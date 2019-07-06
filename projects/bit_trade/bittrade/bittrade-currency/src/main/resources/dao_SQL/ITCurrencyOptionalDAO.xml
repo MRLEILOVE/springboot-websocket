@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bittrade.api.dao.ITCurrencyOptionalDAO">
+
+	<!-- 查询用户自选的交易对	-->
+	<select id="findOptionalByUserId" resultType="com.bittrade.pojo.vo.TransactionPairVO" parameterType="java.lang.String">
+		SELECT o.id as optionalId,t.id,t.symbol,t.currency_id1 as  currencyId1,t.currency_id2 as currencyId2
+		FROM t_currency_optional o
+		INNER JOIN t_currency_trade t ON o.currency_trade_id = t.id
+		WHERE o.`status` = 1 AND o.user_id = #{userId}
+	</select>
+
+</mapper>
