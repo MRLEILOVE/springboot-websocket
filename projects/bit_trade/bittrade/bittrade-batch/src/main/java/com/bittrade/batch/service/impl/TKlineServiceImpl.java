@@ -16,6 +16,5 @@ import com.bittrade.pojo.vo.TKlineVO;
  */
 @Service
 public class TKlineServiceImpl extends AbstractTKlineServiceImpl<ITKlineDAO, TKline, TKlineDTO, TKlineVO> implements ITKlineService {
-//public class TKlineServiceImpl extends DefaultTKlineServiceImpl<ITKlineDAO, TKline, TKlineDTO, TKlineVO> implements ITKlineService {
 
 }
