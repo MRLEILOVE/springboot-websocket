@@ -4,15 +4,13 @@ package com.bittrade.currency.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.bittrade.api.service.ITCurrencyService;
-import com.bittrade.api.service.IWUserWalletBillService;
-import com.bittrade.api.service.IWUserWalletService;
-import com.bittrade.api.service.IWWithdrawWalletBillService;
+import com.bittrade.api.service.*;
 import com.bittrade.currency.response.Result;
 import com.bittrade.pojo.model.TCurrency;
 import com.bittrade.pojo.model.WUserWallet;
 import com.bittrade.pojo.model.WUserWalletBill;
 import com.bittrade.pojo.model.WWithdrawWalletBill;
+import com.bittrade.pojo.vo.CoinAccountVO;
 import com.bittrade.pojo.vo.RechargeVo;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
@@ -49,6 +47,8 @@ public class WalletController {
     private IWUserWalletService userWalletService;
     @Autowired
     private ITCurrencyService currencyService;
+    @Autowired
+    private ITWalletService walletService;
 
 
   /*  @PostMapping("coinSelect")
@@ -125,4 +125,13 @@ public class WalletController {
         return records;
     }
 
+    /**
+     * 查询用户的币币账户
+     */
+    @ApiOperation(value="查询用户的币币账户", notes="查询用户的币币账户")
+    @GetMapping(value = "/queryCoinAccountByUserId/{userId}")
+    @ResponseBody
+    public CoinAccountVO queryCoinAccountByUserId(@PathVariable("userId")Integer userId){
+        return walletService.queryCoinAccountByUserId(userId);
+    }
 }

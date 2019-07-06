@@ -1,5 +1,6 @@
 package com.bittrade.pojo.model;
 
+import com.core.framework.base.model.BaseModel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -19,7 +20,7 @@ import java.time.LocalDateTime;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-public class TWallet implements Serializable {
+public class TWallet extends BaseModel<TWallet> implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
