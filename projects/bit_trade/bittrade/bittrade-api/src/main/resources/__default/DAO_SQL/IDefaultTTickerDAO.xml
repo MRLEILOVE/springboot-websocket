@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+	This code is generated automatically. Please do not edit it.
+-->
+<mapper namespace="com.bittrade.api.__default.DAO.IDefaultTTickerDAO">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.bittrade.pojo.model.TTicker">
+		<id javaType="int" property="id" jdbcType="INTEGER" column="id" />
+		<result javaType="String" property="symbol" jdbcType="VARCHAR" column="symbol" />
+		<result javaType="String" property="last" jdbcType="VARCHAR" column="last" />
+		<result javaType="java.util.Date" property="createTime" jdbcType="TIMESTAMP" column="create_time" />
+	</resultMap>
+
+	<!-- 通用查询结果列 -->
+	<sql id="Base_Column_List">
+		`symbol` AS symbol, 
+		`last` AS last, 
+		`create_time` AS createTime
+	</sql>
+	
+	<insert id="add" parameterType="com.bittrade.pojo.model.TTicker">
+		INSERT INTO t_ticker(`symbol`, `last`, `create_time`)
+		VALUES(#{symbol,jdbcType=VARCHAR}, #{last,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP})
+	</insert>
+	
+	<insert id="addWithSelective" parameterType="com.bittrade.pojo.model.TTicker">
+		INSERT INTO t_ticker(
+			<if test="symbol != null and symbol != ''">
+			`symbol`, 
+			</if>
+			<if test="last != null and last != ''">
+			`last`, 
+			</if>
+			<if test="createTime != null and createTime != ''">
+			`create_time`
+			</if>
+		)
+		VALUES(
+			<if test="symbol != null and symbol != ''">
+			#{symbol,jdbcType=VARCHAR}, 
+			</if>
+			<if test="last != null and last != ''">
+			#{last,jdbcType=VARCHAR}, 
+			</if>
+			<if test="createTime != null and createTime != ''">
+			#{createTime,jdbcType=TIMESTAMP}
+			</if>
+		)
+	</insert>
+	
+	<delete id="removeByPK">
+		DELETE FROM t_ticker
+		WHERE 
+			`id` = #{id,jdbcType=INTEGER}
+	</delete>
+	
+	<delete id="remove" parameterType="com.bittrade.pojo.model.TTicker">
+		DELETE FROM t_ticker
+		WHERE
+			<if test="symbol != null and symbol != ''">
+			`symbol` = #{symbol,jdbcType=VARCHAR} AND
+			</if>
+			<if test="last != null and last != ''">
+			`last` = #{last,jdbcType=VARCHAR} AND
+			</if>
+			<if test="createTime != null and createTime != ''">
+			`create_time` = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+	</delete>
+	
+	<update id="modifyByPK" parameterType="com.bittrade.pojo.model.TTicker">
+		UPDATE t_ticker
+		SET
+			`symbol` = #{symbol,jdbcType=VARCHAR}, 
+			`last` = #{last,jdbcType=VARCHAR}, 
+			`create_time` = #{createTime,jdbcType=TIMESTAMP}
+		WHERE 
+			`id` = #{id,jdbcType=INTEGER}
+	</update>
+	
+	<update id="modifyWithSelectiveByPK" parameterType="com.bittrade.pojo.model.TTicker">
+		UPDATE t_ticker
+		SET
+			<if test="symbol != null and symbol != ''">
+			`symbol` = #{symbol,jdbcType=VARCHAR}, 
+			</if>
+			<if test="last != null and last != ''">
+			`last` = #{last,jdbcType=VARCHAR}, 
+			</if>
+			<if test="createTime != null and createTime != ''">
+			`create_time` = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+		WHERE 
+			`id` = #{id,jdbcType=INTEGER}
+	</update>
+	
+	<update id="modify">
+		UPDATE t_ticker
+		SET
+			`symbol` = #{tTicker.symbol,jdbcType=VARCHAR}, 
+			`last` = #{tTicker.last,jdbcType=VARCHAR}, 
+			`create_time` = #{tTicker.createTime,jdbcType=TIMESTAMP}
+		WHERE 
+			<if test="condiTTicker.symbol != null and condiTTicker.symbol != ''">
+			`symbol` = #{condiTTicker.symbol,jdbcType=VARCHAR} AND
+			</if>
+			<if test="condiTTicker.last != null and condiTTicker.last != ''">
+			`last` = #{condiTTicker.last,jdbcType=VARCHAR} AND
+			</if>
+			<if test="condiTTicker.createTime != null and condiTTicker.createTime != ''">
+			`create_time` = #{condiTTicker.createTime,jdbcType=TIMESTAMP}
+			</if>
+	</update>
+	
+	<update id="modifyWithSelective">
+		UPDATE t_ticker
+		SET
+			<if test="symbol != null and symbol != ''">
+			`symbol` = #{tTicker.symbol,jdbcType=VARCHAR}, 
+			</if>
+			<if test="last != null and last != ''">
+			`last` = #{tTicker.last,jdbcType=VARCHAR}, 
+			</if>
+			<if test="createTime != null and createTime != ''">
+			`create_time` = #{tTicker.createTime,jdbcType=TIMESTAMP}
+			</if>
+		WHERE 
+			<if test="condiTTicker.symbol != null and condiTTicker.symbol != ''">
+			`symbol` = #{condiTTicker.symbol,jdbcType=VARCHAR} AND
+			</if>
+			<if test="condiTTicker.last != null and condiTTicker.last != ''">
+			`last` = #{condiTTicker.last,jdbcType=VARCHAR} AND
+			</if>
+			<if test="condiTTicker.createTime != null and condiTTicker.createTime != ''">
+			`create_time` = #{condiTTicker.createTime,jdbcType=TIMESTAMP}
+			</if>
+	</update>
+	
+	<select id="getByPK" resultType="com.bittrade.pojo.model.TTicker">
+		SELECT 
+			`id`, 
+			`symbol`, 
+			`last`, 
+			`create_time`
+		FROM t_ticker
+		<where>
+			`id` = #{id,jdbcType=INTEGER}
+		</where>
+	</select>
+	
+	<select id="get" resultType="com.bittrade.pojo.dto.TTickerDTO">
+		SELECT 
+			`id`, 
+			`symbol`, 
+			`last`, 
+			`create_time`
+		FROM t_ticker
+		<where>
+			<if test="symbol != null and symbol != ''">
+			AND `symbol` = #{symbol,jdbcType=VARCHAR}
+			</if>
+			<if test="last != null and last != ''">
+			AND `last` = #{last,jdbcType=VARCHAR}
+			</if>
+			<if test="createTime != null and createTime != ''">
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+		</where>
+	</select>
+	
+	<select id="gets" resultType="com.bittrade.pojo.dto.TTickerDTO">
+		SELECT 
+			`id`, 
+			`symbol`, 
+			`last`, 
+			`create_time`
+		FROM t_ticker
+	</select>
+	
+	<select id="getCntWithPage" resultType="int">
+		SELECT COUNT(1)
+		FROM t_ticker
+		<where>
+			<if test="tTicker.symbol != null and tTicker.symbol != ''">
+			AND `symbol` = #{tTicker.symbol,jdbcType=VARCHAR}
+			</if>
+			<if test="tTicker.last != null and tTicker.last != ''">
+			AND `last` = #{tTicker.last,jdbcType=VARCHAR}
+			</if>
+			<if test="tTicker.createTime != null and tTicker.createTime != ''">
+			AND `create_time` = #{tTicker.createTime,jdbcType=TIMESTAMP}
+			</if>
+		</where>
+	</select>
+	
+	<select id="getsWithPage" resultType="com.bittrade.pojo.dto.TTickerDTO">
+		SELECT 
+			`id`, 
+			`symbol`, 
+			`last`, 
+			`create_time`
+		FROM t_ticker
+		<where>
+			<if test="tTicker.symbol != null and tTicker.symbol != ''">
+			AND `symbol` = #{tTicker.symbol,jdbcType=VARCHAR}
+			</if>
+			<if test="tTicker.last != null and tTicker.last != ''">
+			AND `last` = #{tTicker.last,jdbcType=VARCHAR}
+			</if>
+			<if test="tTicker.createTime != null and tTicker.createTime != ''">
+			AND `create_time` = #{tTicker.createTime,jdbcType=TIMESTAMP}
+			</if>
+		</where>
+		LIMIT #{page}, #{size}
+	</select>
+
+</mapper>

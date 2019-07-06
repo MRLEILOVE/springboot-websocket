@@ -1,0 +1,16 @@
+#svc_name: currency
+
+data:
+  #model-package: com.*.pojo.model.*
+  #mapper-locations: classpath*:/__default/DAO_SQL/**/I*DAO.xml,classpath*:/dao_SQL/**/I*DAO.xml
+  application:
+    name: currency
+
+server:
+  port: 8901
+
+spring:
+#  application:
+#    name: currency
+  profiles:
+    active: common

@@ -1,0 +1,108 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>后台管理系统</title>
+<script src="/statics/js/jquery-1.8.3.min.js"></script>
+<link rel="stylesheet" href="/statics/css/login.css">
+<link rel="icon" href="/statics/images/favicon.ico" type="image/x-icon">
+</head>
+
+<body>
+	<div class="content">
+      <header> 
+       <img src="/statics/images/logo.png" alt="特点技术logo">
+        <div class="headerTitle">
+          <h2><font>共</font>享充电宝管理系统</h2>
+          <span></span> </div>
+      </header>
+     </div>
+	 <div class="loginBigBox">
+ 	     <span class="ornament ornament1"></span>
+       <span class="ornament ornament2"></span>
+	 <form action="/login"  method="post" class="loginBox" id="fi" name="myForm" onsubmit="return validateForm()">
+      <div class="loginContent">
+				<h4>登录</h4>
+				<div class="error" id="error1"></div>
+      	<div class="inputBox">
+        <label class="account"></label>
+      	<input type="text"  placeholder="请输入账号" name="username" id="username" value="admin">
+      	</div>     	
+       <div class="inputBox">
+        <label class="password"></label>
+      	<input type="password"  placeholder="请输入密码" name="password" id="password" value="123456">
+       </div>
+       
+        <div class="codebox">
+      	<input type="text"  placeholder="请输入验证码" name="code" class="code" id="code" v-model.trim="msg">
+      	<img id="img1" src="/validatecodeServlet" alt="点击刷新"  class="codeimg" onclick="refreshCode()">
+      	<img src="/statics/images/refresh.png" class="refresh" onclick="refreshCode()">
+       </div>
+      	<input type="submit" value="登录" class="loginBtn">   	
+      </div>    	
+    </form>
+	 	
+	 </div>
+
+	
+</body>
+
+<script>
+var error=document.getElementById("error1")
+    error.style.display="none";
+
+function refreshCode() {
+    document.getElementById("img1").src="/validatecodeServlet?"+Math.random();
+}
+
+function validateForm()
+{
+	var x=document.getElementById("username");
+	var y=document.getElementById("password")
+	var z=document.getElementById("code");
+	
+  if (x.value.length==0)
+  {
+		error.style.display="block";
+		error.innerHTML="账号不能为空！";
+		x.focus();
+    return false;
+	}
+	if(y.value.length==0)
+	{
+		error.style.display="block";
+		error.innerHTML="密码不能为空！";
+		y.focus();
+    return false;
+
+	}
+	
+	
+	if(z.value.length==0||z.value.length != 4)
+	{
+		error.style.display="block";
+		error.innerHTML="请正确输入验证码！";
+		z.focus();
+    return false;
+
+	}
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
+</html>

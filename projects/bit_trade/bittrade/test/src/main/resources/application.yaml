@@ -1,0 +1,17 @@
+server:
+  port: 132
+spring:
+  application:
+    name: td
+ #####################################################################################################
+ 
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    cache: false #关闭缓存
+    mode: LEGACYHTML5
+
+  security:
+    user:
+      name: o
+      password: o

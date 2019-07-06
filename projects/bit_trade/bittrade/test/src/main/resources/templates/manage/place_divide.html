@@ -1,0 +1,461 @@
+<html class="x-admin-sm" xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="UTF-8">
+    <title>场所分成</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8" />
+    <link rel="stylesheet" href="/statics/css/font.css">
+    <link rel="stylesheet" href="/statics/css/xadmin.css">
+    <script type="text/javascript" src="/statics/js/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="/statics/lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/statics/js/xadmin.js"></script>
+    <script type="text/javascript" src="/statics/js/cookie.js"></script>
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<style>
+    .sefirst {
+        color: #fff !important;
+        cursor: default;
+        background-color: #009688 !important;
+        border-color: #009688;
+    }
+
+    .page a {
+        margin-right: 6px !important;
+        cursor: pointer;
+    }
+
+    .page {
+        display: flex;
+        flex-direction: row;
+        margin-top: 0;
+        justify-content: center;
+    }
+
+    .page select {
+        width: 110px;
+        height: 36px;
+        margin-right: 10px;
+    }
+
+    .page span {
+        padding: 10px 0;
+        border: none;
+    }
+
+    .pageData {
+        margin-right: 6px;
+    }
+
+    .dataBigBox {
+        margin-top: 10px;
+        border: 1px solid #dedee1;
+        padding-top: 20px;
+        padding-left: 20px;
+        padding-right: 20px;
+        box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.2);
+    }
+    .searchBigBox {
+        border: 1px solid #dedee1;
+        padding-top: 20px;
+        padding-left: 20px;
+        padding-right: 20px;
+        box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.2);
+    }
+
+    .searchItem {
+        margin-right: 40px;
+    }
+</style>
+
+
+<body>
+
+    <div class="x-nav">
+        <span class="layui-breadcrumb">
+            <a href="">首页</a>
+            <a href="">统计管理</a>
+            <a>
+                <cite>场所分成</cite></a>
+        </span>
+        <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:12px;float:right"
+           href="javascript:location.replace(location.href);" title="刷新">
+            <i class="layui-icon" style="line-height:25px"><img src="/statics/images/refresh2.png" alt="" style="width:16px;"></i></a>
+    </div>
+    <div class="x-body" id="acPlace">
+        <xblock>
+            <button class="layui-btn layui-btn-danger" onclick="leading_out()"><i class="layui-icon">&#xe714;</i>导出</button>
+            <button class="layui-btn" onclick="searchs_show()"><i class="layui-icon">&#xe615;</i>查询</button>
+            <button class="layui-btn" onclick="data_show()"><i class="iconfont">&#xe6a2;</i> 查看公式</button>
+            <span class="x-right" style="line-height:40px">共有数据：<font class="particular"><b>{{totalNum}}</b></font>条 <font class="particular"><b>{{pageNum}}/{{totalPages}}</b></font> 每页<font class="particular"><b>{{pageSize}}</b></font>条</span>
+        </xblock>
+
+        <!-- 搜索条件 -->
+        <div class="layui-row searchBigBox" id="searchBox" style="overflow:visible;">
+            <form class="layui-form layui-col-md12 x-so">
+                <div class="form-group col-lg-3">
+                    <div class="layui-input-inline searchItem">
+                        <select name="userName">
+                            <option value="">请选择代理商</option>
+                            <option v-for="l in agentList" :value="l.agentName">{{l.agentName}}</option>
+                        </select>
+                    </div>
+                    <div class="layui-input-inline searchItem">
+                        <select name="soleName">
+                            <option value="">请选择销售代表</option>
+                            <option v-for="sl in soleList" :value="sl.nickname">{{sl.nickname}}</option>
+                        </select>
+                    </div>
+                    <div class="layui-input-inline searchItem">
+                        <select name="placeName">
+                            <option value="">请选择场所</option>
+                            <option v-for="pl in placeList" :value="pl.placeName">{{pl.placeName}}</option>
+                        </select>
+                    </div>
+                    <input class="layui-input" autocomplete="off" placeholder="开始日" name="beginTime" id="start">
+                    <input class="layui-input" autocomplete="off" placeholder="截止日" name="endTime" id="end">
+                    <input type="text" name="type" value="2" autocomplete="off" class="layui-input searchItem" style="display: none;">
+                    <!--<button class="layui-btn" @click.prevent="sreachs()" ><i class="layui-icon">&#xe615;</i></button>-->
+                    <!--<button type="reset" class="layui-btn layui-btn-primary" @click.prevent="reset()">重置</button>-->
+                    <button class="layui-btn" lay-submit lay-filter="formDemo">查询</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+
+            </form>
+        </div>
+
+        <!-- 查看公式-->
+        <div class="layui-row dataBigBox" id="dataBigBox">
+            <blockquote class="layui-elem-quote">
+                <font style="font-weight: bold;">总收入 </font>= 总收费 - 支付手续费(微信手续费+支付宝手续费)
+            </blockquote>
+            <blockquote class="layui-elem-quote">
+                <font style="font-weight: bold;">平台收入 </font> = 总收入 * (100 - 代理商分成百分比)/100
+            </blockquote>
+            <blockquote class="layui-elem-quote">
+                <font style="font-weight: bold;">场所收入</font>(分成模式) = (总收入 - 平台收入) * 分成百分比 /100
+            </blockquote>
+            <blockquote class="layui-elem-quote">
+                <font style="font-weight: bold;">场所收入 </font>(租金模式) = 租金 /当月天数
+            </blockquote>
+            <blockquote class="layui-elem-quote">
+                <font style="font-weight: bold;">代理商收入</font> = 总收入 - 平台收入 - 场所收入
+            </blockquote>
+            <blockquote class="layui-elem-quote">
+                <font style="font-weight: bold;">总收费： </font>客户通过微信或支付宝支付消费的费用<br>
+                <font style="font-weight: bold;">代理商分成百分比：</font>代理商和平台的分成的百分比<br>
+                <font style="font-weight: bold;">分成百分比：</font> 代理商和场所管理员的分成百分比<br>
+                <font style="font-weight: bold;">保底模式：</font>
+                针对场所，若分成模式的收入-租金模式的收入>=0,则采用分成模式；若分成模式的收入-租金模式的收入&lt;0,则采用租金模式！<br>
+            </blockquote>
+
+        </div>
+        <div>
+            <table class="layui-table x-admin" id="">
+                <thead>
+                    <tr>
+                        <th>代理商</th>
+                        <th>销售代表</th>
+                        <th>场所</th>
+                        <!--<th>场所类型</th>-->
+                        <!--<th>台数</th>-->
+                        <th>分成日期</th>
+                        <th>结算模式</th>
+                        <!--<th>总收入（不含手续费）</th>-->
+                        <!--<th>平台收入（元）</th>-->
+                        <th>总收入（含场所收入）</th>
+                        <!--<th>租金模式场所收入(元)</th>-->
+                        <th>分成模式场所收入(元)</th>
+                        <!--<th>租金(元/月)</th>-->
+                        <!--<th>代理商分成百分比</th>-->
+                        <th>场所分成百分比</th>
+                        <!--<th>总收费(含手续费)(元)</th>-->
+                        <th>微信手续费(0.6%)(元)</th>
+                        <th>支付宝手续费(0.6%)(元)</th>
+
+                </thead>
+                <tbody>
+                    <tr v-for="item of list">
+                        <td>{{item.userName}}</td>
+                        <td>{{item.soleName}}</td>
+                        <td>{{item.placeName}}</td>
+                        <!--<td>{{item.placeType}}</td>-->
+                        <!--<td>{{item.equipNumber}}</td>-->
+                        <td>{{item.createdTime | formatDate}}</td>
+                        <td>分成模式</td>
+                        <!--<td>{{item.generalIncome}}</td>-->
+                        <!--<td>{{item.platformIncome}}</td>-->
+                        <td>{{item.money | formatAllMoney(item.divided)}}</td>
+                        <!--<td>{{item.rentalModelIncome}}</td>-->
+                        <td>{{item.money | formatMoney}}</td>
+                        <!--<td>{{item.rental}}</td>-->
+                        <!--<td>{{item.agencyPercentage}}</td>-->
+                        <td>{{item.divided}}</td>
+                        <!--<td>{{item.totalCharge}}</td>-->
+                        <td>0.00</td>
+                        <td>0.00</td>
+                    </tr>
+                    <tr>
+                        <!--<td colspan="18">-->
+                            <!--<font style="font-weight: bold;">分成数据以月底结算为准(以下统计仅供参考)</font><br>-->
+                            <!--<font>总收费(含手续费):200.50 总收入(不含手续费):199.30 平台收入:0.00 代理商收入:195.96 场所收入:3.33 手续费:1.20 </font>-->
+                        <!--</td>-->
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="page">
+                <a v-if="pageNum>1" v-on:click="pageNum--,pageClick()">&lt;&lt;</a>
+                <a v-if="pageNum==1" class="num current">&lt;&lt;</a>
+                <a v-for="index in indexs" v-bind:class="{'sefirst' : pageNum == index}" v-on:click="btnClick(index)">{{index}}</a>
+                <a v-if="pageNum!=totalPages" v-on:click="pageNum++,pageClick()" class="num">&gt;&gt;</a>
+                <a v-if="pageNum == totalPages" class="banclik">&gt;&gt;</a>
+                <font style="color:#999;">到第</font>
+                <input type="text" class="pageNumber" v-model="pageNumber">
+                <font style="color:#999;">页</font>
+                <button  class="pageOK" @click="btnOK()">确定</button>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <script src="/statics/js/vue.min.js"></script>
+    <script src="/statics/js/vue-resource.js"></script>
+
+</body>
+
+
+
+<script>
+
+    function leading_out(){
+        layer.confirm('确定导出订单列表吗?', {icon: 3, title:'提示'}, function(index){
+            layer.close(index);
+            location.href="/admin/order/excelOrder"
+        });
+    }
+
+     layui.use('laydate', function () {
+      var laydate = layui.laydate;
+      //执行一个laydate实例
+      laydate.render({
+        elem: '#start' //指定元素
+      });
+
+      //执行一个laydate实例
+      laydate.render({
+        elem: '#end' //指定元素
+      });
+    }); 
+$("#dataBigBox").hide();
+function data_show() {
+    $("#dataBigBox").toggle(200);
+}
+
+     $("#searchBox").hide();
+     function searchs_show() {
+         $("#searchBox").toggle(200);
+     }
+
+
+    var padDate = function (va) {
+        va = va < 10 ? '0' + va : va;
+        return va
+    }
+
+
+     var placeA = new Vue({
+         el: "#acPlace",
+         data: {
+             list: [],
+             pageNum:1, //当前页数
+             pageSize:1, //每页数量
+             isFirstPage:false,
+             totalPages:0, //总页数
+             isLastPage:false,
+             totalNum:0, //总数量
+             agentList:[],
+             placeList:[],
+             soleList:[],
+             pageNumber:1,
+         },mounted:function () {
+             var _this = this;
+             this.$http.post('/admin/order/orderRecordList',{type:2},{emulateJSON:false}).then(function(res){
+                 console.log("/admin/order/orderRecordList")
+                 console.log(res.body)
+                 _this.list = res.body.data.list
+                 _this.pageNum=res.body.data.pageNum
+                 _this.pageSize=res.body.data.pageSize
+                 _this.isFirstPage=res.body.data.isFirstPage
+                 _this.totalPages=res.body.data.pages
+                 _this.isLastPage=res.body.data.isLastPage
+                 _this.totalNum = res.body.data.total
+             });
+             this.$http.post('/findAllAgentInfo',{emulateJSON:false}).then(function(res){
+                 _this.agentList = res.body.list});
+             this.$http.post('/findAllPlaceInfo',{emulateJSON:false}).then(function(res){
+                 _this.placeList = res.body.list});
+             this.$http.post('/findAllSoleUser',{emulateJSON:false}).then(function(res){
+                 _this.soleList = res.body.list});
+         },methods: {
+             btnClick: function(data){//页码点击事件
+                 var _this = this;
+                 _this.pageNumber = data
+                 if(data != this.pageNum){
+                     this.$http.post('/admin/order/orderRecordList',
+                         {pageNum:data,pageSize:10,type:2},{emulateJSON:false}).then(function(res){
+
+                         // console.log(res.body)
+                         _this.list = res.body.data.list
+                         _this.pageNum=res.body.data.pageNum
+                         _this.pageSize=res.body.data.pageSize
+                         _this.isFirstPage=res.body.data.isFirstPage
+                         _this.totalPages=res.body.data.pages
+                         _this.isLastPage=res.body.data.isLastPage
+                         _this.totalNum = res.body.data.total
+                         if(null == res){
+                         }
+                     });
+
+                 }
+             },
+             pageClick: function(reccept,event) {
+                 //父组件通过change方法来接受当前的页码
+                 //这里是点击下一页执行函数
+                 var _this = this
+                 _this.pageNumber = _this.pageNum
+                 this.$http.post('/admin/order/orderRecordList',
+                     {pageNum:_this.pageNum,pageSize:10,type:2},{emulateJSON:false}).then(function(res){
+
+                     // console.log(res.body)
+                     _this.list = res.body.data.list
+                     _this.pageNum=res.body.data.pageNum
+                     _this.pageSize=res.body.data.pageSize
+                     _this.isFirstPage=res.body.data.isFirstPage
+                     _this.totalPages=res.body.data.pages
+                     _this.isLastPage=res.body.data.isLastPage
+                     _this.totalNum = res.body.data.total
+                     if(null == res){
+                     }
+                 });
+             },btnOK:function(data){
+                 var _this = this;
+                 // this.pageNum=this.pageNumber
+                 if(_this.pageNumber>_this.totalPages){
+                     _this.pageNumber=_this.totalPages
+                     // this.pageNum=this.pageNumber
+                 }
+                 this.$http.post('/admin/order/orderRecordList',
+                     {pageNum:_this.pageNumber,pageSize:10,type:2},{emulateJSON:false}).then(function(res){
+                     _this.list = res.body.data.list
+                     _this.pageNum=res.body.data.pageNum
+                     _this.pageSize=res.body.data.pageSize
+                     _this.isFirstPage=res.body.data.isFirstPage
+                     _this.totalPages=res.body.data.pages
+                     _this.isLastPage=res.body.data.isLastPage
+                     _this.totalNum = res.body.data.total
+                 });
+
+             },
+         },computed: {
+             indexs: function () {
+                 this.all = Math.ceil(this.totalNum / this.pageSize);
+                 // console.log(this.all)
+                 var left = 1;
+                 var right = this.all;
+
+                 var ar = [];
+                 if (this.all >= 5) {
+                     if (this.pageNum> 3 && this.pageNum < this.all - 2) {
+                         left = this.pageNum - 2
+                         right = this.pageNum + 2
+                     } else {
+                         if (this.pageNum <= 3) {
+                             left = 1
+                             right = 5
+                         } else {
+                             right = this.all
+                             left = this.all - 4
+                         }
+                     }
+                 }
+                 while (left <= right) {
+                     ar.push(left)
+                     left++
+                 }
+                 return ar
+             }
+         },
+
+         filters: {
+             formatDate: function (val) {
+                 if(null == val){
+                     return '-'
+                 }
+
+                 var value = new Date(val);
+                 var year = value.getFullYear();
+                 var month = padDate(value.getMonth() + 1);
+                 var day = padDate(value.getDate());
+                 var hour = padDate(value.getHours());
+                 var minutes = padDate(value.getMinutes());
+                 var seconds = padDate(value.getSeconds());
+                 return year + '-' + month + '-' + day + ' ' + hour + ':' + minutes + ':' + seconds;
+
+             },
+             formatMoney: function (val) {
+                 return val*0.01
+             },
+             formatAllMoney:function (money,divided) {
+                 if(money == 0 && divided ==0){
+                     return 0
+                 }
+                 return money/(divided*0.01)
+             }
+
+         }
+
+
+     })
+
+     //Demo
+     layui.use('form', function() {
+         var form = layui.form;
+         //监听提交
+         form.on('submit(formDemo)', function (data) {
+
+             layer.msg(JSON.stringify(data.field));
+             console.log(JSON.stringify(data.field));
+             $.ajax({
+                 type: 'post',
+                 url: "/admin/order/orderRecordList",
+                 contentType: "application/json;charset=utf-8",
+                 async: false,
+                 dataType: 'json',
+                 data: JSON.stringify(data.field),
+                 success: function (res) {
+                     var _this = placeA;
+                     _this.list = res.data.list
+                     _this.pageNum = res.data.pageNum
+                     _this.pageSize = res.data.pageSize
+                     _this.isFirstPage = res.data.isFirstPage
+                     _this.totalPages = res.data.pages
+                     _this.isLastPage = res.data.isLastPage
+                     _this.totalNum = res.data.total
+                 }
+
+             });
+             return false;
+         });
+     });
+</script>
+
+</html>

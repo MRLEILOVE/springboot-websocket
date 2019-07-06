@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bittrade.api.dao.ITWalletDAO">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.bittrade.pojo.model.TWallet">
+		<id javaType="int" property="id" jdbcType="INTEGER" column="id" />
+		<result javaType="long" property="userId" jdbcType="BIGINT" column="user_id" />
+		<result javaType="int" property="currencyId" jdbcType="INTEGER" column="currency_id" />
+		<result javaType="java.math.BigDecimal" property="total" jdbcType="DECIMAL" column="total" />
+		<result javaType="java.math.BigDecimal" property="tradeFrozen" jdbcType="DECIMAL" column="trade_frozen" />
+		<result javaType="java.math.BigDecimal" property="transferFrozen" jdbcType="DECIMAL" column="transfer_frozen" />
+		<result javaType="int" property="version" jdbcType="INTEGER" column="version" />
+		<result javaType="java.util.Date" property="createTime" jdbcType="TIMESTAMP" column="create_time" />
+		<result javaType="java.util.Date" property="updateTime" jdbcType="TIMESTAMP" column="update_time" />
+	</resultMap>
+
+	<!-- 通用查询结果列 -->
+	<sql id="Base_Column_List">
+		`user_id` AS userId, 
+		`currency_id` AS currencyId, 
+		`total` AS total, 
+		`trade_frozen` AS tradeFrozen, 
+		`transfer_frozen` AS transferFrozen, 
+		`version` AS version, 
+		`create_time` AS createTime, 
+		`update_time` AS updateTime
+	</sql>
+
+	<select id="queryByUserId" parameterType="java.lang.Integer" resultType="com.bittrade.pojo.vo.QueryWalletVO">
+		SELECT w.id,w.user_id as userId,w.total,w.trade_frozen as tradeFrozen,w.transfer_frozen as transferFrozen,c.name as currencyName
+		FROM t_wallet w
+		INNER JOIN t_currency c on c.id = w.currency_id
+		WHERE w.user_id = #{userId}
+	</select>
+</mapper>

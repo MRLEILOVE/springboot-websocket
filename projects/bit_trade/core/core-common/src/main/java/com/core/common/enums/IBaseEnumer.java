@@ -1,0 +1,23 @@
+package com.core.common.enums;
+
+/**
+ * 
+ * @author Administrator
+ * @datetime Jul 5, 2019 10:00:58 AM
+ *
+ */
+public interface IBaseEnumer {
+
+	/**
+	 * 
+	 * @return
+	 */
+	public int getCode();
+
+	/**
+	 * 
+	 * @return
+	 */
+	public String getName();
+
+}

@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html class="x-admin-sm" xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="UTF-8">
+    <title>全部设备</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8"/>
+
+    <link rel="stylesheet" href="/statics/css/font.css">
+    <link rel="stylesheet" href="/statics/css/xadmin.css">
+    <link rel="icon" href="/statics/images/favicon.ico" type="image/x-icon">
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="/statics/lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/statics/js/xadmin.js"></script>
+    <script type="text/javascript" src="/statics/js/cookie.js"></script>
+     <!--让IE8/9支持媒体查询，从而兼容栅格-->
+    <!--[if lt IE 9]>
+    <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+    <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<style>
+    .sefirst {
+        color: #fff !important;
+        cursor: default;
+        background-color: #009688 !important;
+        border-color: #009688;
+    }
+
+    .page a {
+        margin-right: 10px !important;
+        cursor: pointer;
+        user-select: none;
+    }
+</style>
+<body>
+<div class="x-nav" >
+      <span class="layui-breadcrumb">
+        <a href="">首页</a>
+        <a href="">设备管理</a>
+        <a>
+          <cite>全部设备</cite></a>
+      </span>
+    <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:12px;float:right"
+       href="javascript:location.replace(location.href);" title="刷新">
+        <i class="layui-icon" style="line-height:25px"><img src="/statics/images/refresh2.png" alt=""
+                                                            style="width:16px;"></i></a>
+</div>
+<div class="x-body" id="deivceList">
+    <div class="layui-row">
+        <form class="layui-form layui-col-md12 x-so">
+           <!-- <input class="layui-input" autocomplete="off" placeholder="开始日" name="startTime" id="startTime" v-model="startTime">-
+            <input class="layui-input" autocomplete="off" placeholder="截止日" name="endTime" id="endTime" v-model="endTime">-->
+            <input type="text" name="deviceNo" placeholder="请输入设备编号" autocomplete="off" v-model="deviceNo" class="layui-input">
+            <input type="text" name="deviceName" placeholder="请输入设备名称" autocomplete="off" v-model="deviceName" class="layui-input">
+            <input type="text" name="deviceUuid" placeholder="请输入设备UUID" autocomplete="off" v-model="deviceUuid" class="layui-input">
+            <input type="text" name="sn" placeholder="请输入设备IMEI" autocomplete="off" v-model="sn" class="layui-input">
+            <div class="layui-input-inline">
+                <select name="deviceState" lay-ignore  style="width:100px;height:32px;" v-model="deviceState">
+                    <option value="">状态</option>
+                    <option value="1">启用</option>
+                    <option value="0">禁用</option>
+                </select>
+            </div>
+            <button class="layui-btn" @click.prevent="sreachs()" ><i class="layui-icon">&#xe615;</i></button>
+            <button type="reset" class="layui-btn layui-btn-primary" @click.prevent="reset()">重置</button>
+        </form>
+    </div>
+    <xblock>
+        <!--<button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>-->
+        <button class="layui-btn" id="addbtn" onclick="x_admin_show('添加','/device/addDevice',500,400)"><i class="layui-icon"></i>添加</button>
+        <!--<button class="layui-btn" id="editbtn" onclick="x_admin_show('编辑','/device/addDevice',500,400)"><i class="iconfont">&#xe69e;</i> 编辑</button>-->
+        <span class="x-right" style="line-height:40px">共有数据：<font class="particular"><b>{{totalNum}}</b></font>条 <font class="particular"><b>{{pageNum}}/{{totalPages}}</b></font> 每页<font class="particular"><b>{{pageSize}}</b></font>条</span>
+    </xblock>
+    <table class="layui-table x-admin">
+        <thead>
+        <tr>
+            <!--<th>-->
+                <!--<div class="layui-unselect header layui-form-checkbox" lay-skin="primary"><i-->
+                        <!--class="layui-icon">&#xe605;</i></div>-->
+            <!--</th>-->
+            <th>设备型号</th>
+            <th>设备编号</th>
+            <th>设备名称</th>
+            <th>设备UUID</th>
+            <th>设备IMEI</th>
+            <th>设备ICCID</th>
+            <th>设备状态</th>
+            <th>激活时间</th>
+            <th>IP</th>
+            <th>二维码</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody id="oprateList">
+
+        <tr v-for="list in deviceLists">
+            <!--<td>-->
+                <!--<div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='2'><i class="layui-icon">&#xe605;</i>-->
+                <!--</div>-->
+            <!--</td>-->
+
+            <td>{{list.deviceModel}}口机</td>
+            <td>{{list.deviceNo}}</td>
+            <td>{{list.deviceName}}</td>
+            <td>{{list.deviceUuid}}</td>
+            <td>{{list.sn}}</td>
+            <td>{{list.iccId}}</td>
+            <td v-if="list.deviceState == 0 ">
+               禁用
+            </td>
+            <td v-if="list.deviceState == 1 ">
+                启用
+            </td>
+
+            <td>
+                {{ list.createdTime | formatDate }}
+            </td>
+            <td>{{list.deviceIP}}</td>
+            <td><button class="layui-btn layui-btn-small btn-qrcode get-qrcode" @click="see_qrcode(list.url)">
+                <i class="iconfont">&#xe6a9;</i>二维码
+            </button></td>
+            <td class="td-manage">
+                <a title="编辑"  @click="editDevice(list)" href="javascript:;">
+                    <i class="layui-icon">&#xe642;</i>
+                </a>
+                <a title="查看" @click="showDevice(list)" href="javascript:;">
+                    <i class="layui-icon">&#xe63c;</i>
+                </a>
+                <!--<a title="调试设备"  :href="'/device/debug'">-->
+                <!--<i class="layui-icon">&#xe63c;</i>-->
+                <!--</a>-->
+
+                <!--<a title="删除" onclick="member_del(this,'要删除的id')" href="javascript:;">-->
+                    <!--<i class="layui-icon">&#xe640;</i>-->
+                <!--</a>-->
+                <a title="删除" href="javascript:;" @click="member_del(list)">
+                <i class="layui-icon">&#xe640;</i>
+                </a>
+
+            </td>
+        </tr>
+
+        </tbody>
+    </table>
+    <div class="page">
+        <a v-if="pageNum>1" v-on:click="pageNum--,pageClick()">&lt;&lt;</a>
+        <a v-if="pageNum==1" class="num current">&lt;&lt;</a>
+        <a v-for="index in indexs" v-bind:class="{'sefirst' : pageNum == index}" v-on:click="btnClick(index)">{{index}}</a>
+        <a v-if="pageNum!=totalPages" v-on:click="pageNum++,pageClick()" class="num">&gt;&gt;</a>
+        <a v-if="pageNum == totalPages" class="banclik">&gt;&gt;</a>
+        <font style="color:#999;">到第</font>
+        <input type="text" class="pageNumber" v-model="pageNumber">
+        <font style="color:#999;">页</font>
+        <button  class="pageOK" @click="btnOK()">确定</button>
+    </div>
+</div>
+
+
+
+
+<script>
+    layui.use('laydate', function () {
+        var laydate = layui.laydate;
+
+        //执行一个laydate实例
+        laydate.render({
+            elem: '#start' //指定元素
+        });
+
+        //执行一个laydate实例
+        laydate.render({
+            elem: '#end' //指定元素
+        });
+    });
+
+
+    /*设备-删除*/
+    function member_del(obj, id) {
+        layer.confirm('确认要删除吗？', function (index) {
+
+
+            //发异步删除数据
+            $(obj).parents("tr").remove();
+            layer.msg('已删除!', {icon: 1, time: 1000});
+        });
+    }
+
+    function delAll(argument) {
+        var data = tableCheck.getData();
+
+        layer.confirm('确认要删除吗？' + data, function (index) {
+            //捉到所有被选中的，发异步进行删除
+            layer.msg('删除成功', {icon: 1});
+            $(".layui-form-checked").not('.header').parents('tr').remove();
+        });
+    }
+
+
+</script>
+</body>
+
+</html>
+<script src="/statics/js/vue.min.js"></script>
+<script src="/statics/js/vue-resource.js"></script>
+
+<script>
+
+    var pages =0;
+    var total =0;
+    var pageNum = 0;
+
+    var padDate=function(va) {
+        va = va < 10 ? '0' + va : va;
+        return va
+    }
+
+    var deivceList = new Vue({
+
+        el: '#deivceList',
+        data: {
+            inputtext:{},
+            message:'',
+            deviceLists:[],
+            totals:'',
+            deviceName :'',
+            deviceState:'',
+            sn:'',
+            deviceUuid:'',
+            deviceNo:'',
+            // startTime:'',
+            // endTime:'',
+            pageNum:1, //当前页数
+            pageSize:1, //每页数量
+            isFirstPage:false,
+            totalPages:0, //总页数
+            isLastPage:false,
+            totalNum:0, //总数量
+            pageNumber:1,
+
+        },
+        methods: {
+            reset:function(){
+                var _this = this
+                _this.deviceName=''
+                _this.deviceState=''
+                _this.deviceUuid=''
+                _this.sn=''
+                _this.deviceNo=''
+            },
+            editDevice:function(list){
+                var url = '/device/editDevice?deviceModel='+list.deviceModel
+                    +'&deviceNo='+list.deviceNo
+                    +'&deviceName='+list.deviceName
+                    +'&deviceUuid='+list.deviceUuid
+                    +'&sn='+list.sn
+                    +'&iccId='+list.iccId
+                    +'&deviceState='+list.deviceState
+                    +'&deviceIP='+list.deviceIP
+                console.log(url)
+                x_admin_show('编辑',url,500,400);
+            },
+            sreachs:function () {
+                var _this = this;
+                this.$http.post('/device/listDate',
+                    {
+                        deviceName:this.deviceName,
+                        deviceNo:this.deviceNo,
+                        deviceUuid:this.deviceUuid,
+                        sn:this.sn,
+                        deviceState:this.deviceState
+                    },{emulateJSON:false}).then(function(res){
+                    _this.deviceLists = res.body.list;
+                    // console.log("/device/listDate")
+                    // console.log( res.body);
+                    _this.pageNum=res.body.pageNum
+                    _this.pageSize=res.body.pageSize
+                    _this.isFirstPage=res.body.isFirstPage
+                    _this.totalPages=res.body.pages
+                    _this.isLastPage=res.body.isLastPage
+                    _this.totalNum = res.body.total
+                },function(res){
+                    console.log(res.status);
+                });
+            },
+            showDevice(list){
+                var url = '/device/deviceState?id='+list.id
+                    +'&deviceModel='+list.deviceModel
+                    +'&sn='+list.sn
+                    +'&createdTime='+formatDate(list.createdTime)
+                    +'&deviceUuid='+list.deviceUuid
+                x_admin_show('查看',url,600,600)
+            },
+            member_del(b){
+                layer.confirm('确认要删除吗？',function(index){
+                    $.ajax({ type:'post',url: "/device/del", data: JSON.stringify(b), contentType: "application/json",
+                        success: function(date){
+                            //捉到所有被选中的，发异步进行删除
+                            layer.msg('删除成功', {icon: 1});
+                            $(".layui-form-checked").not('.header').parents('tr').remove();
+                            location.reload();
+                        }
+
+                    });
+                });
+            },
+            btnClick: function(data){//页码点击事件
+                var _this = this;
+                _this.pageNumber = data
+                if(data != this.pageNum){
+                    this.$http.post('/device/listDate',
+                        {pageNum:data,pageSize:10},{emulateJSON:false}).then(function(res){
+
+                        // console.log(res.body)
+                        _this.deviceLists = res.body.list
+                        _this.pageNum=res.body.pageNum
+                        _this.pageSize=res.body.pageSize
+                        _this.isFirstPage=res.body.isFirstPage
+                        _this.totalPages=res.body.pages
+                        _this.isLastPage=res.body.isLastPage
+                        _this.totalNum = res.body.total
+                        if(null == res){
+                        }
+                    },function(res){
+                        console.log(res.status);
+                    });
+
+                }
+            },
+            pageClick: function(reccept,event) {
+                //父组件通过change方法来接受当前的页码
+                //这里是点击下一页执行函数
+                var _this = this
+                _this.pageNumber = _this.pageNum
+                this.$http.post('/device/listDate',
+                    {pageNum:_this.pageNum,pageSize:10},{emulateJSON:false}).then(function(res){
+
+                    // console.log(res.body)
+                    _this.deviceLists = res.body.list
+                    _this.pageNum=res.body.pageNum
+                    _this.pageSize=res.body.pageSize
+                    _this.isFirstPage=res.body.isFirstPage
+                    _this.totalPages=res.body.pages
+                    _this.isLastPage=res.body.isLastPage
+                    _this.totalNum = res.body.total
+                });
+
+
+            },btnOK:function(data){
+                var _this = this;
+                // this.pageNum=this.pageNumber
+                if(_this.pageNumber>_this.totalPages){
+                    _this.pageNumber=_this.totalPages
+                    // this.pageNum=this.pageNumber
+                }
+                this.$http.post('/device/listDate',
+                    {pageNum:_this.pageNumber,pageSize:10},{emulateJSON:false}).then(function(res){
+                    _this.deviceLists = res.body.list
+                    _this.pageNum=res.body.pageNum
+                    _this.pageSize=res.body.pageSize
+                    _this.isFirstPage=res.body.isFirstPage
+                    _this.totalPages=res.body.pages
+                    _this.isLastPage=res.body.isLastPage
+                    _this.totalNum = res.body.total
+                });
+
+            },
+
+
+        },computed: {
+            indexs: function () {
+                this.all = Math.ceil(this.totalNum / this.pageSize);
+                // console.log(this.all)
+                var left = 1;
+                var right = this.all;
+
+                var ar = [];
+                if (this.all >= 5) {
+                    if (this.pageNum> 3 && this.pageNum < this.all - 2) {
+                        left = this.pageNum - 2
+                        right = this.pageNum + 2
+                    } else {
+                        if (this.pageNum <= 3) {
+                            left = 1
+                            right = 5
+                        } else {
+                            right = this.all
+                            left = this.all - 4
+                        }
+                    }
+                }
+                while (left <= right) {
+                    ar.push(left)
+                    left++
+                }
+                return ar
+            },
+        },
+        mounted:function () {
+            var _this = this;
+                this.$http.post('/device/listDate',
+                    {},{emulateJSON:false}).then(function(res){
+                    // console.log("/device/listDate")
+                    // console.log(res.body)
+                    _this.deviceLists = res.body.list
+                    _this.pageNum=res.body.pageNum
+                    _this.pageSize=res.body.pageSize
+                    _this.isFirstPage=res.body.isFirstPage
+                    _this.totalPages=res.body.pages
+                    _this.isLastPage=res.body.isLastPage
+                    _this.totalNum = res.body.total
+                    if(null == res){
+
+                    }
+                },function(res){
+                    console.log(res.status);
+                });
+        },
+
+        filters: {
+            formatDate: function (val) {
+                var value = new Date(val);
+                var year = value.getFullYear();
+                var month = padDate(value.getMonth() + 1);
+                var day = padDate(value.getDate());
+                var hour = padDate(value.getHours());
+                var minutes = padDate(value.getMinutes());
+                var seconds = padDate(value.getSeconds());
+                return year + '-' + month + '-' + day + ' ' + hour + ':' + minutes + ':' + seconds;
+
+            }
+        }
+    })
+
+
+    function formatDate(val) {
+        var value = new Date(val);
+        var year = value.getFullYear();
+        var month = padDate(value.getMonth() + 1);
+        var day = padDate(value.getDate());
+        var hour = padDate(value.getHours());
+        var minutes = padDate(value.getMinutes());
+        var seconds = padDate(value.getSeconds());
+        return year + '-' + month + '-' + day + ' ' + hour + ':' + minutes + ':' + seconds;
+
+    }
+
+    var pageBar = new Vue({
+        el: 'page-bar',
+
+        data: {
+            all: pages, //总页数
+            cur: pageNum,//当前页码
+
+        }
+    })
+
+    // 查看二维码
+    function see_qrcode(url) {
+        console.log(url);
+        layer.open({
+            type: 1,
+            title: false,
+            closeBtn: 0,
+            shadeClose: true,
+            skin: 'yourclass',
+            content: "<img src=http://api.tdotcn.com/"+url+" alt='二维码图片丢失，请重新生成二维码！' width='300px' height='300px'>"
+
+        });
+
+    }
+
+</script>

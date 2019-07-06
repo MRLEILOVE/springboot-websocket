@@ -1,0 +1,561 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+	This code is generated automatically. Please do not edit it.
+-->
+<mapper namespace="com.bittrade.api.__default.DAO.IDefaultWCoinConfigDAO">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.bittrade.pojo.model.WCoinConfig">
+		<id javaType="long" property="id" jdbcType="BIGINT" column="id" />
+		<result javaType="String" property="coinType" jdbcType="VARCHAR" column="coin_type" />
+		<result javaType="String" property="token" jdbcType="VARCHAR" column="token" />
+		<result javaType="String" property="contract" jdbcType="VARCHAR" column="contract" />
+		<result javaType="long" property="scanBlock" jdbcType="BIGINT" column="scan_block" />
+		<result javaType="int" property="baseMultiple" jdbcType="INTEGER" column="base_multiple" />
+		<result javaType="int" property="minConfirm" jdbcType="INTEGER" column="min_confirm" />
+		<result javaType="String" property="bossAddress" jdbcType="VARCHAR" column="boss_address" />
+		<result javaType="java.math.BigDecimal" property="minCollectionAmount" jdbcType="DECIMAL" column="min_collection_amount" />
+		<result javaType="String" property="valid" jdbcType="CHAR" column="valid" />
+		<result javaType="String" property="remark" jdbcType="VARCHAR" column="remark" />
+		<result javaType="java.util.Date" property="createTime" jdbcType="TIMESTAMP" column="create_time" />
+		<result javaType="java.util.Date" property="updateTime" jdbcType="TIMESTAMP" column="update_time" />
+	</resultMap>
+
+	<!-- 通用查询结果列 -->
+	<sql id="Base_Column_List">
+		`coin_type` AS coinType, 
+		`token` AS token, 
+		`contract` AS contract, 
+		`scan_block` AS scanBlock, 
+		`base_multiple` AS baseMultiple, 
+		`min_confirm` AS minConfirm, 
+		`boss_address` AS bossAddress, 
+		`min_collection_amount` AS minCollectionAmount, 
+		`valid` AS valid, 
+		`remark` AS remark, 
+		`create_time` AS createTime, 
+		`update_time` AS updateTime
+	</sql>
+	
+	<insert id="add" parameterType="com.bittrade.pojo.model.WCoinConfig">
+		INSERT INTO w_coin_config(`coin_type`, `token`, `contract`, `scan_block`, `base_multiple`, `min_confirm`, `boss_address`, `min_collection_amount`, `valid`, `remark`, `create_time`, `update_time`)
+		VALUES(#{coinType,jdbcType=VARCHAR}, #{token,jdbcType=VARCHAR}, #{contract,jdbcType=VARCHAR}, #{scanBlock,jdbcType=BIGINT}, #{baseMultiple,jdbcType=INTEGER}, #{minConfirm,jdbcType=INTEGER}, #{bossAddress,jdbcType=VARCHAR}, #{minCollectionAmount,jdbcType=DECIMAL}, #{valid,jdbcType=CHAR}, #{remark,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+	</insert>
+	
+	<insert id="addWithSelective" parameterType="com.bittrade.pojo.model.WCoinConfig">
+		INSERT INTO w_coin_config(
+			<if test="coinType != null and coinType != ''">
+			`coin_type`, 
+			</if>
+			<if test="token != null and token != ''">
+			`token`, 
+			</if>
+			<if test="contract != null and contract != ''">
+			`contract`, 
+			</if>
+			<if test="scanBlock != null and scanBlock != ''">
+			`scan_block`, 
+			</if>
+			<if test="baseMultiple != null and baseMultiple != ''">
+			`base_multiple`, 
+			</if>
+			<if test="minConfirm != null and minConfirm != ''">
+			`min_confirm`, 
+			</if>
+			<if test="bossAddress != null and bossAddress != ''">
+			`boss_address`, 
+			</if>
+			<if test="minCollectionAmount != null and minCollectionAmount != ''">
+			`min_collection_amount`, 
+			</if>
+			<if test="valid != null and valid != ''">
+			`valid`, 
+			</if>
+			<if test="remark != null and remark != ''">
+			`remark`, 
+			</if>
+			<if test="createTime != null and createTime != ''">
+			`create_time`, 
+			</if>
+			<if test="updateTime != null and updateTime != ''">
+			`update_time`
+			</if>
+		)
+		VALUES(
+			<if test="coinType != null and coinType != ''">
+			#{coinType,jdbcType=VARCHAR}, 
+			</if>
+			<if test="token != null and token != ''">
+			#{token,jdbcType=VARCHAR}, 
+			</if>
+			<if test="contract != null and contract != ''">
+			#{contract,jdbcType=VARCHAR}, 
+			</if>
+			<if test="scanBlock != null and scanBlock != ''">
+			#{scanBlock,jdbcType=BIGINT}, 
+			</if>
+			<if test="baseMultiple != null and baseMultiple != ''">
+			#{baseMultiple,jdbcType=INTEGER}, 
+			</if>
+			<if test="minConfirm != null and minConfirm != ''">
+			#{minConfirm,jdbcType=INTEGER}, 
+			</if>
+			<if test="bossAddress != null and bossAddress != ''">
+			#{bossAddress,jdbcType=VARCHAR}, 
+			</if>
+			<if test="minCollectionAmount != null and minCollectionAmount != ''">
+			#{minCollectionAmount,jdbcType=DECIMAL}, 
+			</if>
+			<if test="valid != null and valid != ''">
+			#{valid,jdbcType=CHAR}, 
+			</if>
+			<if test="remark != null and remark != ''">
+			#{remark,jdbcType=VARCHAR}, 
+			</if>
+			<if test="createTime != null and createTime != ''">
+			#{createTime,jdbcType=TIMESTAMP}, 
+			</if>
+			<if test="updateTime != null and updateTime != ''">
+			#{updateTime,jdbcType=TIMESTAMP}
+			</if>
+		)
+	</insert>
+	
+	<delete id="removeByPK">
+		DELETE FROM w_coin_config
+		WHERE 
+			`id` = #{id,jdbcType=BIGINT}
+	</delete>
+	
+	<delete id="remove" parameterType="com.bittrade.pojo.model.WCoinConfig">
+		DELETE FROM w_coin_config
+		WHERE
+			<if test="coinType != null and coinType != ''">
+			`coin_type` = #{coinType,jdbcType=VARCHAR} AND
+			</if>
+			<if test="token != null and token != ''">
+			`token` = #{token,jdbcType=VARCHAR} AND
+			</if>
+			<if test="contract != null and contract != ''">
+			`contract` = #{contract,jdbcType=VARCHAR} AND
+			</if>
+			<if test="scanBlock != null and scanBlock != ''">
+			`scan_block` = #{scanBlock,jdbcType=BIGINT} AND
+			</if>
+			<if test="baseMultiple != null and baseMultiple != ''">
+			`base_multiple` = #{baseMultiple,jdbcType=INTEGER} AND
+			</if>
+			<if test="minConfirm != null and minConfirm != ''">
+			`min_confirm` = #{minConfirm,jdbcType=INTEGER} AND
+			</if>
+			<if test="bossAddress != null and bossAddress != ''">
+			`boss_address` = #{bossAddress,jdbcType=VARCHAR} AND
+			</if>
+			<if test="minCollectionAmount != null and minCollectionAmount != ''">
+			`min_collection_amount` = #{minCollectionAmount,jdbcType=DECIMAL} AND
+			</if>
+			<if test="valid != null and valid != ''">
+			`valid` = #{valid,jdbcType=CHAR} AND
+			</if>
+			<if test="remark != null and remark != ''">
+			`remark` = #{remark,jdbcType=VARCHAR} AND
+			</if>
+			<if test="createTime != null and createTime != ''">
+			`create_time` = #{createTime,jdbcType=TIMESTAMP} AND
+			</if>
+			<if test="updateTime != null and updateTime != ''">
+			`update_time` = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+	</delete>
+	
+	<update id="modifyByPK" parameterType="com.bittrade.pojo.model.WCoinConfig">
+		UPDATE w_coin_config
+		SET
+			`coin_type` = #{coinType,jdbcType=VARCHAR}, 
+			`token` = #{token,jdbcType=VARCHAR}, 
+			`contract` = #{contract,jdbcType=VARCHAR}, 
+			`scan_block` = #{scanBlock,jdbcType=BIGINT}, 
+			`base_multiple` = #{baseMultiple,jdbcType=INTEGER}, 
+			`min_confirm` = #{minConfirm,jdbcType=INTEGER}, 
+			`boss_address` = #{bossAddress,jdbcType=VARCHAR}, 
+			`min_collection_amount` = #{minCollectionAmount,jdbcType=DECIMAL}, 
+			`valid` = #{valid,jdbcType=CHAR}, 
+			`remark` = #{remark,jdbcType=VARCHAR}, 
+			`create_time` = #{createTime,jdbcType=TIMESTAMP}, 
+			`update_time` = #{updateTime,jdbcType=TIMESTAMP}
+		WHERE 
+			`id` = #{id,jdbcType=BIGINT}
+	</update>
+	
+	<update id="modifyWithSelectiveByPK" parameterType="com.bittrade.pojo.model.WCoinConfig">
+		UPDATE w_coin_config
+		SET
+			<if test="coinType != null and coinType != ''">
+			`coin_type` = #{coinType,jdbcType=VARCHAR}, 
+			</if>
+			<if test="token != null and token != ''">
+			`token` = #{token,jdbcType=VARCHAR}, 
+			</if>
+			<if test="contract != null and contract != ''">
+			`contract` = #{contract,jdbcType=VARCHAR}, 
+			</if>
+			<if test="scanBlock != null and scanBlock != ''">
+			`scan_block` = #{scanBlock,jdbcType=BIGINT}, 
+			</if>
+			<if test="baseMultiple != null and baseMultiple != ''">
+			`base_multiple` = #{baseMultiple,jdbcType=INTEGER}, 
+			</if>
+			<if test="minConfirm != null and minConfirm != ''">
+			`min_confirm` = #{minConfirm,jdbcType=INTEGER}, 
+			</if>
+			<if test="bossAddress != null and bossAddress != ''">
+			`boss_address` = #{bossAddress,jdbcType=VARCHAR}, 
+			</if>
+			<if test="minCollectionAmount != null and minCollectionAmount != ''">
+			`min_collection_amount` = #{minCollectionAmount,jdbcType=DECIMAL}, 
+			</if>
+			<if test="valid != null and valid != ''">
+			`valid` = #{valid,jdbcType=CHAR}, 
+			</if>
+			<if test="remark != null and remark != ''">
+			`remark` = #{remark,jdbcType=VARCHAR}, 
+			</if>
+			<if test="createTime != null and createTime != ''">
+			`create_time` = #{createTime,jdbcType=TIMESTAMP}, 
+			</if>
+			<if test="updateTime != null and updateTime != ''">
+			`update_time` = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+		WHERE 
+			`id` = #{id,jdbcType=BIGINT}
+	</update>
+	
+	<update id="modify">
+		UPDATE w_coin_config
+		SET
+			`coin_type` = #{wCoinConfig.coinType,jdbcType=VARCHAR}, 
+			`token` = #{wCoinConfig.token,jdbcType=VARCHAR}, 
+			`contract` = #{wCoinConfig.contract,jdbcType=VARCHAR}, 
+			`scan_block` = #{wCoinConfig.scanBlock,jdbcType=BIGINT}, 
+			`base_multiple` = #{wCoinConfig.baseMultiple,jdbcType=INTEGER}, 
+			`min_confirm` = #{wCoinConfig.minConfirm,jdbcType=INTEGER}, 
+			`boss_address` = #{wCoinConfig.bossAddress,jdbcType=VARCHAR}, 
+			`min_collection_amount` = #{wCoinConfig.minCollectionAmount,jdbcType=DECIMAL}, 
+			`valid` = #{wCoinConfig.valid,jdbcType=CHAR}, 
+			`remark` = #{wCoinConfig.remark,jdbcType=VARCHAR}, 
+			`create_time` = #{wCoinConfig.createTime,jdbcType=TIMESTAMP}, 
+			`update_time` = #{wCoinConfig.updateTime,jdbcType=TIMESTAMP}
+		WHERE 
+			<if test="condiWCoinConfig.coinType != null and condiWCoinConfig.coinType != ''">
+			`coin_type` = #{condiWCoinConfig.coinType,jdbcType=VARCHAR} AND
+			</if>
+			<if test="condiWCoinConfig.token != null and condiWCoinConfig.token != ''">
+			`token` = #{condiWCoinConfig.token,jdbcType=VARCHAR} AND
+			</if>
+			<if test="condiWCoinConfig.contract != null and condiWCoinConfig.contract != ''">
+			`contract` = #{condiWCoinConfig.contract,jdbcType=VARCHAR} AND
+			</if>
+			<if test="condiWCoinConfig.scanBlock != null and condiWCoinConfig.scanBlock != ''">
+			`scan_block` = #{condiWCoinConfig.scanBlock,jdbcType=BIGINT} AND
+			</if>
+			<if test="condiWCoinConfig.baseMultiple != null and condiWCoinConfig.baseMultiple != ''">
+			`base_multiple` = #{condiWCoinConfig.baseMultiple,jdbcType=INTEGER} AND
+			</if>
+			<if test="condiWCoinConfig.minConfirm != null and condiWCoinConfig.minConfirm != ''">
+			`min_confirm` = #{condiWCoinConfig.minConfirm,jdbcType=INTEGER} AND
+			</if>
+			<if test="condiWCoinConfig.bossAddress != null and condiWCoinConfig.bossAddress != ''">
+			`boss_address` = #{condiWCoinConfig.bossAddress,jdbcType=VARCHAR} AND
+			</if>
+			<if test="condiWCoinConfig.minCollectionAmount != null and condiWCoinConfig.minCollectionAmount != ''">
+			`min_collection_amount` = #{condiWCoinConfig.minCollectionAmount,jdbcType=DECIMAL} AND
+			</if>
+			<if test="condiWCoinConfig.valid != null and condiWCoinConfig.valid != ''">
+			`valid` = #{condiWCoinConfig.valid,jdbcType=CHAR} AND
+			</if>
+			<if test="condiWCoinConfig.remark != null and condiWCoinConfig.remark != ''">
+			`remark` = #{condiWCoinConfig.remark,jdbcType=VARCHAR} AND
+			</if>
+			<if test="condiWCoinConfig.createTime != null and condiWCoinConfig.createTime != ''">
+			`create_time` = #{condiWCoinConfig.createTime,jdbcType=TIMESTAMP} AND
+			</if>
+			<if test="condiWCoinConfig.updateTime != null and condiWCoinConfig.updateTime != ''">
+			`update_time` = #{condiWCoinConfig.updateTime,jdbcType=TIMESTAMP}
+			</if>
+	</update>
+	
+	<update id="modifyWithSelective">
+		UPDATE w_coin_config
+		SET
+			<if test="coinType != null and coinType != ''">
+			`coin_type` = #{wCoinConfig.coinType,jdbcType=VARCHAR}, 
+			</if>
+			<if test="token != null and token != ''">
+			`token` = #{wCoinConfig.token,jdbcType=VARCHAR}, 
+			</if>
+			<if test="contract != null and contract != ''">
+			`contract` = #{wCoinConfig.contract,jdbcType=VARCHAR}, 
+			</if>
+			<if test="scanBlock != null and scanBlock != ''">
+			`scan_block` = #{wCoinConfig.scanBlock,jdbcType=BIGINT}, 
+			</if>
+			<if test="baseMultiple != null and baseMultiple != ''">
+			`base_multiple` = #{wCoinConfig.baseMultiple,jdbcType=INTEGER}, 
+			</if>
+			<if test="minConfirm != null and minConfirm != ''">
+			`min_confirm` = #{wCoinConfig.minConfirm,jdbcType=INTEGER}, 
+			</if>
+			<if test="bossAddress != null and bossAddress != ''">
+			`boss_address` = #{wCoinConfig.bossAddress,jdbcType=VARCHAR}, 
+			</if>
+			<if test="minCollectionAmount != null and minCollectionAmount != ''">
+			`min_collection_amount` = #{wCoinConfig.minCollectionAmount,jdbcType=DECIMAL}, 
+			</if>
+			<if test="valid != null and valid != ''">
+			`valid` = #{wCoinConfig.valid,jdbcType=CHAR}, 
+			</if>
+			<if test="remark != null and remark != ''">
+			`remark` = #{wCoinConfig.remark,jdbcType=VARCHAR}, 
+			</if>
+			<if test="createTime != null and createTime != ''">
+			`create_time` = #{wCoinConfig.createTime,jdbcType=TIMESTAMP}, 
+			</if>
+			<if test="updateTime != null and updateTime != ''">
+			`update_time` = #{wCoinConfig.updateTime,jdbcType=TIMESTAMP}
+			</if>
+		WHERE 
+			<if test="condiWCoinConfig.coinType != null and condiWCoinConfig.coinType != ''">
+			`coin_type` = #{condiWCoinConfig.coinType,jdbcType=VARCHAR} AND
+			</if>
+			<if test="condiWCoinConfig.token != null and condiWCoinConfig.token != ''">
+			`token` = #{condiWCoinConfig.token,jdbcType=VARCHAR} AND
+			</if>
+			<if test="condiWCoinConfig.contract != null and condiWCoinConfig.contract != ''">
+			`contract` = #{condiWCoinConfig.contract,jdbcType=VARCHAR} AND
+			</if>
+			<if test="condiWCoinConfig.scanBlock != null and condiWCoinConfig.scanBlock != ''">
+			`scan_block` = #{condiWCoinConfig.scanBlock,jdbcType=BIGINT} AND
+			</if>
+			<if test="condiWCoinConfig.baseMultiple != null and condiWCoinConfig.baseMultiple != ''">
+			`base_multiple` = #{condiWCoinConfig.baseMultiple,jdbcType=INTEGER} AND
+			</if>
+			<if test="condiWCoinConfig.minConfirm != null and condiWCoinConfig.minConfirm != ''">
+			`min_confirm` = #{condiWCoinConfig.minConfirm,jdbcType=INTEGER} AND
+			</if>
+			<if test="condiWCoinConfig.bossAddress != null and condiWCoinConfig.bossAddress != ''">
+			`boss_address` = #{condiWCoinConfig.bossAddress,jdbcType=VARCHAR} AND
+			</if>
+			<if test="condiWCoinConfig.minCollectionAmount != null and condiWCoinConfig.minCollectionAmount != ''">
+			`min_collection_amount` = #{condiWCoinConfig.minCollectionAmount,jdbcType=DECIMAL} AND
+			</if>
+			<if test="condiWCoinConfig.valid != null and condiWCoinConfig.valid != ''">
+			`valid` = #{condiWCoinConfig.valid,jdbcType=CHAR} AND
+			</if>
+			<if test="condiWCoinConfig.remark != null and condiWCoinConfig.remark != ''">
+			`remark` = #{condiWCoinConfig.remark,jdbcType=VARCHAR} AND
+			</if>
+			<if test="condiWCoinConfig.createTime != null and condiWCoinConfig.createTime != ''">
+			`create_time` = #{condiWCoinConfig.createTime,jdbcType=TIMESTAMP} AND
+			</if>
+			<if test="condiWCoinConfig.updateTime != null and condiWCoinConfig.updateTime != ''">
+			`update_time` = #{condiWCoinConfig.updateTime,jdbcType=TIMESTAMP}
+			</if>
+	</update>
+	
+	<select id="getByPK" resultType="com.bittrade.pojo.model.WCoinConfig">
+		SELECT 
+			`id`, 
+			`coin_type`, 
+			`token`, 
+			`contract`, 
+			`scan_block`, 
+			`base_multiple`, 
+			`min_confirm`, 
+			`boss_address`, 
+			`min_collection_amount`, 
+			`valid`, 
+			`remark`, 
+			`create_time`, 
+			`update_time`
+		FROM w_coin_config
+		<where>
+			`id` = #{id,jdbcType=BIGINT}
+		</where>
+	</select>
+	
+	<select id="get" resultType="com.bittrade.pojo.dto.WCoinConfigDTO">
+		SELECT 
+			`id`, 
+			`coin_type`, 
+			`token`, 
+			`contract`, 
+			`scan_block`, 
+			`base_multiple`, 
+			`min_confirm`, 
+			`boss_address`, 
+			`min_collection_amount`, 
+			`valid`, 
+			`remark`, 
+			`create_time`, 
+			`update_time`
+		FROM w_coin_config
+		<where>
+			<if test="coinType != null and coinType != ''">
+			AND `coin_type` = #{coinType,jdbcType=VARCHAR}
+			</if>
+			<if test="token != null and token != ''">
+			AND `token` = #{token,jdbcType=VARCHAR}
+			</if>
+			<if test="contract != null and contract != ''">
+			AND `contract` = #{contract,jdbcType=VARCHAR}
+			</if>
+			<if test="scanBlock != null and scanBlock != ''">
+			AND `scan_block` = #{scanBlock,jdbcType=BIGINT}
+			</if>
+			<if test="baseMultiple != null and baseMultiple != ''">
+			AND `base_multiple` = #{baseMultiple,jdbcType=INTEGER}
+			</if>
+			<if test="minConfirm != null and minConfirm != ''">
+			AND `min_confirm` = #{minConfirm,jdbcType=INTEGER}
+			</if>
+			<if test="bossAddress != null and bossAddress != ''">
+			AND `boss_address` = #{bossAddress,jdbcType=VARCHAR}
+			</if>
+			<if test="minCollectionAmount != null and minCollectionAmount != ''">
+			AND `min_collection_amount` = #{minCollectionAmount,jdbcType=DECIMAL}
+			</if>
+			<if test="valid != null and valid != ''">
+			AND `valid` = #{valid,jdbcType=CHAR}
+			</if>
+			<if test="remark != null and remark != ''">
+			AND `remark` = #{remark,jdbcType=VARCHAR}
+			</if>
+			<if test="createTime != null and createTime != ''">
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="updateTime != null and updateTime != ''">
+			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+		</where>
+	</select>
+	
+	<select id="gets" resultType="com.bittrade.pojo.dto.WCoinConfigDTO">
+		SELECT 
+			`id`, 
+			`coin_type`, 
+			`token`, 
+			`contract`, 
+			`scan_block`, 
+			`base_multiple`, 
+			`min_confirm`, 
+			`boss_address`, 
+			`min_collection_amount`, 
+			`valid`, 
+			`remark`, 
+			`create_time`, 
+			`update_time`
+		FROM w_coin_config
+	</select>
+	
+	<select id="getCntWithPage" resultType="int">
+		SELECT COUNT(1)
+		FROM w_coin_config
+		<where>
+			<if test="wCoinConfig.coinType != null and wCoinConfig.coinType != ''">
+			AND `coin_type` = #{wCoinConfig.coinType,jdbcType=VARCHAR}
+			</if>
+			<if test="wCoinConfig.token != null and wCoinConfig.token != ''">
+			AND `token` = #{wCoinConfig.token,jdbcType=VARCHAR}
+			</if>
+			<if test="wCoinConfig.contract != null and wCoinConfig.contract != ''">
+			AND `contract` = #{wCoinConfig.contract,jdbcType=VARCHAR}
+			</if>
+			<if test="wCoinConfig.scanBlock != null and wCoinConfig.scanBlock != ''">
+			AND `scan_block` = #{wCoinConfig.scanBlock,jdbcType=BIGINT}
+			</if>
+			<if test="wCoinConfig.baseMultiple != null and wCoinConfig.baseMultiple != ''">
+			AND `base_multiple` = #{wCoinConfig.baseMultiple,jdbcType=INTEGER}
+			</if>
+			<if test="wCoinConfig.minConfirm != null and wCoinConfig.minConfirm != ''">
+			AND `min_confirm` = #{wCoinConfig.minConfirm,jdbcType=INTEGER}
+			</if>
+			<if test="wCoinConfig.bossAddress != null and wCoinConfig.bossAddress != ''">
+			AND `boss_address` = #{wCoinConfig.bossAddress,jdbcType=VARCHAR}
+			</if>
+			<if test="wCoinConfig.minCollectionAmount != null and wCoinConfig.minCollectionAmount != ''">
+			AND `min_collection_amount` = #{wCoinConfig.minCollectionAmount,jdbcType=DECIMAL}
+			</if>
+			<if test="wCoinConfig.valid != null and wCoinConfig.valid != ''">
+			AND `valid` = #{wCoinConfig.valid,jdbcType=CHAR}
+			</if>
+			<if test="wCoinConfig.remark != null and wCoinConfig.remark != ''">
+			AND `remark` = #{wCoinConfig.remark,jdbcType=VARCHAR}
+			</if>
+			<if test="wCoinConfig.createTime != null and wCoinConfig.createTime != ''">
+			AND `create_time` = #{wCoinConfig.createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="wCoinConfig.updateTime != null and wCoinConfig.updateTime != ''">
+			AND `update_time` = #{wCoinConfig.updateTime,jdbcType=TIMESTAMP}
+			</if>
+		</where>
+	</select>
+	
+	<select id="getsWithPage" resultType="com.bittrade.pojo.dto.WCoinConfigDTO">
+		SELECT 
+			`id`, 
+			`coin_type`, 
+			`token`, 
+			`contract`, 
+			`scan_block`, 
+			`base_multiple`, 
+			`min_confirm`, 
+			`boss_address`, 
+			`min_collection_amount`, 
+			`valid`, 
+			`remark`, 
+			`create_time`, 
+			`update_time`
+		FROM w_coin_config
+		<where>
+			<if test="wCoinConfig.coinType != null and wCoinConfig.coinType != ''">
+			AND `coin_type` = #{wCoinConfig.coinType,jdbcType=VARCHAR}
+			</if>
+			<if test="wCoinConfig.token != null and wCoinConfig.token != ''">
+			AND `token` = #{wCoinConfig.token,jdbcType=VARCHAR}
+			</if>
+			<if test="wCoinConfig.contract != null and wCoinConfig.contract != ''">
+			AND `contract` = #{wCoinConfig.contract,jdbcType=VARCHAR}
+			</if>
+			<if test="wCoinConfig.scanBlock != null and wCoinConfig.scanBlock != ''">
+			AND `scan_block` = #{wCoinConfig.scanBlock,jdbcType=BIGINT}
+			</if>
+			<if test="wCoinConfig.baseMultiple != null and wCoinConfig.baseMultiple != ''">
+			AND `base_multiple` = #{wCoinConfig.baseMultiple,jdbcType=INTEGER}
+			</if>
+			<if test="wCoinConfig.minConfirm != null and wCoinConfig.minConfirm != ''">
+			AND `min_confirm` = #{wCoinConfig.minConfirm,jdbcType=INTEGER}
+			</if>
+			<if test="wCoinConfig.bossAddress != null and wCoinConfig.bossAddress != ''">
+			AND `boss_address` = #{wCoinConfig.bossAddress,jdbcType=VARCHAR}
+			</if>
+			<if test="wCoinConfig.minCollectionAmount != null and wCoinConfig.minCollectionAmount != ''">
+			AND `min_collection_amount` = #{wCoinConfig.minCollectionAmount,jdbcType=DECIMAL}
+			</if>
+			<if test="wCoinConfig.valid != null and wCoinConfig.valid != ''">
+			AND `valid` = #{wCoinConfig.valid,jdbcType=CHAR}
+			</if>
+			<if test="wCoinConfig.remark != null and wCoinConfig.remark != ''">
+			AND `remark` = #{wCoinConfig.remark,jdbcType=VARCHAR}
+			</if>
+			<if test="wCoinConfig.createTime != null and wCoinConfig.createTime != ''">
+			AND `create_time` = #{wCoinConfig.createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="wCoinConfig.updateTime != null and wCoinConfig.updateTime != ''">
+			AND `update_time` = #{wCoinConfig.updateTime,jdbcType=TIMESTAMP}
+			</if>
+		</where>
+		LIMIT #{page}, #{size}
+	</select>
+
+</mapper>

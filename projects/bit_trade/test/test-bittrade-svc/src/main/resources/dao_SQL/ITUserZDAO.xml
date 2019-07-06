@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.test.bittrade.svc.api.dao.ITUserZDAO">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.test.bittrade.svc.pojo.model.TUserZ">
+		<id javaType="int" property="id" jdbcType="INTEGER" column="id" />
+		<result javaType="long" property="tenantId" jdbcType="BIGINT" column="tenant_id" />
+		<result javaType="String" property="name" jdbcType="VARCHAR" column="name" />
+		<result javaType="int" property="age" jdbcType="INTEGER" column="age" />
+		<result javaType="int" property="testType" jdbcType="INTEGER" column="test_type" />
+		<result javaType="java.util.Date" property="testDate" jdbcType="TIMESTAMP" column="test_date" />
+		<result javaType="long" property="role" jdbcType="BIGINT" column="role" />
+		<result javaType="String" property="phone" jdbcType="VARCHAR" column="phone" />
+	</resultMap>
+
+	<!-- 通用查询结果列 -->
+	<sql id="Base_Column_List">
+		`tenant_id` AS tenantId, 
+		`name` AS name, 
+		`age` AS age, 
+		`test_type` AS testType, 
+		`test_date` AS testDate, 
+		`role` AS role, 
+		`phone` AS phone
+	</sql>
+
+</mapper>

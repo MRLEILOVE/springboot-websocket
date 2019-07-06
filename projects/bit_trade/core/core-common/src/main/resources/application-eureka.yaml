@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: ${spring.application_name:eureka-cluster}
+
+---
+#server:
+#  port: 8761
+
+eureka:
+  port_1: 1761
+  port_2: 1762
+  port_3: 1763
+  instance:
+    hostname: localhost
+  client:
+    serviceUrl:
+      defaultZone: http://${eureka.instance.hostname}:${eureka.port_1}/eureka/,http://${eureka.instance.hostname}:${eureka.port_2}/eureka/,http://${eureka.instance.hostname}:${eureka.port_3}/eureka/
+    register-with-eureka: ${data.register-with-eureka:true}
+    fetch-registry: true

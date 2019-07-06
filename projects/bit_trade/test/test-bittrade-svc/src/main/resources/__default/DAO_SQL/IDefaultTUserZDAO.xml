@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+	This code is generated automatically. Please do not edit it.
+-->
+<mapper namespace="com.test.bittrade.svc.api.__default.DAO.IDefaultTUserZDAO">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.test.bittrade.svc.pojo.model.TUserZ">
+		<id javaType="long" property="testId" jdbcType="BIGINT" column="test_id" />
+		<result javaType="long" property="tenantId" jdbcType="BIGINT" column="tenant_id" />
+		<result javaType="String" property="name" jdbcType="VARCHAR" column="name" />
+		<result javaType="int" property="age" jdbcType="INTEGER" column="age" />
+		<result javaType="int" property="testType" jdbcType="INTEGER" column="test_type" />
+		<result javaType="java.util.Date" property="testDate" jdbcType="TIMESTAMP" column="test_date" />
+		<result javaType="long" property="role" jdbcType="BIGINT" column="role" />
+		<result javaType="String" property="phone" jdbcType="VARCHAR" column="phone" />
+	</resultMap>
+
+	<!-- 通用查询结果列 -->
+	<sql id="Base_Column_List">
+		`tenant_id` AS tenantId, 
+		`name` AS name, 
+		`age` AS age, 
+		`test_type` AS testType, 
+		`test_date` AS testDate, 
+		`role` AS role, 
+		`phone` AS phone
+	</sql>
+	
+	<insert id="add" parameterType="com.test.bittrade.svc.pojo.model.TUserZ">
+		INSERT INTO t_user_z(`tenant_id`, `name`, `age`, `test_type`, `test_date`, `role`, `phone`)
+		VALUES(#{tenantId,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{age,jdbcType=INTEGER}, #{testType,jdbcType=INTEGER}, #{testDate,jdbcType=TIMESTAMP}, #{role,jdbcType=BIGINT}, #{phone,jdbcType=VARCHAR})
+	</insert>
+	
+	<insert id="addWithSelective" parameterType="com.test.bittrade.svc.pojo.model.TUserZ">
+		INSERT INTO t_user_z(
+			<if test="tenantId != null and tenantId != ''">
+			`tenant_id`, 
+			</if>
+			<if test="name != null and name != ''">
+			`name`, 
+			</if>
+			<if test="age != null and age != ''">
+			`age`, 
+			</if>
+			<if test="testType != null and testType != ''">
+			`test_type`, 
+			</if>
+			<if test="testDate != null and testDate != ''">
+			`test_date`, 
+			</if>
+			<if test="role != null and role != ''">
+			`role`, 
+			</if>
+			<if test="phone != null and phone != ''">
+			`phone`
+			</if>
+		)
+		VALUES(
+			<if test="tenantId != null and tenantId != ''">
+			#{tenantId,jdbcType=BIGINT}, 
+			</if>
+			<if test="name != null and name != ''">
+			#{name,jdbcType=VARCHAR}, 
+			</if>
+			<if test="age != null and age != ''">
+			#{age,jdbcType=INTEGER}, 
+			</if>
+			<if test="testType != null and testType != ''">
+			#{testType,jdbcType=INTEGER}, 
+			</if>
+			<if test="testDate != null and testDate != ''">
+			#{testDate,jdbcType=TIMESTAMP}, 
+			</if>
+			<if test="role != null and role != ''">
+			#{role,jdbcType=BIGINT}, 
+			</if>
+			<if test="phone != null and phone != ''">
+			#{phone,jdbcType=VARCHAR}
+			</if>
+		)
+	</insert>
+	
+	<delete id="removeByPK">
+		DELETE FROM t_user_z
+		WHERE 
+			`test_id` = #{testId,jdbcType=BIGINT}
+	</delete>
+	
+	<delete id="remove" parameterType="com.test.bittrade.svc.pojo.model.TUserZ">
+		DELETE FROM t_user_z
+		WHERE
+			<if test="tenantId != null and tenantId != ''">
+			`tenant_id` = #{tenantId,jdbcType=BIGINT} AND
+			</if>
+			<if test="name != null and name != ''">
+			`name` = #{name,jdbcType=VARCHAR} AND
+			</if>
+			<if test="age != null and age != ''">
+			`age` = #{age,jdbcType=INTEGER} AND
+			</if>
+			<if test="testType != null and testType != ''">
+			`test_type` = #{testType,jdbcType=INTEGER} AND
+			</if>
+			<if test="testDate != null and testDate != ''">
+			`test_date` = #{testDate,jdbcType=TIMESTAMP} AND
+			</if>
+			<if test="role != null and role != ''">
+			`role` = #{role,jdbcType=BIGINT} AND
+			</if>
+			<if test="phone != null and phone != ''">
+			`phone` = #{phone,jdbcType=VARCHAR}
+			</if>
+	</delete>
+	
+	<update id="modifyByPK" parameterType="com.test.bittrade.svc.pojo.model.TUserZ">
+		UPDATE t_user_z
+		SET
+			`tenant_id` = #{tenantId,jdbcType=BIGINT}, 
+			`name` = #{name,jdbcType=VARCHAR}, 
+			`age` = #{age,jdbcType=INTEGER}, 
+			`test_type` = #{testType,jdbcType=INTEGER}, 
+			`test_date` = #{testDate,jdbcType=TIMESTAMP}, 
+			`role` = #{role,jdbcType=BIGINT}, 
+			`phone` = #{phone,jdbcType=VARCHAR}
+		WHERE 
+			`test_id` = #{testId,jdbcType=BIGINT}
+	</update>
+	
+	<update id="modifyWithSelectiveByPK" parameterType="com.test.bittrade.svc.pojo.model.TUserZ">
+		UPDATE t_user_z
+		SET
+			<if test="tenantId != null and tenantId != ''">
+			`tenant_id` = #{tenantId,jdbcType=BIGINT}, 
+			</if>
+			<if test="name != null and name != ''">
+			`name` = #{name,jdbcType=VARCHAR}, 
+			</if>
+			<if test="age != null and age != ''">
+			`age` = #{age,jdbcType=INTEGER}, 
+			</if>
+			<if test="testType != null and testType != ''">
+			`test_type` = #{testType,jdbcType=INTEGER}, 
+			</if>
+			<if test="testDate != null and testDate != ''">
+			`test_date` = #{testDate,jdbcType=TIMESTAMP}, 
+			</if>
+			<if test="role != null and role != ''">
+			`role` = #{role,jdbcType=BIGINT}, 
+			</if>
+			<if test="phone != null and phone != ''">
+			`phone` = #{phone,jdbcType=VARCHAR}
+			</if>
+		WHERE 
+			`test_id` = #{testId,jdbcType=BIGINT}
+	</update>
+	
+	<update id="modify">
+		UPDATE t_user_z
+		SET
+			`tenant_id` = #{tUserZ.tenantId,jdbcType=BIGINT}, 
+			`name` = #{tUserZ.name,jdbcType=VARCHAR}, 
+			`age` = #{tUserZ.age,jdbcType=INTEGER}, 
+			`test_type` = #{tUserZ.testType,jdbcType=INTEGER}, 
+			`test_date` = #{tUserZ.testDate,jdbcType=TIMESTAMP}, 
+			`role` = #{tUserZ.role,jdbcType=BIGINT}, 
+			`phone` = #{tUserZ.phone,jdbcType=VARCHAR}
+		WHERE 
+			<if test="condiTUserZ.tenantId != null and condiTUserZ.tenantId != ''">
+			`tenant_id` = #{condiTUserZ.tenantId,jdbcType=BIGINT} AND
+			</if>
+			<if test="condiTUserZ.name != null and condiTUserZ.name != ''">
+			`name` = #{condiTUserZ.name,jdbcType=VARCHAR} AND
+			</if>
+			<if test="condiTUserZ.age != null and condiTUserZ.age != ''">
+			`age` = #{condiTUserZ.age,jdbcType=INTEGER} AND
+			</if>
+			<if test="condiTUserZ.testType != null and condiTUserZ.testType != ''">
+			`test_type` = #{condiTUserZ.testType,jdbcType=INTEGER} AND
+			</if>
+			<if test="condiTUserZ.testDate != null and condiTUserZ.testDate != ''">
+			`test_date` = #{condiTUserZ.testDate,jdbcType=TIMESTAMP} AND
+			</if>
+			<if test="condiTUserZ.role != null and condiTUserZ.role != ''">
+			`role` = #{condiTUserZ.role,jdbcType=BIGINT} AND
+			</if>
+			<if test="condiTUserZ.phone != null and condiTUserZ.phone != ''">
+			`phone` = #{condiTUserZ.phone,jdbcType=VARCHAR}
+			</if>
+	</update>
+	
+	<update id="modifyWithSelective">
+		UPDATE t_user_z
+		SET
+			<if test="tenantId != null and tenantId != ''">
+			`tenant_id` = #{tUserZ.tenantId,jdbcType=BIGINT}, 
+			</if>
+			<if test="name != null and name != ''">
+			`name` = #{tUserZ.name,jdbcType=VARCHAR}, 
+			</if>
+			<if test="age != null and age != ''">
+			`age` = #{tUserZ.age,jdbcType=INTEGER}, 
+			</if>
+			<if test="testType != null and testType != ''">
+			`test_type` = #{tUserZ.testType,jdbcType=INTEGER}, 
+			</if>
+			<if test="testDate != null and testDate != ''">
+			`test_date` = #{tUserZ.testDate,jdbcType=TIMESTAMP}, 
+			</if>
+			<if test="role != null and role != ''">
+			`role` = #{tUserZ.role,jdbcType=BIGINT}, 
+			</if>
+			<if test="phone != null and phone != ''">
+			`phone` = #{tUserZ.phone,jdbcType=VARCHAR}
+			</if>
+		WHERE 
+			<if test="condiTUserZ.tenantId != null and condiTUserZ.tenantId != ''">
+			`tenant_id` = #{condiTUserZ.tenantId,jdbcType=BIGINT} AND
+			</if>
+			<if test="condiTUserZ.name != null and condiTUserZ.name != ''">
+			`name` = #{condiTUserZ.name,jdbcType=VARCHAR} AND
+			</if>
+			<if test="condiTUserZ.age != null and condiTUserZ.age != ''">
+			`age` = #{condiTUserZ.age,jdbcType=INTEGER} AND
+			</if>
+			<if test="condiTUserZ.testType != null and condiTUserZ.testType != ''">
+			`test_type` = #{condiTUserZ.testType,jdbcType=INTEGER} AND
+			</if>
+			<if test="condiTUserZ.testDate != null and condiTUserZ.testDate != ''">
+			`test_date` = #{condiTUserZ.testDate,jdbcType=TIMESTAMP} AND
+			</if>
+			<if test="condiTUserZ.role != null and condiTUserZ.role != ''">
+			`role` = #{condiTUserZ.role,jdbcType=BIGINT} AND
+			</if>
+			<if test="condiTUserZ.phone != null and condiTUserZ.phone != ''">
+			`phone` = #{condiTUserZ.phone,jdbcType=VARCHAR}
+			</if>
+	</update>
+	
+	<select id="getByPK" resultType="com.test.bittrade.svc.pojo.model.TUserZ">
+		SELECT 
+			`test_id`, 
+			`tenant_id`, 
+			`name`, 
+			`age`, 
+			`test_type`, 
+			`test_date`, 
+			`role`, 
+			`phone`
+		FROM t_user_z
+		<where>
+			`test_id` = #{testId,jdbcType=BIGINT}
+		</where>
+	</select>
+	
+	<select id="get" resultType="com.test.bittrade.svc.pojo.dto.TUserZDTO">
+		SELECT 
+			`test_id`, 
+			`tenant_id`, 
+			`name`, 
+			`age`, 
+			`test_type`, 
+			`test_date`, 
+			`role`, 
+			`phone`
+		FROM t_user_z
+		<where>
+			<if test="tenantId != null and tenantId != ''">
+			AND `tenant_id` = #{tenantId,jdbcType=BIGINT}
+			</if>
+			<if test="name != null and name != ''">
+			AND `name` = #{name,jdbcType=VARCHAR}
+			</if>
+			<if test="age != null and age != ''">
+			AND `age` = #{age,jdbcType=INTEGER}
+			</if>
+			<if test="testType != null and testType != ''">
+			AND `test_type` = #{testType,jdbcType=INTEGER}
+			</if>
+			<if test="testDate != null and testDate != ''">
+			AND `test_date` = #{testDate,jdbcType=TIMESTAMP}
+			</if>
+			<if test="role != null and role != ''">
+			AND `role` = #{role,jdbcType=BIGINT}
+			</if>
+			<if test="phone != null and phone != ''">
+			AND `phone` = #{phone,jdbcType=VARCHAR}
+			</if>
+		</where>
+	</select>
+	
+	<select id="gets" resultType="com.test.bittrade.svc.pojo.dto.TUserZDTO">
+		SELECT 
+			`test_id`, 
+			`tenant_id`, 
+			`name`, 
+			`age`, 
+			`test_type`, 
+			`test_date`, 
+			`role`, 
+			`phone`
+		FROM t_user_z
+	</select>
+	
+	<select id="getCntWithPage" resultType="int">
+		SELECT COUNT(1)
+		FROM t_user_z
+		<where>
+			<if test="tUserZ.tenantId != null and tUserZ.tenantId != ''">
+			AND `tenant_id` = #{tUserZ.tenantId,jdbcType=BIGINT}
+			</if>
+			<if test="tUserZ.name != null and tUserZ.name != ''">
+			AND `name` = #{tUserZ.name,jdbcType=VARCHAR}
+			</if>
+			<if test="tUserZ.age != null and tUserZ.age != ''">
+			AND `age` = #{tUserZ.age,jdbcType=INTEGER}
+			</if>
+			<if test="tUserZ.testType != null and tUserZ.testType != ''">
+			AND `test_type` = #{tUserZ.testType,jdbcType=INTEGER}
+			</if>
+			<if test="tUserZ.testDate != null and tUserZ.testDate != ''">
+			AND `test_date` = #{tUserZ.testDate,jdbcType=TIMESTAMP}
+			</if>
+			<if test="tUserZ.role != null and tUserZ.role != ''">
+			AND `role` = #{tUserZ.role,jdbcType=BIGINT}
+			</if>
+			<if test="tUserZ.phone != null and tUserZ.phone != ''">
+			AND `phone` = #{tUserZ.phone,jdbcType=VARCHAR}
+			</if>
+		</where>
+	</select>
+	
+	<select id="getsWithPage" resultType="com.test.bittrade.svc.pojo.dto.TUserZDTO">
+		SELECT 
+			`test_id`, 
+			`tenant_id`, 
+			`name`, 
+			`age`, 
+			`test_type`, 
+			`test_date`, 
+			`role`, 
+			`phone`
+		FROM t_user_z
+		<where>
+			<if test="tUserZ.tenantId != null and tUserZ.tenantId != ''">
+			AND `tenant_id` = #{tUserZ.tenantId,jdbcType=BIGINT}
+			</if>
+			<if test="tUserZ.name != null and tUserZ.name != ''">
+			AND `name` = #{tUserZ.name,jdbcType=VARCHAR}
+			</if>
+			<if test="tUserZ.age != null and tUserZ.age != ''">
+			AND `age` = #{tUserZ.age,jdbcType=INTEGER}
+			</if>
+			<if test="tUserZ.testType != null and tUserZ.testType != ''">
+			AND `test_type` = #{tUserZ.testType,jdbcType=INTEGER}
+			</if>
+			<if test="tUserZ.testDate != null and tUserZ.testDate != ''">
+			AND `test_date` = #{tUserZ.testDate,jdbcType=TIMESTAMP}
+			</if>
+			<if test="tUserZ.role != null and tUserZ.role != ''">
+			AND `role` = #{tUserZ.role,jdbcType=BIGINT}
+			</if>
+			<if test="tUserZ.phone != null and tUserZ.phone != ''">
+			AND `phone` = #{tUserZ.phone,jdbcType=VARCHAR}
+			</if>
+		</where>
+		LIMIT #{page}, #{size}
+	</select>
+
+</mapper>

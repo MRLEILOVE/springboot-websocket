@@ -1,0 +1,16 @@
+#svc_name: currency
+
+data:
+  model-package: com.bittrade.currency.model.*
+  mapper-locations: classpath*:/com/bittrade/currency/__default/DAO_SQL/**/I*DAO.xml,classpath*:/com/bittrade/currency/dao_SQL/**/I*DAO.xml
+  application:
+    name: currency
+
+server:
+  port: 8901
+
+spring:
+#  application:
+#    name: currency
+  profiles:
+    active: common

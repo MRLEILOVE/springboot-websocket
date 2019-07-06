@@ -1,0 +1,206 @@
+<html class="x-admin-sm">
+
+<head>
+    <meta charset="UTF-8">
+    <title>用户中心</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8" />
+    <link rel="stylesheet" href="/statics/css/font.css">
+    <link rel="stylesheet" href="/statics/css/xadmin.css">
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="/statics/lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/statics/js/xadmin.js"></script>
+    <script type="text/javascript" src="/statics/js/cookie.js"></script>
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+    <div id="home">
+        <div class="x-body">
+            <table class="layui-table x-admin">
+                <thead>
+                    <tr>
+                        <th>登录名</th>
+                        <th>用户名</th>
+                        <th>角色</th>
+                        <th>登录时间</th>
+                        <th>IP</th>
+                    </tr>
+                </thead>
+                <tbody id="oprateList">
+                    <tr>
+                        <td>{{body.username}}</td>
+                        <td>{{body.nickname}}</td>
+                        <td>{{rolename}}</td>
+                        <td>{{body.loginTime}}</td>
+                        <td>{{body.ip}}</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="layui-row">
+                <div class="layui-col-md5">
+                    <table class="layui-table">
+                        <colgroup>
+                            <col width="40">
+                            <col width="200">
+                            <col>
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>设备总数</th>
+                                <th>6</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td rowspan="4">设备状态</td>
+                                <td>工作状态</td>
+                                <td>6</td>
+                            </tr>
+                            <tr>
+
+                                <td>空闲状态</td>
+                                <td>6</td>
+                            </tr>
+                            <tr>
+
+                                <td>维护状态</td>
+                                <td>0</td>
+                            </tr>
+                            <tr>
+
+                                <td>离线状态</td>
+                                <td>0</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="layui-col-md1">&nbsp; </div>
+                <div class="layui-col-md6">
+                    <table class="layui-table">
+                        <colgroup>
+                            <col width="40">
+                            <col width="200">
+                            <col>
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>时间</th>
+                                <th>平台收入</th>
+                                <th>代理商收入</th>
+                                <th>场所收入</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td rowspan="4">收入信息</td>
+                                <td>今日</td>
+                                <td>0.00</td>
+                                <td>0.00</td>
+                                <td>0.00</td>
+                            </tr>
+                            <tr>
+                                <td>昨日</td>
+                                <td>0.00</td>
+                                <td>0.00</td>
+                                <td>0.00</td>
+                            </tr>
+                            <tr>
+                                <td>本月</td>
+                                <td>0.00</td>
+                                <td>0.00</td>
+                                <td>0.00</td>
+                            </tr>
+                            <tr>
+                                <td>上月</td>
+                                <td>0.00</td>
+                                <td>0.00</td>
+                                <td>0.00</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+
+
+    </div>
+
+    <script>
+        layui.use('laydate', function () {
+            var laydate = layui.laydate;
+
+            //执行一个laydate实例
+            laydate.render({
+                elem: '#start' //指定元素
+            });
+
+            //执行一个laydate实例
+            laydate.render({
+                elem: '#end' //指定元素
+            });
+
+
+
+        });
+
+
+
+
+
+    </script>
+    <script src="/statics/js/vue.min.js"></script>
+    <script src="/statics/js/vue-resource.js"></script>
+    <script>
+        var home = new Vue({
+            el:"#home",
+            data:{
+                body:{},
+                rolename:''
+            },
+            mounted:function () {
+                var _this = this;
+                this.$http.post('/findUser',{},{emulateJSON:true}).then(function(res){
+                    _this.body = res.body
+                    var list = res.body.roleList[0].rolename
+                    console.info(list)
+                    _this.rolename = list
+                    console.log(res);
+                },function(res){
+                    console.log(res.status);
+                    console.log(1111);
+                });
+                this.$http.post('/findUser',{},{emulateJSON:true}).then(function(res){
+                    _this.body = res.body
+                    var list = res.body.roleList[0].rolename
+                    console.info(list)
+                    _this.rolename = list
+                    console.log(res);
+                },function(res){
+                    console.log(res.status);
+                    console.log(1111);
+                });
+            }
+
+
+
+        })
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,124 @@
+<!doctype html>
+<html  class="x-admin-sm">
+<head>
+    <meta charset="UTF-8">
+    <title>特点管理系统</title>
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <link rel="stylesheet" href="/statics/css/font.css">
+    <link rel="stylesheet" href="/statics/css/xadmin.css">
+    <link rel="icon" href="/statics/images/favicon.ico" type="image/x-icon">
+    <script type="text/javascript" src="/statics/js/jquery-1.8.3.min.js"></script>
+    <script src="/statics/lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/statics/js/xadmin.js"></script>
+    <script type="text/javascript" src="/statics/js/cookie.js"></script>
+    
+    <script>
+        // 是否开启刷新记忆tab功能
+        // var is_remember = false;
+    </script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            background-image: -moz-linear-gradient(-90deg, rgb(102, 126, 234) 33%, rgb(110, 101, 198) 47%, rgb(118, 75, 162) 100%);
+            background-image: -webkit-linear-gradient(-90deg, rgb(102, 126, 234) 33%, rgb(110, 101, 198) 47%, rgb(118, 75, 162) 100%);
+            background-image: -ms-linear-gradient(-90deg, rgb(102, 126, 234) 33%, rgb(110, 101, 198) 47%, rgb(118, 75, 162) 100%);
+        }
+
+    </style>
+</head>
+<body>
+<div id="app">
+<!-- 顶部开始 -->
+<div class="container" id="index">
+    <div class="logo"><a href="/index"><img src="/statics/images/logo2.png" alt=""></a></div>
+    <div class="left_open">
+        <i title="展开左侧栏" class="iconfont">&#xe699;</i>
+    </div>
+       <div style="float:left;text-align: center;color:#fff;font-size:14px;line-height:71px;margin:auto;margin-left:30px;">当前时间：<span id="show-time"></span></div>
+    <ul class="layui-nav right" lay-filter="">
+        <li class="layui-nav-item">
+            <a href="javascript:;">{{body.username}}</a>
+            <dl class="layui-nav-child"> <!-- 二级菜单 -->
+
+                <dd><a onclick="x_admin_show('修改密码','/edit-word')">修改密码</a></dd>
+                <dd><a href="/logout">退出</a></dd>
+            </dl>
+        </li>
+        <li class="layui-nav-item to-index"><a href="/">前台首页</a></li>
+    </ul>
+
+</div>
+
+
+<!-- 顶部结束 -->
+<!-- 中部开始 -->
+<!-- 左侧菜单开始 -->
+
+<div class="left-nav" >
+       <div id="side-nav">
+       <ul id="nav">
+       		<li v-for="site in sites">
+       			  <a href="javascript:;">
+                    <i class="iconfont"><img :src="site.imagesrc" alt=""></i>
+                    <cite>{{site.name}}</cite>
+                    <i class="iconfont nav_right">&#xe697;</i>
+                </a>
+                 <ul class="sub-menu">
+                    <li  v-for="label in site.labels">
+                        <a :_href="label.ahref">
+                            <i class="iconfont" style="font-size:30px;">.</i>
+                            <cite>{{label.labelname}}</cite>
+                        </a>
+                    </li >
+                </ul>
+       		</li>
+       </ul>
+      </div>
+    </div>
+
+
+<!-- <div class="x-slide_left"></div> -->
+<!-- 左侧菜单结束 -->
+<!-- 右侧主体开始 -->
+<div class="page-content">
+    <div class="layui-tab tab" lay-filter="xbs_tab" lay-allowclose="false">
+        <ul class="layui-tab-title">
+            <li class="home"><i class="layui-icon">&#xe68e;</i>首页</li>
+        </ul>
+        <div class="layui-unselect layui-form-select layui-form-selected" id="tab_right">
+            <dl>
+                <dd data-type="this">关闭当前</dd>
+                <dd data-type="other">关闭其它</dd>
+                <dd data-type="all">关闭全部</dd>
+            </dl>
+        </div>
+        <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">
+                <iframe src='/workHome' frameborder="0" scrolling="yes" class="x-iframe"></iframe>
+            </div>
+        </div>
+        <div id="tab_show"></div>
+    </div>
+</div>
+<div class="page-content-bg"></div>
+<!-- 右侧主体结束 -->
+<!-- 中部结束 -->
+<!-- 底部开始 -->
+<div class="footer">
+    <div class="copyright">Copyright©特点技术有限公司 All Rights Reserved</div>
+</div>
+<!-- 底部结束 -->
+</div>
+</body>
+<script src="/statics/js/vue.min.js"></script>
+<script src="/statics/js/vue-resource.js"></script>
+<script src="/statics/js/index.js"></script>
+<script>
+ setInterval("document.getElementById('show-time').innerHTML=new Date().toLocaleString();", 1000);
+</script>
+</html>
