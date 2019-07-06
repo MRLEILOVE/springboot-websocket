@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+	This code is generated automatically. Please do not edit it.
+-->
+<mapper namespace="com.test.bittrade.api.__default.DAO.IDefaultTUserInfoDAO">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.test.bittrade.pojo.model.TUserInfo">
+		<id javaType="int" property="userId" jdbcType="INTEGER" column="user_id" />
+		<result javaType="int" property="age" jdbcType="INTEGER" column="age" />
+	</resultMap>
+
+	<!-- 通用查询结果列 -->
+	<sql id="Base_Column_List">
+		`age` AS age
+	</sql>
+	
+	<insert id="add" parameterType="com.test.bittrade.pojo.model.TUserInfo">
+		INSERT INTO t_user_info(`age`)
+		VALUES(#{age,jdbcType=INTEGER})
+	</insert>
+	
+	<insert id="addWithSelective" parameterType="com.test.bittrade.pojo.model.TUserInfo">
+		INSERT INTO t_user_info(
+			<if test="age != null and age != ''">
+			`age`
+			</if>
+		)
+		VALUES(
+			<if test="age != null and age != ''">
+			#{age,jdbcType=INTEGER}
+			</if>
+		)
+	</insert>
+	
+	<delete id="removeByPK">
+		DELETE FROM t_user_info
+		WHERE 
+			`user_id` = #{userId,jdbcType=INTEGER}
+	</delete>
+	
+	<delete id="remove" parameterType="com.test.bittrade.pojo.model.TUserInfo">
+		DELETE FROM t_user_info
+		WHERE
+			<if test="age != null and age != ''">
+			`age` = #{age,jdbcType=INTEGER}
+			</if>
+	</delete>
+	
+	<update id="modifyByPK" parameterType="com.test.bittrade.pojo.model.TUserInfo">
+		UPDATE t_user_info
+		SET
+			`age` = #{age,jdbcType=INTEGER}
+		WHERE 
+			`user_id` = #{userId,jdbcType=INTEGER}
+	</update>
+	
+	<update id="modifyWithSelectiveByPK" parameterType="com.test.bittrade.pojo.model.TUserInfo">
+		UPDATE t_user_info
+		SET
+			<if test="age != null and age != ''">
+			`age` = #{age,jdbcType=INTEGER}
+			</if>
+		WHERE 
+			`user_id` = #{userId,jdbcType=INTEGER}
+	</update>
+	
+	<update id="modify">
+		UPDATE t_user_info
+		SET
+			`age` = #{tUserInfo.age,jdbcType=INTEGER}
+		WHERE 
+			<if test="condiTUserInfo.age != null and condiTUserInfo.age != ''">
+			`age` = #{condiTUserInfo.age,jdbcType=INTEGER}
+			</if>
+	</update>
+	
+	<update id="modifyWithSelective">
+		UPDATE t_user_info
+		SET
+			<if test="age != null and age != ''">
+			`age` = #{tUserInfo.age,jdbcType=INTEGER}
+			</if>
+		WHERE 
+			<if test="condiTUserInfo.age != null and condiTUserInfo.age != ''">
+			`age` = #{condiTUserInfo.age,jdbcType=INTEGER}
+			</if>
+	</update>
+	
+	<select id="getByPK" resultType="com.test.bittrade.pojo.model.TUserInfo">
+		SELECT 
+			`user_id`, 
+			`age`
+		FROM t_user_info
+		<where>
+			`user_id` = #{userId,jdbcType=INTEGER}
+		</where>
+	</select>
+	
+	<select id="get" resultType="com.test.bittrade.pojo.dto.TUserInfoDTO">
+		SELECT 
+			`user_id`, 
+			`age`
+		FROM t_user_info
+		<where>
+			<if test="age != null and age != ''">
+			AND `age` = #{age,jdbcType=INTEGER}
+			</if>
+		</where>
+	</select>
+	
+	<select id="gets" resultType="com.test.bittrade.pojo.dto.TUserInfoDTO">
+		SELECT 
+			`user_id`, 
+			`age`
+		FROM t_user_info
+	</select>
+	
+	<select id="getCntWithPage" resultType="int">
+		SELECT COUNT(1)
+		FROM t_user_info
+		<where>
+			<if test="tUserInfo.age != null and tUserInfo.age != ''">
+			AND `age` = #{tUserInfo.age,jdbcType=INTEGER}
+			</if>
+		</where>
+	</select>
+	
+	<select id="getsWithPage" resultType="com.test.bittrade.pojo.dto.TUserInfoDTO">
+		SELECT 
+			`user_id`, 
+			`age`
+		FROM t_user_info
+		<where>
+			<if test="tUserInfo.age != null and tUserInfo.age != ''">
+			AND `age` = #{tUserInfo.age,jdbcType=INTEGER}
+			</if>
+		</where>
+		LIMIT #{page}, #{size}
+	</select>
+
+</mapper>

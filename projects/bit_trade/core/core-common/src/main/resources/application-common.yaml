@@ -55,7 +55,7 @@ mybatis-plus:
   mapper-locations: classpath*:/__default/DAO_SQL/**/I*DAO.xml,classpath*:/dao_SQL/**/I*DAO.xml
   #mapper-locations: ${data.mapper-locations}
   #实体扫描，多个package用逗号或者分号分隔
-  typeAliasesPackage: com.*.pojo.model.*
+  typeAliasesPackage: com.**.pojo.model.*
   #typeAliasesPackage: ${data.model-package}
   configuration:
     map-underscore-to-camel-case: true

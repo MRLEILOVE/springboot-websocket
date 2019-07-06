@@ -1,11 +1,15 @@
 package com.test.bittrade.svc;
 
+import javax.management.Query;
+
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.test.bittrade.svc.api.service.ITUserService;
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.test.bittrade.api.service.ITUserService;
+import com.test.bittrade.pojo.model.TUser;
 import com.test.bittrade.svc.base.BaseTester;
-import com.test.bittrade.svc.pojo.model.TUser;
 
 public class UserTester extends BaseTester {
 

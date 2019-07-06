@@ -1,10 +1,11 @@
 package com.bittrade.currency.service.impl;
 
+import org.springframework.stereotype.Service;
+
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.bittrade.api.dao.TWalletMapper;
+import com.bittrade.currency.dao.TWalletMapper;
 import com.bittrade.pojo.model.TWallet;
-import org.springframework.stereotype.Service;
 
 /**
  * <p>

@@ -5,11 +5,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.test.bittrade.svc.api.dao.ITUserZDAO;
-import com.test.bittrade.svc.pojo.dto.TUserZDTO;
-import com.test.bittrade.svc.pojo.vo.TUserZVO;
-import com.test.bittrade.svc.pojo.model.TUserZ;
-import com.test.bittrade.svc.api.service.ITUserZService;
+import com.test.bittrade.api.__default.DAO.IDefaultTUserZDAO;
+import com.test.bittrade.pojo.dto.TUserZDTO;
+import com.test.bittrade.pojo.vo.TUserZVO;
+import com.test.bittrade.pojo.model.TUserZ;
+import com.test.bittrade.api.service.ITUserZService;
 import com.core.framework.base.controller.BaseController;
 
 /**
@@ -20,6 +20,6 @@ import com.core.framework.base.controller.BaseController;
 @Controller
 @ResponseBody
 @RequestMapping(value = { "/tUserZ" }, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-public class TUserZController extends BaseController<TUserZ, TUserZDTO, TUserZVO, ITUserZDAO, ITUserZService> {
+public class TUserZController extends BaseController<TUserZ, TUserZDTO, TUserZVO, IDefaultTUserZDAO, ITUserZService> {
 	
 }

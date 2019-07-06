@@ -1,6 +1,16 @@
 package com.bittrade.currency.controller;
 
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -8,27 +18,10 @@ import com.bittrade.api.service.ITCurrencyService;
 import com.bittrade.api.service.IWUserWalletBillService;
 import com.bittrade.api.service.IWUserWalletService;
 import com.bittrade.api.service.IWWithdrawWalletBillService;
-import com.bittrade.currency.response.Result;
-import com.bittrade.pojo.model.TCurrency;
-import com.bittrade.pojo.model.WUserWallet;
 import com.bittrade.pojo.model.WUserWalletBill;
 import com.bittrade.pojo.model.WWithdrawWalletBill;
-import com.bittrade.pojo.vo.RechargeVo;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiOperation;
-import org.iherus.codegen.qrcode.SimpleQrcodeGenerator;
-import org.iherus.codegen.utils.IOUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.util.*;
+import io.swagger.annotations.ApiOperation;
 
 /**
  * <p>

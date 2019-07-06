@@ -1,11 +1,11 @@
 package com.bittrade.currency.service.impl;
 
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-
-import com.bittrade.api.dao.WWithdrawWalletBillMapper;
-import com.bittrade.api.service.IWWithdrawWalletBillService;
-import com.bittrade.pojo.model.WWithdrawWalletBill;
 import org.springframework.stereotype.Service;
+
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.bittrade.api.service.IWWithdrawWalletBillService;
+import com.bittrade.currency.dao.WWithdrawWalletBillMapper;
+import com.bittrade.pojo.model.WWithdrawWalletBill;
 
 /**
  * <p>

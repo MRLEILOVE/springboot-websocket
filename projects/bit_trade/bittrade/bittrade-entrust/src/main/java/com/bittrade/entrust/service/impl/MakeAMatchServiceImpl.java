@@ -113,6 +113,12 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 		return i_idx + 1;
 	}
 	
+	/**
+	 * 撮合
+	 * @param entrust
+	 * @param list_market
+	 * @param list_limit
+	 */
 	private void matchSell(TEntrust entrust, List<TEntrust> list_market, List<TEntrust> list_limit) {
 		
 	}

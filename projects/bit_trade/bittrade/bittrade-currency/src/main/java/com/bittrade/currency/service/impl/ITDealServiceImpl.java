@@ -1,13 +1,14 @@
 package com.bittrade.currency.service.impl;
 
-import com.bittrade.api.dao.ITEntrustRecordDAO;
-import com.bittrade.api.service.ITDealService;
-import com.bittrade.pojo.vo.TEntrustRecordVO;
-import com.bittrade.pojo.vo.TRealTimeTransactionVO;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import com.bittrade.api.service.ITDealService;
+import com.bittrade.currency.dao.ITEntrustRecordDAO;
+import com.bittrade.pojo.vo.TEntrustRecordVO;
+import com.bittrade.pojo.vo.TRealTimeTransactionVO;
 
 @Service
 public class ITDealServiceImpl implements ITDealService {

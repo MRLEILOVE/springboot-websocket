@@ -1,22 +1,28 @@
 package com.bittrade.currency.controller;
 
-import com.bittrade.api.service.ITTrustService;
-import com.bittrade.pojo.dto.DealDTO;
-import com.bittrade.pojo.vo.TEntrustInfoVO;
-import com.core.framework.DTO.ReturnDTO;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.bittrade.api.dao.ITEntrustDAO;
-import com.bittrade.pojo.dto.TEntrustDTO;
-import com.bittrade.pojo.vo.TEntrustVO;
-import com.bittrade.pojo.model.TEntrust;
+import com.bittrade.api.__default.DAO.IDefaultTEntrustDAO;
 import com.bittrade.api.service.ITEntrustService;
+import com.bittrade.api.service.ITTrustService;
+import com.bittrade.pojo.dto.DealDTO;
+import com.bittrade.pojo.dto.TEntrustDTO;
+import com.bittrade.pojo.model.TEntrust;
+import com.bittrade.pojo.vo.TEntrustInfoVO;
+import com.bittrade.pojo.vo.TEntrustVO;
+import com.core.framework.DTO.ReturnDTO;
 import com.core.framework.base.controller.BaseController;
-
-import java.util.List;
 
 /**
  * 
@@ -26,7 +32,7 @@ import java.util.List;
 @Controller
 @ResponseBody
 @RequestMapping(value = { "/tEntrust" }, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-public class TEntrustController extends BaseController<TEntrust, TEntrustDTO, TEntrustVO, ITEntrustDAO, ITEntrustService> {
+public class TEntrustController extends BaseController<TEntrust, TEntrustDTO, TEntrustVO, IDefaultTEntrustDAO, ITEntrustService> {
     @Autowired
     private ITTrustService trustService;
 

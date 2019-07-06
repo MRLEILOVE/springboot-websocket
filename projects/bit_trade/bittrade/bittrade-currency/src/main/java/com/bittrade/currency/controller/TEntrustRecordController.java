@@ -1,7 +1,7 @@
 package com.bittrade.currency.controller;
 
-import com.bittrade.api.service.ITDealService;
-import com.bittrade.pojo.vo.TRealTimeTransactionVO;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -10,14 +10,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.bittrade.api.dao.ITEntrustRecordDAO;
-import com.bittrade.pojo.dto.TEntrustRecordDTO;
-import com.bittrade.pojo.vo.TEntrustRecordVO;
-import com.bittrade.pojo.model.TEntrustRecord;
+import com.bittrade.api.__default.DAO.IDefaultTEntrustRecordDAO;
+import com.bittrade.api.service.ITDealService;
 import com.bittrade.api.service.ITEntrustRecordService;
+import com.bittrade.pojo.dto.TEntrustRecordDTO;
+import com.bittrade.pojo.model.TEntrustRecord;
+import com.bittrade.pojo.vo.TEntrustRecordVO;
+import com.bittrade.pojo.vo.TRealTimeTransactionVO;
 import com.core.framework.base.controller.BaseController;
-
-import java.util.List;
 
 /**
  * 
@@ -27,7 +27,7 @@ import java.util.List;
 @Controller
 @ResponseBody
 @RequestMapping(value = { "/tEntrustRecord" }, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-public class TEntrustRecordController extends BaseController<TEntrustRecord, TEntrustRecordDTO, TEntrustRecordVO, ITEntrustRecordDAO, ITEntrustRecordService> {
+public class TEntrustRecordController extends BaseController<TEntrustRecord, TEntrustRecordDTO, TEntrustRecordVO, IDefaultTEntrustRecordDAO, ITEntrustRecordService> {
     @Autowired
     private ITDealService dealService;
 

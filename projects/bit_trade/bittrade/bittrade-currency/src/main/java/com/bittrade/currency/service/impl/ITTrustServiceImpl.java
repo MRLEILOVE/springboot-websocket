@@ -1,16 +1,17 @@
 package com.bittrade.currency.service.impl;
 
-import com.bittrade.api.dao.ITEntrustDAO;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.bittrade.api.service.ITTrustService;
+import com.bittrade.currency.dao.ITEntrustDAO;
 import com.bittrade.pojo.dto.DealDTO;
 import com.bittrade.pojo.model.TEntrust;
 import com.bittrade.pojo.vo.TEntrustInfoVO;
 import com.bittrade.pojo.vo.TEntrustVO;
 import com.core.framework.DTO.ReturnDTO;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class ITTrustServiceImpl implements ITTrustService {

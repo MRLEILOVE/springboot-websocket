@@ -14,10 +14,27 @@
 	<packaging>pom</packaging>
 	
 	<modules>
+		<module>test-bittrade-pojo</module>
+		<module>test-bittrade-api</module>
 		<module>test-bittrade-client</module>
 		<module>test-bittrade-svc</module>
 		<module>test</module>
 	</modules>
+	
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>com.bittrade</groupId>
+				<artifactId>test-bittrade-pojo</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.bittrade</groupId>
+				<artifactId>test-bittrade-api</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 
 	<dependencies>
 		<dependency>

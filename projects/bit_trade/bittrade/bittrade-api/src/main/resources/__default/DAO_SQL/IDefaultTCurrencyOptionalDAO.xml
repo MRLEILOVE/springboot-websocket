@@ -8,7 +8,7 @@
 	<!-- 通用查询映射结果 -->
 	<resultMap id="BaseResultMap" type="com.bittrade.pojo.model.TCurrencyOptional">
 		<id javaType="int" property="id" jdbcType="INTEGER" column="id" />
-		<result javaType="int" property="userId" jdbcType="INTEGER" column="user_id" />
+		<result javaType="long" property="userId" jdbcType="BIGINT" column="user_id" />
 		<result javaType="int" property="currencyTradeId" jdbcType="INTEGER" column="currency_trade_id" />
 		<result javaType="byte" property="status" jdbcType="INTEGER" column="status" />
 		<result javaType="java.util.Date" property="createTime" jdbcType="TIMESTAMP" column="create_time" />
@@ -26,7 +26,7 @@
 	
 	<insert id="add" parameterType="com.bittrade.pojo.model.TCurrencyOptional">
 		INSERT INTO t_currency_optional(`user_id`, `currency_trade_id`, `status`, `create_time`, `update_time`)
-		VALUES(#{userId,jdbcType=INTEGER}, #{currencyTradeId,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+		VALUES(#{userId,jdbcType=BIGINT}, #{currencyTradeId,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
 	</insert>
 	
 	<insert id="addWithSelective" parameterType="com.bittrade.pojo.model.TCurrencyOptional">
@@ -49,7 +49,7 @@
 		)
 		VALUES(
 			<if test="userId != null and userId != ''">
-			#{userId,jdbcType=INTEGER}, 
+			#{userId,jdbcType=BIGINT}, 
 			</if>
 			<if test="currencyTradeId != null and currencyTradeId != ''">
 			#{currencyTradeId,jdbcType=INTEGER}, 
@@ -76,7 +76,7 @@
 		DELETE FROM t_currency_optional
 		WHERE
 			<if test="userId != null and userId != ''">
-			`user_id` = #{userId,jdbcType=INTEGER} AND
+			`user_id` = #{userId,jdbcType=BIGINT} AND
 			</if>
 			<if test="currencyTradeId != null and currencyTradeId != ''">
 			`currency_trade_id` = #{currencyTradeId,jdbcType=INTEGER} AND
@@ -95,7 +95,7 @@
 	<update id="modifyByPK" parameterType="com.bittrade.pojo.model.TCurrencyOptional">
 		UPDATE t_currency_optional
 		SET
-			`user_id` = #{userId,jdbcType=INTEGER}, 
+			`user_id` = #{userId,jdbcType=BIGINT}, 
 			`currency_trade_id` = #{currencyTradeId,jdbcType=INTEGER}, 
 			`status` = #{status,jdbcType=INTEGER}, 
 			`create_time` = #{createTime,jdbcType=TIMESTAMP}, 
@@ -108,7 +108,7 @@
 		UPDATE t_currency_optional
 		SET
 			<if test="userId != null and userId != ''">
-			`user_id` = #{userId,jdbcType=INTEGER}, 
+			`user_id` = #{userId,jdbcType=BIGINT}, 
 			</if>
 			<if test="currencyTradeId != null and currencyTradeId != ''">
 			`currency_trade_id` = #{currencyTradeId,jdbcType=INTEGER}, 
@@ -129,14 +129,14 @@
 	<update id="modify">
 		UPDATE t_currency_optional
 		SET
-			`user_id` = #{tCurrencyOptional.userId,jdbcType=INTEGER}, 
+			`user_id` = #{tCurrencyOptional.userId,jdbcType=BIGINT}, 
 			`currency_trade_id` = #{tCurrencyOptional.currencyTradeId,jdbcType=INTEGER}, 
 			`status` = #{tCurrencyOptional.status,jdbcType=INTEGER}, 
 			`create_time` = #{tCurrencyOptional.createTime,jdbcType=TIMESTAMP}, 
 			`update_time` = #{tCurrencyOptional.updateTime,jdbcType=TIMESTAMP}
 		WHERE 
 			<if test="condiTCurrencyOptional.userId != null and condiTCurrencyOptional.userId != ''">
-			`user_id` = #{condiTCurrencyOptional.userId,jdbcType=INTEGER} AND
+			`user_id` = #{condiTCurrencyOptional.userId,jdbcType=BIGINT} AND
 			</if>
 			<if test="condiTCurrencyOptional.currencyTradeId != null and condiTCurrencyOptional.currencyTradeId != ''">
 			`currency_trade_id` = #{condiTCurrencyOptional.currencyTradeId,jdbcType=INTEGER} AND
@@ -156,7 +156,7 @@
 		UPDATE t_currency_optional
 		SET
 			<if test="userId != null and userId != ''">
-			`user_id` = #{tCurrencyOptional.userId,jdbcType=INTEGER}, 
+			`user_id` = #{tCurrencyOptional.userId,jdbcType=BIGINT}, 
 			</if>
 			<if test="currencyTradeId != null and currencyTradeId != ''">
 			`currency_trade_id` = #{tCurrencyOptional.currencyTradeId,jdbcType=INTEGER}, 
@@ -172,7 +172,7 @@
 			</if>
 		WHERE 
 			<if test="condiTCurrencyOptional.userId != null and condiTCurrencyOptional.userId != ''">
-			`user_id` = #{condiTCurrencyOptional.userId,jdbcType=INTEGER} AND
+			`user_id` = #{condiTCurrencyOptional.userId,jdbcType=BIGINT} AND
 			</if>
 			<if test="condiTCurrencyOptional.currencyTradeId != null and condiTCurrencyOptional.currencyTradeId != ''">
 			`currency_trade_id` = #{condiTCurrencyOptional.currencyTradeId,jdbcType=INTEGER} AND
@@ -213,7 +213,7 @@
 		FROM t_currency_optional
 		<where>
 			<if test="userId != null and userId != ''">
-			AND `user_id` = #{userId,jdbcType=INTEGER}
+			AND `user_id` = #{userId,jdbcType=BIGINT}
 			</if>
 			<if test="currencyTradeId != null and currencyTradeId != ''">
 			AND `currency_trade_id` = #{currencyTradeId,jdbcType=INTEGER}
@@ -246,7 +246,7 @@
 		FROM t_currency_optional
 		<where>
 			<if test="tCurrencyOptional.userId != null and tCurrencyOptional.userId != ''">
-			AND `user_id` = #{tCurrencyOptional.userId,jdbcType=INTEGER}
+			AND `user_id` = #{tCurrencyOptional.userId,jdbcType=BIGINT}
 			</if>
 			<if test="tCurrencyOptional.currencyTradeId != null and tCurrencyOptional.currencyTradeId != ''">
 			AND `currency_trade_id` = #{tCurrencyOptional.currencyTradeId,jdbcType=INTEGER}
@@ -274,7 +274,7 @@
 		FROM t_currency_optional
 		<where>
 			<if test="tCurrencyOptional.userId != null and tCurrencyOptional.userId != ''">
-			AND `user_id` = #{tCurrencyOptional.userId,jdbcType=INTEGER}
+			AND `user_id` = #{tCurrencyOptional.userId,jdbcType=BIGINT}
 			</if>
 			<if test="tCurrencyOptional.currencyTradeId != null and tCurrencyOptional.currencyTradeId != ''">
 			AND `currency_trade_id` = #{tCurrencyOptional.currencyTradeId,jdbcType=INTEGER}
