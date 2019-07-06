@@ -16,6 +16,13 @@ import lombok.NoArgsConstructor;
 public class RedisKeyUtil {
 
 	// usd对cny汇率key
-	public static final String USD_TO_CNY_RATE_KEY = "USD_TO_CNY_RATE_KEY";
+	public static final String	USD_TO_CNY_RATE_KEY	= "USD_TO_CNY_RATE_KEY";
+
+	public static final String	OKEX				= "OKEX_";
+
+	// symbol最新价
+	public static String getOkexSymbolLast(String symbol) {
+		return OKEX + symbol + "_LAST_KEY";
+	}
 
 }
