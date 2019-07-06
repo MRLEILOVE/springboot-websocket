@@ -16,6 +16,7 @@
 	<modules>
 		<module>test-bittrade-client</module>
 		<module>test-bittrade-svc</module>
+		<module>test</module>
 	</modules>
 
 	<dependencies>

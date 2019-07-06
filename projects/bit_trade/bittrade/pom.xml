@@ -21,7 +21,6 @@
 		<module>bittrade-entrust</module>
 		<module>bittrade-netty-websocket</module>
 		<module>bittrade-batch</module>
-		<module>test</module>
 	</modules>
 	
 	<dependencyManagement>
