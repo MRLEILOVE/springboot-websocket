@@ -47,7 +47,7 @@ public class MyWebSocketClient extends WebSocketClient {
 	public void onMessage(String message) {
 		LOG.info( "message=" + message );
 		message = decode( message );
-		message = "{\"table\":\"spot/ticker\",\"data\":[{\"instrument_id\":\"ETH-USDT\",\"last\":\"162.09\",\"best_bid\":\"162.1\",\"best_ask\":\"162.12\",\"open_24h\":\"165.35\",\"high_24h\":\"166.55\",\"low_24h\":\"155.69\",\"base_volume_24h\":\"620062.9352195\",\"quote_volume_24h\":\"100084770.34604578\",\"timestamp\":\"2019-04-16T10:44:06.090Z\"}]}";
+		//message = "{\"table\":\"spot/ticker\",\"data\":[{\"instrument_id\":\"ETH-USDT\",\"last\":\"162.09\",\"best_bid\":\"162.1\",\"best_ask\":\"162.12\",\"open_24h\":\"165.35\",\"high_24h\":\"166.55\",\"low_24h\":\"155.69\",\"base_volume_24h\":\"620062.9352195\",\"quote_volume_24h\":\"100084770.34604578\",\"timestamp\":\"2019-04-16T10:44:06.090Z\"}]}";
 		JSONObject jsonObject = (JSONObject) JSON.parse( message );
 		JSONArray jsonArray = (JSONArray) jsonObject.get( "data" );
 		OkexTickerDto okexTickerDto = JSONObject.parseObject( jsonArray.get( 0 ).toString(), OkexTickerDto.class );
