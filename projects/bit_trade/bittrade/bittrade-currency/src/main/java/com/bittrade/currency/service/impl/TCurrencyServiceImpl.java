@@ -20,7 +20,7 @@ import com.bittrade.pojo.vo.TCurrencyVO;
  */
 @Service
 public class TCurrencyServiceImpl extends
-		DefaultTCurrencyServiceImpl<IDefaultTCurrencyDAO, TCurrency, TCurrencyDTO, TCurrencyVO> implements ITCurrencyService {
+		DefaultTCurrencyServiceImpl<ITCurrencyDAO, TCurrency, TCurrencyDTO, TCurrencyVO> implements ITCurrencyService<TCurrency, TCurrencyDTO, TCurrencyVO, ITCurrencyDAO> {
 
 	@Autowired
 	private ITCurrencyDAO tCurrencyDAO;

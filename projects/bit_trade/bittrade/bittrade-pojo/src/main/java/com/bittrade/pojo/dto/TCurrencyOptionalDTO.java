@@ -17,7 +17,7 @@ public class TCurrencyOptionalDTO extends BaseDTO<TCurrencyOptionalDTO> {
 	private static final long serialVersionUID = 1L;
 
 	private int id;
-	private int userId;
+	private long userId;
 	private int currencyTradeId;
 	private byte status;
 	private java.util.Date createTime;

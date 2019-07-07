@@ -2,12 +2,12 @@ package com.bittrade.currency.service.impl;
 
 import org.springframework.stereotype.Service;
 
-import com.bittrade.api.__default.DAO.IDefaultJobTaskDAO;
 import com.bittrade.api.__default.service.impl.DefaultJobTaskServiceImpl;
-import com.bittrade.api.service.IJobTaskService;
+import com.bittrade.currency.dao.IJobTaskDAO;
 import com.bittrade.pojo.dto.JobTaskDTO;
-import com.bittrade.pojo.model.JobTask;
 import com.bittrade.pojo.vo.JobTaskVO;
+import com.bittrade.pojo.model.JobTask;
+import com.bittrade.api.service.IJobTaskService;
 
 /**
  * 
@@ -15,6 +15,6 @@ import com.bittrade.pojo.vo.JobTaskVO;
  *
  */
 @Service
-public class JobTaskServiceImpl extends DefaultJobTaskServiceImpl<IDefaultJobTaskDAO, JobTask, JobTaskDTO, JobTaskVO> implements IJobTaskService {
+public class JobTaskServiceImpl extends DefaultJobTaskServiceImpl<IJobTaskDAO, JobTask, JobTaskDTO, JobTaskVO> implements IJobTaskService<JobTask, JobTaskDTO, JobTaskVO, IJobTaskDAO> {
 	
 }

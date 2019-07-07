@@ -1,20 +1,19 @@
 package com.test.bittrade.svc;
 
-import javax.management.Query;
-
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.test.bittrade.api.service.ITUserService;
+import com.test.bittrade.pojo.dto.TUserDTO;
 import com.test.bittrade.pojo.model.TUser;
+import com.test.bittrade.pojo.vo.TUserVO;
 import com.test.bittrade.svc.base.BaseTester;
+import com.test.bittrade.svc.dao.ITUserDAO;
 
 public class UserTester extends BaseTester {
 
 	@Autowired
-	private ITUserService userService;
+	private ITUserService<TUser, TUserDTO, TUserVO, ITUserDAO> userService;
 
 	@Test
 	public void test() {
@@ -33,11 +32,26 @@ public class UserTester extends BaseTester {
 		System.out.println(userService.modify(user2, userCondi));
 	}
 
+	@SuppressWarnings("serial")
 	@Test
 	public void modify() {
 //		int id = 20;
 //		userService.modify(id, "李四", 20);
 //		userService.modify(id, "王五", 21);
+		
+		TUser model = new TUser() {
+			{
+				setId(30);
+				setName("name-2");
+			}
+		};
+		System.out.println("==" + userService.modifyByPK(model));
+		TUser condiModel = new TUser() {
+			{
+				setName("22");
+			}
+		};
+		System.out.println("=" + userService.modify(model, condiModel));
 	}
 
 	@Test
@@ -46,7 +60,7 @@ public class UserTester extends BaseTester {
 		TUser u = new TUser();
 //		u.setName("22");
 //		System.out.println(userService.get(u));
-		System.out.println(userService.getsWithPage(u, 1, 3));
+		System.out.println("==" + userService.getsWithPage(u, 1, 3));
 	}
 
 }

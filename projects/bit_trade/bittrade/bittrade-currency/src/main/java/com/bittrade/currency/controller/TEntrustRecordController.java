@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.bittrade.api.__default.DAO.IDefaultTEntrustRecordDAO;
 import com.bittrade.api.service.ITDealService;
 import com.bittrade.api.service.ITEntrustRecordService;
+import com.bittrade.currency.dao.ITEntrustRecordDAO;
 import com.bittrade.pojo.dto.TEntrustRecordDTO;
 import com.bittrade.pojo.model.TEntrustRecord;
 import com.bittrade.pojo.vo.TEntrustRecordVO;
@@ -27,7 +27,7 @@ import com.core.framework.base.controller.BaseController;
 @Controller
 @ResponseBody
 @RequestMapping(value = { "/tEntrustRecord" }, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-public class TEntrustRecordController extends BaseController<TEntrustRecord, TEntrustRecordDTO, TEntrustRecordVO, IDefaultTEntrustRecordDAO, ITEntrustRecordService> {
+public class TEntrustRecordController extends BaseController<TEntrustRecord, TEntrustRecordDTO, TEntrustRecordVO, ITEntrustRecordDAO, ITEntrustRecordService<TEntrustRecord, TEntrustRecordDTO, TEntrustRecordVO, ITEntrustRecordDAO>> {
     @Autowired
     private ITDealService dealService;
 

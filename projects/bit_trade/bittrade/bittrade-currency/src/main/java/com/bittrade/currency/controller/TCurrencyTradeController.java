@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.bittrade.api.__default.DAO.IDefaultTCurrencyTradeDAO;
 import com.bittrade.api.service.ITCurrencyTradeService;
+import com.bittrade.currency.dao.ITCurrencyTradeDAO;
 import com.bittrade.pojo.dto.TCurrencyTradeDTO;
 import com.bittrade.pojo.model.TCurrencyTrade;
 import com.bittrade.pojo.vo.TCurrencyTradeVO;
@@ -26,9 +26,9 @@ import com.core.framework.base.controller.BaseController;
 @Controller
 @ResponseBody
 @RequestMapping(value = { "/tCurrencyTrade" }, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-public class TCurrencyTradeController extends BaseController<TCurrencyTrade, TCurrencyTradeDTO, TCurrencyTradeVO, IDefaultTCurrencyTradeDAO, ITCurrencyTradeService> {
+public class TCurrencyTradeController extends BaseController<TCurrencyTrade, TCurrencyTradeDTO, TCurrencyTradeVO, ITCurrencyTradeDAO, ITCurrencyTradeService<TCurrencyTrade, TCurrencyTradeDTO, TCurrencyTradeVO, ITCurrencyTradeDAO>> {
     @Autowired
-    private ITCurrencyTradeService tCurrencyTradeService;
+    private ITCurrencyTradeService<TCurrencyTrade, TCurrencyTradeDTO, TCurrencyTradeVO, ITCurrencyTradeDAO> tCurrencyTradeService;
 
     /**
      * 根据法币id查找交易对

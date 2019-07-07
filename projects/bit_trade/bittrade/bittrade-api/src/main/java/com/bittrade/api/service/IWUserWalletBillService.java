@@ -1,17 +1,17 @@
 package com.bittrade.api.service;
 
-import com.baomidou.mybatisplus.extension.service.IService;
-import com.bittrade.pojo.model.WUserWalletBill;
+import com.core.framework.base.DAO.IBaseDAO;
+import com.core.framework.base.DTO.BaseDTO;
+import com.core.framework.base.VO.BaseVO;
+import com.core.framework.base.model.BaseModel;
 
+import com.bittrade.api.__default.service.IDefaultWUserWalletBillService;
 
 /**
- * <p>
- * 用户钱包账单 服务类
- * </p>
+ * 
+ * @author Administrator
  *
- * @author jobob
- * @since 2019-07-04
  */
-public interface IWUserWalletBillService extends IService<WUserWalletBill> {
-
+public interface IWUserWalletBillService<Model extends BaseModel<Model>, DTO extends BaseDTO<DTO>, VO extends BaseVO<VO>, DAO extends IBaseDAO<Model, DTO, VO>> extends IDefaultWUserWalletBillService<Model, DTO, VO, DAO> {
+	
 }

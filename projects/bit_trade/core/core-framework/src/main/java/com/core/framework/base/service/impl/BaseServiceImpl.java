@@ -28,61 +28,61 @@ import com.core.framework.base.service.IBaseService;
 public abstract class BaseServiceImpl<Model extends BaseModel<Model>, DTO extends BaseDTO<DTO>, VO extends BaseVO<VO>, DAO extends IBaseDAO<Model, DTO, VO>> extends ServiceImpl<DAO, Model> implements IBaseService<Model, DTO, VO, DAO> {
 	
 	@Autowired
-	protected DAO _DAO; // super.baseMapper
+	protected DAO baseDAO; // super.baseMapper
 
 	@Override
 	public int add(Model model) {
-		return _DAO.add(model);
+		return baseDAO.add(model);
 	}
 
 	@Override
 	public int addWithSelective(Model model) {
-		return _DAO.addWithSelective(model);
+		return baseDAO.addWithSelective(model);
 	}
 
 	@Override
 	public int removeByPK(Serializable PK) {
-		return _DAO.removeByPK(PK);
+		return baseDAO.removeByPK(PK);
 	}
 
 	@Override
 	public int remove(Model model) {
-		return _DAO.remove(model);
+		return baseDAO.remove(model);
 	}
 
 	@Override
 	public int modifyByPK(Model model) {
-		return _DAO.modifyByPK(model);
+		return baseDAO.modifyByPK(model);
 	}
 
 	@Override
 	public int modifyWithSelectiveByPK(Model model) {
-		return _DAO.modifyWithSelectiveByPK(model);
+		return baseDAO.modifyWithSelectiveByPK(model);
 	}
 
 	@Override
 	public int modify(Model model, Model condiModel) {
-		return _DAO.modify(model, condiModel);
+		return baseDAO.modify(model, condiModel);
 	}
 
 	@Override
 	public int modifyWithSelective(Model model, Model condiModel) {
-		return _DAO.modifyWithSelective(model, condiModel);
+		return baseDAO.modifyWithSelective(model, condiModel);
 	}
 
 	@Override
 	public Model getByPK(Serializable PK) {
-		return _DAO.getByPK(PK);
+		return baseDAO.getByPK(PK);
 	}
 
 	@Override
 	public List<DTO> get(Model model) {
-		return _DAO.get(model);
+		return baseDAO.get(model);
 	}
 
 	@Override
 	public List<DTO> gets() {
-		return _DAO.gets();
+		return baseDAO.gets();
 	}
 
 	@Override
@@ -90,9 +90,9 @@ public abstract class BaseServiceImpl<Model extends BaseModel<Model>, DTO extend
 		PageDTO<DTO> pageDTO;
 		
 		int i_totalPage, i_totalSize;
-		i_totalSize = _DAO.getCntWithPage(model);
+		i_totalSize = baseDAO.getCntWithPage(model);
 		i_totalPage = (i_totalSize - 1) / size + 1;
-		List<DTO> list_data = _DAO.getsWithPage(model, (page - 1) * size, size);
+		List<DTO> list_data = baseDAO.getsWithPage(model, (page - 1) * size, size);
 		
 		pageDTO = new PageDTO<DTO>(page, size, i_totalPage, i_totalSize, list_data);
 		

@@ -2,20 +2,19 @@ package com.bittrade.currency.service.impl;
 
 import org.springframework.stereotype.Service;
 
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.bittrade.api.service.ITWalletRecordService;
-import com.bittrade.currency.dao.TWalletRecordMapper;
+import com.bittrade.api.__default.service.impl.DefaultTWalletRecordServiceImpl;
+import com.bittrade.currency.dao.ITWalletRecordDAO;
+import com.bittrade.pojo.dto.TWalletRecordDTO;
+import com.bittrade.pojo.vo.TWalletRecordVO;
 import com.bittrade.pojo.model.TWalletRecord;
+import com.bittrade.api.service.ITWalletRecordService;
 
 /**
- * <p>
- * 虚拟币钱包表日志表 服务实现类
- * </p>
+ * 
+ * @author Administrator
  *
- * @author jobob
- * @since 2019-07-05
  */
 @Service
-public class TWalletRecordServiceImpl extends ServiceImpl<TWalletRecordMapper, TWalletRecord> implements ITWalletRecordService {
-
+public class TWalletRecordServiceImpl extends DefaultTWalletRecordServiceImpl<ITWalletRecordDAO, TWalletRecord, TWalletRecordDTO, TWalletRecordVO> implements ITWalletRecordService<TWalletRecord, TWalletRecordDTO, TWalletRecordVO, ITWalletRecordDAO> {
+	
 }

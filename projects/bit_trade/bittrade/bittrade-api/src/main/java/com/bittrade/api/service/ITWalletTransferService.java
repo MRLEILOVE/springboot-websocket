@@ -1,16 +1,17 @@
 package com.bittrade.api.service;
 
+import com.core.framework.base.DAO.IBaseDAO;
+import com.core.framework.base.DTO.BaseDTO;
+import com.core.framework.base.VO.BaseVO;
+import com.core.framework.base.model.BaseModel;
+
 import com.bittrade.api.__default.service.IDefaultTWalletTransferService;
-import com.bittrade.api.__default.DAO.IDefaultTWalletTransferDAO;
-import com.bittrade.pojo.dto.TWalletTransferDTO;
-import com.bittrade.pojo.vo.TWalletTransferVO;
-import com.bittrade.pojo.model.TWalletTransfer;
 
 /**
  * 
  * @author Administrator
  *
  */
-public interface ITWalletTransferService extends IDefaultTWalletTransferService<TWalletTransfer, TWalletTransferDTO, TWalletTransferVO, IDefaultTWalletTransferDAO> {
+public interface ITWalletTransferService<Model extends BaseModel<Model>, DTO extends BaseDTO<DTO>, VO extends BaseVO<VO>, DAO extends IBaseDAO<Model, DTO, VO>> extends IDefaultTWalletTransferService<Model, DTO, VO, DAO> {
 	
 }

@@ -2,12 +2,19 @@ package com.bittrade.currency.service.impl;
 
 import org.springframework.stereotype.Service;
 
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.bittrade.api.service.IWUserWalletService;
-import com.bittrade.currency.dao.WUserWalletMapper;
+import com.bittrade.api.__default.service.impl.DefaultWUserWalletServiceImpl;
+import com.bittrade.currency.dao.IWUserWalletDAO;
+import com.bittrade.pojo.dto.WUserWalletDTO;
+import com.bittrade.pojo.vo.WUserWalletVO;
 import com.bittrade.pojo.model.WUserWallet;
+import com.bittrade.api.service.IWUserWalletService;
 
+/**
+ * 
+ * @author Administrator
+ *
+ */
 @Service
-public class WUserWalletServiceImpl extends ServiceImpl<WUserWalletMapper, WUserWallet> implements IWUserWalletService {
-
+public class WUserWalletServiceImpl extends DefaultWUserWalletServiceImpl<IWUserWalletDAO, WUserWallet, WUserWalletDTO, WUserWalletVO> implements IWUserWalletService<WUserWallet, WUserWalletDTO, WUserWalletVO, IWUserWalletDAO> {
+	
 }

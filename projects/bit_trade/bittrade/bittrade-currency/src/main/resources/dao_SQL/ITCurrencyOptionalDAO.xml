@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.bittrade.api.dao.ITCurrencyOptionalDAO">
+<mapper namespace="com.bittrade.currency.dao.ITCurrencyOptionalDAO">
 
 	<!-- 查询用户自选的交易对	-->
 	<select id="findOptionalByUserId" resultType="com.bittrade.pojo.vo.TransactionPairVO" parameterType="java.lang.String">

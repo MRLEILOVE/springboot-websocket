@@ -1,22 +1,21 @@
 package com.bittrade.currency.service.impl;
 
-import com.bittrade.currency.dao.ITCurrencyOptionalDAO;
-import com.bittrade.pojo.vo.TransactionPairVO;
-import com.core.framework.DTO.ReturnDTO;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import com.bittrade.api.__default.DAO.IDefaultTCurrencyOptionalDAO;
-import com.bittrade.api.__default.service.impl.DefaultTCurrencyOptionalServiceImpl;
-import com.bittrade.api.service.ITCurrencyOptionalService;
-import com.bittrade.pojo.dto.TCurrencyOptionalDTO;
-import com.bittrade.pojo.model.TCurrencyOptional;
-import com.bittrade.pojo.vo.TCurrencyOptionalVO;
-
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.bittrade.api.__default.service.impl.DefaultTCurrencyOptionalServiceImpl;
+import com.bittrade.api.service.ITCurrencyOptionalService;
+import com.bittrade.currency.dao.ITCurrencyOptionalDAO;
+import com.bittrade.pojo.dto.TCurrencyOptionalDTO;
+import com.bittrade.pojo.model.TCurrencyOptional;
+import com.bittrade.pojo.vo.TCurrencyOptionalVO;
+import com.bittrade.pojo.vo.TransactionPairVO;
+import com.core.framework.DTO.ReturnDTO;
 
 /**
  * 
@@ -24,7 +23,7 @@ import java.util.Map;
  *
  */
 @Service
-public class TCurrencyOptionalServiceImpl extends DefaultTCurrencyOptionalServiceImpl<IDefaultTCurrencyOptionalDAO, TCurrencyOptional, TCurrencyOptionalDTO, TCurrencyOptionalVO> implements ITCurrencyOptionalService {
+public class TCurrencyOptionalServiceImpl extends DefaultTCurrencyOptionalServiceImpl<ITCurrencyOptionalDAO, TCurrencyOptional, TCurrencyOptionalDTO, TCurrencyOptionalVO> implements ITCurrencyOptionalService<TCurrencyOptional, TCurrencyOptionalDTO, TCurrencyOptionalVO, ITCurrencyOptionalDAO> {
     @Autowired
     private ITCurrencyOptionalDAO currencyOptionalDAO;
 

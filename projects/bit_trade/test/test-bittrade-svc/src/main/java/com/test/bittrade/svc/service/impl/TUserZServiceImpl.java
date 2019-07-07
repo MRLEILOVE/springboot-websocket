@@ -3,11 +3,11 @@ package com.test.bittrade.svc.service.impl;
 import org.springframework.stereotype.Service;
 
 import com.test.bittrade.api.__default.service.impl.DefaultTUserZServiceImpl;
-import com.test.bittrade.api.__default.DAO.IDefaultTUserZDAO;
-import com.test.bittrade.pojo.dto.TUserZDTO;
-import com.test.bittrade.pojo.vo.TUserZVO;
-import com.test.bittrade.pojo.model.TUserZ;
 import com.test.bittrade.api.service.ITUserZService;
+import com.test.bittrade.pojo.dto.TUserZDTO;
+import com.test.bittrade.pojo.model.TUserZ;
+import com.test.bittrade.pojo.vo.TUserZVO;
+import com.test.bittrade.svc.dao.ITUserZDAO;
 
 /**
  * 
@@ -15,6 +15,6 @@ import com.test.bittrade.api.service.ITUserZService;
  *
  */
 @Service
-public class TUserZServiceImpl extends DefaultTUserZServiceImpl<IDefaultTUserZDAO, TUserZ, TUserZDTO, TUserZVO> implements ITUserZService {
+public class TUserZServiceImpl extends DefaultTUserZServiceImpl<TUserZ, TUserZDTO, TUserZVO, ITUserZDAO> implements ITUserZService<TUserZ, TUserZDTO, TUserZVO, ITUserZDAO> {
 	
 }

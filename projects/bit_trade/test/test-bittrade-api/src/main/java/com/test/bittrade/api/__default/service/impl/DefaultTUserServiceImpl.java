@@ -16,6 +16,6 @@ import com.core.framework.base.service.impl.BaseServiceImpl;
  *
  */
 //public abstract class DefaultTUserServiceImpl extends BaseServiceImpl<TUser, TUserDTO, TUserVO, ITUserDAO> implements IDefaultTUserService {
-public abstract class DefaultTUserServiceImpl<DAO extends IBaseDAO<Model, DTO, VO>, Model extends BaseModel<Model>, DTO extends BaseDTO<DTO>, VO extends BaseVO<VO>> extends BaseServiceImpl<Model, DTO, VO, DAO> implements IDefaultTUserService<Model, DTO, VO, DAO> {
+public abstract class DefaultTUserServiceImpl<Model extends BaseModel<Model>, DTO extends BaseDTO<DTO>, VO extends BaseVO<VO>, DAO extends IBaseDAO<Model, DTO, VO>> extends BaseServiceImpl<Model, DTO, VO, DAO> implements IDefaultTUserService<Model, DTO, VO, DAO> {
 	
 }

@@ -1,16 +1,18 @@
 package com.test.bittrade.api.service;
 
+import com.core.framework.base.DAO.IBaseDAO;
+import com.core.framework.base.DTO.BaseDTO;
+import com.core.framework.base.VO.BaseVO;
+import com.core.framework.base.model.BaseModel;
 import com.test.bittrade.api.__default.service.IDefaultTUserInfoService;
-import com.test.bittrade.api.__default.DAO.IDefaultTUserInfoDAO;
-import com.test.bittrade.pojo.dto.TUserInfoDTO;
-import com.test.bittrade.pojo.vo.TUserInfoVO;
-import com.test.bittrade.pojo.model.TUserInfo;
 
 /**
  * 
  * @author Administrator
  *
  */
-public interface ITUserInfoService extends IDefaultTUserInfoService<TUserInfo, TUserInfoDTO, TUserInfoVO, IDefaultTUserInfoDAO> {
+public interface ITUserInfoService
+<Model extends BaseModel<Model>, DTO extends BaseDTO<DTO>, VO extends BaseVO<VO>, DAO extends IBaseDAO<Model, DTO, VO>>
+extends IDefaultTUserInfoService<Model, DTO, VO, DAO> {
 	
 }

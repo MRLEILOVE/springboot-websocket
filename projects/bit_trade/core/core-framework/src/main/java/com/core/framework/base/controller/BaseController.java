@@ -33,7 +33,7 @@ import com.core.framework.base.service.IBaseService;
 public abstract class BaseController<Model extends BaseModel<Model>, DTO extends BaseDTO<DTO>, VO extends BaseVO<VO>, DAO extends IBaseDAO<Model, DTO, VO>, Service extends IBaseService<Model, DTO, VO, DAO>> {
 
 	@Autowired
-	protected IBaseService<Model, DTO, VO, DAO> baseService;
+	protected Service baseService;
 
 	@RequestMapping(value = "/add", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public int add(Model model) {

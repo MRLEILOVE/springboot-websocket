@@ -21,9 +21,27 @@ import com.bittrade.api.service.ITWalletService;
 import com.bittrade.api.service.IWUserWalletBillService;
 import com.bittrade.api.service.IWUserWalletService;
 import com.bittrade.api.service.IWWithdrawWalletBillService;
+import com.bittrade.currency.dao.ITCurrencyDAO;
+import com.bittrade.currency.dao.ITWalletDAO;
+import com.bittrade.currency.dao.IWUserWalletBillDAO;
+import com.bittrade.currency.dao.IWUserWalletDAO;
+import com.bittrade.currency.dao.IWWithdrawWalletBillDAO;
+import com.bittrade.pojo.dto.TCurrencyDTO;
+import com.bittrade.pojo.dto.TWalletDTO;
+import com.bittrade.pojo.dto.WUserWalletBillDTO;
+import com.bittrade.pojo.dto.WUserWalletDTO;
+import com.bittrade.pojo.dto.WWithdrawWalletBillDTO;
+import com.bittrade.pojo.model.TCurrency;
+import com.bittrade.pojo.model.TWallet;
+import com.bittrade.pojo.model.WUserWallet;
 import com.bittrade.pojo.model.WUserWalletBill;
 import com.bittrade.pojo.model.WWithdrawWalletBill;
 import com.bittrade.pojo.vo.CoinAccountVO;
+import com.bittrade.pojo.vo.TCurrencyVO;
+import com.bittrade.pojo.vo.TWalletVO;
+import com.bittrade.pojo.vo.WUserWalletBillVO;
+import com.bittrade.pojo.vo.WUserWalletVO;
+import com.bittrade.pojo.vo.WWithdrawWalletBillVO;
 
 import io.swagger.annotations.ApiOperation;
 
@@ -39,15 +57,15 @@ import io.swagger.annotations.ApiOperation;
 @RequestMapping(value = "wallet",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class WalletController {
     @Autowired
-    private IWUserWalletBillService userWalletBillService;
+    private IWUserWalletBillService<WUserWalletBill, WUserWalletBillDTO, WUserWalletBillVO, IWUserWalletBillDAO> userWalletBillService;
     @Autowired
-    private IWWithdrawWalletBillService withdrawWalletBillService;
+    private IWWithdrawWalletBillService<WWithdrawWalletBill, WWithdrawWalletBillDTO, WWithdrawWalletBillVO, IWWithdrawWalletBillDAO> withdrawWalletBillService;
     @Autowired
-    private IWUserWalletService userWalletService;
+    private IWUserWalletService<WUserWallet, WUserWalletDTO, WUserWalletVO, IWUserWalletDAO> userWalletService;
     @Autowired
-    private ITCurrencyService currencyService;
+    private ITCurrencyService<TCurrency, TCurrencyDTO, TCurrencyVO, ITCurrencyDAO> currencyService;
     @Autowired
-    private ITWalletService walletService;
+    private ITWalletService<TWallet, TWalletDTO, TWalletVO, ITWalletDAO> walletService;
 
 
   /*  @PostMapping("coinSelect")

@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.bittrade.api.__default.DAO.IDefaultTCurrencyTradeDAO;
 import com.bittrade.api.__default.service.impl.DefaultTCurrencyTradeServiceImpl;
 import com.bittrade.api.service.ITCurrencyTradeService;
 import com.bittrade.currency.dao.ITCurrencyTradeDAO;
@@ -21,8 +20,8 @@ import com.bittrade.pojo.vo.TransactionPairVO;
  */
 @Service
 public class TCurrencyTradeServiceImpl extends
-		DefaultTCurrencyTradeServiceImpl<IDefaultTCurrencyTradeDAO, TCurrencyTrade, TCurrencyTradeDTO, TCurrencyTradeVO>
-		implements ITCurrencyTradeService {
+		DefaultTCurrencyTradeServiceImpl<ITCurrencyTradeDAO, TCurrencyTrade, TCurrencyTradeDTO, TCurrencyTradeVO>
+		implements ITCurrencyTradeService<TCurrencyTrade, TCurrencyTradeDTO, TCurrencyTradeVO, ITCurrencyTradeDAO> {
 
 	@Autowired
 	private ITCurrencyTradeDAO tCurrencyTradeDAO;

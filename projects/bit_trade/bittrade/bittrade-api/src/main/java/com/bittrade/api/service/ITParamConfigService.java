@@ -1,16 +1,17 @@
 package com.bittrade.api.service;
 
+import com.core.framework.base.DAO.IBaseDAO;
+import com.core.framework.base.DTO.BaseDTO;
+import com.core.framework.base.VO.BaseVO;
+import com.core.framework.base.model.BaseModel;
+
 import com.bittrade.api.__default.service.IDefaultTParamConfigService;
-import com.bittrade.api.__default.DAO.IDefaultTParamConfigDAO;
-import com.bittrade.pojo.dto.TParamConfigDTO;
-import com.bittrade.pojo.vo.TParamConfigVO;
-import com.bittrade.pojo.model.TParamConfig;
 
 /**
  * 
  * @author Administrator
  *
  */
-public interface ITParamConfigService extends IDefaultTParamConfigService<TParamConfig, TParamConfigDTO, TParamConfigVO, IDefaultTParamConfigDAO> {
+public interface ITParamConfigService<Model extends BaseModel<Model>, DTO extends BaseDTO<DTO>, VO extends BaseVO<VO>, DAO extends IBaseDAO<Model, DTO, VO>> extends IDefaultTParamConfigService<Model, DTO, VO, DAO> {
 	
 }

@@ -1,12 +1,11 @@
 package com.bittrade.api.service;
 
-import com.baomidou.mybatisplus.extension.service.IService;
 import com.bittrade.api.__default.service.IDefaultTWalletService;
-import com.bittrade.api.dao.ITWalletDAO;
-import com.bittrade.pojo.dto.TWalletDTO;
-import com.bittrade.pojo.model.TWallet;
 import com.bittrade.pojo.vo.CoinAccountVO;
-import com.bittrade.pojo.vo.TWalletVO;
+import com.core.framework.base.DAO.IBaseDAO;
+import com.core.framework.base.DTO.BaseDTO;
+import com.core.framework.base.VO.BaseVO;
+import com.core.framework.base.model.BaseModel;
 
 
 /**
@@ -17,7 +16,7 @@ import com.bittrade.pojo.vo.TWalletVO;
  * @author jobob
  * @since 2019-07-05
  */
-public interface ITWalletService extends IDefaultTWalletService<TWallet, TWalletDTO, TWalletVO, ITWalletDAO> {
+public interface ITWalletService<Model extends BaseModel<Model>, DTO extends BaseDTO<DTO>, VO extends BaseVO<VO>, DAO extends IBaseDAO<Model, DTO, VO>> extends IDefaultTWalletService<Model, DTO, VO, DAO> {
 
     /**
      * 查询用户的币币账户

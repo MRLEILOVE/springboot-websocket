@@ -2,20 +2,19 @@ package com.bittrade.currency.service.impl;
 
 import org.springframework.stereotype.Service;
 
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.bittrade.api.service.IWWithdrawWalletBillService;
-import com.bittrade.currency.dao.WWithdrawWalletBillMapper;
+import com.bittrade.api.__default.service.impl.DefaultWWithdrawWalletBillServiceImpl;
+import com.bittrade.currency.dao.IWWithdrawWalletBillDAO;
+import com.bittrade.pojo.dto.WWithdrawWalletBillDTO;
+import com.bittrade.pojo.vo.WWithdrawWalletBillVO;
 import com.bittrade.pojo.model.WWithdrawWalletBill;
+import com.bittrade.api.service.IWWithdrawWalletBillService;
 
 /**
- * <p>
- * 提币钱包账单 服务实现类
- * </p>
+ * 
+ * @author Administrator
  *
- * @author jobob
- * @since 2019-07-04
  */
 @Service
-public class WWithdrawWalletBillServiceImpl extends ServiceImpl<WWithdrawWalletBillMapper, WWithdrawWalletBill> implements IWWithdrawWalletBillService {
-
+public class WWithdrawWalletBillServiceImpl extends DefaultWWithdrawWalletBillServiceImpl<IWWithdrawWalletBillDAO, WWithdrawWalletBill, WWithdrawWalletBillDTO, WWithdrawWalletBillVO> implements IWWithdrawWalletBillService<WWithdrawWalletBill, WWithdrawWalletBillDTO, WWithdrawWalletBillVO, IWWithdrawWalletBillDAO> {
+	
 }
