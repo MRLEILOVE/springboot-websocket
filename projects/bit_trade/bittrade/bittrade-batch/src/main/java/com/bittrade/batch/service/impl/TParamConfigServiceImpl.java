@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 
 import com.bittrade.api.__default.service.impl.DefaultTParamConfigServiceImpl;
 import com.bittrade.api.service.ITParamConfigService;
+import com.bittrade.batch.dao.ITParamConfigDAO;
 import com.bittrade.pojo.dto.TParamConfigDTO;
 import com.bittrade.pojo.model.TParamConfig;
 import com.bittrade.pojo.vo.TParamConfigVO;

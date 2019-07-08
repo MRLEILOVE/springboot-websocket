@@ -21,6 +21,8 @@ import com.alibaba.fastjson.JSONArray;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.bittrade.api.service.ITKlineService;
 import com.bittrade.api.service.ITParamConfigService;
+import com.bittrade.batch.dao.ITKlineDAO;
+import com.bittrade.batch.dao.ITParamConfigDAO;
 import com.bittrade.batch.enumer.ParamConfigEnum.ParamKeyEnum;
 import com.bittrade.batch.enumer.ParamConfigEnum.ParamValue;
 import com.bittrade.batch.general.ObtainParamConfigInfo;

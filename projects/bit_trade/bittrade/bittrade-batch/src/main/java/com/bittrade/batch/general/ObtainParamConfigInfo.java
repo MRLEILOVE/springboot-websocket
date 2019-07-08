@@ -2,6 +2,7 @@ package com.bittrade.batch.general;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.bittrade.api.service.ITParamConfigService;
+import com.bittrade.batch.dao.ITParamConfigDAO;
 import com.bittrade.batch.enumer.ParamConfigEnum.ParamStatus;
 import com.bittrade.pojo.dto.TParamConfigDTO;
 import com.bittrade.pojo.model.TParamConfig;
