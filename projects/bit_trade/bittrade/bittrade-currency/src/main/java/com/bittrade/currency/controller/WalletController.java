@@ -6,11 +6,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -26,22 +24,8 @@ import com.bittrade.currency.dao.ITWalletDAO;
 import com.bittrade.currency.dao.IWUserWalletBillDAO;
 import com.bittrade.currency.dao.IWUserWalletDAO;
 import com.bittrade.currency.dao.IWWithdrawWalletBillDAO;
-import com.bittrade.pojo.dto.TCurrencyDTO;
-import com.bittrade.pojo.dto.TWalletDTO;
-import com.bittrade.pojo.dto.WUserWalletBillDTO;
-import com.bittrade.pojo.dto.WUserWalletDTO;
-import com.bittrade.pojo.dto.WWithdrawWalletBillDTO;
-import com.bittrade.pojo.model.TCurrency;
-import com.bittrade.pojo.model.TWallet;
-import com.bittrade.pojo.model.WUserWallet;
 import com.bittrade.pojo.model.WUserWalletBill;
 import com.bittrade.pojo.model.WWithdrawWalletBill;
-import com.bittrade.pojo.vo.CoinAccountVO;
-import com.bittrade.pojo.vo.TCurrencyVO;
-import com.bittrade.pojo.vo.TWalletVO;
-import com.bittrade.pojo.vo.WUserWalletBillVO;
-import com.bittrade.pojo.vo.WUserWalletVO;
-import com.bittrade.pojo.vo.WWithdrawWalletBillVO;
 
 import io.swagger.annotations.ApiOperation;
 
@@ -142,13 +126,4 @@ public class WalletController {
         return records;
     }
 
-    /**
-     * 查询用户的币币账户
-     */
-    @ApiOperation(value="查询用户的币币账户", notes="查询用户的币币账户")
-    @GetMapping(value = "/queryCoinAccountByUserId/{userId}")
-    @ResponseBody
-    public CoinAccountVO queryCoinAccountByUserId(@PathVariable("userId")Integer userId){
-        return walletService.queryCoinAccountByUserId(userId);
-    }
 }
