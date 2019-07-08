@@ -2,6 +2,7 @@ package com.bittrade.currency.controller;
 
 import java.util.List;
 
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -36,39 +37,35 @@ public class TEntrustController extends BaseController<TEntrust, TEntrustDTO, TE
     @Autowired
     private ITTrustService trustService;
 
-    //    @ApiOperation(value = "查询用户当前委托")
+    @ApiOperation(value = "查询用户当前委托")
     @GetMapping(value = "/queryPresentEntrustByUserId/{userId}")
     @ResponseBody
     public List<TEntrustVO> queryPresentEntrustByUserId(@PathVariable("userId") String userId) {
         return trustService.queryPresentEntrustByUserId(userId);
     }
 
-    //    @ApiOperation(value = "查询用户历史委托")
+    @ApiOperation(value = "查询用户历史委托")
     @GetMapping(value = "/queryHistoryEntrustByUserId/{userId}")
     @ResponseBody
     public List<TEntrustVO> queryHistoryEntrustByUserId(@PathVariable("userId") String userId) {
         return trustService.queryHistoryEntrustByUserId(userId);
     }
 
-    //    @ApiOperation(value = "买/卖交易对")
+    @ApiOperation(value = "买/卖交易对")
     @PostMapping(value = "/deal")
     @ResponseBody
     public String queryDealEntrustByUserId(@RequestBody DealDTO dealDTO) {
         return trustService.deal(dealDTO);
     }
 
-    /**
-     * 查询用户的委托单成交明细
-     */
+    @ApiOperation(value = "查询用户的委托单成交明细")
     @RequestMapping(value = "/queryEntrustInfoByUserId/{userId}/{entrustId}",method = RequestMethod.GET)
     @ResponseBody
     public TEntrustInfoVO queryEntrustInfoByUserId(@PathVariable("userId") String userId, @PathVariable("entrustId") String entrustId) {
         return trustService.queryEntrustInfoByUserId(userId,entrustId);
     }
 
-    /**
-     * 用户撤单
-     */
+    @ApiOperation(value = "用户撤单")
     @RequestMapping(value = "/killOrder/{entrustId}",method = RequestMethod.GET)
     @ResponseBody
     public ReturnDTO killOrder(@PathVariable("entrustId") String entrustId) {

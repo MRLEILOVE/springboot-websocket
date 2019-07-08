@@ -2,6 +2,7 @@ package com.bittrade.currency.service.impl;
 
 import java.util.List;
 
+import com.bittrade.pojo.vo.UserWalletVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -68,5 +69,15 @@ public class TWalletServiceImpl extends DefaultTWalletServiceImpl<ITWalletDAO, T
             resultVO.setTotal(0.00);
         }
         return resultVO;
+    }
+
+    /**
+     * 查询用户钱包
+     * @param userId 用户id
+     * @param currencyTradeId 交易对id
+     */
+    @Override
+    public UserWalletVO queryUserWallet(Integer userId, Integer currencyTradeId) {
+        return walletDAO.queryUserWallet(userId,currencyTradeId);
     }
 }
