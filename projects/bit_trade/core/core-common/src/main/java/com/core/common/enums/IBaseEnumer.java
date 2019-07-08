@@ -6,13 +6,13 @@ package com.core.common.enums;
  * @datetime Jul 5, 2019 10:00:58 AM
  *
  */
-public interface IBaseEnumer {
+public interface IBaseEnumer<T> {
 
 	/**
 	 * 
 	 * @return
 	 */
-	public int getCode();
+	public T getCode();
 
 	/**
 	 * 

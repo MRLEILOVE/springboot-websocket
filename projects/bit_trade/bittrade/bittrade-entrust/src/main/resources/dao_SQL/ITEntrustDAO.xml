@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bittrade.currency.dao.ITEntrustDAO">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.bittrade.pojo.model.TEntrust">
+		<id javaType="int" property="id" jdbcType="INTEGER" column="id" />
+		<result javaType="long" property="userId" jdbcType="BIGINT" column="user_id" />
+		<result javaType="int" property="currencyTradeId" jdbcType="INTEGER" column="currency_trade_id" />
+		<result javaType="java.math.BigDecimal" property="price" jdbcType="DECIMAL" column="price" />
+		<result javaType="java.math.BigDecimal" property="amount" jdbcType="DECIMAL" column="amount" />
+		<result javaType="java.math.BigDecimal" property="successAmount" jdbcType="DECIMAL" column="success_amount" />
+		<result javaType="java.math.BigDecimal" property="count" jdbcType="DECIMAL" column="count" />
+		<result javaType="java.math.BigDecimal" property="leftCount" jdbcType="DECIMAL" column="left_count" />
+		<result javaType="java.math.BigDecimal" property="fees" jdbcType="DECIMAL" column="fees" />
+		<result javaType="java.math.BigDecimal" property="leftFees" jdbcType="DECIMAL" column="left_fees" />
+		<result javaType="int" property="status" jdbcType="INTEGER" column="status" />
+		<result javaType="int" property="entrustType" jdbcType="INTEGER" column="entrust_type" />
+		<result javaType="int" property="entrustDirection" jdbcType="INTEGER" column="entrust_direction" />
+		<result javaType="int" property="version" jdbcType="INTEGER" column="version" />
+		<result javaType="java.util.Date" property="createTime" jdbcType="TIMESTAMP" column="create_time" />
+		<result javaType="java.util.Date" property="updateTime" jdbcType="TIMESTAMP" column="update_time" />
+	</resultMap>
+
+	<!-- 通用查询结果列 -->
+	<sql id="Base_Column_List">
+		`user_id` AS userId, 
+		`currency_trade_id` AS currencyTradeId, 
+		`price` AS price, 
+		`amount` AS amount, 
+		`success_amount` AS successAmount, 
+		`count` AS count, 
+		`left_count` AS leftCount, 
+		`fees` AS fees, 
+		`left_fees` AS leftFees, 
+		`status` AS status, 
+		`entrust_type` AS entrustType, 
+		`entrust_direction` AS entrustDirection, 
+		`version` AS version, 
+		`create_time` AS createTime, 
+		`update_time` AS updateTime
+	</sql>
+	
+	<update id="updateOnMatch">
+		UPDATE t_entrust
+		SET 
+			successAmount = #{successAmount}, 
+			leftCount = #{leftCount}, 
+			status = #{status}
+		WHERE id = #{ID}
+	</update>
+
+</mapper>

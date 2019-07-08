@@ -1,6 +1,7 @@
 package com.bittrade.pojo.model;
 
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.core.framework.base.interfaces.ICreateTime;
 import com.core.framework.base.model.BaseModel;
 
 import lombok.Data;
@@ -15,7 +16,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @TableName(value="t_entrust_record")
-public class TEntrustRecord extends BaseModel<TEntrustRecord> {
+public class TEntrustRecord extends BaseModel<TEntrustRecord> implements ICreateTime {
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -90,7 +91,7 @@ public class TEntrustRecord extends BaseModel<TEntrustRecord> {
 		/**
 		 * 交易类型:0-买，1-卖
 		 */
-		public static final String ENTRUST_TYPE = "entrust_type";
+		public static final String ENTRUST_DIRECTION = "entrust_direction";
 		
 		/**
 		 * 版本号，每更新一次数据加1
@@ -167,7 +168,7 @@ public class TEntrustRecord extends BaseModel<TEntrustRecord> {
 	/**
 	 * 交易类型:0-买，1-卖
 	 */
-	private int entrustType;
+	private int entrustDirection;
 	
 	/**
 	 * 版本号，每更新一次数据加1

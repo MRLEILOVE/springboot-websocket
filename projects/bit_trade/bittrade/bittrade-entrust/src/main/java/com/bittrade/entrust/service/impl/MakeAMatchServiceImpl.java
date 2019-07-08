@@ -18,11 +18,14 @@ import com.bittrade.api.service.ITEntrustService;
 import com.bittrade.common.constant.ICompareResultConstant;
 import com.bittrade.common.constant.IConstant;
 import com.bittrade.common.enums.EntrustDirectionEnumer;
+import com.bittrade.common.enums.EntrustStatusEnumer;
 import com.bittrade.common.enums.EntrustTypeEnumer;
+import com.bittrade.common.enums.IsActiveEnumer;
 import com.bittrade.entrust.dao.ITEntrustDAO;
 import com.bittrade.entrust.dao.ITEntrustRecordDAO;
 import com.bittrade.entrust.service.IMakeAMatchService;
 import com.bittrade.pojo.model.TEntrust;
+import com.bittrade.pojo.model.TEntrustRecord;
 import com.core.tool.SnowFlake;
 
 public class MakeAMatchServiceImpl implements IMakeAMatchService {
@@ -128,7 +131,57 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 				TEntrust entrust_market = list_market.get(i);
 				
 				LINE_PRICE.abs();
-//				entrust.getCount
+				int i_compareTo = entrust.getCount().compareTo(entrust_market.getCount());
+				if (i_compareTo == 1) {
+					BigDecimal successAmount;
+					BigDecimal leftCount;
+					int status;
+					
+//					entrustService.updateOnMatch(
+//							successAmount, 
+//							entrust.getCount().subtract(entrust_market.getCount()), 
+//							EntrustStatusEnumer.PART_FINISH.getCode(), 
+//							entrust.getId()
+//							);
+//					entrustService.updateOnMatch(
+//							successAmount, 
+//							new BigDecimal(0), 
+//							EntrustStatusEnumer.FINISH.getCode(), 
+//							entrust_market.getId()
+//							);
+					
+					TEntrustRecord entrustRecord_buy = new TEntrustRecord();
+					entrustRecord_buy.setId(SNOW_FLAKE.nextId());
+					entrustRecord_buy.setUserId(entrust.getUserId());
+					entrustRecord_buy.setRivalUserId(entrust_market.getUserId());
+					entrustRecord_buy.setEntrustId(entrust.getId());
+					entrustRecord_buy.setRivalEntrustId(entrust_market.getId());
+					entrustRecord_buy.setPrice(LINE_PRICE);
+					entrustRecord_buy.setCount(entrust_market.getCount());
+					entrustRecord_buy.setAmount(LINE_PRICE.multiply(entrust_market.getCount()));
+					entrustRecord_buy.setCurrencyTradeId(entrust.getCurrencyTradeId());
+					entrustRecord_buy.setIsActive(IsActiveEnumer.UNACTIVE.getCode());
+					entrustRecord_buy.setEntrustDirection(EntrustDirectionEnumer.BUY.getCode());
+					entrustRecord_buy.setVersion(0);
+					entrustRecordService.add(entrustRecord_buy);
+					
+					TEntrustRecord entrustRecord_sell = new TEntrustRecord();
+					entrustRecord_sell.setId(SNOW_FLAKE.nextId());
+					entrustRecord_sell.setUserId(entrust_market.getUserId());
+					entrustRecord_sell.setRivalUserId(entrust.getUserId());
+					entrustRecord_sell.setEntrustId(entrust_market.getId());
+					entrustRecord_sell.setRivalEntrustId(entrust.getId());
+					entrustRecord_sell.setPrice(LINE_PRICE);
+					entrustRecord_sell.setCount(entrust_market.getCount());
+					entrustRecord_sell.setAmount(LINE_PRICE.multiply(entrust_market.getCount()));
+					entrustRecord_sell.setCurrencyTradeId(entrust_market.getCurrencyTradeId());
+					entrustRecord_sell.setIsActive(IsActiveEnumer.ACTIVE.getCode());
+					entrustRecord_sell.setEntrustDirection(EntrustDirectionEnumer.SELL.getCode());
+					entrustRecord_sell.setVersion(0);
+					entrustRecordService.add(entrustRecord_sell);
+				} else if (i_compareTo == 0) {
+					
+				}
 			}
 		}
 		if (list_limit.size() > 0) {
@@ -155,7 +208,7 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 	
 	public void makeAMatch(TEntrust entrust) {
 		entrust.setId(SNOW_FLAKE.nextId());
-		entrust.setCreateTime(new Date());
+		entrust.setStatus(EntrustStatusEnumer.UNFINISH.getCode());
 		entrustService.add(entrust);
 		if (entrust.getEntrustDirection() == EntrustDirectionEnumer.BUY.getCode()) {
 			int i_idx;
@@ -181,26 +234,36 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 		System.out.println("buy ---------------------------------------------");
 		for (int i = 0, len = LIST_BUY_MARKET.size(); i < len; i++) {
 			TEntrust e = LIST_BUY_MARKET.get(i);
-			System.out.println(e.getPrice() + ", " + e.getCount() + ", " + e.getEntrustDirection() + ", " + e.getEntrustType());
+			System.out.println(e.getUserId() + ", " + e.getCurrencyTradeId() + ", " + e.getEntrustDirection() + ", " + e.getEntrustType() + ", " + e.getPrice() + ", " + e.getCount());
 		}
 		for (int i = 0, len = LIST_BUY_LIMIT.size(); i < len; i++) {
 			TEntrust e = LIST_BUY_LIMIT.get(i);
-			System.out.println(e.getPrice() + ", " + e.getCount() + ", " + e.getEntrustDirection() + ", " + e.getEntrustType());
+			System.out.println(e.getUserId() + ", " + e.getCurrencyTradeId() + ", " + e.getEntrustDirection() + ", " + e.getEntrustType() + ", " + e.getPrice() + ", " + e.getCount());
 		}
 		System.out.println("sell ---------------------------------------------");
 		for (int i = 0, len = LIST_SELL_MARKET.size(); i < len; i++) {
 			TEntrust e = LIST_SELL_MARKET.get(i);
-			System.out.println(e.getPrice() + ", " + e.getCount() + ", " + e.getEntrustDirection() + ", " + e.getEntrustType());
+			System.out.println(e.getUserId() + ", " + e.getCurrencyTradeId() + ", " + e.getEntrustDirection() + ", " + e.getEntrustType() + ", " + e.getPrice() + ", " + e.getCount());
 		}
 		for (int i = 0, len = LIST_SELL_LIMIT.size(); i < len; i++) {
 			TEntrust e = LIST_SELL_LIMIT.get(i);
-			System.out.println(e.getPrice() + ", " + e.getCount() + ", " + e.getEntrustDirection() + ", " + e.getEntrustType());
+			System.out.println(e.getUserId() + ", " + e.getCurrencyTradeId() + ", " + e.getEntrustDirection() + ", " + e.getEntrustType() + ", " + e.getPrice() + ", " + e.getCount());
 		}
 	}
 	
 	private static final class Tester {
 		
 		private static final Random R = new Random(System.currentTimeMillis());
+		
+		private static long getUserID() {
+			Random r = new Random(R.nextLong());
+			return r.nextInt(1000);
+		}
+		
+		private static int getCurrencyTradeID() {
+			Random r = new Random(R.nextLong());
+			return r.nextInt(100);
+		}
 		
 		private static int getEntrustDirection() {
 			Random r = new Random(R.nextLong());
@@ -223,7 +286,7 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 		}
 		
 		private static void test() {
-			final int CNT = 50;
+			final int CNT = 5; // 50
 			
 			ExecutorService es = Executors.newFixedThreadPool(CNT);
 			CountDownLatch cdl = new CountDownLatch(CNT);
@@ -234,6 +297,8 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 					@Override
 					public String call() throws Exception {
 						TEntrust entrust = new TEntrust();
+						entrust.setUserId(getUserID());
+						entrust.setCurrencyTradeId(getCurrencyTradeID());
 						entrust.setEntrustDirection(getEntrustDirection());
 						entrust.setEntrustType(getEntrustType());
 						if (entrust.getEntrustType() == EntrustTypeEnumer.LIMIT.getCode()) {

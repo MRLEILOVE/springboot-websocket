@@ -8,7 +8,7 @@ import com.core.common.enums.IBaseEnumer;
  * @datetime Jul 5, 2019 10:08:35 AM
  *
  */
-public enum EntrustDirectionEnumer implements IBaseEnumer {
+public enum EntrustDirectionEnumer implements IBaseEnumer<Integer> {
 	
 	/**
 	 * 买入
@@ -30,7 +30,7 @@ public enum EntrustDirectionEnumer implements IBaseEnumer {
 	}
 
 	@Override
-	public int getCode() {
+	public Integer getCode() {
 		return code;
 	}
 

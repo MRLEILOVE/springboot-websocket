@@ -1,13 +1,13 @@
 package com.bittrade.entrust.service.impl;
 
+import java.math.BigDecimal;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.bittrade.api.__default.service.impl.DefaultTEntrustServiceImpl;
 import com.bittrade.api.service.ITEntrustService;
+import com.bittrade.api.service.abs.AbstractTEntrustServiceImpl;
 import com.bittrade.entrust.dao.ITEntrustDAO;
-import com.bittrade.pojo.dto.TEntrustDTO;
-import com.bittrade.pojo.model.TEntrust;
-import com.bittrade.pojo.vo.TEntrustVO;
 
 /**
  * 
@@ -15,6 +15,14 @@ import com.bittrade.pojo.vo.TEntrustVO;
  *
  */
 @Service
-public class TEntrustServiceImpl extends DefaultTEntrustServiceImpl<ITEntrustDAO, TEntrust, TEntrustDTO, TEntrustVO> implements ITEntrustService<ITEntrustDAO> {
+public class TEntrustServiceImpl extends AbstractTEntrustServiceImpl<ITEntrustDAO> implements ITEntrustService<ITEntrustDAO> {
+
+	@Autowired
+	private ITEntrustDAO entrustDAO;
+	
+	@Override
+	public void updateOnMatch(BigDecimal successAmount, BigDecimal leftCount, int status, long ID) {
+		entrustDAO.updateOnMatch(successAmount, leftCount, status, ID);
+	}
 	
 }

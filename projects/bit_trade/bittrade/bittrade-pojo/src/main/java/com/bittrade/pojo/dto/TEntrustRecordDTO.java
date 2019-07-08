@@ -28,7 +28,7 @@ public class TEntrustRecordDTO extends BaseDTO<TEntrustRecordDTO> {
 	private java.math.BigDecimal fees;
 	private int currencyTradeId;
 	private byte isActive;
-	private int entrustType;
+	private int entrustDirection;
 	private int version;
 	private java.util.Date createTime;
 

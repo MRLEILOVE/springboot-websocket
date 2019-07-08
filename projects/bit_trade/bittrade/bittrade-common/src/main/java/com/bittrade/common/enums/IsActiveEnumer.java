@@ -3,38 +3,36 @@ package com.bittrade.common.enums;
 import com.core.common.enums.IBaseEnumer;
 
 /**
- * 委托类型:0市价交易,1限价交易
+ * 是否主动:1-主买主卖，0-被买被卖
  * @author Administrator
  * @datetime Jul 5, 2019 10:08:12 AM
  *
  */
-public enum EntrustTypeEnumer implements IBaseEnumer<Integer> {
+public enum IsActiveEnumer implements IBaseEnumer<Byte> {
 	
 	/**
-	 * 市价交易
+	 * 被买被卖
 	 */
-	MARKET(0, "市价交易"), 
+	UNACTIVE((byte) 0, "被买被卖"), 
 	
 	/**
-	 * 限价交易
+	 * 主买主卖
 	 */
-	LIMIT(1, "限价交易"), 
+	ACTIVE((byte) 1, "主买主卖"), 
 	;
 	
-	private int code;
+	private byte code;
 	private String name;
 	
-	EntrustTypeEnumer(int code, String name) {
+	IsActiveEnumer(byte code, String name) {
 		this.code = code;
 		this.name = name;
 	}
 
-	@Override
-	public Integer getCode() {
+	public Byte getCode() {
 		return code;
 	}
 
-	@Override
 	public String getName() {
 		return name;
 	}

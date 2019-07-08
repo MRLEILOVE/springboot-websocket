@@ -2,12 +2,9 @@ package com.bittrade.currency.service.impl;
 
 import org.springframework.stereotype.Service;
 
-import com.bittrade.api.__default.service.impl.DefaultTEntrustServiceImpl;
-import com.bittrade.currency.dao.ITEntrustDAO;
-import com.bittrade.pojo.dto.TEntrustDTO;
-import com.bittrade.pojo.vo.TEntrustVO;
-import com.bittrade.pojo.model.TEntrust;
 import com.bittrade.api.service.ITEntrustService;
+import com.bittrade.api.service.abs.AbstractTEntrustServiceImpl;
+import com.bittrade.currency.dao.ITEntrustDAO;
 
 /**
  * 
@@ -15,6 +12,6 @@ import com.bittrade.api.service.ITEntrustService;
  *
  */
 @Service
-public class TEntrustServiceImpl extends DefaultTEntrustServiceImpl<ITEntrustDAO, TEntrust, TEntrustDTO, TEntrustVO> implements ITEntrustService<ITEntrustDAO> {
+public class TEntrustServiceImpl extends AbstractTEntrustServiceImpl<ITEntrustDAO> implements ITEntrustService<ITEntrustDAO> {
 	
 }

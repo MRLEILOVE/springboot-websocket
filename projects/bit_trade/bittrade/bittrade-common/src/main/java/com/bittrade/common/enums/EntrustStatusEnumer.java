@@ -3,28 +3,38 @@ package com.bittrade.common.enums;
 import com.core.common.enums.IBaseEnumer;
 
 /**
- * 委托类型:0市价交易,1限价交易
+ * 状态:1未完成,2部分成交,3完全成交,4用户撤销
  * @author Administrator
  * @datetime Jul 5, 2019 10:08:12 AM
  *
  */
-public enum EntrustTypeEnumer implements IBaseEnumer<Integer> {
+public enum EntrustStatusEnumer implements IBaseEnumer<Integer> {
 	
 	/**
-	 * 市价交易
+	 * 未完成
 	 */
-	MARKET(0, "市价交易"), 
+	UNFINISH(1, "未完成"), 
 	
 	/**
-	 * 限价交易
+	 * 部分成交
 	 */
-	LIMIT(1, "限价交易"), 
+	PART_FINISH(2, "部分成交"), 
+	
+	/**
+	 * 完全成交
+	 */
+	FINISH(3, "完全成交"), 
+	
+	/**
+	 * 用户撤销
+	 */
+	CANCEL(4, "用户撤销"), 
 	;
 	
 	private int code;
 	private String name;
 	
-	EntrustTypeEnumer(int code, String name) {
+	EntrustStatusEnumer(int code, String name) {
 		this.code = code;
 		this.name = name;
 	}
