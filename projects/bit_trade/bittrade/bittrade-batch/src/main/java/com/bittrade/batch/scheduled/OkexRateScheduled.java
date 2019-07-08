@@ -35,7 +35,7 @@ public class OkexRateScheduled {
 	@Autowired
 	private JedisCluster			jedisCluster;
 
-	@Scheduled(cron = "0 0 0/2 * * ?") // 两个小时执行一次
+	//@Scheduled(cron = "0 0 0/2 * * ?") // 两个小时执行一次
 	public void rate() {
 		try {
 			LOG.info( "获取okex法币汇率开始" );

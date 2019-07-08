@@ -10,7 +10,7 @@
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>2.0.7.RELEASE</version>
 		<!-- <version>2.0.5.RELEASE</version> -->
-		<relativePath /> <!-- lookup parent from repository -->
+		<!-- <relativePath /> --> <!-- lookup parent from repository -->
 	</parent>
 
 	<groupId>com.bittrade</groupId>
@@ -34,6 +34,11 @@
 
 	<dependencyManagement>
 		<dependencies>
+			<dependency>
+				<groupId>org.apache.commons</groupId>
+				<artifactId>commons-compress</artifactId>
+				<version>1.18</version>
+			</dependency>
 			<!--fastjson begin -->
 			<dependency>
 				<groupId>com.alibaba</groupId>

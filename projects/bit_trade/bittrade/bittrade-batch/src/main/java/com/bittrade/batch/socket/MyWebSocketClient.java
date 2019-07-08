@@ -111,7 +111,7 @@ public class MyWebSocketClient extends WebSocketClient {
 		return "";
 	}
 
-	@PostConstruct
+	//@PostConstruct
 	public void init() {
 		try {
 			LOG.info( "************WebSockeClientHandler客户端开始连接************" );
