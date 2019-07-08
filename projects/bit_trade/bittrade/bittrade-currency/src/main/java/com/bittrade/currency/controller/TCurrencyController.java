@@ -2,6 +2,7 @@ package com.bittrade.currency.controller;
 
 import java.util.List;
 
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -28,12 +29,10 @@ public class TCurrencyController extends BaseController<TCurrency, TCurrencyDTO,
     @Autowired
     private ITCurrencyService<ITCurrencyDAO> tCurrencyService;
 
-    /**
-     * 查找所有法币
-     */
+    @ApiOperation(value = "查找所有法币")
     @RequestMapping(value = "/findAllLegalCurrency",method = RequestMethod.GET)
     @ResponseBody
-    public List<TCurrencyVO> findAllLegalCurrency() {
+    public List<TCurrency> findAllLegalCurrency() {
         return tCurrencyService.findAllLegalCurrency();
     }
 }

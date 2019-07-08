@@ -2,6 +2,7 @@ package com.bittrade.currency.controller;
 
 import java.util.List;
 
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -31,14 +32,14 @@ public class TEntrustRecordController extends BaseController<TEntrustRecord, TEn
     @Autowired
     private ITDealService dealService;
 
-    //    @ApiOperation(value = "查询用户成交记录")
+    @ApiOperation(value = "查询用户成交记录")
     @GetMapping(value = "/queryDealEntrustByUserId/{userId}")
     @ResponseBody
     public List<TEntrustRecordVO> queryDealEntrustByUserId(@PathVariable("userId") String userId) {
         return dealService.queryDealEntrustByUserId(userId);
     }
 
-    //    @ApiOperation(value = "实时成交")
+    @ApiOperation(value = "实时成交")
     @GetMapping(value = "/realTimeTransaction/{currencyTradeId}")
     @ResponseBody
     public List<TRealTimeTransactionVO> realTimeTransaction(@PathVariable("currencyTradeId") String currencyTradeId) {

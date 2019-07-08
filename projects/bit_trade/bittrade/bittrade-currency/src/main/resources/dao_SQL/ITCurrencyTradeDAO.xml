@@ -42,9 +42,10 @@
 	</sql>
 
 	<!-- 根据法币id查找交易对	-->
-	<select id="findTradeByCurrencyId" resultType="com.bittrade.pojo.vo.TransactionPairVO" parameterType="java.lang.String">
+	<select id="findTradeByCurrencyId2" resultType="com.bittrade.pojo.vo.TransactionPairVO" parameterType="java.lang.String">
 		SELECT t.id,t.symbol,t.currency_id1 as  currencyId1,t.currency_id2 as currencyId2
 		FROM t_currency_trade t
 		WHERE t.`status` = 1
+		AND t.currency_id2 = #{currencyId2}
 	</select>
 </mapper>

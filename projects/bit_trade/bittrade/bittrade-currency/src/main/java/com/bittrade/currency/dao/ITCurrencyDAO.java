@@ -11,8 +11,4 @@ import java.util.List;
  *
  */
 public interface ITCurrencyDAO extends IDefaultTCurrencyDAO {
-    /**
-     * 查找所有法币
-     */
-    List<TCurrencyVO> findAllLegalCurrency();
 }

@@ -12,7 +12,6 @@ import java.util.List;
  * @author Administrator
  *
  */
-@Repository
 public interface ITKlineDAO extends IDefaultTKlineDAO {
 
     /**
