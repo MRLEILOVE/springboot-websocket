@@ -5,7 +5,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.context.annotation.ComponentScan;
 
 //@EnableAutoConfiguration(exclude = { DataSourceAutoConfiguration.class })
-@MapperScan(value = { "com.**.api.__default.DAO", "com.**.dao" })
+@MapperScan(value = {
+		//"com.**.api.__default.DAO", 
+		"com.**.dao"
+		})
 @ComponentScan(basePackages = { "com.core.framework.props", "com.core.framework.config" })
 public abstract class BaseApplication {
 
