@@ -64,8 +64,6 @@ public class WalletController {
     private IWUserWalletService<WUserWallet, WUserWalletDTO, WUserWalletVO, IWUserWalletDAO> userWalletService;
     @Autowired
     private ITCurrencyService<TCurrency, TCurrencyDTO, TCurrencyVO, ITCurrencyDAO> currencyService;
-    @Autowired
-    private ITWalletService<TWallet, TWalletDTO, TWalletVO, ITWalletDAO> walletService;
 
 
   /*  @PostMapping("coinSelect")
@@ -142,13 +140,4 @@ public class WalletController {
         return records;
     }
 
-    /**
-     * 查询用户的币币账户
-     */
-    @ApiOperation(value="查询用户的币币账户", notes="查询用户的币币账户")
-    @GetMapping(value = "/queryCoinAccountByUserId/{userId}")
-    @ResponseBody
-    public CoinAccountVO queryCoinAccountByUserId(@PathVariable("userId")Integer userId){
-        return walletService.queryCoinAccountByUserId(userId);
-    }
 }
