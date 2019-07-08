@@ -43,6 +43,11 @@ public class TWalletRecord extends BaseModel<TWalletRecord> {
 		public static final String CURRENCY_ID = "currency_id";
 		
 		/**
+		 * 
+		 */
+		public static final String TOKEN = "token";
+		
+		/**
 		 * 成交前金额
 		 */
 		public static final String BEFORE_AMOUNT = "before_amount";
@@ -93,6 +98,11 @@ public class TWalletRecord extends BaseModel<TWalletRecord> {
 	 * 货币id(t_currency.id)
 	 */
 	private int currencyId;
+	
+	/**
+	 * 
+	 */
+	private String token;
 	
 	/**
 	 * 成交前金额

@@ -29,12 +29,7 @@ import com.bittrade.batch.general.ObtainParamConfigInfo;
 import com.bittrade.common.constant.IConstant;
 import com.bittrade.common.utils.HttpClientResult;
 import com.bittrade.common.utils.HttpClientUtils;
-import com.bittrade.pojo.dto.TKlineDTO;
-import com.bittrade.pojo.dto.TParamConfigDTO;
 import com.bittrade.pojo.model.TKline;
-import com.bittrade.pojo.model.TParamConfig;
-import com.bittrade.pojo.vo.TKlineVO;
-import com.bittrade.pojo.vo.TParamConfigVO;
 
 /**
  * 获取okex法币汇率
@@ -48,10 +43,10 @@ public class OkexKlineScheduled {
 	private static final Logger		LOG					= LoggerFactory.getLogger( OkexKlineScheduled.class );
 
 	@Autowired
-	private ITKlineService<TKline, TKlineDTO, TKlineVO, ITKlineDAO>			klineService;
+	private ITKlineService<ITKlineDAO>			klineService;
 
 	@Autowired
-	private ITParamConfigService<TParamConfig, TParamConfigDTO, TParamConfigVO, ITParamConfigDAO>	paramConfigService;
+	private ITParamConfigService<ITParamConfigDAO>	paramConfigService;
 
 	// 创建一个可缓存线程池，如果线程池长度超过处理需要，可灵活回收空闲线程，若无可回收，则新建线程。
 	private ExecutorService			cachedThreadPool	= Executors.newCachedThreadPool();

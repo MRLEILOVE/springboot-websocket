@@ -15,6 +15,6 @@ import com.bittrade.api.service.IWConfigWalletService;
  *
  */
 @Service
-public class WConfigWalletServiceImpl extends DefaultWConfigWalletServiceImpl<IWConfigWalletDAO, WConfigWallet, WConfigWalletDTO, WConfigWalletVO> implements IWConfigWalletService<WConfigWallet, WConfigWalletDTO, WConfigWalletVO, IWConfigWalletDAO> {
+public class WConfigWalletServiceImpl extends DefaultWConfigWalletServiceImpl<IWConfigWalletDAO, WConfigWallet, WConfigWalletDTO, WConfigWalletVO> implements IWConfigWalletService<IWConfigWalletDAO> {
 	
 }

@@ -15,6 +15,6 @@ import com.bittrade.api.service.ITUserCapitalAccountRecordService;
  *
  */
 @Service
-public class TUserCapitalAccountRecordServiceImpl extends DefaultTUserCapitalAccountRecordServiceImpl<ITUserCapitalAccountRecordDAO, TUserCapitalAccountRecord, TUserCapitalAccountRecordDTO, TUserCapitalAccountRecordVO> implements ITUserCapitalAccountRecordService<TUserCapitalAccountRecord, TUserCapitalAccountRecordDTO, TUserCapitalAccountRecordVO, ITUserCapitalAccountRecordDAO> {
+public class TUserCapitalAccountRecordServiceImpl extends DefaultTUserCapitalAccountRecordServiceImpl<ITUserCapitalAccountRecordDAO, TUserCapitalAccountRecord, TUserCapitalAccountRecordDTO, TUserCapitalAccountRecordVO> implements ITUserCapitalAccountRecordService<ITUserCapitalAccountRecordDAO> {
 	
 }

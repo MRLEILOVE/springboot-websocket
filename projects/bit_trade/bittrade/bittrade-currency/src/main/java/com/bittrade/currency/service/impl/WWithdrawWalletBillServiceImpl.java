@@ -15,6 +15,6 @@ import com.bittrade.api.service.IWWithdrawWalletBillService;
  *
  */
 @Service
-public class WWithdrawWalletBillServiceImpl extends DefaultWWithdrawWalletBillServiceImpl<IWWithdrawWalletBillDAO, WWithdrawWalletBill, WWithdrawWalletBillDTO, WWithdrawWalletBillVO> implements IWWithdrawWalletBillService<WWithdrawWalletBill, WWithdrawWalletBillDTO, WWithdrawWalletBillVO, IWWithdrawWalletBillDAO> {
+public class WWithdrawWalletBillServiceImpl extends DefaultWWithdrawWalletBillServiceImpl<IWWithdrawWalletBillDAO, WWithdrawWalletBill, WWithdrawWalletBillDTO, WWithdrawWalletBillVO> implements IWWithdrawWalletBillService<IWWithdrawWalletBillDAO> {
 	
 }

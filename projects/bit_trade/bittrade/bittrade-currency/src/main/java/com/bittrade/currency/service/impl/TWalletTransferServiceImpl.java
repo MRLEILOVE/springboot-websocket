@@ -15,6 +15,6 @@ import com.bittrade.api.service.ITWalletTransferService;
  *
  */
 @Service
-public class TWalletTransferServiceImpl extends DefaultTWalletTransferServiceImpl<ITWalletTransferDAO, TWalletTransfer, TWalletTransferDTO, TWalletTransferVO> implements ITWalletTransferService<TWalletTransfer, TWalletTransferDTO, TWalletTransferVO, ITWalletTransferDAO> {
+public class TWalletTransferServiceImpl extends DefaultTWalletTransferServiceImpl<ITWalletTransferDAO, TWalletTransfer, TWalletTransferDTO, TWalletTransferVO> implements ITWalletTransferService<ITWalletTransferDAO> {
 	
 }

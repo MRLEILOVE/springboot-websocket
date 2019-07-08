@@ -21,7 +21,7 @@ import com.bittrade.pojo.vo.TransactionPairVO;
 @Service
 public class TCurrencyTradeServiceImpl extends
 		DefaultTCurrencyTradeServiceImpl<ITCurrencyTradeDAO, TCurrencyTrade, TCurrencyTradeDTO, TCurrencyTradeVO>
-		implements ITCurrencyTradeService<TCurrencyTrade, TCurrencyTradeDTO, TCurrencyTradeVO, ITCurrencyTradeDAO> {
+		implements ITCurrencyTradeService<ITCurrencyTradeDAO> {
 
 	@Autowired
 	private ITCurrencyTradeDAO tCurrencyTradeDAO;

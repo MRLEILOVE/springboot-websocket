@@ -14,7 +14,8 @@ public class ParamConfigEnum {
 		OKEX_KLINE_URL_KEY("okexKlineUrlKey", "okex-K线地址"), //
 		OKEX_SYMBOL_KLINE_HISTORY_DATA_KEY("okexSymbolKlineHistoryDataKey", "拉取指定okex交易对历史数据"), //
 		OKEX_GRANULARITYS_KEY("okexGranularitysKey", "公共-获取K线数据"), //
-		OKEX_WEB_SOCKET_URL_KEY("okexWebsocketUrlKey", "okex-WebSocket地址"),//
+		OKEX_WEB_SOCKET_URL_KEY("okexWebsocketUrlKey", "okex-WebSocket地址"), //
+		OKEX_TICKER_HTTP_URL_KEY("okexTickerHttpUrlKey", "okex-Ticker地址"),//
 		;
 
 		private String	key;	// 参数键

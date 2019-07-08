@@ -26,7 +26,7 @@ import redis.clients.jedis.JedisCluster;
  * @since 2019-07-05
  */
 @Service
-public class TWalletServiceImpl extends DefaultTWalletServiceImpl<ITWalletDAO, TWallet, TWalletDTO, TWalletVO> implements ITWalletService<TWallet, TWalletDTO, TWalletVO, ITWalletDAO> {
+public class TWalletServiceImpl extends DefaultTWalletServiceImpl<ITWalletDAO, TWallet, TWalletDTO, TWalletVO> implements ITWalletService<ITWalletDAO> {
     @Autowired
     private ITWalletDAO walletDAO;
     @Autowired

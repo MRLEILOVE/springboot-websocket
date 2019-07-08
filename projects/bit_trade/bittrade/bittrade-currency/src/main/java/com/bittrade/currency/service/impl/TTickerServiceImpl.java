@@ -15,6 +15,6 @@ import com.bittrade.api.service.ITTickerService;
  *
  */
 @Service
-public class TTickerServiceImpl extends DefaultTTickerServiceImpl<ITTickerDAO, TTicker, TTickerDTO, TTickerVO> implements ITTickerService<TTicker, TTickerDTO, TTickerVO, ITTickerDAO> {
+public class TTickerServiceImpl extends DefaultTTickerServiceImpl<ITTickerDAO, TTicker, TTickerDTO, TTickerVO> implements ITTickerService<ITTickerDAO> {
 	
 }

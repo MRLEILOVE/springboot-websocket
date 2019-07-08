@@ -18,6 +18,8 @@ import com.bittrade.api.service.ITEntrustService;
 import com.bittrade.common.constant.IConstant;
 import com.bittrade.common.enums.EntrustDirectionEnumer;
 import com.bittrade.common.enums.EntrustTypeEnumer;
+import com.bittrade.entrust.dao.ITEntrustDAO;
+import com.bittrade.entrust.dao.ITEntrustRecordDAO;
 import com.bittrade.entrust.service.IMakeAMatchService;
 import com.bittrade.pojo.model.TEntrust;
 import com.core.tool.SnowFlake;
@@ -47,9 +49,9 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 	private static final SnowFlake SNOW_FLAKE = new SnowFlake(1, 1);
 	
 	@Autowired
-	private ITEntrustService entrustService;
+	private ITEntrustService<ITEntrustDAO> entrustService;
 	@Autowired
-	private ITEntrustRecordService entrustRecordService;
+	private ITEntrustRecordService<ITEntrustRecordDAO> entrustRecordService;
 	
 	/**
 	 * 行情价

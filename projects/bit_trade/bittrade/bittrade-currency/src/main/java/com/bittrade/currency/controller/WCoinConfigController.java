@@ -20,6 +20,6 @@ import com.core.framework.base.controller.BaseController;
 @Controller
 @ResponseBody
 @RequestMapping(value = { "/wCoinConfig" }, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-public class WCoinConfigController extends BaseController<WCoinConfig, WCoinConfigDTO, WCoinConfigVO, IWCoinConfigDAO, IWCoinConfigService<WCoinConfig, WCoinConfigDTO, WCoinConfigVO, IWCoinConfigDAO>> {
+public class WCoinConfigController extends BaseController<WCoinConfig, WCoinConfigDTO, WCoinConfigVO, IWCoinConfigDAO, IWCoinConfigService<IWCoinConfigDAO>> {
 	
 }

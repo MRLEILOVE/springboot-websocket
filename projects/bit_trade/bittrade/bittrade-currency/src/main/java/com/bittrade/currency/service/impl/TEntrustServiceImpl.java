@@ -15,6 +15,6 @@ import com.bittrade.api.service.ITEntrustService;
  *
  */
 @Service
-public class TEntrustServiceImpl extends DefaultTEntrustServiceImpl<ITEntrustDAO, TEntrust, TEntrustDTO, TEntrustVO> implements ITEntrustService<TEntrust, TEntrustDTO, TEntrustVO, ITEntrustDAO> {
+public class TEntrustServiceImpl extends DefaultTEntrustServiceImpl<ITEntrustDAO, TEntrust, TEntrustDTO, TEntrustVO> implements ITEntrustService<ITEntrustDAO> {
 	
 }

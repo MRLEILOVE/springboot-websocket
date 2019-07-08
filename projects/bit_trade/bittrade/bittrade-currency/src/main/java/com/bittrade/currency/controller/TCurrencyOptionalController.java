@@ -30,9 +30,9 @@ import io.swagger.annotations.ApiOperation;
 @Controller
 @ResponseBody
 @RequestMapping(value = { "/tCurrencyOptional" }, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-public class TCurrencyOptionalController extends BaseController<TCurrencyOptional, TCurrencyOptionalDTO, TCurrencyOptionalVO, ITCurrencyOptionalDAO, ITCurrencyOptionalService<TCurrencyOptional, TCurrencyOptionalDTO, TCurrencyOptionalVO, ITCurrencyOptionalDAO>> {
+public class TCurrencyOptionalController extends BaseController<TCurrencyOptional, TCurrencyOptionalDTO, TCurrencyOptionalVO, ITCurrencyOptionalDAO, ITCurrencyOptionalService<ITCurrencyOptionalDAO>> {
     @Autowired
-    private ITCurrencyOptionalService<TCurrencyOptional, TCurrencyOptionalDTO, TCurrencyOptionalVO, ITCurrencyOptionalDAO> currencyOptionalService;
+    private ITCurrencyOptionalService<ITCurrencyOptionalDAO> currencyOptionalService;
 
     @ApiOperation(value="查询用户自选的交易对",notes="传用户id")
     @RequestMapping(value="/findOptionalTradeByUserId/{userId}",method = RequestMethod.GET)

@@ -26,9 +26,9 @@ import com.core.framework.base.controller.BaseController;
 @Controller
 @ResponseBody
 @RequestMapping(value = { "/tCurrencyTrade" }, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-public class TCurrencyTradeController extends BaseController<TCurrencyTrade, TCurrencyTradeDTO, TCurrencyTradeVO, ITCurrencyTradeDAO, ITCurrencyTradeService<TCurrencyTrade, TCurrencyTradeDTO, TCurrencyTradeVO, ITCurrencyTradeDAO>> {
+public class TCurrencyTradeController extends BaseController<TCurrencyTrade, TCurrencyTradeDTO, TCurrencyTradeVO, ITCurrencyTradeDAO, ITCurrencyTradeService<ITCurrencyTradeDAO>> {
     @Autowired
-    private ITCurrencyTradeService<TCurrencyTrade, TCurrencyTradeDTO, TCurrencyTradeVO, ITCurrencyTradeDAO> tCurrencyTradeService;
+    private ITCurrencyTradeService<ITCurrencyTradeDAO> tCurrencyTradeService;
 
     /**
      * 根据法币id查找交易对

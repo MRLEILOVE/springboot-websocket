@@ -20,6 +20,6 @@ import com.core.framework.base.controller.BaseController;
 @Controller
 @ResponseBody
 @RequestMapping(value = { "/tCurrencyAddress" }, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-public class TCurrencyAddressController extends BaseController<TCurrencyAddress, TCurrencyAddressDTO, TCurrencyAddressVO, ITCurrencyAddressDAO, ITCurrencyAddressService<TCurrencyAddress, TCurrencyAddressDTO, TCurrencyAddressVO, ITCurrencyAddressDAO>> {
+public class TCurrencyAddressController extends BaseController<TCurrencyAddress, TCurrencyAddressDTO, TCurrencyAddressVO, ITCurrencyAddressDAO, ITCurrencyAddressService<ITCurrencyAddressDAO>> {
 	
 }

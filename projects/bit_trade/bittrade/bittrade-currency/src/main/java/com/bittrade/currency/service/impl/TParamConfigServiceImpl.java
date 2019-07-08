@@ -15,6 +15,6 @@ import com.bittrade.api.service.ITParamConfigService;
  *
  */
 @Service
-public class TParamConfigServiceImpl extends DefaultTParamConfigServiceImpl<ITParamConfigDAO, TParamConfig, TParamConfigDTO, TParamConfigVO> implements ITParamConfigService<TParamConfig, TParamConfigDTO, TParamConfigVO, ITParamConfigDAO> {
+public class TParamConfigServiceImpl extends DefaultTParamConfigServiceImpl<ITParamConfigDAO, TParamConfig, TParamConfigDTO, TParamConfigVO> implements ITParamConfigService<ITParamConfigDAO> {
 	
 }

@@ -15,6 +15,6 @@ import com.bittrade.api.service.ITWalletRecordService;
  *
  */
 @Service
-public class TWalletRecordServiceImpl extends DefaultTWalletRecordServiceImpl<ITWalletRecordDAO, TWalletRecord, TWalletRecordDTO, TWalletRecordVO> implements ITWalletRecordService<TWalletRecord, TWalletRecordDTO, TWalletRecordVO, ITWalletRecordDAO> {
+public class TWalletRecordServiceImpl extends DefaultTWalletRecordServiceImpl<ITWalletRecordDAO, TWalletRecord, TWalletRecordDTO, TWalletRecordVO> implements ITWalletRecordService<ITWalletRecordDAO> {
 	
 }

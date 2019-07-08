@@ -24,9 +24,9 @@ import com.core.framework.base.controller.BaseController;
 @Controller
 @ResponseBody
 @RequestMapping(value = { "/tCurrency" }, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-public class TCurrencyController extends BaseController<TCurrency, TCurrencyDTO, TCurrencyVO, ITCurrencyDAO, ITCurrencyService<TCurrency, TCurrencyDTO, TCurrencyVO, ITCurrencyDAO>> {
+public class TCurrencyController extends BaseController<TCurrency, TCurrencyDTO, TCurrencyVO, ITCurrencyDAO, ITCurrencyService<ITCurrencyDAO>> {
     @Autowired
-    private ITCurrencyService<TCurrency, TCurrencyDTO, TCurrencyVO, ITCurrencyDAO> tCurrencyService;
+    private ITCurrencyService<ITCurrencyDAO> tCurrencyService;
 
     /**
      * 查找所有法币

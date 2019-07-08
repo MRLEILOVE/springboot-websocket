@@ -20,6 +20,6 @@ import com.core.framework.base.controller.BaseController;
 @Controller
 @ResponseBody
 @RequestMapping(value = { "/wConfigWallet" }, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-public class WConfigWalletController extends BaseController<WConfigWallet, WConfigWalletDTO, WConfigWalletVO, IWConfigWalletDAO, IWConfigWalletService<WConfigWallet, WConfigWalletDTO, WConfigWalletVO, IWConfigWalletDAO>> {
+public class WConfigWalletController extends BaseController<WConfigWallet, WConfigWalletDTO, WConfigWalletVO, IWConfigWalletDAO, IWConfigWalletService<IWConfigWalletDAO>> {
 	
 }

@@ -26,9 +26,9 @@ import com.core.framework.base.controller.BaseController;
 @Controller
 @ResponseBody
 @RequestMapping(value = { "/tWallet" }, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-public class TWalletController extends BaseController<TWallet, TWalletDTO, TWalletVO, ITWalletDAO, ITWalletService<TWallet, TWalletDTO, TWalletVO, ITWalletDAO>> {
+public class TWalletController extends BaseController<TWallet, TWalletDTO, TWalletVO, ITWalletDAO, ITWalletService<ITWalletDAO>> {
     @Autowired
-    private ITWalletService<TWallet, TWalletDTO, TWalletVO, ITWalletDAO> walletService;
+    private ITWalletService<ITWalletDAO> walletService;
 
     @ApiOperation(value="查询用户的币币账户", notes="查询用户的币币账户")
     @GetMapping(value = "/queryCoinAccountByUserId/{userId}")

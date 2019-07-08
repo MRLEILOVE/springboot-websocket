@@ -15,6 +15,6 @@ import com.test.bittrade.svc.dao.ITUserDAO;
  *
  */
 @Service
-public class TUserServiceImpl extends DefaultTUserServiceImpl<TUser, TUserDTO, TUserVO, ITUserDAO> implements ITUserService<TUser, TUserDTO, TUserVO, ITUserDAO> {
+public class TUserServiceImpl extends DefaultTUserServiceImpl<TUser, TUserDTO, TUserVO, ITUserDAO> implements ITUserService<ITUserDAO> {
 	
 }
