@@ -1,8 +1,6 @@
 package com.bittrade.batch.scheduled;
 
 import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -13,7 +11,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.bittrade.api.service.ITParamConfigService;
 import com.bittrade.batch.enumer.ParamConfigEnum.ParamKeyEnum;
@@ -40,6 +37,9 @@ public class OkexSymbolTickerScheduled {
 	// 创建一个可缓存线程池，如果线程池长度超过处理需要，可灵活回收空闲线程，若无可回收，则新建线程。
 	private ExecutorService			cachedThreadPool	= Executors.newCachedThreadPool();
 
+	/**
+	 * 获取交易对ticker信息
+	 */
 	@Scheduled(cron = "0/1 * * * * ?")
 	public void symbolTicker() {
 		try {
