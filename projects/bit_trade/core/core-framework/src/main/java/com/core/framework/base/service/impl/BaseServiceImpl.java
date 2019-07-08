@@ -11,7 +11,8 @@ import com.core.framework.DTO.PageDTO;
 import com.core.framework.base.DAO.IBaseDAO;
 import com.core.framework.base.DTO.BaseDTO;
 import com.core.framework.base.VO.BaseVO;
-import com.core.framework.base.interfaces.ICreateAndModifyTime;
+import com.core.framework.base.interfaces.ICreateTime;
+import com.core.framework.base.interfaces.IModifyTime;
 import com.core.framework.base.model.BaseModel;
 import com.core.framework.base.service.IBaseService;
 
@@ -33,17 +34,16 @@ public abstract class BaseServiceImpl<Model extends BaseModel<Model>, DTO extend
 	protected DAO baseDAO; // super.baseMapper
 
 	private void setCreateTime/*AndModify*/(Model model) {
-		if (model instanceof ICreateAndModifyTime/* && model.getClass() == ICreateAndModifyTime.class*/) { // equals() ?
+		if (model instanceof ICreateTime/* && model.getClass() == ICreateAndModifyTime.class*/) { // equals() ?
 			Date now = new Date();
-			((ICreateAndModifyTime) model).setCreateTime(now);
-//			((ICreateAndModifyTime) model).setModifyTime(now);
+			((ICreateTime) model).setCreateTime(now);
 		}
 	}
 
 	private void setModifyTime(Model model) {
-		if (model instanceof ICreateAndModifyTime/* && model.getClass() == ICreateAndModifyTime.class*/) { // equals() ?
+		if (model instanceof IModifyTime/* && model.getClass() == ICreateAndModifyTime.class*/) { // equals() ?
 			Date now = new Date();
-			((ICreateAndModifyTime) model).setModifyTime(now);
+			((IModifyTime) model).setModifyTime(now);
 		}
 	}
 	

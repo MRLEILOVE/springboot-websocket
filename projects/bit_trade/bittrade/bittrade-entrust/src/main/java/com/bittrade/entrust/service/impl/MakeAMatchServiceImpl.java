@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.bittrade.api.service.ITEntrustRecordService;
 import com.bittrade.api.service.ITEntrustService;
+import com.bittrade.common.constant.ICompareResultConstant;
 import com.bittrade.common.constant.IConstant;
 import com.bittrade.common.enums.EntrustDirectionEnumer;
 import com.bittrade.common.enums.EntrustTypeEnumer;
@@ -117,33 +118,39 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 	
 	/**
 	 * 撮合
-	 * @param entrust
+	 * @param entrust 市价类型
 	 * @param list_market
 	 * @param list_limit
 	 */
-	private void matchSellWithBuy(TEntrust entrust, List<TEntrust> list_market, List<TEntrust> list_limit) {
+	private void matchSellWithBuyMarket(TEntrust entrust, List<TEntrust> list_market, List<TEntrust> list_limit) {
 		if (list_market.size() > 0) {
-			for (int i = list_market.size() - 1; i > -1; i--) {
-				TEntrust _entrust = list_market.get(i);
+			for (int i = list_market.size() - 1; i > -1; i--) { // 撮合市价
+				TEntrust entrust_market = list_market.get(i);
 				
+				LINE_PRICE.abs();
+//				entrust.getCount
+			}
+		}
+		if (list_limit.size() > 0) {
+			for (int i = list_limit.size() - 1; i > -1; i--) { // 撮合限价
+				TEntrust entrust_limit = list_limit.get(i);
 				
 			}
 		}
 	}
 	
-	private void addToBuy(int idx, TEntrust entrust, List<TEntrust> list) {
+	private void addToBuyMarket(int idx, TEntrust entrust, List<TEntrust> list) {
 		if (idx == list.size()) { // isFirst
-			if (LIST_SELL_MARKET.size() > 0 || LIST_SELL_LIMIT.size() > 0) { // 和对手盘（卖）进行撮合。
-				matchSellWithBuy(entrust, LIST_SELL_MARKET, LIST_SELL_LIMIT);
-//				if (entrust.getPrice()) {
-//					
-//				}
-			} else {
+			matchSellWithBuyMarket(entrust, LIST_SELL_MARKET, LIST_SELL_LIMIT); // 和对手盘（卖）进行撮合。
+			if (entrust.getCount().compareTo(BigDecimal.ZERO) == ICompareResultConstant.GREATER_THAN) { // 有剩余的则加入列表。
 				list.add(entrust);
 			}
 		} else {
 			list.add(idx, entrust);
 		}
+	}
+	
+	private void addToBuyLimit(int idx, TEntrust entrust, List<TEntrust> list) {
 	}
 	
 	public void makeAMatch(TEntrust entrust) {
@@ -155,10 +162,10 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 			LOCK_BUY.lock();
 			if (entrust.getEntrustType() == EntrustTypeEnumer.MARKET.getCode()) { // 市价
 				i_idx = findIndexFromMarket(entrust, LIST_BUY_MARKET);
-				addToBuy(i_idx, entrust, LIST_BUY_MARKET);
+				addToBuyMarket(i_idx, entrust, LIST_BUY_MARKET);
 			} else { // 限价
-				i_idx = findIndexFromLimit(entrust, LIST_BUY_LIMIT, -1);
-				addToBuy(i_idx, entrust, LIST_BUY_LIMIT);
+				i_idx = findIndexFromLimit(entrust, LIST_BUY_LIMIT, ICompareResultConstant.LESS_THAN);
+				addToBuyLimit(i_idx, entrust, LIST_BUY_LIMIT);
 			}
 			LOCK_BUY.unlock();
 		} else if (entrust.getEntrustDirection() == EntrustDirectionEnumer.SELL.getCode()) {
@@ -229,7 +236,9 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 						TEntrust entrust = new TEntrust();
 						entrust.setEntrustDirection(getEntrustDirection());
 						entrust.setEntrustType(getEntrustType());
-						entrust.setPrice(getPrice());
+						if (entrust.getEntrustType() == EntrustTypeEnumer.LIMIT.getCode()) {
+							entrust.setPrice(getPrice());
+						}
 						entrust.setCount(getCount());
 						makeAMatch.makeAMatch(entrust);
 						

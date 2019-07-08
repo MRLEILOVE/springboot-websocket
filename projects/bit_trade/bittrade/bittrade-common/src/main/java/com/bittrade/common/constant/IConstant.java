@@ -1,7 +1,7 @@
 package com.bittrade.common.constant;
 
 /**
- * 
+ * 常量区
  * @author Administrator
  * @datetime Jul 4, 2019 11:30:30 AM
  *
