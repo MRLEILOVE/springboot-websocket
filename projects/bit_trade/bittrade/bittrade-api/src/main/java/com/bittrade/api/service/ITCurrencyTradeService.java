@@ -18,5 +18,5 @@ public interface ITCurrencyTradeService<DAO extends IBaseDAO<TCurrencyTrade, TCu
     /**
      * 根据法币id查找交易对
      */
-    List<TransactionPairVO> findTradeByCurrencyId(String currencyId2);
+    List<TransactionPairVO> findTradeByCurrencyId2(String currencyId2);
 }

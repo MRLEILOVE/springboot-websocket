@@ -17,5 +17,5 @@ public interface ITCurrencyService<DAO extends IBaseDAO<TCurrency, TCurrencyDTO,
     /**
      * 查找所有法币
      */
-    List<TCurrencyVO> findAllLegalCurrency();
+    List<TCurrency> findAllLegalCurrency();
 }

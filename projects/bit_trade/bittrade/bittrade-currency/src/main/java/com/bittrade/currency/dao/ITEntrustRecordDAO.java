@@ -11,7 +11,6 @@ import java.util.List;
  * @author Administrator
  *
  */
-@Repository
 public interface ITEntrustRecordDAO extends IDefaultTEntrustRecordDAO {
 
     /**

@@ -30,7 +30,7 @@ public class TCurrencyTradeServiceImpl extends
 	 * 根据法币id查找交易对
 	 */
 	@Override
-	public List<TransactionPairVO> findTradeByCurrencyId(String currencyId2) {
-		return tCurrencyTradeDAO.findTradeByCurrencyId(currencyId2);
+	public List<TransactionPairVO> findTradeByCurrencyId2(String currencyId2) {
+		return tCurrencyTradeDAO.findTradeByCurrencyId2(currencyId2);
 	}
 }

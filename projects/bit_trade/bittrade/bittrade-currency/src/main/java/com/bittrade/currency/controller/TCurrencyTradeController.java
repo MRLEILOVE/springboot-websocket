@@ -2,6 +2,9 @@ package com.bittrade.currency.controller;
 
 import java.util.List;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.bittrade.pojo.vo.TCurrencyVO;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -33,9 +36,12 @@ public class TCurrencyTradeController extends BaseController<TCurrencyTrade, TCu
     /**
      * 根据法币id查找交易对
      */
-    @RequestMapping(value="/findTradeByCurrencyId/{currencyId2}",method = RequestMethod.GET)
+    @ApiOperation(value = "根据法币id查找交易对",notes = "传法币的id")
+    @RequestMapping(value="/findTradeByCurrencyId2/{currencyId2}",method = RequestMethod.GET)
     @ResponseBody
-    public List<TransactionPairVO> findTradeByCurrencyId(@PathVariable("currencyId2") String currencyId2) {
-        return tCurrencyTradeService.findTradeByCurrencyId(currencyId2);
+    public List<TransactionPairVO> findTradeByCurrencyId2(@PathVariable("currencyId2") String currencyId2) {
+        QueryWrapper<TCurrencyVO> wrapper = new QueryWrapper<>();
+        wrapper.eq("status",1).select("id","name");
+        return tCurrencyTradeService.findTradeByCurrencyId2(currencyId2);
     }
 }

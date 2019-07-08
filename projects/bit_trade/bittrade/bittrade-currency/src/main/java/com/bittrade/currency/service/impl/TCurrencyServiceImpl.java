@@ -2,6 +2,7 @@ package com.bittrade.currency.service.impl;
 
 import java.util.List;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +29,9 @@ public class TCurrencyServiceImpl extends
 	 * 查找所有法币
 	 */
 	@Override
-	public List<TCurrencyVO> findAllLegalCurrency() {
-		return tCurrencyDAO.findAllLegalCurrency();
+	public List<TCurrency> findAllLegalCurrency() {
+		QueryWrapper<TCurrency> wrapper = new QueryWrapper<>();
+		wrapper.eq("status",1).select("id","name");
+		return tCurrencyDAO.selectList(wrapper);
 	}
 }
