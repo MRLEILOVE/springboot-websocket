@@ -20,6 +20,6 @@ import com.test.bittrade.svc.dao.ITUserInfoDAO;
 @Controller
 @ResponseBody
 @RequestMapping(value = { "/tUserInfo" }, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-public class TUserInfoController extends BaseController<TUserInfo, TUserInfoDTO, TUserInfoVO, ITUserInfoDAO, ITUserInfoService<TUserInfo, TUserInfoDTO, TUserInfoVO, ITUserInfoDAO>> {
+public class TUserInfoController extends BaseController<TUserInfo, TUserInfoDTO, TUserInfoVO, ITUserInfoDAO, ITUserInfoService<ITUserInfoDAO>> {
 	
 }

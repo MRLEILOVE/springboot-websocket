@@ -15,6 +15,6 @@ import com.bittrade.api.service.IJobTaskService;
  *
  */
 @Service
-public class JobTaskServiceImpl extends DefaultJobTaskServiceImpl<IJobTaskDAO, JobTask, JobTaskDTO, JobTaskVO> implements IJobTaskService<JobTask, JobTaskDTO, JobTaskVO, IJobTaskDAO> {
+public class JobTaskServiceImpl extends DefaultJobTaskServiceImpl<IJobTaskDAO, JobTask, JobTaskDTO, JobTaskVO> implements IJobTaskService<IJobTaskDAO> {
 	
 }

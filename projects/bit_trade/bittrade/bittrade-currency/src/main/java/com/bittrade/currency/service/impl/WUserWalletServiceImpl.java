@@ -15,6 +15,6 @@ import com.bittrade.api.service.IWUserWalletService;
  *
  */
 @Service
-public class WUserWalletServiceImpl extends DefaultWUserWalletServiceImpl<IWUserWalletDAO, WUserWallet, WUserWalletDTO, WUserWalletVO> implements IWUserWalletService<WUserWallet, WUserWalletDTO, WUserWalletVO, IWUserWalletDAO> {
+public class WUserWalletServiceImpl extends DefaultWUserWalletServiceImpl<IWUserWalletDAO, WUserWallet, WUserWalletDTO, WUserWalletVO> implements IWUserWalletService<IWUserWalletDAO> {
 	
 }

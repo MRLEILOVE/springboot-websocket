@@ -15,6 +15,6 @@ import com.bittrade.api.service.IWCoinConfigService;
  *
  */
 @Service
-public class WCoinConfigServiceImpl extends DefaultWCoinConfigServiceImpl<IWCoinConfigDAO, WCoinConfig, WCoinConfigDTO, WCoinConfigVO> implements IWCoinConfigService<WCoinConfig, WCoinConfigDTO, WCoinConfigVO, IWCoinConfigDAO> {
+public class WCoinConfigServiceImpl extends DefaultWCoinConfigServiceImpl<IWCoinConfigDAO, WCoinConfig, WCoinConfigDTO, WCoinConfigVO> implements IWCoinConfigService<IWCoinConfigDAO> {
 	
 }

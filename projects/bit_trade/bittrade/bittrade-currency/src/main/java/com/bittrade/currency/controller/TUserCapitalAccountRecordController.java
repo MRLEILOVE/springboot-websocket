@@ -20,6 +20,6 @@ import com.core.framework.base.controller.BaseController;
 @Controller
 @ResponseBody
 @RequestMapping(value = { "/tUserCapitalAccountRecord" }, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-public class TUserCapitalAccountRecordController extends BaseController<TUserCapitalAccountRecord, TUserCapitalAccountRecordDTO, TUserCapitalAccountRecordVO, ITUserCapitalAccountRecordDAO, ITUserCapitalAccountRecordService<TUserCapitalAccountRecord, TUserCapitalAccountRecordDTO, TUserCapitalAccountRecordVO, ITUserCapitalAccountRecordDAO>> {
+public class TUserCapitalAccountRecordController extends BaseController<TUserCapitalAccountRecord, TUserCapitalAccountRecordDTO, TUserCapitalAccountRecordVO, ITUserCapitalAccountRecordDAO, ITUserCapitalAccountRecordService<ITUserCapitalAccountRecordDAO>> {
 	
 }

@@ -27,10 +27,10 @@ import com.core.framework.base.controller.BaseController;
 @Controller
 @ResponseBody
 @RequestMapping(value = { "/tKline" }, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-public class TKlineController extends BaseController<TKline, TKlineDTO, TKlineVO, ITKlineDAO, ITKlineService<TKline, TKlineDTO, TKlineVO, ITKlineDAO>> {
+public class TKlineController extends BaseController<TKline, TKlineDTO, TKlineVO, ITKlineDAO, ITKlineService<ITKlineDAO>> {
 
     @Autowired
-    private ITKlineService<TKline, TKlineDTO, TKlineVO, ITKlineDAO> tKlineService;
+    private ITKlineService<ITKlineDAO> tKlineService;
 
     /**
      * k线查询

@@ -19,6 +19,7 @@ public class TWalletRecordDTO extends BaseDTO<TWalletRecordDTO> {
 	private long id;
 	private long userId;
 	private int currencyId;
+	private String token;
 	private java.math.BigDecimal beforeAmount;
 	private java.math.BigDecimal afterAmount;
 	private java.math.BigDecimal changeAmount;

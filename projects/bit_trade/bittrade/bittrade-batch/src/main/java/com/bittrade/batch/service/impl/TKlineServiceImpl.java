@@ -5,9 +5,6 @@ import org.springframework.stereotype.Service;
 import com.bittrade.api.service.ITKlineService;
 import com.bittrade.api.service.abs.AbstractTKlineServiceImpl;
 import com.bittrade.batch.dao.ITKlineDAO;
-import com.bittrade.pojo.dto.TKlineDTO;
-import com.bittrade.pojo.model.TKline;
-import com.bittrade.pojo.vo.TKlineVO;
 
 /**
  * 
@@ -15,6 +12,6 @@ import com.bittrade.pojo.vo.TKlineVO;
  *
  */
 @Service
-public class TKlineServiceImpl extends AbstractTKlineServiceImpl<ITKlineDAO, TKline, TKlineDTO, TKlineVO> implements ITKlineService<TKline, TKlineDTO, TKlineVO, ITKlineDAO> {
+public class TKlineServiceImpl extends AbstractTKlineServiceImpl<ITKlineDAO> implements ITKlineService<ITKlineDAO> {
 
 }

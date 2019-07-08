@@ -1,17 +1,17 @@
 package com.bittrade.api.service;
 
 import com.core.framework.base.DAO.IBaseDAO;
-import com.core.framework.base.DTO.BaseDTO;
-import com.core.framework.base.VO.BaseVO;
-import com.core.framework.base.model.BaseModel;
 
 import com.bittrade.api.__default.service.IDefaultWUserWalletBillService;
+import com.bittrade.pojo.dto.WUserWalletBillDTO;
+import com.bittrade.pojo.vo.WUserWalletBillVO;
+import com.bittrade.pojo.model.WUserWalletBill;
 
 /**
  * 
  * @author Administrator
  *
  */
-public interface IWUserWalletBillService<Model extends BaseModel<Model>, DTO extends BaseDTO<DTO>, VO extends BaseVO<VO>, DAO extends IBaseDAO<Model, DTO, VO>> extends IDefaultWUserWalletBillService<Model, DTO, VO, DAO> {
+public interface IWUserWalletBillService<DAO extends IBaseDAO<WUserWalletBill, WUserWalletBillDTO, WUserWalletBillVO>> extends IDefaultWUserWalletBillService<WUserWalletBill, WUserWalletBillDTO, WUserWalletBillVO, DAO> {
 	
 }

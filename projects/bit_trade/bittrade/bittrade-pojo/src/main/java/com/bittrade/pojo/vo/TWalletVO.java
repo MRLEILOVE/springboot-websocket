@@ -19,6 +19,7 @@ public class TWalletVO extends BaseVO<TWalletVO> {
 	private long id;
 	private long userId;
 	private int currencyId;
+	private String token;
 	private java.math.BigDecimal total;
 	private java.math.BigDecimal tradeFrozen;
 	private java.math.BigDecimal transferFrozen;

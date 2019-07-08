@@ -32,7 +32,7 @@ import com.core.framework.base.controller.BaseController;
 @Controller
 @ResponseBody
 @RequestMapping(value = { "/tEntrust" }, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-public class TEntrustController extends BaseController<TEntrust, TEntrustDTO, TEntrustVO, ITEntrustDAO, ITEntrustService<TEntrust, TEntrustDTO, TEntrustVO, ITEntrustDAO>> {
+public class TEntrustController extends BaseController<TEntrust, TEntrustDTO, TEntrustVO, ITEntrustDAO, ITEntrustService<ITEntrustDAO>> {
     @Autowired
     private ITTrustService trustService;
 

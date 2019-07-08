@@ -20,6 +20,6 @@ import com.core.framework.base.controller.BaseController;
 @Controller
 @ResponseBody
 @RequestMapping(value = { "/tParamConfig" }, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-public class TParamConfigController extends BaseController<TParamConfig, TParamConfigDTO, TParamConfigVO, ITParamConfigDAO, ITParamConfigService<TParamConfig, TParamConfigDTO, TParamConfigVO, ITParamConfigDAO>> {
+public class TParamConfigController extends BaseController<TParamConfig, TParamConfigDTO, TParamConfigVO, ITParamConfigDAO, ITParamConfigService<ITParamConfigDAO>> {
 	
 }

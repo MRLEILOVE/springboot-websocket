@@ -23,7 +23,7 @@ import com.core.framework.DTO.ReturnDTO;
  *
  */
 @Service
-public class TCurrencyOptionalServiceImpl extends DefaultTCurrencyOptionalServiceImpl<ITCurrencyOptionalDAO, TCurrencyOptional, TCurrencyOptionalDTO, TCurrencyOptionalVO> implements ITCurrencyOptionalService<TCurrencyOptional, TCurrencyOptionalDTO, TCurrencyOptionalVO, ITCurrencyOptionalDAO> {
+public class TCurrencyOptionalServiceImpl extends DefaultTCurrencyOptionalServiceImpl<ITCurrencyOptionalDAO, TCurrencyOptional, TCurrencyOptionalDTO, TCurrencyOptionalVO> implements ITCurrencyOptionalService<ITCurrencyOptionalDAO> {
     @Autowired
     private ITCurrencyOptionalDAO currencyOptionalDAO;
 

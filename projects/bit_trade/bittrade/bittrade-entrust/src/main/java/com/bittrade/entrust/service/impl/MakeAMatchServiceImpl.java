@@ -18,6 +18,8 @@ import com.bittrade.api.service.ITEntrustService;
 import com.bittrade.common.constant.IConstant;
 import com.bittrade.common.enums.EntrustDirectionEnumer;
 import com.bittrade.common.enums.EntrustTypeEnumer;
+import com.bittrade.entrust.dao.ITEntrustDAO;
+import com.bittrade.entrust.dao.ITEntrustRecordDAO;
 import com.bittrade.entrust.service.IMakeAMatchService;
 import com.bittrade.pojo.model.TEntrust;
 import com.core.tool.SnowFlake;
@@ -47,9 +49,9 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 	private static final SnowFlake SNOW_FLAKE = new SnowFlake(1, 1);
 	
 	@Autowired
-	private ITEntrustService entrustService;
+	private ITEntrustService<ITEntrustDAO> entrustService;
 	@Autowired
-	private ITEntrustRecordService entrustRecordService;
+	private ITEntrustRecordService<ITEntrustRecordDAO> entrustRecordService;
 	
 	/**
 	 * 行情价
@@ -119,14 +121,23 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 	 * @param list_market
 	 * @param list_limit
 	 */
-	private void matchSell(TEntrust entrust, List<TEntrust> list_market, List<TEntrust> list_limit) {
-		
+	private void matchSellWithBuy(TEntrust entrust, List<TEntrust> list_market, List<TEntrust> list_limit) {
+		if (list_market.size() > 0) {
+			for (int i = list_market.size() - 1; i > -1; i--) {
+				TEntrust _entrust = list_market.get(i);
+				
+				
+			}
+		}
 	}
 	
 	private void addToBuy(int idx, TEntrust entrust, List<TEntrust> list) {
 		if (idx == list.size()) { // isFirst
 			if (LIST_SELL_MARKET.size() > 0 || LIST_SELL_LIMIT.size() > 0) { // 和对手盘（卖）进行撮合。
-				matchSell(entrust, LIST_SELL_MARKET, LIST_SELL_LIMIT);
+				matchSellWithBuy(entrust, LIST_SELL_MARKET, LIST_SELL_LIMIT);
+//				if (entrust.getPrice()) {
+//					
+//				}
 			} else {
 				list.add(entrust);
 			}

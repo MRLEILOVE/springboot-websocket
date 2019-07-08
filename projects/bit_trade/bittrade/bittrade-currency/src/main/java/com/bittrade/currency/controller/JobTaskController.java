@@ -20,6 +20,6 @@ import com.core.framework.base.controller.BaseController;
 @Controller
 @ResponseBody
 @RequestMapping(value = { "/jobTask" }, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-public class JobTaskController extends BaseController<JobTask, JobTaskDTO, JobTaskVO, IJobTaskDAO, IJobTaskService<JobTask, JobTaskDTO, JobTaskVO, IJobTaskDAO>> {
+public class JobTaskController extends BaseController<JobTask, JobTaskDTO, JobTaskVO, IJobTaskDAO, IJobTaskService<IJobTaskDAO>> {
 	
 }

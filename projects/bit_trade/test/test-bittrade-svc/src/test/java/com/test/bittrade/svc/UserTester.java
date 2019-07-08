@@ -4,16 +4,14 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.test.bittrade.api.service.ITUserService;
-import com.test.bittrade.pojo.dto.TUserDTO;
 import com.test.bittrade.pojo.model.TUser;
-import com.test.bittrade.pojo.vo.TUserVO;
 import com.test.bittrade.svc.base.BaseTester;
 import com.test.bittrade.svc.dao.ITUserDAO;
 
 public class UserTester extends BaseTester {
 
 	@Autowired
-	private ITUserService<TUser, TUserDTO, TUserVO, ITUserDAO> userService;
+	private ITUserService<ITUserDAO> userService;
 
 	@Test
 	public void test() {

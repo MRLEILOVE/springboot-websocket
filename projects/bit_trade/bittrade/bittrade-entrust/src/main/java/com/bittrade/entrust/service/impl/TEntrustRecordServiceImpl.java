@@ -15,6 +15,6 @@ import com.bittrade.pojo.vo.TEntrustRecordVO;
  *
  */
 @Service
-public class TEntrustRecordServiceImpl extends DefaultTEntrustRecordServiceImpl<ITEntrustRecordDAO, TEntrustRecord, TEntrustRecordDTO, TEntrustRecordVO> implements ITEntrustRecordService<TEntrustRecord, TEntrustRecordDTO, TEntrustRecordVO, ITEntrustRecordDAO> {
+public class TEntrustRecordServiceImpl extends DefaultTEntrustRecordServiceImpl<ITEntrustRecordDAO, TEntrustRecord, TEntrustRecordDTO, TEntrustRecordVO> implements ITEntrustRecordService<ITEntrustRecordDAO> {
 	
 }

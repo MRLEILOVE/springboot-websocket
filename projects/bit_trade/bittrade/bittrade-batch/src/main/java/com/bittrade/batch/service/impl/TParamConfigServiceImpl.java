@@ -16,6 +16,6 @@ import com.bittrade.pojo.vo.TParamConfigVO;
  */
 @Service
 public class TParamConfigServiceImpl extends DefaultTParamConfigServiceImpl<ITParamConfigDAO, TParamConfig, TParamConfigDTO, TParamConfigVO>
-		implements ITParamConfigService<TParamConfig, TParamConfigDTO, TParamConfigVO, ITParamConfigDAO> {
+		implements ITParamConfigService<ITParamConfigDAO> {
 
 }

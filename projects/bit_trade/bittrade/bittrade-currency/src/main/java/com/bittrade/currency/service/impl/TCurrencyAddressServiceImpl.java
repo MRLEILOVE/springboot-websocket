@@ -15,6 +15,6 @@ import com.bittrade.api.service.ITCurrencyAddressService;
  *
  */
 @Service
-public class TCurrencyAddressServiceImpl extends DefaultTCurrencyAddressServiceImpl<ITCurrencyAddressDAO, TCurrencyAddress, TCurrencyAddressDTO, TCurrencyAddressVO> implements ITCurrencyAddressService<TCurrencyAddress, TCurrencyAddressDTO, TCurrencyAddressVO, ITCurrencyAddressDAO> {
+public class TCurrencyAddressServiceImpl extends DefaultTCurrencyAddressServiceImpl<ITCurrencyAddressDAO, TCurrencyAddress, TCurrencyAddressDTO, TCurrencyAddressVO> implements ITCurrencyAddressService<ITCurrencyAddressDAO> {
 	
 }

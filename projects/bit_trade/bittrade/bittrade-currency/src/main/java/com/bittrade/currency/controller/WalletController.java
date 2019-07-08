@@ -57,15 +57,15 @@ import io.swagger.annotations.ApiOperation;
 @RequestMapping(value = "wallet",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class WalletController {
     @Autowired
-    private IWUserWalletBillService<WUserWalletBill, WUserWalletBillDTO, WUserWalletBillVO, IWUserWalletBillDAO> userWalletBillService;
+    private IWUserWalletBillService<IWUserWalletBillDAO> userWalletBillService;
     @Autowired
-    private IWWithdrawWalletBillService<WWithdrawWalletBill, WWithdrawWalletBillDTO, WWithdrawWalletBillVO, IWWithdrawWalletBillDAO> withdrawWalletBillService;
+    private IWWithdrawWalletBillService<IWWithdrawWalletBillDAO> withdrawWalletBillService;
     @Autowired
-    private IWUserWalletService<WUserWallet, WUserWalletDTO, WUserWalletVO, IWUserWalletDAO> userWalletService;
+    private IWUserWalletService<IWUserWalletDAO> userWalletService;
     @Autowired
-    private ITCurrencyService<TCurrency, TCurrencyDTO, TCurrencyVO, ITCurrencyDAO> currencyService;
+    private ITCurrencyService<ITCurrencyDAO> currencyService;
     @Autowired
-    private ITWalletService<TWallet, TWalletDTO, TWalletVO, ITWalletDAO> walletService;
+    private ITWalletService<ITWalletDAO> walletService;
 
 
   /*  @PostMapping("coinSelect")

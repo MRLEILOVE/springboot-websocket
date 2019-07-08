@@ -1,17 +1,17 @@
 package com.bittrade.api.service;
 
 import com.core.framework.base.DAO.IBaseDAO;
-import com.core.framework.base.DTO.BaseDTO;
-import com.core.framework.base.VO.BaseVO;
-import com.core.framework.base.model.BaseModel;
 
 import com.bittrade.api.__default.service.IDefaultTCurrencyAddressService;
+import com.bittrade.pojo.dto.TCurrencyAddressDTO;
+import com.bittrade.pojo.vo.TCurrencyAddressVO;
+import com.bittrade.pojo.model.TCurrencyAddress;
 
 /**
  * 
  * @author Administrator
  *
  */
-public interface ITCurrencyAddressService<Model extends BaseModel<Model>, DTO extends BaseDTO<DTO>, VO extends BaseVO<VO>, DAO extends IBaseDAO<Model, DTO, VO>> extends IDefaultTCurrencyAddressService<Model, DTO, VO, DAO> {
+public interface ITCurrencyAddressService<DAO extends IBaseDAO<TCurrencyAddress, TCurrencyAddressDTO, TCurrencyAddressVO>> extends IDefaultTCurrencyAddressService<TCurrencyAddress, TCurrencyAddressDTO, TCurrencyAddressVO, DAO> {
 	
 }

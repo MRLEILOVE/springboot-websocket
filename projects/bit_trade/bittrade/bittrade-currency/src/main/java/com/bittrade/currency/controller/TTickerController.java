@@ -20,6 +20,6 @@ import com.core.framework.base.controller.BaseController;
 @Controller
 @ResponseBody
 @RequestMapping(value = { "/tTicker" }, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-public class TTickerController extends BaseController<TTicker, TTickerDTO, TTickerVO, ITTickerDAO, ITTickerService<TTicker, TTickerDTO, TTickerVO, ITTickerDAO>> {
+public class TTickerController extends BaseController<TTicker, TTickerDTO, TTickerVO, ITTickerDAO, ITTickerService<ITTickerDAO>> {
 	
 }

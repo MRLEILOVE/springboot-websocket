@@ -20,6 +20,6 @@ import com.core.framework.base.controller.BaseController;
 @Controller
 @ResponseBody
 @RequestMapping(value = { "/wUserWallet" }, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-public class WUserWalletController extends BaseController<WUserWallet, WUserWalletDTO, WUserWalletVO, IWUserWalletDAO, IWUserWalletService<WUserWallet, WUserWalletDTO, WUserWalletVO, IWUserWalletDAO>> {
+public class WUserWalletController extends BaseController<WUserWallet, WUserWalletDTO, WUserWalletVO, IWUserWalletDAO, IWUserWalletService<IWUserWalletDAO>> {
 	
 }
