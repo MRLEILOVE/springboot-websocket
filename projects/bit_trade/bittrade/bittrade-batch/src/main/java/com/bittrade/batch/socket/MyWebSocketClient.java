@@ -20,6 +20,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.bittrade.api.service.ITParamConfigService;
+import com.bittrade.batch.dao.ITParamConfigDAO;
 import com.bittrade.batch.enumer.ParamConfigEnum.ParamKeyEnum;
 import com.bittrade.batch.general.ObtainParamConfigInfo;
 import com.bittrade.common.utils.RedisKeyUtil;
@@ -39,7 +40,7 @@ public class MyWebSocketClient extends WebSocketClient {
 	private JedisCluster			jedisCluster;
 
 	@Autowired
-	private ITParamConfigService	paramConfigService;
+	private ITParamConfigService<ITParamConfigDAO>	paramConfigService;
 
 	private int						connectFailCount	= 1;
 
