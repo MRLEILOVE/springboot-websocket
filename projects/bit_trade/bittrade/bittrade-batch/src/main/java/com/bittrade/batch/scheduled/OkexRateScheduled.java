@@ -7,6 +7,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.bittrade.api.service.ITParamConfigService;
+import com.bittrade.batch.dao.ITParamConfigDAO;
 import com.bittrade.batch.enumer.ParamConfigEnum.ParamKeyEnum;
 import com.bittrade.batch.general.ObtainParamConfigInfo;
 import com.bittrade.common.constant.IConstant;
@@ -29,7 +30,7 @@ public class OkexRateScheduled {
 	private static final Logger		LOG	= LoggerFactory.getLogger( OkexRateScheduled.class );
 
 	@Autowired
-	private ITParamConfigService	paramConfigService;
+	private ITParamConfigService<ITParamConfigDAO>	paramConfigService;
 
 	@Autowired
 	private JedisCluster			jedisCluster;
