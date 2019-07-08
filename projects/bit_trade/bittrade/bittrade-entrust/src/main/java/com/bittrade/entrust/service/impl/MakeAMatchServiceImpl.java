@@ -2,7 +2,6 @@ package com.bittrade.entrust.service.impl;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.Callable;
@@ -130,25 +129,22 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 			for (int i = list_market.size() - 1; i > -1; i--) { // 撮合市价
 				TEntrust entrust_market = list_market.get(i);
 				
-				LINE_PRICE.abs();
 				int i_compareTo = entrust.getCount().compareTo(entrust_market.getCount());
 				if (i_compareTo == 1) {
-					BigDecimal successAmount;
-					BigDecimal leftCount;
-					int status;
+					BigDecimal amount = LINE_PRICE.multiply(entrust_market.getCount());
 					
-//					entrustService.updateOnMatch(
-//							successAmount, 
-//							entrust.getCount().subtract(entrust_market.getCount()), 
-//							EntrustStatusEnumer.PART_FINISH.getCode(), 
-//							entrust.getId()
-//							);
-//					entrustService.updateOnMatch(
-//							successAmount, 
-//							new BigDecimal(0), 
-//							EntrustStatusEnumer.FINISH.getCode(), 
-//							entrust_market.getId()
-//							);
+					entrustService.updateOnMatch(
+							entrust.getSuccessAmount().add(amount), 
+							entrust.getCount().subtract(entrust_market.getCount()), 
+							EntrustStatusEnumer.PART_FINISH.getCode(), 
+							entrust.getId()
+							);
+					entrustService.updateOnMatch(
+							amount, 
+							new BigDecimal(0), 
+							EntrustStatusEnumer.FINISH.getCode(), 
+							entrust_market.getId()
+							);
 					
 					TEntrustRecord entrustRecord_buy = new TEntrustRecord();
 					entrustRecord_buy.setId(SNOW_FLAKE.nextId());
@@ -158,7 +154,7 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 					entrustRecord_buy.setRivalEntrustId(entrust_market.getId());
 					entrustRecord_buy.setPrice(LINE_PRICE);
 					entrustRecord_buy.setCount(entrust_market.getCount());
-					entrustRecord_buy.setAmount(LINE_PRICE.multiply(entrust_market.getCount()));
+					entrustRecord_buy.setAmount(amount);
 					entrustRecord_buy.setCurrencyTradeId(entrust.getCurrencyTradeId());
 					entrustRecord_buy.setIsActive(IsActiveEnumer.UNACTIVE.getCode());
 					entrustRecord_buy.setEntrustDirection(EntrustDirectionEnumer.BUY.getCode());
@@ -173,7 +169,7 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 					entrustRecord_sell.setRivalEntrustId(entrust.getId());
 					entrustRecord_sell.setPrice(LINE_PRICE);
 					entrustRecord_sell.setCount(entrust_market.getCount());
-					entrustRecord_sell.setAmount(LINE_PRICE.multiply(entrust_market.getCount()));
+					entrustRecord_sell.setAmount(amount);
 					entrustRecord_sell.setCurrencyTradeId(entrust_market.getCurrencyTradeId());
 					entrustRecord_sell.setIsActive(IsActiveEnumer.ACTIVE.getCode());
 					entrustRecord_sell.setEntrustDirection(EntrustDirectionEnumer.SELL.getCode());
@@ -184,7 +180,11 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 				}
 			}
 		}
-		if (list_limit.size() > 0) {
+		if (
+				entrust.getCount().compareTo(BigDecimal.ZERO) == ICompareResultConstant.GREATER_THAN
+				&& 
+				list_limit.size() > 0
+				) {
 			for (int i = list_limit.size() - 1; i > -1; i--) { // 撮合限价
 				TEntrust entrust_limit = list_limit.get(i);
 				
