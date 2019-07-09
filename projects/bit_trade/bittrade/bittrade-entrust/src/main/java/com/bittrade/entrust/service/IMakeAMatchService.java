@@ -1,7 +1,5 @@
 package com.bittrade.entrust.service;
 
-import com.bittrade.api.service.ITEntrustService;
-import com.bittrade.entrust.dao.ITEntrustDAO;
 import com.bittrade.pojo.model.TEntrust;
 
 /**
@@ -14,8 +12,7 @@ public interface IMakeAMatchService {
 	/**
 	 * 
 	 * @param entrust
-	 * @param entrustService
 	 */
-	void makeAMatch(TEntrust entrust, ITEntrustService<ITEntrustDAO> entrustService);
+	void makeAMatch(TEntrust entrust);
 	
 }

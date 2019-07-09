@@ -302,7 +302,7 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 		}
 	}
 	
-	public void makeAMatch(TEntrust entrust, ITEntrustService<ITEntrustDAO> entrustService) {
+	public void makeAMatch(TEntrust entrust) {
 		// 入库。
 		{
 			entrust.setId(SNOW_FLAKE__ENTRUST.nextId());
@@ -312,29 +312,29 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 			entrustService.add(entrust);
 //			System.out.println(entrust);
 		}
-//		if (entrust.getEntrustDirection() == EntrustDirectionEnumer.BUY.getCode()) {
-//			int i_idx;
-//			LOCK_BUY.lock();
-//			if (entrust.getEntrustType() == EntrustTypeEnumer.MARKET.getCode()) { // 市价
-//				i_idx = findIndexFromMarket(entrust, LIST_BUY_MARKET);
-//				addTo(i_idx, entrust, LIST_BUY_MARKET, LIST_SELL_MARKET, LIST_SELL_LIMIT);
-//			} else { // 限价
-//				i_idx = findIndexFromLimit(entrust, LIST_BUY_LIMIT, ICompareResultConstant.LESS_THAN);
-//				addTo(i_idx, entrust, LIST_BUY_LIMIT, LIST_SELL_MARKET, LIST_SELL_LIMIT);
-//			}
-//			LOCK_BUY.unlock();
-//		} else if (entrust.getEntrustDirection() == EntrustDirectionEnumer.SELL.getCode()) {
-//			int i_idx;
-//			LOCK_BUY.lock();
-//			if (entrust.getEntrustType() == EntrustTypeEnumer.MARKET.getCode()) { // 市价
-//				i_idx = findIndexFromMarket(entrust, LIST_SELL_MARKET);
-//				addTo(i_idx, entrust, LIST_SELL_MARKET, LIST_BUY_MARKET, LIST_BUY_LIMIT);
-//			} else { // 限价
-//				i_idx = findIndexFromLimit(entrust, LIST_SELL_LIMIT, ICompareResultConstant.GREATER_THAN);
-//				addTo(i_idx, entrust, LIST_SELL_LIMIT, LIST_BUY_MARKET, LIST_BUY_LIMIT);
-//			}
-//			LOCK_BUY.unlock();
-//		}
+		if (entrust.getEntrustDirection() == EntrustDirectionEnumer.BUY.getCode()) {
+			int i_idx;
+			LOCK_BUY.lock();
+			if (entrust.getEntrustType() == EntrustTypeEnumer.MARKET.getCode()) { // 市价
+				i_idx = findIndexFromMarket(entrust, LIST_BUY_MARKET);
+				addTo(i_idx, entrust, LIST_BUY_MARKET, LIST_SELL_MARKET, LIST_SELL_LIMIT);
+			} else { // 限价
+				i_idx = findIndexFromLimit(entrust, LIST_BUY_LIMIT, ICompareResultConstant.LESS_THAN);
+				addTo(i_idx, entrust, LIST_BUY_LIMIT, LIST_SELL_MARKET, LIST_SELL_LIMIT);
+			}
+			LOCK_BUY.unlock();
+		} else if (entrust.getEntrustDirection() == EntrustDirectionEnumer.SELL.getCode()) {
+			int i_idx;
+			LOCK_BUY.lock();
+			if (entrust.getEntrustType() == EntrustTypeEnumer.MARKET.getCode()) { // 市价
+				i_idx = findIndexFromMarket(entrust, LIST_SELL_MARKET);
+				addTo(i_idx, entrust, LIST_SELL_MARKET, LIST_BUY_MARKET, LIST_BUY_LIMIT);
+			} else { // 限价
+				i_idx = findIndexFromLimit(entrust, LIST_SELL_LIMIT, ICompareResultConstant.GREATER_THAN);
+				addTo(i_idx, entrust, LIST_SELL_LIMIT, LIST_BUY_MARKET, LIST_BUY_LIMIT);
+			}
+			LOCK_BUY.unlock();
+		}
 	}
 	
 	private static void print() {
@@ -399,12 +399,14 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 		private static final class MyCallable implements Callable<String> {
 			
 			private ITEntrustService<ITEntrustDAO> entrustService;
+			private ITEntrustRecordService<ITEntrustRecordDAO> entrustRecordService;
 			private MakeAMatchServiceImpl makeAMatch;
 			private CountDownLatch cdl;
 			
-			public MyCallable(MakeAMatchServiceImpl makeAMatch, ITEntrustService<ITEntrustDAO> entrustService, CountDownLatch cdl) {
+			private MyCallable(MakeAMatchServiceImpl makeAMatch, ITEntrustService<ITEntrustDAO> entrustService, ITEntrustRecordService<ITEntrustRecordDAO> entrustRecordService, CountDownLatch cdl) {
 				this.makeAMatch = makeAMatch;
 				this.entrustService = entrustService;
+				this.entrustRecordService = entrustRecordService;
 				this.cdl = cdl;
 			}
 
@@ -420,7 +422,7 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 				}
 				entrust.setCount(getCount());
 				System.out.println("11 com.bittrade.entrust.service.impl.MakeAMatchServiceImpl.makeAMatch(TEntrust)");
-				makeAMatch.makeAMatch(entrust, entrustService);
+				makeAMatch.makeAMatch(entrust);
 				System.out.println("22 com.bittrade.entrust.service.impl.MakeAMatchServiceImpl.makeAMatch(TEntrust)");
 				
 				System.out.println("countDown before");
@@ -432,38 +434,34 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 			
 		}
 		
-		private static void test(ITEntrustService<ITEntrustDAO> entrustService) {
+		private static void test(IMakeAMatchService makeAMatch) {
 			final int CNT = 5; // 50 5
 			
 			ExecutorService es = Executors.newFixedThreadPool(CNT);
-			MakeAMatchServiceImpl makeAMatch = new MakeAMatchServiceImpl();
 			CountDownLatch cdl = new CountDownLatch(CNT);
-//			MyCallable MyCallable = new MyCallable(makeAMatch, entrustService, cdl);
+//			MyCallable MyCallable = new MyCallable(makeAMatch, entrustService, entrustRecordService, cdl);
 			
 			for (int i = 0; i < CNT; i++) {
 //				/* Future<String> future = */es.submit(MyCallable);
-				/* Future<String> future = */es.submit(new Callable<String>() {
-					@Override
-					public String call() throws Exception {
-						TEntrust entrust = new TEntrust();
-						entrust.setUserId(getUserID());
-						entrust.setCurrencyTradeId(getCurrencyTradeID());
-						entrust.setEntrustDirection(getEntrustDirection());
-						entrust.setEntrustType(getEntrustType());
-						if (entrust.getEntrustType() == EntrustTypeEnumer.LIMIT.getCode()) {
-							entrust.setPrice(getPrice());
-						}
-						entrust.setCount(getCount());
-						System.out.println("11 com.bittrade.entrust.service.impl.MakeAMatchServiceImpl.makeAMatch(TEntrust)");
-						makeAMatch.makeAMatch(entrust, entrustService);
-						System.out.println("22 com.bittrade.entrust.service.impl.MakeAMatchServiceImpl.makeAMatch(TEntrust)");
-						
-						System.out.println("countDown before");
-						cdl.countDown();
-						System.out.println("countDown after");
-						
-						return null;
+				/* Future<String> future = */es.submit(() -> {
+					TEntrust entrust = new TEntrust();
+					entrust.setUserId(getUserID());
+					entrust.setCurrencyTradeId(getCurrencyTradeID());
+					entrust.setEntrustDirection(getEntrustDirection());
+					entrust.setEntrustType(getEntrustType());
+					if (entrust.getEntrustType() == EntrustTypeEnumer.LIMIT.getCode()) {
+						entrust.setPrice(getPrice());
 					}
+					entrust.setCount(getCount());
+					System.out.println("11 com.bittrade.entrust.service.impl.MakeAMatchServiceImpl.makeAMatch(TEntrust)");
+					makeAMatch.makeAMatch(entrust);
+					System.out.println("22 com.bittrade.entrust.service.impl.MakeAMatchServiceImpl.makeAMatch(TEntrust)");
+					
+					System.out.println("countDown before");
+					cdl.countDown();
+					System.out.println("countDown after");
+					
+					return null;
 				});
 //				try {
 //					System.out.println(future.get());
@@ -491,10 +489,10 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 	}
 	
 	public void test() {
-		Tester.test(entrustService);
+		Tester.test(this);
 	}
 	
-	public static void main(String[] args) {
+	public static void _main(String[] args) {
 		Tester.test(null);
 	}
 	
