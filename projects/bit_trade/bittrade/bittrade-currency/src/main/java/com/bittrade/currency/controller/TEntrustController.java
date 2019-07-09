@@ -40,21 +40,34 @@ public class TEntrustController extends BaseController<TEntrust, TEntrustDTO, TE
     @ApiOperation(value = "查询用户当前委托")
     @GetMapping(value = "/queryPresentEntrustByUserId/{userId}")
     @ResponseBody
-    public List<TEntrustVO> queryPresentEntrustByUserId(@PathVariable("userId") String userId) {
-        return trustService.queryPresentEntrustByUserId(userId);
+    public ReturnDTO<List<TEntrustVO>> queryPresentEntrustByUserId(@PathVariable("userId") String userId) {
+        try{
+            return ReturnDTO.ok(trustService.queryPresentEntrustByUserId(userId));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ReturnDTO.error("服务器异常");
+        }
+
     }
 
     @ApiOperation(value = "查询用户历史委托")
     @GetMapping(value = "/queryHistoryEntrustByUserId/{userId}")
     @ResponseBody
-    public List<TEntrustVO> queryHistoryEntrustByUserId(@PathVariable("userId") String userId) {
-        return trustService.queryHistoryEntrustByUserId(userId);
+    public ReturnDTO<List<TEntrustVO>> queryHistoryEntrustByUserId(@PathVariable("userId") String userId) {
+        try{
+            return ReturnDTO.ok(trustService.queryHistoryEntrustByUserId(userId));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ReturnDTO.error("服务器异常");
+        }
+
     }
 
     @ApiOperation(value = "买/卖交易对")
     @PostMapping(value = "/deal")
     @ResponseBody
-    public String queryDealEntrustByUserId(@RequestBody DealDTO dealDTO) {
+    public ReturnDTO<String> queryDealEntrustByUserId(@RequestBody DealDTO dealDTO) {
+
         return trustService.deal(dealDTO);
     }
 

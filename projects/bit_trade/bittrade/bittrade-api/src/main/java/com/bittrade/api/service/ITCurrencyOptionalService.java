@@ -24,10 +24,10 @@ public interface ITCurrencyOptionalService<DAO extends IBaseDAO<TCurrencyOptiona
     /**
      * 添加自选
      */
-    ReturnDTO addOptional(TCurrencyOptionalDTO currencyOptionalDTO);
+    ReturnDTO<String> addOptional(TCurrencyOptionalDTO currencyOptionalDTO);
 
     /**
      * 删除自选
      */
-    ReturnDTO deleteOptional(TCurrencyOptionalDTO currencyOptionalDTO);
+    ReturnDTO<String> deleteOptional(TCurrencyOptionalDTO currencyOptionalDTO);
 }

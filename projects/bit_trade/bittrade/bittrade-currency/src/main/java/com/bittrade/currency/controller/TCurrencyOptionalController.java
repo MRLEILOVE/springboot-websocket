@@ -37,14 +37,19 @@ public class TCurrencyOptionalController extends BaseController<TCurrencyOptiona
     @ApiOperation(value="查询用户自选的交易对",notes="传用户id")
     @RequestMapping(value="/findOptionalTradeByUserId/{userId}",method = RequestMethod.GET)
     @ResponseBody
-    public List<TransactionPairVO> findOptionalByUserId(@PathVariable("userId") String userId) {
-        return currencyOptionalService.findOptionalByUserId(userId);
+    public ReturnDTO<List<TransactionPairVO>> findOptionalByUserId(@PathVariable("userId") String userId) {
+        try{
+            return ReturnDTO.ok(currencyOptionalService.findOptionalByUserId(userId));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ReturnDTO.error("服务器异常");
+        }
     }
 
     @ApiOperation(value="添加自选",notes="传用户id、交易对id")
     @RequestMapping(value="/addOptional",method = RequestMethod.POST)
     @ResponseBody
-    public ReturnDTO addOptional(@RequestBody TCurrencyOptionalDTO currencyOptionalDTO) {
+    public ReturnDTO<String> addOptional(@RequestBody TCurrencyOptionalDTO currencyOptionalDTO) {
         return currencyOptionalService.addOptional(currencyOptionalDTO);
     }
 

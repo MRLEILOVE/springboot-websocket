@@ -39,7 +39,7 @@ public class TCurrencyOptionalServiceImpl extends DefaultTCurrencyOptionalServic
      * 添加自选
      */
     @Override
-    public ReturnDTO addOptional(TCurrencyOptionalDTO currencyOptionalDTO) {
+    public ReturnDTO<String> addOptional(TCurrencyOptionalDTO currencyOptionalDTO) {
         //查询是否添加过
         Map<String,Object> map = new HashMap<>();
         map.put("user_id",currencyOptionalDTO.getUserId());
@@ -78,7 +78,7 @@ public class TCurrencyOptionalServiceImpl extends DefaultTCurrencyOptionalServic
      * 删除自选
      */
     @Override
-    public ReturnDTO deleteOptional(TCurrencyOptionalDTO currencyOptionalDTO) {
+    public ReturnDTO<String> deleteOptional(TCurrencyOptionalDTO currencyOptionalDTO) {
         Map<String,Object> map = new HashMap<>();
         map.put("user_id",currencyOptionalDTO.getUserId());
         map.put("currency_trade_id",currencyOptionalDTO.getCurrencyTradeId());

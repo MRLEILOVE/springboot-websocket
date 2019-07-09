@@ -2,6 +2,7 @@ package com.bittrade.currency.controller;
 
 import com.bittrade.pojo.vo.CoinAccountVO;
 import com.bittrade.pojo.vo.UserWalletVO;
+import com.core.framework.DTO.ReturnDTO;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -33,15 +34,27 @@ public class TWalletController extends BaseController<TWallet, TWalletDTO, TWall
     @ApiOperation(value="查询用户的币币账户", notes="查询用户的币币账户")
     @GetMapping(value = "/queryCoinAccountByUserId/{userId}")
     @ResponseBody
-    public CoinAccountVO queryCoinAccountByUserId(@PathVariable("userId")Integer userId){
-        return walletService.queryCoinAccountByUserId(userId);
+    public ReturnDTO<CoinAccountVO> queryCoinAccountByUserId(@PathVariable("userId")Integer userId){
+        try{
+            return ReturnDTO.ok(walletService.queryCoinAccountByUserId(userId));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ReturnDTO.error("服务器异常");
+        }
+
     }
 
     @ApiOperation(value="查询用户钱包", notes="传用户id，交易对id")
     @GetMapping(value = "/queryUserWallet/{userId}/{currencyTradeId}")
     @ResponseBody
-    public UserWalletVO queryUserWallet(@PathVariable("userId")Integer userId, @PathVariable("currencyTradeId")Integer currencyTradeId){
-        return walletService.queryUserWallet(userId,currencyTradeId);
+    public ReturnDTO<UserWalletVO> queryUserWallet(@PathVariable("userId")Integer userId, @PathVariable("currencyTradeId")Integer currencyTradeId){
+        try {
+            return ReturnDTO.ok(walletService.queryUserWallet(userId,currencyTradeId));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ReturnDTO.error("服务器异常");
+        }
+
     }
 
 }
