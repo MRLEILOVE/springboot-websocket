@@ -21,7 +21,7 @@ public interface ITTrustService {
     /**
      * 买/卖交易对
      */
-    String deal(DealDTO dealDTO);
+    ReturnDTO<String> deal(DealDTO dealDTO);
 
     /**
      * 查询用户的委托单成交明细

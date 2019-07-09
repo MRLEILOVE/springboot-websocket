@@ -39,7 +39,7 @@ public class ITTrustServiceImpl implements ITTrustService {
      * 买/卖交易对
      */
     @Override
-    public String deal(DealDTO dealDTO) {
+    public ReturnDTO<String> deal(DealDTO dealDTO) {
         //#TODO 调用接口
         return null;
     }

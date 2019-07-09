@@ -2,6 +2,7 @@ package com.bittrade.currency.controller;
 
 import java.util.List;
 
+import com.core.framework.DTO.ReturnDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -37,7 +38,13 @@ public class TKlineController extends BaseController<TKline, TKlineDTO, TKlineVO
      */
     @RequestMapping(value = "/queryKLine",method = RequestMethod.POST)
     @ResponseBody
-    public List<QueryKLineVO> queryKLine(@RequestBody QueryKLineDto queryKLineDto) {
-        return tKlineService.queryKLine(queryKLineDto);
+    public ReturnDTO<List<QueryKLineVO>> queryKLine(@RequestBody QueryKLineDto queryKLineDto) {
+        try{
+            return ReturnDTO.ok(tKlineService.queryKLine(queryKLineDto));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ReturnDTO.error("服务器异常");
+        }
+
     }
 }

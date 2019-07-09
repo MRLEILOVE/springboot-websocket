@@ -2,6 +2,7 @@ package com.bittrade.currency.controller;
 
 import java.util.List;
 
+import com.core.framework.DTO.ReturnDTO;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -35,14 +36,26 @@ public class TEntrustRecordController extends BaseController<TEntrustRecord, TEn
     @ApiOperation(value = "查询用户成交记录")
     @GetMapping(value = "/queryDealEntrustByUserId/{userId}")
     @ResponseBody
-    public List<TEntrustRecordVO> queryDealEntrustByUserId(@PathVariable("userId") String userId) {
-        return dealService.queryDealEntrustByUserId(userId);
+    public ReturnDTO<List<TEntrustRecordVO>> queryDealEntrustByUserId(@PathVariable("userId") String userId) {
+        try{
+            return ReturnDTO.ok(dealService.queryDealEntrustByUserId(userId));
+        }catch (Exception e){
+            e.printStackTrace();
+            return ReturnDTO.error("服务器异常");
+        }
+
     }
 
     @ApiOperation(value = "实时成交")
     @GetMapping(value = "/realTimeTransaction/{currencyTradeId}")
     @ResponseBody
-    public List<TRealTimeTransactionVO> realTimeTransaction(@PathVariable("currencyTradeId") String currencyTradeId) {
-        return dealService.realTimeTransaction(currencyTradeId);
+    public ReturnDTO<List<TRealTimeTransactionVO>> realTimeTransaction(@PathVariable("currencyTradeId") String currencyTradeId) {
+        try{
+            return ReturnDTO.ok(dealService.realTimeTransaction(currencyTradeId));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ReturnDTO.error("服务器异常");
+        }
+
     }
 }
