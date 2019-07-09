@@ -45,12 +45,15 @@
 	</sql>
 	
 	<insert id="add" parameterType="com.bittrade.pojo.model.TEntrust">
-		INSERT INTO t_entrust(`user_id`, `currency_trade_id`, `price`, `amount`, `success_amount`, `count`, `left_count`, `fees`, `left_fees`, `status`, `entrust_type`, `entrust_direction`, `version`, `create_time`, `update_time`)
-		VALUES(#{userId,jdbcType=BIGINT}, #{currencyTradeId,jdbcType=INTEGER}, #{price,jdbcType=DECIMAL}, #{amount,jdbcType=DECIMAL}, #{successAmount,jdbcType=DECIMAL}, #{count,jdbcType=DECIMAL}, #{leftCount,jdbcType=DECIMAL}, #{fees,jdbcType=DECIMAL}, #{leftFees,jdbcType=DECIMAL}, #{status,jdbcType=INTEGER}, #{entrustType,jdbcType=INTEGER}, #{entrustDirection,jdbcType=INTEGER}, #{version,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+		INSERT INTO t_entrust(`id`, `user_id`, `currency_trade_id`, `price`, `amount`, `success_amount`, `count`, `left_count`, `fees`, `left_fees`, `status`, `entrust_type`, `entrust_direction`, `version`, `create_time`, `update_time`)
+		VALUES(#{id,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{currencyTradeId,jdbcType=INTEGER}, #{price,jdbcType=DECIMAL}, #{amount,jdbcType=DECIMAL}, #{successAmount,jdbcType=DECIMAL}, #{count,jdbcType=DECIMAL}, #{leftCount,jdbcType=DECIMAL}, #{fees,jdbcType=DECIMAL}, #{leftFees,jdbcType=DECIMAL}, #{status,jdbcType=INTEGER}, #{entrustType,jdbcType=INTEGER}, #{entrustDirection,jdbcType=INTEGER}, #{version,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
 	</insert>
 	
 	<insert id="addWithSelective" parameterType="com.bittrade.pojo.model.TEntrust">
 		INSERT INTO t_entrust(
+			<if test="id != null and id != ''">
+			`id`, 
+			</if>
 			<if test="userId != null and userId != ''">
 			`user_id`, 
 			</if>
@@ -98,6 +101,9 @@
 			</if>
 		)
 		VALUES(
+			<if test="id != null and id != ''">
+			#{id,jdbcType=BIGINT}, 
+			</if>
 			<if test="userId != null and userId != ''">
 			#{userId,jdbcType=BIGINT}, 
 			</if>

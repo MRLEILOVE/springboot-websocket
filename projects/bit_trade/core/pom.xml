@@ -22,6 +22,21 @@
 	
 	<dependencyManagement>
 		<dependencies>
+			<dependency>
+				<groupId>com.bittrade</groupId>
+				<artifactId>core-common</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.bittrade</groupId>
+				<artifactId>core-framework</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.bittrade</groupId>
+				<artifactId>core-tool</artifactId>
+				<version>${project.version}</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 	
@@ -34,6 +49,10 @@
 			<optional>true</optional> 这个需要为 true 热部署才有效
 		</dependency> -->
 		
+		<dependency>
+			<groupId>com.bittrade</groupId>
+			<artifactId>core-common</artifactId>
+		</dependency>
 	</dependencies>
 
 </project>

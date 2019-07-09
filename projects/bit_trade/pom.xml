@@ -58,22 +58,6 @@
 			</dependency>
 
 			<dependency>
-				<groupId>com.bittrade</groupId>
-				<artifactId>core-common</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.bittrade</groupId>
-				<artifactId>core-framework</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.bittrade</groupId>
-				<artifactId>core-tool</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-
-			<dependency>
 				<groupId>com.baomidou</groupId>
 				<artifactId>mybatis-plus-boot-starter</artifactId>
 				<version>3.1.1</version>

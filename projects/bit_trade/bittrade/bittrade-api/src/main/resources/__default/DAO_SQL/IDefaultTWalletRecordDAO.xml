@@ -10,6 +10,7 @@
 		<id javaType="long" property="id" jdbcType="BIGINT" column="id" />
 		<result javaType="long" property="userId" jdbcType="BIGINT" column="user_id" />
 		<result javaType="int" property="currencyId" jdbcType="INTEGER" column="currency_id" />
+		<result javaType="String" property="token" jdbcType="VARCHAR" column="token" />
 		<result javaType="java.math.BigDecimal" property="beforeAmount" jdbcType="DECIMAL" column="before_amount" />
 		<result javaType="java.math.BigDecimal" property="afterAmount" jdbcType="DECIMAL" column="after_amount" />
 		<result javaType="java.math.BigDecimal" property="changeAmount" jdbcType="DECIMAL" column="change_amount" />
@@ -23,6 +24,7 @@
 	<sql id="Base_Column_List">
 		`user_id` AS userId, 
 		`currency_id` AS currencyId, 
+		`token` AS token, 
 		`before_amount` AS beforeAmount, 
 		`after_amount` AS afterAmount, 
 		`change_amount` AS changeAmount, 
@@ -33,8 +35,8 @@
 	</sql>
 	
 	<insert id="add" parameterType="com.bittrade.pojo.model.TWalletRecord">
-		INSERT INTO t_wallet_record(`user_id`, `currency_id`, `before_amount`, `after_amount`, `change_amount`, `type`, `entrust_record_id`, `version`, `create_time`)
-		VALUES(#{userId,jdbcType=BIGINT}, #{currencyId,jdbcType=INTEGER}, #{beforeAmount,jdbcType=DECIMAL}, #{afterAmount,jdbcType=DECIMAL}, #{changeAmount,jdbcType=DECIMAL}, #{type,jdbcType=INTEGER}, #{entrustRecordId,jdbcType=BIGINT}, #{version,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP})
+		INSERT INTO t_wallet_record(`user_id`, `currency_id`, `token`, `before_amount`, `after_amount`, `change_amount`, `type`, `entrust_record_id`, `version`, `create_time`)
+		VALUES(#{userId,jdbcType=BIGINT}, #{currencyId,jdbcType=INTEGER}, #{token,jdbcType=VARCHAR}, #{beforeAmount,jdbcType=DECIMAL}, #{afterAmount,jdbcType=DECIMAL}, #{changeAmount,jdbcType=DECIMAL}, #{type,jdbcType=INTEGER}, #{entrustRecordId,jdbcType=BIGINT}, #{version,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP})
 	</insert>
 	
 	<insert id="addWithSelective" parameterType="com.bittrade.pojo.model.TWalletRecord">
@@ -44,6 +46,9 @@
 			</if>
 			<if test="currencyId != null and currencyId != ''">
 			`currency_id`, 
+			</if>
+			<if test="token != null and token != ''">
+			`token`, 
 			</if>
 			<if test="beforeAmount != null and beforeAmount != ''">
 			`before_amount`, 
@@ -73,6 +78,9 @@
 			</if>
 			<if test="currencyId != null and currencyId != ''">
 			#{currencyId,jdbcType=INTEGER}, 
+			</if>
+			<if test="token != null and token != ''">
+			#{token,jdbcType=VARCHAR}, 
 			</if>
 			<if test="beforeAmount != null and beforeAmount != ''">
 			#{beforeAmount,jdbcType=DECIMAL}, 
@@ -113,6 +121,9 @@
 			<if test="currencyId != null and currencyId != ''">
 			`currency_id` = #{currencyId,jdbcType=INTEGER} AND
 			</if>
+			<if test="token != null and token != ''">
+			`token` = #{token,jdbcType=VARCHAR} AND
+			</if>
 			<if test="beforeAmount != null and beforeAmount != ''">
 			`before_amount` = #{beforeAmount,jdbcType=DECIMAL} AND
 			</if>
@@ -141,6 +152,7 @@
 		SET
 			`user_id` = #{userId,jdbcType=BIGINT}, 
 			`currency_id` = #{currencyId,jdbcType=INTEGER}, 
+			`token` = #{token,jdbcType=VARCHAR}, 
 			`before_amount` = #{beforeAmount,jdbcType=DECIMAL}, 
 			`after_amount` = #{afterAmount,jdbcType=DECIMAL}, 
 			`change_amount` = #{changeAmount,jdbcType=DECIMAL}, 
@@ -160,6 +172,9 @@
 			</if>
 			<if test="currencyId != null and currencyId != ''">
 			`currency_id` = #{currencyId,jdbcType=INTEGER}, 
+			</if>
+			<if test="token != null and token != ''">
+			`token` = #{token,jdbcType=VARCHAR}, 
 			</if>
 			<if test="beforeAmount != null and beforeAmount != ''">
 			`before_amount` = #{beforeAmount,jdbcType=DECIMAL}, 
@@ -191,6 +206,7 @@
 		SET
 			`user_id` = #{tWalletRecord.userId,jdbcType=BIGINT}, 
 			`currency_id` = #{tWalletRecord.currencyId,jdbcType=INTEGER}, 
+			`token` = #{tWalletRecord.token,jdbcType=VARCHAR}, 
 			`before_amount` = #{tWalletRecord.beforeAmount,jdbcType=DECIMAL}, 
 			`after_amount` = #{tWalletRecord.afterAmount,jdbcType=DECIMAL}, 
 			`change_amount` = #{tWalletRecord.changeAmount,jdbcType=DECIMAL}, 
@@ -204,6 +220,9 @@
 			</if>
 			<if test="condiTWalletRecord.currencyId != null and condiTWalletRecord.currencyId != ''">
 			`currency_id` = #{condiTWalletRecord.currencyId,jdbcType=INTEGER} AND
+			</if>
+			<if test="condiTWalletRecord.token != null and condiTWalletRecord.token != ''">
+			`token` = #{condiTWalletRecord.token,jdbcType=VARCHAR} AND
 			</if>
 			<if test="condiTWalletRecord.beforeAmount != null and condiTWalletRecord.beforeAmount != ''">
 			`before_amount` = #{condiTWalletRecord.beforeAmount,jdbcType=DECIMAL} AND
@@ -237,6 +256,9 @@
 			<if test="currencyId != null and currencyId != ''">
 			`currency_id` = #{tWalletRecord.currencyId,jdbcType=INTEGER}, 
 			</if>
+			<if test="token != null and token != ''">
+			`token` = #{tWalletRecord.token,jdbcType=VARCHAR}, 
+			</if>
 			<if test="beforeAmount != null and beforeAmount != ''">
 			`before_amount` = #{tWalletRecord.beforeAmount,jdbcType=DECIMAL}, 
 			</if>
@@ -264,6 +286,9 @@
 			</if>
 			<if test="condiTWalletRecord.currencyId != null and condiTWalletRecord.currencyId != ''">
 			`currency_id` = #{condiTWalletRecord.currencyId,jdbcType=INTEGER} AND
+			</if>
+			<if test="condiTWalletRecord.token != null and condiTWalletRecord.token != ''">
+			`token` = #{condiTWalletRecord.token,jdbcType=VARCHAR} AND
 			</if>
 			<if test="condiTWalletRecord.beforeAmount != null and condiTWalletRecord.beforeAmount != ''">
 			`before_amount` = #{condiTWalletRecord.beforeAmount,jdbcType=DECIMAL} AND
@@ -293,6 +318,7 @@
 			`id`, 
 			`user_id`, 
 			`currency_id`, 
+			`token`, 
 			`before_amount`, 
 			`after_amount`, 
 			`change_amount`, 
@@ -311,6 +337,7 @@
 			`id`, 
 			`user_id`, 
 			`currency_id`, 
+			`token`, 
 			`before_amount`, 
 			`after_amount`, 
 			`change_amount`, 
@@ -325,6 +352,9 @@
 			</if>
 			<if test="currencyId != null and currencyId != ''">
 			AND `currency_id` = #{currencyId,jdbcType=INTEGER}
+			</if>
+			<if test="token != null and token != ''">
+			AND `token` = #{token,jdbcType=VARCHAR}
 			</if>
 			<if test="beforeAmount != null and beforeAmount != ''">
 			AND `before_amount` = #{beforeAmount,jdbcType=DECIMAL}
@@ -355,6 +385,7 @@
 			`id`, 
 			`user_id`, 
 			`currency_id`, 
+			`token`, 
 			`before_amount`, 
 			`after_amount`, 
 			`change_amount`, 
@@ -374,6 +405,9 @@
 			</if>
 			<if test="tWalletRecord.currencyId != null and tWalletRecord.currencyId != ''">
 			AND `currency_id` = #{tWalletRecord.currencyId,jdbcType=INTEGER}
+			</if>
+			<if test="tWalletRecord.token != null and tWalletRecord.token != ''">
+			AND `token` = #{tWalletRecord.token,jdbcType=VARCHAR}
 			</if>
 			<if test="tWalletRecord.beforeAmount != null and tWalletRecord.beforeAmount != ''">
 			AND `before_amount` = #{tWalletRecord.beforeAmount,jdbcType=DECIMAL}
@@ -404,6 +438,7 @@
 			`id`, 
 			`user_id`, 
 			`currency_id`, 
+			`token`, 
 			`before_amount`, 
 			`after_amount`, 
 			`change_amount`, 
@@ -418,6 +453,9 @@
 			</if>
 			<if test="tWalletRecord.currencyId != null and tWalletRecord.currencyId != ''">
 			AND `currency_id` = #{tWalletRecord.currencyId,jdbcType=INTEGER}
+			</if>
+			<if test="tWalletRecord.token != null and tWalletRecord.token != ''">
+			AND `token` = #{tWalletRecord.token,jdbcType=VARCHAR}
 			</if>
 			<if test="tWalletRecord.beforeAmount != null and tWalletRecord.beforeAmount != ''">
 			AND `before_amount` = #{tWalletRecord.beforeAmount,jdbcType=DECIMAL}

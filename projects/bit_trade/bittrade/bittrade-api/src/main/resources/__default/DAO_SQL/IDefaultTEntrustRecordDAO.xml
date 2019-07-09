@@ -19,7 +19,7 @@
 		<result javaType="java.math.BigDecimal" property="fees" jdbcType="DECIMAL" column="fees" />
 		<result javaType="int" property="currencyTradeId" jdbcType="INTEGER" column="currency_trade_id" />
 		<result javaType="byte" property="isActive" jdbcType="INTEGER" column="is_active" />
-		<result javaType="int" property="entrustType" jdbcType="INTEGER" column="entrust_type" />
+		<result javaType="int" property="entrustDirection" jdbcType="INTEGER" column="entrust_direction" />
 		<result javaType="int" property="version" jdbcType="INTEGER" column="version" />
 		<result javaType="java.util.Date" property="createTime" jdbcType="TIMESTAMP" column="create_time" />
 	</resultMap>
@@ -37,18 +37,21 @@
 		`fees` AS fees, 
 		`currency_trade_id` AS currencyTradeId, 
 		`is_active` AS isActive, 
-		`entrust_type` AS entrustType, 
+		`entrust_direction` AS entrustDirection, 
 		`version` AS version, 
 		`create_time` AS createTime
 	</sql>
 	
 	<insert id="add" parameterType="com.bittrade.pojo.model.TEntrustRecord">
-		INSERT INTO t_entrust_record(`user_id`, `rival_user_id`, `entrust_id`, `rival_entrust_id`, `amount`, `price`, `count`, `rate`, `fees`, `currency_trade_id`, `is_active`, `entrust_type`, `version`, `create_time`)
-		VALUES(#{userId,jdbcType=BIGINT}, #{rivalUserId,jdbcType=BIGINT}, #{entrustId,jdbcType=BIGINT}, #{rivalEntrustId,jdbcType=BIGINT}, #{amount,jdbcType=DECIMAL}, #{price,jdbcType=DECIMAL}, #{count,jdbcType=DECIMAL}, #{rate,jdbcType=DECIMAL}, #{fees,jdbcType=DECIMAL}, #{currencyTradeId,jdbcType=INTEGER}, #{isActive,jdbcType=INTEGER}, #{entrustType,jdbcType=INTEGER}, #{version,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP})
+		INSERT INTO t_entrust_record(`id`, `user_id`, `rival_user_id`, `entrust_id`, `rival_entrust_id`, `amount`, `price`, `count`, `rate`, `fees`, `currency_trade_id`, `is_active`, `entrust_direction`, `version`, `create_time`)
+		VALUES(#{id,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{rivalUserId,jdbcType=BIGINT}, #{entrustId,jdbcType=BIGINT}, #{rivalEntrustId,jdbcType=BIGINT}, #{amount,jdbcType=DECIMAL}, #{price,jdbcType=DECIMAL}, #{count,jdbcType=DECIMAL}, #{rate,jdbcType=DECIMAL}, #{fees,jdbcType=DECIMAL}, #{currencyTradeId,jdbcType=INTEGER}, #{isActive,jdbcType=INTEGER}, #{entrustDirection,jdbcType=INTEGER}, #{version,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP})
 	</insert>
 	
 	<insert id="addWithSelective" parameterType="com.bittrade.pojo.model.TEntrustRecord">
 		INSERT INTO t_entrust_record(
+			<if test="id != null and id != ''">
+			`id`, 
+			</if>
 			<if test="userId != null and userId != ''">
 			`user_id`, 
 			</if>
@@ -82,8 +85,8 @@
 			<if test="isActive != null and isActive != ''">
 			`is_active`, 
 			</if>
-			<if test="entrustType != null and entrustType != ''">
-			`entrust_type`, 
+			<if test="entrustDirection != null and entrustDirection != ''">
+			`entrust_direction`, 
 			</if>
 			<if test="version != null and version != ''">
 			`version`, 
@@ -93,6 +96,9 @@
 			</if>
 		)
 		VALUES(
+			<if test="id != null and id != ''">
+			#{id,jdbcType=BIGINT}, 
+			</if>
 			<if test="userId != null and userId != ''">
 			#{userId,jdbcType=BIGINT}, 
 			</if>
@@ -126,8 +132,8 @@
 			<if test="isActive != null and isActive != ''">
 			#{isActive,jdbcType=INTEGER}, 
 			</if>
-			<if test="entrustType != null and entrustType != ''">
-			#{entrustType,jdbcType=INTEGER}, 
+			<if test="entrustDirection != null and entrustDirection != ''">
+			#{entrustDirection,jdbcType=INTEGER}, 
 			</if>
 			<if test="version != null and version != ''">
 			#{version,jdbcType=INTEGER}, 
@@ -180,8 +186,8 @@
 			<if test="isActive != null and isActive != ''">
 			`is_active` = #{isActive,jdbcType=INTEGER} AND
 			</if>
-			<if test="entrustType != null and entrustType != ''">
-			`entrust_type` = #{entrustType,jdbcType=INTEGER} AND
+			<if test="entrustDirection != null and entrustDirection != ''">
+			`entrust_direction` = #{entrustDirection,jdbcType=INTEGER} AND
 			</if>
 			<if test="version != null and version != ''">
 			`version` = #{version,jdbcType=INTEGER} AND
@@ -205,7 +211,7 @@
 			`fees` = #{fees,jdbcType=DECIMAL}, 
 			`currency_trade_id` = #{currencyTradeId,jdbcType=INTEGER}, 
 			`is_active` = #{isActive,jdbcType=INTEGER}, 
-			`entrust_type` = #{entrustType,jdbcType=INTEGER}, 
+			`entrust_direction` = #{entrustDirection,jdbcType=INTEGER}, 
 			`version` = #{version,jdbcType=INTEGER}, 
 			`create_time` = #{createTime,jdbcType=TIMESTAMP}
 		WHERE 
@@ -248,8 +254,8 @@
 			<if test="isActive != null and isActive != ''">
 			`is_active` = #{isActive,jdbcType=INTEGER}, 
 			</if>
-			<if test="entrustType != null and entrustType != ''">
-			`entrust_type` = #{entrustType,jdbcType=INTEGER}, 
+			<if test="entrustDirection != null and entrustDirection != ''">
+			`entrust_direction` = #{entrustDirection,jdbcType=INTEGER}, 
 			</if>
 			<if test="version != null and version != ''">
 			`version` = #{version,jdbcType=INTEGER}, 
@@ -275,7 +281,7 @@
 			`fees` = #{tEntrustRecord.fees,jdbcType=DECIMAL}, 
 			`currency_trade_id` = #{tEntrustRecord.currencyTradeId,jdbcType=INTEGER}, 
 			`is_active` = #{tEntrustRecord.isActive,jdbcType=INTEGER}, 
-			`entrust_type` = #{tEntrustRecord.entrustType,jdbcType=INTEGER}, 
+			`entrust_direction` = #{tEntrustRecord.entrustDirection,jdbcType=INTEGER}, 
 			`version` = #{tEntrustRecord.version,jdbcType=INTEGER}, 
 			`create_time` = #{tEntrustRecord.createTime,jdbcType=TIMESTAMP}
 		WHERE 
@@ -312,8 +318,8 @@
 			<if test="condiTEntrustRecord.isActive != null and condiTEntrustRecord.isActive != ''">
 			`is_active` = #{condiTEntrustRecord.isActive,jdbcType=INTEGER} AND
 			</if>
-			<if test="condiTEntrustRecord.entrustType != null and condiTEntrustRecord.entrustType != ''">
-			`entrust_type` = #{condiTEntrustRecord.entrustType,jdbcType=INTEGER} AND
+			<if test="condiTEntrustRecord.entrustDirection != null and condiTEntrustRecord.entrustDirection != ''">
+			`entrust_direction` = #{condiTEntrustRecord.entrustDirection,jdbcType=INTEGER} AND
 			</if>
 			<if test="condiTEntrustRecord.version != null and condiTEntrustRecord.version != ''">
 			`version` = #{condiTEntrustRecord.version,jdbcType=INTEGER} AND
@@ -359,8 +365,8 @@
 			<if test="isActive != null and isActive != ''">
 			`is_active` = #{tEntrustRecord.isActive,jdbcType=INTEGER}, 
 			</if>
-			<if test="entrustType != null and entrustType != ''">
-			`entrust_type` = #{tEntrustRecord.entrustType,jdbcType=INTEGER}, 
+			<if test="entrustDirection != null and entrustDirection != ''">
+			`entrust_direction` = #{tEntrustRecord.entrustDirection,jdbcType=INTEGER}, 
 			</if>
 			<if test="version != null and version != ''">
 			`version` = #{tEntrustRecord.version,jdbcType=INTEGER}, 
@@ -402,8 +408,8 @@
 			<if test="condiTEntrustRecord.isActive != null and condiTEntrustRecord.isActive != ''">
 			`is_active` = #{condiTEntrustRecord.isActive,jdbcType=INTEGER} AND
 			</if>
-			<if test="condiTEntrustRecord.entrustType != null and condiTEntrustRecord.entrustType != ''">
-			`entrust_type` = #{condiTEntrustRecord.entrustType,jdbcType=INTEGER} AND
+			<if test="condiTEntrustRecord.entrustDirection != null and condiTEntrustRecord.entrustDirection != ''">
+			`entrust_direction` = #{condiTEntrustRecord.entrustDirection,jdbcType=INTEGER} AND
 			</if>
 			<if test="condiTEntrustRecord.version != null and condiTEntrustRecord.version != ''">
 			`version` = #{condiTEntrustRecord.version,jdbcType=INTEGER} AND
@@ -427,7 +433,7 @@
 			`fees`, 
 			`currency_trade_id`, 
 			`is_active`, 
-			`entrust_type`, 
+			`entrust_direction`, 
 			`version`, 
 			`create_time`
 		FROM t_entrust_record
@@ -450,7 +456,7 @@
 			`fees`, 
 			`currency_trade_id`, 
 			`is_active`, 
-			`entrust_type`, 
+			`entrust_direction`, 
 			`version`, 
 			`create_time`
 		FROM t_entrust_record
@@ -488,8 +494,8 @@
 			<if test="isActive != null and isActive != ''">
 			AND `is_active` = #{isActive,jdbcType=INTEGER}
 			</if>
-			<if test="entrustType != null and entrustType != ''">
-			AND `entrust_type` = #{entrustType,jdbcType=INTEGER}
+			<if test="entrustDirection != null and entrustDirection != ''">
+			AND `entrust_direction` = #{entrustDirection,jdbcType=INTEGER}
 			</if>
 			<if test="version != null and version != ''">
 			AND `version` = #{version,jdbcType=INTEGER}
@@ -514,7 +520,7 @@
 			`fees`, 
 			`currency_trade_id`, 
 			`is_active`, 
-			`entrust_type`, 
+			`entrust_direction`, 
 			`version`, 
 			`create_time`
 		FROM t_entrust_record
@@ -557,8 +563,8 @@
 			<if test="tEntrustRecord.isActive != null and tEntrustRecord.isActive != ''">
 			AND `is_active` = #{tEntrustRecord.isActive,jdbcType=INTEGER}
 			</if>
-			<if test="tEntrustRecord.entrustType != null and tEntrustRecord.entrustType != ''">
-			AND `entrust_type` = #{tEntrustRecord.entrustType,jdbcType=INTEGER}
+			<if test="tEntrustRecord.entrustDirection != null and tEntrustRecord.entrustDirection != ''">
+			AND `entrust_direction` = #{tEntrustRecord.entrustDirection,jdbcType=INTEGER}
 			</if>
 			<if test="tEntrustRecord.version != null and tEntrustRecord.version != ''">
 			AND `version` = #{tEntrustRecord.version,jdbcType=INTEGER}
@@ -583,7 +589,7 @@
 			`fees`, 
 			`currency_trade_id`, 
 			`is_active`, 
-			`entrust_type`, 
+			`entrust_direction`, 
 			`version`, 
 			`create_time`
 		FROM t_entrust_record
@@ -621,8 +627,8 @@
 			<if test="tEntrustRecord.isActive != null and tEntrustRecord.isActive != ''">
 			AND `is_active` = #{tEntrustRecord.isActive,jdbcType=INTEGER}
 			</if>
-			<if test="tEntrustRecord.entrustType != null and tEntrustRecord.entrustType != ''">
-			AND `entrust_type` = #{tEntrustRecord.entrustType,jdbcType=INTEGER}
+			<if test="tEntrustRecord.entrustDirection != null and tEntrustRecord.entrustDirection != ''">
+			AND `entrust_direction` = #{tEntrustRecord.entrustDirection,jdbcType=INTEGER}
 			</if>
 			<if test="tEntrustRecord.version != null and tEntrustRecord.version != ''">
 			AND `version` = #{tEntrustRecord.version,jdbcType=INTEGER}

@@ -1,4 +1,4 @@
-package com.bittrade.common.constant;
+package com.core.common.constant;
 
 /**
  * 比较的结果值常量区

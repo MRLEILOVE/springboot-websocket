@@ -1,5 +1,7 @@
 package com.core.framework.DTO;
 
+import com.core.common.constant.IConstant;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,17 +19,18 @@ import lombok.NoArgsConstructor;
 public class ReturnDTO<T> {
 
 	/**
-	 * 成功
+	 * 错误码
 	 */
-	private static final int SUCCESS = 0;
-
-	/**
-	 * 失败
-	 */
-	private static final int FAILURE = -1;
-
 	private int code;
+	
+	/**
+	 * 消息
+	 */
 	private String msg;
+	
+	/**
+	 * 数据
+	 */
 	private T data;
 	
 	/**
@@ -39,7 +42,7 @@ public class ReturnDTO<T> {
 	public static final <T> ReturnDTO<T> ok(T data) {
 		ReturnDTO<T> ret = new ReturnDTO<T>();
 		
-		ret.setCode(SUCCESS);
+		ret.setCode(IConstant.SUCCESS);
 		ret.setData(data);
 		
 		return ret;
@@ -54,7 +57,7 @@ public class ReturnDTO<T> {
 	public static final <T> ReturnDTO<T> error(String msg) {
 		ReturnDTO<T> ret = new ReturnDTO<T>();
 		
-		ret.setCode(FAILURE);
+		ret.setCode(IConstant.FAILURE);
 		ret.setMsg(msg);
 		
 		return ret;

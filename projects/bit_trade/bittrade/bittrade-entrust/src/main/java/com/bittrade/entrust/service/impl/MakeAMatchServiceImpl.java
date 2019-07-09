@@ -11,10 +11,10 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.locks.ReentrantLock;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.bittrade.api.service.ITEntrustRecordService;
 import com.bittrade.api.service.ITEntrustService;
-import com.bittrade.common.constant.ICompareResultConstant;
 import com.bittrade.common.constant.IConstant;
 import com.bittrade.common.enums.EntrustDirectionEnumer;
 import com.bittrade.common.enums.EntrustStatusEnumer;
@@ -25,8 +25,11 @@ import com.bittrade.entrust.dao.ITEntrustRecordDAO;
 import com.bittrade.entrust.service.IMakeAMatchService;
 import com.bittrade.pojo.model.TEntrust;
 import com.bittrade.pojo.model.TEntrustRecord;
+import com.core.common.constant.ICompareResultConstant;
+import com.core.tool.BigDecimalUtil;
 import com.core.tool.SnowFlake;
 
+@Service
 public class MakeAMatchServiceImpl implements IMakeAMatchService {
 	
 	/**
@@ -49,7 +52,8 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 	 */
 	private static final ArrayList<TEntrust> LIST_SELL_LIMIT = new ArrayList<>();
 	
-	private static final SnowFlake SNOW_FLAKE = new SnowFlake(1, 1);
+	private static final SnowFlake SNOW_FLAKE__ENTRUST = new SnowFlake(1, 1);
+	private static final SnowFlake SNOW_FLAKE__ENTRUST_RECORD = new SnowFlake(1, 1);
 	
 	@Autowired
 	private ITEntrustService<ITEntrustDAO> entrustService;
@@ -59,7 +63,7 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 	/**
 	 * 行情价
 	 */
-	private static final BigDecimal LINE_PRICE = new BigDecimal(0);
+	private static /* final */BigDecimal LINE_PRICE = new BigDecimal(0);
 	
 	private static final ReentrantLock LOCK_BUY = new ReentrantLock();
 	private static final ReentrantLock LOCK_SELL = new ReentrantLock();
@@ -119,111 +123,218 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 	}
 	
 	/**
-	 * 撮合
-	 * @param entrust 市价类型
-	 * @param list_market
-	 * @param list_limit
+	 * 获取成交价。
+	 * @param price
+	 * @return
 	 */
-	private void matchSellWithBuyMarket(TEntrust entrust, List<TEntrust> list_market, List<TEntrust> list_limit) {
-		if (list_market.size() > 0) {
-			for (int i = list_market.size() - 1; i > -1; i--) { // 撮合市价
-				TEntrust entrust_market = list_market.get(i);
+	private BigDecimal getPrice(BigDecimal price) {
+		return BigDecimalUtil.isNullOrZero(price) ? LINE_PRICE : price;
+	}
+	
+	/**
+	 * 获取成交价根据行情价。
+	 * @param price_buy
+	 * @param price_sell
+	 * @return
+	 */
+	private BigDecimal getPriceWithLinePrice(BigDecimal price_buy, BigDecimal price_sell) {
+		return price_buy.compareTo(price_sell) >= ICompareResultConstant.EQUAL ?
+				price_buy.compareTo(LINE_PRICE) >= ICompareResultConstant.EQUAL && LINE_PRICE.compareTo(price_sell) >= ICompareResultConstant.EQUAL ?
+						LINE_PRICE : 
+							LINE_PRICE.compareTo(price_buy) == ICompareResultConstant.GREATER_THAN ? price_buy : price_sell
+				:
+				null
+				;
+	}
+	
+	/**
+	 * （市市、限限、市限、限市）四种类型  获取成交价。
+	 * @param entrust_before
+	 * @param entrust_after
+	 * @return
+	 */
+	private BigDecimal getPrice(TEntrust entrust_before, TEntrust entrust_after) {
+		BigDecimal bd_price = null;
+		
+		BigDecimal bd_beforePrice = getPrice(entrust_before.getPrice()), bd_afterPrice = getPrice(entrust_after.getPrice());
+		if (
+				entrust_before.getEntrustDirection() == EntrustDirectionEnumer.BUY.getCode()
+				&& 
+				entrust_after.getEntrustDirection() == EntrustDirectionEnumer.SELL.getCode()
+				) {
+			bd_price = getPriceWithLinePrice(bd_beforePrice, bd_afterPrice);
+		}
+		if (
+				entrust_before.getEntrustDirection() == EntrustDirectionEnumer.SELL.getCode()
+				&& 
+				entrust_after.getEntrustDirection() == EntrustDirectionEnumer.BUY.getCode()
+				) {
+			bd_price = getPriceWithLinePrice(bd_afterPrice, bd_beforePrice);
+		}
+		
+		return bd_price;
+	}
+	
+	private void matchWithBuy(TEntrust entrust_before, TEntrust entrust_after, BigDecimal price) {
+		BigDecimal count;
+		BigDecimal amount;
+		int i_compareTo = entrust_before.getCount().compareTo(entrust_after.getCount());
+		if (i_compareTo == ICompareResultConstant.LESS_THAN) {
+			count = entrust_before.getCount();
+		} else if (i_compareTo == 0) {
+			count = entrust_before.getCount();
+		} else {
+			count = entrust_after.getCount();
+		}
+		amount = price.multiply(count);
+		
+		// 修改委托
+		{
+			entrust_before.setLeftCount(entrust_before.getCount().subtract(count));
+			entrust_before.setSuccessAmount(entrust_before.getSuccessAmount().add(amount));
+			entrustService.updateOnMatch(
+					entrust_before.getSuccessAmount(), 
+					entrust_before.getLeftCount(), 
+					BigDecimalUtil.isZero(entrust_before.getLeftCount()) ? EntrustStatusEnumer.FINISH.getCode() : EntrustStatusEnumer.PART_FINISH.getCode(), 
+					entrust_before.getId()
+					);
+//			System.out.println(
+//					"entrust_before.getSuccessAmount()=" + entrust_before.getSuccessAmount() + ", " + 
+//					"entrust_before.getLeftCount()=" + entrust_before.getLeftCount() + ", " + 
+//					(BigDecimalUtil.isZero(entrust_before.getLeftCount()) ? EntrustStatusEnumer.FINISH.getCode() : EntrustStatusEnumer.PART_FINISH.getCode()) + ", " + 
+//					entrust_before.getId()
+//					);
+		}
+		{
+			entrust_after.setLeftCount(entrust_after.getCount().subtract(count));
+			entrust_after.setSuccessAmount(entrust_after.getSuccessAmount().add(amount));
+			entrustService.updateOnMatch(
+					entrust_after.getSuccessAmount(), 
+					entrust_after.getLeftCount(), 
+					BigDecimalUtil.isZero(entrust_after.getLeftCount()) ? EntrustStatusEnumer.FINISH.getCode() : EntrustStatusEnumer.PART_FINISH.getCode(), 
+					entrust_after.getId()
+					);
+//			System.out.println(
+//					"entrust_after.getSuccessAmount()=" + entrust_after.getSuccessAmount() + ", " + 
+//					"entrust_after.getLeftCount()=" + entrust_after.getLeftCount() + ", " + 
+//					(BigDecimalUtil.isZero(entrust_after.getLeftCount()) ? EntrustStatusEnumer.FINISH.getCode() : EntrustStatusEnumer.PART_FINISH.getCode()) + ", " + 
+//					entrust_after.getId()
+//					);
+		}
+		
+		// 新增撮合
+		// 主动
+		TEntrustRecord entrustRecord_before = new TEntrustRecord();
+		entrustRecord_before.setId(SNOW_FLAKE__ENTRUST_RECORD.nextId());
+		entrustRecord_before.setUserId(entrust_before.getUserId());
+		entrustRecord_before.setRivalUserId(entrust_after.getUserId());
+		entrustRecord_before.setEntrustId(entrust_before.getId());
+		entrustRecord_before.setRivalEntrustId(entrust_after.getId());
+		entrustRecord_before.setPrice(price);
+		entrustRecord_before.setCount(count);
+		entrustRecord_before.setAmount(amount);
+		entrustRecord_before.setCurrencyTradeId(entrust_before.getCurrencyTradeId());
+		entrustRecord_before.setIsActive(IsActiveEnumer.ACTIVE.getCode());
+		entrustRecord_before.setEntrustDirection(entrust_before.getEntrustDirection());
+		entrustRecord_before.setVersion(0);
+		entrustRecordService.add(entrustRecord_before);
+//		System.out.println(entrustRecord_before);
+		// 被动
+		TEntrustRecord entrustRecord_after = new TEntrustRecord();
+		entrustRecord_after.setId(SNOW_FLAKE__ENTRUST_RECORD.nextId());
+		entrustRecord_after.setUserId(entrust_after.getUserId());
+		entrustRecord_after.setRivalUserId(entrust_before.getUserId());
+		entrustRecord_after.setEntrustId(entrust_after.getId());
+		entrustRecord_after.setRivalEntrustId(entrust_before.getId());
+		entrustRecord_after.setPrice(price);
+		entrustRecord_after.setCount(count);
+		entrustRecord_after.setAmount(amount);
+		entrustRecord_after.setCurrencyTradeId(entrust_after.getCurrencyTradeId());
+		entrustRecord_after.setIsActive(IsActiveEnumer.UNACTIVE.getCode());
+		entrustRecord_after.setEntrustDirection(entrust_after.getEntrustDirection());
+		entrustRecord_after.setVersion(0);
+		entrustRecordService.add(entrustRecord_after);
+//		System.out.println(entrustRecord_after);
+	}
+	
+	/**
+	 * 撮合
+	 * <p>
+	 *   当然程序也可以写成专门针对某种类型的操作， 比如：市市、市限、限限、限市。 <br />
+	 *   这样程序会多写一份类似的， 少部分一样， 但是准确从效率来讲会高一些。 不过现在应该这个可以忽略不计。
+	 * </p>
+	 * @param entrust 市价或者限价类型
+	 * @param list
+	 */
+	private void matchWith(TEntrust entrust, List<TEntrust> list) {
+		if (
+				entrust.getLeftCount().compareTo(BigDecimal.ZERO) == ICompareResultConstant.GREATER_THAN // 还有未成交数
+				&& 
+				list.size() > 0
+				) {
+			for (int i = list.size() - 1; i > -1; i--) {
+				TEntrust entrust_ = list.get(i);
 				
-				int i_compareTo = entrust.getCount().compareTo(entrust_market.getCount());
-				if (i_compareTo == 1) {
-					BigDecimal amount = LINE_PRICE.multiply(entrust_market.getCount());
+				BigDecimal bd_price = getPrice(entrust_, entrust);
+				if (bd_price != null) {
+					matchWithBuy(entrust_, entrust, bd_price);
 					
-					entrustService.updateOnMatch(
-							entrust.getSuccessAmount().add(amount), 
-							entrust.getCount().subtract(entrust_market.getCount()), 
-							EntrustStatusEnumer.PART_FINISH.getCode(), 
-							entrust.getId()
-							);
-					entrustService.updateOnMatch(
-							amount, 
-							new BigDecimal(0), 
-							EntrustStatusEnumer.FINISH.getCode(), 
-							entrust_market.getId()
-							);
-					
-					TEntrustRecord entrustRecord_buy = new TEntrustRecord();
-					entrustRecord_buy.setId(SNOW_FLAKE.nextId());
-					entrustRecord_buy.setUserId(entrust.getUserId());
-					entrustRecord_buy.setRivalUserId(entrust_market.getUserId());
-					entrustRecord_buy.setEntrustId(entrust.getId());
-					entrustRecord_buy.setRivalEntrustId(entrust_market.getId());
-					entrustRecord_buy.setPrice(LINE_PRICE);
-					entrustRecord_buy.setCount(entrust_market.getCount());
-					entrustRecord_buy.setAmount(amount);
-					entrustRecord_buy.setCurrencyTradeId(entrust.getCurrencyTradeId());
-					entrustRecord_buy.setIsActive(IsActiveEnumer.UNACTIVE.getCode());
-					entrustRecord_buy.setEntrustDirection(EntrustDirectionEnumer.BUY.getCode());
-					entrustRecord_buy.setVersion(0);
-					entrustRecordService.add(entrustRecord_buy);
-					
-					TEntrustRecord entrustRecord_sell = new TEntrustRecord();
-					entrustRecord_sell.setId(SNOW_FLAKE.nextId());
-					entrustRecord_sell.setUserId(entrust_market.getUserId());
-					entrustRecord_sell.setRivalUserId(entrust.getUserId());
-					entrustRecord_sell.setEntrustId(entrust_market.getId());
-					entrustRecord_sell.setRivalEntrustId(entrust.getId());
-					entrustRecord_sell.setPrice(LINE_PRICE);
-					entrustRecord_sell.setCount(entrust_market.getCount());
-					entrustRecord_sell.setAmount(amount);
-					entrustRecord_sell.setCurrencyTradeId(entrust_market.getCurrencyTradeId());
-					entrustRecord_sell.setIsActive(IsActiveEnumer.ACTIVE.getCode());
-					entrustRecord_sell.setEntrustDirection(EntrustDirectionEnumer.SELL.getCode());
-					entrustRecord_sell.setVersion(0);
-					entrustRecordService.add(entrustRecord_sell);
-				} else if (i_compareTo == 0) {
-					
+					if (entrust_.getLeftCount().compareTo(BigDecimal.ZERO) == ICompareResultConstant.EQUAL) {
+						list.remove(i);
+					}
+					if (entrust.getLeftCount().compareTo(BigDecimal.ZERO) == ICompareResultConstant.EQUAL) {
+						break;
+					}
 				}
 			}
 		}
-		if (
-				entrust.getCount().compareTo(BigDecimal.ZERO) == ICompareResultConstant.GREATER_THAN
-				&& 
-				list_limit.size() > 0
-				) {
-			for (int i = list_limit.size() - 1; i > -1; i--) { // 撮合限价
-				TEntrust entrust_limit = list_limit.get(i);
-				
-			}
-		}
 	}
 	
-	private void addToBuyMarket(int idx, TEntrust entrust, List<TEntrust> list) {
-		if (idx == list.size()) { // isFirst
-			matchSellWithBuyMarket(entrust, LIST_SELL_MARKET, LIST_SELL_LIMIT); // 和对手盘（卖）进行撮合。
-			if (entrust.getCount().compareTo(BigDecimal.ZERO) == ICompareResultConstant.GREATER_THAN) { // 有剩余的则加入列表。
-				list.add(entrust);
+	private void addTo(int idx, TEntrust entrust, List<TEntrust> list_after, List<TEntrust> list_beforeMarket, List<TEntrust> list_beforeLimit) {
+		if (idx == list_after.size()) { // isFirst
+			matchWith(entrust, list_beforeMarket); // 市价和对手盘（卖）进行撮合。
+			matchWith(entrust, list_beforeLimit); // 市价和对手盘（卖）进行撮合。
+			if (entrust.getLeftCount().compareTo(BigDecimal.ZERO) == ICompareResultConstant.GREATER_THAN) { // 有剩余的则加入列表。
+				list_after.add(entrust);
 			}
 		} else {
-			list.add(idx, entrust);
+			list_after.add(idx, entrust);
 		}
 	}
 	
-	private void addToBuyLimit(int idx, TEntrust entrust, List<TEntrust> list) {
-	}
-	
-	public void makeAMatch(TEntrust entrust) {
-		entrust.setId(SNOW_FLAKE.nextId());
-		entrust.setStatus(EntrustStatusEnumer.UNFINISH.getCode());
-		entrustService.add(entrust);
-		if (entrust.getEntrustDirection() == EntrustDirectionEnumer.BUY.getCode()) {
-			int i_idx;
-			LOCK_BUY.lock();
-			if (entrust.getEntrustType() == EntrustTypeEnumer.MARKET.getCode()) { // 市价
-				i_idx = findIndexFromMarket(entrust, LIST_BUY_MARKET);
-				addToBuyMarket(i_idx, entrust, LIST_BUY_MARKET);
-			} else { // 限价
-				i_idx = findIndexFromLimit(entrust, LIST_BUY_LIMIT, ICompareResultConstant.LESS_THAN);
-				addToBuyLimit(i_idx, entrust, LIST_BUY_LIMIT);
-			}
-			LOCK_BUY.unlock();
-		} else if (entrust.getEntrustDirection() == EntrustDirectionEnumer.SELL.getCode()) {
-//			int i_idx = findIndexFromSell(entrust);
+	public void makeAMatch(TEntrust entrust, ITEntrustService<ITEntrustDAO> entrustService) {
+		// 入库。
+		{
+			entrust.setId(SNOW_FLAKE__ENTRUST.nextId());
+			entrust.setSuccessAmount(BigDecimal.ZERO);
+			entrust.setLeftCount(entrust.getCount());
+			entrust.setStatus(EntrustStatusEnumer.UNFINISH.getCode());
+			entrustService.add(entrust);
+//			System.out.println(entrust);
 		}
+//		if (entrust.getEntrustDirection() == EntrustDirectionEnumer.BUY.getCode()) {
+//			int i_idx;
+//			LOCK_BUY.lock();
+//			if (entrust.getEntrustType() == EntrustTypeEnumer.MARKET.getCode()) { // 市价
+//				i_idx = findIndexFromMarket(entrust, LIST_BUY_MARKET);
+//				addTo(i_idx, entrust, LIST_BUY_MARKET, LIST_SELL_MARKET, LIST_SELL_LIMIT);
+//			} else { // 限价
+//				i_idx = findIndexFromLimit(entrust, LIST_BUY_LIMIT, ICompareResultConstant.LESS_THAN);
+//				addTo(i_idx, entrust, LIST_BUY_LIMIT, LIST_SELL_MARKET, LIST_SELL_LIMIT);
+//			}
+//			LOCK_BUY.unlock();
+//		} else if (entrust.getEntrustDirection() == EntrustDirectionEnumer.SELL.getCode()) {
+//			int i_idx;
+//			LOCK_BUY.lock();
+//			if (entrust.getEntrustType() == EntrustTypeEnumer.MARKET.getCode()) { // 市价
+//				i_idx = findIndexFromMarket(entrust, LIST_SELL_MARKET);
+//				addTo(i_idx, entrust, LIST_SELL_MARKET, LIST_BUY_MARKET, LIST_BUY_LIMIT);
+//			} else { // 限价
+//				i_idx = findIndexFromLimit(entrust, LIST_SELL_LIMIT, ICompareResultConstant.GREATER_THAN);
+//				addTo(i_idx, entrust, LIST_SELL_LIMIT, LIST_BUY_MARKET, LIST_BUY_LIMIT);
+//			}
+//			LOCK_BUY.unlock();
+//		}
 	}
 	
 	private static void print() {
@@ -285,14 +396,52 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 			return new BigDecimal(r.nextDouble() * 100).setScale(IConstant.COUNT_DECIMAL_LENGTH, BigDecimal.ROUND_HALF_DOWN);
 		}
 		
-		private static void test() {
-			final int CNT = 5; // 50
+		private static final class MyCallable implements Callable<String> {
+			
+			private ITEntrustService<ITEntrustDAO> entrustService;
+			private MakeAMatchServiceImpl makeAMatch;
+			private CountDownLatch cdl;
+			
+			public MyCallable(MakeAMatchServiceImpl makeAMatch, ITEntrustService<ITEntrustDAO> entrustService, CountDownLatch cdl) {
+				this.makeAMatch = makeAMatch;
+				this.entrustService = entrustService;
+				this.cdl = cdl;
+			}
+
+			@Override
+			public String call() throws Exception {
+				TEntrust entrust = new TEntrust();
+				entrust.setUserId(getUserID());
+				entrust.setCurrencyTradeId(getCurrencyTradeID());
+				entrust.setEntrustDirection(getEntrustDirection());
+				entrust.setEntrustType(getEntrustType());
+				if (entrust.getEntrustType() == EntrustTypeEnumer.LIMIT.getCode()) {
+					entrust.setPrice(getPrice());
+				}
+				entrust.setCount(getCount());
+				System.out.println("11 com.bittrade.entrust.service.impl.MakeAMatchServiceImpl.makeAMatch(TEntrust)");
+				makeAMatch.makeAMatch(entrust, entrustService);
+				System.out.println("22 com.bittrade.entrust.service.impl.MakeAMatchServiceImpl.makeAMatch(TEntrust)");
+				
+				System.out.println("countDown before");
+				cdl.countDown();
+				System.out.println("countDown after");
+				
+				return null;
+			}
+			
+		}
+		
+		private static void test(ITEntrustService<ITEntrustDAO> entrustService) {
+			final int CNT = 5; // 50 5
 			
 			ExecutorService es = Executors.newFixedThreadPool(CNT);
-			CountDownLatch cdl = new CountDownLatch(CNT);
 			MakeAMatchServiceImpl makeAMatch = new MakeAMatchServiceImpl();
+			CountDownLatch cdl = new CountDownLatch(CNT);
+//			MyCallable MyCallable = new MyCallable(makeAMatch, entrustService, cdl);
 			
 			for (int i = 0; i < CNT; i++) {
+//				/* Future<String> future = */es.submit(MyCallable);
 				/* Future<String> future = */es.submit(new Callable<String>() {
 					@Override
 					public String call() throws Exception {
@@ -305,9 +454,13 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 							entrust.setPrice(getPrice());
 						}
 						entrust.setCount(getCount());
-						makeAMatch.makeAMatch(entrust);
+						System.out.println("11 com.bittrade.entrust.service.impl.MakeAMatchServiceImpl.makeAMatch(TEntrust)");
+						makeAMatch.makeAMatch(entrust, entrustService);
+						System.out.println("22 com.bittrade.entrust.service.impl.MakeAMatchServiceImpl.makeAMatch(TEntrust)");
 						
+						System.out.println("countDown before");
 						cdl.countDown();
+						System.out.println("countDown after");
 						
 						return null;
 					}
@@ -322,7 +475,9 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 			}
 			
 			try {
+				System.out.println("await before");
 				cdl.await();
+				System.out.println("await after");
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -335,8 +490,12 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 		
 	}
 	
+	public void test() {
+		Tester.test(entrustService);
+	}
+	
 	public static void main(String[] args) {
-		Tester.test();
+		Tester.test(null);
 	}
 	
 }

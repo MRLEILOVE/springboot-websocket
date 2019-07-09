@@ -10,6 +10,7 @@
 		<id javaType="long" property="id" jdbcType="BIGINT" column="id" />
 		<result javaType="long" property="userId" jdbcType="BIGINT" column="user_id" />
 		<result javaType="int" property="currencyId" jdbcType="INTEGER" column="currency_id" />
+		<result javaType="String" property="token" jdbcType="VARCHAR" column="token" />
 		<result javaType="java.math.BigDecimal" property="total" jdbcType="DECIMAL" column="total" />
 		<result javaType="java.math.BigDecimal" property="tradeFrozen" jdbcType="DECIMAL" column="trade_frozen" />
 		<result javaType="java.math.BigDecimal" property="transferFrozen" jdbcType="DECIMAL" column="transfer_frozen" />
@@ -22,6 +23,7 @@
 	<sql id="Base_Column_List">
 		`user_id` AS userId, 
 		`currency_id` AS currencyId, 
+		`token` AS token, 
 		`total` AS total, 
 		`trade_frozen` AS tradeFrozen, 
 		`transfer_frozen` AS transferFrozen, 
@@ -31,8 +33,8 @@
 	</sql>
 	
 	<insert id="add" parameterType="com.bittrade.pojo.model.TWallet">
-		INSERT INTO t_wallet(`user_id`, `currency_id`, `total`, `trade_frozen`, `transfer_frozen`, `version`, `create_time`, `update_time`)
-		VALUES(#{userId,jdbcType=BIGINT}, #{currencyId,jdbcType=INTEGER}, #{total,jdbcType=DECIMAL}, #{tradeFrozen,jdbcType=DECIMAL}, #{transferFrozen,jdbcType=DECIMAL}, #{version,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+		INSERT INTO t_wallet(`user_id`, `currency_id`, `token`, `total`, `trade_frozen`, `transfer_frozen`, `version`, `create_time`, `update_time`)
+		VALUES(#{userId,jdbcType=BIGINT}, #{currencyId,jdbcType=INTEGER}, #{token,jdbcType=VARCHAR}, #{total,jdbcType=DECIMAL}, #{tradeFrozen,jdbcType=DECIMAL}, #{transferFrozen,jdbcType=DECIMAL}, #{version,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
 	</insert>
 	
 	<insert id="addWithSelective" parameterType="com.bittrade.pojo.model.TWallet">
@@ -42,6 +44,9 @@
 			</if>
 			<if test="currencyId != null and currencyId != ''">
 			`currency_id`, 
+			</if>
+			<if test="token != null and token != ''">
+			`token`, 
 			</if>
 			<if test="total != null and total != ''">
 			`total`, 
@@ -68,6 +73,9 @@
 			</if>
 			<if test="currencyId != null and currencyId != ''">
 			#{currencyId,jdbcType=INTEGER}, 
+			</if>
+			<if test="token != null and token != ''">
+			#{token,jdbcType=VARCHAR}, 
 			</if>
 			<if test="total != null and total != ''">
 			#{total,jdbcType=DECIMAL}, 
@@ -105,6 +113,9 @@
 			<if test="currencyId != null and currencyId != ''">
 			`currency_id` = #{currencyId,jdbcType=INTEGER} AND
 			</if>
+			<if test="token != null and token != ''">
+			`token` = #{token,jdbcType=VARCHAR} AND
+			</if>
 			<if test="total != null and total != ''">
 			`total` = #{total,jdbcType=DECIMAL} AND
 			</if>
@@ -130,6 +141,7 @@
 		SET
 			`user_id` = #{userId,jdbcType=BIGINT}, 
 			`currency_id` = #{currencyId,jdbcType=INTEGER}, 
+			`token` = #{token,jdbcType=VARCHAR}, 
 			`total` = #{total,jdbcType=DECIMAL}, 
 			`trade_frozen` = #{tradeFrozen,jdbcType=DECIMAL}, 
 			`transfer_frozen` = #{transferFrozen,jdbcType=DECIMAL}, 
@@ -148,6 +160,9 @@
 			</if>
 			<if test="currencyId != null and currencyId != ''">
 			`currency_id` = #{currencyId,jdbcType=INTEGER}, 
+			</if>
+			<if test="token != null and token != ''">
+			`token` = #{token,jdbcType=VARCHAR}, 
 			</if>
 			<if test="total != null and total != ''">
 			`total` = #{total,jdbcType=DECIMAL}, 
@@ -176,6 +191,7 @@
 		SET
 			`user_id` = #{tWallet.userId,jdbcType=BIGINT}, 
 			`currency_id` = #{tWallet.currencyId,jdbcType=INTEGER}, 
+			`token` = #{tWallet.token,jdbcType=VARCHAR}, 
 			`total` = #{tWallet.total,jdbcType=DECIMAL}, 
 			`trade_frozen` = #{tWallet.tradeFrozen,jdbcType=DECIMAL}, 
 			`transfer_frozen` = #{tWallet.transferFrozen,jdbcType=DECIMAL}, 
@@ -188,6 +204,9 @@
 			</if>
 			<if test="condiTWallet.currencyId != null and condiTWallet.currencyId != ''">
 			`currency_id` = #{condiTWallet.currencyId,jdbcType=INTEGER} AND
+			</if>
+			<if test="condiTWallet.token != null and condiTWallet.token != ''">
+			`token` = #{condiTWallet.token,jdbcType=VARCHAR} AND
 			</if>
 			<if test="condiTWallet.total != null and condiTWallet.total != ''">
 			`total` = #{condiTWallet.total,jdbcType=DECIMAL} AND
@@ -218,6 +237,9 @@
 			<if test="currencyId != null and currencyId != ''">
 			`currency_id` = #{tWallet.currencyId,jdbcType=INTEGER}, 
 			</if>
+			<if test="token != null and token != ''">
+			`token` = #{tWallet.token,jdbcType=VARCHAR}, 
+			</if>
 			<if test="total != null and total != ''">
 			`total` = #{tWallet.total,jdbcType=DECIMAL}, 
 			</if>
@@ -242,6 +264,9 @@
 			</if>
 			<if test="condiTWallet.currencyId != null and condiTWallet.currencyId != ''">
 			`currency_id` = #{condiTWallet.currencyId,jdbcType=INTEGER} AND
+			</if>
+			<if test="condiTWallet.token != null and condiTWallet.token != ''">
+			`token` = #{condiTWallet.token,jdbcType=VARCHAR} AND
 			</if>
 			<if test="condiTWallet.total != null and condiTWallet.total != ''">
 			`total` = #{condiTWallet.total,jdbcType=DECIMAL} AND
@@ -268,6 +293,7 @@
 			`id`, 
 			`user_id`, 
 			`currency_id`, 
+			`token`, 
 			`total`, 
 			`trade_frozen`, 
 			`transfer_frozen`, 
@@ -285,6 +311,7 @@
 			`id`, 
 			`user_id`, 
 			`currency_id`, 
+			`token`, 
 			`total`, 
 			`trade_frozen`, 
 			`transfer_frozen`, 
@@ -298,6 +325,9 @@
 			</if>
 			<if test="currencyId != null and currencyId != ''">
 			AND `currency_id` = #{currencyId,jdbcType=INTEGER}
+			</if>
+			<if test="token != null and token != ''">
+			AND `token` = #{token,jdbcType=VARCHAR}
 			</if>
 			<if test="total != null and total != ''">
 			AND `total` = #{total,jdbcType=DECIMAL}
@@ -325,6 +355,7 @@
 			`id`, 
 			`user_id`, 
 			`currency_id`, 
+			`token`, 
 			`total`, 
 			`trade_frozen`, 
 			`transfer_frozen`, 
@@ -343,6 +374,9 @@
 			</if>
 			<if test="tWallet.currencyId != null and tWallet.currencyId != ''">
 			AND `currency_id` = #{tWallet.currencyId,jdbcType=INTEGER}
+			</if>
+			<if test="tWallet.token != null and tWallet.token != ''">
+			AND `token` = #{tWallet.token,jdbcType=VARCHAR}
 			</if>
 			<if test="tWallet.total != null and tWallet.total != ''">
 			AND `total` = #{tWallet.total,jdbcType=DECIMAL}
@@ -370,6 +404,7 @@
 			`id`, 
 			`user_id`, 
 			`currency_id`, 
+			`token`, 
 			`total`, 
 			`trade_frozen`, 
 			`transfer_frozen`, 
@@ -383,6 +418,9 @@
 			</if>
 			<if test="tWallet.currencyId != null and tWallet.currencyId != ''">
 			AND `currency_id` = #{tWallet.currencyId,jdbcType=INTEGER}
+			</if>
+			<if test="tWallet.token != null and tWallet.token != ''">
+			AND `token` = #{tWallet.token,jdbcType=VARCHAR}
 			</if>
 			<if test="tWallet.total != null and tWallet.total != ''">
 			AND `total` = #{tWallet.total,jdbcType=DECIMAL}

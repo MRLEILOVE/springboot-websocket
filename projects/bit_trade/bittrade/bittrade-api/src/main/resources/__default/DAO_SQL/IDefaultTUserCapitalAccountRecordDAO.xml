@@ -33,12 +33,15 @@
 	</sql>
 	
 	<insert id="add" parameterType="com.bittrade.pojo.model.TUserCapitalAccountRecord">
-		INSERT INTO t_user_capital_account_record(`user_id`, `currency_id`, `count`, `adderess`, `fees`, `type`, `status`, `create_time`, `update_time`)
-		VALUES(#{userId,jdbcType=BIGINT}, #{currencyId,jdbcType=INTEGER}, #{count,jdbcType=DECIMAL}, #{adderess,jdbcType=VARCHAR}, #{fees,jdbcType=DECIMAL}, #{type,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+		INSERT INTO t_user_capital_account_record(`id`, `user_id`, `currency_id`, `count`, `adderess`, `fees`, `type`, `status`, `create_time`, `update_time`)
+		VALUES(#{id,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{currencyId,jdbcType=INTEGER}, #{count,jdbcType=DECIMAL}, #{adderess,jdbcType=VARCHAR}, #{fees,jdbcType=DECIMAL}, #{type,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
 	</insert>
 	
 	<insert id="addWithSelective" parameterType="com.bittrade.pojo.model.TUserCapitalAccountRecord">
 		INSERT INTO t_user_capital_account_record(
+			<if test="id != null and id != ''">
+			`id`, 
+			</if>
 			<if test="userId != null and userId != ''">
 			`user_id`, 
 			</if>
@@ -68,6 +71,9 @@
 			</if>
 		)
 		VALUES(
+			<if test="id != null and id != ''">
+			#{id,jdbcType=BIGINT}, 
+			</if>
 			<if test="userId != null and userId != ''">
 			#{userId,jdbcType=BIGINT}, 
 			</if>
