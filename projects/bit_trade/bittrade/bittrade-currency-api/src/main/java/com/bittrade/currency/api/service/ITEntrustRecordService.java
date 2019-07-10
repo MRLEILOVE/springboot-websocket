@@ -19,7 +19,7 @@ public interface ITEntrustRecordService
 	/**
 	 * 查询用户成交记录
 	 */
-	List<TEntrustRecordVO> queryDealEntrustByUserId(String userId);
+	List<TEntrustRecord> queryDealEntrustByUserId(String userId);
 
 	/**
 	 * 实时成交

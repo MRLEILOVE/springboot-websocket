@@ -36,7 +36,7 @@ public class TEntrustRecordController extends BaseController<TEntrustRecord, TEn
     @ApiOperation(value = "查询用户成交记录")
     @GetMapping(value = "/queryDealEntrustByUserId/{userId}")
     @ResponseBody
-    public ReturnDTO<List<TEntrustRecordVO>> queryDealEntrustByUserId(@PathVariable("userId") String userId) {
+    public ReturnDTO<List<TEntrustRecord>> queryDealEntrustByUserId(@PathVariable("userId") String userId) {
         try{
             return ReturnDTO.ok(entrustRecordService.queryDealEntrustByUserId(userId));
         }catch (Exception e){

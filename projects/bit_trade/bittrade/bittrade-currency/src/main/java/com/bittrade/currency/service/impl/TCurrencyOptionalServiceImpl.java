@@ -42,8 +42,8 @@ public class TCurrencyOptionalServiceImpl extends DefaultTCurrencyOptionalServic
     public ReturnDTO<String> addOptional(TCurrencyOptionalDTO currencyOptionalDTO) {
         //查询是否添加过
         Map<String,Object> map = new HashMap<>();
-        map.put("user_id",currencyOptionalDTO.getUserId());
-        map.put("currency_trade_id",currencyOptionalDTO.getCurrencyTradeId());
+        map.put(TCurrencyOptional.FieldNames.USER_ID,currencyOptionalDTO.getUserId());
+        map.put(TCurrencyOptional.FieldNames.CURRENCY_TRADE_ID,currencyOptionalDTO.getCurrencyTradeId());
         List<TCurrencyOptional> tCurrencyOptionals = currencyOptionalDAO.selectByMap(map);
 
         if(tCurrencyOptionals != null && tCurrencyOptionals.size() > 0){
@@ -80,8 +80,8 @@ public class TCurrencyOptionalServiceImpl extends DefaultTCurrencyOptionalServic
     @Override
     public ReturnDTO<String> deleteOptional(TCurrencyOptionalDTO currencyOptionalDTO) {
         Map<String,Object> map = new HashMap<>();
-        map.put("user_id",currencyOptionalDTO.getUserId());
-        map.put("currency_trade_id",currencyOptionalDTO.getCurrencyTradeId());
+        map.put(TCurrencyOptional.FieldNames.USER_ID,currencyOptionalDTO.getUserId());
+        map.put(TCurrencyOptional.FieldNames.CURRENCY_TRADE_ID,currencyOptionalDTO.getCurrencyTradeId());
         List<TCurrencyOptional> tCurrencyOptionals = currencyOptionalDAO.selectByMap(map);
 
         if(tCurrencyOptionals != null && tCurrencyOptionals.size() > 0){

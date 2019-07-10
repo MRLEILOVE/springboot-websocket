@@ -5,13 +5,14 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.bittrade.__default.service.impl.DefaultTEntrustRecordServiceImpl;
 import com.bittrade.currency.api.service.ITEntrustRecordService;
 import com.bittrade.currency.dao.ITEntrustRecordDAO;
 import com.bittrade.pojo.dto.TEntrustRecordDTO;
+import com.bittrade.pojo.model.TEntrustRecord;
 import com.bittrade.pojo.vo.TEntrustRecordVO;
 import com.bittrade.pojo.vo.TRealTimeTransactionVO;
-import com.bittrade.pojo.model.TEntrustRecord;
 
 /**
  * 
@@ -31,8 +32,10 @@ public class TEntrustRecordServiceImpl extends
 	 * 查询用户成交记录
 	 */
 	@Override
-	public List<TEntrustRecordVO> queryDealEntrustByUserId(String userId) {
-		return tEntrustRecordDAO.queryDealEntrustByUserId(userId);
+	public List<TEntrustRecord> queryDealEntrustByUserId(String userId) {
+		QueryWrapper<TEntrustRecord> wrapper = new QueryWrapper<>();
+		wrapper.eq(TEntrustRecord.FieldNames.USER_ID, userId).orderByDesc(TEntrustRecord.FieldNames.ID);
+		return tEntrustRecordDAO.selectList(wrapper);
 	}
 
 	/**

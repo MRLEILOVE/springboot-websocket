@@ -31,7 +31,7 @@ public class TCurrencyServiceImpl extends
 	@Override
 	public List<TCurrency> findAllLegalCurrency() {
 		QueryWrapper<TCurrency> wrapper = new QueryWrapper<>();
-		wrapper.eq("status",1).select("id","name");
+		wrapper.eq(TCurrency.FieldNames.STATUS,1).select(TCurrency.FieldNames.ID,TCurrency.FieldNames.NAME);
 		return tCurrencyDAO.selectList(wrapper);
 	}
 }
