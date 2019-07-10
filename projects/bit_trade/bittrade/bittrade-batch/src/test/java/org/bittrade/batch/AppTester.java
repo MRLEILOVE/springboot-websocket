@@ -6,7 +6,7 @@ import org.bittrade.batch.base.BaseTester;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.bittrade.api.service.ITParamConfigService;
+import com.bittrade.currency.api.service.ITParamConfigService;
 import com.bittrade.pojo.dto.TParamConfigDTO;
 import com.bittrade.pojo.model.TParamConfig;
 

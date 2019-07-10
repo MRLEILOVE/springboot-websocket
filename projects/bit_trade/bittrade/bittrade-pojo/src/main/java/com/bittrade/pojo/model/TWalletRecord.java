@@ -43,11 +43,6 @@ public class TWalletRecord extends BaseModel<TWalletRecord> {
 		public static final String CURRENCY_ID = "currency_id";
 		
 		/**
-		 * 
-		 */
-		public static final String TOKEN = "token";
-		
-		/**
 		 * 成交前金额
 		 */
 		public static final String BEFORE_AMOUNT = "before_amount";
@@ -73,11 +68,6 @@ public class TWalletRecord extends BaseModel<TWalletRecord> {
 		public static final String ENTRUST_RECORD_ID = "entrust_record_id";
 		
 		/**
-		 * 版本号，每更新一次数据加1
-		 */
-		public static final String VERSION = "version";
-		
-		/**
 		 * 创建时间
 		 */
 		public static final String CREATE_TIME = "create_time";
@@ -98,11 +88,6 @@ public class TWalletRecord extends BaseModel<TWalletRecord> {
 	 * 货币id(t_currency.id)
 	 */
 	private int currencyId;
-	
-	/**
-	 * 
-	 */
-	private String token;
 	
 	/**
 	 * 成交前金额
@@ -128,11 +113,6 @@ public class TWalletRecord extends BaseModel<TWalletRecord> {
 	 * 关联的id,当前主要指成交id,t_entrust_record.id
 	 */
 	private long entrustRecordId;
-	
-	/**
-	 * 版本号，每更新一次数据加1
-	 */
-	private int version;
 	
 	/**
 	 * 创建时间

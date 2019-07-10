@@ -30,7 +30,7 @@ import com.core.framework.base.service.IBaseService;
  * @param <DAO>
  * @param <Service>
  */
-public abstract class BaseController<Model extends BaseModel<Model>, DTO extends BaseDTO<DTO>, VO extends BaseVO<VO>, DAO extends IBaseDAO<Model, DTO, VO>, Service extends IBaseService<Model, DTO, VO, DAO>> {
+public abstract class BaseController<Model extends BaseModel<Model>, DTO extends BaseDTO<DTO>, VO extends BaseVO<VO>, DAO extends IBaseDAO<Model, DTO, VO>, Service extends IBaseService<Model, DTO, VO>> {
 
 	@Autowired
 	protected Service baseService;

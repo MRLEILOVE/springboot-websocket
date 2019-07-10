@@ -15,6 +15,6 @@ import com.test.bittrade.svc.dao.ITUserInfoDAO;
  *
  */
 @Service
-public class TUserInfoServiceImpl extends DefaultTUserInfoServiceImpl<TUserInfo, TUserInfoDTO, TUserInfoVO, ITUserInfoDAO> implements ITUserInfoService<ITUserInfoDAO> {
+public class TUserInfoServiceImpl extends DefaultTUserInfoServiceImpl<TUserInfo, TUserInfoDTO, TUserInfoVO, ITUserInfoDAO> implements ITUserInfoService {
 	
 }

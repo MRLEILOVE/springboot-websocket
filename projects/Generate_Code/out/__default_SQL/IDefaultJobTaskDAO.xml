@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+	This code is generated automatically. Please do not edit it.
+-->
+<mapper namespace="com.bittrade.__default.DAO.IDefaultJobTaskDAO">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.bittrade.pojo.model.JobTask">
+		<id javaType="long" property="id" jdbcType="BIGINT" column="id" />
+		<result javaType="String" property="content" jdbcType="VARCHAR" column="content" />
+		<result javaType="long" property="sendTime" jdbcType="BIGINT" column="send_time" />
+		<result javaType="int" property="status" jdbcType="INTEGER" column="status" />
+	</resultMap>
+
+	<!-- 通用查询结果列 -->
+	<sql id="Base_Column_List">
+		`content` AS content, 
+		`send_time` AS sendTime, 
+		`status` AS status
+	</sql>
+	
+	<insert id="add" parameterType="com.bittrade.pojo.model.JobTask">
+		INSERT INTO job_task(`content`, `send_time`, `status`)
+		VALUES(#{content,jdbcType=VARCHAR}, #{sendTime,jdbcType=BIGINT}, #{status,jdbcType=INTEGER})
+	</insert>
+	
+	<insert id="addWithSelective" parameterType="com.bittrade.pojo.model.JobTask">
+		INSERT INTO job_task(
+			<if test="content != null and content != ''">
+			`content`, 
+			</if>
+			<if test="sendTime != null and sendTime != ''">
+			`send_time`, 
+			</if>
+			<if test="status != null and status != ''">
+			`status`
+			</if>
+		)
+		VALUES(
+			<if test="content != null and content != ''">
+			#{content,jdbcType=VARCHAR}, 
+			</if>
+			<if test="sendTime != null and sendTime != ''">
+			#{sendTime,jdbcType=BIGINT}, 
+			</if>
+			<if test="status != null and status != ''">
+			#{status,jdbcType=INTEGER}
+			</if>
+		)
+	</insert>
+	
+	<delete id="removeByPK">
+		DELETE FROM job_task
+		WHERE 
+			`id` = #{id,jdbcType=BIGINT}
+	</delete>
+	
+	<delete id="remove" parameterType="com.bittrade.pojo.model.JobTask">
+		DELETE FROM job_task
+		WHERE
+			<if test="content != null and content != ''">
+			`content` = #{content,jdbcType=VARCHAR} AND
+			</if>
+			<if test="sendTime != null and sendTime != ''">
+			`send_time` = #{sendTime,jdbcType=BIGINT} AND
+			</if>
+			<if test="status != null and status != ''">
+			`status` = #{status,jdbcType=INTEGER}
+			</if>
+	</delete>
+	
+	<update id="modifyByPK" parameterType="com.bittrade.pojo.model.JobTask">
+		UPDATE job_task
+		SET
+			`content` = #{content,jdbcType=VARCHAR}, 
+			`send_time` = #{sendTime,jdbcType=BIGINT}, 
+			`status` = #{status,jdbcType=INTEGER}
+		WHERE 
+			`id` = #{id,jdbcType=BIGINT}
+	</update>
+	
+	<update id="modifyWithSelectiveByPK" parameterType="com.bittrade.pojo.model.JobTask">
+		UPDATE job_task
+		SET
+			<if test="content != null and content != ''">
+			`content` = #{content,jdbcType=VARCHAR}, 
+			</if>
+			<if test="sendTime != null and sendTime != ''">
+			`send_time` = #{sendTime,jdbcType=BIGINT}, 
+			</if>
+			<if test="status != null and status != ''">
+			`status` = #{status,jdbcType=INTEGER}
+			</if>
+		WHERE 
+			`id` = #{id,jdbcType=BIGINT}
+	</update>
+	
+	<update id="modify">
+		UPDATE job_task
+		SET
+			`content` = #{jobTask.content,jdbcType=VARCHAR}, 
+			`send_time` = #{jobTask.sendTime,jdbcType=BIGINT}, 
+			`status` = #{jobTask.status,jdbcType=INTEGER}
+		WHERE 
+			<if test="condiJobTask.content != null and condiJobTask.content != ''">
+			`content` = #{condiJobTask.content,jdbcType=VARCHAR} AND
+			</if>
+			<if test="condiJobTask.sendTime != null and condiJobTask.sendTime != ''">
+			`send_time` = #{condiJobTask.sendTime,jdbcType=BIGINT} AND
+			</if>
+			<if test="condiJobTask.status != null and condiJobTask.status != ''">
+			`status` = #{condiJobTask.status,jdbcType=INTEGER}
+			</if>
+	</update>
+	
+	<update id="modifyWithSelective">
+		UPDATE job_task
+		SET
+			<if test="content != null and content != ''">
+			`content` = #{jobTask.content,jdbcType=VARCHAR}, 
+			</if>
+			<if test="sendTime != null and sendTime != ''">
+			`send_time` = #{jobTask.sendTime,jdbcType=BIGINT}, 
+			</if>
+			<if test="status != null and status != ''">
+			`status` = #{jobTask.status,jdbcType=INTEGER}
+			</if>
+		WHERE 
+			<if test="condiJobTask.content != null and condiJobTask.content != ''">
+			`content` = #{condiJobTask.content,jdbcType=VARCHAR} AND
+			</if>
+			<if test="condiJobTask.sendTime != null and condiJobTask.sendTime != ''">
+			`send_time` = #{condiJobTask.sendTime,jdbcType=BIGINT} AND
+			</if>
+			<if test="condiJobTask.status != null and condiJobTask.status != ''">
+			`status` = #{condiJobTask.status,jdbcType=INTEGER}
+			</if>
+	</update>
+	
+	<select id="getByPK" resultType="com.bittrade.pojo.model.JobTask">
+		SELECT 
+			`id`, 
+			`content`, 
+			`send_time`, 
+			`status`
+		FROM job_task
+		<where>
+			`id` = #{id,jdbcType=BIGINT}
+		</where>
+	</select>
+	
+	<select id="get" resultType="com.bittrade.pojo.dto.JobTaskDTO">
+		SELECT 
+			`id`, 
+			`content`, 
+			`send_time`, 
+			`status`
+		FROM job_task
+		<where>
+			<if test="content != null and content != ''">
+			AND `content` = #{content,jdbcType=VARCHAR}
+			</if>
+			<if test="sendTime != null and sendTime != ''">
+			AND `send_time` = #{sendTime,jdbcType=BIGINT}
+			</if>
+			<if test="status != null and status != ''">
+			AND `status` = #{status,jdbcType=INTEGER}
+			</if>
+		</where>
+	</select>
+	
+	<select id="gets" resultType="com.bittrade.pojo.dto.JobTaskDTO">
+		SELECT 
+			`id`, 
+			`content`, 
+			`send_time`, 
+			`status`
+		FROM job_task
+	</select>
+	
+	<select id="getCntWithPage" resultType="int">
+		SELECT COUNT(1)
+		FROM job_task
+		<where>
+			<if test="jobTask.content != null and jobTask.content != ''">
+			AND `content` = #{jobTask.content,jdbcType=VARCHAR}
+			</if>
+			<if test="jobTask.sendTime != null and jobTask.sendTime != ''">
+			AND `send_time` = #{jobTask.sendTime,jdbcType=BIGINT}
+			</if>
+			<if test="jobTask.status != null and jobTask.status != ''">
+			AND `status` = #{jobTask.status,jdbcType=INTEGER}
+			</if>
+		</where>
+	</select>
+	
+	<select id="getsWithPage" resultType="com.bittrade.pojo.dto.JobTaskDTO">
+		SELECT 
+			`id`, 
+			`content`, 
+			`send_time`, 
+			`status`
+		FROM job_task
+		<where>
+			<if test="jobTask.content != null and jobTask.content != ''">
+			AND `content` = #{jobTask.content,jdbcType=VARCHAR}
+			</if>
+			<if test="jobTask.sendTime != null and jobTask.sendTime != ''">
+			AND `send_time` = #{jobTask.sendTime,jdbcType=BIGINT}
+			</if>
+			<if test="jobTask.status != null and jobTask.status != ''">
+			AND `status` = #{jobTask.status,jdbcType=INTEGER}
+			</if>
+		</where>
+		LIMIT #{page}, #{size}
+	</select>
+
+</mapper>

@@ -14,21 +14,18 @@ import java.util.concurrent.Executors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSONArray;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.bittrade.api.service.ITKlineService;
-import com.bittrade.api.service.ITParamConfigService;
-import com.bittrade.batch.dao.ITKlineDAO;
-import com.bittrade.batch.dao.ITParamConfigDAO;
 import com.bittrade.batch.enumer.ParamConfigEnum.ParamKeyEnum;
 import com.bittrade.batch.enumer.ParamConfigEnum.ParamValue;
 import com.bittrade.batch.general.ObtainParamConfigInfo;
 import com.bittrade.common.constant.IConstant;
 import com.bittrade.common.utils.HttpClientResult;
 import com.bittrade.common.utils.HttpClientUtils;
+import com.bittrade.currency.api.service.ITKlineService;
+import com.bittrade.currency.api.service.ITParamConfigService;
 import com.bittrade.pojo.model.TKline;
 
 /**
@@ -43,10 +40,10 @@ public class OkexKlineScheduled {
 	private static final Logger		LOG					= LoggerFactory.getLogger( OkexKlineScheduled.class );
 
 	@Autowired
-	private ITKlineService<ITKlineDAO>			klineService;
+	private ITKlineService klineService;
 
 	@Autowired
-	private ITParamConfigService<ITParamConfigDAO>	paramConfigService;
+	private ITParamConfigService paramConfigService;
 
 	// 创建一个可缓存线程池，如果线程池长度超过处理需要，可灵活回收空闲线程，若无可回收，则新建线程。
 	private ExecutorService			cachedThreadPool	= Executors.newCachedThreadPool();

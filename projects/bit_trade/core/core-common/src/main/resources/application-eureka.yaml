@@ -16,4 +16,4 @@ eureka:
     serviceUrl:
       defaultZone: http://${eureka.instance.hostname}:${eureka.port_1}/eureka/,http://${eureka.instance.hostname}:${eureka.port_2}/eureka/,http://${eureka.instance.hostname}:${eureka.port_3}/eureka/
     register-with-eureka: ${data.register-with-eureka:true}
-    fetch-registry: true
+    fetch-registry: ${data.fetch-registry:true}

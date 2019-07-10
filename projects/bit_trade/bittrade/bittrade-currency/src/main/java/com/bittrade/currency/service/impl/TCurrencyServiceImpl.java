@@ -6,8 +6,8 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.bittrade.api.__default.service.impl.DefaultTCurrencyServiceImpl;
-import com.bittrade.api.service.ITCurrencyService;
+import com.bittrade.__default.service.impl.DefaultTCurrencyServiceImpl;
+import com.bittrade.currency.api.service.ITCurrencyService;
 import com.bittrade.currency.dao.ITCurrencyDAO;
 import com.bittrade.pojo.dto.TCurrencyDTO;
 import com.bittrade.pojo.model.TCurrency;
@@ -20,7 +20,7 @@ import com.bittrade.pojo.vo.TCurrencyVO;
  */
 @Service
 public class TCurrencyServiceImpl extends
-		DefaultTCurrencyServiceImpl<ITCurrencyDAO, TCurrency, TCurrencyDTO, TCurrencyVO> implements ITCurrencyService<ITCurrencyDAO> {
+		DefaultTCurrencyServiceImpl<ITCurrencyDAO, TCurrency, TCurrencyDTO, TCurrencyVO> implements ITCurrencyService {
 
 	@Autowired
 	private ITCurrencyDAO tCurrencyDAO;

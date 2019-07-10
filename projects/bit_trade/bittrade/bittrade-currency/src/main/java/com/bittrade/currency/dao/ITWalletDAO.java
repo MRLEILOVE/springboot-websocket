@@ -5,7 +5,7 @@ import java.util.List;
 import com.bittrade.pojo.vo.UserWalletVO;
 import org.apache.ibatis.annotations.Param;
 
-import com.bittrade.api.__default.DAO.IDefaultTWalletDAO;
+import com.bittrade.__default.DAO.IDefaultTWalletDAO;
 import com.bittrade.pojo.vo.QueryWalletVO;
 
 /**

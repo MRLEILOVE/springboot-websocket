@@ -94,11 +94,6 @@ public class TEntrustRecord extends BaseModel<TEntrustRecord> implements ICreate
 		public static final String ENTRUST_DIRECTION = "entrust_direction";
 		
 		/**
-		 * 版本号，每更新一次数据加1
-		 */
-		public static final String VERSION = "version";
-		
-		/**
 		 * 创建时间
 		 */
 		public static final String CREATE_TIME = "create_time";
@@ -169,11 +164,6 @@ public class TEntrustRecord extends BaseModel<TEntrustRecord> implements ICreate
 	 * 交易类型:0-买，1-卖
 	 */
 	private int entrustDirection;
-	
-	/**
-	 * 版本号，每更新一次数据加1
-	 */
-	private int version;
 	
 	/**
 	 * 创建时间

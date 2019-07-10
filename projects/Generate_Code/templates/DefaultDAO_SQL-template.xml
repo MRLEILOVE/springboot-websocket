@@ -3,7 +3,7 @@
 <!--
 	This code is generated automatically. Please do not edit it.
 -->
-<mapper namespace="${API_BASE_PKG}.__default.DAO${module_name}.IDefault${struct.className}DAO">
+<mapper namespace="${DEFAULT_BASE_PKG}.DAO${module_name}.IDefault${struct.className}DAO">
 
 	<!-- 通用查询映射结果 -->
 	<resultMap id="BaseResultMap" type="${POJO_BASE_PKG}.model${module_name}.${struct.className}">

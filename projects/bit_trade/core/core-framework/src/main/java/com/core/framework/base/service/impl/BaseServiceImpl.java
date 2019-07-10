@@ -12,7 +12,7 @@ import com.core.framework.base.DAO.IBaseDAO;
 import com.core.framework.base.DTO.BaseDTO;
 import com.core.framework.base.VO.BaseVO;
 import com.core.framework.base.interfaces.ICreateTime;
-import com.core.framework.base.interfaces.IModifyTime;
+import com.core.framework.base.interfaces.IUpdateTime;
 import com.core.framework.base.model.BaseModel;
 import com.core.framework.base.service.IBaseService;
 
@@ -28,7 +28,7 @@ import com.core.framework.base.service.IBaseService;
  * @param <VO>
  * @param <DAO>
  */
-public abstract class BaseServiceImpl<Model extends BaseModel<Model>, DTO extends BaseDTO<DTO>, VO extends BaseVO<VO>, DAO extends IBaseDAO<Model, DTO, VO>> extends ServiceImpl<DAO, Model> implements IBaseService<Model, DTO, VO, DAO> {
+public abstract class BaseServiceImpl<Model extends BaseModel<Model>, DTO extends BaseDTO<DTO>, VO extends BaseVO<VO>, DAO extends IBaseDAO<Model, DTO, VO>> extends ServiceImpl<DAO, Model> implements IBaseService<Model, DTO, VO> {
 	
 	@Autowired
 	protected DAO baseDAO; // super.baseMapper
@@ -40,10 +40,10 @@ public abstract class BaseServiceImpl<Model extends BaseModel<Model>, DTO extend
 		}
 	}
 
-	private void setModifyTime(Model model) {
-		if (model instanceof IModifyTime/* && model.getClass() == ICreateAndModifyTime.class*/) { // equals() ?
+	private void setUpdateTime(Model model) {
+		if (model instanceof IUpdateTime/* && model.getClass() == ICreateAndModifyTime.class*/) { // equals() ?
 			Date now = new Date();
-			((IModifyTime) model).setModifyTime(now);
+			((IUpdateTime) model).setUpdateTime(now);
 		}
 	}
 	
@@ -71,25 +71,25 @@ public abstract class BaseServiceImpl<Model extends BaseModel<Model>, DTO extend
 
 	@Override
 	public int modifyByPK(Model model) {
-		setModifyTime(model);
+		setUpdateTime(model);
 		return baseDAO.modifyByPK(model);
 	}
 
 	@Override
 	public int modifyWithSelectiveByPK(Model model) {
-		setModifyTime(model);
+		setUpdateTime(model);
 		return baseDAO.modifyWithSelectiveByPK(model);
 	}
 
 	@Override
 	public int modify(Model model, Model condiModel) {
-		setModifyTime(model);
+		setUpdateTime(model);
 		return baseDAO.modify(model, condiModel);
 	}
 
 	@Override
 	public int modifyWithSelective(Model model, Model condiModel) {
-		setModifyTime(model);
+		setUpdateTime(model);
 		return baseDAO.modifyWithSelective(model, condiModel);
 	}
 

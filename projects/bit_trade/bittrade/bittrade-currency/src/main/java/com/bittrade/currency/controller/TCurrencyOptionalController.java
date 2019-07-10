@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.bittrade.api.service.ITCurrencyOptionalService;
+import com.bittrade.currency.api.service.ITCurrencyOptionalService;
 import com.bittrade.currency.dao.ITCurrencyOptionalDAO;
 import com.bittrade.pojo.dto.TCurrencyOptionalDTO;
 import com.bittrade.pojo.model.TCurrencyOptional;
@@ -30,9 +30,9 @@ import io.swagger.annotations.ApiOperation;
 @Controller
 @ResponseBody
 @RequestMapping(value = { "/tCurrencyOptional" }, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-public class TCurrencyOptionalController extends BaseController<TCurrencyOptional, TCurrencyOptionalDTO, TCurrencyOptionalVO, ITCurrencyOptionalDAO, ITCurrencyOptionalService<ITCurrencyOptionalDAO>> {
+public class TCurrencyOptionalController extends BaseController<TCurrencyOptional, TCurrencyOptionalDTO, TCurrencyOptionalVO, ITCurrencyOptionalDAO, ITCurrencyOptionalService> {
     @Autowired
-    private ITCurrencyOptionalService<ITCurrencyOptionalDAO> currencyOptionalService;
+    private ITCurrencyOptionalService currencyOptionalService;
 
     @ApiOperation(value="查询用户自选的交易对",notes="传用户id")
     @RequestMapping(value="/findOptionalTradeByUserId/{userId}",method = RequestMethod.GET)
@@ -56,7 +56,7 @@ public class TCurrencyOptionalController extends BaseController<TCurrencyOptiona
     @ApiOperation(value="删除自选",notes="传用户id、交易对id")
     @RequestMapping(value="/deleteOptional",method = RequestMethod.POST)
     @ResponseBody
-    public ReturnDTO deleteOptional(@RequestBody TCurrencyOptionalDTO currencyOptionalDTO) {
+    public ReturnDTO<String> deleteOptional(@RequestBody TCurrencyOptionalDTO currencyOptionalDTO) {
         return currencyOptionalService.deleteOptional(currencyOptionalDTO);
     }
 }

@@ -1,0 +1,409 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+	This code is generated automatically. Please do not edit it.
+-->
+<mapper namespace="com.bittrade.__default.DAO.IDefaultTParamConfigDAO">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.bittrade.pojo.model.TParamConfig">
+		<id javaType="int" property="id" jdbcType="INTEGER" column="id" />
+		<result javaType="String" property="paramKey" jdbcType="VARCHAR" column="param_key" />
+		<result javaType="String" property="paramValue" jdbcType="VARCHAR" column="param_value" />
+		<result javaType="int" property="paramStatus" jdbcType="INTEGER" column="param_status" />
+		<result javaType="String" property="paramRemark" jdbcType="VARCHAR" column="param_remark" />
+		<result javaType="java.util.Date" property="createTime" jdbcType="TIMESTAMP" column="create_time" />
+		<result javaType="String" property="creater" jdbcType="VARCHAR" column="creater" />
+		<result javaType="java.util.Date" property="updateTime" jdbcType="TIMESTAMP" column="update_time" />
+		<result javaType="String" property="updater" jdbcType="VARCHAR" column="updater" />
+	</resultMap>
+
+	<!-- 通用查询结果列 -->
+	<sql id="Base_Column_List">
+		`param_key` AS paramKey, 
+		`param_value` AS paramValue, 
+		`param_status` AS paramStatus, 
+		`param_remark` AS paramRemark, 
+		`create_time` AS createTime, 
+		`creater` AS creater, 
+		`update_time` AS updateTime, 
+		`updater` AS updater
+	</sql>
+	
+	<insert id="add" parameterType="com.bittrade.pojo.model.TParamConfig">
+		INSERT INTO t_param_config(`param_key`, `param_value`, `param_status`, `param_remark`, `create_time`, `creater`, `update_time`, `updater`)
+		VALUES(#{paramKey,jdbcType=VARCHAR}, #{paramValue,jdbcType=VARCHAR}, #{paramStatus,jdbcType=INTEGER}, #{paramRemark,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{creater,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{updater,jdbcType=VARCHAR})
+	</insert>
+	
+	<insert id="addWithSelective" parameterType="com.bittrade.pojo.model.TParamConfig">
+		INSERT INTO t_param_config(
+			<if test="paramKey != null and paramKey != ''">
+			`param_key`, 
+			</if>
+			<if test="paramValue != null and paramValue != ''">
+			`param_value`, 
+			</if>
+			<if test="paramStatus != null and paramStatus != ''">
+			`param_status`, 
+			</if>
+			<if test="paramRemark != null and paramRemark != ''">
+			`param_remark`, 
+			</if>
+			<if test="createTime != null and createTime != ''">
+			`create_time`, 
+			</if>
+			<if test="creater != null and creater != ''">
+			`creater`, 
+			</if>
+			<if test="updateTime != null and updateTime != ''">
+			`update_time`, 
+			</if>
+			<if test="updater != null and updater != ''">
+			`updater`
+			</if>
+		)
+		VALUES(
+			<if test="paramKey != null and paramKey != ''">
+			#{paramKey,jdbcType=VARCHAR}, 
+			</if>
+			<if test="paramValue != null and paramValue != ''">
+			#{paramValue,jdbcType=VARCHAR}, 
+			</if>
+			<if test="paramStatus != null and paramStatus != ''">
+			#{paramStatus,jdbcType=INTEGER}, 
+			</if>
+			<if test="paramRemark != null and paramRemark != ''">
+			#{paramRemark,jdbcType=VARCHAR}, 
+			</if>
+			<if test="createTime != null and createTime != ''">
+			#{createTime,jdbcType=TIMESTAMP}, 
+			</if>
+			<if test="creater != null and creater != ''">
+			#{creater,jdbcType=VARCHAR}, 
+			</if>
+			<if test="updateTime != null and updateTime != ''">
+			#{updateTime,jdbcType=TIMESTAMP}, 
+			</if>
+			<if test="updater != null and updater != ''">
+			#{updater,jdbcType=VARCHAR}
+			</if>
+		)
+	</insert>
+	
+	<delete id="removeByPK">
+		DELETE FROM t_param_config
+		WHERE 
+			`id` = #{id,jdbcType=INTEGER}
+	</delete>
+	
+	<delete id="remove" parameterType="com.bittrade.pojo.model.TParamConfig">
+		DELETE FROM t_param_config
+		WHERE
+			<if test="paramKey != null and paramKey != ''">
+			`param_key` = #{paramKey,jdbcType=VARCHAR} AND
+			</if>
+			<if test="paramValue != null and paramValue != ''">
+			`param_value` = #{paramValue,jdbcType=VARCHAR} AND
+			</if>
+			<if test="paramStatus != null and paramStatus != ''">
+			`param_status` = #{paramStatus,jdbcType=INTEGER} AND
+			</if>
+			<if test="paramRemark != null and paramRemark != ''">
+			`param_remark` = #{paramRemark,jdbcType=VARCHAR} AND
+			</if>
+			<if test="createTime != null and createTime != ''">
+			`create_time` = #{createTime,jdbcType=TIMESTAMP} AND
+			</if>
+			<if test="creater != null and creater != ''">
+			`creater` = #{creater,jdbcType=VARCHAR} AND
+			</if>
+			<if test="updateTime != null and updateTime != ''">
+			`update_time` = #{updateTime,jdbcType=TIMESTAMP} AND
+			</if>
+			<if test="updater != null and updater != ''">
+			`updater` = #{updater,jdbcType=VARCHAR}
+			</if>
+	</delete>
+	
+	<update id="modifyByPK" parameterType="com.bittrade.pojo.model.TParamConfig">
+		UPDATE t_param_config
+		SET
+			`param_key` = #{paramKey,jdbcType=VARCHAR}, 
+			`param_value` = #{paramValue,jdbcType=VARCHAR}, 
+			`param_status` = #{paramStatus,jdbcType=INTEGER}, 
+			`param_remark` = #{paramRemark,jdbcType=VARCHAR}, 
+			`create_time` = #{createTime,jdbcType=TIMESTAMP}, 
+			`creater` = #{creater,jdbcType=VARCHAR}, 
+			`update_time` = #{updateTime,jdbcType=TIMESTAMP}, 
+			`updater` = #{updater,jdbcType=VARCHAR}
+		WHERE 
+			`id` = #{id,jdbcType=INTEGER}
+	</update>
+	
+	<update id="modifyWithSelectiveByPK" parameterType="com.bittrade.pojo.model.TParamConfig">
+		UPDATE t_param_config
+		SET
+			<if test="paramKey != null and paramKey != ''">
+			`param_key` = #{paramKey,jdbcType=VARCHAR}, 
+			</if>
+			<if test="paramValue != null and paramValue != ''">
+			`param_value` = #{paramValue,jdbcType=VARCHAR}, 
+			</if>
+			<if test="paramStatus != null and paramStatus != ''">
+			`param_status` = #{paramStatus,jdbcType=INTEGER}, 
+			</if>
+			<if test="paramRemark != null and paramRemark != ''">
+			`param_remark` = #{paramRemark,jdbcType=VARCHAR}, 
+			</if>
+			<if test="createTime != null and createTime != ''">
+			`create_time` = #{createTime,jdbcType=TIMESTAMP}, 
+			</if>
+			<if test="creater != null and creater != ''">
+			`creater` = #{creater,jdbcType=VARCHAR}, 
+			</if>
+			<if test="updateTime != null and updateTime != ''">
+			`update_time` = #{updateTime,jdbcType=TIMESTAMP}, 
+			</if>
+			<if test="updater != null and updater != ''">
+			`updater` = #{updater,jdbcType=VARCHAR}
+			</if>
+		WHERE 
+			`id` = #{id,jdbcType=INTEGER}
+	</update>
+	
+	<update id="modify">
+		UPDATE t_param_config
+		SET
+			`param_key` = #{tParamConfig.paramKey,jdbcType=VARCHAR}, 
+			`param_value` = #{tParamConfig.paramValue,jdbcType=VARCHAR}, 
+			`param_status` = #{tParamConfig.paramStatus,jdbcType=INTEGER}, 
+			`param_remark` = #{tParamConfig.paramRemark,jdbcType=VARCHAR}, 
+			`create_time` = #{tParamConfig.createTime,jdbcType=TIMESTAMP}, 
+			`creater` = #{tParamConfig.creater,jdbcType=VARCHAR}, 
+			`update_time` = #{tParamConfig.updateTime,jdbcType=TIMESTAMP}, 
+			`updater` = #{tParamConfig.updater,jdbcType=VARCHAR}
+		WHERE 
+			<if test="condiTParamConfig.paramKey != null and condiTParamConfig.paramKey != ''">
+			`param_key` = #{condiTParamConfig.paramKey,jdbcType=VARCHAR} AND
+			</if>
+			<if test="condiTParamConfig.paramValue != null and condiTParamConfig.paramValue != ''">
+			`param_value` = #{condiTParamConfig.paramValue,jdbcType=VARCHAR} AND
+			</if>
+			<if test="condiTParamConfig.paramStatus != null and condiTParamConfig.paramStatus != ''">
+			`param_status` = #{condiTParamConfig.paramStatus,jdbcType=INTEGER} AND
+			</if>
+			<if test="condiTParamConfig.paramRemark != null and condiTParamConfig.paramRemark != ''">
+			`param_remark` = #{condiTParamConfig.paramRemark,jdbcType=VARCHAR} AND
+			</if>
+			<if test="condiTParamConfig.createTime != null and condiTParamConfig.createTime != ''">
+			`create_time` = #{condiTParamConfig.createTime,jdbcType=TIMESTAMP} AND
+			</if>
+			<if test="condiTParamConfig.creater != null and condiTParamConfig.creater != ''">
+			`creater` = #{condiTParamConfig.creater,jdbcType=VARCHAR} AND
+			</if>
+			<if test="condiTParamConfig.updateTime != null and condiTParamConfig.updateTime != ''">
+			`update_time` = #{condiTParamConfig.updateTime,jdbcType=TIMESTAMP} AND
+			</if>
+			<if test="condiTParamConfig.updater != null and condiTParamConfig.updater != ''">
+			`updater` = #{condiTParamConfig.updater,jdbcType=VARCHAR}
+			</if>
+	</update>
+	
+	<update id="modifyWithSelective">
+		UPDATE t_param_config
+		SET
+			<if test="paramKey != null and paramKey != ''">
+			`param_key` = #{tParamConfig.paramKey,jdbcType=VARCHAR}, 
+			</if>
+			<if test="paramValue != null and paramValue != ''">
+			`param_value` = #{tParamConfig.paramValue,jdbcType=VARCHAR}, 
+			</if>
+			<if test="paramStatus != null and paramStatus != ''">
+			`param_status` = #{tParamConfig.paramStatus,jdbcType=INTEGER}, 
+			</if>
+			<if test="paramRemark != null and paramRemark != ''">
+			`param_remark` = #{tParamConfig.paramRemark,jdbcType=VARCHAR}, 
+			</if>
+			<if test="createTime != null and createTime != ''">
+			`create_time` = #{tParamConfig.createTime,jdbcType=TIMESTAMP}, 
+			</if>
+			<if test="creater != null and creater != ''">
+			`creater` = #{tParamConfig.creater,jdbcType=VARCHAR}, 
+			</if>
+			<if test="updateTime != null and updateTime != ''">
+			`update_time` = #{tParamConfig.updateTime,jdbcType=TIMESTAMP}, 
+			</if>
+			<if test="updater != null and updater != ''">
+			`updater` = #{tParamConfig.updater,jdbcType=VARCHAR}
+			</if>
+		WHERE 
+			<if test="condiTParamConfig.paramKey != null and condiTParamConfig.paramKey != ''">
+			`param_key` = #{condiTParamConfig.paramKey,jdbcType=VARCHAR} AND
+			</if>
+			<if test="condiTParamConfig.paramValue != null and condiTParamConfig.paramValue != ''">
+			`param_value` = #{condiTParamConfig.paramValue,jdbcType=VARCHAR} AND
+			</if>
+			<if test="condiTParamConfig.paramStatus != null and condiTParamConfig.paramStatus != ''">
+			`param_status` = #{condiTParamConfig.paramStatus,jdbcType=INTEGER} AND
+			</if>
+			<if test="condiTParamConfig.paramRemark != null and condiTParamConfig.paramRemark != ''">
+			`param_remark` = #{condiTParamConfig.paramRemark,jdbcType=VARCHAR} AND
+			</if>
+			<if test="condiTParamConfig.createTime != null and condiTParamConfig.createTime != ''">
+			`create_time` = #{condiTParamConfig.createTime,jdbcType=TIMESTAMP} AND
+			</if>
+			<if test="condiTParamConfig.creater != null and condiTParamConfig.creater != ''">
+			`creater` = #{condiTParamConfig.creater,jdbcType=VARCHAR} AND
+			</if>
+			<if test="condiTParamConfig.updateTime != null and condiTParamConfig.updateTime != ''">
+			`update_time` = #{condiTParamConfig.updateTime,jdbcType=TIMESTAMP} AND
+			</if>
+			<if test="condiTParamConfig.updater != null and condiTParamConfig.updater != ''">
+			`updater` = #{condiTParamConfig.updater,jdbcType=VARCHAR}
+			</if>
+	</update>
+	
+	<select id="getByPK" resultType="com.bittrade.pojo.model.TParamConfig">
+		SELECT 
+			`id`, 
+			`param_key`, 
+			`param_value`, 
+			`param_status`, 
+			`param_remark`, 
+			`create_time`, 
+			`creater`, 
+			`update_time`, 
+			`updater`
+		FROM t_param_config
+		<where>
+			`id` = #{id,jdbcType=INTEGER}
+		</where>
+	</select>
+	
+	<select id="get" resultType="com.bittrade.pojo.dto.TParamConfigDTO">
+		SELECT 
+			`id`, 
+			`param_key`, 
+			`param_value`, 
+			`param_status`, 
+			`param_remark`, 
+			`create_time`, 
+			`creater`, 
+			`update_time`, 
+			`updater`
+		FROM t_param_config
+		<where>
+			<if test="paramKey != null and paramKey != ''">
+			AND `param_key` = #{paramKey,jdbcType=VARCHAR}
+			</if>
+			<if test="paramValue != null and paramValue != ''">
+			AND `param_value` = #{paramValue,jdbcType=VARCHAR}
+			</if>
+			<if test="paramStatus != null and paramStatus != ''">
+			AND `param_status` = #{paramStatus,jdbcType=INTEGER}
+			</if>
+			<if test="paramRemark != null and paramRemark != ''">
+			AND `param_remark` = #{paramRemark,jdbcType=VARCHAR}
+			</if>
+			<if test="createTime != null and createTime != ''">
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="creater != null and creater != ''">
+			AND `creater` = #{creater,jdbcType=VARCHAR}
+			</if>
+			<if test="updateTime != null and updateTime != ''">
+			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="updater != null and updater != ''">
+			AND `updater` = #{updater,jdbcType=VARCHAR}
+			</if>
+		</where>
+	</select>
+	
+	<select id="gets" resultType="com.bittrade.pojo.dto.TParamConfigDTO">
+		SELECT 
+			`id`, 
+			`param_key`, 
+			`param_value`, 
+			`param_status`, 
+			`param_remark`, 
+			`create_time`, 
+			`creater`, 
+			`update_time`, 
+			`updater`
+		FROM t_param_config
+	</select>
+	
+	<select id="getCntWithPage" resultType="int">
+		SELECT COUNT(1)
+		FROM t_param_config
+		<where>
+			<if test="tParamConfig.paramKey != null and tParamConfig.paramKey != ''">
+			AND `param_key` = #{tParamConfig.paramKey,jdbcType=VARCHAR}
+			</if>
+			<if test="tParamConfig.paramValue != null and tParamConfig.paramValue != ''">
+			AND `param_value` = #{tParamConfig.paramValue,jdbcType=VARCHAR}
+			</if>
+			<if test="tParamConfig.paramStatus != null and tParamConfig.paramStatus != ''">
+			AND `param_status` = #{tParamConfig.paramStatus,jdbcType=INTEGER}
+			</if>
+			<if test="tParamConfig.paramRemark != null and tParamConfig.paramRemark != ''">
+			AND `param_remark` = #{tParamConfig.paramRemark,jdbcType=VARCHAR}
+			</if>
+			<if test="tParamConfig.createTime != null and tParamConfig.createTime != ''">
+			AND `create_time` = #{tParamConfig.createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="tParamConfig.creater != null and tParamConfig.creater != ''">
+			AND `creater` = #{tParamConfig.creater,jdbcType=VARCHAR}
+			</if>
+			<if test="tParamConfig.updateTime != null and tParamConfig.updateTime != ''">
+			AND `update_time` = #{tParamConfig.updateTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="tParamConfig.updater != null and tParamConfig.updater != ''">
+			AND `updater` = #{tParamConfig.updater,jdbcType=VARCHAR}
+			</if>
+		</where>
+	</select>
+	
+	<select id="getsWithPage" resultType="com.bittrade.pojo.dto.TParamConfigDTO">
+		SELECT 
+			`id`, 
+			`param_key`, 
+			`param_value`, 
+			`param_status`, 
+			`param_remark`, 
+			`create_time`, 
+			`creater`, 
+			`update_time`, 
+			`updater`
+		FROM t_param_config
+		<where>
+			<if test="tParamConfig.paramKey != null and tParamConfig.paramKey != ''">
+			AND `param_key` = #{tParamConfig.paramKey,jdbcType=VARCHAR}
+			</if>
+			<if test="tParamConfig.paramValue != null and tParamConfig.paramValue != ''">
+			AND `param_value` = #{tParamConfig.paramValue,jdbcType=VARCHAR}
+			</if>
+			<if test="tParamConfig.paramStatus != null and tParamConfig.paramStatus != ''">
+			AND `param_status` = #{tParamConfig.paramStatus,jdbcType=INTEGER}
+			</if>
+			<if test="tParamConfig.paramRemark != null and tParamConfig.paramRemark != ''">
+			AND `param_remark` = #{tParamConfig.paramRemark,jdbcType=VARCHAR}
+			</if>
+			<if test="tParamConfig.createTime != null and tParamConfig.createTime != ''">
+			AND `create_time` = #{tParamConfig.createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="tParamConfig.creater != null and tParamConfig.creater != ''">
+			AND `creater` = #{tParamConfig.creater,jdbcType=VARCHAR}
+			</if>
+			<if test="tParamConfig.updateTime != null and tParamConfig.updateTime != ''">
+			AND `update_time` = #{tParamConfig.updateTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="tParamConfig.updater != null and tParamConfig.updater != ''">
+			AND `updater` = #{tParamConfig.updater,jdbcType=VARCHAR}
+			</if>
+		</where>
+		LIMIT #{page}, #{size}
+	</select>
+
+</mapper>

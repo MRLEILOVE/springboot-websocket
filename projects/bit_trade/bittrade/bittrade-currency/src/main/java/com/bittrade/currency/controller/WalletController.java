@@ -1,6 +1,5 @@
 package com.bittrade.currency.controller;
 
-
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,16 +13,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.bittrade.api.service.ITCurrencyService;
-import com.bittrade.api.service.ITWalletService;
-import com.bittrade.api.service.IWUserWalletBillService;
-import com.bittrade.api.service.IWUserWalletService;
-import com.bittrade.api.service.IWWithdrawWalletBillService;
-import com.bittrade.currency.dao.ITCurrencyDAO;
-import com.bittrade.currency.dao.ITWalletDAO;
-import com.bittrade.currency.dao.IWUserWalletBillDAO;
-import com.bittrade.currency.dao.IWUserWalletDAO;
-import com.bittrade.currency.dao.IWWithdrawWalletBillDAO;
+import com.bittrade.currency.api.service.ITCurrencyService;
+import com.bittrade.currency.api.service.ITWalletService;
+import com.bittrade.currency.api.service.IWUserWalletBillService;
+import com.bittrade.currency.api.service.IWUserWalletService;
+import com.bittrade.currency.api.service.IWWithdrawWalletBillService;
 import com.bittrade.pojo.model.WUserWalletBill;
 import com.bittrade.pojo.model.WWithdrawWalletBill;
 
@@ -41,15 +35,15 @@ import io.swagger.annotations.ApiOperation;
 @RequestMapping(value = "wallet",produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class WalletController {
     @Autowired
-    private IWUserWalletBillService<IWUserWalletBillDAO> userWalletBillService;
+    private IWUserWalletBillService userWalletBillService;
     @Autowired
-    private IWWithdrawWalletBillService<IWWithdrawWalletBillDAO> withdrawWalletBillService;
+    private IWWithdrawWalletBillService withdrawWalletBillService;
     @Autowired
-    private IWUserWalletService<IWUserWalletDAO> userWalletService;
+    private IWUserWalletService userWalletService;
     @Autowired
-    private ITCurrencyService<ITCurrencyDAO> currencyService;
+    private ITCurrencyService currencyService;
     @Autowired
-    private ITWalletService<ITWalletDAO> walletService;
+    private ITWalletService walletService;
 
 
   /*  @PostMapping("coinSelect")
@@ -104,7 +98,7 @@ public class WalletController {
 
     @PostMapping("rechargeRecord/{currentPage}/{pageSize}")
     @ApiOperation(value="充币记录", notes="冲币记录")
-    public List rechargeRecord(Model model,@PathVariable  Integer currentPage,@PathVariable Integer pageSize){
+    public List<WUserWalletBill> rechargeRecord(Model model,@PathVariable  Integer currentPage,@PathVariable Integer pageSize){
         QueryWrapper<WUserWalletBill>queryWrapper=new QueryWrapper<>();
         queryWrapper.eq("user_id",5).orderByDesc("update_time");
         queryWrapper.select("amount","update_time");
@@ -116,7 +110,7 @@ public class WalletController {
 
     @PostMapping("extractRecord/{currentPage}/{pageSize}")
     @ApiOperation(value="提币记录", notes="提币记录")
-    public List extractRecord(Model model,@PathVariable  Integer currentPage,@PathVariable Integer pageSize){
+    public List<WWithdrawWalletBill> extractRecord(Model model,@PathVariable  Integer currentPage,@PathVariable Integer pageSize){
         QueryWrapper<WWithdrawWalletBill>queryWrapper=new QueryWrapper<>();
         queryWrapper.eq("user_id",5).orderByDesc("update_time");
         queryWrapper.select("amount","update_time");

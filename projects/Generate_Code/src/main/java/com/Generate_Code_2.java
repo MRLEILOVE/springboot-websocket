@@ -51,12 +51,13 @@ public class Generate_Code_2 {
 	private static /* final */String BASE_OUT_PATH = "base_out_path";
 	private static /* final */String FRAMEWORK_PACKAGE = "framework_package";
 	private static /* final */String POJO_BASE_PACKAGE = "POJO_base_package";
+	private static /* final */String DEFAULT_BASE_PACKAGE = "default_base_package";
 	private static /* final */String API_BASE_PACKAGE = "API_base_package";
 	private static /* final */String BASE_PACKAGE = "base_package";
 	@SuppressWarnings("unused")
 	private static /* final */String MODULE_NAME = "module_name";
 	private static /* final */String REMOVE_FROM_BASE_PATH = "remove_from_base_path";
-	private static /* final */String _POJOOutPath, _APIOutPath, outPath;
+	private static /* final */String _POJOOutPath, _DefaultOutPath, _APIOutPath, outPath;
 	private static /* final */String objectsIgnore = "objects.ignore";
 	private static /* final */String objectFilter = "object.filter";
 	private static /* final */String columnsIgnore = "columns.ignore";
@@ -156,6 +157,7 @@ public class Generate_Code_2 {
 			BASE_OUT_PATH = props.getProperty(BASE_OUT_PATH);
 			FRAMEWORK_PACKAGE = props.getProperty(FRAMEWORK_PACKAGE);
 			POJO_BASE_PACKAGE = props.getProperty(POJO_BASE_PACKAGE);
+			DEFAULT_BASE_PACKAGE = props.getProperty(DEFAULT_BASE_PACKAGE);
 			API_BASE_PACKAGE = props.getProperty(API_BASE_PACKAGE);
 			BASE_PACKAGE = props.getProperty(BASE_PACKAGE);
 //			MODULE_NAME = props.getProperty(MODULE_NAME);
@@ -609,6 +611,9 @@ public class Generate_Code_2 {
 			String str_relativePath = POJO_BASE_PACKAGE.replace('.', File.separatorChar) + File.separatorChar;
 			_POJOOutPath = BASE_OUT_PATH + str_relativePath;
 			makeSurePathExist(_POJOOutPath);
+			str_relativePath = DEFAULT_BASE_PACKAGE.replace('.', File.separatorChar) + File.separatorChar;
+			_DefaultOutPath = BASE_OUT_PATH + str_relativePath;
+			makeSurePathExist(_DefaultOutPath);
 			str_relativePath = API_BASE_PACKAGE.replace('.', File.separatorChar) + File.separatorChar;
 			_APIOutPath = BASE_OUT_PATH + str_relativePath;
 			makeSurePathExist(_APIOutPath);
@@ -637,6 +642,17 @@ public class Generate_Code_2 {
 
 	private static final String getPOJOOutPath(String name) {
 		String str_path = _POJOOutPath + name + File.separator;
+//		if (MODULE_NAME != null && MODULE_NAME.length() > 0) {
+//			str_path += MODULE_NAME + File.separatorChar;
+//		}
+		if (isUseModuleName) {
+			str_path += DB_NAME + File.separatorChar;
+		}
+		return str_path;
+	}
+
+	private static final String getDefaultOutPath(String name) {
+		String str_path = _DefaultOutPath + name + File.separator;
 //		if (MODULE_NAME != null && MODULE_NAME.length() > 0) {
 //			str_path += MODULE_NAME + File.separatorChar;
 //		}
@@ -682,6 +698,7 @@ public class Generate_Code_2 {
 	private static final void setBase(Map<String, Object> map) {
 		map.put("FRAMEWORK_PACKAGE", FRAMEWORK_PACKAGE);
 		map.put("POJO_BASE_PKG", POJO_BASE_PACKAGE);
+		map.put("DEFAULT_BASE_PKG", DEFAULT_BASE_PACKAGE);
 		map.put("API_BASE_PKG", API_BASE_PACKAGE);
 		map.put("BASE_PKG", BASE_PACKAGE);
 //		if (MODULE_NAME != null && MODULE_NAME.length() > 0) {
@@ -818,7 +835,7 @@ public class Generate_Code_2 {
 	private static void _DefaultDAO(Configuration configuration) throws TemplateNotFoundException,
 	MalformedTemplateNameException, ParseException, IOException, TemplateException {
 		// DAO .
-		String str_path = getAPIOutPath("__default" + File.separator + "DAO");
+		String str_path = getDefaultOutPath("DAO");
 		makeSurePathExist(str_path);
 		Template template = configuration.getTemplate("DefaultDAO-template.java");
 
@@ -841,7 +858,7 @@ public class Generate_Code_2 {
     private static void _DefaultDAO_SQL(Configuration configuration) throws TemplateNotFoundException,
 	MalformedTemplateNameException, ParseException, IOException, TemplateException {
 		// DAO_XML .
-		String str_path = getDAOOutPath("__default" + File.separator + "DAO_SQL");
+		String str_path = getDAOOutPath("__default_SQL");
 		makeSurePathExist(str_path);
 		Template template = configuration.getTemplate("DefaultDAO_SQL-template.xml");
 
@@ -903,7 +920,7 @@ public class Generate_Code_2 {
     private static void _DAO_SQL(Configuration configuration) throws TemplateNotFoundException,
 	MalformedTemplateNameException, ParseException, IOException, TemplateException {
 		// DAO_SQL .
-		String str_path = getDAOOutPath(DAO + "_SQL");
+		String str_path = getDAOOutPath("SQL");
 		makeSurePathExist(str_path);
 		Template template = configuration.getTemplate("DAO_SQL-template.xml");
 
@@ -942,7 +959,7 @@ public class Generate_Code_2 {
 	private static void _defaultService(Configuration configuration) throws TemplateNotFoundException,
 	MalformedTemplateNameException, ParseException, IOException, TemplateException {
 		// Service .
-		String str_path = getAPIOutPath("__default" + File.separator + "service");
+		String str_path = getDefaultOutPath("service");
 		makeSurePathExist(str_path);
 		Template template = configuration.getTemplate("DefaultService-template.java");
 
@@ -964,7 +981,7 @@ public class Generate_Code_2 {
 	private static void _defaultServiceImpl(Configuration configuration) throws TemplateNotFoundException,
 	MalformedTemplateNameException, ParseException, IOException, TemplateException {
 		// ServiceImpl .
-		String str_path = getAPIOutPath("__default" + File.separator + "service" + File.separator + "impl");
+		String str_path = getDefaultOutPath("service" + File.separator + "impl");
 		makeSurePathExist(str_path);
 		Template template = configuration.getTemplate("DefaultServiceImpl-template.java");
 

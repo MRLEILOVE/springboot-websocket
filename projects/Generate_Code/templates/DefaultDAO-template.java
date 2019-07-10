@@ -1,7 +1,7 @@
 /**
  * This code is generated automatically. Please do not edit it.
  */
-package ${API_BASE_PKG}.__default.DAO${module_name};
+package ${DEFAULT_BASE_PKG}.DAO${module_name};
 
 import java.io.Serializable;
 import java.util.List;

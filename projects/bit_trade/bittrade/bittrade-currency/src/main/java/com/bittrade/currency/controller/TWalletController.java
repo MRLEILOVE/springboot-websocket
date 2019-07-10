@@ -12,11 +12,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.bittrade.currency.api.service.ITWalletService;
 import com.bittrade.currency.dao.ITWalletDAO;
 import com.bittrade.pojo.dto.TWalletDTO;
 import com.bittrade.pojo.vo.TWalletVO;
 import com.bittrade.pojo.model.TWallet;
-import com.bittrade.api.service.ITWalletService;
 import com.core.framework.base.controller.BaseController;
 
 /**
@@ -27,9 +27,9 @@ import com.core.framework.base.controller.BaseController;
 @Controller
 @ResponseBody
 @RequestMapping(value = { "/tWallet" }, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-public class TWalletController extends BaseController<TWallet, TWalletDTO, TWalletVO, ITWalletDAO, ITWalletService<ITWalletDAO>> {
+public class TWalletController extends BaseController<TWallet, TWalletDTO, TWalletVO, ITWalletDAO, ITWalletService> {
     @Autowired
-    private ITWalletService<ITWalletDAO> walletService;
+    private ITWalletService walletService;
 
     @ApiOperation(value="查询用户的币币账户", notes="查询用户的币币账户")
     @GetMapping(value = "/queryCoinAccountByUserId/{userId}")

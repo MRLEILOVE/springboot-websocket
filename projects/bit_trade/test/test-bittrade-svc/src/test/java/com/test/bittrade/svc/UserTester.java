@@ -6,12 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.test.bittrade.api.service.ITUserService;
 import com.test.bittrade.pojo.model.TUser;
 import com.test.bittrade.svc.base.BaseTester;
-import com.test.bittrade.svc.dao.ITUserDAO;
 
 public class UserTester extends BaseTester {
 
 	@Autowired
-	private ITUserService<ITUserDAO> userService;
+	private ITUserService userService;
 
 	@Test
 	public void test() {

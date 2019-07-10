@@ -13,6 +13,10 @@
 	<artifactId>core-tool</artifactId>
 
 	<dependencies>
+		<dependency>
+			<groupId>com.bittrade</groupId>
+			<artifactId>core-common</artifactId>
+		</dependency>
 	</dependencies>
 
 </project>

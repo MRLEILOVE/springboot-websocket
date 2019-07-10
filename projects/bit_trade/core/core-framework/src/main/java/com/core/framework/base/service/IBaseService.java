@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.core.framework.DTO.PageDTO;
-import com.core.framework.base.DAO.IBaseDAO;
 import com.core.framework.base.DTO.BaseDTO;
 import com.core.framework.base.VO.BaseVO;
 import com.core.framework.base.model.BaseModel;
@@ -26,7 +25,7 @@ import com.core.framework.base.model.BaseModel;
  * @param <VO>
  * @param <DAO>
  */
-public abstract interface IBaseService<Model extends BaseModel<Model>, DTO extends BaseDTO<DTO>, VO extends BaseVO<VO>, DAO extends IBaseDAO<Model, DTO, VO>>
+public abstract interface IBaseService<Model extends BaseModel<Model>, DTO extends BaseDTO<DTO>, VO extends BaseVO<VO>/*, DAO extends IBaseDAO<Model, DTO, VO>*/>
 		extends IService<Model> {
 
 	/**

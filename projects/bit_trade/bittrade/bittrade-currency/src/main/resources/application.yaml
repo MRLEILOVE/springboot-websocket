@@ -5,6 +5,8 @@ data:
   #mapper-locations: classpath*:/__default/DAO_SQL/**/I*DAO.xml,classpath*:/dao_SQL/**/I*DAO.xml
   application:
     name: currency
+  register-with-eureka: false
+  fetch-registry: false
 
 server:
   port: 8901
@@ -14,3 +16,21 @@ spring:
 #    name: currency
   profiles:
     active: common
+
+---
+dubbo:
+  registry:
+    #protocol: zookeeper
+    #address: 127.0.0.1:2181
+    address: zookeeper://127.0.0.1:2181
+  protocol:
+    port: 20880
+    name: dubbo
+  application:
+    name: user-service-provider
+  monitor:
+    protocol: registry
+  provider:
+    timeout: 1000
+
+#demo.service.version=1.0.0

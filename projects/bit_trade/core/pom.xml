@@ -49,10 +49,6 @@
 			<optional>true</optional> 这个需要为 true 热部署才有效
 		</dependency> -->
 		
-		<dependency>
-			<groupId>com.bittrade</groupId>
-			<artifactId>core-common</artifactId>
-		</dependency>
 	</dependencies>
 
 </project>

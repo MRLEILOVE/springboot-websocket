@@ -1,6 +1,6 @@
 package com.bittrade.currency.dao;
 
-import com.bittrade.api.__default.DAO.IDefaultTWalletRecordDAO;
+import com.bittrade.__default.DAO.IDefaultTWalletRecordDAO;
 
 /**
  * 

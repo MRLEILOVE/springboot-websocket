@@ -3,17 +3,15 @@ package com.bittrade.batch.scheduled;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import com.bittrade.api.service.ITParamConfigService;
-import com.bittrade.batch.dao.ITParamConfigDAO;
 import com.bittrade.batch.enumer.ParamConfigEnum.ParamKeyEnum;
 import com.bittrade.batch.general.ObtainParamConfigInfo;
 import com.bittrade.common.constant.IConstant;
 import com.bittrade.common.utils.HttpClientResult;
 import com.bittrade.common.utils.HttpClientUtils;
 import com.bittrade.common.utils.RedisKeyUtil;
+import com.bittrade.currency.api.service.ITParamConfigService;
 import com.bittrade.pojo.model.TParamConfig;
 
 import redis.clients.jedis.JedisCluster;
@@ -30,7 +28,7 @@ public class OkexRateScheduled {
 	private static final Logger		LOG	= LoggerFactory.getLogger( OkexRateScheduled.class );
 
 	@Autowired
-	private ITParamConfigService<ITParamConfigDAO>	paramConfigService;
+	private ITParamConfigService paramConfigService;
 
 	@Autowired
 	private JedisCluster			jedisCluster;

@@ -43,11 +43,6 @@ public class TWallet extends BaseModel<TWallet> {
 		public static final String CURRENCY_ID = "currency_id";
 		
 		/**
-		 * 货币种类
-		 */
-		public static final String TOKEN = "token";
-		
-		/**
 		 * 总数量
 		 */
 		public static final String TOTAL = "total";
@@ -93,11 +88,6 @@ public class TWallet extends BaseModel<TWallet> {
 	 * 货币id(t_currency.id)
 	 */
 	private int currencyId;
-	
-	/**
-	 * 货币种类
-	 */
-	private String token;
 	
 	/**
 	 * 总数量

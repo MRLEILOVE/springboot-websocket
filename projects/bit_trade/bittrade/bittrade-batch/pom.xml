@@ -16,11 +16,11 @@
 	<dependencies>
 		<dependency>
 			<groupId>com.bittrade</groupId>
-			<artifactId>bittrade-api</artifactId>
+			<artifactId>bittrade-common</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>com.bittrade</groupId>
-			<artifactId>bittrade-common</artifactId>
+			<artifactId>bittrade-currency-api</artifactId>
 		</dependency>
 
 		<dependency>

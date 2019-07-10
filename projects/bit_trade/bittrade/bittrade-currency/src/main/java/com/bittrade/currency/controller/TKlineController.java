@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.bittrade.api.service.ITKlineService;
+import com.bittrade.currency.api.service.ITKlineService;
 import com.bittrade.currency.dao.ITKlineDAO;
 import com.bittrade.pojo.dto.QueryKLineDto;
 import com.bittrade.pojo.dto.TKlineDTO;
@@ -28,10 +28,10 @@ import com.core.framework.base.controller.BaseController;
 @Controller
 @ResponseBody
 @RequestMapping(value = { "/tKline" }, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-public class TKlineController extends BaseController<TKline, TKlineDTO, TKlineVO, ITKlineDAO, ITKlineService<ITKlineDAO>> {
+public class TKlineController extends BaseController<TKline, TKlineDTO, TKlineVO, ITKlineDAO, ITKlineService> {
 
     @Autowired
-    private ITKlineService<ITKlineDAO> tKlineService;
+    private ITKlineService tKlineService;
 
     /**
      * k线查询

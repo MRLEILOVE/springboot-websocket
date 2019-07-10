@@ -15,8 +15,9 @@
 	
 	<modules>
 		<module>bittrade-pojo</module>
-		<module>bittrade-api</module>
+		<module>bittrade-__default</module>
 		<module>bittrade-common</module>
+		<module>bittrade-currency-api</module>
 		<module>bittrade-currency</module>
 		<module>bittrade-entrust</module>
 		<module>bittrade-netty-websocket</module>
@@ -40,12 +41,17 @@
 			</dependency>
 			<dependency>
 				<groupId>com.bittrade</groupId>
-				<artifactId>bittrade-api</artifactId>
+				<artifactId>bittrade-__default</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.bittrade</groupId>
 				<artifactId>bittrade-common</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.bittrade</groupId>
+				<artifactId>bittrade-currency-api</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 		</dependencies>

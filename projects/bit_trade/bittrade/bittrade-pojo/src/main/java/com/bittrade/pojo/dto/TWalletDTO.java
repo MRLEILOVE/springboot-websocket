@@ -19,7 +19,6 @@ public class TWalletDTO extends BaseDTO<TWalletDTO> {
 	private long id;
 	private long userId;
 	private int currencyId;
-	private String token;
 	private java.math.BigDecimal total;
 	private java.math.BigDecimal tradeFrozen;
 	private java.math.BigDecimal transferFrozen;

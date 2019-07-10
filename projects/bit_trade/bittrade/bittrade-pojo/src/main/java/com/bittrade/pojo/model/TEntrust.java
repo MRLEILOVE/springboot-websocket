@@ -1,6 +1,7 @@
 package com.bittrade.pojo.model;
 
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.core.framework.base.interfaces.ICreateAndUpdateTime;
 import com.core.framework.base.model.BaseModel;
 
 import lombok.Data;
@@ -15,7 +16,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @TableName(value="t_entrust")
-public class TEntrust extends BaseModel<TEntrust> {
+public class TEntrust extends BaseModel<TEntrust> implements ICreateAndUpdateTime {
 	
 	private static final long serialVersionUID = 1L;
 	

@@ -17,7 +17,7 @@
 		test.
 	-->
 	<entry key="POJO_base_package">com.bittrade.pojo</entry>
-	<entry key="API_base_package">com.bittrade.api</entry>
+	<entry key="default_base_package">com.bittrade.__default</entry>
 	<!--
 		上面是全量更新
 		下面是增量更新
@@ -26,6 +26,7 @@
 		currency
 		svc
 	-->
+	<entry key="API_base_package">com.bittrade.currency.api</entry>
 	<entry key="base_package">com.bittrade.currency</entry>
 	<!-- <entry key="module_name">sys</entry> -->
 	<entry key="remove_from_base_path">true</entry>

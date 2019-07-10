@@ -6,8 +6,8 @@ import com.bittrade.pojo.vo.UserWalletVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.bittrade.api.__default.service.impl.DefaultTWalletServiceImpl;
-import com.bittrade.api.service.ITWalletService;
+import com.bittrade.__default.service.impl.DefaultTWalletServiceImpl;
+import com.bittrade.currency.api.service.ITWalletService;
 import com.bittrade.currency.dao.ITWalletDAO;
 import com.bittrade.pojo.dto.TWalletDTO;
 import com.bittrade.pojo.model.TWallet;
@@ -26,7 +26,7 @@ import redis.clients.jedis.JedisCluster;
  * @since 2019-07-05
  */
 @Service
-public class TWalletServiceImpl extends DefaultTWalletServiceImpl<ITWalletDAO, TWallet, TWalletDTO, TWalletVO> implements ITWalletService<ITWalletDAO> {
+public class TWalletServiceImpl extends DefaultTWalletServiceImpl<ITWalletDAO, TWallet, TWalletDTO, TWalletVO> implements ITWalletService {
     @Autowired
     private ITWalletDAO walletDAO;
     @Autowired

@@ -1,11 +1,10 @@
 package com.bittrade.currency.dao;
 
-import com.bittrade.api.__default.DAO.IDefaultTKlineDAO;
+import java.util.List;
+
+import com.bittrade.__default.DAO.IDefaultTKlineDAO;
 import com.bittrade.pojo.dto.QueryKLineDto;
 import com.bittrade.pojo.vo.QueryKLineVO;
-import org.springframework.stereotype.Repository;
-
-import java.util.List;
 
 /**
  * 

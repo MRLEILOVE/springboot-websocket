@@ -4,13 +4,28 @@ data:
   model-package: com.bittrade.currency.model.*
   mapper-locations: classpath*:/com/bittrade/currency/__default/DAO_SQL/**/I*DAO.xml,classpath*:/com/bittrade/currency/dao_SQL/**/I*DAO.xml
   application:
-    name: currency
+    name: entrust
+  register-with-eureka: false
+  fetch-registry: false
 
 server:
-  port: 8901
+  port: 8910
 
 spring:
 #  application:
 #    name: currency
   profiles:
     active: common
+
+---
+dubbo:
+  registry:
+    address: zookeeper://127.0.0.1:2181
+  application:
+    name: order-service-consumer
+  monitor:
+    protocol: registry
+
+#demo.service.version=1.0.0
+
+#dubbo.provider.timeout=1000

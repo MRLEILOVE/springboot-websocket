@@ -23,6 +23,6 @@ import ${FRAMEWORK_PACKAGE}.base.controller.BaseController;
 <#--
 ${struct.className}, ${struct.className}DTO, ${struct.className}VO, 
 -->
-public class ${struct.className}Controller extends BaseController<${struct.className}, ${struct.className}DTO, ${struct.className}VO, I${struct.className}DAO, I${struct.className}Service<I${struct.className}DAO>> {
+public class ${struct.className}Controller extends BaseController<${struct.className}, ${struct.className}DTO, ${struct.className}VO, I${struct.className}DAO, I${struct.className}Service> {
 	
 }

@@ -10,18 +10,15 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.locks.ReentrantLock;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.bittrade.api.service.ITEntrustRecordService;
-import com.bittrade.api.service.ITEntrustService;
 import com.bittrade.common.constant.IConstant;
 import com.bittrade.common.enums.EntrustDirectionEnumer;
 import com.bittrade.common.enums.EntrustStatusEnumer;
 import com.bittrade.common.enums.EntrustTypeEnumer;
 import com.bittrade.common.enums.IsActiveEnumer;
-import com.bittrade.entrust.dao.ITEntrustDAO;
-import com.bittrade.entrust.dao.ITEntrustRecordDAO;
+import com.bittrade.currency.api.service.ITEntrustRecordService;
+import com.bittrade.currency.api.service.ITEntrustService;
 import com.bittrade.entrust.service.IMakeAMatchService;
 import com.bittrade.pojo.model.TEntrust;
 import com.bittrade.pojo.model.TEntrustRecord;
@@ -55,10 +52,10 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 	private static final SnowFlake SNOW_FLAKE__ENTRUST = new SnowFlake(1, 1);
 	private static final SnowFlake SNOW_FLAKE__ENTRUST_RECORD = new SnowFlake(1, 1);
 	
-	@Autowired
-	private ITEntrustService<ITEntrustDAO> entrustService;
-	@Autowired
-	private ITEntrustRecordService<ITEntrustRecordDAO> entrustRecordService;
+	@com.alibaba.dubbo.config.annotation.Reference
+	private ITEntrustService entrustService;
+	@com.alibaba.dubbo.config.annotation.Reference
+	private ITEntrustRecordService entrustRecordService;
 	
 	/**
 	 * 行情价
@@ -153,8 +150,8 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 	 * @param entrust_after
 	 * @return
 	 */
-	private BigDecimal getPrice(TEntrust entrust_before, TEntrust entrust_after) {
-		BigDecimal bd_price = null;
+	private BigDecimal getDealPrice(TEntrust entrust_before, TEntrust entrust_after) {
+		BigDecimal bd_dealPrice = null;
 		
 		BigDecimal bd_beforePrice = getPrice(entrust_before.getPrice()), bd_afterPrice = getPrice(entrust_after.getPrice());
 		if (
@@ -162,20 +159,20 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 				&& 
 				entrust_after.getEntrustDirection() == EntrustDirectionEnumer.SELL.getCode()
 				) {
-			bd_price = getPriceWithLinePrice(bd_beforePrice, bd_afterPrice);
+			bd_dealPrice = getPriceWithLinePrice(bd_beforePrice, bd_afterPrice);
 		}
 		if (
 				entrust_before.getEntrustDirection() == EntrustDirectionEnumer.SELL.getCode()
 				&& 
 				entrust_after.getEntrustDirection() == EntrustDirectionEnumer.BUY.getCode()
 				) {
-			bd_price = getPriceWithLinePrice(bd_afterPrice, bd_beforePrice);
+			bd_dealPrice = getPriceWithLinePrice(bd_afterPrice, bd_beforePrice);
 		}
 		
-		return bd_price;
+		return bd_dealPrice;
 	}
 	
-	private void matchWithBuy(TEntrust entrust_before, TEntrust entrust_after, BigDecimal price) {
+	private void matchWith(TEntrust entrust_before, TEntrust entrust_after, BigDecimal dealPrice) {
 		BigDecimal count;
 		BigDecimal amount;
 		int i_compareTo = entrust_before.getCount().compareTo(entrust_after.getCount());
@@ -186,7 +183,7 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 		} else {
 			count = entrust_after.getCount();
 		}
-		amount = price.multiply(count);
+		amount = dealPrice.multiply(count);
 		
 		// 修改委托
 		{
@@ -230,13 +227,12 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 		entrustRecord_before.setRivalUserId(entrust_after.getUserId());
 		entrustRecord_before.setEntrustId(entrust_before.getId());
 		entrustRecord_before.setRivalEntrustId(entrust_after.getId());
-		entrustRecord_before.setPrice(price);
+		entrustRecord_before.setPrice(dealPrice);
 		entrustRecord_before.setCount(count);
 		entrustRecord_before.setAmount(amount);
 		entrustRecord_before.setCurrencyTradeId(entrust_before.getCurrencyTradeId());
 		entrustRecord_before.setIsActive(IsActiveEnumer.ACTIVE.getCode());
 		entrustRecord_before.setEntrustDirection(entrust_before.getEntrustDirection());
-		entrustRecord_before.setVersion(0);
 		entrustRecordService.add(entrustRecord_before);
 //		System.out.println(entrustRecord_before);
 		// 被动
@@ -246,15 +242,24 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 		entrustRecord_after.setRivalUserId(entrust_before.getUserId());
 		entrustRecord_after.setEntrustId(entrust_after.getId());
 		entrustRecord_after.setRivalEntrustId(entrust_before.getId());
-		entrustRecord_after.setPrice(price);
+		entrustRecord_after.setPrice(dealPrice);
 		entrustRecord_after.setCount(count);
 		entrustRecord_after.setAmount(amount);
 		entrustRecord_after.setCurrencyTradeId(entrust_after.getCurrencyTradeId());
 		entrustRecord_after.setIsActive(IsActiveEnumer.UNACTIVE.getCode());
 		entrustRecord_after.setEntrustDirection(entrust_after.getEntrustDirection());
-		entrustRecord_after.setVersion(0);
 		entrustRecordService.add(entrustRecord_after);
 //		System.out.println(entrustRecord_after);
+	}
+	
+	/**
+	 * 修改行情价根据成交价
+	 * @param dealPrice
+	 */
+	private void changeLinePrice(BigDecimal dealPrice) {
+		if (LINE_PRICE.compareTo(dealPrice) != ICompareResultConstant.EQUAL) {
+			
+		}
 	}
 	
 	/**
@@ -275,9 +280,12 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 			for (int i = list.size() - 1; i > -1; i--) {
 				TEntrust entrust_ = list.get(i);
 				
-				BigDecimal bd_price = getPrice(entrust_, entrust);
-				if (bd_price != null) {
-					matchWithBuy(entrust_, entrust, bd_price);
+				BigDecimal bd_dealPrice = getDealPrice(entrust_, entrust);
+				if (bd_dealPrice == null) {
+					break;
+				} else {
+					matchWith(entrust_, entrust, bd_dealPrice);
+					changeLinePrice(bd_dealPrice);
 					
 					if (entrust_.getLeftCount().compareTo(BigDecimal.ZERO) == ICompareResultConstant.EQUAL) {
 						list.remove(i);
@@ -398,12 +406,12 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 		
 		private static final class MyCallable implements Callable<String> {
 			
-			private ITEntrustService<ITEntrustDAO> entrustService;
-			private ITEntrustRecordService<ITEntrustRecordDAO> entrustRecordService;
+			private ITEntrustService entrustService;
+			private ITEntrustRecordService entrustRecordService;
 			private MakeAMatchServiceImpl makeAMatch;
 			private CountDownLatch cdl;
 			
-			private MyCallable(MakeAMatchServiceImpl makeAMatch, ITEntrustService<ITEntrustDAO> entrustService, ITEntrustRecordService<ITEntrustRecordDAO> entrustRecordService, CountDownLatch cdl) {
+			private MyCallable(MakeAMatchServiceImpl makeAMatch, ITEntrustService entrustService, ITEntrustRecordService entrustRecordService, CountDownLatch cdl) {
 				this.makeAMatch = makeAMatch;
 				this.entrustService = entrustService;
 				this.entrustRecordService = entrustRecordService;
@@ -489,7 +497,44 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 	}
 	
 	public void test() {
-		Tester.test(this);
+//		Tester.test(this);
+		TEntrust entrust1 = new TEntrust();
+		entrust1.setUserId(101);
+		entrust1.setCurrencyTradeId(102);
+		entrust1.setEntrustDirection(EntrustDirectionEnumer.BUY.getCode());
+		entrust1.setEntrustType(EntrustTypeEnumer.MARKET.getCode());
+		entrust1.setCount(new BigDecimal(50));
+		makeAMatch(entrust1);
+		TEntrust entrust2 = new TEntrust();
+		entrust2.setUserId(101);
+		entrust2.setCurrencyTradeId(102);
+		entrust2.setEntrustDirection(EntrustDirectionEnumer.BUY.getCode());
+		entrust2.setEntrustType(EntrustTypeEnumer.LIMIT.getCode());
+		entrust2.setPrice(new BigDecimal(57));
+		entrust2.setCount(new BigDecimal(28));
+		makeAMatch(entrust2);
+		TEntrust entrust3 = new TEntrust();
+		entrust3.setUserId(101);
+		entrust3.setCurrencyTradeId(102);
+		entrust3.setEntrustDirection(EntrustDirectionEnumer.SELL.getCode());
+		entrust3.setEntrustType(EntrustTypeEnumer.LIMIT.getCode());
+		entrust3.setPrice(new BigDecimal(101));
+		entrust3.setCount(new BigDecimal(37));
+		makeAMatch(entrust3);
+		TEntrust entrust4 = new TEntrust();
+		entrust4.setUserId(101);
+		entrust4.setCurrencyTradeId(102);
+		entrust4.setEntrustDirection(EntrustDirectionEnumer.SELL.getCode());
+		entrust4.setEntrustType(EntrustTypeEnumer.MARKET.getCode());
+		entrust4.setCount(new BigDecimal(80));
+		makeAMatch(entrust4);
+		TEntrust entrust5 = new TEntrust();
+		entrust5.setUserId(101);
+		entrust5.setCurrencyTradeId(102);
+		entrust5.setEntrustDirection(EntrustDirectionEnumer.BUY.getCode());
+		entrust5.setEntrustType(EntrustTypeEnumer.MARKET.getCode());
+		entrust5.setCount(new BigDecimal(83));
+		makeAMatch(entrust5);
 	}
 	
 	public static void _main(String[] args) {
