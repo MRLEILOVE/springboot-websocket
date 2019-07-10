@@ -175,19 +175,16 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 	private void matchWith(TEntrust entrust_before, TEntrust entrust_after, BigDecimal dealPrice) {
 		BigDecimal count;
 		BigDecimal amount;
-		int i_compareTo = entrust_before.getCount().compareTo(entrust_after.getCount());
-		if (i_compareTo == ICompareResultConstant.LESS_THAN) {
-			count = entrust_before.getCount();
-		} else if (i_compareTo == 0) {
-			count = entrust_before.getCount();
+		if (entrust_before.getLeftCount().compareTo(entrust_after.getLeftCount()) == ICompareResultConstant.LESS_THAN) {
+			count = entrust_before.getLeftCount();
 		} else {
-			count = entrust_after.getCount();
+			count = entrust_after.getLeftCount();
 		}
 		amount = dealPrice.multiply(count);
 		
 		// 修改委托
 		{
-			entrust_before.setLeftCount(entrust_before.getCount().subtract(count));
+			entrust_before.setLeftCount(entrust_before.getLeftCount().subtract(count));
 			entrust_before.setSuccessAmount(entrust_before.getSuccessAmount().add(amount));
 			entrustService.updateOnMatch(
 					entrust_before.getSuccessAmount(), 
@@ -203,7 +200,7 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 //					);
 		}
 		{
-			entrust_after.setLeftCount(entrust_after.getCount().subtract(count));
+			entrust_after.setLeftCount(entrust_after.getLeftCount().subtract(count));
 			entrust_after.setSuccessAmount(entrust_after.getSuccessAmount().add(amount));
 			entrustService.updateOnMatch(
 					entrust_after.getSuccessAmount(), 
@@ -258,6 +255,8 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 	 */
 	private void changeLinePrice(BigDecimal dealPrice) {
 		if (LINE_PRICE.compareTo(dealPrice) != ICompareResultConstant.EQUAL) {
+			LINE_PRICE = dealPrice;
+			// 异步通知。
 			
 		}
 	}
@@ -506,15 +505,15 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 		entrust1.setCount(new BigDecimal(50));
 		makeAMatch(entrust1);
 		TEntrust entrust2 = new TEntrust();
-		entrust2.setUserId(101);
+		entrust2.setUserId(102);
 		entrust2.setCurrencyTradeId(102);
 		entrust2.setEntrustDirection(EntrustDirectionEnumer.BUY.getCode());
 		entrust2.setEntrustType(EntrustTypeEnumer.LIMIT.getCode());
-		entrust2.setPrice(new BigDecimal(57));
+		entrust2.setPrice(new BigDecimal(157));
 		entrust2.setCount(new BigDecimal(28));
 		makeAMatch(entrust2);
 		TEntrust entrust3 = new TEntrust();
-		entrust3.setUserId(101);
+		entrust3.setUserId(103);
 		entrust3.setCurrencyTradeId(102);
 		entrust3.setEntrustDirection(EntrustDirectionEnumer.SELL.getCode());
 		entrust3.setEntrustType(EntrustTypeEnumer.LIMIT.getCode());
@@ -522,14 +521,14 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 		entrust3.setCount(new BigDecimal(37));
 		makeAMatch(entrust3);
 		TEntrust entrust4 = new TEntrust();
-		entrust4.setUserId(101);
+		entrust4.setUserId(104);
 		entrust4.setCurrencyTradeId(102);
 		entrust4.setEntrustDirection(EntrustDirectionEnumer.SELL.getCode());
 		entrust4.setEntrustType(EntrustTypeEnumer.MARKET.getCode());
 		entrust4.setCount(new BigDecimal(80));
 		makeAMatch(entrust4);
 		TEntrust entrust5 = new TEntrust();
-		entrust5.setUserId(101);
+		entrust5.setUserId(105);
 		entrust5.setCurrencyTradeId(102);
 		entrust5.setEntrustDirection(EntrustDirectionEnumer.BUY.getCode());
 		entrust5.setEntrustType(EntrustTypeEnumer.MARKET.getCode());
