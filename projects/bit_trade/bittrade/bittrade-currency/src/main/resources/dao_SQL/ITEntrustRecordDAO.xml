@@ -39,10 +39,4 @@
 		`create_time` AS createTime
 	</sql>
 
-	<select id="queryDealEntrustByUserId" parameterType="java.lang.String" resultType="com.bittrade.pojo.vo.TEntrustRecordVO">
-		SELECT r.*
-		FROM t_entrust_record r
-		WHERE r.user_id = #{userId}
-		ORDER BY r.id DESC
-	</select>
 </mapper>

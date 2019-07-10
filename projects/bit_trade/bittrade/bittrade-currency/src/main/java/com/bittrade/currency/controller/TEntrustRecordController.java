@@ -31,14 +31,14 @@ import com.core.framework.base.controller.BaseController;
 @RequestMapping(value = { "/tEntrustRecord" }, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class TEntrustRecordController extends BaseController<TEntrustRecord, TEntrustRecordDTO, TEntrustRecordVO, ITEntrustRecordDAO, ITEntrustRecordService<ITEntrustRecordDAO>> {
     @Autowired
-    private ITDealService dealService;
+    private ITEntrustRecordService entrustRecordService;
 
     @ApiOperation(value = "查询用户成交记录")
     @GetMapping(value = "/queryDealEntrustByUserId/{userId}")
     @ResponseBody
-    public ReturnDTO<List<TEntrustRecordVO>> queryDealEntrustByUserId(@PathVariable("userId") String userId) {
+    public ReturnDTO<List<TEntrustRecord>> queryDealEntrustByUserId(@PathVariable("userId") String userId) {
         try{
-            return ReturnDTO.ok(dealService.queryDealEntrustByUserId(userId));
+            return ReturnDTO.ok(entrustRecordService.queryDealEntrustByUserId(userId));
         }catch (Exception e){
             e.printStackTrace();
             return ReturnDTO.error("服务器异常");
@@ -51,7 +51,7 @@ public class TEntrustRecordController extends BaseController<TEntrustRecord, TEn
     @ResponseBody
     public ReturnDTO<List<TRealTimeTransactionVO>> realTimeTransaction(@PathVariable("currencyTradeId") String currencyTradeId) {
         try{
-            return ReturnDTO.ok(dealService.realTimeTransaction(currencyTradeId));
+            return ReturnDTO.ok(entrustRecordService.realTimeTransaction(currencyTradeId));
         } catch (Exception e) {
             e.printStackTrace();
             return ReturnDTO.error("服务器异常");
