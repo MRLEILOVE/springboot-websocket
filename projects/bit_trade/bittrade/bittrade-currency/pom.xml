@@ -17,6 +17,10 @@
 			<groupId>com.bittrade</groupId>
 			<artifactId>bittrade-api</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>com.bittrade</groupId>
+			<artifactId>bittrade-common</artifactId>
+		</dependency>
 		
 		<dependency>
 			<groupId>mysql</groupId>

@@ -17,13 +17,13 @@ public class DealDTO implements Serializable {
     private Long currencyTradeId;
 
 //    @ApiModelProperty(value = "单价")
-    private Double price;
+    private String price;
 
 //    @ApiModelProperty(value = "总价")
-    private Double amount;
+    private String amount;
 
 //    @ApiModelProperty(value = "数量")
-    private Double count;
+    private String count;
 
 //    @ApiModelProperty(value = "委托类型:0市价交易,1限价交易")
     private Integer entrustType;
