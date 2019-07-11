@@ -280,7 +280,48 @@
 		</where>
 	</select>
 	
-	<select id="get" resultType="com.bittrade.pojo.dto.WConfigWalletDTO">
+	<select id="get" resultType="com.bittrade.pojo.model.WConfigWallet">
+		SELECT 
+			`id`, 
+			`coin_type`, 
+			`wallet_type`, 
+			`address`, 
+			`keystore`, 
+			`valid`, 
+			`remark`, 
+			`create_time`, 
+			`update_time`
+		FROM w_config_wallet
+		<where>
+			<if test="coinType != null and coinType != ''">
+			AND `coin_type` = #{coinType,jdbcType=VARCHAR}
+			</if>
+			<if test="walletType != null and walletType != ''">
+			AND `wallet_type` = #{walletType,jdbcType=VARCHAR}
+			</if>
+			<if test="address != null and address != ''">
+			AND `address` = #{address,jdbcType=VARCHAR}
+			</if>
+			<if test="keystore != null and keystore != ''">
+			AND `keystore` = #{keystore,jdbcType=VARCHAR}
+			</if>
+			<if test="valid != null and valid != ''">
+			AND `valid` = #{valid,jdbcType=CHAR}
+			</if>
+			<if test="remark != null and remark != ''">
+			AND `remark` = #{remark,jdbcType=VARCHAR}
+			</if>
+			<if test="createTime != null and createTime != ''">
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="updateTime != null and updateTime != ''">
+			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+		</where>
+		LIMIT 1
+	</select>
+	
+	<select id="gets" resultType="com.bittrade.pojo.model.WConfigWallet">
 		SELECT 
 			`id`, 
 			`coin_type`, 
@@ -320,7 +361,7 @@
 		</where>
 	</select>
 	
-	<select id="gets" resultType="com.bittrade.pojo.dto.WConfigWalletDTO">
+	<select id="gets" resultType="com.bittrade.pojo.model.WConfigWallet">
 		SELECT 
 			`id`, 
 			`coin_type`, 
@@ -365,7 +406,7 @@
 		</where>
 	</select>
 	
-	<select id="getsWithPage" resultType="com.bittrade.pojo.dto.WConfigWalletDTO">
+	<select id="getsWithPage" resultType="com.bittrade.pojo.model.WConfigWallet">
 		SELECT 
 			`id`, 
 			`coin_type`, 

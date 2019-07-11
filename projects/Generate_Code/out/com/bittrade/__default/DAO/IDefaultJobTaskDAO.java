@@ -91,13 +91,20 @@ public abstract interface IDefaultJobTaskDAO extends IBaseDAO<JobTask, JobTaskDT
 	 * @param jobTask
 	 * @return
 	 */
-	public List<JobTaskDTO> get(JobTask jobTask);
+	public JobTask get(JobTask jobTask);
+	
+	/**
+	 * 
+	 * @param jobTask
+	 * @return
+	 */
+	public List<JobTask> gets(JobTask jobTask);
 	
 	/**
 	 * 
 	 * @return
 	 */
-	public List<JobTaskDTO> gets();
+	public List<JobTask> gets();
 	
 	/**
 	 * 
@@ -113,6 +120,6 @@ public abstract interface IDefaultJobTaskDAO extends IBaseDAO<JobTask, JobTaskDT
 	 * @param size
 	 * @return
 	 */
-	public List<JobTaskDTO> getsWithPage(@Param(value="jobTask") JobTask jobTask, @Param(value="page") int page, @Param(value="size") int size);
+	public List<JobTask> getsWithPage(@Param(value="jobTask") JobTask jobTask, @Param(value="page") int page, @Param(value="size") int size);
 	
 }

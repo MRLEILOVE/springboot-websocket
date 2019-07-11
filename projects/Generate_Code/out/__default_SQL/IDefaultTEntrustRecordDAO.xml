@@ -416,7 +416,68 @@
 		</where>
 	</select>
 	
-	<select id="get" resultType="com.bittrade.pojo.dto.TEntrustRecordDTO">
+	<select id="get" resultType="com.bittrade.pojo.model.TEntrustRecord">
+		SELECT 
+			`id`, 
+			`user_id`, 
+			`rival_user_id`, 
+			`entrust_id`, 
+			`rival_entrust_id`, 
+			`amount`, 
+			`price`, 
+			`count`, 
+			`rate`, 
+			`fees`, 
+			`currency_trade_id`, 
+			`is_active`, 
+			`entrust_direction`, 
+			`create_time`
+		FROM t_entrust_record
+		<where>
+			<if test="userId != null and userId != ''">
+			AND `user_id` = #{userId,jdbcType=BIGINT}
+			</if>
+			<if test="rivalUserId != null and rivalUserId != ''">
+			AND `rival_user_id` = #{rivalUserId,jdbcType=BIGINT}
+			</if>
+			<if test="entrustId != null and entrustId != ''">
+			AND `entrust_id` = #{entrustId,jdbcType=BIGINT}
+			</if>
+			<if test="rivalEntrustId != null and rivalEntrustId != ''">
+			AND `rival_entrust_id` = #{rivalEntrustId,jdbcType=BIGINT}
+			</if>
+			<if test="amount != null and amount != ''">
+			AND `amount` = #{amount,jdbcType=DECIMAL}
+			</if>
+			<if test="price != null and price != ''">
+			AND `price` = #{price,jdbcType=DECIMAL}
+			</if>
+			<if test="count != null and count != ''">
+			AND `count` = #{count,jdbcType=DECIMAL}
+			</if>
+			<if test="rate != null and rate != ''">
+			AND `rate` = #{rate,jdbcType=DECIMAL}
+			</if>
+			<if test="fees != null and fees != ''">
+			AND `fees` = #{fees,jdbcType=DECIMAL}
+			</if>
+			<if test="currencyTradeId != null and currencyTradeId != ''">
+			AND `currency_trade_id` = #{currencyTradeId,jdbcType=INTEGER}
+			</if>
+			<if test="isActive != null and isActive != ''">
+			AND `is_active` = #{isActive,jdbcType=INTEGER}
+			</if>
+			<if test="entrustDirection != null and entrustDirection != ''">
+			AND `entrust_direction` = #{entrustDirection,jdbcType=INTEGER}
+			</if>
+			<if test="createTime != null and createTime != ''">
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+		</where>
+		LIMIT 1
+	</select>
+	
+	<select id="gets" resultType="com.bittrade.pojo.model.TEntrustRecord">
 		SELECT 
 			`id`, 
 			`user_id`, 
@@ -476,7 +537,7 @@
 		</where>
 	</select>
 	
-	<select id="gets" resultType="com.bittrade.pojo.dto.TEntrustRecordDTO">
+	<select id="gets" resultType="com.bittrade.pojo.model.TEntrustRecord">
 		SELECT 
 			`id`, 
 			`user_id`, 
@@ -541,7 +602,7 @@
 		</where>
 	</select>
 	
-	<select id="getsWithPage" resultType="com.bittrade.pojo.dto.TEntrustRecordDTO">
+	<select id="getsWithPage" resultType="com.bittrade.pojo.model.TEntrustRecord">
 		SELECT 
 			`id`, 
 			`user_id`, 

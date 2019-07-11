@@ -312,7 +312,52 @@
 		</where>
 	</select>
 	
-	<select id="get" resultType="com.bittrade.pojo.dto.TUserCapitalAccountRecordDTO">
+	<select id="get" resultType="com.bittrade.pojo.model.TUserCapitalAccountRecord">
+		SELECT 
+			`id`, 
+			`user_id`, 
+			`currency_id`, 
+			`count`, 
+			`adderess`, 
+			`fees`, 
+			`type`, 
+			`status`, 
+			`create_time`, 
+			`update_time`
+		FROM t_user_capital_account_record
+		<where>
+			<if test="userId != null and userId != ''">
+			AND `user_id` = #{userId,jdbcType=BIGINT}
+			</if>
+			<if test="currencyId != null and currencyId != ''">
+			AND `currency_id` = #{currencyId,jdbcType=INTEGER}
+			</if>
+			<if test="count != null and count != ''">
+			AND `count` = #{count,jdbcType=DECIMAL}
+			</if>
+			<if test="adderess != null and adderess != ''">
+			AND `adderess` = #{adderess,jdbcType=VARCHAR}
+			</if>
+			<if test="fees != null and fees != ''">
+			AND `fees` = #{fees,jdbcType=DECIMAL}
+			</if>
+			<if test="type != null and type != ''">
+			AND `type` = #{type,jdbcType=INTEGER}
+			</if>
+			<if test="status != null and status != ''">
+			AND `status` = #{status,jdbcType=INTEGER}
+			</if>
+			<if test="createTime != null and createTime != ''">
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="updateTime != null and updateTime != ''">
+			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+		</where>
+		LIMIT 1
+	</select>
+	
+	<select id="gets" resultType="com.bittrade.pojo.model.TUserCapitalAccountRecord">
 		SELECT 
 			`id`, 
 			`user_id`, 
@@ -356,7 +401,7 @@
 		</where>
 	</select>
 	
-	<select id="gets" resultType="com.bittrade.pojo.dto.TUserCapitalAccountRecordDTO">
+	<select id="gets" resultType="com.bittrade.pojo.model.TUserCapitalAccountRecord">
 		SELECT 
 			`id`, 
 			`user_id`, 
@@ -405,7 +450,7 @@
 		</where>
 	</select>
 	
-	<select id="getsWithPage" resultType="com.bittrade.pojo.dto.TUserCapitalAccountRecordDTO">
+	<select id="getsWithPage" resultType="com.bittrade.pojo.model.TUserCapitalAccountRecord">
 		SELECT 
 			`id`, 
 			`user_id`, 

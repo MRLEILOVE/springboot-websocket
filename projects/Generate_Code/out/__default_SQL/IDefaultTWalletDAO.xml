@@ -280,7 +280,48 @@
 		</where>
 	</select>
 	
-	<select id="get" resultType="com.bittrade.pojo.dto.TWalletDTO">
+	<select id="get" resultType="com.bittrade.pojo.model.TWallet">
+		SELECT 
+			`id`, 
+			`user_id`, 
+			`currency_id`, 
+			`total`, 
+			`trade_frozen`, 
+			`transfer_frozen`, 
+			`version`, 
+			`create_time`, 
+			`update_time`
+		FROM t_wallet
+		<where>
+			<if test="userId != null and userId != ''">
+			AND `user_id` = #{userId,jdbcType=BIGINT}
+			</if>
+			<if test="currencyId != null and currencyId != ''">
+			AND `currency_id` = #{currencyId,jdbcType=INTEGER}
+			</if>
+			<if test="total != null and total != ''">
+			AND `total` = #{total,jdbcType=DECIMAL}
+			</if>
+			<if test="tradeFrozen != null and tradeFrozen != ''">
+			AND `trade_frozen` = #{tradeFrozen,jdbcType=DECIMAL}
+			</if>
+			<if test="transferFrozen != null and transferFrozen != ''">
+			AND `transfer_frozen` = #{transferFrozen,jdbcType=DECIMAL}
+			</if>
+			<if test="version != null and version != ''">
+			AND `version` = #{version,jdbcType=INTEGER}
+			</if>
+			<if test="createTime != null and createTime != ''">
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="updateTime != null and updateTime != ''">
+			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+		</where>
+		LIMIT 1
+	</select>
+	
+	<select id="gets" resultType="com.bittrade.pojo.model.TWallet">
 		SELECT 
 			`id`, 
 			`user_id`, 
@@ -320,7 +361,7 @@
 		</where>
 	</select>
 	
-	<select id="gets" resultType="com.bittrade.pojo.dto.TWalletDTO">
+	<select id="gets" resultType="com.bittrade.pojo.model.TWallet">
 		SELECT 
 			`id`, 
 			`user_id`, 
@@ -365,7 +406,7 @@
 		</where>
 	</select>
 	
-	<select id="getsWithPage" resultType="com.bittrade.pojo.dto.TWalletDTO">
+	<select id="getsWithPage" resultType="com.bittrade.pojo.model.TWallet">
 		SELECT 
 			`id`, 
 			`user_id`, 

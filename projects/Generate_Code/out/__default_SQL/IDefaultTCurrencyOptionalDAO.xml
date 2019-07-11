@@ -202,7 +202,36 @@
 		</where>
 	</select>
 	
-	<select id="get" resultType="com.bittrade.pojo.dto.TCurrencyOptionalDTO">
+	<select id="get" resultType="com.bittrade.pojo.model.TCurrencyOptional">
+		SELECT 
+			`id`, 
+			`user_id`, 
+			`currency_trade_id`, 
+			`status`, 
+			`create_time`, 
+			`update_time`
+		FROM t_currency_optional
+		<where>
+			<if test="userId != null and userId != ''">
+			AND `user_id` = #{userId,jdbcType=BIGINT}
+			</if>
+			<if test="currencyTradeId != null and currencyTradeId != ''">
+			AND `currency_trade_id` = #{currencyTradeId,jdbcType=INTEGER}
+			</if>
+			<if test="status != null and status != ''">
+			AND `status` = #{status,jdbcType=INTEGER}
+			</if>
+			<if test="createTime != null and createTime != ''">
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="updateTime != null and updateTime != ''">
+			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+		</where>
+		LIMIT 1
+	</select>
+	
+	<select id="gets" resultType="com.bittrade.pojo.model.TCurrencyOptional">
 		SELECT 
 			`id`, 
 			`user_id`, 
@@ -230,7 +259,7 @@
 		</where>
 	</select>
 	
-	<select id="gets" resultType="com.bittrade.pojo.dto.TCurrencyOptionalDTO">
+	<select id="gets" resultType="com.bittrade.pojo.model.TCurrencyOptional">
 		SELECT 
 			`id`, 
 			`user_id`, 
@@ -263,7 +292,7 @@
 		</where>
 	</select>
 	
-	<select id="getsWithPage" resultType="com.bittrade.pojo.dto.TCurrencyOptionalDTO">
+	<select id="getsWithPage" resultType="com.bittrade.pojo.model.TCurrencyOptional">
 		SELECT 
 			`id`, 
 			`user_id`, 

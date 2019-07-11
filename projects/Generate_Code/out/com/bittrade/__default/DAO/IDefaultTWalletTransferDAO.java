@@ -91,13 +91,20 @@ public abstract interface IDefaultTWalletTransferDAO extends IBaseDAO<TWalletTra
 	 * @param tWalletTransfer
 	 * @return
 	 */
-	public List<TWalletTransferDTO> get(TWalletTransfer tWalletTransfer);
+	public TWalletTransfer get(TWalletTransfer tWalletTransfer);
+	
+	/**
+	 * 
+	 * @param tWalletTransfer
+	 * @return
+	 */
+	public List<TWalletTransfer> gets(TWalletTransfer tWalletTransfer);
 	
 	/**
 	 * 
 	 * @return
 	 */
-	public List<TWalletTransferDTO> gets();
+	public List<TWalletTransfer> gets();
 	
 	/**
 	 * 
@@ -113,6 +120,6 @@ public abstract interface IDefaultTWalletTransferDAO extends IBaseDAO<TWalletTra
 	 * @param size
 	 * @return
 	 */
-	public List<TWalletTransferDTO> getsWithPage(@Param(value="tWalletTransfer") TWalletTransfer tWalletTransfer, @Param(value="page") int page, @Param(value="size") int size);
+	public List<TWalletTransfer> getsWithPage(@Param(value="tWalletTransfer") TWalletTransfer tWalletTransfer, @Param(value="page") int page, @Param(value="size") int size);
 	
 }

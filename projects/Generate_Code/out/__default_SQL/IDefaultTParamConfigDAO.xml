@@ -280,7 +280,48 @@
 		</where>
 	</select>
 	
-	<select id="get" resultType="com.bittrade.pojo.dto.TParamConfigDTO">
+	<select id="get" resultType="com.bittrade.pojo.model.TParamConfig">
+		SELECT 
+			`id`, 
+			`param_key`, 
+			`param_value`, 
+			`param_status`, 
+			`param_remark`, 
+			`create_time`, 
+			`creater`, 
+			`update_time`, 
+			`updater`
+		FROM t_param_config
+		<where>
+			<if test="paramKey != null and paramKey != ''">
+			AND `param_key` = #{paramKey,jdbcType=VARCHAR}
+			</if>
+			<if test="paramValue != null and paramValue != ''">
+			AND `param_value` = #{paramValue,jdbcType=VARCHAR}
+			</if>
+			<if test="paramStatus != null and paramStatus != ''">
+			AND `param_status` = #{paramStatus,jdbcType=INTEGER}
+			</if>
+			<if test="paramRemark != null and paramRemark != ''">
+			AND `param_remark` = #{paramRemark,jdbcType=VARCHAR}
+			</if>
+			<if test="createTime != null and createTime != ''">
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="creater != null and creater != ''">
+			AND `creater` = #{creater,jdbcType=VARCHAR}
+			</if>
+			<if test="updateTime != null and updateTime != ''">
+			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="updater != null and updater != ''">
+			AND `updater` = #{updater,jdbcType=VARCHAR}
+			</if>
+		</where>
+		LIMIT 1
+	</select>
+	
+	<select id="gets" resultType="com.bittrade.pojo.model.TParamConfig">
 		SELECT 
 			`id`, 
 			`param_key`, 
@@ -320,7 +361,7 @@
 		</where>
 	</select>
 	
-	<select id="gets" resultType="com.bittrade.pojo.dto.TParamConfigDTO">
+	<select id="gets" resultType="com.bittrade.pojo.model.TParamConfig">
 		SELECT 
 			`id`, 
 			`param_key`, 
@@ -365,7 +406,7 @@
 		</where>
 	</select>
 	
-	<select id="getsWithPage" resultType="com.bittrade.pojo.dto.TParamConfigDTO">
+	<select id="getsWithPage" resultType="com.bittrade.pojo.model.TParamConfig">
 		SELECT 
 			`id`, 
 			`param_key`, 

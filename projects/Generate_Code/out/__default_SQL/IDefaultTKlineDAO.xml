@@ -332,7 +332,56 @@
 		</where>
 	</select>
 	
-	<select id="get" resultType="com.bittrade.pojo.dto.TKlineDTO">
+	<select id="get" resultType="com.bittrade.pojo.model.TKline">
+		SELECT 
+			`id`, 
+			`symbol`, 
+			`low`, 
+			`high`, 
+			`open`, 
+			`close`, 
+			`volume`, 
+			`granularity`, 
+			`time`, 
+			`create_time`, 
+			`update_time`
+		FROM t_kline
+		<where>
+			<if test="symbol != null and symbol != ''">
+			AND `symbol` = #{symbol,jdbcType=VARCHAR}
+			</if>
+			<if test="low != null and low != ''">
+			AND `low` = #{low,jdbcType=DECIMAL}
+			</if>
+			<if test="high != null and high != ''">
+			AND `high` = #{high,jdbcType=DECIMAL}
+			</if>
+			<if test="open != null and open != ''">
+			AND `open` = #{open,jdbcType=DECIMAL}
+			</if>
+			<if test="close != null and close != ''">
+			AND `close` = #{close,jdbcType=DECIMAL}
+			</if>
+			<if test="volume != null and volume != ''">
+			AND `volume` = #{volume,jdbcType=DECIMAL}
+			</if>
+			<if test="granularity != null and granularity != ''">
+			AND `granularity` = #{granularity,jdbcType=VARCHAR}
+			</if>
+			<if test="time != null and time != ''">
+			AND `time` = #{time,jdbcType=TIMESTAMP}
+			</if>
+			<if test="createTime != null and createTime != ''">
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="updateTime != null and updateTime != ''">
+			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+		</where>
+		LIMIT 1
+	</select>
+	
+	<select id="gets" resultType="com.bittrade.pojo.model.TKline">
 		SELECT 
 			`id`, 
 			`symbol`, 
@@ -380,7 +429,7 @@
 		</where>
 	</select>
 	
-	<select id="gets" resultType="com.bittrade.pojo.dto.TKlineDTO">
+	<select id="gets" resultType="com.bittrade.pojo.model.TKline">
 		SELECT 
 			`id`, 
 			`symbol`, 
@@ -433,7 +482,7 @@
 		</where>
 	</select>
 	
-	<select id="getsWithPage" resultType="com.bittrade.pojo.dto.TKlineDTO">
+	<select id="getsWithPage" resultType="com.bittrade.pojo.model.TKline">
 		SELECT 
 			`id`, 
 			`symbol`, 

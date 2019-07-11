@@ -91,13 +91,20 @@ public abstract interface IDefaultTCurrencyAddressDAO extends IBaseDAO<TCurrency
 	 * @param tCurrencyAddress
 	 * @return
 	 */
-	public List<TCurrencyAddressDTO> get(TCurrencyAddress tCurrencyAddress);
+	public TCurrencyAddress get(TCurrencyAddress tCurrencyAddress);
+	
+	/**
+	 * 
+	 * @param tCurrencyAddress
+	 * @return
+	 */
+	public List<TCurrencyAddress> gets(TCurrencyAddress tCurrencyAddress);
 	
 	/**
 	 * 
 	 * @return
 	 */
-	public List<TCurrencyAddressDTO> gets();
+	public List<TCurrencyAddress> gets();
 	
 	/**
 	 * 
@@ -113,6 +120,6 @@ public abstract interface IDefaultTCurrencyAddressDAO extends IBaseDAO<TCurrency
 	 * @param size
 	 * @return
 	 */
-	public List<TCurrencyAddressDTO> getsWithPage(@Param(value="tCurrencyAddress") TCurrencyAddress tCurrencyAddress, @Param(value="page") int page, @Param(value="size") int size);
+	public List<TCurrencyAddress> getsWithPage(@Param(value="tCurrencyAddress") TCurrencyAddress tCurrencyAddress, @Param(value="page") int page, @Param(value="size") int size);
 	
 }

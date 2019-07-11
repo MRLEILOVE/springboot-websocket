@@ -91,13 +91,20 @@ public abstract interface IDefaultTCurrencyOptionalDAO extends IBaseDAO<TCurrenc
 	 * @param tCurrencyOptional
 	 * @return
 	 */
-	public List<TCurrencyOptionalDTO> get(TCurrencyOptional tCurrencyOptional);
+	public TCurrencyOptional get(TCurrencyOptional tCurrencyOptional);
+	
+	/**
+	 * 
+	 * @param tCurrencyOptional
+	 * @return
+	 */
+	public List<TCurrencyOptional> gets(TCurrencyOptional tCurrencyOptional);
 	
 	/**
 	 * 
 	 * @return
 	 */
-	public List<TCurrencyOptionalDTO> gets();
+	public List<TCurrencyOptional> gets();
 	
 	/**
 	 * 
@@ -113,6 +120,6 @@ public abstract interface IDefaultTCurrencyOptionalDAO extends IBaseDAO<TCurrenc
 	 * @param size
 	 * @return
 	 */
-	public List<TCurrencyOptionalDTO> getsWithPage(@Param(value="tCurrencyOptional") TCurrencyOptional tCurrencyOptional, @Param(value="page") int page, @Param(value="size") int size);
+	public List<TCurrencyOptional> getsWithPage(@Param(value="tCurrencyOptional") TCurrencyOptional tCurrencyOptional, @Param(value="page") int page, @Param(value="size") int size);
 	
 }
