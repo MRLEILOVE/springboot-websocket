@@ -91,13 +91,20 @@ public abstract interface IDefaultTEntrustRecordDAO extends IBaseDAO<TEntrustRec
 	 * @param tEntrustRecord
 	 * @return
 	 */
-	public List<TEntrustRecordDTO> get(TEntrustRecord tEntrustRecord);
+	public TEntrustRecord get(TEntrustRecord tEntrustRecord);
+	
+	/**
+	 * 
+	 * @param tEntrustRecord
+	 * @return
+	 */
+	public List<TEntrustRecord> gets(TEntrustRecord tEntrustRecord);
 	
 	/**
 	 * 
 	 * @return
 	 */
-	public List<TEntrustRecordDTO> gets();
+	public List<TEntrustRecord> gets();
 	
 	/**
 	 * 
@@ -113,6 +120,6 @@ public abstract interface IDefaultTEntrustRecordDAO extends IBaseDAO<TEntrustRec
 	 * @param size
 	 * @return
 	 */
-	public List<TEntrustRecordDTO> getsWithPage(@Param(value="tEntrustRecord") TEntrustRecord tEntrustRecord, @Param(value="page") int page, @Param(value="size") int size);
+	public List<TEntrustRecord> getsWithPage(@Param(value="tEntrustRecord") TEntrustRecord tEntrustRecord, @Param(value="page") int page, @Param(value="size") int size);
 	
 }

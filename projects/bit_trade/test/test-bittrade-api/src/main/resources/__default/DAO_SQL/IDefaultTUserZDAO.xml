@@ -288,6 +288,43 @@
 			AND `test_type` = #{testType,jdbcType=INTEGER}
 			</if>
 		</where>
+		LIMIT 1
+	</select>
+	
+	<select id="get" resultType="com.test.bittrade.pojo.dto.TUserZDTO">
+		SELECT 
+			`test_id`, 
+			`age`, 
+			`name`, 
+			`phone`, 
+			`role`, 
+			`tenant_id`, 
+			`test_date`, 
+			`test_type`
+		FROM t_user_z
+		<where>
+			<if test="age != null and age != ''">
+			AND `age` = #{age,jdbcType=INTEGER}
+			</if>
+			<if test="name != null and name != ''">
+			AND `name` = #{name,jdbcType=VARCHAR}
+			</if>
+			<if test="phone != null and phone != ''">
+			AND `phone` = #{phone,jdbcType=VARCHAR}
+			</if>
+			<if test="role != null and role != ''">
+			AND `role` = #{role,jdbcType=BIGINT}
+			</if>
+			<if test="tenantId != null and tenantId != ''">
+			AND `tenant_id` = #{tenantId,jdbcType=BIGINT}
+			</if>
+			<if test="testDate != null and testDate != ''">
+			AND `test_date` = #{testDate,jdbcType=TIMESTAMP}
+			</if>
+			<if test="testType != null and testType != ''">
+			AND `test_type` = #{testType,jdbcType=INTEGER}
+			</if>
+		</where>
 	</select>
 	
 	<select id="gets" resultType="com.test.bittrade.pojo.dto.TUserZDTO">

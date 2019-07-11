@@ -149,7 +149,26 @@
 		</where>
 	</select>
 	
-	<select id="get" resultType="${POJO_BASE_PKG}.${DTO}${module_name}.${struct.className}DTO">
+	<select id="get" resultType="${POJO_BASE_PKG}.model${module_name}.${struct.className}">
+		SELECT 
+			<#list struct.list_itemPK as itemPK>
+			`${itemPK.columnName}`, 
+			</#list>
+			<#list struct.list_item as item>
+			`${item.columnName}`<#if item_has_next>, </#if>
+			</#list>
+		FROM ${struct.tableName}
+		<where>
+			<#list struct.list_item as item>
+			<if test="${item.name} != null and ${item.name} != ''">
+			AND `${item.columnName}` = ${r'#{'}${item.name},jdbcType=${item.jdbcType}${r'}'}
+			</if>
+			</#list>
+		</where>
+		LIMIT 1
+	</select>
+	
+	<select id="gets" resultType="${POJO_BASE_PKG}.model${module_name}.${struct.className}">
 		SELECT 
 			<#list struct.list_itemPK as itemPK>
 			`${itemPK.columnName}`, 
@@ -167,7 +186,7 @@
 		</where>
 	</select>
 	
-	<select id="gets" resultType="${POJO_BASE_PKG}.${DTO}${module_name}.${struct.className}DTO">
+	<select id="gets" resultType="${POJO_BASE_PKG}.model${module_name}.${struct.className}">
 		SELECT 
 			<#list struct.list_itemPK as itemPK>
 			`${itemPK.columnName}`, 
@@ -190,7 +209,7 @@
 		</where>
 	</select>
 	
-	<select id="getsWithPage" resultType="${POJO_BASE_PKG}.${DTO}${module_name}.${struct.className}DTO">
+	<select id="getsWithPage" resultType="${POJO_BASE_PKG}.model${module_name}.${struct.className}">
 		SELECT 
 			<#list struct.list_itemPK as itemPK>
 			`${itemPK.columnName}`, 

@@ -8,6 +8,7 @@ import java.util.*;
 
 import javax.annotation.PostConstruct;
 
+import com.alibaba.dubbo.config.annotation.Reference;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -36,7 +37,7 @@ public class MyWebSocketClient {
 
 	private static final Logger LOG					= LoggerFactory.getLogger( MyWebSocketClient.class );
 
-	@Autowired
+	@Reference
 	private static ITParamConfigService paramConfigService;
 	@Autowired
 	private static JedisCluster jedisCluster;

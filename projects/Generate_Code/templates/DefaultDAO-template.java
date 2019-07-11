@@ -91,13 +91,20 @@ public abstract interface IDefault${struct.className}DAO extends IBaseDAO<${stru
 	 * @param ${struct.variableName}
 	 * @return
 	 */
-	public List<${struct.className}DTO> get(${struct.className} ${struct.variableName});
+	public ${struct.className} get(${struct.className} ${struct.variableName});
+	
+	/**
+	 * 
+	 * @param ${struct.variableName}
+	 * @return
+	 */
+	public List<${struct.className}> gets(${struct.className} ${struct.variableName});
 	
 	/**
 	 * 
 	 * @return
 	 */
-	public List<${struct.className}DTO> gets();
+	public List<${struct.className}> gets();
 	
 	/**
 	 * 
@@ -113,6 +120,6 @@ public abstract interface IDefault${struct.className}DAO extends IBaseDAO<${stru
 	 * @param size
 	 * @return
 	 */
-	public List<${struct.className}DTO> getsWithPage(@Param(value="${struct.variableName}") ${struct.className} ${struct.variableName}, @Param(value="page") int page, @Param(value="size") int size);
+	public List<${struct.className}> getsWithPage(@Param(value="${struct.variableName}") ${struct.className} ${struct.variableName}, @Param(value="page") int page, @Param(value="size") int size);
 	
 }

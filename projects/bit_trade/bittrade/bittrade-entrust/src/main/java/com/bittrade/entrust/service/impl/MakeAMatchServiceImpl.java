@@ -1,5 +1,6 @@
 package com.bittrade.entrust.service.impl;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +13,8 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.amqp.core.Message;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,6 +33,7 @@ import com.bittrade.pojo.model.TEntrustRecord;
 import com.core.common.constant.ICompareResultConstant;
 import com.core.tool.BigDecimalUtil;
 import com.core.tool.SnowFlake;
+import com.rabbitmq.client.Channel;
 
 @Service
 public class MakeAMatchServiceImpl implements IMakeAMatchService {
@@ -268,7 +272,22 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 			LINE_PRICE = dealPrice;
 			// 异步通知。
 			rabbitTemplate.convertAndSend(IQueueConstants.MESSAGE_EXCHANGE, IQueueConstants.MESSAGE_ROUTE_KEY, LINE_PRICE);
+			rabbitTemplate.setConfirmCallback((correlationData, ack, cause) -> {
+				System.out.println("消息唯一标识" + correlationData);
+				System.out.println("消息确认结果" + ack);
+				System.out.println("失败原因" + cause);
+			});
 			LOG.info("修改行情价为：" + LINE_PRICE);
+		}
+	}
+	
+	@RabbitListener(queues = { IQueueConstants.MESSAGE_QUEUE_NAME })
+	public void processMessage(Channel channel, Message message) {
+		System.out.println("MessageConsumer收到消息：" + new String(message.getBody()));
+		try {
+			channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 	

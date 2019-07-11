@@ -99,25 +99,30 @@ public abstract class BaseServiceImpl<Model extends BaseModel<Model>, DTO extend
 	}
 
 	@Override
-	public List<DTO> get(Model model) {
+	public Model get(Model model) {
 		return baseDAO.get(model);
 	}
 
 	@Override
-	public List<DTO> gets() {
+	public List<Model> gets(Model model) {
+		return baseDAO.gets(model);
+	}
+
+	@Override
+	public List<Model> gets() {
 		return baseDAO.gets();
 	}
 
 	@Override
-	public PageDTO<DTO> getsWithPage(Model model, int page, int size) {
-		PageDTO<DTO> pageDTO;
+	public PageDTO<Model> getsWithPage(Model model, int page, int size) {
+		PageDTO<Model> pageDTO;
 		
 		int i_totalPage, i_totalSize;
 		i_totalSize = baseDAO.getCntWithPage(model);
 		i_totalPage = (i_totalSize - 1) / size + 1;
-		List<DTO> list_data = baseDAO.getsWithPage(model, (page - 1) * size, size);
+		List<Model> list_data = baseDAO.getsWithPage(model, (page - 1) * size, size);
 		
-		pageDTO = new PageDTO<DTO>(page, size, i_totalPage, i_totalSize, list_data);
+		pageDTO = new PageDTO<Model>(page, size, i_totalPage, i_totalSize, list_data);
 		
 		return pageDTO;
 	}

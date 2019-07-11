@@ -566,7 +566,92 @@
 		</where>
 	</select>
 	
-	<select id="get" resultType="com.bittrade.pojo.dto.WWithdrawWalletBillDTO">
+	<select id="get" resultType="com.bittrade.pojo.model.WWithdrawWalletBill">
+		SELECT 
+			`id`, 
+			`user_id`, 
+			`platform`, 
+			`order_id`, 
+			`direction`, 
+			`coin_type`, 
+			`token`, 
+			`contract`, 
+			`sender_address`, 
+			`receiver_address`, 
+			`amount`, 
+			`block`, 
+			`tx`, 
+			`trade_step`, 
+			`operation_type`, 
+			`transfer_flag`, 
+			`flag`, 
+			`remark`, 
+			`create_time`, 
+			`update_time`
+		FROM w_withdraw_wallet_bill
+		<where>
+			<if test="userId != null and userId != ''">
+			AND `user_id` = #{userId,jdbcType=BIGINT}
+			</if>
+			<if test="platform != null and platform != ''">
+			AND `platform` = #{platform,jdbcType=VARCHAR}
+			</if>
+			<if test="orderId != null and orderId != ''">
+			AND `order_id` = #{orderId,jdbcType=VARCHAR}
+			</if>
+			<if test="direction != null and direction != ''">
+			AND `direction` = #{direction,jdbcType=INTEGER}
+			</if>
+			<if test="coinType != null and coinType != ''">
+			AND `coin_type` = #{coinType,jdbcType=VARCHAR}
+			</if>
+			<if test="token != null and token != ''">
+			AND `token` = #{token,jdbcType=VARCHAR}
+			</if>
+			<if test="contract != null and contract != ''">
+			AND `contract` = #{contract,jdbcType=VARCHAR}
+			</if>
+			<if test="senderAddress != null and senderAddress != ''">
+			AND `sender_address` = #{senderAddress,jdbcType=VARCHAR}
+			</if>
+			<if test="receiverAddress != null and receiverAddress != ''">
+			AND `receiver_address` = #{receiverAddress,jdbcType=VARCHAR}
+			</if>
+			<if test="amount != null and amount != ''">
+			AND `amount` = #{amount,jdbcType=DECIMAL}
+			</if>
+			<if test="block != null and block != ''">
+			AND `block` = #{block,jdbcType=BIGINT}
+			</if>
+			<if test="tx != null and tx != ''">
+			AND `tx` = #{tx,jdbcType=VARCHAR}
+			</if>
+			<if test="tradeStep != null and tradeStep != ''">
+			AND `trade_step` = #{tradeStep,jdbcType=CHAR}
+			</if>
+			<if test="operationType != null and operationType != ''">
+			AND `operation_type` = #{operationType,jdbcType=VARCHAR}
+			</if>
+			<if test="transferFlag != null and transferFlag != ''">
+			AND `transfer_flag` = #{transferFlag,jdbcType=INTEGER}
+			</if>
+			<if test="flag != null and flag != ''">
+			AND `flag` = #{flag,jdbcType=INTEGER}
+			</if>
+			<if test="remark != null and remark != ''">
+			AND `remark` = #{remark,jdbcType=VARCHAR}
+			</if>
+			<if test="createTime != null and createTime != ''">
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="updateTime != null and updateTime != ''">
+			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+		</where>
+		LIMIT 1
+	</select>
+	
+	<select id="gets" resultType="com.bittrade.pojo.model.WWithdrawWalletBill">
 		SELECT 
 			`id`, 
 			`user_id`, 
@@ -650,7 +735,7 @@
 		</where>
 	</select>
 	
-	<select id="gets" resultType="com.bittrade.pojo.dto.WWithdrawWalletBillDTO">
+	<select id="gets" resultType="com.bittrade.pojo.model.WWithdrawWalletBill">
 		SELECT 
 			`id`, 
 			`user_id`, 
@@ -739,7 +824,7 @@
 		</where>
 	</select>
 	
-	<select id="getsWithPage" resultType="com.bittrade.pojo.dto.WWithdrawWalletBillDTO">
+	<select id="getsWithPage" resultType="com.bittrade.pojo.model.WWithdrawWalletBill">
 		SELECT 
 			`id`, 
 			`user_id`, 

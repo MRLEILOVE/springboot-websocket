@@ -91,13 +91,19 @@ public abstract interface IDefaultTUserInfoDAO extends IBaseDAO<TUserInfo, TUser
 	 * @param tUserInfo
 	 * @return
 	 */
-	public List<TUserInfoDTO> get(TUserInfo tUserInfo);
+	public TUserInfo get(TUserInfo tUserInfo);
 	
 	/**
 	 * 
 	 * @return
 	 */
-	public List<TUserInfoDTO> gets();
+	public List<TUserInfo> gets(TUserInfo tUserInfo);
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public List<TUserInfo> gets();
 	
 	/**
 	 * 
@@ -113,6 +119,6 @@ public abstract interface IDefaultTUserInfoDAO extends IBaseDAO<TUserInfo, TUser
 	 * @param size
 	 * @return
 	 */
-	public List<TUserInfoDTO> getsWithPage(@Param(value="tUserInfo") TUserInfo tUserInfo, @Param(value="page") int page, @Param(value="size") int size);
+	public List<TUserInfo> getsWithPage(@Param(value="tUserInfo") TUserInfo tUserInfo, @Param(value="page") int page, @Param(value="size") int size);
 	
 }

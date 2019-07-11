@@ -22,7 +22,10 @@ public abstract class BaseApplication {
 		System.setProperty("svc_name", name);
 //		System.setProperty("spring.devtools.restart.enabled", "false");
 
-		SpringApplication.run(cls, args);
+//		SpringApplication.run(cls, args);
+		SpringApplication sa = new SpringApplication(cls);
+//		sa.setWebApplicationType(org.springframework.boot.WebApplicationType.NONE);
+		sa.run(args);
 	}
 
 }

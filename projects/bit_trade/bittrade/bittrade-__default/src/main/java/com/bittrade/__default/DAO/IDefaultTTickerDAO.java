@@ -91,13 +91,20 @@ public abstract interface IDefaultTTickerDAO extends IBaseDAO<TTicker, TTickerDT
 	 * @param tTicker
 	 * @return
 	 */
-	public List<TTickerDTO> get(TTicker tTicker);
+	public TTicker get(TTicker tTicker);
+	
+	/**
+	 * 
+	 * @param tTicker
+	 * @return
+	 */
+	public List<TTicker> gets(TTicker tTicker);
 	
 	/**
 	 * 
 	 * @return
 	 */
-	public List<TTickerDTO> gets();
+	public List<TTicker> gets();
 	
 	/**
 	 * 
@@ -113,6 +120,6 @@ public abstract interface IDefaultTTickerDAO extends IBaseDAO<TTicker, TTickerDT
 	 * @param size
 	 * @return
 	 */
-	public List<TTickerDTO> getsWithPage(@Param(value="tTicker") TTicker tTicker, @Param(value="page") int page, @Param(value="size") int size);
+	public List<TTicker> getsWithPage(@Param(value="tTicker") TTicker tTicker, @Param(value="page") int page, @Param(value="size") int size);
 	
 }

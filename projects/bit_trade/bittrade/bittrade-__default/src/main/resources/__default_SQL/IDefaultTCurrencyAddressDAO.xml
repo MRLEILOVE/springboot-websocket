@@ -202,7 +202,36 @@
 		</where>
 	</select>
 	
-	<select id="get" resultType="com.bittrade.pojo.dto.TCurrencyAddressDTO">
+	<select id="get" resultType="com.bittrade.pojo.model.TCurrencyAddress">
+		SELECT 
+			`id`, 
+			`user_id`, 
+			`currency_id`, 
+			`adderess`, 
+			`address_remark`, 
+			`create_time`
+		FROM t_currency_address
+		<where>
+			<if test="userId != null and userId != ''">
+			AND `user_id` = #{userId,jdbcType=BIGINT}
+			</if>
+			<if test="currencyId != null and currencyId != ''">
+			AND `currency_id` = #{currencyId,jdbcType=INTEGER}
+			</if>
+			<if test="adderess != null and adderess != ''">
+			AND `adderess` = #{adderess,jdbcType=VARCHAR}
+			</if>
+			<if test="addressRemark != null and addressRemark != ''">
+			AND `address_remark` = #{addressRemark,jdbcType=VARCHAR}
+			</if>
+			<if test="createTime != null and createTime != ''">
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+		</where>
+		LIMIT 1
+	</select>
+	
+	<select id="gets" resultType="com.bittrade.pojo.model.TCurrencyAddress">
 		SELECT 
 			`id`, 
 			`user_id`, 
@@ -230,7 +259,7 @@
 		</where>
 	</select>
 	
-	<select id="gets" resultType="com.bittrade.pojo.dto.TCurrencyAddressDTO">
+	<select id="gets" resultType="com.bittrade.pojo.model.TCurrencyAddress">
 		SELECT 
 			`id`, 
 			`user_id`, 
@@ -263,7 +292,7 @@
 		</where>
 	</select>
 	
-	<select id="getsWithPage" resultType="com.bittrade.pojo.dto.TCurrencyAddressDTO">
+	<select id="getsWithPage" resultType="com.bittrade.pojo.model.TCurrencyAddress">
 		SELECT 
 			`id`, 
 			`user_id`, 

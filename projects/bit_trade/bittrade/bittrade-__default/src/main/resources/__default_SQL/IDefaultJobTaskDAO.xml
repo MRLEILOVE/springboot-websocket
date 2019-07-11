@@ -150,7 +150,28 @@
 		</where>
 	</select>
 	
-	<select id="get" resultType="com.bittrade.pojo.dto.JobTaskDTO">
+	<select id="get" resultType="com.bittrade.pojo.model.JobTask">
+		SELECT 
+			`id`, 
+			`content`, 
+			`send_time`, 
+			`status`
+		FROM job_task
+		<where>
+			<if test="content != null and content != ''">
+			AND `content` = #{content,jdbcType=VARCHAR}
+			</if>
+			<if test="sendTime != null and sendTime != ''">
+			AND `send_time` = #{sendTime,jdbcType=BIGINT}
+			</if>
+			<if test="status != null and status != ''">
+			AND `status` = #{status,jdbcType=INTEGER}
+			</if>
+		</where>
+		LIMIT 1
+	</select>
+	
+	<select id="gets" resultType="com.bittrade.pojo.model.JobTask">
 		SELECT 
 			`id`, 
 			`content`, 
@@ -170,7 +191,7 @@
 		</where>
 	</select>
 	
-	<select id="gets" resultType="com.bittrade.pojo.dto.JobTaskDTO">
+	<select id="gets" resultType="com.bittrade.pojo.model.JobTask">
 		SELECT 
 			`id`, 
 			`content`, 
@@ -195,7 +216,7 @@
 		</where>
 	</select>
 	
-	<select id="getsWithPage" resultType="com.bittrade.pojo.dto.JobTaskDTO">
+	<select id="getsWithPage" resultType="com.bittrade.pojo.model.JobTask">
 		SELECT 
 			`id`, 
 			`content`, 
