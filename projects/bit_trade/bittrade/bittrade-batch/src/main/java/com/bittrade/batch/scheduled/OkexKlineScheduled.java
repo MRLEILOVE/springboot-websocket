@@ -16,11 +16,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.alibaba.dubbo.config.annotation.Reference;
 import com.alibaba.fastjson.JSONArray;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.bittrade.batch.enumer.ParamConfigEnum.ParamKeyEnum;
 import com.bittrade.batch.enumer.ParamConfigEnum.ParamValue;
-import com.bittrade.batch.general.ObtainParamConfigInfo;
+import com.bittrade.batch.general.GeneralMethod;
 import com.bittrade.common.constant.IConstant;
 import com.bittrade.common.utils.HttpClientResult;
 import com.bittrade.common.utils.HttpClientUtils;
@@ -39,11 +40,11 @@ public class OkexKlineScheduled {
 
 	private static final Logger		LOG					= LoggerFactory.getLogger( OkexKlineScheduled.class );
 
-	@Autowired
-	private ITKlineService klineService;
+	@Reference
+	private ITKlineService			klineService;
 
-	@Autowired
-	private ITParamConfigService paramConfigService;
+	@Reference
+	private ITParamConfigService	paramConfigService;
 
 	// 创建一个可缓存线程池，如果线程池长度超过处理需要，可灵活回收空闲线程，若无可回收，则新建线程。
 	private ExecutorService			cachedThreadPool	= Executors.newCachedThreadPool();
@@ -51,15 +52,15 @@ public class OkexKlineScheduled {
 	/**
 	 * 拉取交易对历史K线数据
 	 */
-	//@Scheduled(cron = "0/10 * * * * ?")
+	// @Scheduled(cron = "0/10 * * * * ?")
 	public void kline() {
 		try {
-			String klineSwitch = ObtainParamConfigInfo.obtainRate( paramConfigService, ParamKeyEnum.OKEX_KLINE_HISTORY_SWITCH_KEY.getKey() )
+			String klineSwitch = GeneralMethod.qryParamConfigInfo( paramConfigService, ParamKeyEnum.OKEX_KLINE_HISTORY_SWITCH_KEY.getKey() )
 					.getParamValue();
 			if (ParamValue.OFF.getKey().equals( klineSwitch )) {
 				return;
 			}
-			String[] symbols = ObtainParamConfigInfo.obtainRate( paramConfigService, ParamKeyEnum.OKEX_SYMBOL_KLINE_HISTORY_DATA_KEY.getKey() )
+			String[] symbols = GeneralMethod.qryParamConfigInfo( paramConfigService, ParamKeyEnum.OKEX_SYMBOL_KLINE_HISTORY_DATA_KEY.getKey() )
 					.getParamValue().split( "," );
 			for (String symbol : symbols) {
 				cachedThreadPool.execute( new Runnable() {
@@ -91,10 +92,10 @@ public class OkexKlineScheduled {
 	 */
 	private void symbolKlineDataHandle(String symbol) throws Exception {
 		Date date = new Date();
-		String[] granularitys = ObtainParamConfigInfo.obtainRate( paramConfigService, ParamKeyEnum.OKEX_GRANULARITYS_KEY.getKey() ).getParamValue()
+		String[] granularitys = GeneralMethod.qryParamConfigInfo( paramConfigService, ParamKeyEnum.OKEX_GRANULARITYS_KEY.getKey() ).getParamValue()
 				.split( "," );
 		for (String granularity : granularitys) {
-			String klineUrl = ObtainParamConfigInfo.obtainRate( paramConfigService, ParamKeyEnum.OKEX_KLINE_URL_KEY.getKey() ).getParamValue();
+			String klineUrl = GeneralMethod.qryParamConfigInfo( paramConfigService, ParamKeyEnum.OKEX_KLINE_URL_KEY.getKey() ).getParamValue();
 			klineUrl = MessageFormat.format( klineUrl, symbol, granularity );
 
 			HttpClientResult result = HttpClientUtils.doGet( klineUrl );

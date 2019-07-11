@@ -7,42 +7,53 @@ import java.util.concurrent.Executors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import com.alibaba.dubbo.config.annotation.Reference;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.bittrade.batch.enumer.ParamConfigEnum.ParamKeyEnum;
-import com.bittrade.batch.general.ObtainParamConfigInfo;
+import com.bittrade.batch.enumer.ParamConfigEnum.ParamStatus;
+import com.bittrade.batch.general.GeneralMethod;
 import com.bittrade.common.constant.IConstant;
 import com.bittrade.common.utils.HttpClientResult;
 import com.bittrade.common.utils.HttpClientUtils;
 import com.bittrade.common.utils.RedisKeyUtil;
 import com.bittrade.currency.api.service.ITParamConfigService;
 import com.bittrade.pojo.dto.OkexTickerDto;
+import com.bittrade.pojo.model.TParamConfig;
 
 import redis.clients.jedis.JedisCluster;
 
 @Component
 public class OkexSymbolTickerScheduled {
 
-	private static final Logger						LOG					= LoggerFactory.getLogger( OkexSymbolTickerScheduled.class );
+	private static final Logger		LOG					= LoggerFactory.getLogger( OkexSymbolTickerScheduled.class );
+
+	@Reference
+	private ITParamConfigService	paramConfigService;
 
 	@Autowired
-	private ITParamConfigService paramConfigService;
-
-	@Autowired
-	private JedisCluster							jedisCluster;
+	private JedisCluster			jedisCluster;
 
 	// 创建一个可缓存线程池，如果线程池长度超过处理需要，可灵活回收空闲线程，若无可回收，则新建线程。
-	private ExecutorService							cachedThreadPool	= Executors.newCachedThreadPool();
+	private ExecutorService			cachedThreadPool	= Executors.newCachedThreadPool();
 
 	/**
 	 * 获取交易对ticker信息
 	 */
-	// @Scheduled(cron = "0/1 * * * * ?")
+//	@Scheduled(cron = "0/1 * * * * ?")
 	public void symbolTicker() {
 		try {
-			String[] symbols = ObtainParamConfigInfo.obtainRate( paramConfigService, ParamKeyEnum.OKEX_SYMBOL_KLINE_HISTORY_DATA_KEY.getKey() )
+			QueryWrapper<TParamConfig> queryWrapper = new QueryWrapper<TParamConfig>();
+			queryWrapper.eq( TParamConfig.FieldNames.PARAM_KEY, ParamKeyEnum.OKEX_SYMBOL_KLINE_HISTORY_DATA_KEY.getKey() );
+			queryWrapper.eq( TParamConfig.FieldNames.PARAM_STATUS, ParamStatus.ENABLE.getKey() );
+			TParamConfig paramConfig = paramConfigService.getOne( queryWrapper );
+			System.out.println( "paramConfig=" + paramConfig );
+			
+			String[] symbols = GeneralMethod.qryParamConfigInfo( paramConfigService, ParamKeyEnum.OKEX_SYMBOL_KLINE_HISTORY_DATA_KEY.getKey() )
 					.getParamValue().split( "," );
 			for (String symbol : symbols) {
 				cachedThreadPool.execute( new Runnable() {
@@ -67,7 +78,7 @@ public class OkexSymbolTickerScheduled {
 	}
 
 	private void tickerDataHandler(String symbol) throws Exception {
-		String tickerHttpUrl = ObtainParamConfigInfo.obtainRate( paramConfigService, ParamKeyEnum.OKEX_TICKER_HTTP_URL_KEY.getKey() ).getParamValue();
+		String tickerHttpUrl = GeneralMethod.qryParamConfigInfo( paramConfigService, ParamKeyEnum.OKEX_TICKER_HTTP_URL_KEY.getKey() ).getParamValue();
 		tickerHttpUrl = MessageFormat.format( tickerHttpUrl, symbol );
 
 		HttpClientResult result = HttpClientUtils.doGet( tickerHttpUrl );

@@ -15,6 +15,7 @@ import com.bittrade.pojo.model.TWalletRecord;
  *
  */
 @Service
+@com.alibaba.dubbo.config.annotation.Service
 public class TWalletRecordServiceImpl extends DefaultTWalletRecordServiceImpl<ITWalletRecordDAO, TWalletRecord, TWalletRecordDTO, TWalletRecordVO> implements ITWalletRecordService {
 	
 }

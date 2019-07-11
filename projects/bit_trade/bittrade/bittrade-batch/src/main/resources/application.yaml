@@ -5,4 +5,4 @@ server:
    port: 8902
 spring:
    profiles:
-      active: common
+      active: common,dubbo_consumer

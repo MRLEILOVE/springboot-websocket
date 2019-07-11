@@ -9,3 +9,5 @@ dubbo:
     address: N/A
   monitor:
     protocol: registry
+  consumer:
+    timeout: 3000

@@ -20,6 +20,7 @@ import com.bittrade.pojo.vo.TKlineVO;
  *
  */
 @Service
+@com.alibaba.dubbo.config.annotation.Service
 public class TKlineServiceImpl extends DefaultTKlineServiceImpl<ITKlineDAO, TKline, TKlineDTO, TKlineVO>
 		implements ITKlineService {
 

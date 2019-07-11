@@ -19,7 +19,7 @@ import okio.ByteString;
 @Component
 public class MyWebSocketClient {
 
-	@PostConstruct
+	//@PostConstruct
 	public void init() {
 		try {
 			System.out.println( "*********************************" );

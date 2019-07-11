@@ -26,6 +26,7 @@ import redis.clients.jedis.JedisCluster;
  * @since 2019-07-05
  */
 @Service
+@com.alibaba.dubbo.config.annotation.Service
 public class TWalletServiceImpl extends DefaultTWalletServiceImpl<ITWalletDAO, TWallet, TWalletDTO, TWalletVO> implements ITWalletService {
     @Autowired
     private ITWalletDAO walletDAO;
