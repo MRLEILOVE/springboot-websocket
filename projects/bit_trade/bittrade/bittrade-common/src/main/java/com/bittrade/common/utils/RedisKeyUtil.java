@@ -25,4 +25,9 @@ public class RedisKeyUtil {
 		return OKEX + symbol + "_LAST_KEY";
 	}
 
+	public static final String OKEX_PING_KEY = "PING_KEY";
+
+	public static String getOkexPingKey() {
+		return OKEX + OKEX_PING_KEY;
+	}
 }
