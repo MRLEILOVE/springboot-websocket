@@ -1,0 +1,12 @@
+spring:
+  rabbitmq:
+    #服务器ip
+    host: localhost
+    #端口号
+    port: 5672
+    #用户名
+    username: o
+    #密码
+    password: o
+    #虚拟空间地址
+    virtual-host: /tmp
