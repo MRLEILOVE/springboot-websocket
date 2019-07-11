@@ -10,9 +10,14 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.locks.ReentrantLock;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.bittrade.common.constant.IConstant;
+import com.bittrade.common.constant.IQueueConstants;
 import com.bittrade.common.enums.EntrustDirectionEnumer;
 import com.bittrade.common.enums.EntrustStatusEnumer;
 import com.bittrade.common.enums.EntrustTypeEnumer;
@@ -28,6 +33,8 @@ import com.core.tool.SnowFlake;
 
 @Service
 public class MakeAMatchServiceImpl implements IMakeAMatchService {
+	
+	private static final Logger LOG = LoggerFactory.getLogger(MakeAMatchServiceImpl.class);
 	
 	/**
 	 * 市价买
@@ -64,6 +71,9 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 	
 	private static final ReentrantLock LOCK_BUY = new ReentrantLock();
 	private static final ReentrantLock LOCK_SELL = new ReentrantLock();
+	
+	@Autowired
+	private RabbitTemplate rabbitTemplate;
 	
 	/**
 	 * <pre>
@@ -180,12 +190,12 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 		} else {
 			count = entrust_after.getLeftCount();
 		}
-		amount = dealPrice.multiply(count);
+		amount = dealPrice.multiply(count).setScale(IConstant.AMOUNT_DECIMAL_LENGTH, BigDecimal.ROUND_HALF_DOWN);
 		
 		// 修改委托
 		{
-			entrust_before.setLeftCount(entrust_before.getLeftCount().subtract(count));
-			entrust_before.setSuccessAmount(entrust_before.getSuccessAmount().add(amount));
+			entrust_before.setLeftCount(entrust_before.getLeftCount().subtract(count).setScale(IConstant.COUNT_DECIMAL_LENGTH, BigDecimal.ROUND_HALF_DOWN));
+			entrust_before.setSuccessAmount(entrust_before.getSuccessAmount().add(amount).setScale(IConstant.AMOUNT_DECIMAL_LENGTH, BigDecimal.ROUND_HALF_DOWN));
 			entrustService.updateOnMatch(
 					entrust_before.getSuccessAmount(), 
 					entrust_before.getLeftCount(), 
@@ -200,8 +210,8 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 //					);
 		}
 		{
-			entrust_after.setLeftCount(entrust_after.getLeftCount().subtract(count));
-			entrust_after.setSuccessAmount(entrust_after.getSuccessAmount().add(amount));
+			entrust_after.setLeftCount(entrust_after.getLeftCount().subtract(count).setScale(IConstant.COUNT_DECIMAL_LENGTH, BigDecimal.ROUND_HALF_DOWN));
+			entrust_after.setSuccessAmount(entrust_after.getSuccessAmount().add(amount).setScale(IConstant.AMOUNT_DECIMAL_LENGTH, BigDecimal.ROUND_HALF_DOWN));
 			entrustService.updateOnMatch(
 					entrust_after.getSuccessAmount(), 
 					entrust_after.getLeftCount(), 
@@ -257,7 +267,8 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 		if (LINE_PRICE.compareTo(dealPrice) != ICompareResultConstant.EQUAL) {
 			LINE_PRICE = dealPrice;
 			// 异步通知。
-			
+			rabbitTemplate.convertAndSend(IQueueConstants.MESSAGE_EXCHANGE, IQueueConstants.MESSAGE_ROUTE_KEY, LINE_PRICE);
+			LOG.info("修改行情价为：" + LINE_PRICE);
 		}
 	}
 	
@@ -313,6 +324,13 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 		// 入库。
 		{
 			entrust.setId(SNOW_FLAKE__ENTRUST.nextId());
+			{
+				if (entrust.getPrice() != null) {
+					entrust.setPrice(entrust.getPrice().setScale(IConstant.PRICE_DECIMAL_LENGTH, BigDecimal.ROUND_HALF_DOWN));
+					entrust.setAmount(entrust.getPrice().multiply(entrust.getCount()).setScale(IConstant.AMOUNT_DECIMAL_LENGTH, BigDecimal.ROUND_HALF_DOWN));
+				}
+				entrust.setCount(entrust.getCount().setScale(IConstant.COUNT_DECIMAL_LENGTH, BigDecimal.ROUND_HALF_DOWN));
+			}
 			entrust.setSuccessAmount(BigDecimal.ZERO);
 			entrust.setLeftCount(entrust.getCount());
 			entrust.setStatus(EntrustStatusEnumer.UNFINISH.getCode());
@@ -395,12 +413,12 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 		
 		private static BigDecimal getPrice() {
 			Random r = new Random(R.nextLong());
-			return new BigDecimal(r.nextDouble() * 100).setScale(IConstant.PRICE_DECIMAL_LENGTH, BigDecimal.ROUND_HALF_DOWN);
+			return new BigDecimal(r.nextDouble() * 100)/*.setScale(IConstant.PRICE_DECIMAL_LENGTH, BigDecimal.ROUND_HALF_DOWN)*/;
 		}
 		
 		private static BigDecimal getCount() {
 			Random r = new Random(R.nextLong());
-			return new BigDecimal(r.nextDouble() * 100).setScale(IConstant.COUNT_DECIMAL_LENGTH, BigDecimal.ROUND_HALF_DOWN);
+			return new BigDecimal(r.nextDouble() * 100)/*.setScale(IConstant.COUNT_DECIMAL_LENGTH, BigDecimal.ROUND_HALF_DOWN)*/;
 		}
 		
 		private static final class MyCallable implements Callable<String> {
@@ -538,6 +556,22 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 	
 	public static void _main(String[] args) {
 //		Tester.test(null);
+//		BigDecimal bd = new BigDecimal(123.12345678901);
+//		System.out.println(bd);
+//		System.out.println(bd.setScale(11, BigDecimal.ROUND_HALF_DOWN));
+//		System.out.println(bd);
+//		System.out.println(BigDecimal.valueOf(123.12345678901));
+//		System.out.println(new BigDecimal(123.12345678901, new MathContext(14, RoundingMode.HALF_DOWN)));
+//		System.out.println(new BigDecimal(123.12345678901, new MathContext(20, RoundingMode.HALF_DOWN)));
+		
+//		BigDecimal bd1 = new BigDecimal(1.3);
+//		BigDecimal bd2 = new BigDecimal(1.5);
+//		System.out.println(bd1.multiply(bd2));
+//		System.out.println(bd1.multiply(bd2, new MathContext(9, RoundingMode.HALF_DOWN)));
+//		System.out.println(bd1.multiply(bd2).setScale(8, BigDecimal.ROUND_HALF_DOWN));
+//		System.out.println(bd1.multiply(bd2).multiply(BigDecimal.valueOf(2)));
+//		System.out.println(bd1.multiply(bd2, new MathContext(9, RoundingMode.HALF_DOWN)).multiply(BigDecimal.valueOf(2)));
+//		System.out.println(bd1.multiply(bd2).setScale(8, BigDecimal.ROUND_HALF_DOWN).multiply(BigDecimal.valueOf(2)));
 	}
 	
 }
