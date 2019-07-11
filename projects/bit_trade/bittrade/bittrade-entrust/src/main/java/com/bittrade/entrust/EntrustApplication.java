@@ -24,7 +24,7 @@ public class EntrustApplication extends BaseApplication {
 
 	@Reference
 	ITEntrustService es;
-	@PostConstruct
+//	@PostConstruct
 	public void test() {
 //		QueryWrapper<TEntrust> qw = new QueryWrapper<TEntrust>();
 //		qw.eq("ab", "bc");
