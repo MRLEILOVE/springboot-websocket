@@ -98,7 +98,7 @@ public abstract interface IDefaultWCoinConfigDAO extends IBaseDAO<WCoinConfig, W
 	 * @param wCoinConfig
 	 * @return
 	 */
-	public List<WCoinConfig> gets(WCoinConfig wCoinConfig);
+	public List<WCoinConfig> getsBy(WCoinConfig wCoinConfig);
 	
 	/**
 	 * 

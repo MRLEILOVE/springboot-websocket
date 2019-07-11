@@ -98,7 +98,7 @@ public abstract interface IDefaultTCurrencyOptionalDAO extends IBaseDAO<TCurrenc
 	 * @param tCurrencyOptional
 	 * @return
 	 */
-	public List<TCurrencyOptional> gets(TCurrencyOptional tCurrencyOptional);
+	public List<TCurrencyOptional> getsBy(TCurrencyOptional tCurrencyOptional);
 	
 	/**
 	 * 

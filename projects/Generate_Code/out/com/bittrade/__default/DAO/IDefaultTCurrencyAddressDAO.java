@@ -98,7 +98,7 @@ public abstract interface IDefaultTCurrencyAddressDAO extends IBaseDAO<TCurrency
 	 * @param tCurrencyAddress
 	 * @return
 	 */
-	public List<TCurrencyAddress> gets(TCurrencyAddress tCurrencyAddress);
+	public List<TCurrencyAddress> getsBy(TCurrencyAddress tCurrencyAddress);
 	
 	/**
 	 * 

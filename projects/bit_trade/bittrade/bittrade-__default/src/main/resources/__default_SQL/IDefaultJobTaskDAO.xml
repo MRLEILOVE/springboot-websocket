@@ -171,7 +171,7 @@
 		LIMIT 1
 	</select>
 	
-	<select id="gets" resultType="com.bittrade.pojo.model.JobTask">
+	<select id="getsBy" resultType="com.bittrade.pojo.model.JobTask">
 		SELECT 
 			`id`, 
 			`content`, 

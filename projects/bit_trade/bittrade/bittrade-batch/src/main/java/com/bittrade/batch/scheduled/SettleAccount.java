@@ -1,6 +1,7 @@
 package com.bittrade.batch.scheduled;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -53,7 +54,7 @@ public class SettleAccount {
 
 	private static final SnowFlake	SNOW_FLAKE			= new SnowFlake( 1, 1 );
 
-	@Scheduled(cron = "0/1 * * * * ?")
+	// @Scheduled(cron = "0/1 * * * * ?")
 	public void sellte() {
 		try {
 			List<TEntrustRecord> list = entrustRecordService.gets();
@@ -130,6 +131,7 @@ public class SettleAccount {
 		walletRecord.setCurrencyId( wallet.getCurrencyId() );
 		walletRecord.setType( (byte) 3 );
 		walletRecord.setEntrustRecordId( entrustRecordId );
+		walletRecord.setCreateTime( new Date() );
 
 		BigDecimal beforeAmount = wallet.getTotal().add( wallet.getTradeFrozen() ).add( wallet.getTransferFrozen() );
 		walletRecord.setBeforeAmount( beforeAmount );

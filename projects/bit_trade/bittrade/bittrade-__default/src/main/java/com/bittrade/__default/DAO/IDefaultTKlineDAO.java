@@ -98,7 +98,7 @@ public abstract interface IDefaultTKlineDAO extends IBaseDAO<TKline, TKlineDTO, 
 	 * @param tKline
 	 * @return
 	 */
-	public List<TKline> gets(TKline tKline);
+	public List<TKline> getsBy(TKline tKline);
 	
 	/**
 	 * 

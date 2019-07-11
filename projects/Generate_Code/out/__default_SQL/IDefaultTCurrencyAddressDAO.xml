@@ -231,7 +231,7 @@
 		LIMIT 1
 	</select>
 	
-	<select id="gets" resultType="com.bittrade.pojo.model.TCurrencyAddress">
+	<select id="getsBy" resultType="com.bittrade.pojo.model.TCurrencyAddress">
 		SELECT 
 			`id`, 
 			`user_id`, 

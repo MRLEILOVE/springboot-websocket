@@ -27,9 +27,9 @@ public class ParamConfigEnum {
 	@Getter
 	public enum ParamStatus {
 
-		ENABLE("1", "开启"), DISABLED("0", "禁用");
+		ENABLE(1, "开启"), DISABLED(0, "禁用");
 
-		private String	key;	//
+		private int		key;	//
 		private String	remark;	//
 
 	}

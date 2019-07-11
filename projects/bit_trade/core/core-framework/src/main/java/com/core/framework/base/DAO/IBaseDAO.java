@@ -90,7 +90,7 @@ public abstract interface IBaseDAO<Model, DTO, VO> extends com.baomidou.mybatisp
 	 * @param model
 	 * @return
 	 */
-	public List<Model> gets(Model model);
+	public List<Model> getsBy(Model model);
 
 	/**
 	 * 查询所有

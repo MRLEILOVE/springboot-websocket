@@ -98,7 +98,7 @@ public abstract interface IDefaultTWalletRecordDAO extends IBaseDAO<TWalletRecor
 	 * @param tWalletRecord
 	 * @return
 	 */
-	public List<TWalletRecord> gets(TWalletRecord tWalletRecord);
+	public List<TWalletRecord> getsBy(TWalletRecord tWalletRecord);
 	
 	/**
 	 * 

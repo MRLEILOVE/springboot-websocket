@@ -98,7 +98,7 @@ public abstract interface IDefault${struct.className}DAO extends IBaseDAO<${stru
 	 * @param ${struct.variableName}
 	 * @return
 	 */
-	public List<${struct.className}> gets(${struct.className} ${struct.variableName});
+	public List<${struct.className}> getsBy(${struct.className} ${struct.variableName});
 	
 	/**
 	 * 

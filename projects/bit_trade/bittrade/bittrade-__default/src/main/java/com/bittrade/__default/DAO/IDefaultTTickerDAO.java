@@ -98,7 +98,7 @@ public abstract interface IDefaultTTickerDAO extends IBaseDAO<TTicker, TTickerDT
 	 * @param tTicker
 	 * @return
 	 */
-	public List<TTicker> gets(TTicker tTicker);
+	public List<TTicker> getsBy(TTicker tTicker);
 	
 	/**
 	 * 

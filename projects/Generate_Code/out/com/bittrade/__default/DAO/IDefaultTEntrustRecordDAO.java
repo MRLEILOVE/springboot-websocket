@@ -98,7 +98,7 @@ public abstract interface IDefaultTEntrustRecordDAO extends IBaseDAO<TEntrustRec
 	 * @param tEntrustRecord
 	 * @return
 	 */
-	public List<TEntrustRecord> gets(TEntrustRecord tEntrustRecord);
+	public List<TEntrustRecord> getsBy(TEntrustRecord tEntrustRecord);
 	
 	/**
 	 * 

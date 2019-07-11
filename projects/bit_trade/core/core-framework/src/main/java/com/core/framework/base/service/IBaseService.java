@@ -105,7 +105,7 @@ public abstract interface IBaseService<Model extends BaseModel<Model>, DTO exten
 	 * @param model
 	 * @return
 	 */
-	public List<Model> gets(Model model);
+	public List<Model> getsBy(Model model);
 
 	/**
 	 * 查询所有

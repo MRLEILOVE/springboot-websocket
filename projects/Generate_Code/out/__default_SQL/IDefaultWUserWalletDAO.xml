@@ -351,7 +351,7 @@
 		LIMIT 1
 	</select>
 	
-	<select id="gets" resultType="com.bittrade.pojo.model.WUserWallet">
+	<select id="getsBy" resultType="com.bittrade.pojo.model.WUserWallet">
 		SELECT 
 			`id`, 
 			`platform`, 

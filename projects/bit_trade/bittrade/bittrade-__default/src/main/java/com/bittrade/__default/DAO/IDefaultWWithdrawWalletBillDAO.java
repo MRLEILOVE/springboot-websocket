@@ -98,7 +98,7 @@ public abstract interface IDefaultWWithdrawWalletBillDAO extends IBaseDAO<WWithd
 	 * @param wWithdrawWalletBill
 	 * @return
 	 */
-	public List<WWithdrawWalletBill> gets(WWithdrawWalletBill wWithdrawWalletBill);
+	public List<WWithdrawWalletBill> getsBy(WWithdrawWalletBill wWithdrawWalletBill);
 	
 	/**
 	 * 

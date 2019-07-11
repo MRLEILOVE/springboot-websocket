@@ -98,7 +98,7 @@ public abstract interface IDefaultTOrderDAO extends IBaseDAO<TOrder, TOrderDTO, 
 	 * @param tOrder
 	 * @return
 	 */
-	public List<TOrder> gets(TOrder tOrder);
+	public List<TOrder> getsBy(TOrder tOrder);
 	
 	/**
 	 * 

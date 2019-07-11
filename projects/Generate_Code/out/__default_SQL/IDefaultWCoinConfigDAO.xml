@@ -441,7 +441,7 @@
 		LIMIT 1
 	</select>
 	
-	<select id="gets" resultType="com.bittrade.pojo.model.WCoinConfig">
+	<select id="getsBy" resultType="com.bittrade.pojo.model.WCoinConfig">
 		SELECT 
 			`id`, 
 			`coin_type`, 

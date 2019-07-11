@@ -13,10 +13,16 @@ import com.bittrade.pojo.model.TWallet;
 public class GeneralMethod {
 
 	public static TParamConfig qryParamConfigInfo(ITParamConfigService paramConfigService, String key) throws Exception {
-		QueryWrapper<TParamConfig> queryWrapper = new QueryWrapper<TParamConfig>();
-		queryWrapper.eq( TParamConfig.FieldNames.PARAM_KEY, key );
-		queryWrapper.eq( TParamConfig.FieldNames.PARAM_STATUS, ParamStatus.ENABLE.getKey() );
-		TParamConfig paramConfig = paramConfigService.getOne( queryWrapper );
+		// QueryWrapper<TParamConfig> queryWrapper = new
+		// QueryWrapper<TParamConfig>();
+		// queryWrapper.eq( TParamConfig.FieldNames.PARAM_KEY, key );
+		// queryWrapper.eq( TParamConfig.FieldNames.PARAM_STATUS,
+		// ParamStatus.ENABLE.getKey() );
+		// TParamConfig paramConfig = paramConfigService.getOne( queryWrapper );
+		TParamConfig paramConfigCondi = new TParamConfig();
+		paramConfigCondi.setParamKey( key );
+		paramConfigCondi.setParamStatus( ParamStatus.ENABLE.getKey() );
+		TParamConfig paramConfig = paramConfigService.get( paramConfigCondi );
 		if (null == paramConfig) {
 			throw new Exception( "key：" + key + "未配置" );
 		}

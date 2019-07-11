@@ -86,8 +86,8 @@ public abstract class BaseController<Model extends BaseModel<Model>, DTO extends
 	}
 
 	@RequestMapping(value = "/getsBy", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public List<Model> gets(Model model) {
-		return baseService.gets(model);
+	public List<Model> getsBy(Model model) {
+		return baseService.getsBy(model);
 	}
 
 	@RequestMapping(value = "/gets", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)

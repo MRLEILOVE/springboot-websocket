@@ -98,7 +98,7 @@ public abstract interface IDefaultWConfigWalletDAO extends IBaseDAO<WConfigWalle
 	 * @param wConfigWallet
 	 * @return
 	 */
-	public List<WConfigWallet> gets(WConfigWallet wConfigWallet);
+	public List<WConfigWallet> getsBy(WConfigWallet wConfigWallet);
 	
 	/**
 	 * 

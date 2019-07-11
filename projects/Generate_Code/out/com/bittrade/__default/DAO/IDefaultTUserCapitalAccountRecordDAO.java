@@ -98,7 +98,7 @@ public abstract interface IDefaultTUserCapitalAccountRecordDAO extends IBaseDAO<
 	 * @param tUserCapitalAccountRecord
 	 * @return
 	 */
-	public List<TUserCapitalAccountRecord> gets(TUserCapitalAccountRecord tUserCapitalAccountRecord);
+	public List<TUserCapitalAccountRecord> getsBy(TUserCapitalAccountRecord tUserCapitalAccountRecord);
 	
 	/**
 	 * 

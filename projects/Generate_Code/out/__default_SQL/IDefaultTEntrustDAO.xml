@@ -537,7 +537,7 @@
 		LIMIT 1
 	</select>
 	
-	<select id="gets" resultType="com.bittrade.pojo.model.TEntrust">
+	<select id="getsBy" resultType="com.bittrade.pojo.model.TEntrust">
 		SELECT 
 			`id`, 
 			`user_id`, 

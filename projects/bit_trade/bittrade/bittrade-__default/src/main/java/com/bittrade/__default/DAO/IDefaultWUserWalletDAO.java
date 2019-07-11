@@ -98,7 +98,7 @@ public abstract interface IDefaultWUserWalletDAO extends IBaseDAO<WUserWallet, W
 	 * @param wUserWallet
 	 * @return
 	 */
-	public List<WUserWallet> gets(WUserWallet wUserWallet);
+	public List<WUserWallet> getsBy(WUserWallet wUserWallet);
 	
 	/**
 	 * 

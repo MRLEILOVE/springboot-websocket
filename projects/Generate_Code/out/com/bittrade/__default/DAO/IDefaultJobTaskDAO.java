@@ -98,7 +98,7 @@ public abstract interface IDefaultJobTaskDAO extends IBaseDAO<JobTask, JobTaskDT
 	 * @param jobTask
 	 * @return
 	 */
-	public List<JobTask> gets(JobTask jobTask);
+	public List<JobTask> getsBy(JobTask jobTask);
 	
 	/**
 	 * 

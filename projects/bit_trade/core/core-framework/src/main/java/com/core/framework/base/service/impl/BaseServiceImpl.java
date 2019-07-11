@@ -104,8 +104,8 @@ public abstract class BaseServiceImpl<Model extends BaseModel<Model>, DTO extend
 	}
 
 	@Override
-	public List<Model> gets(Model model) {
-		return baseDAO.gets(model);
+	public List<Model> getsBy(Model model) {
+		return baseDAO.getsBy(model);
 	}
 
 	@Override

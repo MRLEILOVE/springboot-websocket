@@ -321,7 +321,7 @@
 		LIMIT 1
 	</select>
 	
-	<select id="gets" resultType="com.bittrade.pojo.model.TWallet">
+	<select id="getsBy" resultType="com.bittrade.pojo.model.TWallet">
 		SELECT 
 			`id`, 
 			`user_id`, 

@@ -98,7 +98,7 @@ public abstract interface IDefaultTWalletDAO extends IBaseDAO<TWallet, TWalletDT
 	 * @param tWallet
 	 * @return
 	 */
-	public List<TWallet> gets(TWallet tWallet);
+	public List<TWallet> getsBy(TWallet tWallet);
 	
 	/**
 	 * 

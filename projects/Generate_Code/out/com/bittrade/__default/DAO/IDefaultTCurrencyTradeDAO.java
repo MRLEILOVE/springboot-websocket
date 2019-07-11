@@ -98,7 +98,7 @@ public abstract interface IDefaultTCurrencyTradeDAO extends IBaseDAO<TCurrencyTr
 	 * @param tCurrencyTrade
 	 * @return
 	 */
-	public List<TCurrencyTrade> gets(TCurrencyTrade tCurrencyTrade);
+	public List<TCurrencyTrade> getsBy(TCurrencyTrade tCurrencyTrade);
 	
 	/**
 	 * 

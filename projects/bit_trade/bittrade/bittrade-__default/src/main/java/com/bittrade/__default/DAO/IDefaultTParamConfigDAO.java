@@ -98,7 +98,7 @@ public abstract interface IDefaultTParamConfigDAO extends IBaseDAO<TParamConfig,
 	 * @param tParamConfig
 	 * @return
 	 */
-	public List<TParamConfig> gets(TParamConfig tParamConfig);
+	public List<TParamConfig> getsBy(TParamConfig tParamConfig);
 	
 	/**
 	 * 

@@ -168,7 +168,7 @@
 		LIMIT 1
 	</select>
 	
-	<select id="gets" resultType="${POJO_BASE_PKG}.model${module_name}.${struct.className}">
+	<select id="getsBy" resultType="${POJO_BASE_PKG}.model${module_name}.${struct.className}">
 		SELECT 
 			<#list struct.list_itemPK as itemPK>
 			`${itemPK.columnName}`, 
