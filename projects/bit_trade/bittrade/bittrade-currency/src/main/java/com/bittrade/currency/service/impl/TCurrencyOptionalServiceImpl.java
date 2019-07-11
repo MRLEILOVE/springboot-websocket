@@ -23,6 +23,7 @@ import com.core.framework.DTO.ReturnDTO;
  *
  */
 @Service
+@com.alibaba.dubbo.config.annotation.Service
 public class TCurrencyOptionalServiceImpl extends DefaultTCurrencyOptionalServiceImpl<ITCurrencyOptionalDAO, TCurrencyOptional, TCurrencyOptionalDTO, TCurrencyOptionalVO> implements ITCurrencyOptionalService {
     @Autowired
     private ITCurrencyOptionalDAO currencyOptionalDAO;

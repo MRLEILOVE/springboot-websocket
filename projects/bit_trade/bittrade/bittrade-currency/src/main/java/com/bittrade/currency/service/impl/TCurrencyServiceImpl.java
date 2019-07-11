@@ -19,6 +19,7 @@ import com.bittrade.pojo.vo.TCurrencyVO;
  *
  */
 @Service
+@com.alibaba.dubbo.config.annotation.Service
 public class TCurrencyServiceImpl extends
 		DefaultTCurrencyServiceImpl<ITCurrencyDAO, TCurrency, TCurrencyDTO, TCurrencyVO> implements ITCurrencyService {
 

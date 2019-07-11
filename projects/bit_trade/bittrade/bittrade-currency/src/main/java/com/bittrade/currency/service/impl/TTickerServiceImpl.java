@@ -15,6 +15,7 @@ import com.bittrade.pojo.model.TTicker;
  *
  */
 @Service
+@com.alibaba.dubbo.config.annotation.Service
 public class TTickerServiceImpl extends DefaultTTickerServiceImpl<ITTickerDAO, TTicker, TTickerDTO, TTickerVO> implements ITTickerService {
 	
 }

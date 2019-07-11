@@ -15,6 +15,7 @@ import com.bittrade.pojo.model.TWalletTransfer;
  *
  */
 @Service
+@com.alibaba.dubbo.config.annotation.Service
 public class TWalletTransferServiceImpl extends DefaultTWalletTransferServiceImpl<ITWalletTransferDAO, TWalletTransfer, TWalletTransferDTO, TWalletTransferVO> implements ITWalletTransferService {
 	
 }

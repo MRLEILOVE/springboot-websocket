@@ -15,6 +15,7 @@ import com.bittrade.pojo.model.TParamConfig;
  *
  */
 @Service
+@com.alibaba.dubbo.config.annotation.Service
 public class TParamConfigServiceImpl extends DefaultTParamConfigServiceImpl<ITParamConfigDAO, TParamConfig, TParamConfigDTO, TParamConfigVO> implements ITParamConfigService {
 	
 }
