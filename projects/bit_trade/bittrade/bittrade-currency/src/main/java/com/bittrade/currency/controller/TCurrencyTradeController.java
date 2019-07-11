@@ -3,6 +3,7 @@ package com.bittrade.currency.controller;
 import java.util.List;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.bittrade.pojo.model.TCurrency;
 import com.bittrade.pojo.vo.TCurrencyVO;
 import com.core.framework.DTO.ReturnDTO;
 import io.swagger.annotations.ApiOperation;
@@ -42,7 +43,7 @@ public class TCurrencyTradeController extends BaseController<TCurrencyTrade, TCu
     @ResponseBody
     public ReturnDTO<List<TransactionPairVO>> findTradeByCurrencyId2(@PathVariable("currencyId2") String currencyId2) {
         QueryWrapper<TCurrencyVO> wrapper = new QueryWrapper<>();
-        wrapper.eq("status",1).select("id","name");
+        wrapper.eq(TCurrency.FieldNames.STATUS,1).select(TCurrency.FieldNames.ID,TCurrency.FieldNames.NAME);
         try{
             return ReturnDTO.ok(tCurrencyTradeService.findTradeByCurrencyId2(currencyId2));
         }catch (Exception e){
