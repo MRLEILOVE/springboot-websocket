@@ -1,0 +1,11 @@
+---
+dubbo:
+  # dubbo 信息
+  application:
+    id: service-consumer
+    name: service-consumer
+  registry:
+    #address: zookeeper://127.0.0.1:2181
+    address: N/A
+  monitor:
+    protocol: registry

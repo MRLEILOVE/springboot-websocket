@@ -1,0 +1,28 @@
+---
+dubbo:
+  # dubbo 信息
+  application:
+    id: service-provider
+    name: service-provider
+  # 协议信息
+  protocol:
+    id: dubbo
+    name: dubbo
+    port: 20880
+  # 注册中心信息
+  registry:
+    id: my-registry
+    #protocol: zookeeper
+    #address: 127.0.0.1:2181
+    #address: zookeeper://127.0.0.1:2181
+    address: N/A
+  monitor:
+    protocol: registry
+  provider:
+    timeout: 1000
+  scan:
+    # like the @EnableDubbo ?
+    # Base packages to scan Dubbo Components (e.g., @Service, @Reference)
+    #basePackages: cn.itsource.dubbo.api.impl
+
+#demo.service.version=1.0.0

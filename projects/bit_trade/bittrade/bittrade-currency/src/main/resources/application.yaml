@@ -2,7 +2,7 @@
 
 data:
   #model-package: com.*.pojo.model.*
-  #mapper-locations: classpath*:/__default/DAO_SQL/**/I*DAO.xml,classpath*:/dao_SQL/**/I*DAO.xml
+  #mapper-locations: classpath*:/__default_SQL/**/I*DAO.xml,classpath*:/SQL/**/I*DAO.xml
   application:
     name: currency
   register-with-eureka: false
@@ -15,22 +15,4 @@ spring:
 #  application:
 #    name: currency
   profiles:
-    active: common
-
----
-dubbo:
-  registry:
-    #protocol: zookeeper
-    #address: 127.0.0.1:2181
-    address: zookeeper://127.0.0.1:2181
-  protocol:
-    port: 20880
-    name: dubbo
-  application:
-    name: user-service-provider
-  monitor:
-    protocol: registry
-  provider:
-    timeout: 1000
-
-#demo.service.version=1.0.0
+    active: common, dubbo_provider
