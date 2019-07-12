@@ -2,15 +2,16 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!--
 	This code is generated automatically. Please do not edit it.
+	现在字段也可以要彻底动态？
 -->
 <mapper namespace="com.bittrade.__default.DAO.IDefaultTCurrencyOptionalDAO">
 
 	<!-- 通用查询映射结果 -->
 	<resultMap id="BaseResultMap" type="com.bittrade.pojo.model.TCurrencyOptional">
-		<id javaType="int" property="id" jdbcType="INTEGER" column="id" />
-		<result javaType="long" property="userId" jdbcType="BIGINT" column="user_id" />
-		<result javaType="int" property="currencyTradeId" jdbcType="INTEGER" column="currency_trade_id" />
-		<result javaType="byte" property="status" jdbcType="INTEGER" column="status" />
+		<id javaType="Integer" property="id" jdbcType="INTEGER" column="id" />
+		<result javaType="Long" property="userId" jdbcType="BIGINT" column="user_id" />
+		<result javaType="Integer" property="currencyTradeId" jdbcType="INTEGER" column="currency_trade_id" />
+		<result javaType="Byte" property="status" jdbcType="INTEGER" column="status" />
 		<result javaType="java.util.Date" property="createTime" jdbcType="TIMESTAMP" column="create_time" />
 		<result javaType="java.util.Date" property="updateTime" jdbcType="TIMESTAMP" column="update_time" />
 	</resultMap>
@@ -31,36 +32,36 @@
 	
 	<insert id="addWithSelective" parameterType="com.bittrade.pojo.model.TCurrencyOptional">
 		INSERT INTO t_currency_optional(
-			<if test="userId != null and userId != ''">
+			<if test="userId != null">
 			`user_id`, 
 			</if>
-			<if test="currencyTradeId != null and currencyTradeId != ''">
+			<if test="currencyTradeId != null">
 			`currency_trade_id`, 
 			</if>
-			<if test="status != null and status != ''">
+			<if test="status != null">
 			`status`, 
 			</if>
-			<if test="createTime != null and createTime != ''">
+			<if test="createTime != null">
 			`create_time`, 
 			</if>
-			<if test="updateTime != null and updateTime != ''">
+			<if test="updateTime != null">
 			`update_time`
 			</if>
 		)
 		VALUES(
-			<if test="userId != null and userId != ''">
+			<if test="userId != null">
 			#{userId,jdbcType=BIGINT}, 
 			</if>
-			<if test="currencyTradeId != null and currencyTradeId != ''">
+			<if test="currencyTradeId != null">
 			#{currencyTradeId,jdbcType=INTEGER}, 
 			</if>
-			<if test="status != null and status != ''">
+			<if test="status != null">
 			#{status,jdbcType=INTEGER}, 
 			</if>
-			<if test="createTime != null and createTime != ''">
+			<if test="createTime != null">
 			#{createTime,jdbcType=TIMESTAMP}, 
 			</if>
-			<if test="updateTime != null and updateTime != ''">
+			<if test="updateTime != null">
 			#{updateTime,jdbcType=TIMESTAMP}
 			</if>
 		)
@@ -68,26 +69,27 @@
 	
 	<delete id="removeByPK">
 		DELETE FROM t_currency_optional
-		WHERE 
-			`id` = #{id,jdbcType=INTEGER}
+		<where>
+			AND `id` = #{id,jdbcType=INTEGER}
+		</where>
 	</delete>
 	
 	<delete id="remove" parameterType="com.bittrade.pojo.model.TCurrencyOptional">
 		DELETE FROM t_currency_optional
 		<where>
-			<if test="userId != null and userId != ''">
+			<if test="userId != null">
 			AND `user_id` = #{userId,jdbcType=BIGINT}
 			</if>
-			<if test="currencyTradeId != null and currencyTradeId != ''">
+			<if test="currencyTradeId != null">
 			AND `currency_trade_id` = #{currencyTradeId,jdbcType=INTEGER}
 			</if>
-			<if test="status != null and status != ''">
+			<if test="status != null">
 			AND `status` = #{status,jdbcType=INTEGER}
 			</if>
-			<if test="createTime != null and createTime != ''">
+			<if test="createTime != null">
 			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
 			</if>
-			<if test="updateTime != null and updateTime != ''">
+			<if test="updateTime != null">
 			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
 			</if>
 		</where>
@@ -95,99 +97,117 @@
 	
 	<update id="modifyByPK" parameterType="com.bittrade.pojo.model.TCurrencyOptional">
 		UPDATE t_currency_optional
-		SET
+		<set>
 			`user_id` = #{userId,jdbcType=BIGINT}, 
 			`currency_trade_id` = #{currencyTradeId,jdbcType=INTEGER}, 
 			`status` = #{status,jdbcType=INTEGER}, 
 			`create_time` = #{createTime,jdbcType=TIMESTAMP}, 
-			`update_time` = #{updateTime,jdbcType=TIMESTAMP}
-		WHERE 
-			`id` = #{id,jdbcType=INTEGER}
+			`update_time` = #{updateTime,jdbcType=TIMESTAMP}, 
+		</set>
+		<where>
+			AND `id` = #{id,jdbcType=INTEGER}
+		</where>
 	</update>
 	
 	<update id="modifyWithSelectiveByPK" parameterType="com.bittrade.pojo.model.TCurrencyOptional">
 		UPDATE t_currency_optional
-		SET
-			<if test="userId != null and userId != ''">
+		<set>
+			<if test="userId != null">
 			`user_id` = #{userId,jdbcType=BIGINT}, 
 			</if>
-			<if test="currencyTradeId != null and currencyTradeId != ''">
+			<if test="currencyTradeId != null">
 			`currency_trade_id` = #{currencyTradeId,jdbcType=INTEGER}, 
 			</if>
-			<if test="status != null and status != ''">
+			<if test="status != null">
 			`status` = #{status,jdbcType=INTEGER}, 
 			</if>
-			<if test="createTime != null and createTime != ''">
+			<if test="createTime != null">
 			`create_time` = #{createTime,jdbcType=TIMESTAMP}, 
 			</if>
-			<if test="updateTime != null and updateTime != ''">
-			`update_time` = #{updateTime,jdbcType=TIMESTAMP}
+			<if test="updateTime != null">
+			`update_time` = #{updateTime,jdbcType=TIMESTAMP}, 
 			</if>
-		WHERE 
-			`id` = #{id,jdbcType=INTEGER}
+		</set>
+		<where>
+			AND `id` = #{id,jdbcType=INTEGER}
+		</where>
 	</update>
 	
 	<update id="modify">
 		UPDATE t_currency_optional
-		SET
+		<set>
 			`user_id` = #{tCurrencyOptional.userId,jdbcType=BIGINT}, 
 			`currency_trade_id` = #{tCurrencyOptional.currencyTradeId,jdbcType=INTEGER}, 
 			`status` = #{tCurrencyOptional.status,jdbcType=INTEGER}, 
 			`create_time` = #{tCurrencyOptional.createTime,jdbcType=TIMESTAMP}, 
-			`update_time` = #{tCurrencyOptional.updateTime,jdbcType=TIMESTAMP}
+			`update_time` = #{tCurrencyOptional.updateTime,jdbcType=TIMESTAMP}, 
+		</set>
 		<where>
-			<if test="condiTCurrencyOptional.userId != null and condiTCurrencyOptional.userId != ''">
+		<if test="condiTCurrencyOptional != null">
+			<if test="condiTCurrencyOptional.id != null">
+			AND `id` = #{condiTCurrencyOptional.id,jdbcType=INTEGER}
+			</if>
+			<if test="condiTCurrencyOptional.userId != null">
 			AND `user_id` = #{condiTCurrencyOptional.userId,jdbcType=BIGINT}
 			</if>
-			<if test="condiTCurrencyOptional.currencyTradeId != null and condiTCurrencyOptional.currencyTradeId != ''">
+			<if test="condiTCurrencyOptional.currencyTradeId != null">
 			AND `currency_trade_id` = #{condiTCurrencyOptional.currencyTradeId,jdbcType=INTEGER}
 			</if>
-			<if test="condiTCurrencyOptional.status != null and condiTCurrencyOptional.status != ''">
+			<if test="condiTCurrencyOptional.status != null">
 			AND `status` = #{condiTCurrencyOptional.status,jdbcType=INTEGER}
 			</if>
-			<if test="condiTCurrencyOptional.createTime != null and condiTCurrencyOptional.createTime != ''">
+			<if test="condiTCurrencyOptional.createTime != null">
 			AND `create_time` = #{condiTCurrencyOptional.createTime,jdbcType=TIMESTAMP}
 			</if>
-			<if test="condiTCurrencyOptional.updateTime != null and condiTCurrencyOptional.updateTime != ''">
+			<if test="condiTCurrencyOptional.updateTime != null">
 			AND `update_time` = #{condiTCurrencyOptional.updateTime,jdbcType=TIMESTAMP}
 			</if>
+		</if>
 		</where>
 	</update>
 	
 	<update id="modifyWithSelective">
 		UPDATE t_currency_optional
-		SET
-			<if test="tCurrencyOptional.userId != null and tCurrencyOptional.userId != ''">
+		<set>
+		<if test="tCurrencyOptional != null">
+			<if test="tCurrencyOptional.userId != null">
 			`user_id` = #{tCurrencyOptional.userId,jdbcType=BIGINT}, 
 			</if>
-			<if test="tCurrencyOptional.currencyTradeId != null and tCurrencyOptional.currencyTradeId != ''">
+			<if test="tCurrencyOptional.currencyTradeId != null">
 			`currency_trade_id` = #{tCurrencyOptional.currencyTradeId,jdbcType=INTEGER}, 
 			</if>
-			<if test="tCurrencyOptional.status != null and tCurrencyOptional.status != ''">
+			<if test="tCurrencyOptional.status != null">
 			`status` = #{tCurrencyOptional.status,jdbcType=INTEGER}, 
 			</if>
-			<if test="tCurrencyOptional.createTime != null and tCurrencyOptional.createTime != ''">
+			<if test="tCurrencyOptional.createTime != null">
 			`create_time` = #{tCurrencyOptional.createTime,jdbcType=TIMESTAMP}, 
 			</if>
-			<if test="tCurrencyOptional.updateTime != null and tCurrencyOptional.updateTime != ''">
-			`update_time` = #{tCurrencyOptional.updateTime,jdbcType=TIMESTAMP}
+			<if test="tCurrencyOptional.updateTime != null">
+			`update_time` = #{tCurrencyOptional.updateTime,jdbcType=TIMESTAMP}, 
 			</if>
+		</if>
+		</set>
 		<where>
-			<if test="condiTCurrencyOptional.userId != null and condiTCurrencyOptional.userId != ''">
+		<if test="condiTCurrencyOptional != null">
+			<if test="condiTCurrencyOptional.id != null">
+			AND `id` = #{condiTCurrencyOptional.id,jdbcType=INTEGER}
+			</if>
+			<if test="condiTCurrencyOptional.userId != null">
 			AND `user_id` = #{condiTCurrencyOptional.userId,jdbcType=BIGINT}
 			</if>
-			<if test="condiTCurrencyOptional.currencyTradeId != null and condiTCurrencyOptional.currencyTradeId != ''">
+			<if test="condiTCurrencyOptional.currencyTradeId != null">
 			AND `currency_trade_id` = #{condiTCurrencyOptional.currencyTradeId,jdbcType=INTEGER}
 			</if>
-			<if test="condiTCurrencyOptional.status != null and condiTCurrencyOptional.status != ''">
+			<if test="condiTCurrencyOptional.status != null">
 			AND `status` = #{condiTCurrencyOptional.status,jdbcType=INTEGER}
 			</if>
-			<if test="condiTCurrencyOptional.createTime != null and condiTCurrencyOptional.createTime != ''">
+			<if test="condiTCurrencyOptional.createTime != null">
 			AND `create_time` = #{condiTCurrencyOptional.createTime,jdbcType=TIMESTAMP}
 			</if>
-			<if test="condiTCurrencyOptional.updateTime != null and condiTCurrencyOptional.updateTime != ''">
+			<if test="condiTCurrencyOptional.updateTime != null">
 			AND `update_time` = #{condiTCurrencyOptional.updateTime,jdbcType=TIMESTAMP}
 			</if>
+		</if>
 		</where>
 	</update>
 	
@@ -200,8 +220,9 @@
 			`create_time`, 
 			`update_time`
 		FROM t_currency_optional
-		WHERE 
-			`id` = #{id,jdbcType=INTEGER}
+		<where>
+			AND `id` = #{id,jdbcType=INTEGER}
+		</where>
 	</select>
 	
 	<select id="get" resultType="com.bittrade.pojo.model.TCurrencyOptional">
@@ -214,19 +235,19 @@
 			`update_time`
 		FROM t_currency_optional
 		<where>
-			<if test="userId != null and userId != ''">
+			<if test="userId != null">
 			AND `user_id` = #{userId,jdbcType=BIGINT}
 			</if>
-			<if test="currencyTradeId != null and currencyTradeId != ''">
+			<if test="currencyTradeId != null">
 			AND `currency_trade_id` = #{currencyTradeId,jdbcType=INTEGER}
 			</if>
-			<if test="status != null and status != ''">
+			<if test="status != null">
 			AND `status` = #{status,jdbcType=INTEGER}
 			</if>
-			<if test="createTime != null and createTime != ''">
+			<if test="createTime != null">
 			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
 			</if>
-			<if test="updateTime != null and updateTime != ''">
+			<if test="updateTime != null">
 			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
 			</if>
 		</where>
@@ -243,19 +264,19 @@
 			`update_time`
 		FROM t_currency_optional
 		<where>
-			<if test="userId != null and userId != ''">
+			<if test="userId != null">
 			AND `user_id` = #{userId,jdbcType=BIGINT}
 			</if>
-			<if test="currencyTradeId != null and currencyTradeId != ''">
+			<if test="currencyTradeId != null">
 			AND `currency_trade_id` = #{currencyTradeId,jdbcType=INTEGER}
 			</if>
-			<if test="status != null and status != ''">
+			<if test="status != null">
 			AND `status` = #{status,jdbcType=INTEGER}
 			</if>
-			<if test="createTime != null and createTime != ''">
+			<if test="createTime != null">
 			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
 			</if>
-			<if test="updateTime != null and updateTime != ''">
+			<if test="updateTime != null">
 			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
 			</if>
 		</where>
@@ -276,21 +297,23 @@
 		SELECT COUNT(1)
 		FROM t_currency_optional
 		<where>
-			<if test="tCurrencyOptional.userId != null and tCurrencyOptional.userId != ''">
+		<if test="tCurrencyOptional != null">
+			<if test="tCurrencyOptional.userId != null">
 			AND `user_id` = #{tCurrencyOptional.userId,jdbcType=BIGINT}
 			</if>
-			<if test="tCurrencyOptional.currencyTradeId != null and tCurrencyOptional.currencyTradeId != ''">
+			<if test="tCurrencyOptional.currencyTradeId != null">
 			AND `currency_trade_id` = #{tCurrencyOptional.currencyTradeId,jdbcType=INTEGER}
 			</if>
-			<if test="tCurrencyOptional.status != null and tCurrencyOptional.status != ''">
+			<if test="tCurrencyOptional.status != null">
 			AND `status` = #{tCurrencyOptional.status,jdbcType=INTEGER}
 			</if>
-			<if test="tCurrencyOptional.createTime != null and tCurrencyOptional.createTime != ''">
+			<if test="tCurrencyOptional.createTime != null">
 			AND `create_time` = #{tCurrencyOptional.createTime,jdbcType=TIMESTAMP}
 			</if>
-			<if test="tCurrencyOptional.updateTime != null and tCurrencyOptional.updateTime != ''">
+			<if test="tCurrencyOptional.updateTime != null">
 			AND `update_time` = #{tCurrencyOptional.updateTime,jdbcType=TIMESTAMP}
 			</if>
+		</if>
 		</where>
 	</select>
 	
@@ -304,21 +327,23 @@
 			`update_time`
 		FROM t_currency_optional
 		<where>
-			<if test="tCurrencyOptional.userId != null and tCurrencyOptional.userId != ''">
+		<if test="tCurrencyOptional != null">
+			<if test="tCurrencyOptional.userId != null">
 			AND `user_id` = #{tCurrencyOptional.userId,jdbcType=BIGINT}
 			</if>
-			<if test="tCurrencyOptional.currencyTradeId != null and tCurrencyOptional.currencyTradeId != ''">
+			<if test="tCurrencyOptional.currencyTradeId != null">
 			AND `currency_trade_id` = #{tCurrencyOptional.currencyTradeId,jdbcType=INTEGER}
 			</if>
-			<if test="tCurrencyOptional.status != null and tCurrencyOptional.status != ''">
+			<if test="tCurrencyOptional.status != null">
 			AND `status` = #{tCurrencyOptional.status,jdbcType=INTEGER}
 			</if>
-			<if test="tCurrencyOptional.createTime != null and tCurrencyOptional.createTime != ''">
+			<if test="tCurrencyOptional.createTime != null">
 			AND `create_time` = #{tCurrencyOptional.createTime,jdbcType=TIMESTAMP}
 			</if>
-			<if test="tCurrencyOptional.updateTime != null and tCurrencyOptional.updateTime != ''">
+			<if test="tCurrencyOptional.updateTime != null">
 			AND `update_time` = #{tCurrencyOptional.updateTime,jdbcType=TIMESTAMP}
 			</if>
+		</if>
 		</where>
 		LIMIT #{page}, #{size}
 	</select>

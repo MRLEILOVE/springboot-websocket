@@ -87,12 +87,12 @@ public class TOrder extends BaseModel<TOrder> {
 	/**
 	 * 
 	 */
-	private int id;
+	private Integer id;
 	
 	/**
 	 * 提币用户
 	 */
-	private int userId;
+	private Integer userId;
 	
 	/**
 	 * 订单id

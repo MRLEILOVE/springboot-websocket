@@ -16,9 +16,9 @@ public class JobTaskVO extends BaseVO<JobTaskVO> {
 
 	private static final long serialVersionUID = 1L;
 
-	private long id;
+	private Long id;
 	private String content;
-	private long sendTime;
-	private int status;
+	private Long sendTime;
+	private Integer status;
 
 }

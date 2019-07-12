@@ -82,7 +82,7 @@ public class WUserWallet extends BaseModel<WUserWallet> {
 	/**
 	 * ID
 	 */
-	private long id;
+	private Long id;
 	
 	/**
 	 * 默认角色
@@ -92,7 +92,7 @@ public class WUserWallet extends BaseModel<WUserWallet> {
 	/**
 	 * 用户ID
 	 */
-	private long userId;
+	private Long userId;
 	
 	/**
 	 * 币种大类
@@ -112,7 +112,7 @@ public class WUserWallet extends BaseModel<WUserWallet> {
 	/**
 	 * 是否需要处理  0:否   1是
 	 */
-	private byte flag;
+	private Byte flag;
 	
 	/**
 	 * 是否有效：D无效E有效

@@ -5,8 +5,8 @@
 	<!-- 通用查询映射结果 -->
 	<resultMap id="BaseResultMap" type="com.bittrade.pojo.model.TCurrencyAddress">
 		<id javaType="int" property="id" jdbcType="INTEGER" column="id" />
-		<result javaType="long" property="userId" jdbcType="BIGINT" column="user_id" />
-		<result javaType="int" property="currencyId" jdbcType="INTEGER" column="currency_id" />
+		<result javaType="Long" property="userId" jdbcType="BIGINT" column="user_id" />
+		<result javaType="Integer" property="currencyId" jdbcType="INTEGER" column="currency_id" />
 		<result javaType="String" property="adderess" jdbcType="VARCHAR" column="adderess" />
 		<result javaType="String" property="addressRemark" jdbcType="VARCHAR" column="address_remark" />
 		<result javaType="java.util.Date" property="createTime" jdbcType="TIMESTAMP" column="create_time" />

@@ -82,17 +82,17 @@ public class TUserCapitalAccountRecord extends BaseModel<TUserCapitalAccountReco
 	/**
 	 * 主键id
 	 */
-	private long id;
+	private Long id;
 	
 	/**
 	 * 用户id
 	 */
-	private long userId;
+	private Long userId;
 	
 	/**
 	 * 货币id，t_currency表中的id
 	 */
-	private int currencyId;
+	private Integer currencyId;
 	
 	/**
 	 * 数量
@@ -112,12 +112,12 @@ public class TUserCapitalAccountRecord extends BaseModel<TUserCapitalAccountReco
 	/**
 	 * 类型:1:充币,2提币,3:撤销提现
 	 */
-	private byte type;
+	private Byte type;
 	
 	/**
 	 * 状态:0:失败,1:成功
 	 */
-	private byte status;
+	private Byte status;
 	
 	/**
 	 * 创建时间

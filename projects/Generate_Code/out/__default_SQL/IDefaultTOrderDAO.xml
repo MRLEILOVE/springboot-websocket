@@ -2,13 +2,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!--
 	This code is generated automatically. Please do not edit it.
+	现在字段也可以要彻底动态？
 -->
 <mapper namespace="com.bittrade.__default.DAO.IDefaultTOrderDAO">
 
 	<!-- 通用查询映射结果 -->
 	<resultMap id="BaseResultMap" type="com.bittrade.pojo.model.TOrder">
-		<id javaType="int" property="id" jdbcType="INTEGER" column="id" />
-		<result javaType="int" property="userId" jdbcType="INTEGER" column="userId" />
+		<id javaType="Integer" property="id" jdbcType="INTEGER" column="id" />
+		<result javaType="Integer" property="userId" jdbcType="INTEGER" column="userId" />
 		<result javaType="String" property="orderId" jdbcType="VARCHAR" column="order_id" />
 		<result javaType="java.math.BigDecimal" property="fee" jdbcType="DECIMAL" column="fee" />
 		<result javaType="String" property="token" jdbcType="VARCHAR" column="token" />
@@ -41,66 +42,66 @@
 	
 	<insert id="addWithSelective" parameterType="com.bittrade.pojo.model.TOrder">
 		INSERT INTO t_order(
-			<if test="userId != null and userId != ''">
+			<if test="userId != null">
 			`userId`, 
 			</if>
-			<if test="orderId != null and orderId != ''">
+			<if test="orderId != null">
 			`order_id`, 
 			</if>
-			<if test="fee != null and fee != ''">
+			<if test="fee != null">
 			`fee`, 
 			</if>
-			<if test="token != null and token != ''">
+			<if test="token != null">
 			`token`, 
 			</if>
-			<if test="amount != null and amount != ''">
+			<if test="amount != null">
 			`amount`, 
 			</if>
-			<if test="receiverAddress != null and receiverAddress != ''">
+			<if test="receiverAddress != null">
 			`receiver_address`, 
 			</if>
-			<if test="type != null and type != ''">
+			<if test="type != null">
 			`type`, 
 			</if>
-			<if test="operator != null and operator != ''">
+			<if test="operator != null">
 			`operator`, 
 			</if>
-			<if test="createTime != null and createTime != ''">
+			<if test="createTime != null">
 			`create_time`, 
 			</if>
-			<if test="updateTime != null and updateTime != ''">
+			<if test="updateTime != null">
 			`update_time`
 			</if>
 		)
 		VALUES(
-			<if test="userId != null and userId != ''">
+			<if test="userId != null">
 			#{userId,jdbcType=INTEGER}, 
 			</if>
-			<if test="orderId != null and orderId != ''">
+			<if test="orderId != null">
 			#{orderId,jdbcType=VARCHAR}, 
 			</if>
-			<if test="fee != null and fee != ''">
+			<if test="fee != null">
 			#{fee,jdbcType=DECIMAL}, 
 			</if>
-			<if test="token != null and token != ''">
+			<if test="token != null">
 			#{token,jdbcType=VARCHAR}, 
 			</if>
-			<if test="amount != null and amount != ''">
+			<if test="amount != null">
 			#{amount,jdbcType=DECIMAL}, 
 			</if>
-			<if test="receiverAddress != null and receiverAddress != ''">
+			<if test="receiverAddress != null">
 			#{receiverAddress,jdbcType=VARCHAR}, 
 			</if>
-			<if test="type != null and type != ''">
+			<if test="type != null">
 			#{type,jdbcType=VARCHAR}, 
 			</if>
-			<if test="operator != null and operator != ''">
+			<if test="operator != null">
 			#{operator,jdbcType=VARCHAR}, 
 			</if>
-			<if test="createTime != null and createTime != ''">
+			<if test="createTime != null">
 			#{createTime,jdbcType=TIMESTAMP}, 
 			</if>
-			<if test="updateTime != null and updateTime != ''">
+			<if test="updateTime != null">
 			#{updateTime,jdbcType=TIMESTAMP}
 			</if>
 		)
@@ -108,41 +109,42 @@
 	
 	<delete id="removeByPK">
 		DELETE FROM t_order
-		WHERE 
-			`id` = #{id,jdbcType=INTEGER}
+		<where>
+			AND `id` = #{id,jdbcType=INTEGER}
+		</where>
 	</delete>
 	
 	<delete id="remove" parameterType="com.bittrade.pojo.model.TOrder">
 		DELETE FROM t_order
 		<where>
-			<if test="userId != null and userId != ''">
+			<if test="userId != null">
 			AND `userId` = #{userId,jdbcType=INTEGER}
 			</if>
-			<if test="orderId != null and orderId != ''">
+			<if test="orderId != null">
 			AND `order_id` = #{orderId,jdbcType=VARCHAR}
 			</if>
-			<if test="fee != null and fee != ''">
+			<if test="fee != null">
 			AND `fee` = #{fee,jdbcType=DECIMAL}
 			</if>
-			<if test="token != null and token != ''">
+			<if test="token != null">
 			AND `token` = #{token,jdbcType=VARCHAR}
 			</if>
-			<if test="amount != null and amount != ''">
+			<if test="amount != null">
 			AND `amount` = #{amount,jdbcType=DECIMAL}
 			</if>
-			<if test="receiverAddress != null and receiverAddress != ''">
+			<if test="receiverAddress != null">
 			AND `receiver_address` = #{receiverAddress,jdbcType=VARCHAR}
 			</if>
-			<if test="type != null and type != ''">
+			<if test="type != null">
 			AND `type` = #{type,jdbcType=VARCHAR}
 			</if>
-			<if test="operator != null and operator != ''">
+			<if test="operator != null">
 			AND `operator` = #{operator,jdbcType=VARCHAR}
 			</if>
-			<if test="createTime != null and createTime != ''">
+			<if test="createTime != null">
 			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
 			</if>
-			<if test="updateTime != null and updateTime != ''">
+			<if test="updateTime != null">
 			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
 			</if>
 		</where>
@@ -150,7 +152,7 @@
 	
 	<update id="modifyByPK" parameterType="com.bittrade.pojo.model.TOrder">
 		UPDATE t_order
-		SET
+		<set>
 			`userId` = #{userId,jdbcType=INTEGER}, 
 			`order_id` = #{orderId,jdbcType=VARCHAR}, 
 			`fee` = #{fee,jdbcType=DECIMAL}, 
@@ -160,51 +162,55 @@
 			`type` = #{type,jdbcType=VARCHAR}, 
 			`operator` = #{operator,jdbcType=VARCHAR}, 
 			`create_time` = #{createTime,jdbcType=TIMESTAMP}, 
-			`update_time` = #{updateTime,jdbcType=TIMESTAMP}
-		WHERE 
-			`id` = #{id,jdbcType=INTEGER}
+			`update_time` = #{updateTime,jdbcType=TIMESTAMP}, 
+		</set>
+		<where>
+			AND `id` = #{id,jdbcType=INTEGER}
+		</where>
 	</update>
 	
 	<update id="modifyWithSelectiveByPK" parameterType="com.bittrade.pojo.model.TOrder">
 		UPDATE t_order
-		SET
-			<if test="userId != null and userId != ''">
+		<set>
+			<if test="userId != null">
 			`userId` = #{userId,jdbcType=INTEGER}, 
 			</if>
-			<if test="orderId != null and orderId != ''">
+			<if test="orderId != null">
 			`order_id` = #{orderId,jdbcType=VARCHAR}, 
 			</if>
-			<if test="fee != null and fee != ''">
+			<if test="fee != null">
 			`fee` = #{fee,jdbcType=DECIMAL}, 
 			</if>
-			<if test="token != null and token != ''">
+			<if test="token != null">
 			`token` = #{token,jdbcType=VARCHAR}, 
 			</if>
-			<if test="amount != null and amount != ''">
+			<if test="amount != null">
 			`amount` = #{amount,jdbcType=DECIMAL}, 
 			</if>
-			<if test="receiverAddress != null and receiverAddress != ''">
+			<if test="receiverAddress != null">
 			`receiver_address` = #{receiverAddress,jdbcType=VARCHAR}, 
 			</if>
-			<if test="type != null and type != ''">
+			<if test="type != null">
 			`type` = #{type,jdbcType=VARCHAR}, 
 			</if>
-			<if test="operator != null and operator != ''">
+			<if test="operator != null">
 			`operator` = #{operator,jdbcType=VARCHAR}, 
 			</if>
-			<if test="createTime != null and createTime != ''">
+			<if test="createTime != null">
 			`create_time` = #{createTime,jdbcType=TIMESTAMP}, 
 			</if>
-			<if test="updateTime != null and updateTime != ''">
-			`update_time` = #{updateTime,jdbcType=TIMESTAMP}
+			<if test="updateTime != null">
+			`update_time` = #{updateTime,jdbcType=TIMESTAMP}, 
 			</if>
-		WHERE 
-			`id` = #{id,jdbcType=INTEGER}
+		</set>
+		<where>
+			AND `id` = #{id,jdbcType=INTEGER}
+		</where>
 	</update>
 	
 	<update id="modify">
 		UPDATE t_order
-		SET
+		<set>
 			`userId` = #{tOrder.userId,jdbcType=INTEGER}, 
 			`order_id` = #{tOrder.orderId,jdbcType=VARCHAR}, 
 			`fee` = #{tOrder.fee,jdbcType=DECIMAL}, 
@@ -214,105 +220,119 @@
 			`type` = #{tOrder.type,jdbcType=VARCHAR}, 
 			`operator` = #{tOrder.operator,jdbcType=VARCHAR}, 
 			`create_time` = #{tOrder.createTime,jdbcType=TIMESTAMP}, 
-			`update_time` = #{tOrder.updateTime,jdbcType=TIMESTAMP}
+			`update_time` = #{tOrder.updateTime,jdbcType=TIMESTAMP}, 
+		</set>
 		<where>
-			<if test="condiTOrder.userId != null and condiTOrder.userId != ''">
+		<if test="condiTOrder != null">
+			<if test="condiTOrder.id != null">
+			AND `id` = #{condiTOrder.id,jdbcType=INTEGER}
+			</if>
+			<if test="condiTOrder.userId != null">
 			AND `userId` = #{condiTOrder.userId,jdbcType=INTEGER}
 			</if>
-			<if test="condiTOrder.orderId != null and condiTOrder.orderId != ''">
+			<if test="condiTOrder.orderId != null">
 			AND `order_id` = #{condiTOrder.orderId,jdbcType=VARCHAR}
 			</if>
-			<if test="condiTOrder.fee != null and condiTOrder.fee != ''">
+			<if test="condiTOrder.fee != null">
 			AND `fee` = #{condiTOrder.fee,jdbcType=DECIMAL}
 			</if>
-			<if test="condiTOrder.token != null and condiTOrder.token != ''">
+			<if test="condiTOrder.token != null">
 			AND `token` = #{condiTOrder.token,jdbcType=VARCHAR}
 			</if>
-			<if test="condiTOrder.amount != null and condiTOrder.amount != ''">
+			<if test="condiTOrder.amount != null">
 			AND `amount` = #{condiTOrder.amount,jdbcType=DECIMAL}
 			</if>
-			<if test="condiTOrder.receiverAddress != null and condiTOrder.receiverAddress != ''">
+			<if test="condiTOrder.receiverAddress != null">
 			AND `receiver_address` = #{condiTOrder.receiverAddress,jdbcType=VARCHAR}
 			</if>
-			<if test="condiTOrder.type != null and condiTOrder.type != ''">
+			<if test="condiTOrder.type != null">
 			AND `type` = #{condiTOrder.type,jdbcType=VARCHAR}
 			</if>
-			<if test="condiTOrder.operator != null and condiTOrder.operator != ''">
+			<if test="condiTOrder.operator != null">
 			AND `operator` = #{condiTOrder.operator,jdbcType=VARCHAR}
 			</if>
-			<if test="condiTOrder.createTime != null and condiTOrder.createTime != ''">
+			<if test="condiTOrder.createTime != null">
 			AND `create_time` = #{condiTOrder.createTime,jdbcType=TIMESTAMP}
 			</if>
-			<if test="condiTOrder.updateTime != null and condiTOrder.updateTime != ''">
+			<if test="condiTOrder.updateTime != null">
 			AND `update_time` = #{condiTOrder.updateTime,jdbcType=TIMESTAMP}
 			</if>
+		</if>
 		</where>
 	</update>
 	
 	<update id="modifyWithSelective">
 		UPDATE t_order
-		SET
-			<if test="tOrder.userId != null and tOrder.userId != ''">
+		<set>
+		<if test="tOrder != null">
+			<if test="tOrder.userId != null">
 			`userId` = #{tOrder.userId,jdbcType=INTEGER}, 
 			</if>
-			<if test="tOrder.orderId != null and tOrder.orderId != ''">
+			<if test="tOrder.orderId != null">
 			`order_id` = #{tOrder.orderId,jdbcType=VARCHAR}, 
 			</if>
-			<if test="tOrder.fee != null and tOrder.fee != ''">
+			<if test="tOrder.fee != null">
 			`fee` = #{tOrder.fee,jdbcType=DECIMAL}, 
 			</if>
-			<if test="tOrder.token != null and tOrder.token != ''">
+			<if test="tOrder.token != null">
 			`token` = #{tOrder.token,jdbcType=VARCHAR}, 
 			</if>
-			<if test="tOrder.amount != null and tOrder.amount != ''">
+			<if test="tOrder.amount != null">
 			`amount` = #{tOrder.amount,jdbcType=DECIMAL}, 
 			</if>
-			<if test="tOrder.receiverAddress != null and tOrder.receiverAddress != ''">
+			<if test="tOrder.receiverAddress != null">
 			`receiver_address` = #{tOrder.receiverAddress,jdbcType=VARCHAR}, 
 			</if>
-			<if test="tOrder.type != null and tOrder.type != ''">
+			<if test="tOrder.type != null">
 			`type` = #{tOrder.type,jdbcType=VARCHAR}, 
 			</if>
-			<if test="tOrder.operator != null and tOrder.operator != ''">
+			<if test="tOrder.operator != null">
 			`operator` = #{tOrder.operator,jdbcType=VARCHAR}, 
 			</if>
-			<if test="tOrder.createTime != null and tOrder.createTime != ''">
+			<if test="tOrder.createTime != null">
 			`create_time` = #{tOrder.createTime,jdbcType=TIMESTAMP}, 
 			</if>
-			<if test="tOrder.updateTime != null and tOrder.updateTime != ''">
-			`update_time` = #{tOrder.updateTime,jdbcType=TIMESTAMP}
+			<if test="tOrder.updateTime != null">
+			`update_time` = #{tOrder.updateTime,jdbcType=TIMESTAMP}, 
 			</if>
+		</if>
+		</set>
 		<where>
-			<if test="condiTOrder.userId != null and condiTOrder.userId != ''">
+		<if test="condiTOrder != null">
+			<if test="condiTOrder.id != null">
+			AND `id` = #{condiTOrder.id,jdbcType=INTEGER}
+			</if>
+			<if test="condiTOrder.userId != null">
 			AND `userId` = #{condiTOrder.userId,jdbcType=INTEGER}
 			</if>
-			<if test="condiTOrder.orderId != null and condiTOrder.orderId != ''">
+			<if test="condiTOrder.orderId != null">
 			AND `order_id` = #{condiTOrder.orderId,jdbcType=VARCHAR}
 			</if>
-			<if test="condiTOrder.fee != null and condiTOrder.fee != ''">
+			<if test="condiTOrder.fee != null">
 			AND `fee` = #{condiTOrder.fee,jdbcType=DECIMAL}
 			</if>
-			<if test="condiTOrder.token != null and condiTOrder.token != ''">
+			<if test="condiTOrder.token != null">
 			AND `token` = #{condiTOrder.token,jdbcType=VARCHAR}
 			</if>
-			<if test="condiTOrder.amount != null and condiTOrder.amount != ''">
+			<if test="condiTOrder.amount != null">
 			AND `amount` = #{condiTOrder.amount,jdbcType=DECIMAL}
 			</if>
-			<if test="condiTOrder.receiverAddress != null and condiTOrder.receiverAddress != ''">
+			<if test="condiTOrder.receiverAddress != null">
 			AND `receiver_address` = #{condiTOrder.receiverAddress,jdbcType=VARCHAR}
 			</if>
-			<if test="condiTOrder.type != null and condiTOrder.type != ''">
+			<if test="condiTOrder.type != null">
 			AND `type` = #{condiTOrder.type,jdbcType=VARCHAR}
 			</if>
-			<if test="condiTOrder.operator != null and condiTOrder.operator != ''">
+			<if test="condiTOrder.operator != null">
 			AND `operator` = #{condiTOrder.operator,jdbcType=VARCHAR}
 			</if>
-			<if test="condiTOrder.createTime != null and condiTOrder.createTime != ''">
+			<if test="condiTOrder.createTime != null">
 			AND `create_time` = #{condiTOrder.createTime,jdbcType=TIMESTAMP}
 			</if>
-			<if test="condiTOrder.updateTime != null and condiTOrder.updateTime != ''">
+			<if test="condiTOrder.updateTime != null">
 			AND `update_time` = #{condiTOrder.updateTime,jdbcType=TIMESTAMP}
 			</if>
+		</if>
 		</where>
 	</update>
 	
@@ -330,8 +350,9 @@
 			`create_time`, 
 			`update_time`
 		FROM t_order
-		WHERE 
-			`id` = #{id,jdbcType=INTEGER}
+		<where>
+			AND `id` = #{id,jdbcType=INTEGER}
+		</where>
 	</select>
 	
 	<select id="get" resultType="com.bittrade.pojo.model.TOrder">
@@ -349,34 +370,34 @@
 			`update_time`
 		FROM t_order
 		<where>
-			<if test="userId != null and userId != ''">
+			<if test="userId != null">
 			AND `userId` = #{userId,jdbcType=INTEGER}
 			</if>
-			<if test="orderId != null and orderId != ''">
+			<if test="orderId != null">
 			AND `order_id` = #{orderId,jdbcType=VARCHAR}
 			</if>
-			<if test="fee != null and fee != ''">
+			<if test="fee != null">
 			AND `fee` = #{fee,jdbcType=DECIMAL}
 			</if>
-			<if test="token != null and token != ''">
+			<if test="token != null">
 			AND `token` = #{token,jdbcType=VARCHAR}
 			</if>
-			<if test="amount != null and amount != ''">
+			<if test="amount != null">
 			AND `amount` = #{amount,jdbcType=DECIMAL}
 			</if>
-			<if test="receiverAddress != null and receiverAddress != ''">
+			<if test="receiverAddress != null">
 			AND `receiver_address` = #{receiverAddress,jdbcType=VARCHAR}
 			</if>
-			<if test="type != null and type != ''">
+			<if test="type != null">
 			AND `type` = #{type,jdbcType=VARCHAR}
 			</if>
-			<if test="operator != null and operator != ''">
+			<if test="operator != null">
 			AND `operator` = #{operator,jdbcType=VARCHAR}
 			</if>
-			<if test="createTime != null and createTime != ''">
+			<if test="createTime != null">
 			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
 			</if>
-			<if test="updateTime != null and updateTime != ''">
+			<if test="updateTime != null">
 			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
 			</if>
 		</where>
@@ -398,34 +419,34 @@
 			`update_time`
 		FROM t_order
 		<where>
-			<if test="userId != null and userId != ''">
+			<if test="userId != null">
 			AND `userId` = #{userId,jdbcType=INTEGER}
 			</if>
-			<if test="orderId != null and orderId != ''">
+			<if test="orderId != null">
 			AND `order_id` = #{orderId,jdbcType=VARCHAR}
 			</if>
-			<if test="fee != null and fee != ''">
+			<if test="fee != null">
 			AND `fee` = #{fee,jdbcType=DECIMAL}
 			</if>
-			<if test="token != null and token != ''">
+			<if test="token != null">
 			AND `token` = #{token,jdbcType=VARCHAR}
 			</if>
-			<if test="amount != null and amount != ''">
+			<if test="amount != null">
 			AND `amount` = #{amount,jdbcType=DECIMAL}
 			</if>
-			<if test="receiverAddress != null and receiverAddress != ''">
+			<if test="receiverAddress != null">
 			AND `receiver_address` = #{receiverAddress,jdbcType=VARCHAR}
 			</if>
-			<if test="type != null and type != ''">
+			<if test="type != null">
 			AND `type` = #{type,jdbcType=VARCHAR}
 			</if>
-			<if test="operator != null and operator != ''">
+			<if test="operator != null">
 			AND `operator` = #{operator,jdbcType=VARCHAR}
 			</if>
-			<if test="createTime != null and createTime != ''">
+			<if test="createTime != null">
 			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
 			</if>
-			<if test="updateTime != null and updateTime != ''">
+			<if test="updateTime != null">
 			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
 			</if>
 		</where>
@@ -451,36 +472,38 @@
 		SELECT COUNT(1)
 		FROM t_order
 		<where>
-			<if test="tOrder.userId != null and tOrder.userId != ''">
+		<if test="tOrder != null">
+			<if test="tOrder.userId != null">
 			AND `userId` = #{tOrder.userId,jdbcType=INTEGER}
 			</if>
-			<if test="tOrder.orderId != null and tOrder.orderId != ''">
+			<if test="tOrder.orderId != null">
 			AND `order_id` = #{tOrder.orderId,jdbcType=VARCHAR}
 			</if>
-			<if test="tOrder.fee != null and tOrder.fee != ''">
+			<if test="tOrder.fee != null">
 			AND `fee` = #{tOrder.fee,jdbcType=DECIMAL}
 			</if>
-			<if test="tOrder.token != null and tOrder.token != ''">
+			<if test="tOrder.token != null">
 			AND `token` = #{tOrder.token,jdbcType=VARCHAR}
 			</if>
-			<if test="tOrder.amount != null and tOrder.amount != ''">
+			<if test="tOrder.amount != null">
 			AND `amount` = #{tOrder.amount,jdbcType=DECIMAL}
 			</if>
-			<if test="tOrder.receiverAddress != null and tOrder.receiverAddress != ''">
+			<if test="tOrder.receiverAddress != null">
 			AND `receiver_address` = #{tOrder.receiverAddress,jdbcType=VARCHAR}
 			</if>
-			<if test="tOrder.type != null and tOrder.type != ''">
+			<if test="tOrder.type != null">
 			AND `type` = #{tOrder.type,jdbcType=VARCHAR}
 			</if>
-			<if test="tOrder.operator != null and tOrder.operator != ''">
+			<if test="tOrder.operator != null">
 			AND `operator` = #{tOrder.operator,jdbcType=VARCHAR}
 			</if>
-			<if test="tOrder.createTime != null and tOrder.createTime != ''">
+			<if test="tOrder.createTime != null">
 			AND `create_time` = #{tOrder.createTime,jdbcType=TIMESTAMP}
 			</if>
-			<if test="tOrder.updateTime != null and tOrder.updateTime != ''">
+			<if test="tOrder.updateTime != null">
 			AND `update_time` = #{tOrder.updateTime,jdbcType=TIMESTAMP}
 			</if>
+		</if>
 		</where>
 	</select>
 	
@@ -499,36 +522,38 @@
 			`update_time`
 		FROM t_order
 		<where>
-			<if test="tOrder.userId != null and tOrder.userId != ''">
+		<if test="tOrder != null">
+			<if test="tOrder.userId != null">
 			AND `userId` = #{tOrder.userId,jdbcType=INTEGER}
 			</if>
-			<if test="tOrder.orderId != null and tOrder.orderId != ''">
+			<if test="tOrder.orderId != null">
 			AND `order_id` = #{tOrder.orderId,jdbcType=VARCHAR}
 			</if>
-			<if test="tOrder.fee != null and tOrder.fee != ''">
+			<if test="tOrder.fee != null">
 			AND `fee` = #{tOrder.fee,jdbcType=DECIMAL}
 			</if>
-			<if test="tOrder.token != null and tOrder.token != ''">
+			<if test="tOrder.token != null">
 			AND `token` = #{tOrder.token,jdbcType=VARCHAR}
 			</if>
-			<if test="tOrder.amount != null and tOrder.amount != ''">
+			<if test="tOrder.amount != null">
 			AND `amount` = #{tOrder.amount,jdbcType=DECIMAL}
 			</if>
-			<if test="tOrder.receiverAddress != null and tOrder.receiverAddress != ''">
+			<if test="tOrder.receiverAddress != null">
 			AND `receiver_address` = #{tOrder.receiverAddress,jdbcType=VARCHAR}
 			</if>
-			<if test="tOrder.type != null and tOrder.type != ''">
+			<if test="tOrder.type != null">
 			AND `type` = #{tOrder.type,jdbcType=VARCHAR}
 			</if>
-			<if test="tOrder.operator != null and tOrder.operator != ''">
+			<if test="tOrder.operator != null">
 			AND `operator` = #{tOrder.operator,jdbcType=VARCHAR}
 			</if>
-			<if test="tOrder.createTime != null and tOrder.createTime != ''">
+			<if test="tOrder.createTime != null">
 			AND `create_time` = #{tOrder.createTime,jdbcType=TIMESTAMP}
 			</if>
-			<if test="tOrder.updateTime != null and tOrder.updateTime != ''">
+			<if test="tOrder.updateTime != null">
 			AND `update_time` = #{tOrder.updateTime,jdbcType=TIMESTAMP}
 			</if>
+		</if>
 		</where>
 		LIMIT #{page}, #{size}
 	</select>

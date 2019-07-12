@@ -2,18 +2,19 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!--
 	This code is generated automatically. Please do not edit it.
+	现在字段也可以要彻底动态？
 -->
 <mapper namespace="com.bittrade.__default.DAO.IDefaultTWalletDAO">
 
 	<!-- 通用查询映射结果 -->
 	<resultMap id="BaseResultMap" type="com.bittrade.pojo.model.TWallet">
-		<id javaType="long" property="id" jdbcType="BIGINT" column="id" />
-		<result javaType="long" property="userId" jdbcType="BIGINT" column="user_id" />
-		<result javaType="int" property="currencyId" jdbcType="INTEGER" column="currency_id" />
+		<id javaType="Long" property="id" jdbcType="BIGINT" column="id" />
+		<result javaType="Long" property="userId" jdbcType="BIGINT" column="user_id" />
+		<result javaType="Integer" property="currencyId" jdbcType="INTEGER" column="currency_id" />
 		<result javaType="java.math.BigDecimal" property="total" jdbcType="DECIMAL" column="total" />
 		<result javaType="java.math.BigDecimal" property="tradeFrozen" jdbcType="DECIMAL" column="trade_frozen" />
 		<result javaType="java.math.BigDecimal" property="transferFrozen" jdbcType="DECIMAL" column="transfer_frozen" />
-		<result javaType="int" property="version" jdbcType="INTEGER" column="version" />
+		<result javaType="Integer" property="version" jdbcType="INTEGER" column="version" />
 		<result javaType="java.util.Date" property="createTime" jdbcType="TIMESTAMP" column="create_time" />
 		<result javaType="java.util.Date" property="updateTime" jdbcType="TIMESTAMP" column="update_time" />
 	</resultMap>
@@ -37,54 +38,54 @@
 	
 	<insert id="addWithSelective" parameterType="com.bittrade.pojo.model.TWallet">
 		INSERT INTO t_wallet(
-			<if test="userId != null and userId != ''">
+			<if test="userId != null">
 			`user_id`, 
 			</if>
-			<if test="currencyId != null and currencyId != ''">
+			<if test="currencyId != null">
 			`currency_id`, 
 			</if>
-			<if test="total != null and total != ''">
+			<if test="total != null">
 			`total`, 
 			</if>
-			<if test="tradeFrozen != null and tradeFrozen != ''">
+			<if test="tradeFrozen != null">
 			`trade_frozen`, 
 			</if>
-			<if test="transferFrozen != null and transferFrozen != ''">
+			<if test="transferFrozen != null">
 			`transfer_frozen`, 
 			</if>
-			<if test="version != null and version != ''">
+			<if test="version != null">
 			`version`, 
 			</if>
-			<if test="createTime != null and createTime != ''">
+			<if test="createTime != null">
 			`create_time`, 
 			</if>
-			<if test="updateTime != null and updateTime != ''">
+			<if test="updateTime != null">
 			`update_time`
 			</if>
 		)
 		VALUES(
-			<if test="userId != null and userId != ''">
+			<if test="userId != null">
 			#{userId,jdbcType=BIGINT}, 
 			</if>
-			<if test="currencyId != null and currencyId != ''">
+			<if test="currencyId != null">
 			#{currencyId,jdbcType=INTEGER}, 
 			</if>
-			<if test="total != null and total != ''">
+			<if test="total != null">
 			#{total,jdbcType=DECIMAL}, 
 			</if>
-			<if test="tradeFrozen != null and tradeFrozen != ''">
+			<if test="tradeFrozen != null">
 			#{tradeFrozen,jdbcType=DECIMAL}, 
 			</if>
-			<if test="transferFrozen != null and transferFrozen != ''">
+			<if test="transferFrozen != null">
 			#{transferFrozen,jdbcType=DECIMAL}, 
 			</if>
-			<if test="version != null and version != ''">
+			<if test="version != null">
 			#{version,jdbcType=INTEGER}, 
 			</if>
-			<if test="createTime != null and createTime != ''">
+			<if test="createTime != null">
 			#{createTime,jdbcType=TIMESTAMP}, 
 			</if>
-			<if test="updateTime != null and updateTime != ''">
+			<if test="updateTime != null">
 			#{updateTime,jdbcType=TIMESTAMP}
 			</if>
 		)
@@ -92,35 +93,36 @@
 	
 	<delete id="removeByPK">
 		DELETE FROM t_wallet
-		WHERE 
-			`id` = #{id,jdbcType=BIGINT}
+		<where>
+			AND `id` = #{id,jdbcType=BIGINT}
+		</where>
 	</delete>
 	
 	<delete id="remove" parameterType="com.bittrade.pojo.model.TWallet">
 		DELETE FROM t_wallet
 		<where>
-			<if test="userId != null and userId != ''">
+			<if test="userId != null">
 			AND `user_id` = #{userId,jdbcType=BIGINT}
 			</if>
-			<if test="currencyId != null and currencyId != ''">
+			<if test="currencyId != null">
 			AND `currency_id` = #{currencyId,jdbcType=INTEGER}
 			</if>
-			<if test="total != null and total != ''">
+			<if test="total != null">
 			AND `total` = #{total,jdbcType=DECIMAL}
 			</if>
-			<if test="tradeFrozen != null and tradeFrozen != ''">
+			<if test="tradeFrozen != null">
 			AND `trade_frozen` = #{tradeFrozen,jdbcType=DECIMAL}
 			</if>
-			<if test="transferFrozen != null and transferFrozen != ''">
+			<if test="transferFrozen != null">
 			AND `transfer_frozen` = #{transferFrozen,jdbcType=DECIMAL}
 			</if>
-			<if test="version != null and version != ''">
+			<if test="version != null">
 			AND `version` = #{version,jdbcType=INTEGER}
 			</if>
-			<if test="createTime != null and createTime != ''">
+			<if test="createTime != null">
 			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
 			</if>
-			<if test="updateTime != null and updateTime != ''">
+			<if test="updateTime != null">
 			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
 			</if>
 		</where>
@@ -128,7 +130,7 @@
 	
 	<update id="modifyByPK" parameterType="com.bittrade.pojo.model.TWallet">
 		UPDATE t_wallet
-		SET
+		<set>
 			`user_id` = #{userId,jdbcType=BIGINT}, 
 			`currency_id` = #{currencyId,jdbcType=INTEGER}, 
 			`total` = #{total,jdbcType=DECIMAL}, 
@@ -136,45 +138,49 @@
 			`transfer_frozen` = #{transferFrozen,jdbcType=DECIMAL}, 
 			`version` = #{version,jdbcType=INTEGER}, 
 			`create_time` = #{createTime,jdbcType=TIMESTAMP}, 
-			`update_time` = #{updateTime,jdbcType=TIMESTAMP}
-		WHERE 
-			`id` = #{id,jdbcType=BIGINT}
+			`update_time` = #{updateTime,jdbcType=TIMESTAMP}, 
+		</set>
+		<where>
+			AND `id` = #{id,jdbcType=BIGINT}
+		</where>
 	</update>
 	
 	<update id="modifyWithSelectiveByPK" parameterType="com.bittrade.pojo.model.TWallet">
 		UPDATE t_wallet
-		SET
-			<if test="userId != null and userId != ''">
+		<set>
+			<if test="userId != null">
 			`user_id` = #{userId,jdbcType=BIGINT}, 
 			</if>
-			<if test="currencyId != null and currencyId != ''">
+			<if test="currencyId != null">
 			`currency_id` = #{currencyId,jdbcType=INTEGER}, 
 			</if>
-			<if test="total != null and total != ''">
+			<if test="total != null">
 			`total` = #{total,jdbcType=DECIMAL}, 
 			</if>
-			<if test="tradeFrozen != null and tradeFrozen != ''">
+			<if test="tradeFrozen != null">
 			`trade_frozen` = #{tradeFrozen,jdbcType=DECIMAL}, 
 			</if>
-			<if test="transferFrozen != null and transferFrozen != ''">
+			<if test="transferFrozen != null">
 			`transfer_frozen` = #{transferFrozen,jdbcType=DECIMAL}, 
 			</if>
-			<if test="version != null and version != ''">
+			<if test="version != null">
 			`version` = #{version,jdbcType=INTEGER}, 
 			</if>
-			<if test="createTime != null and createTime != ''">
+			<if test="createTime != null">
 			`create_time` = #{createTime,jdbcType=TIMESTAMP}, 
 			</if>
-			<if test="updateTime != null and updateTime != ''">
-			`update_time` = #{updateTime,jdbcType=TIMESTAMP}
+			<if test="updateTime != null">
+			`update_time` = #{updateTime,jdbcType=TIMESTAMP}, 
 			</if>
-		WHERE 
-			`id` = #{id,jdbcType=BIGINT}
+		</set>
+		<where>
+			AND `id` = #{id,jdbcType=BIGINT}
+		</where>
 	</update>
 	
 	<update id="modify">
 		UPDATE t_wallet
-		SET
+		<set>
 			`user_id` = #{tWallet.userId,jdbcType=BIGINT}, 
 			`currency_id` = #{tWallet.currencyId,jdbcType=INTEGER}, 
 			`total` = #{tWallet.total,jdbcType=DECIMAL}, 
@@ -182,87 +188,101 @@
 			`transfer_frozen` = #{tWallet.transferFrozen,jdbcType=DECIMAL}, 
 			`version` = #{tWallet.version,jdbcType=INTEGER}, 
 			`create_time` = #{tWallet.createTime,jdbcType=TIMESTAMP}, 
-			`update_time` = #{tWallet.updateTime,jdbcType=TIMESTAMP}
+			`update_time` = #{tWallet.updateTime,jdbcType=TIMESTAMP}, 
+		</set>
 		<where>
-			<if test="condiTWallet.userId != null and condiTWallet.userId != ''">
+		<if test="condiTWallet != null">
+			<if test="condiTWallet.id != null">
+			AND `id` = #{condiTWallet.id,jdbcType=BIGINT}
+			</if>
+			<if test="condiTWallet.userId != null">
 			AND `user_id` = #{condiTWallet.userId,jdbcType=BIGINT}
 			</if>
-			<if test="condiTWallet.currencyId != null and condiTWallet.currencyId != ''">
+			<if test="condiTWallet.currencyId != null">
 			AND `currency_id` = #{condiTWallet.currencyId,jdbcType=INTEGER}
 			</if>
-			<if test="condiTWallet.total != null and condiTWallet.total != ''">
+			<if test="condiTWallet.total != null">
 			AND `total` = #{condiTWallet.total,jdbcType=DECIMAL}
 			</if>
-			<if test="condiTWallet.tradeFrozen != null and condiTWallet.tradeFrozen != ''">
+			<if test="condiTWallet.tradeFrozen != null">
 			AND `trade_frozen` = #{condiTWallet.tradeFrozen,jdbcType=DECIMAL}
 			</if>
-			<if test="condiTWallet.transferFrozen != null and condiTWallet.transferFrozen != ''">
+			<if test="condiTWallet.transferFrozen != null">
 			AND `transfer_frozen` = #{condiTWallet.transferFrozen,jdbcType=DECIMAL}
 			</if>
-			<if test="condiTWallet.version != null and condiTWallet.version != ''">
+			<if test="condiTWallet.version != null">
 			AND `version` = #{condiTWallet.version,jdbcType=INTEGER}
 			</if>
-			<if test="condiTWallet.createTime != null and condiTWallet.createTime != ''">
+			<if test="condiTWallet.createTime != null">
 			AND `create_time` = #{condiTWallet.createTime,jdbcType=TIMESTAMP}
 			</if>
-			<if test="condiTWallet.updateTime != null and condiTWallet.updateTime != ''">
+			<if test="condiTWallet.updateTime != null">
 			AND `update_time` = #{condiTWallet.updateTime,jdbcType=TIMESTAMP}
 			</if>
+		</if>
 		</where>
 	</update>
 	
 	<update id="modifyWithSelective">
 		UPDATE t_wallet
-		SET
-			<if test="tWallet.userId != null and tWallet.userId != ''">
+		<set>
+		<if test="tWallet != null">
+			<if test="tWallet.userId != null">
 			`user_id` = #{tWallet.userId,jdbcType=BIGINT}, 
 			</if>
-			<if test="tWallet.currencyId != null and tWallet.currencyId != ''">
+			<if test="tWallet.currencyId != null">
 			`currency_id` = #{tWallet.currencyId,jdbcType=INTEGER}, 
 			</if>
-			<if test="tWallet.total != null and tWallet.total != ''">
+			<if test="tWallet.total != null">
 			`total` = #{tWallet.total,jdbcType=DECIMAL}, 
 			</if>
-			<if test="tWallet.tradeFrozen != null and tWallet.tradeFrozen != ''">
+			<if test="tWallet.tradeFrozen != null">
 			`trade_frozen` = #{tWallet.tradeFrozen,jdbcType=DECIMAL}, 
 			</if>
-			<if test="tWallet.transferFrozen != null and tWallet.transferFrozen != ''">
+			<if test="tWallet.transferFrozen != null">
 			`transfer_frozen` = #{tWallet.transferFrozen,jdbcType=DECIMAL}, 
 			</if>
-			<if test="tWallet.version != null and tWallet.version != ''">
+			<if test="tWallet.version != null">
 			`version` = #{tWallet.version,jdbcType=INTEGER}, 
 			</if>
-			<if test="tWallet.createTime != null and tWallet.createTime != ''">
+			<if test="tWallet.createTime != null">
 			`create_time` = #{tWallet.createTime,jdbcType=TIMESTAMP}, 
 			</if>
-			<if test="tWallet.updateTime != null and tWallet.updateTime != ''">
-			`update_time` = #{tWallet.updateTime,jdbcType=TIMESTAMP}
+			<if test="tWallet.updateTime != null">
+			`update_time` = #{tWallet.updateTime,jdbcType=TIMESTAMP}, 
 			</if>
+		</if>
+		</set>
 		<where>
-			<if test="condiTWallet.userId != null and condiTWallet.userId != ''">
+		<if test="condiTWallet != null">
+			<if test="condiTWallet.id != null">
+			AND `id` = #{condiTWallet.id,jdbcType=BIGINT}
+			</if>
+			<if test="condiTWallet.userId != null">
 			AND `user_id` = #{condiTWallet.userId,jdbcType=BIGINT}
 			</if>
-			<if test="condiTWallet.currencyId != null and condiTWallet.currencyId != ''">
+			<if test="condiTWallet.currencyId != null">
 			AND `currency_id` = #{condiTWallet.currencyId,jdbcType=INTEGER}
 			</if>
-			<if test="condiTWallet.total != null and condiTWallet.total != ''">
+			<if test="condiTWallet.total != null">
 			AND `total` = #{condiTWallet.total,jdbcType=DECIMAL}
 			</if>
-			<if test="condiTWallet.tradeFrozen != null and condiTWallet.tradeFrozen != ''">
+			<if test="condiTWallet.tradeFrozen != null">
 			AND `trade_frozen` = #{condiTWallet.tradeFrozen,jdbcType=DECIMAL}
 			</if>
-			<if test="condiTWallet.transferFrozen != null and condiTWallet.transferFrozen != ''">
+			<if test="condiTWallet.transferFrozen != null">
 			AND `transfer_frozen` = #{condiTWallet.transferFrozen,jdbcType=DECIMAL}
 			</if>
-			<if test="condiTWallet.version != null and condiTWallet.version != ''">
+			<if test="condiTWallet.version != null">
 			AND `version` = #{condiTWallet.version,jdbcType=INTEGER}
 			</if>
-			<if test="condiTWallet.createTime != null and condiTWallet.createTime != ''">
+			<if test="condiTWallet.createTime != null">
 			AND `create_time` = #{condiTWallet.createTime,jdbcType=TIMESTAMP}
 			</if>
-			<if test="condiTWallet.updateTime != null and condiTWallet.updateTime != ''">
+			<if test="condiTWallet.updateTime != null">
 			AND `update_time` = #{condiTWallet.updateTime,jdbcType=TIMESTAMP}
 			</if>
+		</if>
 		</where>
 	</update>
 	
@@ -278,8 +298,9 @@
 			`create_time`, 
 			`update_time`
 		FROM t_wallet
-		WHERE 
-			`id` = #{id,jdbcType=BIGINT}
+		<where>
+			AND `id` = #{id,jdbcType=BIGINT}
+		</where>
 	</select>
 	
 	<select id="get" resultType="com.bittrade.pojo.model.TWallet">
@@ -295,28 +316,28 @@
 			`update_time`
 		FROM t_wallet
 		<where>
-			<if test="userId != null and userId != ''">
+			<if test="userId != null">
 			AND `user_id` = #{userId,jdbcType=BIGINT}
 			</if>
-			<if test="currencyId != null and currencyId != ''">
+			<if test="currencyId != null">
 			AND `currency_id` = #{currencyId,jdbcType=INTEGER}
 			</if>
-			<if test="total != null and total != ''">
+			<if test="total != null">
 			AND `total` = #{total,jdbcType=DECIMAL}
 			</if>
-			<if test="tradeFrozen != null and tradeFrozen != ''">
+			<if test="tradeFrozen != null">
 			AND `trade_frozen` = #{tradeFrozen,jdbcType=DECIMAL}
 			</if>
-			<if test="transferFrozen != null and transferFrozen != ''">
+			<if test="transferFrozen != null">
 			AND `transfer_frozen` = #{transferFrozen,jdbcType=DECIMAL}
 			</if>
-			<if test="version != null and version != ''">
+			<if test="version != null">
 			AND `version` = #{version,jdbcType=INTEGER}
 			</if>
-			<if test="createTime != null and createTime != ''">
+			<if test="createTime != null">
 			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
 			</if>
-			<if test="updateTime != null and updateTime != ''">
+			<if test="updateTime != null">
 			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
 			</if>
 		</where>
@@ -336,28 +357,28 @@
 			`update_time`
 		FROM t_wallet
 		<where>
-			<if test="userId != null and userId != ''">
+			<if test="userId != null">
 			AND `user_id` = #{userId,jdbcType=BIGINT}
 			</if>
-			<if test="currencyId != null and currencyId != ''">
+			<if test="currencyId != null">
 			AND `currency_id` = #{currencyId,jdbcType=INTEGER}
 			</if>
-			<if test="total != null and total != ''">
+			<if test="total != null">
 			AND `total` = #{total,jdbcType=DECIMAL}
 			</if>
-			<if test="tradeFrozen != null and tradeFrozen != ''">
+			<if test="tradeFrozen != null">
 			AND `trade_frozen` = #{tradeFrozen,jdbcType=DECIMAL}
 			</if>
-			<if test="transferFrozen != null and transferFrozen != ''">
+			<if test="transferFrozen != null">
 			AND `transfer_frozen` = #{transferFrozen,jdbcType=DECIMAL}
 			</if>
-			<if test="version != null and version != ''">
+			<if test="version != null">
 			AND `version` = #{version,jdbcType=INTEGER}
 			</if>
-			<if test="createTime != null and createTime != ''">
+			<if test="createTime != null">
 			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
 			</if>
-			<if test="updateTime != null and updateTime != ''">
+			<if test="updateTime != null">
 			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
 			</if>
 		</where>
@@ -381,30 +402,32 @@
 		SELECT COUNT(1)
 		FROM t_wallet
 		<where>
-			<if test="tWallet.userId != null and tWallet.userId != ''">
+		<if test="tWallet != null">
+			<if test="tWallet.userId != null">
 			AND `user_id` = #{tWallet.userId,jdbcType=BIGINT}
 			</if>
-			<if test="tWallet.currencyId != null and tWallet.currencyId != ''">
+			<if test="tWallet.currencyId != null">
 			AND `currency_id` = #{tWallet.currencyId,jdbcType=INTEGER}
 			</if>
-			<if test="tWallet.total != null and tWallet.total != ''">
+			<if test="tWallet.total != null">
 			AND `total` = #{tWallet.total,jdbcType=DECIMAL}
 			</if>
-			<if test="tWallet.tradeFrozen != null and tWallet.tradeFrozen != ''">
+			<if test="tWallet.tradeFrozen != null">
 			AND `trade_frozen` = #{tWallet.tradeFrozen,jdbcType=DECIMAL}
 			</if>
-			<if test="tWallet.transferFrozen != null and tWallet.transferFrozen != ''">
+			<if test="tWallet.transferFrozen != null">
 			AND `transfer_frozen` = #{tWallet.transferFrozen,jdbcType=DECIMAL}
 			</if>
-			<if test="tWallet.version != null and tWallet.version != ''">
+			<if test="tWallet.version != null">
 			AND `version` = #{tWallet.version,jdbcType=INTEGER}
 			</if>
-			<if test="tWallet.createTime != null and tWallet.createTime != ''">
+			<if test="tWallet.createTime != null">
 			AND `create_time` = #{tWallet.createTime,jdbcType=TIMESTAMP}
 			</if>
-			<if test="tWallet.updateTime != null and tWallet.updateTime != ''">
+			<if test="tWallet.updateTime != null">
 			AND `update_time` = #{tWallet.updateTime,jdbcType=TIMESTAMP}
 			</if>
+		</if>
 		</where>
 	</select>
 	
@@ -421,30 +444,32 @@
 			`update_time`
 		FROM t_wallet
 		<where>
-			<if test="tWallet.userId != null and tWallet.userId != ''">
+		<if test="tWallet != null">
+			<if test="tWallet.userId != null">
 			AND `user_id` = #{tWallet.userId,jdbcType=BIGINT}
 			</if>
-			<if test="tWallet.currencyId != null and tWallet.currencyId != ''">
+			<if test="tWallet.currencyId != null">
 			AND `currency_id` = #{tWallet.currencyId,jdbcType=INTEGER}
 			</if>
-			<if test="tWallet.total != null and tWallet.total != ''">
+			<if test="tWallet.total != null">
 			AND `total` = #{tWallet.total,jdbcType=DECIMAL}
 			</if>
-			<if test="tWallet.tradeFrozen != null and tWallet.tradeFrozen != ''">
+			<if test="tWallet.tradeFrozen != null">
 			AND `trade_frozen` = #{tWallet.tradeFrozen,jdbcType=DECIMAL}
 			</if>
-			<if test="tWallet.transferFrozen != null and tWallet.transferFrozen != ''">
+			<if test="tWallet.transferFrozen != null">
 			AND `transfer_frozen` = #{tWallet.transferFrozen,jdbcType=DECIMAL}
 			</if>
-			<if test="tWallet.version != null and tWallet.version != ''">
+			<if test="tWallet.version != null">
 			AND `version` = #{tWallet.version,jdbcType=INTEGER}
 			</if>
-			<if test="tWallet.createTime != null and tWallet.createTime != ''">
+			<if test="tWallet.createTime != null">
 			AND `create_time` = #{tWallet.createTime,jdbcType=TIMESTAMP}
 			</if>
-			<if test="tWallet.updateTime != null and tWallet.updateTime != ''">
+			<if test="tWallet.updateTime != null">
 			AND `update_time` = #{tWallet.updateTime,jdbcType=TIMESTAMP}
 			</if>
+		</if>
 		</where>
 		LIMIT #{page}, #{size}
 	</select>

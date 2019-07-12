@@ -16,8 +16,8 @@ public class TOrderDTO extends BaseDTO<TOrderDTO> {
 
 	private static final long serialVersionUID = 1L;
 
-	private int id;
-	private int userId;
+	private Integer id;
+	private Integer userId;
 	private String orderId;
 	private java.math.BigDecimal fee;
 	private String token;

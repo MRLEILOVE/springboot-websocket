@@ -5,22 +5,22 @@
 	<!-- 通用查询映射结果 -->
 	<resultMap id="BaseResultMap" type="com.bittrade.pojo.model.WUserWalletBill">
 		<id javaType="int" property="id" jdbcType="INTEGER" column="id" />
-		<result javaType="long" property="userId" jdbcType="BIGINT" column="user_id" />
+		<result javaType="Long" property="userId" jdbcType="BIGINT" column="user_id" />
 		<result javaType="String" property="platform" jdbcType="VARCHAR" column="platform" />
 		<result javaType="String" property="orderId" jdbcType="VARCHAR" column="order_id" />
-		<result javaType="int" property="direction" jdbcType="INTEGER" column="direction" />
+		<result javaType="Integer" property="direction" jdbcType="INTEGER" column="direction" />
 		<result javaType="String" property="coinType" jdbcType="VARCHAR" column="coin_type" />
 		<result javaType="String" property="token" jdbcType="VARCHAR" column="token" />
 		<result javaType="String" property="contract" jdbcType="VARCHAR" column="contract" />
 		<result javaType="String" property="senderAddress" jdbcType="VARCHAR" column="sender_address" />
 		<result javaType="String" property="receiverAddress" jdbcType="VARCHAR" column="receiver_address" />
 		<result javaType="java.math.BigDecimal" property="amount" jdbcType="DECIMAL" column="amount" />
-		<result javaType="long" property="block" jdbcType="BIGINT" column="block" />
+		<result javaType="Long" property="block" jdbcType="BIGINT" column="block" />
 		<result javaType="String" property="tx" jdbcType="VARCHAR" column="tx" />
 		<result javaType="String" property="tradeStep" jdbcType="CHAR" column="trade_step" />
 		<result javaType="String" property="operationType" jdbcType="VARCHAR" column="operation_type" />
-		<result javaType="byte" property="transferFlag" jdbcType="INTEGER" column="transfer_flag" />
-		<result javaType="byte" property="flag" jdbcType="INTEGER" column="flag" />
+		<result javaType="Byte" property="transferFlag" jdbcType="INTEGER" column="transfer_flag" />
+		<result javaType="Byte" property="flag" jdbcType="INTEGER" column="flag" />
 		<result javaType="String" property="remark" jdbcType="VARCHAR" column="remark" />
 		<result javaType="java.util.Date" property="createTime" jdbcType="TIMESTAMP" column="create_time" />
 		<result javaType="java.util.Date" property="updateTime" jdbcType="TIMESTAMP" column="update_time" />

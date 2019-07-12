@@ -16,7 +16,7 @@ public class TTickerDTO extends BaseDTO<TTickerDTO> {
 
 	private static final long serialVersionUID = 1L;
 
-	private int id;
+	private Integer id;
 	private String symbol;
 	private String last;
 	private java.util.Date createTime;

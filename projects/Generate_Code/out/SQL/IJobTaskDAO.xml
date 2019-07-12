@@ -6,8 +6,8 @@
 	<resultMap id="BaseResultMap" type="com.bittrade.pojo.model.JobTask">
 		<id javaType="int" property="id" jdbcType="INTEGER" column="id" />
 		<result javaType="String" property="content" jdbcType="VARCHAR" column="content" />
-		<result javaType="long" property="sendTime" jdbcType="BIGINT" column="send_time" />
-		<result javaType="int" property="status" jdbcType="INTEGER" column="status" />
+		<result javaType="Long" property="sendTime" jdbcType="BIGINT" column="send_time" />
+		<result javaType="Integer" property="status" jdbcType="INTEGER" column="status" />
 	</resultMap>
 
 	<!-- 通用查询结果列 -->

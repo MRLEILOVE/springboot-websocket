@@ -77,7 +77,7 @@ public class TParamConfig extends BaseModel<TParamConfig> {
 	/**
 	 * 主键自增
 	 */
-	private int id;
+	private Integer id;
 	
 	/**
 	 * 参数键
@@ -92,7 +92,7 @@ public class TParamConfig extends BaseModel<TParamConfig> {
 	/**
 	 * 启动状态,1：开启, 0:不开启
 	 */
-	private int paramStatus;
+	private Integer paramStatus;
 	
 	/**
 	 * 参数备注

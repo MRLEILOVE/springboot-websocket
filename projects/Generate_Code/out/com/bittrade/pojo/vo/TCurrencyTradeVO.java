@@ -16,20 +16,20 @@ public class TCurrencyTradeVO extends BaseVO<TCurrencyTradeVO> {
 
 	private static final long serialVersionUID = 1L;
 
-	private int id;
+	private Integer id;
 	private String symbol;
-	private int currencyId1;
-	private int currencyId2;
-	private int priceDecimalDigits;
-	private int countDecimalDigits;
+	private Integer currencyId1;
+	private Integer currencyId2;
+	private Integer priceDecimalDigits;
+	private Integer countDecimalDigits;
 	private java.math.BigDecimal minBuyCount;
 	private java.math.BigDecimal minBuyPrice;
 	private java.math.BigDecimal minBuyAmount;
 	private java.math.BigDecimal maxBuyCount;
 	private java.math.BigDecimal maxBuyAmount;
 	private java.math.BigDecimal maxBuyPrice;
-	private byte status;
-	private int sort;
+	private Byte status;
+	private Integer sort;
 	private java.util.Date createTime;
 	private java.util.Date updateTime;
 

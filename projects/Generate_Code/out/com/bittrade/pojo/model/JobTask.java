@@ -52,7 +52,7 @@ public class JobTask extends BaseModel<JobTask> {
 	/**
 	 * 
 	 */
-	private long id;
+	private Long id;
 	
 	/**
 	 * 
@@ -62,11 +62,11 @@ public class JobTask extends BaseModel<JobTask> {
 	/**
 	 * 
 	 */
-	private long sendTime;
+	private Long sendTime;
 	
 	/**
 	 * 
 	 */
-	private int status;
+	private Integer status;
 	
 }

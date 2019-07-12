@@ -6,11 +6,11 @@
 	<resultMap id="BaseResultMap" type="com.bittrade.pojo.model.WUserWallet">
 		<id javaType="int" property="id" jdbcType="INTEGER" column="id" />
 		<result javaType="String" property="platform" jdbcType="VARCHAR" column="platform" />
-		<result javaType="long" property="userId" jdbcType="BIGINT" column="user_id" />
+		<result javaType="Long" property="userId" jdbcType="BIGINT" column="user_id" />
 		<result javaType="String" property="coinType" jdbcType="VARCHAR" column="coin_type" />
 		<result javaType="String" property="address" jdbcType="VARCHAR" column="address" />
 		<result javaType="String" property="privateKey" jdbcType="VARCHAR" column="private_key" />
-		<result javaType="byte" property="flag" jdbcType="INTEGER" column="flag" />
+		<result javaType="Byte" property="flag" jdbcType="INTEGER" column="flag" />
 		<result javaType="String" property="valid" jdbcType="CHAR" column="valid" />
 		<result javaType="java.util.Date" property="createTime" jdbcType="TIMESTAMP" column="create_time" />
 		<result javaType="java.util.Date" property="updateTime" jdbcType="TIMESTAMP" column="update_time" />

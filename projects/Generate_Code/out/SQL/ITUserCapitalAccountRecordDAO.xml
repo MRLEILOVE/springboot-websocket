@@ -5,13 +5,13 @@
 	<!-- 通用查询映射结果 -->
 	<resultMap id="BaseResultMap" type="com.bittrade.pojo.model.TUserCapitalAccountRecord">
 		<id javaType="int" property="id" jdbcType="INTEGER" column="id" />
-		<result javaType="long" property="userId" jdbcType="BIGINT" column="user_id" />
-		<result javaType="int" property="currencyId" jdbcType="INTEGER" column="currency_id" />
+		<result javaType="Long" property="userId" jdbcType="BIGINT" column="user_id" />
+		<result javaType="Integer" property="currencyId" jdbcType="INTEGER" column="currency_id" />
 		<result javaType="java.math.BigDecimal" property="count" jdbcType="DECIMAL" column="count" />
 		<result javaType="String" property="adderess" jdbcType="VARCHAR" column="adderess" />
 		<result javaType="java.math.BigDecimal" property="fees" jdbcType="DECIMAL" column="fees" />
-		<result javaType="byte" property="type" jdbcType="INTEGER" column="type" />
-		<result javaType="byte" property="status" jdbcType="INTEGER" column="status" />
+		<result javaType="Byte" property="type" jdbcType="INTEGER" column="type" />
+		<result javaType="Byte" property="status" jdbcType="INTEGER" column="status" />
 		<result javaType="java.util.Date" property="createTime" jdbcType="TIMESTAMP" column="create_time" />
 		<result javaType="java.util.Date" property="updateTime" jdbcType="TIMESTAMP" column="update_time" />
 	</resultMap>

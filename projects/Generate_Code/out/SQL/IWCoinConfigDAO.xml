@@ -8,9 +8,9 @@
 		<result javaType="String" property="coinType" jdbcType="VARCHAR" column="coin_type" />
 		<result javaType="String" property="token" jdbcType="VARCHAR" column="token" />
 		<result javaType="String" property="contract" jdbcType="VARCHAR" column="contract" />
-		<result javaType="long" property="scanBlock" jdbcType="BIGINT" column="scan_block" />
-		<result javaType="int" property="baseMultiple" jdbcType="INTEGER" column="base_multiple" />
-		<result javaType="int" property="minConfirm" jdbcType="INTEGER" column="min_confirm" />
+		<result javaType="Long" property="scanBlock" jdbcType="BIGINT" column="scan_block" />
+		<result javaType="Integer" property="baseMultiple" jdbcType="INTEGER" column="base_multiple" />
+		<result javaType="Integer" property="minConfirm" jdbcType="INTEGER" column="min_confirm" />
 		<result javaType="String" property="bossAddress" jdbcType="VARCHAR" column="boss_address" />
 		<result javaType="java.math.BigDecimal" property="minCollectionAmount" jdbcType="DECIMAL" column="min_collection_amount" />
 		<result javaType="String" property="valid" jdbcType="CHAR" column="valid" />

@@ -6,18 +6,18 @@
 	<resultMap id="BaseResultMap" type="com.bittrade.pojo.model.TCurrencyTrade">
 		<id javaType="int" property="id" jdbcType="INTEGER" column="id" />
 		<result javaType="String" property="symbol" jdbcType="VARCHAR" column="symbol" />
-		<result javaType="int" property="currencyId1" jdbcType="INTEGER" column="currency_id1" />
-		<result javaType="int" property="currencyId2" jdbcType="INTEGER" column="currency_id2" />
-		<result javaType="int" property="priceDecimalDigits" jdbcType="INTEGER" column="price_decimal_digits" />
-		<result javaType="int" property="countDecimalDigits" jdbcType="INTEGER" column="count_decimal_digits" />
+		<result javaType="Integer" property="currencyId1" jdbcType="INTEGER" column="currency_id1" />
+		<result javaType="Integer" property="currencyId2" jdbcType="INTEGER" column="currency_id2" />
+		<result javaType="Integer" property="priceDecimalDigits" jdbcType="INTEGER" column="price_decimal_digits" />
+		<result javaType="Integer" property="countDecimalDigits" jdbcType="INTEGER" column="count_decimal_digits" />
 		<result javaType="java.math.BigDecimal" property="minBuyCount" jdbcType="DECIMAL" column="min_buy_count" />
 		<result javaType="java.math.BigDecimal" property="minBuyPrice" jdbcType="DECIMAL" column="min_Buy_price" />
 		<result javaType="java.math.BigDecimal" property="minBuyAmount" jdbcType="DECIMAL" column="min_buy_amount" />
 		<result javaType="java.math.BigDecimal" property="maxBuyCount" jdbcType="DECIMAL" column="max_buy_count" />
 		<result javaType="java.math.BigDecimal" property="maxBuyAmount" jdbcType="DECIMAL" column="max_buy_amount" />
 		<result javaType="java.math.BigDecimal" property="maxBuyPrice" jdbcType="DECIMAL" column="max_buy_price" />
-		<result javaType="byte" property="status" jdbcType="INTEGER" column="status" />
-		<result javaType="int" property="sort" jdbcType="INTEGER" column="sort" />
+		<result javaType="Byte" property="status" jdbcType="INTEGER" column="status" />
+		<result javaType="Integer" property="sort" jdbcType="INTEGER" column="sort" />
 		<result javaType="java.util.Date" property="createTime" jdbcType="TIMESTAMP" column="create_time" />
 		<result javaType="java.util.Date" property="updateTime" jdbcType="TIMESTAMP" column="update_time" />
 	</resultMap>
