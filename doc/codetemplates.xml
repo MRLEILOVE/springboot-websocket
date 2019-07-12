@@ -18,14 +18,14 @@
  * File Name:${file_name}  
  * Package Name:${package_name}  
  * Author : ${user}
- * Date:${date}${time}  
+ * DateTime: ${date} ${time} &lt;br /&gt;
  * Copyright (c) 仙灵科技 All Rights Reserved.
  *  
  */</template><template autoinsert="false" context="typecomment_context" deleted="false" description="Comment for created types" enabled="true" id="org.eclipse.jdt.ui.text.codetemplates.typecomment" name="typecomment">/**  
  * ClassName: ${type_name} &lt;br/&gt;  
  * Function: ${todo} ADD FUNCTION. &lt;br/&gt;  
  * Reason: ${todo} ADD REASON(可选). &lt;br/&gt;  
- * date: ${date} ${time} &lt;br/&gt;  
+ * DateTime: ${date} ${time} &lt;br /&gt;
  *  
  * @author ${user}  
  * @version ${enclosing_type}${tags}  
@@ -53,7 +53,7 @@
  * Project Name:${project_name}  
  * File Name:${file_name}  
  * Package Name:${package_name}  
- * Date:${date}${time}  
+ * DateTime: ${date} ${time} &lt;br /&gt;
  * Copyright (c) ${year}, 仙灵科技 All Rights Reserved.  
  *  
 */  
@@ -63,7 +63,7 @@ ${package_declaration}
 /**  
  * ClassName:${type_name} &lt;br/&gt;  
  * Description: ${todo} 添加描述. &lt;br/&gt;  
- * Date:     ${date} ${time} &lt;br/&gt;  
+ * DateTime: ${date} ${time} &lt;br /&gt;
  * @author   ${user}  
  * @version    
  * @since    JDK 1.8  
