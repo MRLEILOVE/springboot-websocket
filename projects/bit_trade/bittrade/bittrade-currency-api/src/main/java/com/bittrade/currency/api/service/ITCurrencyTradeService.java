@@ -17,5 +17,5 @@ public interface ITCurrencyTradeService extends IDefaultTCurrencyTradeService<TC
     /**
      * 根据法币id查找交易对
      */
-    List<TransactionPairVO> findTradeByCurrencyId2(String currencyId2);
+    List<TransactionPairVO> findTradeByCurrencyId2(String currencyId2,String userId);
 }

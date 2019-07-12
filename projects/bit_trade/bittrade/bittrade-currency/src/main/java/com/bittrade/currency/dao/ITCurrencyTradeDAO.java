@@ -15,5 +15,5 @@ public interface ITCurrencyTradeDAO extends IDefaultTCurrencyTradeDAO {
     /**
      * 根据法币id查找交易对
      */
-    List<TransactionPairVO> findTradeByCurrencyId2(@Param("currencyId2") String currencyId2);
+    List<TransactionPairVO> findTradeByCurrencyId2(@Param("currencyId2") String currencyId2,@Param("userId") String userId);
 }
