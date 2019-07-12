@@ -47,7 +47,7 @@ public abstract interface IDefaultWWithdrawWalletBillDAO extends IBaseDAO<WWithd
 	 * @param wWithdrawWalletBill
 	 * @return
 	 */
-	public int remove(WWithdrawWalletBill wWithdrawWalletBill);
+	public int removeBy(WWithdrawWalletBill wWithdrawWalletBill);
 	
 	/**
 	 * 
@@ -69,7 +69,7 @@ public abstract interface IDefaultWWithdrawWalletBillDAO extends IBaseDAO<WWithd
 	 * @param condiWWithdrawWalletBill
 	 * @return
 	 */
-	public int modify(@Param(value="wWithdrawWalletBill") WWithdrawWalletBill wWithdrawWalletBill, @Param(value="condiWWithdrawWalletBill") WWithdrawWalletBill condiWWithdrawWalletBill);
+	public int modifyBy(@Param(value="wWithdrawWalletBill") WWithdrawWalletBill wWithdrawWalletBill, @Param(value="condiWWithdrawWalletBill") WWithdrawWalletBill condiWWithdrawWalletBill);
 	
 	/**
 	 * 
@@ -77,7 +77,7 @@ public abstract interface IDefaultWWithdrawWalletBillDAO extends IBaseDAO<WWithd
 	 * @param condiWWithdrawWalletBill
 	 * @return
 	 */
-	public int modifyWithSelective(@Param(value="wWithdrawWalletBill") WWithdrawWalletBill wWithdrawWalletBill, @Param(value="condiWWithdrawWalletBill") WWithdrawWalletBill condiWWithdrawWalletBill);
+	public int modifyWithSelectiveBy(@Param(value="wWithdrawWalletBill") WWithdrawWalletBill wWithdrawWalletBill, @Param(value="condiWWithdrawWalletBill") WWithdrawWalletBill condiWWithdrawWalletBill);
 	
 	/**
 	 * 
@@ -91,7 +91,13 @@ public abstract interface IDefaultWWithdrawWalletBillDAO extends IBaseDAO<WWithd
 	 * @param wWithdrawWalletBill
 	 * @return
 	 */
-	public WWithdrawWalletBill get(WWithdrawWalletBill wWithdrawWalletBill);
+	public WWithdrawWalletBill getBy(WWithdrawWalletBill wWithdrawWalletBill);
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public WWithdrawWalletBill get();
 	
 	/**
 	 * 
@@ -111,7 +117,7 @@ public abstract interface IDefaultWWithdrawWalletBillDAO extends IBaseDAO<WWithd
 	 * @param wWithdrawWalletBill
 	 * @return
 	 */
-	public int getCntWithPage(@Param(value="wWithdrawWalletBill") WWithdrawWalletBill wWithdrawWalletBill);
+	public int getCntBy(@Param(value="wWithdrawWalletBill") WWithdrawWalletBill wWithdrawWalletBill);
 	
 	/**
 	 * 
@@ -120,6 +126,6 @@ public abstract interface IDefaultWWithdrawWalletBillDAO extends IBaseDAO<WWithd
 	 * @param size
 	 * @return
 	 */
-	public List<WWithdrawWalletBill> getsWithPage(@Param(value="wWithdrawWalletBill") WWithdrawWalletBill wWithdrawWalletBill, @Param(value="page") int page, @Param(value="size") int size);
+	public List<WWithdrawWalletBill> getsByPage(@Param(value="wWithdrawWalletBill") WWithdrawWalletBill wWithdrawWalletBill, @Param(value="page") int page, @Param(value="size") int size);
 	
 }

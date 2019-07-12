@@ -47,7 +47,7 @@ public abstract interface IDefaultTEntrustDAO extends IBaseDAO<TEntrust, TEntrus
 	 * @param tEntrust
 	 * @return
 	 */
-	public int remove(TEntrust tEntrust);
+	public int removeBy(TEntrust tEntrust);
 	
 	/**
 	 * 
@@ -69,7 +69,7 @@ public abstract interface IDefaultTEntrustDAO extends IBaseDAO<TEntrust, TEntrus
 	 * @param condiTEntrust
 	 * @return
 	 */
-	public int modify(@Param(value="tEntrust") TEntrust tEntrust, @Param(value="condiTEntrust") TEntrust condiTEntrust);
+	public int modifyBy(@Param(value="tEntrust") TEntrust tEntrust, @Param(value="condiTEntrust") TEntrust condiTEntrust);
 	
 	/**
 	 * 
@@ -77,7 +77,7 @@ public abstract interface IDefaultTEntrustDAO extends IBaseDAO<TEntrust, TEntrus
 	 * @param condiTEntrust
 	 * @return
 	 */
-	public int modifyWithSelective(@Param(value="tEntrust") TEntrust tEntrust, @Param(value="condiTEntrust") TEntrust condiTEntrust);
+	public int modifyWithSelectiveBy(@Param(value="tEntrust") TEntrust tEntrust, @Param(value="condiTEntrust") TEntrust condiTEntrust);
 	
 	/**
 	 * 
@@ -91,7 +91,13 @@ public abstract interface IDefaultTEntrustDAO extends IBaseDAO<TEntrust, TEntrus
 	 * @param tEntrust
 	 * @return
 	 */
-	public TEntrust get(TEntrust tEntrust);
+	public TEntrust getBy(TEntrust tEntrust);
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public TEntrust get();
 	
 	/**
 	 * 
@@ -111,7 +117,7 @@ public abstract interface IDefaultTEntrustDAO extends IBaseDAO<TEntrust, TEntrus
 	 * @param tEntrust
 	 * @return
 	 */
-	public int getCntWithPage(@Param(value="tEntrust") TEntrust tEntrust);
+	public int getCntBy(@Param(value="tEntrust") TEntrust tEntrust);
 	
 	/**
 	 * 
@@ -120,6 +126,6 @@ public abstract interface IDefaultTEntrustDAO extends IBaseDAO<TEntrust, TEntrus
 	 * @param size
 	 * @return
 	 */
-	public List<TEntrust> getsWithPage(@Param(value="tEntrust") TEntrust tEntrust, @Param(value="page") int page, @Param(value="size") int size);
+	public List<TEntrust> getsByPage(@Param(value="tEntrust") TEntrust tEntrust, @Param(value="page") int page, @Param(value="size") int size);
 	
 }

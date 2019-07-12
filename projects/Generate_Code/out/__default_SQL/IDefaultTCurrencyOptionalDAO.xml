@@ -74,7 +74,7 @@
 		</where>
 	</delete>
 	
-	<delete id="remove" parameterType="com.bittrade.pojo.model.TCurrencyOptional">
+	<delete id="removeBy" parameterType="com.bittrade.pojo.model.TCurrencyOptional">
 		DELETE FROM t_currency_optional
 		<where>
 			<if test="userId != null">
@@ -133,7 +133,7 @@
 		</where>
 	</update>
 	
-	<update id="modify">
+	<update id="modifyBy">
 		UPDATE t_currency_optional
 		<set>
 			`user_id` = #{tCurrencyOptional.userId,jdbcType=BIGINT}, 
@@ -166,7 +166,7 @@
 		</where>
 	</update>
 	
-	<update id="modifyWithSelective">
+	<update id="modifyWithSelectiveBy">
 		UPDATE t_currency_optional
 		<set>
 		<if test="tCurrencyOptional != null">
@@ -225,7 +225,7 @@
 		</where>
 	</select>
 	
-	<select id="get" resultType="com.bittrade.pojo.model.TCurrencyOptional">
+	<select id="getBy" resultType="com.bittrade.pojo.model.TCurrencyOptional">
 		SELECT 
 			`id`, 
 			`user_id`, 
@@ -251,6 +251,18 @@
 			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
 			</if>
 		</where>
+		LIMIT 1
+	</select>
+	
+	<select id="get" resultType="com.bittrade.pojo.model.TCurrencyOptional">
+		SELECT 
+			`id`, 
+			`user_id`, 
+			`currency_trade_id`, 
+			`status`, 
+			`create_time`, 
+			`update_time`
+		FROM t_currency_optional
 		LIMIT 1
 	</select>
 	
@@ -293,7 +305,7 @@
 		FROM t_currency_optional
 	</select>
 	
-	<select id="getCntWithPage" resultType="int">
+	<select id="getCntBy" resultType="int">
 		SELECT COUNT(1)
 		FROM t_currency_optional
 		<where>
@@ -317,7 +329,7 @@
 		</where>
 	</select>
 	
-	<select id="getsWithPage" resultType="com.bittrade.pojo.model.TCurrencyOptional">
+	<select id="getsByPage" resultType="com.bittrade.pojo.model.TCurrencyOptional">
 		SELECT 
 			`id`, 
 			`user_id`, 

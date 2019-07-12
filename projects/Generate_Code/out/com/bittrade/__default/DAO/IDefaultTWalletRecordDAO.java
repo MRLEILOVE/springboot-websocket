@@ -47,7 +47,7 @@ public abstract interface IDefaultTWalletRecordDAO extends IBaseDAO<TWalletRecor
 	 * @param tWalletRecord
 	 * @return
 	 */
-	public int remove(TWalletRecord tWalletRecord);
+	public int removeBy(TWalletRecord tWalletRecord);
 	
 	/**
 	 * 
@@ -69,7 +69,7 @@ public abstract interface IDefaultTWalletRecordDAO extends IBaseDAO<TWalletRecor
 	 * @param condiTWalletRecord
 	 * @return
 	 */
-	public int modify(@Param(value="tWalletRecord") TWalletRecord tWalletRecord, @Param(value="condiTWalletRecord") TWalletRecord condiTWalletRecord);
+	public int modifyBy(@Param(value="tWalletRecord") TWalletRecord tWalletRecord, @Param(value="condiTWalletRecord") TWalletRecord condiTWalletRecord);
 	
 	/**
 	 * 
@@ -77,7 +77,7 @@ public abstract interface IDefaultTWalletRecordDAO extends IBaseDAO<TWalletRecor
 	 * @param condiTWalletRecord
 	 * @return
 	 */
-	public int modifyWithSelective(@Param(value="tWalletRecord") TWalletRecord tWalletRecord, @Param(value="condiTWalletRecord") TWalletRecord condiTWalletRecord);
+	public int modifyWithSelectiveBy(@Param(value="tWalletRecord") TWalletRecord tWalletRecord, @Param(value="condiTWalletRecord") TWalletRecord condiTWalletRecord);
 	
 	/**
 	 * 
@@ -91,7 +91,13 @@ public abstract interface IDefaultTWalletRecordDAO extends IBaseDAO<TWalletRecor
 	 * @param tWalletRecord
 	 * @return
 	 */
-	public TWalletRecord get(TWalletRecord tWalletRecord);
+	public TWalletRecord getBy(TWalletRecord tWalletRecord);
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public TWalletRecord get();
 	
 	/**
 	 * 
@@ -111,7 +117,7 @@ public abstract interface IDefaultTWalletRecordDAO extends IBaseDAO<TWalletRecor
 	 * @param tWalletRecord
 	 * @return
 	 */
-	public int getCntWithPage(@Param(value="tWalletRecord") TWalletRecord tWalletRecord);
+	public int getCntBy(@Param(value="tWalletRecord") TWalletRecord tWalletRecord);
 	
 	/**
 	 * 
@@ -120,6 +126,6 @@ public abstract interface IDefaultTWalletRecordDAO extends IBaseDAO<TWalletRecor
 	 * @param size
 	 * @return
 	 */
-	public List<TWalletRecord> getsWithPage(@Param(value="tWalletRecord") TWalletRecord tWalletRecord, @Param(value="page") int page, @Param(value="size") int size);
+	public List<TWalletRecord> getsByPage(@Param(value="tWalletRecord") TWalletRecord tWalletRecord, @Param(value="page") int page, @Param(value="size") int size);
 	
 }

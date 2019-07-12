@@ -26,7 +26,7 @@ public class UserTester extends BaseTester {
 		TUser userCondi = new TUser();
 		userCondi.setName("zs张三");
 //		System.out.println(userService.modifyByPK(user2));
-		System.out.println(userService.modify(user2, userCondi));
+		System.out.println(userService.modifyBy(user2, userCondi));
 	}
 
 	@SuppressWarnings("serial")
@@ -48,7 +48,7 @@ public class UserTester extends BaseTester {
 				setName("22");
 			}
 		};
-		System.out.println("=" + userService.modify(model, condiModel));
+		System.out.println("=" + userService.modifyBy(model, condiModel));
 	}
 
 	@Test
@@ -57,7 +57,7 @@ public class UserTester extends BaseTester {
 		TUser u = new TUser();
 //		u.setName("22");
 //		System.out.println(userService.get(u));
-		System.out.println("==" + userService.getsWithPage(u, 1, 3));
+		System.out.println("==" + userService.getsByPage(u, 1, 3));
 	}
 
 }

@@ -39,7 +39,7 @@ public abstract interface IBaseDAO<Model, DTO, VO> extends com.baomidou.mybatisp
 	 * @param model
 	 * @return
 	 */
-	public int remove(Model model);
+	public int removeBy(Model model);
 
 	/**
 	 * 修改根据主键
@@ -61,7 +61,7 @@ public abstract interface IBaseDAO<Model, DTO, VO> extends com.baomidou.mybatisp
 	 * @param condiModel
 	 * @return
 	 */
-	public int modify(Model model, Model condiModel);
+	public int modifyBy(Model model, Model condiModel);
 
 	/**
 	 * 修改根据实体（会使用数据库默认值）
@@ -69,7 +69,7 @@ public abstract interface IBaseDAO<Model, DTO, VO> extends com.baomidou.mybatisp
 	 * @param condiModel
 	 * @return
 	 */
-	public int modifyWithSelective(Model model, Model condiModel);
+	public int modifyWithSelectiveBy(Model model, Model condiModel);
 
 	/**
 	 * 查询一个根据主键
@@ -83,7 +83,14 @@ public abstract interface IBaseDAO<Model, DTO, VO> extends com.baomidou.mybatisp
 	 * @param model
 	 * @return
 	 */
-	public Model get(Model model);
+	public Model getBy(Model model);
+
+	/**
+	 * 查询一个（默认取第一个）
+	 * @param model
+	 * @return
+	 */
+	public Model get();
 
 	/**
 	 * 查询多个根据实体
@@ -103,7 +110,7 @@ public abstract interface IBaseDAO<Model, DTO, VO> extends com.baomidou.mybatisp
 	 * @param model
 	 * @return
 	 */
-	public int getCntWithPage(Model model);
+	public int getCntBy(Model model);
 
 	/**
 	 * 查询多个根据实体和分页
@@ -112,6 +119,6 @@ public abstract interface IBaseDAO<Model, DTO, VO> extends com.baomidou.mybatisp
 	 * @param size
 	 * @return
 	 */
-	public List<Model> getsWithPage(Model model, int page, int size);
+	public List<Model> getsByPage(Model model, int page, int size);
 
 }

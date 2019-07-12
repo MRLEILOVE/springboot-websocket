@@ -47,7 +47,7 @@ public abstract interface IDefaultTCurrencyDAO extends IBaseDAO<TCurrency, TCurr
 	 * @param tCurrency
 	 * @return
 	 */
-	public int remove(TCurrency tCurrency);
+	public int removeBy(TCurrency tCurrency);
 	
 	/**
 	 * 
@@ -69,7 +69,7 @@ public abstract interface IDefaultTCurrencyDAO extends IBaseDAO<TCurrency, TCurr
 	 * @param condiTCurrency
 	 * @return
 	 */
-	public int modify(@Param(value="tCurrency") TCurrency tCurrency, @Param(value="condiTCurrency") TCurrency condiTCurrency);
+	public int modifyBy(@Param(value="tCurrency") TCurrency tCurrency, @Param(value="condiTCurrency") TCurrency condiTCurrency);
 	
 	/**
 	 * 
@@ -77,7 +77,7 @@ public abstract interface IDefaultTCurrencyDAO extends IBaseDAO<TCurrency, TCurr
 	 * @param condiTCurrency
 	 * @return
 	 */
-	public int modifyWithSelective(@Param(value="tCurrency") TCurrency tCurrency, @Param(value="condiTCurrency") TCurrency condiTCurrency);
+	public int modifyWithSelectiveBy(@Param(value="tCurrency") TCurrency tCurrency, @Param(value="condiTCurrency") TCurrency condiTCurrency);
 	
 	/**
 	 * 
@@ -91,7 +91,13 @@ public abstract interface IDefaultTCurrencyDAO extends IBaseDAO<TCurrency, TCurr
 	 * @param tCurrency
 	 * @return
 	 */
-	public TCurrency get(TCurrency tCurrency);
+	public TCurrency getBy(TCurrency tCurrency);
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public TCurrency get();
 	
 	/**
 	 * 
@@ -111,7 +117,7 @@ public abstract interface IDefaultTCurrencyDAO extends IBaseDAO<TCurrency, TCurr
 	 * @param tCurrency
 	 * @return
 	 */
-	public int getCntWithPage(@Param(value="tCurrency") TCurrency tCurrency);
+	public int getCntBy(@Param(value="tCurrency") TCurrency tCurrency);
 	
 	/**
 	 * 
@@ -120,6 +126,6 @@ public abstract interface IDefaultTCurrencyDAO extends IBaseDAO<TCurrency, TCurr
 	 * @param size
 	 * @return
 	 */
-	public List<TCurrency> getsWithPage(@Param(value="tCurrency") TCurrency tCurrency, @Param(value="page") int page, @Param(value="size") int size);
+	public List<TCurrency> getsByPage(@Param(value="tCurrency") TCurrency tCurrency, @Param(value="page") int page, @Param(value="size") int size);
 	
 }

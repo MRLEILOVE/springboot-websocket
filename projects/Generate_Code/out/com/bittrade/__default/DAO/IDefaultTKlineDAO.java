@@ -47,7 +47,7 @@ public abstract interface IDefaultTKlineDAO extends IBaseDAO<TKline, TKlineDTO, 
 	 * @param tKline
 	 * @return
 	 */
-	public int remove(TKline tKline);
+	public int removeBy(TKline tKline);
 	
 	/**
 	 * 
@@ -69,7 +69,7 @@ public abstract interface IDefaultTKlineDAO extends IBaseDAO<TKline, TKlineDTO, 
 	 * @param condiTKline
 	 * @return
 	 */
-	public int modify(@Param(value="tKline") TKline tKline, @Param(value="condiTKline") TKline condiTKline);
+	public int modifyBy(@Param(value="tKline") TKline tKline, @Param(value="condiTKline") TKline condiTKline);
 	
 	/**
 	 * 
@@ -77,7 +77,7 @@ public abstract interface IDefaultTKlineDAO extends IBaseDAO<TKline, TKlineDTO, 
 	 * @param condiTKline
 	 * @return
 	 */
-	public int modifyWithSelective(@Param(value="tKline") TKline tKline, @Param(value="condiTKline") TKline condiTKline);
+	public int modifyWithSelectiveBy(@Param(value="tKline") TKline tKline, @Param(value="condiTKline") TKline condiTKline);
 	
 	/**
 	 * 
@@ -91,7 +91,13 @@ public abstract interface IDefaultTKlineDAO extends IBaseDAO<TKline, TKlineDTO, 
 	 * @param tKline
 	 * @return
 	 */
-	public TKline get(TKline tKline);
+	public TKline getBy(TKline tKline);
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public TKline get();
 	
 	/**
 	 * 
@@ -111,7 +117,7 @@ public abstract interface IDefaultTKlineDAO extends IBaseDAO<TKline, TKlineDTO, 
 	 * @param tKline
 	 * @return
 	 */
-	public int getCntWithPage(@Param(value="tKline") TKline tKline);
+	public int getCntBy(@Param(value="tKline") TKline tKline);
 	
 	/**
 	 * 
@@ -120,6 +126,6 @@ public abstract interface IDefaultTKlineDAO extends IBaseDAO<TKline, TKlineDTO, 
 	 * @param size
 	 * @return
 	 */
-	public List<TKline> getsWithPage(@Param(value="tKline") TKline tKline, @Param(value="page") int page, @Param(value="size") int size);
+	public List<TKline> getsByPage(@Param(value="tKline") TKline tKline, @Param(value="page") int page, @Param(value="size") int size);
 	
 }

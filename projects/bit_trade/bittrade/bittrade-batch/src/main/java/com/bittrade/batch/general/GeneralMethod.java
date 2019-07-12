@@ -16,7 +16,7 @@ public class GeneralMethod {
 		TParamConfig paramConfigCondi = new TParamConfig();
 		paramConfigCondi.setParamKey( key );
 		paramConfigCondi.setParamStatus( ParamStatus.ENABLE.getKey() );
-		TParamConfig paramConfig = paramConfigService.get( paramConfigCondi );
+		TParamConfig paramConfig = paramConfigService.getBy( paramConfigCondi );
 		if (null == paramConfig) {
 			throw new Exception( "key：" + key + "未配置" );
 		}
@@ -27,7 +27,7 @@ public class GeneralMethod {
 		TWallet qryWallet = new TWallet();
 		qryWallet.setUserId( userId );
 		qryWallet.setCurrencyId( currencyId );
-		TWallet result = walletService.get( qryWallet );
+		TWallet result = walletService.getBy( qryWallet );
 		if (null == result) { // 用户币币钱包不存在，则给其生成一个钱包
 			TWallet wallet = new TWallet();
 			wallet.setUserId( userId );

@@ -47,7 +47,7 @@ public abstract interface IDefaultWUserWalletBillDAO extends IBaseDAO<WUserWalle
 	 * @param wUserWalletBill
 	 * @return
 	 */
-	public int remove(WUserWalletBill wUserWalletBill);
+	public int removeBy(WUserWalletBill wUserWalletBill);
 	
 	/**
 	 * 
@@ -69,7 +69,7 @@ public abstract interface IDefaultWUserWalletBillDAO extends IBaseDAO<WUserWalle
 	 * @param condiWUserWalletBill
 	 * @return
 	 */
-	public int modify(@Param(value="wUserWalletBill") WUserWalletBill wUserWalletBill, @Param(value="condiWUserWalletBill") WUserWalletBill condiWUserWalletBill);
+	public int modifyBy(@Param(value="wUserWalletBill") WUserWalletBill wUserWalletBill, @Param(value="condiWUserWalletBill") WUserWalletBill condiWUserWalletBill);
 	
 	/**
 	 * 
@@ -77,7 +77,7 @@ public abstract interface IDefaultWUserWalletBillDAO extends IBaseDAO<WUserWalle
 	 * @param condiWUserWalletBill
 	 * @return
 	 */
-	public int modifyWithSelective(@Param(value="wUserWalletBill") WUserWalletBill wUserWalletBill, @Param(value="condiWUserWalletBill") WUserWalletBill condiWUserWalletBill);
+	public int modifyWithSelectiveBy(@Param(value="wUserWalletBill") WUserWalletBill wUserWalletBill, @Param(value="condiWUserWalletBill") WUserWalletBill condiWUserWalletBill);
 	
 	/**
 	 * 
@@ -91,7 +91,13 @@ public abstract interface IDefaultWUserWalletBillDAO extends IBaseDAO<WUserWalle
 	 * @param wUserWalletBill
 	 * @return
 	 */
-	public WUserWalletBill get(WUserWalletBill wUserWalletBill);
+	public WUserWalletBill getBy(WUserWalletBill wUserWalletBill);
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public WUserWalletBill get();
 	
 	/**
 	 * 
@@ -111,7 +117,7 @@ public abstract interface IDefaultWUserWalletBillDAO extends IBaseDAO<WUserWalle
 	 * @param wUserWalletBill
 	 * @return
 	 */
-	public int getCntWithPage(@Param(value="wUserWalletBill") WUserWalletBill wUserWalletBill);
+	public int getCntBy(@Param(value="wUserWalletBill") WUserWalletBill wUserWalletBill);
 	
 	/**
 	 * 
@@ -120,6 +126,6 @@ public abstract interface IDefaultWUserWalletBillDAO extends IBaseDAO<WUserWalle
 	 * @param size
 	 * @return
 	 */
-	public List<WUserWalletBill> getsWithPage(@Param(value="wUserWalletBill") WUserWalletBill wUserWalletBill, @Param(value="page") int page, @Param(value="size") int size);
+	public List<WUserWalletBill> getsByPage(@Param(value="wUserWalletBill") WUserWalletBill wUserWalletBill, @Param(value="page") int page, @Param(value="size") int size);
 	
 }

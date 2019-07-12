@@ -47,7 +47,7 @@ public abstract interface IDefaultTTickerDAO extends IBaseDAO<TTicker, TTickerDT
 	 * @param tTicker
 	 * @return
 	 */
-	public int remove(TTicker tTicker);
+	public int removeBy(TTicker tTicker);
 	
 	/**
 	 * 
@@ -69,7 +69,7 @@ public abstract interface IDefaultTTickerDAO extends IBaseDAO<TTicker, TTickerDT
 	 * @param condiTTicker
 	 * @return
 	 */
-	public int modify(@Param(value="tTicker") TTicker tTicker, @Param(value="condiTTicker") TTicker condiTTicker);
+	public int modifyBy(@Param(value="tTicker") TTicker tTicker, @Param(value="condiTTicker") TTicker condiTTicker);
 	
 	/**
 	 * 
@@ -77,7 +77,7 @@ public abstract interface IDefaultTTickerDAO extends IBaseDAO<TTicker, TTickerDT
 	 * @param condiTTicker
 	 * @return
 	 */
-	public int modifyWithSelective(@Param(value="tTicker") TTicker tTicker, @Param(value="condiTTicker") TTicker condiTTicker);
+	public int modifyWithSelectiveBy(@Param(value="tTicker") TTicker tTicker, @Param(value="condiTTicker") TTicker condiTTicker);
 	
 	/**
 	 * 
@@ -91,7 +91,13 @@ public abstract interface IDefaultTTickerDAO extends IBaseDAO<TTicker, TTickerDT
 	 * @param tTicker
 	 * @return
 	 */
-	public TTicker get(TTicker tTicker);
+	public TTicker getBy(TTicker tTicker);
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public TTicker get();
 	
 	/**
 	 * 
@@ -111,7 +117,7 @@ public abstract interface IDefaultTTickerDAO extends IBaseDAO<TTicker, TTickerDT
 	 * @param tTicker
 	 * @return
 	 */
-	public int getCntWithPage(@Param(value="tTicker") TTicker tTicker);
+	public int getCntBy(@Param(value="tTicker") TTicker tTicker);
 	
 	/**
 	 * 
@@ -120,6 +126,6 @@ public abstract interface IDefaultTTickerDAO extends IBaseDAO<TTicker, TTickerDT
 	 * @param size
 	 * @return
 	 */
-	public List<TTicker> getsWithPage(@Param(value="tTicker") TTicker tTicker, @Param(value="page") int page, @Param(value="size") int size);
+	public List<TTicker> getsByPage(@Param(value="tTicker") TTicker tTicker, @Param(value="page") int page, @Param(value="size") int size);
 	
 }

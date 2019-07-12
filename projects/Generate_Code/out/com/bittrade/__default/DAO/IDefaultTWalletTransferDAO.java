@@ -47,7 +47,7 @@ public abstract interface IDefaultTWalletTransferDAO extends IBaseDAO<TWalletTra
 	 * @param tWalletTransfer
 	 * @return
 	 */
-	public int remove(TWalletTransfer tWalletTransfer);
+	public int removeBy(TWalletTransfer tWalletTransfer);
 	
 	/**
 	 * 
@@ -69,7 +69,7 @@ public abstract interface IDefaultTWalletTransferDAO extends IBaseDAO<TWalletTra
 	 * @param condiTWalletTransfer
 	 * @return
 	 */
-	public int modify(@Param(value="tWalletTransfer") TWalletTransfer tWalletTransfer, @Param(value="condiTWalletTransfer") TWalletTransfer condiTWalletTransfer);
+	public int modifyBy(@Param(value="tWalletTransfer") TWalletTransfer tWalletTransfer, @Param(value="condiTWalletTransfer") TWalletTransfer condiTWalletTransfer);
 	
 	/**
 	 * 
@@ -77,7 +77,7 @@ public abstract interface IDefaultTWalletTransferDAO extends IBaseDAO<TWalletTra
 	 * @param condiTWalletTransfer
 	 * @return
 	 */
-	public int modifyWithSelective(@Param(value="tWalletTransfer") TWalletTransfer tWalletTransfer, @Param(value="condiTWalletTransfer") TWalletTransfer condiTWalletTransfer);
+	public int modifyWithSelectiveBy(@Param(value="tWalletTransfer") TWalletTransfer tWalletTransfer, @Param(value="condiTWalletTransfer") TWalletTransfer condiTWalletTransfer);
 	
 	/**
 	 * 
@@ -91,7 +91,13 @@ public abstract interface IDefaultTWalletTransferDAO extends IBaseDAO<TWalletTra
 	 * @param tWalletTransfer
 	 * @return
 	 */
-	public TWalletTransfer get(TWalletTransfer tWalletTransfer);
+	public TWalletTransfer getBy(TWalletTransfer tWalletTransfer);
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public TWalletTransfer get();
 	
 	/**
 	 * 
@@ -111,7 +117,7 @@ public abstract interface IDefaultTWalletTransferDAO extends IBaseDAO<TWalletTra
 	 * @param tWalletTransfer
 	 * @return
 	 */
-	public int getCntWithPage(@Param(value="tWalletTransfer") TWalletTransfer tWalletTransfer);
+	public int getCntBy(@Param(value="tWalletTransfer") TWalletTransfer tWalletTransfer);
 	
 	/**
 	 * 
@@ -120,6 +126,6 @@ public abstract interface IDefaultTWalletTransferDAO extends IBaseDAO<TWalletTra
 	 * @param size
 	 * @return
 	 */
-	public List<TWalletTransfer> getsWithPage(@Param(value="tWalletTransfer") TWalletTransfer tWalletTransfer, @Param(value="page") int page, @Param(value="size") int size);
+	public List<TWalletTransfer> getsByPage(@Param(value="tWalletTransfer") TWalletTransfer tWalletTransfer, @Param(value="page") int page, @Param(value="size") int size);
 	
 }

@@ -98,7 +98,7 @@
 		</where>
 	</delete>
 	
-	<delete id="remove" parameterType="com.bittrade.pojo.model.TWalletRecord">
+	<delete id="removeBy" parameterType="com.bittrade.pojo.model.TWalletRecord">
 		DELETE FROM t_wallet_record
 		<where>
 			<if test="userId != null">
@@ -178,7 +178,7 @@
 		</where>
 	</update>
 	
-	<update id="modify">
+	<update id="modifyBy">
 		UPDATE t_wallet_record
 		<set>
 			`user_id` = #{tWalletRecord.userId,jdbcType=BIGINT}, 
@@ -223,7 +223,7 @@
 		</where>
 	</update>
 	
-	<update id="modifyWithSelective">
+	<update id="modifyWithSelectiveBy">
 		UPDATE t_wallet_record
 		<set>
 		<if test="tWalletRecord != null">
@@ -303,7 +303,7 @@
 		</where>
 	</select>
 	
-	<select id="get" resultType="com.bittrade.pojo.model.TWalletRecord">
+	<select id="getBy" resultType="com.bittrade.pojo.model.TWalletRecord">
 		SELECT 
 			`id`, 
 			`user_id`, 
@@ -341,6 +341,21 @@
 			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
 			</if>
 		</where>
+		LIMIT 1
+	</select>
+	
+	<select id="get" resultType="com.bittrade.pojo.model.TWalletRecord">
+		SELECT 
+			`id`, 
+			`user_id`, 
+			`currency_id`, 
+			`before_amount`, 
+			`after_amount`, 
+			`change_amount`, 
+			`type`, 
+			`entrust_record_id`, 
+			`create_time`
+		FROM t_wallet_record
 		LIMIT 1
 	</select>
 	
@@ -398,7 +413,7 @@
 		FROM t_wallet_record
 	</select>
 	
-	<select id="getCntWithPage" resultType="int">
+	<select id="getCntBy" resultType="int">
 		SELECT COUNT(1)
 		FROM t_wallet_record
 		<where>
@@ -431,7 +446,7 @@
 		</where>
 	</select>
 	
-	<select id="getsWithPage" resultType="com.bittrade.pojo.model.TWalletRecord">
+	<select id="getsByPage" resultType="com.bittrade.pojo.model.TWalletRecord">
 		SELECT 
 			`id`, 
 			`user_id`, 

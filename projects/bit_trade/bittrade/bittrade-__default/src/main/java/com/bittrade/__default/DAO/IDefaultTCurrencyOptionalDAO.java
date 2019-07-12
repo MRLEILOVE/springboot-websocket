@@ -47,7 +47,7 @@ public abstract interface IDefaultTCurrencyOptionalDAO extends IBaseDAO<TCurrenc
 	 * @param tCurrencyOptional
 	 * @return
 	 */
-	public int remove(TCurrencyOptional tCurrencyOptional);
+	public int removeBy(TCurrencyOptional tCurrencyOptional);
 	
 	/**
 	 * 
@@ -69,7 +69,7 @@ public abstract interface IDefaultTCurrencyOptionalDAO extends IBaseDAO<TCurrenc
 	 * @param condiTCurrencyOptional
 	 * @return
 	 */
-	public int modify(@Param(value="tCurrencyOptional") TCurrencyOptional tCurrencyOptional, @Param(value="condiTCurrencyOptional") TCurrencyOptional condiTCurrencyOptional);
+	public int modifyBy(@Param(value="tCurrencyOptional") TCurrencyOptional tCurrencyOptional, @Param(value="condiTCurrencyOptional") TCurrencyOptional condiTCurrencyOptional);
 	
 	/**
 	 * 
@@ -77,7 +77,7 @@ public abstract interface IDefaultTCurrencyOptionalDAO extends IBaseDAO<TCurrenc
 	 * @param condiTCurrencyOptional
 	 * @return
 	 */
-	public int modifyWithSelective(@Param(value="tCurrencyOptional") TCurrencyOptional tCurrencyOptional, @Param(value="condiTCurrencyOptional") TCurrencyOptional condiTCurrencyOptional);
+	public int modifyWithSelectiveBy(@Param(value="tCurrencyOptional") TCurrencyOptional tCurrencyOptional, @Param(value="condiTCurrencyOptional") TCurrencyOptional condiTCurrencyOptional);
 	
 	/**
 	 * 
@@ -91,7 +91,13 @@ public abstract interface IDefaultTCurrencyOptionalDAO extends IBaseDAO<TCurrenc
 	 * @param tCurrencyOptional
 	 * @return
 	 */
-	public TCurrencyOptional get(TCurrencyOptional tCurrencyOptional);
+	public TCurrencyOptional getBy(TCurrencyOptional tCurrencyOptional);
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public TCurrencyOptional get();
 	
 	/**
 	 * 
@@ -111,7 +117,7 @@ public abstract interface IDefaultTCurrencyOptionalDAO extends IBaseDAO<TCurrenc
 	 * @param tCurrencyOptional
 	 * @return
 	 */
-	public int getCntWithPage(@Param(value="tCurrencyOptional") TCurrencyOptional tCurrencyOptional);
+	public int getCntBy(@Param(value="tCurrencyOptional") TCurrencyOptional tCurrencyOptional);
 	
 	/**
 	 * 
@@ -120,6 +126,6 @@ public abstract interface IDefaultTCurrencyOptionalDAO extends IBaseDAO<TCurrenc
 	 * @param size
 	 * @return
 	 */
-	public List<TCurrencyOptional> getsWithPage(@Param(value="tCurrencyOptional") TCurrencyOptional tCurrencyOptional, @Param(value="page") int page, @Param(value="size") int size);
+	public List<TCurrencyOptional> getsByPage(@Param(value="tCurrencyOptional") TCurrencyOptional tCurrencyOptional, @Param(value="page") int page, @Param(value="size") int size);
 	
 }

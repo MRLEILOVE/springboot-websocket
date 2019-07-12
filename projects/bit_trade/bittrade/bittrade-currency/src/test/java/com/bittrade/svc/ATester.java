@@ -35,7 +35,7 @@ public class ATester extends BaseTester {
 //		TWallet updateSellMarketIdWallet = null;
 
 		// 更新钱包
-		System.out.println("==" + walletService.modify/* WithSelective */( updateWallet, updateSellMarketIdWallet ));
+		System.out.println("==" + walletService.modifyBy/* WithSelective */( updateWallet, updateSellMarketIdWallet ));
 	}
 
 }

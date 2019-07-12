@@ -144,7 +144,7 @@
 		</where>
 	</delete>
 	
-	<delete id="remove" parameterType="com.bittrade.pojo.model.TEntrustRecord">
+	<delete id="removeBy" parameterType="com.bittrade.pojo.model.TEntrustRecord">
 		DELETE FROM t_entrust_record
 		<where>
 			<if test="userId != null">
@@ -259,7 +259,7 @@
 		</where>
 	</update>
 	
-	<update id="modify">
+	<update id="modifyBy">
 		UPDATE t_entrust_record
 		<set>
 			`user_id` = #{tEntrustRecord.userId,jdbcType=BIGINT}, 
@@ -324,7 +324,7 @@
 		</where>
 	</update>
 	
-	<update id="modifyWithSelective">
+	<update id="modifyWithSelectiveBy">
 		UPDATE t_entrust_record
 		<set>
 		<if test="tEntrustRecord != null">
@@ -439,7 +439,7 @@
 		</where>
 	</select>
 	
-	<select id="get" resultType="com.bittrade.pojo.model.TEntrustRecord">
+	<select id="getBy" resultType="com.bittrade.pojo.model.TEntrustRecord">
 		SELECT 
 			`id`, 
 			`user_id`, 
@@ -497,6 +497,26 @@
 			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
 			</if>
 		</where>
+		LIMIT 1
+	</select>
+	
+	<select id="get" resultType="com.bittrade.pojo.model.TEntrustRecord">
+		SELECT 
+			`id`, 
+			`user_id`, 
+			`rival_user_id`, 
+			`entrust_id`, 
+			`rival_entrust_id`, 
+			`amount`, 
+			`price`, 
+			`count`, 
+			`rate`, 
+			`fees`, 
+			`currency_trade_id`, 
+			`is_active`, 
+			`entrust_direction`, 
+			`create_time`
+		FROM t_entrust_record
 		LIMIT 1
 	</select>
 	
@@ -579,7 +599,7 @@
 		FROM t_entrust_record
 	</select>
 	
-	<select id="getCntWithPage" resultType="int">
+	<select id="getCntBy" resultType="int">
 		SELECT COUNT(1)
 		FROM t_entrust_record
 		<where>
@@ -627,7 +647,7 @@
 		</where>
 	</select>
 	
-	<select id="getsWithPage" resultType="com.bittrade.pojo.model.TEntrustRecord">
+	<select id="getsByPage" resultType="com.bittrade.pojo.model.TEntrustRecord">
 		SELECT 
 			`id`, 
 			`user_id`, 

@@ -58,7 +58,7 @@
 		</where>
 	</delete>
 	
-	<delete id="remove" parameterType="com.bittrade.pojo.model.TTicker">
+	<delete id="removeBy" parameterType="com.bittrade.pojo.model.TTicker">
 		DELETE FROM t_ticker
 		<where>
 			<if test="symbol != null">
@@ -103,7 +103,7 @@
 		</where>
 	</update>
 	
-	<update id="modify">
+	<update id="modifyBy">
 		UPDATE t_ticker
 		<set>
 			`symbol` = #{tTicker.symbol,jdbcType=VARCHAR}, 
@@ -128,7 +128,7 @@
 		</where>
 	</update>
 	
-	<update id="modifyWithSelective">
+	<update id="modifyWithSelectiveBy">
 		UPDATE t_ticker
 		<set>
 		<if test="tTicker != null">
@@ -173,7 +173,7 @@
 		</where>
 	</select>
 	
-	<select id="get" resultType="com.bittrade.pojo.model.TTicker">
+	<select id="getBy" resultType="com.bittrade.pojo.model.TTicker">
 		SELECT 
 			`id`, 
 			`symbol`, 
@@ -191,6 +191,16 @@
 			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
 			</if>
 		</where>
+		LIMIT 1
+	</select>
+	
+	<select id="get" resultType="com.bittrade.pojo.model.TTicker">
+		SELECT 
+			`id`, 
+			`symbol`, 
+			`last`, 
+			`create_time`
+		FROM t_ticker
 		LIMIT 1
 	</select>
 	
@@ -223,7 +233,7 @@
 		FROM t_ticker
 	</select>
 	
-	<select id="getCntWithPage" resultType="int">
+	<select id="getCntBy" resultType="int">
 		SELECT COUNT(1)
 		FROM t_ticker
 		<where>
@@ -241,7 +251,7 @@
 		</where>
 	</select>
 	
-	<select id="getsWithPage" resultType="com.bittrade.pojo.model.TTicker">
+	<select id="getsByPage" resultType="com.bittrade.pojo.model.TTicker">
 		SELECT 
 			`id`, 
 			`symbol`, 

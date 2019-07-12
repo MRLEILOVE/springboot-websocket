@@ -47,7 +47,7 @@ public abstract interface IDefaultWCoinConfigDAO extends IBaseDAO<WCoinConfig, W
 	 * @param wCoinConfig
 	 * @return
 	 */
-	public int remove(WCoinConfig wCoinConfig);
+	public int removeBy(WCoinConfig wCoinConfig);
 	
 	/**
 	 * 
@@ -69,7 +69,7 @@ public abstract interface IDefaultWCoinConfigDAO extends IBaseDAO<WCoinConfig, W
 	 * @param condiWCoinConfig
 	 * @return
 	 */
-	public int modify(@Param(value="wCoinConfig") WCoinConfig wCoinConfig, @Param(value="condiWCoinConfig") WCoinConfig condiWCoinConfig);
+	public int modifyBy(@Param(value="wCoinConfig") WCoinConfig wCoinConfig, @Param(value="condiWCoinConfig") WCoinConfig condiWCoinConfig);
 	
 	/**
 	 * 
@@ -77,7 +77,7 @@ public abstract interface IDefaultWCoinConfigDAO extends IBaseDAO<WCoinConfig, W
 	 * @param condiWCoinConfig
 	 * @return
 	 */
-	public int modifyWithSelective(@Param(value="wCoinConfig") WCoinConfig wCoinConfig, @Param(value="condiWCoinConfig") WCoinConfig condiWCoinConfig);
+	public int modifyWithSelectiveBy(@Param(value="wCoinConfig") WCoinConfig wCoinConfig, @Param(value="condiWCoinConfig") WCoinConfig condiWCoinConfig);
 	
 	/**
 	 * 
@@ -91,7 +91,13 @@ public abstract interface IDefaultWCoinConfigDAO extends IBaseDAO<WCoinConfig, W
 	 * @param wCoinConfig
 	 * @return
 	 */
-	public WCoinConfig get(WCoinConfig wCoinConfig);
+	public WCoinConfig getBy(WCoinConfig wCoinConfig);
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public WCoinConfig get();
 	
 	/**
 	 * 
@@ -111,7 +117,7 @@ public abstract interface IDefaultWCoinConfigDAO extends IBaseDAO<WCoinConfig, W
 	 * @param wCoinConfig
 	 * @return
 	 */
-	public int getCntWithPage(@Param(value="wCoinConfig") WCoinConfig wCoinConfig);
+	public int getCntBy(@Param(value="wCoinConfig") WCoinConfig wCoinConfig);
 	
 	/**
 	 * 
@@ -120,6 +126,6 @@ public abstract interface IDefaultWCoinConfigDAO extends IBaseDAO<WCoinConfig, W
 	 * @param size
 	 * @return
 	 */
-	public List<WCoinConfig> getsWithPage(@Param(value="wCoinConfig") WCoinConfig wCoinConfig, @Param(value="page") int page, @Param(value="size") int size);
+	public List<WCoinConfig> getsByPage(@Param(value="wCoinConfig") WCoinConfig wCoinConfig, @Param(value="page") int page, @Param(value="size") int size);
 	
 }

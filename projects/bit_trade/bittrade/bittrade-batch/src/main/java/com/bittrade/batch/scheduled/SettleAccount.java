@@ -56,7 +56,7 @@ public class SettleAccount {
 			// 1、查询卖方向的未结算的订单
 			TEntrustRecord entrustRecords = new TEntrustRecord();
 			entrustRecords.setEntrustDirection( 1 );
-			entrustRecords = entrustRecordService.get( entrustRecords );
+			entrustRecords = entrustRecordService.getBy( entrustRecords );
 
 			long currentUserId = entrustRecords.getUserId();// 用户id
 			long rivalUserId = entrustRecords.getRivalUserId();// 对手方用户id
@@ -69,7 +69,7 @@ public class SettleAccount {
 			// 2、根据交易对Id获去币种id
 			TCurrencyTrade currencyTrade = new TCurrencyTrade();
 			currencyTrade.setId( currencyTradeId );
-			currencyTrade = currencyTradeService.get( currencyTrade );
+			currencyTrade = currencyTradeService.getBy( currencyTrade );
 			int currencyId = currencyTrade.getCurrencyId1();// 货比id
 			int marketId = currencyTrade.getCurrencyId2();// 法币id
 
@@ -120,7 +120,7 @@ public class SettleAccount {
 		updateSellMarketIdWallet.setVersion( wallet.getVersion() );
 
 		// 更新钱包
-		int row = walletService.modifyWithSelective( updateWallet, updateSellMarketIdWallet );
+		int row = walletService.modifyWithSelectiveBy( updateWallet, updateSellMarketIdWallet );
 		System.out.println( "row=" + row );
 
 		// 记录钱包流水

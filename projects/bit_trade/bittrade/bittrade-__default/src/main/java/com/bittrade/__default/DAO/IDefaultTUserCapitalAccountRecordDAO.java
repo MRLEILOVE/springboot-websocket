@@ -47,7 +47,7 @@ public abstract interface IDefaultTUserCapitalAccountRecordDAO extends IBaseDAO<
 	 * @param tUserCapitalAccountRecord
 	 * @return
 	 */
-	public int remove(TUserCapitalAccountRecord tUserCapitalAccountRecord);
+	public int removeBy(TUserCapitalAccountRecord tUserCapitalAccountRecord);
 	
 	/**
 	 * 
@@ -69,7 +69,7 @@ public abstract interface IDefaultTUserCapitalAccountRecordDAO extends IBaseDAO<
 	 * @param condiTUserCapitalAccountRecord
 	 * @return
 	 */
-	public int modify(@Param(value="tUserCapitalAccountRecord") TUserCapitalAccountRecord tUserCapitalAccountRecord, @Param(value="condiTUserCapitalAccountRecord") TUserCapitalAccountRecord condiTUserCapitalAccountRecord);
+	public int modifyBy(@Param(value="tUserCapitalAccountRecord") TUserCapitalAccountRecord tUserCapitalAccountRecord, @Param(value="condiTUserCapitalAccountRecord") TUserCapitalAccountRecord condiTUserCapitalAccountRecord);
 	
 	/**
 	 * 
@@ -77,7 +77,7 @@ public abstract interface IDefaultTUserCapitalAccountRecordDAO extends IBaseDAO<
 	 * @param condiTUserCapitalAccountRecord
 	 * @return
 	 */
-	public int modifyWithSelective(@Param(value="tUserCapitalAccountRecord") TUserCapitalAccountRecord tUserCapitalAccountRecord, @Param(value="condiTUserCapitalAccountRecord") TUserCapitalAccountRecord condiTUserCapitalAccountRecord);
+	public int modifyWithSelectiveBy(@Param(value="tUserCapitalAccountRecord") TUserCapitalAccountRecord tUserCapitalAccountRecord, @Param(value="condiTUserCapitalAccountRecord") TUserCapitalAccountRecord condiTUserCapitalAccountRecord);
 	
 	/**
 	 * 
@@ -91,7 +91,13 @@ public abstract interface IDefaultTUserCapitalAccountRecordDAO extends IBaseDAO<
 	 * @param tUserCapitalAccountRecord
 	 * @return
 	 */
-	public TUserCapitalAccountRecord get(TUserCapitalAccountRecord tUserCapitalAccountRecord);
+	public TUserCapitalAccountRecord getBy(TUserCapitalAccountRecord tUserCapitalAccountRecord);
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public TUserCapitalAccountRecord get();
 	
 	/**
 	 * 
@@ -111,7 +117,7 @@ public abstract interface IDefaultTUserCapitalAccountRecordDAO extends IBaseDAO<
 	 * @param tUserCapitalAccountRecord
 	 * @return
 	 */
-	public int getCntWithPage(@Param(value="tUserCapitalAccountRecord") TUserCapitalAccountRecord tUserCapitalAccountRecord);
+	public int getCntBy(@Param(value="tUserCapitalAccountRecord") TUserCapitalAccountRecord tUserCapitalAccountRecord);
 	
 	/**
 	 * 
@@ -120,6 +126,6 @@ public abstract interface IDefaultTUserCapitalAccountRecordDAO extends IBaseDAO<
 	 * @param size
 	 * @return
 	 */
-	public List<TUserCapitalAccountRecord> getsWithPage(@Param(value="tUserCapitalAccountRecord") TUserCapitalAccountRecord tUserCapitalAccountRecord, @Param(value="page") int page, @Param(value="size") int size);
+	public List<TUserCapitalAccountRecord> getsByPage(@Param(value="tUserCapitalAccountRecord") TUserCapitalAccountRecord tUserCapitalAccountRecord, @Param(value="page") int page, @Param(value="size") int size);
 	
 }
