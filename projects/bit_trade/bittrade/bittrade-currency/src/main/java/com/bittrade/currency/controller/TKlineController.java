@@ -19,6 +19,8 @@ import com.bittrade.pojo.vo.TKlineVO;
 import com.core.framework.DTO.ReturnDTO;
 import com.core.framework.base.controller.BaseController;
 
+import io.swagger.annotations.ApiOperation;
+
 /**
  * 
  * @author Administrator
@@ -35,6 +37,7 @@ public class TKlineController extends BaseController<TKline, TKlineDTO, TKlineVO
     /**
      * k线查询
      */
+    @ApiOperation(value = "k线查询",notes = "k线查询")
     @RequestMapping(value = "/queryKLine",method = RequestMethod.POST)
     @ResponseBody
     public ReturnDTO<List<QueryKLineVO>> queryKLine(@RequestBody QueryKLineDto queryKLineDto) {

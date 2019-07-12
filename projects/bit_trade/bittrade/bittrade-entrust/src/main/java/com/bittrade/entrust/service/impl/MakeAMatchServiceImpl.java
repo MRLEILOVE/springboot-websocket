@@ -73,7 +73,6 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 	 */
 	private static final ArrayList<TEntrust> LIST_SELL_LIMIT = new ArrayList<>();
 	
-	private static final SnowFlake SNOW_FLAKE__ENTRUST = new SnowFlake(1, 1);
 	private static final SnowFlake SNOW_FLAKE__ENTRUST_RECORD = new SnowFlake(1, 1);
 	
 	@Autowired
@@ -356,22 +355,6 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 	}
 	
 	public void makeAMatch(TEntrust entrust) {
-		// 入库。
-		{
-			entrust.setId(SNOW_FLAKE__ENTRUST.nextId());
-			{
-				if (entrust.getPrice() != null) {
-					entrust.setPrice(entrust.getPrice().setScale(IConstant.PRICE_DECIMAL_LENGTH, BigDecimal.ROUND_HALF_DOWN));
-					entrust.setAmount(entrust.getPrice().multiply(entrust.getCount()).setScale(IConstant.AMOUNT_DECIMAL_LENGTH, BigDecimal.ROUND_HALF_DOWN));
-				}
-				entrust.setCount(entrust.getCount().setScale(IConstant.COUNT_DECIMAL_LENGTH, BigDecimal.ROUND_HALF_DOWN));
-			}
-			entrust.setSuccessAmount(BigDecimal.ZERO);
-			entrust.setLeftCount(entrust.getCount());
-			entrust.setStatus(EntrustStatusEnumer.UNFINISH.getCode());
-			entrustService.add(entrust);
-//			System.out.println(entrust);
-		}
 		if (entrust.getEntrustDirection() == EntrustDirectionEnumer.BUY.getCode()) {
 			int i_idx;
 			LOCK_BUY.lock();

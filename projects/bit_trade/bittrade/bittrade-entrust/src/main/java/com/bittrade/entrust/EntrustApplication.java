@@ -2,16 +2,12 @@ package com.bittrade.entrust;
 
 import java.io.IOException;
 
-import javax.annotation.PostConstruct;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import com.alibaba.dubbo.config.annotation.Reference;
 import com.alibaba.dubbo.config.spring.context.annotation.EnableDubbo;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.segments.MergeSegments;
-import com.bittrade.currency.api.service.ITEntrustService;
-import com.bittrade.pojo.model.TEntrust;
+import com.bittrade.entrust.api.service.ITEntrustService;
 import com.core.framework.BaseApplication;
 
 @SpringBootApplication
@@ -22,7 +18,7 @@ public class EntrustApplication extends BaseApplication {
 		run(EntrustApplication.class, args, "entrust");
 	}
 
-	@Reference
+	@Autowired
 	ITEntrustService es;
 //	@PostConstruct
 	public void test() {
