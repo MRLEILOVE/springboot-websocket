@@ -47,7 +47,7 @@ public class MyWebSocketClient {
 
 	private final static String		PING	= "ping";
 
-	@PostConstruct
+	//@PostConstruct
 	public void init() {
 		connect();
 	}
