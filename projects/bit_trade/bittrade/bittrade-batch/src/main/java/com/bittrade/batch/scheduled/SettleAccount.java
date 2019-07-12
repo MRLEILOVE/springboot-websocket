@@ -19,6 +19,7 @@ import com.bittrade.currency.api.service.ITCurrencyTradeService;
 import com.bittrade.currency.api.service.ITEntrustRecordService;
 import com.bittrade.currency.api.service.ITWalletRecordService;
 import com.bittrade.currency.api.service.ITWalletService;
+import com.bittrade.pojo.dto.TCurrencyTradeDTO;
 import com.bittrade.pojo.dto.TEntrustRecordDTO;
 import com.bittrade.pojo.model.TCurrencyTrade;
 import com.bittrade.pojo.model.TEntrustRecord;
@@ -54,29 +55,26 @@ public class SettleAccount {
 
 	private static final SnowFlake	SNOW_FLAKE			= new SnowFlake( 1, 1 );
 
-	// @Scheduled(cron = "0/1 * * * * ?")
+	@Scheduled(cron = "0/1 * * * * ?")
 	public void sellte() {
 		try {
-			List<TEntrustRecord> list = entrustRecordService.gets();
-			for (TEntrustRecord tEntrustRecord : list) {
-				System.out.println( tEntrustRecord.getId() );
-			}
-
 			// 1、查询卖方向的未结算的订单
-			QueryWrapper<TEntrustRecord> entrustRecordQuery = new QueryWrapper<TEntrustRecord>();
-			entrustRecordQuery.eq( TEntrustRecord.FieldNames.ENTRUST_DIRECTION, 1 );
-			TEntrustRecord entrustRecords = entrustRecordService.getOne( entrustRecordQuery );
+			TEntrustRecord entrustRecords = new TEntrustRecord();
+			entrustRecords.setEntrustDirection( 1 );
+			entrustRecords = entrustRecordService.getBy( entrustRecords );
+
 			long currentUserId = entrustRecords.getUserId();// 用户id
 			long rivalUserId = entrustRecords.getRivalUserId();// 对手方用户id
 			long entrustRecordId = entrustRecords.getId();
+			int currencyTradeId = entrustRecords.getCurrencyTradeId();
 
 			BigDecimal count = entrustRecords.getCount();
 			BigDecimal amount = entrustRecords.getAmount();
 
 			// 2、根据交易对Id获去币种id
-			QueryWrapper<TCurrencyTrade> currencyTradeQuery = new QueryWrapper<TCurrencyTrade>();
-			entrustRecordQuery.eq( TCurrencyTrade.FieldNames.ID, 1 );
-			TCurrencyTrade currencyTrade = currencyTradeService.getOne( currencyTradeQuery );
+			TCurrencyTrade currencyTrade = new TCurrencyTrade();
+			currencyTrade.setId( currencyTradeId );
+			currencyTrade = currencyTradeService.getBy( currencyTrade );
 			int currencyId = currencyTrade.getCurrencyId1();// 货比id
 			int marketId = currencyTrade.getCurrencyId2();// 法币id
 
@@ -110,7 +108,7 @@ public class SettleAccount {
 		}
 	}
 
-	private boolean updateUserWallet(TWallet wallet, BigDecimal val, long entrustRecordId, boolean bool) {
+	private void updateUserWallet(TWallet wallet, BigDecimal val, long entrustRecordId, boolean bool) {
 		TWallet updateWallet = new TWallet();// 修改的对象
 		if (bool) {
 			updateWallet.setTradeFrozen( wallet.getTradeFrozen().subtract( val ) );
@@ -118,11 +116,17 @@ public class SettleAccount {
 			updateWallet.setTotal( wallet.getTotal().add( val ) );
 		}
 		updateWallet.setVersion( wallet.getVersion() + 1 );
+		updateWallet.setUpdateTime( new Date() );
 
-		UpdateWrapper<TWallet> updateSellMarketIdWrapper = new UpdateWrapper<TWallet>(); // 条件
-		updateSellMarketIdWrapper.eq( TWallet.FieldNames.ID, wallet.getId() );
-		updateSellMarketIdWrapper.eq( TWallet.FieldNames.VERSION, wallet.getVersion() );
-		walletService.update( updateWallet, updateSellMarketIdWrapper );
+		TWallet updateSellMarketIdWallet = new TWallet(); // 条件
+		updateSellMarketIdWallet.setId( wallet.getId() );
+		updateSellMarketIdWallet.setUserId( wallet.getUserId() );
+		updateSellMarketIdWallet.setCurrencyId( wallet.getCurrencyId() );
+		updateSellMarketIdWallet.setVersion( wallet.getVersion() );
+
+		// 更新钱包
+		int row = walletService.modifyWithSelectiveBy( updateWallet, updateSellMarketIdWallet );
+		System.out.println( "row=" + row );
 
 		// 记录钱包流水
 		TWalletRecord walletRecord = new TWalletRecord();
@@ -142,10 +146,8 @@ public class SettleAccount {
 		}
 		walletRecord.setAfterAmount( beforeAmount.add( val ) );
 		// 插入流水
-		walletRecordService.save( walletRecord );
+		walletRecordService.add( walletRecord );
 
-		// 更新钱包
-		return walletService.update( updateWallet, updateSellMarketIdWrapper );
 	}
 
 }
