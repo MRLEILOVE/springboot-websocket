@@ -272,11 +272,14 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 			LINE_PRICE = dealPrice;
 			// 异步通知。
 			rabbitTemplate.convertAndSend(IQueueConstants.MESSAGE_EXCHANGE, IQueueConstants.MESSAGE_ROUTE_KEY, LINE_PRICE);
-			rabbitTemplate.setConfirmCallback((correlationData, ack, cause) -> {
-				System.out.println("消息唯一标识" + correlationData);
-				System.out.println("消息确认结果" + ack);
-				System.out.println("失败原因" + cause);
-			});
+//			rabbitTemplate.setConfirmCallback((correlationData, ack, cause) -> {
+//				System.out.println("消息唯一标识：" + correlationData);
+//				System.out.println("消息确认结果：" + ack);
+//				System.out.println("失败原因：" + cause);
+//			});
+//			rabbitTemplate.setReturnCallback((Message message, int replyCode, String replyText, String exchange, String routingKey) -> {
+//				
+//			});
 			LOG.info("修改行情价为：" + LINE_PRICE);
 		}
 	}
