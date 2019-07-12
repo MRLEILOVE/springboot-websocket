@@ -82,25 +82,26 @@
 	
 	<delete id="remove" parameterType="com.bittrade.pojo.model.TCurrency">
 		DELETE FROM t_currency
-		WHERE
+		<where>
 			<if test="name != null and name != ''">
-			`name` = #{name,jdbcType=VARCHAR} AND
+			AND `name` = #{name,jdbcType=VARCHAR}
 			</if>
 			<if test="shortName != null and shortName != ''">
-			`short_name` = #{shortName,jdbcType=VARCHAR} AND
+			AND `short_name` = #{shortName,jdbcType=VARCHAR}
 			</if>
 			<if test="status != null and status != ''">
-			`status` = #{status,jdbcType=INTEGER} AND
+			AND `status` = #{status,jdbcType=INTEGER}
 			</if>
 			<if test="type != null and type != ''">
-			`type` = #{type,jdbcType=INTEGER} AND
+			AND `type` = #{type,jdbcType=INTEGER}
 			</if>
 			<if test="desc != null and desc != ''">
-			`desc` = #{desc,jdbcType=VARCHAR} AND
+			AND `desc` = #{desc,jdbcType=VARCHAR}
 			</if>
 			<if test="createTime != null and createTime != ''">
-			`create_time` = #{createTime,jdbcType=TIMESTAMP}
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
 			</if>
+		</where>
 	</delete>
 	
 	<update id="modifyByPK" parameterType="com.bittrade.pojo.model.TCurrency">
@@ -150,67 +151,69 @@
 			`type` = #{tCurrency.type,jdbcType=INTEGER}, 
 			`desc` = #{tCurrency.desc,jdbcType=VARCHAR}, 
 			`create_time` = #{tCurrency.createTime,jdbcType=TIMESTAMP}
-		WHERE 
+		<where>
 			<if test="condiTCurrency.name != null and condiTCurrency.name != ''">
-			`name` = #{condiTCurrency.name,jdbcType=VARCHAR} AND
+			AND `name` = #{condiTCurrency.name,jdbcType=VARCHAR}
 			</if>
 			<if test="condiTCurrency.shortName != null and condiTCurrency.shortName != ''">
-			`short_name` = #{condiTCurrency.shortName,jdbcType=VARCHAR} AND
+			AND `short_name` = #{condiTCurrency.shortName,jdbcType=VARCHAR}
 			</if>
 			<if test="condiTCurrency.status != null and condiTCurrency.status != ''">
-			`status` = #{condiTCurrency.status,jdbcType=INTEGER} AND
+			AND `status` = #{condiTCurrency.status,jdbcType=INTEGER}
 			</if>
 			<if test="condiTCurrency.type != null and condiTCurrency.type != ''">
-			`type` = #{condiTCurrency.type,jdbcType=INTEGER} AND
+			AND `type` = #{condiTCurrency.type,jdbcType=INTEGER}
 			</if>
 			<if test="condiTCurrency.desc != null and condiTCurrency.desc != ''">
-			`desc` = #{condiTCurrency.desc,jdbcType=VARCHAR} AND
+			AND `desc` = #{condiTCurrency.desc,jdbcType=VARCHAR}
 			</if>
 			<if test="condiTCurrency.createTime != null and condiTCurrency.createTime != ''">
-			`create_time` = #{condiTCurrency.createTime,jdbcType=TIMESTAMP}
+			AND `create_time` = #{condiTCurrency.createTime,jdbcType=TIMESTAMP}
 			</if>
+		</where>
 	</update>
 	
 	<update id="modifyWithSelective">
 		UPDATE t_currency
 		SET
-			<if test="name != null and name != ''">
+			<if test="tCurrency.name != null and tCurrency.name != ''">
 			`name` = #{tCurrency.name,jdbcType=VARCHAR}, 
 			</if>
-			<if test="shortName != null and shortName != ''">
+			<if test="tCurrency.shortName != null and tCurrency.shortName != ''">
 			`short_name` = #{tCurrency.shortName,jdbcType=VARCHAR}, 
 			</if>
-			<if test="status != null and status != ''">
+			<if test="tCurrency.status != null and tCurrency.status != ''">
 			`status` = #{tCurrency.status,jdbcType=INTEGER}, 
 			</if>
-			<if test="type != null and type != ''">
+			<if test="tCurrency.type != null and tCurrency.type != ''">
 			`type` = #{tCurrency.type,jdbcType=INTEGER}, 
 			</if>
-			<if test="desc != null and desc != ''">
+			<if test="tCurrency.desc != null and tCurrency.desc != ''">
 			`desc` = #{tCurrency.desc,jdbcType=VARCHAR}, 
 			</if>
-			<if test="createTime != null and createTime != ''">
+			<if test="tCurrency.createTime != null and tCurrency.createTime != ''">
 			`create_time` = #{tCurrency.createTime,jdbcType=TIMESTAMP}
 			</if>
-		WHERE 
+		<where>
 			<if test="condiTCurrency.name != null and condiTCurrency.name != ''">
-			`name` = #{condiTCurrency.name,jdbcType=VARCHAR} AND
+			AND `name` = #{condiTCurrency.name,jdbcType=VARCHAR}
 			</if>
 			<if test="condiTCurrency.shortName != null and condiTCurrency.shortName != ''">
-			`short_name` = #{condiTCurrency.shortName,jdbcType=VARCHAR} AND
+			AND `short_name` = #{condiTCurrency.shortName,jdbcType=VARCHAR}
 			</if>
 			<if test="condiTCurrency.status != null and condiTCurrency.status != ''">
-			`status` = #{condiTCurrency.status,jdbcType=INTEGER} AND
+			AND `status` = #{condiTCurrency.status,jdbcType=INTEGER}
 			</if>
 			<if test="condiTCurrency.type != null and condiTCurrency.type != ''">
-			`type` = #{condiTCurrency.type,jdbcType=INTEGER} AND
+			AND `type` = #{condiTCurrency.type,jdbcType=INTEGER}
 			</if>
 			<if test="condiTCurrency.desc != null and condiTCurrency.desc != ''">
-			`desc` = #{condiTCurrency.desc,jdbcType=VARCHAR} AND
+			AND `desc` = #{condiTCurrency.desc,jdbcType=VARCHAR}
 			</if>
 			<if test="condiTCurrency.createTime != null and condiTCurrency.createTime != ''">
-			`create_time` = #{condiTCurrency.createTime,jdbcType=TIMESTAMP}
+			AND `create_time` = #{condiTCurrency.createTime,jdbcType=TIMESTAMP}
 			</if>
+		</where>
 	</update>
 	
 	<select id="getByPK" resultType="com.bittrade.pojo.model.TCurrency">
@@ -223,9 +226,8 @@
 			`desc`, 
 			`create_time`
 		FROM t_currency
-		<where>
+		WHERE 
 			`id` = #{id,jdbcType=INTEGER}
-		</where>
 	</select>
 	
 	<select id="get" resultType="com.bittrade.pojo.model.TCurrency">

@@ -112,34 +112,35 @@
 	
 	<delete id="remove" parameterType="com.bittrade.pojo.model.TUserCapitalAccountRecord">
 		DELETE FROM t_user_capital_account_record
-		WHERE
+		<where>
 			<if test="userId != null and userId != ''">
-			`user_id` = #{userId,jdbcType=BIGINT} AND
+			AND `user_id` = #{userId,jdbcType=BIGINT}
 			</if>
 			<if test="currencyId != null and currencyId != ''">
-			`currency_id` = #{currencyId,jdbcType=INTEGER} AND
+			AND `currency_id` = #{currencyId,jdbcType=INTEGER}
 			</if>
 			<if test="count != null and count != ''">
-			`count` = #{count,jdbcType=DECIMAL} AND
+			AND `count` = #{count,jdbcType=DECIMAL}
 			</if>
 			<if test="adderess != null and adderess != ''">
-			`adderess` = #{adderess,jdbcType=VARCHAR} AND
+			AND `adderess` = #{adderess,jdbcType=VARCHAR}
 			</if>
 			<if test="fees != null and fees != ''">
-			`fees` = #{fees,jdbcType=DECIMAL} AND
+			AND `fees` = #{fees,jdbcType=DECIMAL}
 			</if>
 			<if test="type != null and type != ''">
-			`type` = #{type,jdbcType=INTEGER} AND
+			AND `type` = #{type,jdbcType=INTEGER}
 			</if>
 			<if test="status != null and status != ''">
-			`status` = #{status,jdbcType=INTEGER} AND
+			AND `status` = #{status,jdbcType=INTEGER}
 			</if>
 			<if test="createTime != null and createTime != ''">
-			`create_time` = #{createTime,jdbcType=TIMESTAMP} AND
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
 			</if>
 			<if test="updateTime != null and updateTime != ''">
-			`update_time` = #{updateTime,jdbcType=TIMESTAMP}
+			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
 			</if>
+		</where>
 	</delete>
 	
 	<update id="modifyByPK" parameterType="com.bittrade.pojo.model.TUserCapitalAccountRecord">
@@ -204,94 +205,96 @@
 			`status` = #{tUserCapitalAccountRecord.status,jdbcType=INTEGER}, 
 			`create_time` = #{tUserCapitalAccountRecord.createTime,jdbcType=TIMESTAMP}, 
 			`update_time` = #{tUserCapitalAccountRecord.updateTime,jdbcType=TIMESTAMP}
-		WHERE 
+		<where>
 			<if test="condiTUserCapitalAccountRecord.userId != null and condiTUserCapitalAccountRecord.userId != ''">
-			`user_id` = #{condiTUserCapitalAccountRecord.userId,jdbcType=BIGINT} AND
+			AND `user_id` = #{condiTUserCapitalAccountRecord.userId,jdbcType=BIGINT}
 			</if>
 			<if test="condiTUserCapitalAccountRecord.currencyId != null and condiTUserCapitalAccountRecord.currencyId != ''">
-			`currency_id` = #{condiTUserCapitalAccountRecord.currencyId,jdbcType=INTEGER} AND
+			AND `currency_id` = #{condiTUserCapitalAccountRecord.currencyId,jdbcType=INTEGER}
 			</if>
 			<if test="condiTUserCapitalAccountRecord.count != null and condiTUserCapitalAccountRecord.count != ''">
-			`count` = #{condiTUserCapitalAccountRecord.count,jdbcType=DECIMAL} AND
+			AND `count` = #{condiTUserCapitalAccountRecord.count,jdbcType=DECIMAL}
 			</if>
 			<if test="condiTUserCapitalAccountRecord.adderess != null and condiTUserCapitalAccountRecord.adderess != ''">
-			`adderess` = #{condiTUserCapitalAccountRecord.adderess,jdbcType=VARCHAR} AND
+			AND `adderess` = #{condiTUserCapitalAccountRecord.adderess,jdbcType=VARCHAR}
 			</if>
 			<if test="condiTUserCapitalAccountRecord.fees != null and condiTUserCapitalAccountRecord.fees != ''">
-			`fees` = #{condiTUserCapitalAccountRecord.fees,jdbcType=DECIMAL} AND
+			AND `fees` = #{condiTUserCapitalAccountRecord.fees,jdbcType=DECIMAL}
 			</if>
 			<if test="condiTUserCapitalAccountRecord.type != null and condiTUserCapitalAccountRecord.type != ''">
-			`type` = #{condiTUserCapitalAccountRecord.type,jdbcType=INTEGER} AND
+			AND `type` = #{condiTUserCapitalAccountRecord.type,jdbcType=INTEGER}
 			</if>
 			<if test="condiTUserCapitalAccountRecord.status != null and condiTUserCapitalAccountRecord.status != ''">
-			`status` = #{condiTUserCapitalAccountRecord.status,jdbcType=INTEGER} AND
+			AND `status` = #{condiTUserCapitalAccountRecord.status,jdbcType=INTEGER}
 			</if>
 			<if test="condiTUserCapitalAccountRecord.createTime != null and condiTUserCapitalAccountRecord.createTime != ''">
-			`create_time` = #{condiTUserCapitalAccountRecord.createTime,jdbcType=TIMESTAMP} AND
+			AND `create_time` = #{condiTUserCapitalAccountRecord.createTime,jdbcType=TIMESTAMP}
 			</if>
 			<if test="condiTUserCapitalAccountRecord.updateTime != null and condiTUserCapitalAccountRecord.updateTime != ''">
-			`update_time` = #{condiTUserCapitalAccountRecord.updateTime,jdbcType=TIMESTAMP}
+			AND `update_time` = #{condiTUserCapitalAccountRecord.updateTime,jdbcType=TIMESTAMP}
 			</if>
+		</where>
 	</update>
 	
 	<update id="modifyWithSelective">
 		UPDATE t_user_capital_account_record
 		SET
-			<if test="userId != null and userId != ''">
+			<if test="tUserCapitalAccountRecord.userId != null and tUserCapitalAccountRecord.userId != ''">
 			`user_id` = #{tUserCapitalAccountRecord.userId,jdbcType=BIGINT}, 
 			</if>
-			<if test="currencyId != null and currencyId != ''">
+			<if test="tUserCapitalAccountRecord.currencyId != null and tUserCapitalAccountRecord.currencyId != ''">
 			`currency_id` = #{tUserCapitalAccountRecord.currencyId,jdbcType=INTEGER}, 
 			</if>
-			<if test="count != null and count != ''">
+			<if test="tUserCapitalAccountRecord.count != null and tUserCapitalAccountRecord.count != ''">
 			`count` = #{tUserCapitalAccountRecord.count,jdbcType=DECIMAL}, 
 			</if>
-			<if test="adderess != null and adderess != ''">
+			<if test="tUserCapitalAccountRecord.adderess != null and tUserCapitalAccountRecord.adderess != ''">
 			`adderess` = #{tUserCapitalAccountRecord.adderess,jdbcType=VARCHAR}, 
 			</if>
-			<if test="fees != null and fees != ''">
+			<if test="tUserCapitalAccountRecord.fees != null and tUserCapitalAccountRecord.fees != ''">
 			`fees` = #{tUserCapitalAccountRecord.fees,jdbcType=DECIMAL}, 
 			</if>
-			<if test="type != null and type != ''">
+			<if test="tUserCapitalAccountRecord.type != null and tUserCapitalAccountRecord.type != ''">
 			`type` = #{tUserCapitalAccountRecord.type,jdbcType=INTEGER}, 
 			</if>
-			<if test="status != null and status != ''">
+			<if test="tUserCapitalAccountRecord.status != null and tUserCapitalAccountRecord.status != ''">
 			`status` = #{tUserCapitalAccountRecord.status,jdbcType=INTEGER}, 
 			</if>
-			<if test="createTime != null and createTime != ''">
+			<if test="tUserCapitalAccountRecord.createTime != null and tUserCapitalAccountRecord.createTime != ''">
 			`create_time` = #{tUserCapitalAccountRecord.createTime,jdbcType=TIMESTAMP}, 
 			</if>
-			<if test="updateTime != null and updateTime != ''">
+			<if test="tUserCapitalAccountRecord.updateTime != null and tUserCapitalAccountRecord.updateTime != ''">
 			`update_time` = #{tUserCapitalAccountRecord.updateTime,jdbcType=TIMESTAMP}
 			</if>
-		WHERE 
+		<where>
 			<if test="condiTUserCapitalAccountRecord.userId != null and condiTUserCapitalAccountRecord.userId != ''">
-			`user_id` = #{condiTUserCapitalAccountRecord.userId,jdbcType=BIGINT} AND
+			AND `user_id` = #{condiTUserCapitalAccountRecord.userId,jdbcType=BIGINT}
 			</if>
 			<if test="condiTUserCapitalAccountRecord.currencyId != null and condiTUserCapitalAccountRecord.currencyId != ''">
-			`currency_id` = #{condiTUserCapitalAccountRecord.currencyId,jdbcType=INTEGER} AND
+			AND `currency_id` = #{condiTUserCapitalAccountRecord.currencyId,jdbcType=INTEGER}
 			</if>
 			<if test="condiTUserCapitalAccountRecord.count != null and condiTUserCapitalAccountRecord.count != ''">
-			`count` = #{condiTUserCapitalAccountRecord.count,jdbcType=DECIMAL} AND
+			AND `count` = #{condiTUserCapitalAccountRecord.count,jdbcType=DECIMAL}
 			</if>
 			<if test="condiTUserCapitalAccountRecord.adderess != null and condiTUserCapitalAccountRecord.adderess != ''">
-			`adderess` = #{condiTUserCapitalAccountRecord.adderess,jdbcType=VARCHAR} AND
+			AND `adderess` = #{condiTUserCapitalAccountRecord.adderess,jdbcType=VARCHAR}
 			</if>
 			<if test="condiTUserCapitalAccountRecord.fees != null and condiTUserCapitalAccountRecord.fees != ''">
-			`fees` = #{condiTUserCapitalAccountRecord.fees,jdbcType=DECIMAL} AND
+			AND `fees` = #{condiTUserCapitalAccountRecord.fees,jdbcType=DECIMAL}
 			</if>
 			<if test="condiTUserCapitalAccountRecord.type != null and condiTUserCapitalAccountRecord.type != ''">
-			`type` = #{condiTUserCapitalAccountRecord.type,jdbcType=INTEGER} AND
+			AND `type` = #{condiTUserCapitalAccountRecord.type,jdbcType=INTEGER}
 			</if>
 			<if test="condiTUserCapitalAccountRecord.status != null and condiTUserCapitalAccountRecord.status != ''">
-			`status` = #{condiTUserCapitalAccountRecord.status,jdbcType=INTEGER} AND
+			AND `status` = #{condiTUserCapitalAccountRecord.status,jdbcType=INTEGER}
 			</if>
 			<if test="condiTUserCapitalAccountRecord.createTime != null and condiTUserCapitalAccountRecord.createTime != ''">
-			`create_time` = #{condiTUserCapitalAccountRecord.createTime,jdbcType=TIMESTAMP} AND
+			AND `create_time` = #{condiTUserCapitalAccountRecord.createTime,jdbcType=TIMESTAMP}
 			</if>
 			<if test="condiTUserCapitalAccountRecord.updateTime != null and condiTUserCapitalAccountRecord.updateTime != ''">
-			`update_time` = #{condiTUserCapitalAccountRecord.updateTime,jdbcType=TIMESTAMP}
+			AND `update_time` = #{condiTUserCapitalAccountRecord.updateTime,jdbcType=TIMESTAMP}
 			</if>
+		</where>
 	</update>
 	
 	<select id="getByPK" resultType="com.bittrade.pojo.model.TUserCapitalAccountRecord">
@@ -307,9 +310,8 @@
 			`create_time`, 
 			`update_time`
 		FROM t_user_capital_account_record
-		<where>
+		WHERE 
 			`id` = #{id,jdbcType=BIGINT}
-		</where>
 	</select>
 	
 	<select id="get" resultType="com.bittrade.pojo.model.TUserCapitalAccountRecord">

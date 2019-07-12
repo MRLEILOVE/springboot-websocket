@@ -186,64 +186,65 @@
 	
 	<delete id="remove" parameterType="com.bittrade.pojo.model.WUserWalletBill">
 		DELETE FROM w_user_wallet_bill
-		WHERE
+		<where>
 			<if test="userId != null and userId != ''">
-			`user_id` = #{userId,jdbcType=BIGINT} AND
+			AND `user_id` = #{userId,jdbcType=BIGINT}
 			</if>
 			<if test="platform != null and platform != ''">
-			`platform` = #{platform,jdbcType=VARCHAR} AND
+			AND `platform` = #{platform,jdbcType=VARCHAR}
 			</if>
 			<if test="orderId != null and orderId != ''">
-			`order_id` = #{orderId,jdbcType=VARCHAR} AND
+			AND `order_id` = #{orderId,jdbcType=VARCHAR}
 			</if>
 			<if test="direction != null and direction != ''">
-			`direction` = #{direction,jdbcType=INTEGER} AND
+			AND `direction` = #{direction,jdbcType=INTEGER}
 			</if>
 			<if test="coinType != null and coinType != ''">
-			`coin_type` = #{coinType,jdbcType=VARCHAR} AND
+			AND `coin_type` = #{coinType,jdbcType=VARCHAR}
 			</if>
 			<if test="token != null and token != ''">
-			`token` = #{token,jdbcType=VARCHAR} AND
+			AND `token` = #{token,jdbcType=VARCHAR}
 			</if>
 			<if test="contract != null and contract != ''">
-			`contract` = #{contract,jdbcType=VARCHAR} AND
+			AND `contract` = #{contract,jdbcType=VARCHAR}
 			</if>
 			<if test="senderAddress != null and senderAddress != ''">
-			`sender_address` = #{senderAddress,jdbcType=VARCHAR} AND
+			AND `sender_address` = #{senderAddress,jdbcType=VARCHAR}
 			</if>
 			<if test="receiverAddress != null and receiverAddress != ''">
-			`receiver_address` = #{receiverAddress,jdbcType=VARCHAR} AND
+			AND `receiver_address` = #{receiverAddress,jdbcType=VARCHAR}
 			</if>
 			<if test="amount != null and amount != ''">
-			`amount` = #{amount,jdbcType=DECIMAL} AND
+			AND `amount` = #{amount,jdbcType=DECIMAL}
 			</if>
 			<if test="block != null and block != ''">
-			`block` = #{block,jdbcType=BIGINT} AND
+			AND `block` = #{block,jdbcType=BIGINT}
 			</if>
 			<if test="tx != null and tx != ''">
-			`tx` = #{tx,jdbcType=VARCHAR} AND
+			AND `tx` = #{tx,jdbcType=VARCHAR}
 			</if>
 			<if test="tradeStep != null and tradeStep != ''">
-			`trade_step` = #{tradeStep,jdbcType=CHAR} AND
+			AND `trade_step` = #{tradeStep,jdbcType=CHAR}
 			</if>
 			<if test="operationType != null and operationType != ''">
-			`operation_type` = #{operationType,jdbcType=VARCHAR} AND
+			AND `operation_type` = #{operationType,jdbcType=VARCHAR}
 			</if>
 			<if test="transferFlag != null and transferFlag != ''">
-			`transfer_flag` = #{transferFlag,jdbcType=INTEGER} AND
+			AND `transfer_flag` = #{transferFlag,jdbcType=INTEGER}
 			</if>
 			<if test="flag != null and flag != ''">
-			`flag` = #{flag,jdbcType=INTEGER} AND
+			AND `flag` = #{flag,jdbcType=INTEGER}
 			</if>
 			<if test="remark != null and remark != ''">
-			`remark` = #{remark,jdbcType=VARCHAR} AND
+			AND `remark` = #{remark,jdbcType=VARCHAR}
 			</if>
 			<if test="createTime != null and createTime != ''">
-			`create_time` = #{createTime,jdbcType=TIMESTAMP} AND
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
 			</if>
 			<if test="updateTime != null and updateTime != ''">
-			`update_time` = #{updateTime,jdbcType=TIMESTAMP}
+			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
 			</if>
+		</where>
 	</delete>
 	
 	<update id="modifyByPK" parameterType="com.bittrade.pojo.model.WUserWalletBill">
@@ -358,184 +359,186 @@
 			`remark` = #{wUserWalletBill.remark,jdbcType=VARCHAR}, 
 			`create_time` = #{wUserWalletBill.createTime,jdbcType=TIMESTAMP}, 
 			`update_time` = #{wUserWalletBill.updateTime,jdbcType=TIMESTAMP}
-		WHERE 
+		<where>
 			<if test="condiWUserWalletBill.userId != null and condiWUserWalletBill.userId != ''">
-			`user_id` = #{condiWUserWalletBill.userId,jdbcType=BIGINT} AND
+			AND `user_id` = #{condiWUserWalletBill.userId,jdbcType=BIGINT}
 			</if>
 			<if test="condiWUserWalletBill.platform != null and condiWUserWalletBill.platform != ''">
-			`platform` = #{condiWUserWalletBill.platform,jdbcType=VARCHAR} AND
+			AND `platform` = #{condiWUserWalletBill.platform,jdbcType=VARCHAR}
 			</if>
 			<if test="condiWUserWalletBill.orderId != null and condiWUserWalletBill.orderId != ''">
-			`order_id` = #{condiWUserWalletBill.orderId,jdbcType=VARCHAR} AND
+			AND `order_id` = #{condiWUserWalletBill.orderId,jdbcType=VARCHAR}
 			</if>
 			<if test="condiWUserWalletBill.direction != null and condiWUserWalletBill.direction != ''">
-			`direction` = #{condiWUserWalletBill.direction,jdbcType=INTEGER} AND
+			AND `direction` = #{condiWUserWalletBill.direction,jdbcType=INTEGER}
 			</if>
 			<if test="condiWUserWalletBill.coinType != null and condiWUserWalletBill.coinType != ''">
-			`coin_type` = #{condiWUserWalletBill.coinType,jdbcType=VARCHAR} AND
+			AND `coin_type` = #{condiWUserWalletBill.coinType,jdbcType=VARCHAR}
 			</if>
 			<if test="condiWUserWalletBill.token != null and condiWUserWalletBill.token != ''">
-			`token` = #{condiWUserWalletBill.token,jdbcType=VARCHAR} AND
+			AND `token` = #{condiWUserWalletBill.token,jdbcType=VARCHAR}
 			</if>
 			<if test="condiWUserWalletBill.contract != null and condiWUserWalletBill.contract != ''">
-			`contract` = #{condiWUserWalletBill.contract,jdbcType=VARCHAR} AND
+			AND `contract` = #{condiWUserWalletBill.contract,jdbcType=VARCHAR}
 			</if>
 			<if test="condiWUserWalletBill.senderAddress != null and condiWUserWalletBill.senderAddress != ''">
-			`sender_address` = #{condiWUserWalletBill.senderAddress,jdbcType=VARCHAR} AND
+			AND `sender_address` = #{condiWUserWalletBill.senderAddress,jdbcType=VARCHAR}
 			</if>
 			<if test="condiWUserWalletBill.receiverAddress != null and condiWUserWalletBill.receiverAddress != ''">
-			`receiver_address` = #{condiWUserWalletBill.receiverAddress,jdbcType=VARCHAR} AND
+			AND `receiver_address` = #{condiWUserWalletBill.receiverAddress,jdbcType=VARCHAR}
 			</if>
 			<if test="condiWUserWalletBill.amount != null and condiWUserWalletBill.amount != ''">
-			`amount` = #{condiWUserWalletBill.amount,jdbcType=DECIMAL} AND
+			AND `amount` = #{condiWUserWalletBill.amount,jdbcType=DECIMAL}
 			</if>
 			<if test="condiWUserWalletBill.block != null and condiWUserWalletBill.block != ''">
-			`block` = #{condiWUserWalletBill.block,jdbcType=BIGINT} AND
+			AND `block` = #{condiWUserWalletBill.block,jdbcType=BIGINT}
 			</if>
 			<if test="condiWUserWalletBill.tx != null and condiWUserWalletBill.tx != ''">
-			`tx` = #{condiWUserWalletBill.tx,jdbcType=VARCHAR} AND
+			AND `tx` = #{condiWUserWalletBill.tx,jdbcType=VARCHAR}
 			</if>
 			<if test="condiWUserWalletBill.tradeStep != null and condiWUserWalletBill.tradeStep != ''">
-			`trade_step` = #{condiWUserWalletBill.tradeStep,jdbcType=CHAR} AND
+			AND `trade_step` = #{condiWUserWalletBill.tradeStep,jdbcType=CHAR}
 			</if>
 			<if test="condiWUserWalletBill.operationType != null and condiWUserWalletBill.operationType != ''">
-			`operation_type` = #{condiWUserWalletBill.operationType,jdbcType=VARCHAR} AND
+			AND `operation_type` = #{condiWUserWalletBill.operationType,jdbcType=VARCHAR}
 			</if>
 			<if test="condiWUserWalletBill.transferFlag != null and condiWUserWalletBill.transferFlag != ''">
-			`transfer_flag` = #{condiWUserWalletBill.transferFlag,jdbcType=INTEGER} AND
+			AND `transfer_flag` = #{condiWUserWalletBill.transferFlag,jdbcType=INTEGER}
 			</if>
 			<if test="condiWUserWalletBill.flag != null and condiWUserWalletBill.flag != ''">
-			`flag` = #{condiWUserWalletBill.flag,jdbcType=INTEGER} AND
+			AND `flag` = #{condiWUserWalletBill.flag,jdbcType=INTEGER}
 			</if>
 			<if test="condiWUserWalletBill.remark != null and condiWUserWalletBill.remark != ''">
-			`remark` = #{condiWUserWalletBill.remark,jdbcType=VARCHAR} AND
+			AND `remark` = #{condiWUserWalletBill.remark,jdbcType=VARCHAR}
 			</if>
 			<if test="condiWUserWalletBill.createTime != null and condiWUserWalletBill.createTime != ''">
-			`create_time` = #{condiWUserWalletBill.createTime,jdbcType=TIMESTAMP} AND
+			AND `create_time` = #{condiWUserWalletBill.createTime,jdbcType=TIMESTAMP}
 			</if>
 			<if test="condiWUserWalletBill.updateTime != null and condiWUserWalletBill.updateTime != ''">
-			`update_time` = #{condiWUserWalletBill.updateTime,jdbcType=TIMESTAMP}
+			AND `update_time` = #{condiWUserWalletBill.updateTime,jdbcType=TIMESTAMP}
 			</if>
+		</where>
 	</update>
 	
 	<update id="modifyWithSelective">
 		UPDATE w_user_wallet_bill
 		SET
-			<if test="userId != null and userId != ''">
+			<if test="wUserWalletBill.userId != null and wUserWalletBill.userId != ''">
 			`user_id` = #{wUserWalletBill.userId,jdbcType=BIGINT}, 
 			</if>
-			<if test="platform != null and platform != ''">
+			<if test="wUserWalletBill.platform != null and wUserWalletBill.platform != ''">
 			`platform` = #{wUserWalletBill.platform,jdbcType=VARCHAR}, 
 			</if>
-			<if test="orderId != null and orderId != ''">
+			<if test="wUserWalletBill.orderId != null and wUserWalletBill.orderId != ''">
 			`order_id` = #{wUserWalletBill.orderId,jdbcType=VARCHAR}, 
 			</if>
-			<if test="direction != null and direction != ''">
+			<if test="wUserWalletBill.direction != null and wUserWalletBill.direction != ''">
 			`direction` = #{wUserWalletBill.direction,jdbcType=INTEGER}, 
 			</if>
-			<if test="coinType != null and coinType != ''">
+			<if test="wUserWalletBill.coinType != null and wUserWalletBill.coinType != ''">
 			`coin_type` = #{wUserWalletBill.coinType,jdbcType=VARCHAR}, 
 			</if>
-			<if test="token != null and token != ''">
+			<if test="wUserWalletBill.token != null and wUserWalletBill.token != ''">
 			`token` = #{wUserWalletBill.token,jdbcType=VARCHAR}, 
 			</if>
-			<if test="contract != null and contract != ''">
+			<if test="wUserWalletBill.contract != null and wUserWalletBill.contract != ''">
 			`contract` = #{wUserWalletBill.contract,jdbcType=VARCHAR}, 
 			</if>
-			<if test="senderAddress != null and senderAddress != ''">
+			<if test="wUserWalletBill.senderAddress != null and wUserWalletBill.senderAddress != ''">
 			`sender_address` = #{wUserWalletBill.senderAddress,jdbcType=VARCHAR}, 
 			</if>
-			<if test="receiverAddress != null and receiverAddress != ''">
+			<if test="wUserWalletBill.receiverAddress != null and wUserWalletBill.receiverAddress != ''">
 			`receiver_address` = #{wUserWalletBill.receiverAddress,jdbcType=VARCHAR}, 
 			</if>
-			<if test="amount != null and amount != ''">
+			<if test="wUserWalletBill.amount != null and wUserWalletBill.amount != ''">
 			`amount` = #{wUserWalletBill.amount,jdbcType=DECIMAL}, 
 			</if>
-			<if test="block != null and block != ''">
+			<if test="wUserWalletBill.block != null and wUserWalletBill.block != ''">
 			`block` = #{wUserWalletBill.block,jdbcType=BIGINT}, 
 			</if>
-			<if test="tx != null and tx != ''">
+			<if test="wUserWalletBill.tx != null and wUserWalletBill.tx != ''">
 			`tx` = #{wUserWalletBill.tx,jdbcType=VARCHAR}, 
 			</if>
-			<if test="tradeStep != null and tradeStep != ''">
+			<if test="wUserWalletBill.tradeStep != null and wUserWalletBill.tradeStep != ''">
 			`trade_step` = #{wUserWalletBill.tradeStep,jdbcType=CHAR}, 
 			</if>
-			<if test="operationType != null and operationType != ''">
+			<if test="wUserWalletBill.operationType != null and wUserWalletBill.operationType != ''">
 			`operation_type` = #{wUserWalletBill.operationType,jdbcType=VARCHAR}, 
 			</if>
-			<if test="transferFlag != null and transferFlag != ''">
+			<if test="wUserWalletBill.transferFlag != null and wUserWalletBill.transferFlag != ''">
 			`transfer_flag` = #{wUserWalletBill.transferFlag,jdbcType=INTEGER}, 
 			</if>
-			<if test="flag != null and flag != ''">
+			<if test="wUserWalletBill.flag != null and wUserWalletBill.flag != ''">
 			`flag` = #{wUserWalletBill.flag,jdbcType=INTEGER}, 
 			</if>
-			<if test="remark != null and remark != ''">
+			<if test="wUserWalletBill.remark != null and wUserWalletBill.remark != ''">
 			`remark` = #{wUserWalletBill.remark,jdbcType=VARCHAR}, 
 			</if>
-			<if test="createTime != null and createTime != ''">
+			<if test="wUserWalletBill.createTime != null and wUserWalletBill.createTime != ''">
 			`create_time` = #{wUserWalletBill.createTime,jdbcType=TIMESTAMP}, 
 			</if>
-			<if test="updateTime != null and updateTime != ''">
+			<if test="wUserWalletBill.updateTime != null and wUserWalletBill.updateTime != ''">
 			`update_time` = #{wUserWalletBill.updateTime,jdbcType=TIMESTAMP}
 			</if>
-		WHERE 
+		<where>
 			<if test="condiWUserWalletBill.userId != null and condiWUserWalletBill.userId != ''">
-			`user_id` = #{condiWUserWalletBill.userId,jdbcType=BIGINT} AND
+			AND `user_id` = #{condiWUserWalletBill.userId,jdbcType=BIGINT}
 			</if>
 			<if test="condiWUserWalletBill.platform != null and condiWUserWalletBill.platform != ''">
-			`platform` = #{condiWUserWalletBill.platform,jdbcType=VARCHAR} AND
+			AND `platform` = #{condiWUserWalletBill.platform,jdbcType=VARCHAR}
 			</if>
 			<if test="condiWUserWalletBill.orderId != null and condiWUserWalletBill.orderId != ''">
-			`order_id` = #{condiWUserWalletBill.orderId,jdbcType=VARCHAR} AND
+			AND `order_id` = #{condiWUserWalletBill.orderId,jdbcType=VARCHAR}
 			</if>
 			<if test="condiWUserWalletBill.direction != null and condiWUserWalletBill.direction != ''">
-			`direction` = #{condiWUserWalletBill.direction,jdbcType=INTEGER} AND
+			AND `direction` = #{condiWUserWalletBill.direction,jdbcType=INTEGER}
 			</if>
 			<if test="condiWUserWalletBill.coinType != null and condiWUserWalletBill.coinType != ''">
-			`coin_type` = #{condiWUserWalletBill.coinType,jdbcType=VARCHAR} AND
+			AND `coin_type` = #{condiWUserWalletBill.coinType,jdbcType=VARCHAR}
 			</if>
 			<if test="condiWUserWalletBill.token != null and condiWUserWalletBill.token != ''">
-			`token` = #{condiWUserWalletBill.token,jdbcType=VARCHAR} AND
+			AND `token` = #{condiWUserWalletBill.token,jdbcType=VARCHAR}
 			</if>
 			<if test="condiWUserWalletBill.contract != null and condiWUserWalletBill.contract != ''">
-			`contract` = #{condiWUserWalletBill.contract,jdbcType=VARCHAR} AND
+			AND `contract` = #{condiWUserWalletBill.contract,jdbcType=VARCHAR}
 			</if>
 			<if test="condiWUserWalletBill.senderAddress != null and condiWUserWalletBill.senderAddress != ''">
-			`sender_address` = #{condiWUserWalletBill.senderAddress,jdbcType=VARCHAR} AND
+			AND `sender_address` = #{condiWUserWalletBill.senderAddress,jdbcType=VARCHAR}
 			</if>
 			<if test="condiWUserWalletBill.receiverAddress != null and condiWUserWalletBill.receiverAddress != ''">
-			`receiver_address` = #{condiWUserWalletBill.receiverAddress,jdbcType=VARCHAR} AND
+			AND `receiver_address` = #{condiWUserWalletBill.receiverAddress,jdbcType=VARCHAR}
 			</if>
 			<if test="condiWUserWalletBill.amount != null and condiWUserWalletBill.amount != ''">
-			`amount` = #{condiWUserWalletBill.amount,jdbcType=DECIMAL} AND
+			AND `amount` = #{condiWUserWalletBill.amount,jdbcType=DECIMAL}
 			</if>
 			<if test="condiWUserWalletBill.block != null and condiWUserWalletBill.block != ''">
-			`block` = #{condiWUserWalletBill.block,jdbcType=BIGINT} AND
+			AND `block` = #{condiWUserWalletBill.block,jdbcType=BIGINT}
 			</if>
 			<if test="condiWUserWalletBill.tx != null and condiWUserWalletBill.tx != ''">
-			`tx` = #{condiWUserWalletBill.tx,jdbcType=VARCHAR} AND
+			AND `tx` = #{condiWUserWalletBill.tx,jdbcType=VARCHAR}
 			</if>
 			<if test="condiWUserWalletBill.tradeStep != null and condiWUserWalletBill.tradeStep != ''">
-			`trade_step` = #{condiWUserWalletBill.tradeStep,jdbcType=CHAR} AND
+			AND `trade_step` = #{condiWUserWalletBill.tradeStep,jdbcType=CHAR}
 			</if>
 			<if test="condiWUserWalletBill.operationType != null and condiWUserWalletBill.operationType != ''">
-			`operation_type` = #{condiWUserWalletBill.operationType,jdbcType=VARCHAR} AND
+			AND `operation_type` = #{condiWUserWalletBill.operationType,jdbcType=VARCHAR}
 			</if>
 			<if test="condiWUserWalletBill.transferFlag != null and condiWUserWalletBill.transferFlag != ''">
-			`transfer_flag` = #{condiWUserWalletBill.transferFlag,jdbcType=INTEGER} AND
+			AND `transfer_flag` = #{condiWUserWalletBill.transferFlag,jdbcType=INTEGER}
 			</if>
 			<if test="condiWUserWalletBill.flag != null and condiWUserWalletBill.flag != ''">
-			`flag` = #{condiWUserWalletBill.flag,jdbcType=INTEGER} AND
+			AND `flag` = #{condiWUserWalletBill.flag,jdbcType=INTEGER}
 			</if>
 			<if test="condiWUserWalletBill.remark != null and condiWUserWalletBill.remark != ''">
-			`remark` = #{condiWUserWalletBill.remark,jdbcType=VARCHAR} AND
+			AND `remark` = #{condiWUserWalletBill.remark,jdbcType=VARCHAR}
 			</if>
 			<if test="condiWUserWalletBill.createTime != null and condiWUserWalletBill.createTime != ''">
-			`create_time` = #{condiWUserWalletBill.createTime,jdbcType=TIMESTAMP} AND
+			AND `create_time` = #{condiWUserWalletBill.createTime,jdbcType=TIMESTAMP}
 			</if>
 			<if test="condiWUserWalletBill.updateTime != null and condiWUserWalletBill.updateTime != ''">
-			`update_time` = #{condiWUserWalletBill.updateTime,jdbcType=TIMESTAMP}
+			AND `update_time` = #{condiWUserWalletBill.updateTime,jdbcType=TIMESTAMP}
 			</if>
+		</where>
 	</update>
 	
 	<select id="getByPK" resultType="com.bittrade.pojo.model.WUserWalletBill">
@@ -561,9 +564,8 @@
 			`create_time`, 
 			`update_time`
 		FROM w_user_wallet_bill
-		<where>
+		WHERE 
 			`id` = #{id,jdbcType=BIGINT}
-		</where>
 	</select>
 	
 	<select id="get" resultType="com.bittrade.pojo.model.WUserWalletBill">
