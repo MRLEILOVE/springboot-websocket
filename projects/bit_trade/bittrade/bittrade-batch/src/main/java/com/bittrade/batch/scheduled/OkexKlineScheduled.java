@@ -13,7 +13,7 @@ import java.util.concurrent.Executors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.alibaba.dubbo.config.annotation.Reference;
@@ -52,7 +52,7 @@ public class OkexKlineScheduled {
 	/**
 	 * 拉取交易对历史K线数据
 	 */
-	// @Scheduled(cron = "0/10 * * * * ?")
+	@Scheduled(cron = "0/10 * * * * ?")
 	public void kline() {
 		try {
 			String klineSwitch = GeneralMethod.qryParamConfigInfo( paramConfigService, ParamKeyEnum.OKEX_KLINE_HISTORY_SWITCH_KEY.getKey() )

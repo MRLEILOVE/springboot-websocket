@@ -46,8 +46,8 @@ public class GeneralMethod {
 			wallet.setTradeFrozen( BigDecimal.ZERO );
 			wallet.setTransferFrozen( BigDecimal.ZERO );
 			wallet.setCreateTime( new Date() );
-			boolean bool = walletService.save( wallet );
-			if (bool) {
+			int row = walletService.add( wallet );
+			if (row > 0) {
 				return wallet;
 			} else {
 				throw new Exception( "用户Id=" + userId + ",currencyId = " + currencyId + "生成用户钱包异常" );

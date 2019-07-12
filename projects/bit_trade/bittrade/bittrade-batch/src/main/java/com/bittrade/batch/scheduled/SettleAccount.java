@@ -19,6 +19,7 @@ import com.bittrade.currency.api.service.ITCurrencyTradeService;
 import com.bittrade.currency.api.service.ITEntrustRecordService;
 import com.bittrade.currency.api.service.ITWalletRecordService;
 import com.bittrade.currency.api.service.ITWalletService;
+import com.bittrade.pojo.dto.TCurrencyTradeDTO;
 import com.bittrade.pojo.dto.TEntrustRecordDTO;
 import com.bittrade.pojo.model.TCurrencyTrade;
 import com.bittrade.pojo.model.TEntrustRecord;
@@ -74,11 +75,15 @@ public class SettleAccount {
 			BigDecimal amount = entrustRecords.getAmount();
 
 			// 2、根据交易对Id获去币种id
-			QueryWrapper<TCurrencyTrade> currencyTradeQuery = new QueryWrapper<TCurrencyTrade>();
-			entrustRecordQuery.eq( TCurrencyTrade.FieldNames.ID, 1 );
-			TCurrencyTrade currencyTrade = currencyTradeService.getOne( currencyTradeQuery );
-			int currencyId = currencyTrade.getCurrencyId1();// 货比id
-			int marketId = currencyTrade.getCurrencyId2();// 法币id
+			// QueryWrapper<TCurrencyTrade> currencyTradeQuery = new
+			// QueryWrapper<TCurrencyTrade>();
+			// entrustRecordQuery.eq( TCurrencyTrade.FieldNames.ID, 1 );
+
+			TCurrencyTrade currencyTrade = new TCurrencyTrade();
+			currencyTrade.setId( 1 );
+			TCurrencyTradeDTO currencyTradeDto = currencyTradeService.get( currencyTrade ).get( 0 );
+			int currencyId = currencyTradeDto.getCurrencyId1();// 货比id
+			int marketId = currencyTradeDto.getCurrencyId2();// 法币id
 
 			// 3、获取卖家币币钱包信息
 			// currentUserId-->卖currencyId，currencyId(count)↓，marketId(amout)↑
@@ -110,7 +115,7 @@ public class SettleAccount {
 		}
 	}
 
-	private boolean updateUserWallet(TWallet wallet, BigDecimal val, long entrustRecordId, boolean bool) {
+	private void updateUserWallet(TWallet wallet, BigDecimal val, long entrustRecordId, boolean bool) {
 		TWallet updateWallet = new TWallet();// 修改的对象
 		if (bool) {
 			updateWallet.setTradeFrozen( wallet.getTradeFrozen().subtract( val ) );
@@ -119,10 +124,12 @@ public class SettleAccount {
 		}
 		updateWallet.setVersion( wallet.getVersion() + 1 );
 
-		UpdateWrapper<TWallet> updateSellMarketIdWrapper = new UpdateWrapper<TWallet>(); // 条件
-		updateSellMarketIdWrapper.eq( TWallet.FieldNames.ID, wallet.getId() );
-		updateSellMarketIdWrapper.eq( TWallet.FieldNames.VERSION, wallet.getVersion() );
-		walletService.update( updateWallet, updateSellMarketIdWrapper );
+		TWallet updateSellMarketIdWrapper = new TWallet(); // 条件
+		updateSellMarketIdWrapper.setId( wallet.getId() );
+		updateSellMarketIdWrapper.setVersion( wallet.getVersion() );
+
+		// 更新钱包
+		walletService.modify( updateWallet, updateSellMarketIdWrapper );
 
 		// 记录钱包流水
 		TWalletRecord walletRecord = new TWalletRecord();
@@ -142,10 +149,8 @@ public class SettleAccount {
 		}
 		walletRecord.setAfterAmount( beforeAmount.add( val ) );
 		// 插入流水
-		walletRecordService.save( walletRecord );
+		walletRecordService.add( walletRecord );
 
-		// 更新钱包
-		return walletService.update( updateWallet, updateSellMarketIdWrapper );
 	}
 
 }
