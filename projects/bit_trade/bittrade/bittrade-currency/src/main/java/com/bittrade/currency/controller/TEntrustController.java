@@ -67,7 +67,6 @@ public class TEntrustController extends BaseController<TEntrust, TEntrustDTO, TE
     @PostMapping(value = "/deal")
     @ResponseBody
     public ReturnDTO<String> queryDealEntrustByUserId(@RequestBody DealDTO dealDTO) {
-
         return entrustService.deal(dealDTO);
     }
 

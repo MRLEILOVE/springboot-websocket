@@ -5,29 +5,45 @@ import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
 
+/**
+ * 接收买/卖参数
+ */
 @Data
 @EqualsAndHashCode(callSuper = false)
-//@ApiModel(description = "接收买/卖参数")
 public class DealDTO implements Serializable {
 
-//    @ApiModelProperty(value = "用户id")
+    /**
+     * 用户id
+     */
     private Long userId;
 
-//    @ApiModelProperty(value = "交易对id")
+    /**
+     * 交易对id
+     */
     private Long currencyTradeId;
 
-//    @ApiModelProperty(value = "单价")
+    /**
+     * 单价
+     */
     private String price;
 
-//    @ApiModelProperty(value = "总价")
+    /**
+     * 总价
+     */
     private String amount;
 
-//    @ApiModelProperty(value = "数量")
+    /**
+     * 数量
+     */
     private String count;
 
-//    @ApiModelProperty(value = "委托类型:0市价交易,1限价交易")
+    /**
+     * 委托类型:0市价交易,1限价交易
+     */
     private Integer entrustType;
 
-//    @ApiModelProperty(value = "委托方向:0买入,1卖出")
+    /**
+     * 委托方向:0买入,1卖出
+     */
     private Integer entrustDirection;
 }

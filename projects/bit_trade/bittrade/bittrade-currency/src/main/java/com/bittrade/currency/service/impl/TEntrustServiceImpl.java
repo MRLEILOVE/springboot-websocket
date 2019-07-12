@@ -22,6 +22,7 @@ import com.bittrade.pojo.model.TWallet;
 import com.bittrade.pojo.vo.TEntrustInfoVO;
 import com.bittrade.pojo.vo.TEntrustVO;
 import com.core.framework.DTO.ReturnDTO;
+import org.springframework.util.StringUtils;
 
 /**
  * 
@@ -66,15 +67,29 @@ public class TEntrustServiceImpl extends DefaultTEntrustServiceImpl<ITEntrustDAO
         String price = dealDTO.getPrice();      //单价
         String count = dealDTO.getCount();      //数量
         String amount = dealDTO.getAmount();    //总价
-        if(price == null || Double.parseDouble(price) < 0.0)            return ReturnDTO.error("价格异常");
-        if(count == null || Double.parseDouble(count) <= 0)             return ReturnDTO.error("数量异常");
-        if(amount == null || Double.parseDouble(amount) < 0.0)          return ReturnDTO.error("总价异常");
-        if(dealDTO.getCurrencyTradeId() == null)                        return ReturnDTO.error("交易对id为空");
-        if(dealDTO.getEntrustDirection() == null)                       return ReturnDTO.error("买卖方向为空");
-        if(dealDTO.getUserId() == null)                                 return ReturnDTO.error("用户id为空");
+        if(price == null || Double.parseDouble(price) <= 0.0){
+            return ReturnDTO.error("价格异常");
+        }
+        if(count == null || Double.parseDouble(count) <= 0){
+            return ReturnDTO.error("数量异常");
+        }
+        if(amount == null || Double.parseDouble(amount) <= 0.0){
+            return ReturnDTO.error("总价异常");
+        }
+        if(StringUtils.isEmpty(dealDTO.getCurrencyTradeId())){
+            return ReturnDTO.error("交易对id为空");
+        }
+        if(StringUtils.isEmpty(dealDTO.getEntrustDirection())){
+            return ReturnDTO.error("买卖方向为空");
+        }
+        if(StringUtils.isEmpty(dealDTO.getUserId())){
+            return ReturnDTO.error("用户id为空");
+        }
 
         TCurrencyTrade currencyTrade = currencyTradeDAO.selectById(dealDTO.getCurrencyTradeId());
-        if(currencyTrade == null)                                       return ReturnDTO.error("交易对不存在");
+        if(currencyTrade == null){
+            return ReturnDTO.error("交易对不存在");
+        }
 
         String[] split_price = price.split(".");
         if(split_price != null && split_price.length == 2){
@@ -96,17 +111,30 @@ public class TEntrustServiceImpl extends DefaultTEntrustServiceImpl<ITEntrustDAO
         BigDecimal big_price = new BigDecimal(price);
         BigDecimal big_amount = new BigDecimal(amount);
 
-        if(big_count.compareTo(currencyTrade.getMinBuyCount()) == -1)        return ReturnDTO.error("数量低于最小可买/可卖数量");
-        if(big_price.compareTo(currencyTrade.getMinBuyPrice()) == -1)        return ReturnDTO.error("单价低于最小可买/可卖单价");
-        if(big_amount.compareTo(currencyTrade.getMinBuyAmount()) == -1)      return ReturnDTO.error("总价低于最小可买/可卖总价");
-        if(big_count.compareTo(currencyTrade.getMaxBuyCount()) ==1)          return ReturnDTO.error("数量高于最大可买/可卖数量");
-        if(big_price.compareTo(currencyTrade.getMaxBuyPrice()) == 1)         return ReturnDTO.error("单价高于最大可买/可卖单价");
-        if(big_amount.compareTo(currencyTrade.getMaxBuyAmount()) ==1)        return ReturnDTO.error("总价高于最大可买/可卖总价");
+        if(big_count.compareTo(currencyTrade.getMinBuyCount()) == -1){
+            return ReturnDTO.error("数量低于最小可买/可卖数量");
+        }
+        if(big_price.compareTo(currencyTrade.getMinBuyPrice()) == -1){
+            return ReturnDTO.error("单价低于最小可买/可卖单价");
+        }
+        if(big_amount.compareTo(currencyTrade.getMinBuyAmount()) == -1){
+            return ReturnDTO.error("总价低于最小可买/可卖总价");
+        }
+        if(big_count.compareTo(currencyTrade.getMaxBuyCount()) ==1){
+            return ReturnDTO.error("数量高于最大可买/可卖数量");
+        }
+        if(big_price.compareTo(currencyTrade.getMaxBuyPrice()) == 1){
+            return ReturnDTO.error("单价高于最大可买/可卖单价");
+        }
+        if(big_amount.compareTo(currencyTrade.getMaxBuyAmount()) ==1){
+            return ReturnDTO.error("总价高于最大可买/可卖总价");
+        }
 
-        if(currencyTrade.getStatus() != 1)                                   return ReturnDTO.error("交易对状态不可用");
+        if(currencyTrade.getStatus() != 1){
+            return ReturnDTO.error("交易对状态不可用");
+        }
 
         //2.校验用户钱包
-
         QueryWrapper<TWallet> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("user_id",dealDTO.getUserId());
         if(EntrustDirectionEnumer.BUY.getCode() == dealDTO.getEntrustDirection()){
@@ -119,11 +147,13 @@ public class TEntrustServiceImpl extends DefaultTEntrustServiceImpl<ITEntrustDAO
             queryWrapper.eq("currency_id",currencyTrade.getCurrencyId1()).select("total");
         }
         TWallet tWallet = walletDAO.selectOne(queryWrapper);
-        if(tWallet == null)                                             return ReturnDTO.error("用户钱包不存在");
+        if(tWallet == null){
+            return ReturnDTO.error("用户钱包不存在");
+        }
         BigDecimal total = tWallet.getTotal();
-        if(total == null || total.compareTo(big_amount) == -1)          return ReturnDTO.error("用户钱包余额不足");
-
-
+        if(total == null || total.compareTo(big_amount) == -1){
+            return ReturnDTO.error("用户钱包余额不足");
+        }
 
         //#TODO 调用接口
         return null;
