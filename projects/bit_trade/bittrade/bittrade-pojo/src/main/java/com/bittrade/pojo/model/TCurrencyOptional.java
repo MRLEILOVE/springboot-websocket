@@ -3,6 +3,7 @@ package com.bittrade.pojo.model;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.core.framework.base.model.BaseModel;
 
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -13,6 +14,7 @@ import lombok.EqualsAndHashCode;
  *
  */
 @Data
+@Builder
 @EqualsAndHashCode(callSuper = false)
 @TableName(value="t_currency_optional")
 public class TCurrencyOptional extends BaseModel<TCurrencyOptional> {
