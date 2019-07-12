@@ -58,16 +58,17 @@
 	
 	<delete id="remove" parameterType="com.bittrade.pojo.model.JobTask">
 		DELETE FROM job_task
-		WHERE
+		<where>
 			<if test="content != null and content != ''">
-			`content` = #{content,jdbcType=VARCHAR} AND
+			AND `content` = #{content,jdbcType=VARCHAR}
 			</if>
 			<if test="sendTime != null and sendTime != ''">
-			`send_time` = #{sendTime,jdbcType=BIGINT} AND
+			AND `send_time` = #{sendTime,jdbcType=BIGINT}
 			</if>
 			<if test="status != null and status != ''">
-			`status` = #{status,jdbcType=INTEGER}
+			AND `status` = #{status,jdbcType=INTEGER}
 			</if>
+		</where>
 	</delete>
 	
 	<update id="modifyByPK" parameterType="com.bittrade.pojo.model.JobTask">
@@ -102,40 +103,42 @@
 			`content` = #{jobTask.content,jdbcType=VARCHAR}, 
 			`send_time` = #{jobTask.sendTime,jdbcType=BIGINT}, 
 			`status` = #{jobTask.status,jdbcType=INTEGER}
-		WHERE 
+		<where>
 			<if test="condiJobTask.content != null and condiJobTask.content != ''">
-			`content` = #{condiJobTask.content,jdbcType=VARCHAR} AND
+			AND `content` = #{condiJobTask.content,jdbcType=VARCHAR}
 			</if>
 			<if test="condiJobTask.sendTime != null and condiJobTask.sendTime != ''">
-			`send_time` = #{condiJobTask.sendTime,jdbcType=BIGINT} AND
+			AND `send_time` = #{condiJobTask.sendTime,jdbcType=BIGINT}
 			</if>
 			<if test="condiJobTask.status != null and condiJobTask.status != ''">
-			`status` = #{condiJobTask.status,jdbcType=INTEGER}
+			AND `status` = #{condiJobTask.status,jdbcType=INTEGER}
 			</if>
+		</where>
 	</update>
 	
 	<update id="modifyWithSelective">
 		UPDATE job_task
 		SET
-			<if test="content != null and content != ''">
+			<if test="jobTask.content != null and jobTask.content != ''">
 			`content` = #{jobTask.content,jdbcType=VARCHAR}, 
 			</if>
-			<if test="sendTime != null and sendTime != ''">
+			<if test="jobTask.sendTime != null and jobTask.sendTime != ''">
 			`send_time` = #{jobTask.sendTime,jdbcType=BIGINT}, 
 			</if>
-			<if test="status != null and status != ''">
+			<if test="jobTask.status != null and jobTask.status != ''">
 			`status` = #{jobTask.status,jdbcType=INTEGER}
 			</if>
-		WHERE 
+		<where>
 			<if test="condiJobTask.content != null and condiJobTask.content != ''">
-			`content` = #{condiJobTask.content,jdbcType=VARCHAR} AND
+			AND `content` = #{condiJobTask.content,jdbcType=VARCHAR}
 			</if>
 			<if test="condiJobTask.sendTime != null and condiJobTask.sendTime != ''">
-			`send_time` = #{condiJobTask.sendTime,jdbcType=BIGINT} AND
+			AND `send_time` = #{condiJobTask.sendTime,jdbcType=BIGINT}
 			</if>
 			<if test="condiJobTask.status != null and condiJobTask.status != ''">
-			`status` = #{condiJobTask.status,jdbcType=INTEGER}
+			AND `status` = #{condiJobTask.status,jdbcType=INTEGER}
 			</if>
+		</where>
 	</update>
 	
 	<select id="getByPK" resultType="com.bittrade.pojo.model.JobTask">
@@ -145,9 +148,8 @@
 			`send_time`, 
 			`status`
 		FROM job_task
-		<where>
+		WHERE 
 			`id` = #{id,jdbcType=BIGINT}
-		</where>
 	</select>
 	
 	<select id="get" resultType="com.bittrade.pojo.model.JobTask">

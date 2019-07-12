@@ -98,31 +98,32 @@
 	
 	<delete id="remove" parameterType="com.bittrade.pojo.model.TWalletRecord">
 		DELETE FROM t_wallet_record
-		WHERE
+		<where>
 			<if test="userId != null and userId != ''">
-			`user_id` = #{userId,jdbcType=BIGINT} AND
+			AND `user_id` = #{userId,jdbcType=BIGINT}
 			</if>
 			<if test="currencyId != null and currencyId != ''">
-			`currency_id` = #{currencyId,jdbcType=INTEGER} AND
+			AND `currency_id` = #{currencyId,jdbcType=INTEGER}
 			</if>
 			<if test="beforeAmount != null and beforeAmount != ''">
-			`before_amount` = #{beforeAmount,jdbcType=DECIMAL} AND
+			AND `before_amount` = #{beforeAmount,jdbcType=DECIMAL}
 			</if>
 			<if test="afterAmount != null and afterAmount != ''">
-			`after_amount` = #{afterAmount,jdbcType=DECIMAL} AND
+			AND `after_amount` = #{afterAmount,jdbcType=DECIMAL}
 			</if>
 			<if test="changeAmount != null and changeAmount != ''">
-			`change_amount` = #{changeAmount,jdbcType=DECIMAL} AND
+			AND `change_amount` = #{changeAmount,jdbcType=DECIMAL}
 			</if>
 			<if test="type != null and type != ''">
-			`type` = #{type,jdbcType=INTEGER} AND
+			AND `type` = #{type,jdbcType=INTEGER}
 			</if>
 			<if test="entrustRecordId != null and entrustRecordId != ''">
-			`entrust_record_id` = #{entrustRecordId,jdbcType=BIGINT} AND
+			AND `entrust_record_id` = #{entrustRecordId,jdbcType=BIGINT}
 			</if>
 			<if test="createTime != null and createTime != ''">
-			`create_time` = #{createTime,jdbcType=TIMESTAMP}
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
 			</if>
+		</where>
 	</delete>
 	
 	<update id="modifyByPK" parameterType="com.bittrade.pojo.model.TWalletRecord">
@@ -182,85 +183,87 @@
 			`type` = #{tWalletRecord.type,jdbcType=INTEGER}, 
 			`entrust_record_id` = #{tWalletRecord.entrustRecordId,jdbcType=BIGINT}, 
 			`create_time` = #{tWalletRecord.createTime,jdbcType=TIMESTAMP}
-		WHERE 
+		<where>
 			<if test="condiTWalletRecord.userId != null and condiTWalletRecord.userId != ''">
-			`user_id` = #{condiTWalletRecord.userId,jdbcType=BIGINT} AND
+			AND `user_id` = #{condiTWalletRecord.userId,jdbcType=BIGINT}
 			</if>
 			<if test="condiTWalletRecord.currencyId != null and condiTWalletRecord.currencyId != ''">
-			`currency_id` = #{condiTWalletRecord.currencyId,jdbcType=INTEGER} AND
+			AND `currency_id` = #{condiTWalletRecord.currencyId,jdbcType=INTEGER}
 			</if>
 			<if test="condiTWalletRecord.beforeAmount != null and condiTWalletRecord.beforeAmount != ''">
-			`before_amount` = #{condiTWalletRecord.beforeAmount,jdbcType=DECIMAL} AND
+			AND `before_amount` = #{condiTWalletRecord.beforeAmount,jdbcType=DECIMAL}
 			</if>
 			<if test="condiTWalletRecord.afterAmount != null and condiTWalletRecord.afterAmount != ''">
-			`after_amount` = #{condiTWalletRecord.afterAmount,jdbcType=DECIMAL} AND
+			AND `after_amount` = #{condiTWalletRecord.afterAmount,jdbcType=DECIMAL}
 			</if>
 			<if test="condiTWalletRecord.changeAmount != null and condiTWalletRecord.changeAmount != ''">
-			`change_amount` = #{condiTWalletRecord.changeAmount,jdbcType=DECIMAL} AND
+			AND `change_amount` = #{condiTWalletRecord.changeAmount,jdbcType=DECIMAL}
 			</if>
 			<if test="condiTWalletRecord.type != null and condiTWalletRecord.type != ''">
-			`type` = #{condiTWalletRecord.type,jdbcType=INTEGER} AND
+			AND `type` = #{condiTWalletRecord.type,jdbcType=INTEGER}
 			</if>
 			<if test="condiTWalletRecord.entrustRecordId != null and condiTWalletRecord.entrustRecordId != ''">
-			`entrust_record_id` = #{condiTWalletRecord.entrustRecordId,jdbcType=BIGINT} AND
+			AND `entrust_record_id` = #{condiTWalletRecord.entrustRecordId,jdbcType=BIGINT}
 			</if>
 			<if test="condiTWalletRecord.createTime != null and condiTWalletRecord.createTime != ''">
-			`create_time` = #{condiTWalletRecord.createTime,jdbcType=TIMESTAMP}
+			AND `create_time` = #{condiTWalletRecord.createTime,jdbcType=TIMESTAMP}
 			</if>
+		</where>
 	</update>
 	
 	<update id="modifyWithSelective">
 		UPDATE t_wallet_record
 		SET
-			<if test="userId != null and userId != ''">
+			<if test="tWalletRecord.userId != null and tWalletRecord.userId != ''">
 			`user_id` = #{tWalletRecord.userId,jdbcType=BIGINT}, 
 			</if>
-			<if test="currencyId != null and currencyId != ''">
+			<if test="tWalletRecord.currencyId != null and tWalletRecord.currencyId != ''">
 			`currency_id` = #{tWalletRecord.currencyId,jdbcType=INTEGER}, 
 			</if>
-			<if test="beforeAmount != null and beforeAmount != ''">
+			<if test="tWalletRecord.beforeAmount != null and tWalletRecord.beforeAmount != ''">
 			`before_amount` = #{tWalletRecord.beforeAmount,jdbcType=DECIMAL}, 
 			</if>
-			<if test="afterAmount != null and afterAmount != ''">
+			<if test="tWalletRecord.afterAmount != null and tWalletRecord.afterAmount != ''">
 			`after_amount` = #{tWalletRecord.afterAmount,jdbcType=DECIMAL}, 
 			</if>
-			<if test="changeAmount != null and changeAmount != ''">
+			<if test="tWalletRecord.changeAmount != null and tWalletRecord.changeAmount != ''">
 			`change_amount` = #{tWalletRecord.changeAmount,jdbcType=DECIMAL}, 
 			</if>
-			<if test="type != null and type != ''">
+			<if test="tWalletRecord.type != null and tWalletRecord.type != ''">
 			`type` = #{tWalletRecord.type,jdbcType=INTEGER}, 
 			</if>
-			<if test="entrustRecordId != null and entrustRecordId != ''">
+			<if test="tWalletRecord.entrustRecordId != null and tWalletRecord.entrustRecordId != ''">
 			`entrust_record_id` = #{tWalletRecord.entrustRecordId,jdbcType=BIGINT}, 
 			</if>
-			<if test="createTime != null and createTime != ''">
+			<if test="tWalletRecord.createTime != null and tWalletRecord.createTime != ''">
 			`create_time` = #{tWalletRecord.createTime,jdbcType=TIMESTAMP}
 			</if>
-		WHERE 
+		<where>
 			<if test="condiTWalletRecord.userId != null and condiTWalletRecord.userId != ''">
-			`user_id` = #{condiTWalletRecord.userId,jdbcType=BIGINT} AND
+			AND `user_id` = #{condiTWalletRecord.userId,jdbcType=BIGINT}
 			</if>
 			<if test="condiTWalletRecord.currencyId != null and condiTWalletRecord.currencyId != ''">
-			`currency_id` = #{condiTWalletRecord.currencyId,jdbcType=INTEGER} AND
+			AND `currency_id` = #{condiTWalletRecord.currencyId,jdbcType=INTEGER}
 			</if>
 			<if test="condiTWalletRecord.beforeAmount != null and condiTWalletRecord.beforeAmount != ''">
-			`before_amount` = #{condiTWalletRecord.beforeAmount,jdbcType=DECIMAL} AND
+			AND `before_amount` = #{condiTWalletRecord.beforeAmount,jdbcType=DECIMAL}
 			</if>
 			<if test="condiTWalletRecord.afterAmount != null and condiTWalletRecord.afterAmount != ''">
-			`after_amount` = #{condiTWalletRecord.afterAmount,jdbcType=DECIMAL} AND
+			AND `after_amount` = #{condiTWalletRecord.afterAmount,jdbcType=DECIMAL}
 			</if>
 			<if test="condiTWalletRecord.changeAmount != null and condiTWalletRecord.changeAmount != ''">
-			`change_amount` = #{condiTWalletRecord.changeAmount,jdbcType=DECIMAL} AND
+			AND `change_amount` = #{condiTWalletRecord.changeAmount,jdbcType=DECIMAL}
 			</if>
 			<if test="condiTWalletRecord.type != null and condiTWalletRecord.type != ''">
-			`type` = #{condiTWalletRecord.type,jdbcType=INTEGER} AND
+			AND `type` = #{condiTWalletRecord.type,jdbcType=INTEGER}
 			</if>
 			<if test="condiTWalletRecord.entrustRecordId != null and condiTWalletRecord.entrustRecordId != ''">
-			`entrust_record_id` = #{condiTWalletRecord.entrustRecordId,jdbcType=BIGINT} AND
+			AND `entrust_record_id` = #{condiTWalletRecord.entrustRecordId,jdbcType=BIGINT}
 			</if>
 			<if test="condiTWalletRecord.createTime != null and condiTWalletRecord.createTime != ''">
-			`create_time` = #{condiTWalletRecord.createTime,jdbcType=TIMESTAMP}
+			AND `create_time` = #{condiTWalletRecord.createTime,jdbcType=TIMESTAMP}
 			</if>
+		</where>
 	</update>
 	
 	<select id="getByPK" resultType="com.bittrade.pojo.model.TWalletRecord">
@@ -275,9 +278,8 @@
 			`entrust_record_id`, 
 			`create_time`
 		FROM t_wallet_record
-		<where>
+		WHERE 
 			`id` = #{id,jdbcType=BIGINT}
-		</where>
 	</select>
 	
 	<select id="get" resultType="com.bittrade.pojo.model.TWalletRecord">
