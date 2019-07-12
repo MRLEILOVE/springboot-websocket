@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bittrade.currency.api.service.ITCurrencyOptionalService;
-import com.bittrade.currency.dao.ITCurrencyOptionalDAO;
 import com.bittrade.pojo.dto.TCurrencyOptionalDTO;
 import com.bittrade.pojo.model.TCurrencyOptional;
 import com.bittrade.pojo.vo.TCurrencyOptionalVO;
@@ -30,7 +29,7 @@ import io.swagger.annotations.ApiOperation;
 @Controller
 @ResponseBody
 @RequestMapping(value = { "/tCurrencyOptional" }, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-public class TCurrencyOptionalController extends BaseController<TCurrencyOptional, TCurrencyOptionalDTO, TCurrencyOptionalVO, ITCurrencyOptionalDAO, ITCurrencyOptionalService> {
+public class TCurrencyOptionalController extends BaseController<TCurrencyOptional, TCurrencyOptionalDTO, TCurrencyOptionalVO, ITCurrencyOptionalService> {
     @Autowired
     private ITCurrencyOptionalService currencyOptionalService;
 

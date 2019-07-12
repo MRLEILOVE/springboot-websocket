@@ -5,7 +5,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.bittrade.currency.dao.IWUserWalletBillDAO;
 import com.bittrade.pojo.dto.WUserWalletBillDTO;
 import com.bittrade.pojo.vo.WUserWalletBillVO;
 import com.bittrade.pojo.model.WUserWalletBill;
@@ -20,6 +19,6 @@ import com.core.framework.base.controller.BaseController;
 @Controller
 @ResponseBody
 @RequestMapping(value = { "/wUserWalletBill" }, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-public class WUserWalletBillController extends BaseController<WUserWalletBill, WUserWalletBillDTO, WUserWalletBillVO, IWUserWalletBillDAO, IWUserWalletBillService> {
+public class WUserWalletBillController extends BaseController<WUserWalletBill, WUserWalletBillDTO, WUserWalletBillVO, IWUserWalletBillService> {
 	
 }

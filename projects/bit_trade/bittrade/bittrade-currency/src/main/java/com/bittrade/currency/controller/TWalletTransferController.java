@@ -6,10 +6,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bittrade.currency.api.service.ITWalletTransferService;
-import com.bittrade.currency.dao.ITWalletTransferDAO;
 import com.bittrade.pojo.dto.TWalletTransferDTO;
-import com.bittrade.pojo.vo.TWalletTransferVO;
 import com.bittrade.pojo.model.TWalletTransfer;
+import com.bittrade.pojo.vo.TWalletTransferVO;
 import com.core.framework.base.controller.BaseController;
 
 /**
@@ -20,6 +19,6 @@ import com.core.framework.base.controller.BaseController;
 @Controller
 @ResponseBody
 @RequestMapping(value = { "/tWalletTransfer" }, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-public class TWalletTransferController extends BaseController<TWalletTransfer, TWalletTransferDTO, TWalletTransferVO, ITWalletTransferDAO, ITWalletTransferService> {
+public class TWalletTransferController extends BaseController<TWalletTransfer, TWalletTransferDTO, TWalletTransferVO, ITWalletTransferService> {
 	
 }

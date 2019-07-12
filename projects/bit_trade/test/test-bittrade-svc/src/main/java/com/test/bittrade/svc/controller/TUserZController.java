@@ -10,7 +10,6 @@ import com.test.bittrade.api.service.ITUserZService;
 import com.test.bittrade.pojo.dto.TUserZDTO;
 import com.test.bittrade.pojo.model.TUserZ;
 import com.test.bittrade.pojo.vo.TUserZVO;
-import com.test.bittrade.svc.dao.ITUserZDAO;
 
 /**
  * 
@@ -20,6 +19,6 @@ import com.test.bittrade.svc.dao.ITUserZDAO;
 @Controller
 @ResponseBody
 @RequestMapping(value = { "/tUserZ" }, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-public class TUserZController extends BaseController<TUserZ, TUserZDTO, TUserZVO, ITUserZDAO, ITUserZService> {
+public class TUserZController extends BaseController<TUserZ, TUserZDTO, TUserZVO, ITUserZService> {
 	
 }

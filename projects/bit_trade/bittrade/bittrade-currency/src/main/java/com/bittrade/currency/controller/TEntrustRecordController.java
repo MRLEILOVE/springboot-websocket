@@ -10,8 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.bittrade.currency.api.service.ITEntrustRecordService;
-import com.bittrade.currency.dao.ITEntrustRecordDAO;
+import com.bittrade.entrust.api.service.ITEntrustRecordService;
 import com.bittrade.pojo.dto.TEntrustRecordDTO;
 import com.bittrade.pojo.model.TEntrustRecord;
 import com.bittrade.pojo.vo.TEntrustRecordVO;
@@ -29,7 +28,7 @@ import io.swagger.annotations.ApiOperation;
 @Controller
 @ResponseBody
 @RequestMapping(value = { "/tEntrustRecord" }, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-public class TEntrustRecordController extends BaseController<TEntrustRecord, TEntrustRecordDTO, TEntrustRecordVO, ITEntrustRecordDAO, ITEntrustRecordService> {
+public class TEntrustRecordController extends BaseController<TEntrustRecord, TEntrustRecordDTO, TEntrustRecordVO, ITEntrustRecordService> {
     @Autowired
     private ITEntrustRecordService entrustRecordService;
 

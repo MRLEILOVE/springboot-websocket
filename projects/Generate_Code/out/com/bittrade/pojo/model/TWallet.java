@@ -43,7 +43,7 @@ public class TWallet extends BaseModel<TWallet> {
 		public static final String CURRENCY_ID = "currency_id";
 		
 		/**
-		 * 总数量
+		 * 可用总数量
 		 */
 		public static final String TOTAL = "total";
 		
@@ -90,7 +90,7 @@ public class TWallet extends BaseModel<TWallet> {
 	private Integer currencyId;
 	
 	/**
-	 * 总数量
+	 * 可用总数量
 	 */
 	private java.math.BigDecimal total;
 	

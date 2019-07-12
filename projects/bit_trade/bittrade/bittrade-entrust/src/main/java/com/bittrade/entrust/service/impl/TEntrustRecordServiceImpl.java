@@ -1,14 +1,15 @@
-package com.bittrade.currency.service.impl;
+package com.bittrade.entrust.service.impl;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
+import com.alibaba.dubbo.config.annotation.Service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.bittrade.__default.service.impl.DefaultTEntrustRecordServiceImpl;
-import com.bittrade.currency.api.service.ITEntrustRecordService;
-import com.bittrade.currency.dao.ITEntrustRecordDAO;
+import com.bittrade.entrust.api.service.ITEntrustRecordService;
+import com.bittrade.entrust.dao.ITEntrustRecordDAO;
 import com.bittrade.pojo.dto.TEntrustRecordDTO;
 import com.bittrade.pojo.model.TEntrustRecord;
 import com.bittrade.pojo.vo.TEntrustRecordVO;
@@ -20,7 +21,7 @@ import com.bittrade.pojo.vo.TRealTimeTransactionVO;
  *
  */
 @Service
-@com.alibaba.dubbo.config.annotation.Service
+@Component
 public class TEntrustRecordServiceImpl extends
 		DefaultTEntrustRecordServiceImpl<ITEntrustRecordDAO, TEntrustRecord, TEntrustRecordDTO, TEntrustRecordVO>
 		implements ITEntrustRecordService {

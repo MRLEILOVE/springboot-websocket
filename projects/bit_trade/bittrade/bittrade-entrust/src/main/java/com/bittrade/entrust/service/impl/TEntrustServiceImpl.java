@@ -1,19 +1,20 @@
-package com.bittrade.currency.service.impl;
+package com.bittrade.entrust.service.impl;
 
 import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
+import com.alibaba.dubbo.config.annotation.Service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.segments.MergeSegments;
 import com.bittrade.__default.service.impl.DefaultTEntrustServiceImpl;
 import com.bittrade.common.enums.EntrustDirectionEnumer;
-import com.bittrade.currency.api.service.ITEntrustService;
 import com.bittrade.currency.dao.ITCurrencyTradeDAO;
-import com.bittrade.currency.dao.ITEntrustDAO;
 import com.bittrade.currency.dao.ITWalletDAO;
+import com.bittrade.entrust.api.service.ITEntrustService;
+import com.bittrade.entrust.dao.ITEntrustDAO;
 import com.bittrade.pojo.dto.DealDTO;
 import com.bittrade.pojo.dto.TEntrustDTO;
 import com.bittrade.pojo.model.TCurrencyTrade;
@@ -29,7 +30,7 @@ import com.core.framework.DTO.ReturnDTO;
  *
  */
 @Service
-@com.alibaba.dubbo.config.annotation.Service
+@Component
 public class TEntrustServiceImpl extends DefaultTEntrustServiceImpl<ITEntrustDAO, TEntrust, TEntrustDTO, TEntrustVO>
 		implements ITEntrustService {
 

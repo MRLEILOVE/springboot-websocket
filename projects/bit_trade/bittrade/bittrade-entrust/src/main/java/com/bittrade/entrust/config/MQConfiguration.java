@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
 import com.bittrade.common.constant.IQueueConstants;
 
 @Configuration
-public class MyRabbitMqConfiguration {
+public class MQConfiguration {
 
 	/**
 	 * 交换配置
@@ -21,7 +21,7 @@ public class MyRabbitMqConfiguration {
 	 */
 	@Bean
 	public DirectExchange messageDirectExchange() {
-		return (DirectExchange) ExchangeBuilder.directExchange(IQueueConstants.MESSAGE_EXCHANGE).durable(true).build();
+		return (DirectExchange) ExchangeBuilder.directExchange(IQueueConstants.EXCHANGE).durable(true).build();
 	}
 
 	/**
@@ -31,7 +31,7 @@ public class MyRabbitMqConfiguration {
 	 */
 	@Bean
 	public Queue messageQueue() {
-		return QueueBuilder.durable(IQueueConstants.MESSAGE_QUEUE_NAME).build();
+		return QueueBuilder.durable(IQueueConstants.QUEUE__LINE_PRICE).build();
 	}
 
 	/**
@@ -41,7 +41,7 @@ public class MyRabbitMqConfiguration {
 	 */
 	@Bean
 	public Binding messageBinding() {
-		return BindingBuilder.bind(messageQueue()).to(messageDirectExchange()).with(IQueueConstants.MESSAGE_ROUTE_KEY);
+		return BindingBuilder.bind(messageQueue()).to(messageDirectExchange()).with(IQueueConstants.ROUTE_KEY__LINE_PRICE);
 	}
 
 }

@@ -7,15 +7,14 @@ import java.util.concurrent.Executors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.bittrade.batch.general.GeneralMethod;
 import com.bittrade.currency.api.service.ITCurrencyTradeService;
-import com.bittrade.currency.api.service.ITEntrustRecordService;
 import com.bittrade.currency.api.service.ITWalletRecordService;
 import com.bittrade.currency.api.service.ITWalletService;
+import com.bittrade.entrust.api.service.ITEntrustRecordService;
 import com.bittrade.pojo.model.TCurrencyTrade;
 import com.bittrade.pojo.model.TEntrustRecord;
 import com.bittrade.pojo.model.TWallet;

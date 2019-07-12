@@ -18,6 +18,7 @@
 
 	<!-- 通用查询结果列 -->
 	<sql id="Base_Column_List">
+		`id` AS id, 
 		`user_id` AS userId, 
 		`currency_trade_id` AS currencyTradeId, 
 		`status` AS status, 

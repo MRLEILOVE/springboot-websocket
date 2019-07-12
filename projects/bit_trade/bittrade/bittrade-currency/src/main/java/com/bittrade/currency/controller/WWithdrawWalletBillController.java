@@ -6,10 +6,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bittrade.currency.api.service.IWWithdrawWalletBillService;
-import com.bittrade.currency.dao.IWWithdrawWalletBillDAO;
 import com.bittrade.pojo.dto.WWithdrawWalletBillDTO;
-import com.bittrade.pojo.vo.WWithdrawWalletBillVO;
 import com.bittrade.pojo.model.WWithdrawWalletBill;
+import com.bittrade.pojo.vo.WWithdrawWalletBillVO;
 import com.core.framework.base.controller.BaseController;
 
 /**
@@ -20,6 +19,6 @@ import com.core.framework.base.controller.BaseController;
 @Controller
 @ResponseBody
 @RequestMapping(value = { "/wWithdrawWalletBill" }, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-public class WWithdrawWalletBillController extends BaseController<WWithdrawWalletBill, WWithdrawWalletBillDTO, WWithdrawWalletBillVO, IWWithdrawWalletBillDAO, IWWithdrawWalletBillService> {
+public class WWithdrawWalletBillController extends BaseController<WWithdrawWalletBill, WWithdrawWalletBillDTO, WWithdrawWalletBillVO, IWWithdrawWalletBillService> {
 	
 }
