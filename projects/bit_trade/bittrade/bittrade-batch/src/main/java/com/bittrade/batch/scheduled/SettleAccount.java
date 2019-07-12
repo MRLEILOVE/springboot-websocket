@@ -55,35 +55,28 @@ public class SettleAccount {
 
 	private static final SnowFlake	SNOW_FLAKE			= new SnowFlake( 1, 1 );
 
-	// @Scheduled(cron = "0/1 * * * * ?")
+	@Scheduled(cron = "0/1 * * * * ?")
 	public void sellte() {
 		try {
-			List<TEntrustRecord> list = entrustRecordService.gets();
-			for (TEntrustRecord tEntrustRecord : list) {
-				System.out.println( tEntrustRecord.getId() );
-			}
-
 			// 1、查询卖方向的未结算的订单
-			QueryWrapper<TEntrustRecord> entrustRecordQuery = new QueryWrapper<TEntrustRecord>();
-			entrustRecordQuery.eq( TEntrustRecord.FieldNames.ENTRUST_DIRECTION, 1 );
-			TEntrustRecord entrustRecords = entrustRecordService.getOne( entrustRecordQuery );
+			TEntrustRecord entrustRecords = new TEntrustRecord();
+			entrustRecords.setEntrustDirection( 1 );
+			entrustRecords = entrustRecordService.get( entrustRecords );
+
 			long currentUserId = entrustRecords.getUserId();// 用户id
 			long rivalUserId = entrustRecords.getRivalUserId();// 对手方用户id
 			long entrustRecordId = entrustRecords.getId();
+			int currencyTradeId = entrustRecords.getCurrencyTradeId();
 
 			BigDecimal count = entrustRecords.getCount();
 			BigDecimal amount = entrustRecords.getAmount();
 
 			// 2、根据交易对Id获去币种id
-			// QueryWrapper<TCurrencyTrade> currencyTradeQuery = new
-			// QueryWrapper<TCurrencyTrade>();
-			// entrustRecordQuery.eq( TCurrencyTrade.FieldNames.ID, 1 );
-
 			TCurrencyTrade currencyTrade = new TCurrencyTrade();
-			currencyTrade.setId( 1 );
-			TCurrencyTradeDTO currencyTradeDto = currencyTradeService.get( currencyTrade ).get( 0 );
-			int currencyId = currencyTradeDto.getCurrencyId1();// 货比id
-			int marketId = currencyTradeDto.getCurrencyId2();// 法币id
+			currencyTrade.setId( currencyTradeId );
+			currencyTrade = currencyTradeService.get( currencyTrade );
+			int currencyId = currencyTrade.getCurrencyId1();// 货比id
+			int marketId = currencyTrade.getCurrencyId2();// 法币id
 
 			// 3、获取卖家币币钱包信息
 			// currentUserId-->卖currencyId，currencyId(count)↓，marketId(amout)↑
@@ -123,13 +116,17 @@ public class SettleAccount {
 			updateWallet.setTotal( wallet.getTotal().add( val ) );
 		}
 		updateWallet.setVersion( wallet.getVersion() + 1 );
+		updateWallet.setUpdateTime( new Date() );
 
-		TWallet updateSellMarketIdWrapper = new TWallet(); // 条件
-		updateSellMarketIdWrapper.setId( wallet.getId() );
-		updateSellMarketIdWrapper.setVersion( wallet.getVersion() );
+		TWallet updateSellMarketIdWallet = new TWallet(); // 条件
+		updateSellMarketIdWallet.setId( wallet.getId() );
+		updateSellMarketIdWallet.setUserId( wallet.getUserId() );
+		updateSellMarketIdWallet.setCurrencyId( wallet.getCurrencyId() );
+		updateSellMarketIdWallet.setVersion( wallet.getVersion() );
 
 		// 更新钱包
-		walletService.modify( updateWallet, updateSellMarketIdWrapper );
+		int row = walletService.modifyWithSelective( updateWallet, updateSellMarketIdWallet );
+		System.out.println( "row=" + row );
 
 		// 记录钱包流水
 		TWalletRecord walletRecord = new TWalletRecord();

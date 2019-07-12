@@ -13,12 +13,6 @@ import com.bittrade.pojo.model.TWallet;
 public class GeneralMethod {
 
 	public static TParamConfig qryParamConfigInfo(ITParamConfigService paramConfigService, String key) throws Exception {
-		// QueryWrapper<TParamConfig> queryWrapper = new
-		// QueryWrapper<TParamConfig>();
-		// queryWrapper.eq( TParamConfig.FieldNames.PARAM_KEY, key );
-		// queryWrapper.eq( TParamConfig.FieldNames.PARAM_STATUS,
-		// ParamStatus.ENABLE.getKey() );
-		// TParamConfig paramConfig = paramConfigService.getOne( queryWrapper );
 		TParamConfig paramConfigCondi = new TParamConfig();
 		paramConfigCondi.setParamKey( key );
 		paramConfigCondi.setParamStatus( ParamStatus.ENABLE.getKey() );
@@ -30,10 +24,10 @@ public class GeneralMethod {
 	}
 
 	public static TWallet qryUserWallet(ITWalletService walletService, long userId, int currencyId) throws Exception {
-		QueryWrapper<TWallet> queryWrapper = new QueryWrapper<TWallet>();
-		queryWrapper.eq( TWallet.FieldNames.USER_ID, userId );
-		queryWrapper.eq( TWallet.FieldNames.CURRENCY_ID, currencyId );
-		TWallet result = walletService.getOne( queryWrapper );
+		TWallet qryWallet = new TWallet();
+		qryWallet.setUserId( userId );
+		qryWallet.setCurrencyId( currencyId );
+		TWallet result = walletService.get( qryWallet );
 		if (null == result) { // 用户币币钱包不存在，则给其生成一个钱包
 			TWallet wallet = new TWallet();
 			wallet.setUserId( userId );
