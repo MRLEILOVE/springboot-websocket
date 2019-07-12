@@ -16,9 +16,9 @@ public class TCurrencyAddressDTO extends BaseDTO<TCurrencyAddressDTO> {
 
 	private static final long serialVersionUID = 1L;
 
-	private int id;
-	private long userId;
-	private int currencyId;
+	private Integer id;
+	private Long userId;
+	private Integer currencyId;
 	private String adderess;
 	private String addressRemark;
 	private java.util.Date createTime;

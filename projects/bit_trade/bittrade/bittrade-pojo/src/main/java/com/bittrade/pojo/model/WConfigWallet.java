@@ -77,7 +77,7 @@ public class WConfigWallet extends BaseModel<WConfigWallet> {
 	/**
 	 * ID
 	 */
-	private long id;
+	private Long id;
 	
 	/**
 	 * 币种大类

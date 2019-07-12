@@ -2,25 +2,26 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!--
 	This code is generated automatically. Please do not edit it.
+	现在字段也可以要彻底动态？
 -->
 <mapper namespace="com.bittrade.__default.DAO.IDefaultTCurrencyTradeDAO">
 
 	<!-- 通用查询映射结果 -->
 	<resultMap id="BaseResultMap" type="com.bittrade.pojo.model.TCurrencyTrade">
-		<id javaType="int" property="id" jdbcType="INTEGER" column="id" />
+		<id javaType="Integer" property="id" jdbcType="INTEGER" column="id" />
 		<result javaType="String" property="symbol" jdbcType="VARCHAR" column="symbol" />
-		<result javaType="int" property="currencyId1" jdbcType="INTEGER" column="currency_id1" />
-		<result javaType="int" property="currencyId2" jdbcType="INTEGER" column="currency_id2" />
-		<result javaType="int" property="priceDecimalDigits" jdbcType="INTEGER" column="price_decimal_digits" />
-		<result javaType="int" property="countDecimalDigits" jdbcType="INTEGER" column="count_decimal_digits" />
+		<result javaType="Integer" property="currencyId1" jdbcType="INTEGER" column="currency_id1" />
+		<result javaType="Integer" property="currencyId2" jdbcType="INTEGER" column="currency_id2" />
+		<result javaType="Integer" property="priceDecimalDigits" jdbcType="INTEGER" column="price_decimal_digits" />
+		<result javaType="Integer" property="countDecimalDigits" jdbcType="INTEGER" column="count_decimal_digits" />
 		<result javaType="java.math.BigDecimal" property="minBuyCount" jdbcType="DECIMAL" column="min_buy_count" />
 		<result javaType="java.math.BigDecimal" property="minBuyPrice" jdbcType="DECIMAL" column="min_Buy_price" />
 		<result javaType="java.math.BigDecimal" property="minBuyAmount" jdbcType="DECIMAL" column="min_buy_amount" />
 		<result javaType="java.math.BigDecimal" property="maxBuyCount" jdbcType="DECIMAL" column="max_buy_count" />
 		<result javaType="java.math.BigDecimal" property="maxBuyAmount" jdbcType="DECIMAL" column="max_buy_amount" />
 		<result javaType="java.math.BigDecimal" property="maxBuyPrice" jdbcType="DECIMAL" column="max_buy_price" />
-		<result javaType="byte" property="status" jdbcType="INTEGER" column="status" />
-		<result javaType="int" property="sort" jdbcType="INTEGER" column="sort" />
+		<result javaType="Byte" property="status" jdbcType="INTEGER" column="status" />
+		<result javaType="Integer" property="sort" jdbcType="INTEGER" column="sort" />
 		<result javaType="java.util.Date" property="createTime" jdbcType="TIMESTAMP" column="create_time" />
 		<result javaType="java.util.Date" property="updateTime" jdbcType="TIMESTAMP" column="update_time" />
 	</resultMap>
@@ -51,96 +52,96 @@
 	
 	<insert id="addWithSelective" parameterType="com.bittrade.pojo.model.TCurrencyTrade">
 		INSERT INTO t_currency_trade(
-			<if test="symbol != null and symbol != ''">
+			<if test="symbol != null">
 			`symbol`, 
 			</if>
-			<if test="currencyId1 != null and currencyId1 != ''">
+			<if test="currencyId1 != null">
 			`currency_id1`, 
 			</if>
-			<if test="currencyId2 != null and currencyId2 != ''">
+			<if test="currencyId2 != null">
 			`currency_id2`, 
 			</if>
-			<if test="priceDecimalDigits != null and priceDecimalDigits != ''">
+			<if test="priceDecimalDigits != null">
 			`price_decimal_digits`, 
 			</if>
-			<if test="countDecimalDigits != null and countDecimalDigits != ''">
+			<if test="countDecimalDigits != null">
 			`count_decimal_digits`, 
 			</if>
-			<if test="minBuyCount != null and minBuyCount != ''">
+			<if test="minBuyCount != null">
 			`min_buy_count`, 
 			</if>
-			<if test="minBuyPrice != null and minBuyPrice != ''">
+			<if test="minBuyPrice != null">
 			`min_Buy_price`, 
 			</if>
-			<if test="minBuyAmount != null and minBuyAmount != ''">
+			<if test="minBuyAmount != null">
 			`min_buy_amount`, 
 			</if>
-			<if test="maxBuyCount != null and maxBuyCount != ''">
+			<if test="maxBuyCount != null">
 			`max_buy_count`, 
 			</if>
-			<if test="maxBuyAmount != null and maxBuyAmount != ''">
+			<if test="maxBuyAmount != null">
 			`max_buy_amount`, 
 			</if>
-			<if test="maxBuyPrice != null and maxBuyPrice != ''">
+			<if test="maxBuyPrice != null">
 			`max_buy_price`, 
 			</if>
-			<if test="status != null and status != ''">
+			<if test="status != null">
 			`status`, 
 			</if>
-			<if test="sort != null and sort != ''">
+			<if test="sort != null">
 			`sort`, 
 			</if>
-			<if test="createTime != null and createTime != ''">
+			<if test="createTime != null">
 			`create_time`, 
 			</if>
-			<if test="updateTime != null and updateTime != ''">
+			<if test="updateTime != null">
 			`update_time`
 			</if>
 		)
 		VALUES(
-			<if test="symbol != null and symbol != ''">
+			<if test="symbol != null">
 			#{symbol,jdbcType=VARCHAR}, 
 			</if>
-			<if test="currencyId1 != null and currencyId1 != ''">
+			<if test="currencyId1 != null">
 			#{currencyId1,jdbcType=INTEGER}, 
 			</if>
-			<if test="currencyId2 != null and currencyId2 != ''">
+			<if test="currencyId2 != null">
 			#{currencyId2,jdbcType=INTEGER}, 
 			</if>
-			<if test="priceDecimalDigits != null and priceDecimalDigits != ''">
+			<if test="priceDecimalDigits != null">
 			#{priceDecimalDigits,jdbcType=INTEGER}, 
 			</if>
-			<if test="countDecimalDigits != null and countDecimalDigits != ''">
+			<if test="countDecimalDigits != null">
 			#{countDecimalDigits,jdbcType=INTEGER}, 
 			</if>
-			<if test="minBuyCount != null and minBuyCount != ''">
+			<if test="minBuyCount != null">
 			#{minBuyCount,jdbcType=DECIMAL}, 
 			</if>
-			<if test="minBuyPrice != null and minBuyPrice != ''">
+			<if test="minBuyPrice != null">
 			#{minBuyPrice,jdbcType=DECIMAL}, 
 			</if>
-			<if test="minBuyAmount != null and minBuyAmount != ''">
+			<if test="minBuyAmount != null">
 			#{minBuyAmount,jdbcType=DECIMAL}, 
 			</if>
-			<if test="maxBuyCount != null and maxBuyCount != ''">
+			<if test="maxBuyCount != null">
 			#{maxBuyCount,jdbcType=DECIMAL}, 
 			</if>
-			<if test="maxBuyAmount != null and maxBuyAmount != ''">
+			<if test="maxBuyAmount != null">
 			#{maxBuyAmount,jdbcType=DECIMAL}, 
 			</if>
-			<if test="maxBuyPrice != null and maxBuyPrice != ''">
+			<if test="maxBuyPrice != null">
 			#{maxBuyPrice,jdbcType=DECIMAL}, 
 			</if>
-			<if test="status != null and status != ''">
+			<if test="status != null">
 			#{status,jdbcType=INTEGER}, 
 			</if>
-			<if test="sort != null and sort != ''">
+			<if test="sort != null">
 			#{sort,jdbcType=INTEGER}, 
 			</if>
-			<if test="createTime != null and createTime != ''">
+			<if test="createTime != null">
 			#{createTime,jdbcType=TIMESTAMP}, 
 			</if>
-			<if test="updateTime != null and updateTime != ''">
+			<if test="updateTime != null">
 			#{updateTime,jdbcType=TIMESTAMP}
 			</if>
 		)
@@ -148,56 +149,57 @@
 	
 	<delete id="removeByPK">
 		DELETE FROM t_currency_trade
-		WHERE 
-			`id` = #{id,jdbcType=INTEGER}
+		<where>
+			AND `id` = #{id,jdbcType=INTEGER}
+		</where>
 	</delete>
 	
 	<delete id="remove" parameterType="com.bittrade.pojo.model.TCurrencyTrade">
 		DELETE FROM t_currency_trade
 		<where>
-			<if test="symbol != null and symbol != ''">
+			<if test="symbol != null">
 			AND `symbol` = #{symbol,jdbcType=VARCHAR}
 			</if>
-			<if test="currencyId1 != null and currencyId1 != ''">
+			<if test="currencyId1 != null">
 			AND `currency_id1` = #{currencyId1,jdbcType=INTEGER}
 			</if>
-			<if test="currencyId2 != null and currencyId2 != ''">
+			<if test="currencyId2 != null">
 			AND `currency_id2` = #{currencyId2,jdbcType=INTEGER}
 			</if>
-			<if test="priceDecimalDigits != null and priceDecimalDigits != ''">
+			<if test="priceDecimalDigits != null">
 			AND `price_decimal_digits` = #{priceDecimalDigits,jdbcType=INTEGER}
 			</if>
-			<if test="countDecimalDigits != null and countDecimalDigits != ''">
+			<if test="countDecimalDigits != null">
 			AND `count_decimal_digits` = #{countDecimalDigits,jdbcType=INTEGER}
 			</if>
-			<if test="minBuyCount != null and minBuyCount != ''">
+			<if test="minBuyCount != null">
 			AND `min_buy_count` = #{minBuyCount,jdbcType=DECIMAL}
 			</if>
-			<if test="minBuyPrice != null and minBuyPrice != ''">
+			<if test="minBuyPrice != null">
 			AND `min_Buy_price` = #{minBuyPrice,jdbcType=DECIMAL}
 			</if>
-			<if test="minBuyAmount != null and minBuyAmount != ''">
+			<if test="minBuyAmount != null">
 			AND `min_buy_amount` = #{minBuyAmount,jdbcType=DECIMAL}
 			</if>
-			<if test="maxBuyCount != null and maxBuyCount != ''">
+			<if test="maxBuyCount != null">
 			AND `max_buy_count` = #{maxBuyCount,jdbcType=DECIMAL}
 			</if>
-			<if test="maxBuyAmount != null and maxBuyAmount != ''">
+			<if test="maxBuyAmount != null">
 			AND `max_buy_amount` = #{maxBuyAmount,jdbcType=DECIMAL}
 			</if>
-			<if test="maxBuyPrice != null and maxBuyPrice != ''">
+			<if test="maxBuyPrice != null">
 			AND `max_buy_price` = #{maxBuyPrice,jdbcType=DECIMAL}
 			</if>
-			<if test="status != null and status != ''">
+			<if test="status != null">
 			AND `status` = #{status,jdbcType=INTEGER}
 			</if>
-			<if test="sort != null and sort != ''">
+			<if test="sort != null">
 			AND `sort` = #{sort,jdbcType=INTEGER}
 			</if>
-			<if test="createTime != null and createTime != ''">
+			<if test="createTime != null">
 			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
 			</if>
-			<if test="updateTime != null and updateTime != ''">
+			<if test="updateTime != null">
 			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
 			</if>
 		</where>
@@ -205,7 +207,7 @@
 	
 	<update id="modifyByPK" parameterType="com.bittrade.pojo.model.TCurrencyTrade">
 		UPDATE t_currency_trade
-		SET
+		<set>
 			`symbol` = #{symbol,jdbcType=VARCHAR}, 
 			`currency_id1` = #{currencyId1,jdbcType=INTEGER}, 
 			`currency_id2` = #{currencyId2,jdbcType=INTEGER}, 
@@ -220,66 +222,70 @@
 			`status` = #{status,jdbcType=INTEGER}, 
 			`sort` = #{sort,jdbcType=INTEGER}, 
 			`create_time` = #{createTime,jdbcType=TIMESTAMP}, 
-			`update_time` = #{updateTime,jdbcType=TIMESTAMP}
-		WHERE 
-			`id` = #{id,jdbcType=INTEGER}
+			`update_time` = #{updateTime,jdbcType=TIMESTAMP}, 
+		</set>
+		<where>
+			AND `id` = #{id,jdbcType=INTEGER}
+		</where>
 	</update>
 	
 	<update id="modifyWithSelectiveByPK" parameterType="com.bittrade.pojo.model.TCurrencyTrade">
 		UPDATE t_currency_trade
-		SET
-			<if test="symbol != null and symbol != ''">
+		<set>
+			<if test="symbol != null">
 			`symbol` = #{symbol,jdbcType=VARCHAR}, 
 			</if>
-			<if test="currencyId1 != null and currencyId1 != ''">
+			<if test="currencyId1 != null">
 			`currency_id1` = #{currencyId1,jdbcType=INTEGER}, 
 			</if>
-			<if test="currencyId2 != null and currencyId2 != ''">
+			<if test="currencyId2 != null">
 			`currency_id2` = #{currencyId2,jdbcType=INTEGER}, 
 			</if>
-			<if test="priceDecimalDigits != null and priceDecimalDigits != ''">
+			<if test="priceDecimalDigits != null">
 			`price_decimal_digits` = #{priceDecimalDigits,jdbcType=INTEGER}, 
 			</if>
-			<if test="countDecimalDigits != null and countDecimalDigits != ''">
+			<if test="countDecimalDigits != null">
 			`count_decimal_digits` = #{countDecimalDigits,jdbcType=INTEGER}, 
 			</if>
-			<if test="minBuyCount != null and minBuyCount != ''">
+			<if test="minBuyCount != null">
 			`min_buy_count` = #{minBuyCount,jdbcType=DECIMAL}, 
 			</if>
-			<if test="minBuyPrice != null and minBuyPrice != ''">
+			<if test="minBuyPrice != null">
 			`min_Buy_price` = #{minBuyPrice,jdbcType=DECIMAL}, 
 			</if>
-			<if test="minBuyAmount != null and minBuyAmount != ''">
+			<if test="minBuyAmount != null">
 			`min_buy_amount` = #{minBuyAmount,jdbcType=DECIMAL}, 
 			</if>
-			<if test="maxBuyCount != null and maxBuyCount != ''">
+			<if test="maxBuyCount != null">
 			`max_buy_count` = #{maxBuyCount,jdbcType=DECIMAL}, 
 			</if>
-			<if test="maxBuyAmount != null and maxBuyAmount != ''">
+			<if test="maxBuyAmount != null">
 			`max_buy_amount` = #{maxBuyAmount,jdbcType=DECIMAL}, 
 			</if>
-			<if test="maxBuyPrice != null and maxBuyPrice != ''">
+			<if test="maxBuyPrice != null">
 			`max_buy_price` = #{maxBuyPrice,jdbcType=DECIMAL}, 
 			</if>
-			<if test="status != null and status != ''">
+			<if test="status != null">
 			`status` = #{status,jdbcType=INTEGER}, 
 			</if>
-			<if test="sort != null and sort != ''">
+			<if test="sort != null">
 			`sort` = #{sort,jdbcType=INTEGER}, 
 			</if>
-			<if test="createTime != null and createTime != ''">
+			<if test="createTime != null">
 			`create_time` = #{createTime,jdbcType=TIMESTAMP}, 
 			</if>
-			<if test="updateTime != null and updateTime != ''">
-			`update_time` = #{updateTime,jdbcType=TIMESTAMP}
+			<if test="updateTime != null">
+			`update_time` = #{updateTime,jdbcType=TIMESTAMP}, 
 			</if>
-		WHERE 
-			`id` = #{id,jdbcType=INTEGER}
+		</set>
+		<where>
+			AND `id` = #{id,jdbcType=INTEGER}
+		</where>
 	</update>
 	
 	<update id="modify">
 		UPDATE t_currency_trade
-		SET
+		<set>
 			`symbol` = #{tCurrencyTrade.symbol,jdbcType=VARCHAR}, 
 			`currency_id1` = #{tCurrencyTrade.currencyId1,jdbcType=INTEGER}, 
 			`currency_id2` = #{tCurrencyTrade.currencyId2,jdbcType=INTEGER}, 
@@ -294,150 +300,164 @@
 			`status` = #{tCurrencyTrade.status,jdbcType=INTEGER}, 
 			`sort` = #{tCurrencyTrade.sort,jdbcType=INTEGER}, 
 			`create_time` = #{tCurrencyTrade.createTime,jdbcType=TIMESTAMP}, 
-			`update_time` = #{tCurrencyTrade.updateTime,jdbcType=TIMESTAMP}
+			`update_time` = #{tCurrencyTrade.updateTime,jdbcType=TIMESTAMP}, 
+		</set>
 		<where>
-			<if test="condiTCurrencyTrade.symbol != null and condiTCurrencyTrade.symbol != ''">
+		<if test="condiTCurrencyTrade != null">
+			<if test="condiTCurrencyTrade.id != null">
+			AND `id` = #{condiTCurrencyTrade.id,jdbcType=INTEGER}
+			</if>
+			<if test="condiTCurrencyTrade.symbol != null">
 			AND `symbol` = #{condiTCurrencyTrade.symbol,jdbcType=VARCHAR}
 			</if>
-			<if test="condiTCurrencyTrade.currencyId1 != null and condiTCurrencyTrade.currencyId1 != ''">
+			<if test="condiTCurrencyTrade.currencyId1 != null">
 			AND `currency_id1` = #{condiTCurrencyTrade.currencyId1,jdbcType=INTEGER}
 			</if>
-			<if test="condiTCurrencyTrade.currencyId2 != null and condiTCurrencyTrade.currencyId2 != ''">
+			<if test="condiTCurrencyTrade.currencyId2 != null">
 			AND `currency_id2` = #{condiTCurrencyTrade.currencyId2,jdbcType=INTEGER}
 			</if>
-			<if test="condiTCurrencyTrade.priceDecimalDigits != null and condiTCurrencyTrade.priceDecimalDigits != ''">
+			<if test="condiTCurrencyTrade.priceDecimalDigits != null">
 			AND `price_decimal_digits` = #{condiTCurrencyTrade.priceDecimalDigits,jdbcType=INTEGER}
 			</if>
-			<if test="condiTCurrencyTrade.countDecimalDigits != null and condiTCurrencyTrade.countDecimalDigits != ''">
+			<if test="condiTCurrencyTrade.countDecimalDigits != null">
 			AND `count_decimal_digits` = #{condiTCurrencyTrade.countDecimalDigits,jdbcType=INTEGER}
 			</if>
-			<if test="condiTCurrencyTrade.minBuyCount != null and condiTCurrencyTrade.minBuyCount != ''">
+			<if test="condiTCurrencyTrade.minBuyCount != null">
 			AND `min_buy_count` = #{condiTCurrencyTrade.minBuyCount,jdbcType=DECIMAL}
 			</if>
-			<if test="condiTCurrencyTrade.minBuyPrice != null and condiTCurrencyTrade.minBuyPrice != ''">
+			<if test="condiTCurrencyTrade.minBuyPrice != null">
 			AND `min_Buy_price` = #{condiTCurrencyTrade.minBuyPrice,jdbcType=DECIMAL}
 			</if>
-			<if test="condiTCurrencyTrade.minBuyAmount != null and condiTCurrencyTrade.minBuyAmount != ''">
+			<if test="condiTCurrencyTrade.minBuyAmount != null">
 			AND `min_buy_amount` = #{condiTCurrencyTrade.minBuyAmount,jdbcType=DECIMAL}
 			</if>
-			<if test="condiTCurrencyTrade.maxBuyCount != null and condiTCurrencyTrade.maxBuyCount != ''">
+			<if test="condiTCurrencyTrade.maxBuyCount != null">
 			AND `max_buy_count` = #{condiTCurrencyTrade.maxBuyCount,jdbcType=DECIMAL}
 			</if>
-			<if test="condiTCurrencyTrade.maxBuyAmount != null and condiTCurrencyTrade.maxBuyAmount != ''">
+			<if test="condiTCurrencyTrade.maxBuyAmount != null">
 			AND `max_buy_amount` = #{condiTCurrencyTrade.maxBuyAmount,jdbcType=DECIMAL}
 			</if>
-			<if test="condiTCurrencyTrade.maxBuyPrice != null and condiTCurrencyTrade.maxBuyPrice != ''">
+			<if test="condiTCurrencyTrade.maxBuyPrice != null">
 			AND `max_buy_price` = #{condiTCurrencyTrade.maxBuyPrice,jdbcType=DECIMAL}
 			</if>
-			<if test="condiTCurrencyTrade.status != null and condiTCurrencyTrade.status != ''">
+			<if test="condiTCurrencyTrade.status != null">
 			AND `status` = #{condiTCurrencyTrade.status,jdbcType=INTEGER}
 			</if>
-			<if test="condiTCurrencyTrade.sort != null and condiTCurrencyTrade.sort != ''">
+			<if test="condiTCurrencyTrade.sort != null">
 			AND `sort` = #{condiTCurrencyTrade.sort,jdbcType=INTEGER}
 			</if>
-			<if test="condiTCurrencyTrade.createTime != null and condiTCurrencyTrade.createTime != ''">
+			<if test="condiTCurrencyTrade.createTime != null">
 			AND `create_time` = #{condiTCurrencyTrade.createTime,jdbcType=TIMESTAMP}
 			</if>
-			<if test="condiTCurrencyTrade.updateTime != null and condiTCurrencyTrade.updateTime != ''">
+			<if test="condiTCurrencyTrade.updateTime != null">
 			AND `update_time` = #{condiTCurrencyTrade.updateTime,jdbcType=TIMESTAMP}
 			</if>
+		</if>
 		</where>
 	</update>
 	
 	<update id="modifyWithSelective">
 		UPDATE t_currency_trade
-		SET
-			<if test="tCurrencyTrade.symbol != null and tCurrencyTrade.symbol != ''">
+		<set>
+		<if test="tCurrencyTrade != null">
+			<if test="tCurrencyTrade.symbol != null">
 			`symbol` = #{tCurrencyTrade.symbol,jdbcType=VARCHAR}, 
 			</if>
-			<if test="tCurrencyTrade.currencyId1 != null and tCurrencyTrade.currencyId1 != ''">
+			<if test="tCurrencyTrade.currencyId1 != null">
 			`currency_id1` = #{tCurrencyTrade.currencyId1,jdbcType=INTEGER}, 
 			</if>
-			<if test="tCurrencyTrade.currencyId2 != null and tCurrencyTrade.currencyId2 != ''">
+			<if test="tCurrencyTrade.currencyId2 != null">
 			`currency_id2` = #{tCurrencyTrade.currencyId2,jdbcType=INTEGER}, 
 			</if>
-			<if test="tCurrencyTrade.priceDecimalDigits != null and tCurrencyTrade.priceDecimalDigits != ''">
+			<if test="tCurrencyTrade.priceDecimalDigits != null">
 			`price_decimal_digits` = #{tCurrencyTrade.priceDecimalDigits,jdbcType=INTEGER}, 
 			</if>
-			<if test="tCurrencyTrade.countDecimalDigits != null and tCurrencyTrade.countDecimalDigits != ''">
+			<if test="tCurrencyTrade.countDecimalDigits != null">
 			`count_decimal_digits` = #{tCurrencyTrade.countDecimalDigits,jdbcType=INTEGER}, 
 			</if>
-			<if test="tCurrencyTrade.minBuyCount != null and tCurrencyTrade.minBuyCount != ''">
+			<if test="tCurrencyTrade.minBuyCount != null">
 			`min_buy_count` = #{tCurrencyTrade.minBuyCount,jdbcType=DECIMAL}, 
 			</if>
-			<if test="tCurrencyTrade.minBuyPrice != null and tCurrencyTrade.minBuyPrice != ''">
+			<if test="tCurrencyTrade.minBuyPrice != null">
 			`min_Buy_price` = #{tCurrencyTrade.minBuyPrice,jdbcType=DECIMAL}, 
 			</if>
-			<if test="tCurrencyTrade.minBuyAmount != null and tCurrencyTrade.minBuyAmount != ''">
+			<if test="tCurrencyTrade.minBuyAmount != null">
 			`min_buy_amount` = #{tCurrencyTrade.minBuyAmount,jdbcType=DECIMAL}, 
 			</if>
-			<if test="tCurrencyTrade.maxBuyCount != null and tCurrencyTrade.maxBuyCount != ''">
+			<if test="tCurrencyTrade.maxBuyCount != null">
 			`max_buy_count` = #{tCurrencyTrade.maxBuyCount,jdbcType=DECIMAL}, 
 			</if>
-			<if test="tCurrencyTrade.maxBuyAmount != null and tCurrencyTrade.maxBuyAmount != ''">
+			<if test="tCurrencyTrade.maxBuyAmount != null">
 			`max_buy_amount` = #{tCurrencyTrade.maxBuyAmount,jdbcType=DECIMAL}, 
 			</if>
-			<if test="tCurrencyTrade.maxBuyPrice != null and tCurrencyTrade.maxBuyPrice != ''">
+			<if test="tCurrencyTrade.maxBuyPrice != null">
 			`max_buy_price` = #{tCurrencyTrade.maxBuyPrice,jdbcType=DECIMAL}, 
 			</if>
-			<if test="tCurrencyTrade.status != null and tCurrencyTrade.status != ''">
+			<if test="tCurrencyTrade.status != null">
 			`status` = #{tCurrencyTrade.status,jdbcType=INTEGER}, 
 			</if>
-			<if test="tCurrencyTrade.sort != null and tCurrencyTrade.sort != ''">
+			<if test="tCurrencyTrade.sort != null">
 			`sort` = #{tCurrencyTrade.sort,jdbcType=INTEGER}, 
 			</if>
-			<if test="tCurrencyTrade.createTime != null and tCurrencyTrade.createTime != ''">
+			<if test="tCurrencyTrade.createTime != null">
 			`create_time` = #{tCurrencyTrade.createTime,jdbcType=TIMESTAMP}, 
 			</if>
-			<if test="tCurrencyTrade.updateTime != null and tCurrencyTrade.updateTime != ''">
-			`update_time` = #{tCurrencyTrade.updateTime,jdbcType=TIMESTAMP}
+			<if test="tCurrencyTrade.updateTime != null">
+			`update_time` = #{tCurrencyTrade.updateTime,jdbcType=TIMESTAMP}, 
 			</if>
+		</if>
+		</set>
 		<where>
-			<if test="condiTCurrencyTrade.symbol != null and condiTCurrencyTrade.symbol != ''">
+		<if test="condiTCurrencyTrade != null">
+			<if test="condiTCurrencyTrade.id != null">
+			AND `id` = #{condiTCurrencyTrade.id,jdbcType=INTEGER}
+			</if>
+			<if test="condiTCurrencyTrade.symbol != null">
 			AND `symbol` = #{condiTCurrencyTrade.symbol,jdbcType=VARCHAR}
 			</if>
-			<if test="condiTCurrencyTrade.currencyId1 != null and condiTCurrencyTrade.currencyId1 != ''">
+			<if test="condiTCurrencyTrade.currencyId1 != null">
 			AND `currency_id1` = #{condiTCurrencyTrade.currencyId1,jdbcType=INTEGER}
 			</if>
-			<if test="condiTCurrencyTrade.currencyId2 != null and condiTCurrencyTrade.currencyId2 != ''">
+			<if test="condiTCurrencyTrade.currencyId2 != null">
 			AND `currency_id2` = #{condiTCurrencyTrade.currencyId2,jdbcType=INTEGER}
 			</if>
-			<if test="condiTCurrencyTrade.priceDecimalDigits != null and condiTCurrencyTrade.priceDecimalDigits != ''">
+			<if test="condiTCurrencyTrade.priceDecimalDigits != null">
 			AND `price_decimal_digits` = #{condiTCurrencyTrade.priceDecimalDigits,jdbcType=INTEGER}
 			</if>
-			<if test="condiTCurrencyTrade.countDecimalDigits != null and condiTCurrencyTrade.countDecimalDigits != ''">
+			<if test="condiTCurrencyTrade.countDecimalDigits != null">
 			AND `count_decimal_digits` = #{condiTCurrencyTrade.countDecimalDigits,jdbcType=INTEGER}
 			</if>
-			<if test="condiTCurrencyTrade.minBuyCount != null and condiTCurrencyTrade.minBuyCount != ''">
+			<if test="condiTCurrencyTrade.minBuyCount != null">
 			AND `min_buy_count` = #{condiTCurrencyTrade.minBuyCount,jdbcType=DECIMAL}
 			</if>
-			<if test="condiTCurrencyTrade.minBuyPrice != null and condiTCurrencyTrade.minBuyPrice != ''">
+			<if test="condiTCurrencyTrade.minBuyPrice != null">
 			AND `min_Buy_price` = #{condiTCurrencyTrade.minBuyPrice,jdbcType=DECIMAL}
 			</if>
-			<if test="condiTCurrencyTrade.minBuyAmount != null and condiTCurrencyTrade.minBuyAmount != ''">
+			<if test="condiTCurrencyTrade.minBuyAmount != null">
 			AND `min_buy_amount` = #{condiTCurrencyTrade.minBuyAmount,jdbcType=DECIMAL}
 			</if>
-			<if test="condiTCurrencyTrade.maxBuyCount != null and condiTCurrencyTrade.maxBuyCount != ''">
+			<if test="condiTCurrencyTrade.maxBuyCount != null">
 			AND `max_buy_count` = #{condiTCurrencyTrade.maxBuyCount,jdbcType=DECIMAL}
 			</if>
-			<if test="condiTCurrencyTrade.maxBuyAmount != null and condiTCurrencyTrade.maxBuyAmount != ''">
+			<if test="condiTCurrencyTrade.maxBuyAmount != null">
 			AND `max_buy_amount` = #{condiTCurrencyTrade.maxBuyAmount,jdbcType=DECIMAL}
 			</if>
-			<if test="condiTCurrencyTrade.maxBuyPrice != null and condiTCurrencyTrade.maxBuyPrice != ''">
+			<if test="condiTCurrencyTrade.maxBuyPrice != null">
 			AND `max_buy_price` = #{condiTCurrencyTrade.maxBuyPrice,jdbcType=DECIMAL}
 			</if>
-			<if test="condiTCurrencyTrade.status != null and condiTCurrencyTrade.status != ''">
+			<if test="condiTCurrencyTrade.status != null">
 			AND `status` = #{condiTCurrencyTrade.status,jdbcType=INTEGER}
 			</if>
-			<if test="condiTCurrencyTrade.sort != null and condiTCurrencyTrade.sort != ''">
+			<if test="condiTCurrencyTrade.sort != null">
 			AND `sort` = #{condiTCurrencyTrade.sort,jdbcType=INTEGER}
 			</if>
-			<if test="condiTCurrencyTrade.createTime != null and condiTCurrencyTrade.createTime != ''">
+			<if test="condiTCurrencyTrade.createTime != null">
 			AND `create_time` = #{condiTCurrencyTrade.createTime,jdbcType=TIMESTAMP}
 			</if>
-			<if test="condiTCurrencyTrade.updateTime != null and condiTCurrencyTrade.updateTime != ''">
+			<if test="condiTCurrencyTrade.updateTime != null">
 			AND `update_time` = #{condiTCurrencyTrade.updateTime,jdbcType=TIMESTAMP}
 			</if>
+		</if>
 		</where>
 	</update>
 	
@@ -460,8 +480,9 @@
 			`create_time`, 
 			`update_time`
 		FROM t_currency_trade
-		WHERE 
-			`id` = #{id,jdbcType=INTEGER}
+		<where>
+			AND `id` = #{id,jdbcType=INTEGER}
+		</where>
 	</select>
 	
 	<select id="get" resultType="com.bittrade.pojo.model.TCurrencyTrade">
@@ -484,49 +505,49 @@
 			`update_time`
 		FROM t_currency_trade
 		<where>
-			<if test="symbol != null and symbol != ''">
+			<if test="symbol != null">
 			AND `symbol` = #{symbol,jdbcType=VARCHAR}
 			</if>
-			<if test="currencyId1 != null and currencyId1 != ''">
+			<if test="currencyId1 != null">
 			AND `currency_id1` = #{currencyId1,jdbcType=INTEGER}
 			</if>
-			<if test="currencyId2 != null and currencyId2 != ''">
+			<if test="currencyId2 != null">
 			AND `currency_id2` = #{currencyId2,jdbcType=INTEGER}
 			</if>
-			<if test="priceDecimalDigits != null and priceDecimalDigits != ''">
+			<if test="priceDecimalDigits != null">
 			AND `price_decimal_digits` = #{priceDecimalDigits,jdbcType=INTEGER}
 			</if>
-			<if test="countDecimalDigits != null and countDecimalDigits != ''">
+			<if test="countDecimalDigits != null">
 			AND `count_decimal_digits` = #{countDecimalDigits,jdbcType=INTEGER}
 			</if>
-			<if test="minBuyCount != null and minBuyCount != ''">
+			<if test="minBuyCount != null">
 			AND `min_buy_count` = #{minBuyCount,jdbcType=DECIMAL}
 			</if>
-			<if test="minBuyPrice != null and minBuyPrice != ''">
+			<if test="minBuyPrice != null">
 			AND `min_Buy_price` = #{minBuyPrice,jdbcType=DECIMAL}
 			</if>
-			<if test="minBuyAmount != null and minBuyAmount != ''">
+			<if test="minBuyAmount != null">
 			AND `min_buy_amount` = #{minBuyAmount,jdbcType=DECIMAL}
 			</if>
-			<if test="maxBuyCount != null and maxBuyCount != ''">
+			<if test="maxBuyCount != null">
 			AND `max_buy_count` = #{maxBuyCount,jdbcType=DECIMAL}
 			</if>
-			<if test="maxBuyAmount != null and maxBuyAmount != ''">
+			<if test="maxBuyAmount != null">
 			AND `max_buy_amount` = #{maxBuyAmount,jdbcType=DECIMAL}
 			</if>
-			<if test="maxBuyPrice != null and maxBuyPrice != ''">
+			<if test="maxBuyPrice != null">
 			AND `max_buy_price` = #{maxBuyPrice,jdbcType=DECIMAL}
 			</if>
-			<if test="status != null and status != ''">
+			<if test="status != null">
 			AND `status` = #{status,jdbcType=INTEGER}
 			</if>
-			<if test="sort != null and sort != ''">
+			<if test="sort != null">
 			AND `sort` = #{sort,jdbcType=INTEGER}
 			</if>
-			<if test="createTime != null and createTime != ''">
+			<if test="createTime != null">
 			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
 			</if>
-			<if test="updateTime != null and updateTime != ''">
+			<if test="updateTime != null">
 			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
 			</if>
 		</where>
@@ -553,49 +574,49 @@
 			`update_time`
 		FROM t_currency_trade
 		<where>
-			<if test="symbol != null and symbol != ''">
+			<if test="symbol != null">
 			AND `symbol` = #{symbol,jdbcType=VARCHAR}
 			</if>
-			<if test="currencyId1 != null and currencyId1 != ''">
+			<if test="currencyId1 != null">
 			AND `currency_id1` = #{currencyId1,jdbcType=INTEGER}
 			</if>
-			<if test="currencyId2 != null and currencyId2 != ''">
+			<if test="currencyId2 != null">
 			AND `currency_id2` = #{currencyId2,jdbcType=INTEGER}
 			</if>
-			<if test="priceDecimalDigits != null and priceDecimalDigits != ''">
+			<if test="priceDecimalDigits != null">
 			AND `price_decimal_digits` = #{priceDecimalDigits,jdbcType=INTEGER}
 			</if>
-			<if test="countDecimalDigits != null and countDecimalDigits != ''">
+			<if test="countDecimalDigits != null">
 			AND `count_decimal_digits` = #{countDecimalDigits,jdbcType=INTEGER}
 			</if>
-			<if test="minBuyCount != null and minBuyCount != ''">
+			<if test="minBuyCount != null">
 			AND `min_buy_count` = #{minBuyCount,jdbcType=DECIMAL}
 			</if>
-			<if test="minBuyPrice != null and minBuyPrice != ''">
+			<if test="minBuyPrice != null">
 			AND `min_Buy_price` = #{minBuyPrice,jdbcType=DECIMAL}
 			</if>
-			<if test="minBuyAmount != null and minBuyAmount != ''">
+			<if test="minBuyAmount != null">
 			AND `min_buy_amount` = #{minBuyAmount,jdbcType=DECIMAL}
 			</if>
-			<if test="maxBuyCount != null and maxBuyCount != ''">
+			<if test="maxBuyCount != null">
 			AND `max_buy_count` = #{maxBuyCount,jdbcType=DECIMAL}
 			</if>
-			<if test="maxBuyAmount != null and maxBuyAmount != ''">
+			<if test="maxBuyAmount != null">
 			AND `max_buy_amount` = #{maxBuyAmount,jdbcType=DECIMAL}
 			</if>
-			<if test="maxBuyPrice != null and maxBuyPrice != ''">
+			<if test="maxBuyPrice != null">
 			AND `max_buy_price` = #{maxBuyPrice,jdbcType=DECIMAL}
 			</if>
-			<if test="status != null and status != ''">
+			<if test="status != null">
 			AND `status` = #{status,jdbcType=INTEGER}
 			</if>
-			<if test="sort != null and sort != ''">
+			<if test="sort != null">
 			AND `sort` = #{sort,jdbcType=INTEGER}
 			</if>
-			<if test="createTime != null and createTime != ''">
+			<if test="createTime != null">
 			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
 			</if>
-			<if test="updateTime != null and updateTime != ''">
+			<if test="updateTime != null">
 			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
 			</if>
 		</where>
@@ -626,51 +647,53 @@
 		SELECT COUNT(1)
 		FROM t_currency_trade
 		<where>
-			<if test="tCurrencyTrade.symbol != null and tCurrencyTrade.symbol != ''">
+		<if test="tCurrencyTrade != null">
+			<if test="tCurrencyTrade.symbol != null">
 			AND `symbol` = #{tCurrencyTrade.symbol,jdbcType=VARCHAR}
 			</if>
-			<if test="tCurrencyTrade.currencyId1 != null and tCurrencyTrade.currencyId1 != ''">
+			<if test="tCurrencyTrade.currencyId1 != null">
 			AND `currency_id1` = #{tCurrencyTrade.currencyId1,jdbcType=INTEGER}
 			</if>
-			<if test="tCurrencyTrade.currencyId2 != null and tCurrencyTrade.currencyId2 != ''">
+			<if test="tCurrencyTrade.currencyId2 != null">
 			AND `currency_id2` = #{tCurrencyTrade.currencyId2,jdbcType=INTEGER}
 			</if>
-			<if test="tCurrencyTrade.priceDecimalDigits != null and tCurrencyTrade.priceDecimalDigits != ''">
+			<if test="tCurrencyTrade.priceDecimalDigits != null">
 			AND `price_decimal_digits` = #{tCurrencyTrade.priceDecimalDigits,jdbcType=INTEGER}
 			</if>
-			<if test="tCurrencyTrade.countDecimalDigits != null and tCurrencyTrade.countDecimalDigits != ''">
+			<if test="tCurrencyTrade.countDecimalDigits != null">
 			AND `count_decimal_digits` = #{tCurrencyTrade.countDecimalDigits,jdbcType=INTEGER}
 			</if>
-			<if test="tCurrencyTrade.minBuyCount != null and tCurrencyTrade.minBuyCount != ''">
+			<if test="tCurrencyTrade.minBuyCount != null">
 			AND `min_buy_count` = #{tCurrencyTrade.minBuyCount,jdbcType=DECIMAL}
 			</if>
-			<if test="tCurrencyTrade.minBuyPrice != null and tCurrencyTrade.minBuyPrice != ''">
+			<if test="tCurrencyTrade.minBuyPrice != null">
 			AND `min_Buy_price` = #{tCurrencyTrade.minBuyPrice,jdbcType=DECIMAL}
 			</if>
-			<if test="tCurrencyTrade.minBuyAmount != null and tCurrencyTrade.minBuyAmount != ''">
+			<if test="tCurrencyTrade.minBuyAmount != null">
 			AND `min_buy_amount` = #{tCurrencyTrade.minBuyAmount,jdbcType=DECIMAL}
 			</if>
-			<if test="tCurrencyTrade.maxBuyCount != null and tCurrencyTrade.maxBuyCount != ''">
+			<if test="tCurrencyTrade.maxBuyCount != null">
 			AND `max_buy_count` = #{tCurrencyTrade.maxBuyCount,jdbcType=DECIMAL}
 			</if>
-			<if test="tCurrencyTrade.maxBuyAmount != null and tCurrencyTrade.maxBuyAmount != ''">
+			<if test="tCurrencyTrade.maxBuyAmount != null">
 			AND `max_buy_amount` = #{tCurrencyTrade.maxBuyAmount,jdbcType=DECIMAL}
 			</if>
-			<if test="tCurrencyTrade.maxBuyPrice != null and tCurrencyTrade.maxBuyPrice != ''">
+			<if test="tCurrencyTrade.maxBuyPrice != null">
 			AND `max_buy_price` = #{tCurrencyTrade.maxBuyPrice,jdbcType=DECIMAL}
 			</if>
-			<if test="tCurrencyTrade.status != null and tCurrencyTrade.status != ''">
+			<if test="tCurrencyTrade.status != null">
 			AND `status` = #{tCurrencyTrade.status,jdbcType=INTEGER}
 			</if>
-			<if test="tCurrencyTrade.sort != null and tCurrencyTrade.sort != ''">
+			<if test="tCurrencyTrade.sort != null">
 			AND `sort` = #{tCurrencyTrade.sort,jdbcType=INTEGER}
 			</if>
-			<if test="tCurrencyTrade.createTime != null and tCurrencyTrade.createTime != ''">
+			<if test="tCurrencyTrade.createTime != null">
 			AND `create_time` = #{tCurrencyTrade.createTime,jdbcType=TIMESTAMP}
 			</if>
-			<if test="tCurrencyTrade.updateTime != null and tCurrencyTrade.updateTime != ''">
+			<if test="tCurrencyTrade.updateTime != null">
 			AND `update_time` = #{tCurrencyTrade.updateTime,jdbcType=TIMESTAMP}
 			</if>
+		</if>
 		</where>
 	</select>
 	
@@ -694,51 +717,53 @@
 			`update_time`
 		FROM t_currency_trade
 		<where>
-			<if test="tCurrencyTrade.symbol != null and tCurrencyTrade.symbol != ''">
+		<if test="tCurrencyTrade != null">
+			<if test="tCurrencyTrade.symbol != null">
 			AND `symbol` = #{tCurrencyTrade.symbol,jdbcType=VARCHAR}
 			</if>
-			<if test="tCurrencyTrade.currencyId1 != null and tCurrencyTrade.currencyId1 != ''">
+			<if test="tCurrencyTrade.currencyId1 != null">
 			AND `currency_id1` = #{tCurrencyTrade.currencyId1,jdbcType=INTEGER}
 			</if>
-			<if test="tCurrencyTrade.currencyId2 != null and tCurrencyTrade.currencyId2 != ''">
+			<if test="tCurrencyTrade.currencyId2 != null">
 			AND `currency_id2` = #{tCurrencyTrade.currencyId2,jdbcType=INTEGER}
 			</if>
-			<if test="tCurrencyTrade.priceDecimalDigits != null and tCurrencyTrade.priceDecimalDigits != ''">
+			<if test="tCurrencyTrade.priceDecimalDigits != null">
 			AND `price_decimal_digits` = #{tCurrencyTrade.priceDecimalDigits,jdbcType=INTEGER}
 			</if>
-			<if test="tCurrencyTrade.countDecimalDigits != null and tCurrencyTrade.countDecimalDigits != ''">
+			<if test="tCurrencyTrade.countDecimalDigits != null">
 			AND `count_decimal_digits` = #{tCurrencyTrade.countDecimalDigits,jdbcType=INTEGER}
 			</if>
-			<if test="tCurrencyTrade.minBuyCount != null and tCurrencyTrade.minBuyCount != ''">
+			<if test="tCurrencyTrade.minBuyCount != null">
 			AND `min_buy_count` = #{tCurrencyTrade.minBuyCount,jdbcType=DECIMAL}
 			</if>
-			<if test="tCurrencyTrade.minBuyPrice != null and tCurrencyTrade.minBuyPrice != ''">
+			<if test="tCurrencyTrade.minBuyPrice != null">
 			AND `min_Buy_price` = #{tCurrencyTrade.minBuyPrice,jdbcType=DECIMAL}
 			</if>
-			<if test="tCurrencyTrade.minBuyAmount != null and tCurrencyTrade.minBuyAmount != ''">
+			<if test="tCurrencyTrade.minBuyAmount != null">
 			AND `min_buy_amount` = #{tCurrencyTrade.minBuyAmount,jdbcType=DECIMAL}
 			</if>
-			<if test="tCurrencyTrade.maxBuyCount != null and tCurrencyTrade.maxBuyCount != ''">
+			<if test="tCurrencyTrade.maxBuyCount != null">
 			AND `max_buy_count` = #{tCurrencyTrade.maxBuyCount,jdbcType=DECIMAL}
 			</if>
-			<if test="tCurrencyTrade.maxBuyAmount != null and tCurrencyTrade.maxBuyAmount != ''">
+			<if test="tCurrencyTrade.maxBuyAmount != null">
 			AND `max_buy_amount` = #{tCurrencyTrade.maxBuyAmount,jdbcType=DECIMAL}
 			</if>
-			<if test="tCurrencyTrade.maxBuyPrice != null and tCurrencyTrade.maxBuyPrice != ''">
+			<if test="tCurrencyTrade.maxBuyPrice != null">
 			AND `max_buy_price` = #{tCurrencyTrade.maxBuyPrice,jdbcType=DECIMAL}
 			</if>
-			<if test="tCurrencyTrade.status != null and tCurrencyTrade.status != ''">
+			<if test="tCurrencyTrade.status != null">
 			AND `status` = #{tCurrencyTrade.status,jdbcType=INTEGER}
 			</if>
-			<if test="tCurrencyTrade.sort != null and tCurrencyTrade.sort != ''">
+			<if test="tCurrencyTrade.sort != null">
 			AND `sort` = #{tCurrencyTrade.sort,jdbcType=INTEGER}
 			</if>
-			<if test="tCurrencyTrade.createTime != null and tCurrencyTrade.createTime != ''">
+			<if test="tCurrencyTrade.createTime != null">
 			AND `create_time` = #{tCurrencyTrade.createTime,jdbcType=TIMESTAMP}
 			</if>
-			<if test="tCurrencyTrade.updateTime != null and tCurrencyTrade.updateTime != ''">
+			<if test="tCurrencyTrade.updateTime != null">
 			AND `update_time` = #{tCurrencyTrade.updateTime,jdbcType=TIMESTAMP}
 			</if>
+		</if>
 		</where>
 		LIMIT #{page}, #{size}
 	</select>

@@ -12,15 +12,20 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class TCurrencyAddressVO extends BaseVO<TCurrencyAddressVO> {
+public class TOrderVO extends BaseVO<TOrderVO> {
 
 	private static final long serialVersionUID = 1L;
 
 	private Integer id;
-	private Long userId;
-	private Integer currencyId;
-	private String adderess;
-	private String addressRemark;
+	private Integer userId;
+	private String orderId;
+	private java.math.BigDecimal fee;
+	private String token;
+	private java.math.BigDecimal amount;
+	private String receiverAddress;
+	private String type;
+	private String operator;
 	private java.util.Date createTime;
+	private java.util.Date updateTime;
 
 }

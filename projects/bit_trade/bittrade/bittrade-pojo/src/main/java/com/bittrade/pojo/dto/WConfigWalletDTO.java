@@ -16,7 +16,7 @@ public class WConfigWalletDTO extends BaseDTO<WConfigWalletDTO> {
 
 	private static final long serialVersionUID = 1L;
 
-	private long id;
+	private Long id;
 	private String coinType;
 	private String walletType;
 	private String address;

@@ -132,12 +132,12 @@ public class WUserWalletBill extends BaseModel<WUserWalletBill> {
 	/**
 	 * ID
 	 */
-	private long id;
+	private Long id;
 	
 	/**
 	 * 用户ID
 	 */
-	private long userId;
+	private Long userId;
 	
 	/**
 	 * 默认角色
@@ -152,7 +152,7 @@ public class WUserWalletBill extends BaseModel<WUserWalletBill> {
 	/**
 	 * 1:进账，-1出账
 	 */
-	private int direction;
+	private Integer direction;
 	
 	/**
 	 * 币种大类:BTC系列、BTC_TOKEN、EOS系列、ETH、ETH_TOKEN
@@ -187,7 +187,7 @@ public class WUserWalletBill extends BaseModel<WUserWalletBill> {
 	/**
 	 * 打包区块
 	 */
-	private long block;
+	private Long block;
 	
 	/**
 	 * 交易hash
@@ -207,12 +207,12 @@ public class WUserWalletBill extends BaseModel<WUserWalletBill> {
 	/**
 	 * 转移状态：0：初始化，1：待归集，2已转移，3不用处理
 	 */
-	private byte transferFlag;
+	private Byte transferFlag;
 	
 	/**
 	 * 0：初始化，1：未同步到资金账户，2已同步到资金账户，3不用处理
 	 */
-	private byte flag;
+	private Byte flag;
 	
 	/**
 	 * 备注
