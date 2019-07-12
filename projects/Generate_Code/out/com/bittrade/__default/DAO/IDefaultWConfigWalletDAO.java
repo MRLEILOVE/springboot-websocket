@@ -47,7 +47,7 @@ public abstract interface IDefaultWConfigWalletDAO extends IBaseDAO<WConfigWalle
 	 * @param wConfigWallet
 	 * @return
 	 */
-	public int remove(WConfigWallet wConfigWallet);
+	public int removeBy(WConfigWallet wConfigWallet);
 	
 	/**
 	 * 
@@ -69,7 +69,7 @@ public abstract interface IDefaultWConfigWalletDAO extends IBaseDAO<WConfigWalle
 	 * @param condiWConfigWallet
 	 * @return
 	 */
-	public int modify(@Param(value="wConfigWallet") WConfigWallet wConfigWallet, @Param(value="condiWConfigWallet") WConfigWallet condiWConfigWallet);
+	public int modifyBy(@Param(value="wConfigWallet") WConfigWallet wConfigWallet, @Param(value="condiWConfigWallet") WConfigWallet condiWConfigWallet);
 	
 	/**
 	 * 
@@ -77,7 +77,7 @@ public abstract interface IDefaultWConfigWalletDAO extends IBaseDAO<WConfigWalle
 	 * @param condiWConfigWallet
 	 * @return
 	 */
-	public int modifyWithSelective(@Param(value="wConfigWallet") WConfigWallet wConfigWallet, @Param(value="condiWConfigWallet") WConfigWallet condiWConfigWallet);
+	public int modifyWithSelectiveBy(@Param(value="wConfigWallet") WConfigWallet wConfigWallet, @Param(value="condiWConfigWallet") WConfigWallet condiWConfigWallet);
 	
 	/**
 	 * 
@@ -91,7 +91,13 @@ public abstract interface IDefaultWConfigWalletDAO extends IBaseDAO<WConfigWalle
 	 * @param wConfigWallet
 	 * @return
 	 */
-	public WConfigWallet get(WConfigWallet wConfigWallet);
+	public WConfigWallet getBy(WConfigWallet wConfigWallet);
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public WConfigWallet get();
 	
 	/**
 	 * 
@@ -111,7 +117,7 @@ public abstract interface IDefaultWConfigWalletDAO extends IBaseDAO<WConfigWalle
 	 * @param wConfigWallet
 	 * @return
 	 */
-	public int getCntWithPage(@Param(value="wConfigWallet") WConfigWallet wConfigWallet);
+	public int getCntBy(@Param(value="wConfigWallet") WConfigWallet wConfigWallet);
 	
 	/**
 	 * 
@@ -120,6 +126,6 @@ public abstract interface IDefaultWConfigWalletDAO extends IBaseDAO<WConfigWalle
 	 * @param size
 	 * @return
 	 */
-	public List<WConfigWallet> getsWithPage(@Param(value="wConfigWallet") WConfigWallet wConfigWallet, @Param(value="page") int page, @Param(value="size") int size);
+	public List<WConfigWallet> getsByPage(@Param(value="wConfigWallet") WConfigWallet wConfigWallet, @Param(value="page") int page, @Param(value="size") int size);
 	
 }

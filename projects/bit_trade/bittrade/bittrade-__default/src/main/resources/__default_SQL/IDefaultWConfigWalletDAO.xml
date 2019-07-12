@@ -98,7 +98,7 @@
 		</where>
 	</delete>
 	
-	<delete id="remove" parameterType="com.bittrade.pojo.model.WConfigWallet">
+	<delete id="removeBy" parameterType="com.bittrade.pojo.model.WConfigWallet">
 		DELETE FROM w_config_wallet
 		<where>
 			<if test="coinType != null">
@@ -178,7 +178,7 @@
 		</where>
 	</update>
 	
-	<update id="modify">
+	<update id="modifyBy">
 		UPDATE w_config_wallet
 		<set>
 			`coin_type` = #{wConfigWallet.coinType,jdbcType=VARCHAR}, 
@@ -223,7 +223,7 @@
 		</where>
 	</update>
 	
-	<update id="modifyWithSelective">
+	<update id="modifyWithSelectiveBy">
 		UPDATE w_config_wallet
 		<set>
 		<if test="wConfigWallet != null">
@@ -303,7 +303,7 @@
 		</where>
 	</select>
 	
-	<select id="get" resultType="com.bittrade.pojo.model.WConfigWallet">
+	<select id="getBy" resultType="com.bittrade.pojo.model.WConfigWallet">
 		SELECT 
 			`id`, 
 			`coin_type`, 
@@ -341,6 +341,21 @@
 			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
 			</if>
 		</where>
+		LIMIT 1
+	</select>
+	
+	<select id="get" resultType="com.bittrade.pojo.model.WConfigWallet">
+		SELECT 
+			`id`, 
+			`coin_type`, 
+			`wallet_type`, 
+			`address`, 
+			`keystore`, 
+			`valid`, 
+			`remark`, 
+			`create_time`, 
+			`update_time`
+		FROM w_config_wallet
 		LIMIT 1
 	</select>
 	
@@ -398,7 +413,7 @@
 		FROM w_config_wallet
 	</select>
 	
-	<select id="getCntWithPage" resultType="int">
+	<select id="getCntBy" resultType="int">
 		SELECT COUNT(1)
 		FROM w_config_wallet
 		<where>
@@ -431,7 +446,7 @@
 		</where>
 	</select>
 	
-	<select id="getsWithPage" resultType="com.bittrade.pojo.model.WConfigWallet">
+	<select id="getsByPage" resultType="com.bittrade.pojo.model.WConfigWallet">
 		SELECT 
 			`id`, 
 			`coin_type`, 

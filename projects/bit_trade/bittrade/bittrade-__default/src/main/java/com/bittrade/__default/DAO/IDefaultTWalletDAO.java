@@ -47,7 +47,7 @@ public abstract interface IDefaultTWalletDAO extends IBaseDAO<TWallet, TWalletDT
 	 * @param tWallet
 	 * @return
 	 */
-	public int remove(TWallet tWallet);
+	public int removeBy(TWallet tWallet);
 	
 	/**
 	 * 
@@ -69,7 +69,7 @@ public abstract interface IDefaultTWalletDAO extends IBaseDAO<TWallet, TWalletDT
 	 * @param condiTWallet
 	 * @return
 	 */
-	public int modify(@Param(value="tWallet") TWallet tWallet, @Param(value="condiTWallet") TWallet condiTWallet);
+	public int modifyBy(@Param(value="tWallet") TWallet tWallet, @Param(value="condiTWallet") TWallet condiTWallet);
 	
 	/**
 	 * 
@@ -77,7 +77,7 @@ public abstract interface IDefaultTWalletDAO extends IBaseDAO<TWallet, TWalletDT
 	 * @param condiTWallet
 	 * @return
 	 */
-	public int modifyWithSelective(@Param(value="tWallet") TWallet tWallet, @Param(value="condiTWallet") TWallet condiTWallet);
+	public int modifyWithSelectiveBy(@Param(value="tWallet") TWallet tWallet, @Param(value="condiTWallet") TWallet condiTWallet);
 	
 	/**
 	 * 
@@ -91,7 +91,13 @@ public abstract interface IDefaultTWalletDAO extends IBaseDAO<TWallet, TWalletDT
 	 * @param tWallet
 	 * @return
 	 */
-	public TWallet get(TWallet tWallet);
+	public TWallet getBy(TWallet tWallet);
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public TWallet get();
 	
 	/**
 	 * 
@@ -111,7 +117,7 @@ public abstract interface IDefaultTWalletDAO extends IBaseDAO<TWallet, TWalletDT
 	 * @param tWallet
 	 * @return
 	 */
-	public int getCntWithPage(@Param(value="tWallet") TWallet tWallet);
+	public int getCntBy(@Param(value="tWallet") TWallet tWallet);
 	
 	/**
 	 * 
@@ -120,6 +126,6 @@ public abstract interface IDefaultTWalletDAO extends IBaseDAO<TWallet, TWalletDT
 	 * @param size
 	 * @return
 	 */
-	public List<TWallet> getsWithPage(@Param(value="tWallet") TWallet tWallet, @Param(value="page") int page, @Param(value="size") int size);
+	public List<TWallet> getsByPage(@Param(value="tWallet") TWallet tWallet, @Param(value="page") int page, @Param(value="size") int size);
 	
 }

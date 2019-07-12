@@ -47,7 +47,7 @@ public abstract interface IDefaultTCurrencyTradeDAO extends IBaseDAO<TCurrencyTr
 	 * @param tCurrencyTrade
 	 * @return
 	 */
-	public int remove(TCurrencyTrade tCurrencyTrade);
+	public int removeBy(TCurrencyTrade tCurrencyTrade);
 	
 	/**
 	 * 
@@ -69,7 +69,7 @@ public abstract interface IDefaultTCurrencyTradeDAO extends IBaseDAO<TCurrencyTr
 	 * @param condiTCurrencyTrade
 	 * @return
 	 */
-	public int modify(@Param(value="tCurrencyTrade") TCurrencyTrade tCurrencyTrade, @Param(value="condiTCurrencyTrade") TCurrencyTrade condiTCurrencyTrade);
+	public int modifyBy(@Param(value="tCurrencyTrade") TCurrencyTrade tCurrencyTrade, @Param(value="condiTCurrencyTrade") TCurrencyTrade condiTCurrencyTrade);
 	
 	/**
 	 * 
@@ -77,7 +77,7 @@ public abstract interface IDefaultTCurrencyTradeDAO extends IBaseDAO<TCurrencyTr
 	 * @param condiTCurrencyTrade
 	 * @return
 	 */
-	public int modifyWithSelective(@Param(value="tCurrencyTrade") TCurrencyTrade tCurrencyTrade, @Param(value="condiTCurrencyTrade") TCurrencyTrade condiTCurrencyTrade);
+	public int modifyWithSelectiveBy(@Param(value="tCurrencyTrade") TCurrencyTrade tCurrencyTrade, @Param(value="condiTCurrencyTrade") TCurrencyTrade condiTCurrencyTrade);
 	
 	/**
 	 * 
@@ -91,7 +91,13 @@ public abstract interface IDefaultTCurrencyTradeDAO extends IBaseDAO<TCurrencyTr
 	 * @param tCurrencyTrade
 	 * @return
 	 */
-	public TCurrencyTrade get(TCurrencyTrade tCurrencyTrade);
+	public TCurrencyTrade getBy(TCurrencyTrade tCurrencyTrade);
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public TCurrencyTrade get();
 	
 	/**
 	 * 
@@ -111,7 +117,7 @@ public abstract interface IDefaultTCurrencyTradeDAO extends IBaseDAO<TCurrencyTr
 	 * @param tCurrencyTrade
 	 * @return
 	 */
-	public int getCntWithPage(@Param(value="tCurrencyTrade") TCurrencyTrade tCurrencyTrade);
+	public int getCntBy(@Param(value="tCurrencyTrade") TCurrencyTrade tCurrencyTrade);
 	
 	/**
 	 * 
@@ -120,6 +126,6 @@ public abstract interface IDefaultTCurrencyTradeDAO extends IBaseDAO<TCurrencyTr
 	 * @param size
 	 * @return
 	 */
-	public List<TCurrencyTrade> getsWithPage(@Param(value="tCurrencyTrade") TCurrencyTrade tCurrencyTrade, @Param(value="page") int page, @Param(value="size") int size);
+	public List<TCurrencyTrade> getsByPage(@Param(value="tCurrencyTrade") TCurrencyTrade tCurrencyTrade, @Param(value="page") int page, @Param(value="size") int size);
 	
 }

@@ -47,7 +47,7 @@ public abstract interface IDefaultTEntrustRecordDAO extends IBaseDAO<TEntrustRec
 	 * @param tEntrustRecord
 	 * @return
 	 */
-	public int remove(TEntrustRecord tEntrustRecord);
+	public int removeBy(TEntrustRecord tEntrustRecord);
 	
 	/**
 	 * 
@@ -69,7 +69,7 @@ public abstract interface IDefaultTEntrustRecordDAO extends IBaseDAO<TEntrustRec
 	 * @param condiTEntrustRecord
 	 * @return
 	 */
-	public int modify(@Param(value="tEntrustRecord") TEntrustRecord tEntrustRecord, @Param(value="condiTEntrustRecord") TEntrustRecord condiTEntrustRecord);
+	public int modifyBy(@Param(value="tEntrustRecord") TEntrustRecord tEntrustRecord, @Param(value="condiTEntrustRecord") TEntrustRecord condiTEntrustRecord);
 	
 	/**
 	 * 
@@ -77,7 +77,7 @@ public abstract interface IDefaultTEntrustRecordDAO extends IBaseDAO<TEntrustRec
 	 * @param condiTEntrustRecord
 	 * @return
 	 */
-	public int modifyWithSelective(@Param(value="tEntrustRecord") TEntrustRecord tEntrustRecord, @Param(value="condiTEntrustRecord") TEntrustRecord condiTEntrustRecord);
+	public int modifyWithSelectiveBy(@Param(value="tEntrustRecord") TEntrustRecord tEntrustRecord, @Param(value="condiTEntrustRecord") TEntrustRecord condiTEntrustRecord);
 	
 	/**
 	 * 
@@ -91,7 +91,13 @@ public abstract interface IDefaultTEntrustRecordDAO extends IBaseDAO<TEntrustRec
 	 * @param tEntrustRecord
 	 * @return
 	 */
-	public TEntrustRecord get(TEntrustRecord tEntrustRecord);
+	public TEntrustRecord getBy(TEntrustRecord tEntrustRecord);
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public TEntrustRecord get();
 	
 	/**
 	 * 
@@ -111,7 +117,7 @@ public abstract interface IDefaultTEntrustRecordDAO extends IBaseDAO<TEntrustRec
 	 * @param tEntrustRecord
 	 * @return
 	 */
-	public int getCntWithPage(@Param(value="tEntrustRecord") TEntrustRecord tEntrustRecord);
+	public int getCntBy(@Param(value="tEntrustRecord") TEntrustRecord tEntrustRecord);
 	
 	/**
 	 * 
@@ -120,6 +126,6 @@ public abstract interface IDefaultTEntrustRecordDAO extends IBaseDAO<TEntrustRec
 	 * @param size
 	 * @return
 	 */
-	public List<TEntrustRecord> getsWithPage(@Param(value="tEntrustRecord") TEntrustRecord tEntrustRecord, @Param(value="page") int page, @Param(value="size") int size);
+	public List<TEntrustRecord> getsByPage(@Param(value="tEntrustRecord") TEntrustRecord tEntrustRecord, @Param(value="page") int page, @Param(value="size") int size);
 	
 }

@@ -22,7 +22,7 @@ public class AppTester extends BaseTester {
 
 		TParamConfig paramConfigQuery = new TParamConfig();
 		paramConfigQuery.setParamKey( "usdToCnyRateKey" );
-		TParamConfig paramConfig = paramConfigService.get( paramConfigQuery );
+		TParamConfig paramConfig = paramConfigService.getBy( paramConfigQuery );
 		System.out.println( paramConfig.getParamValue() );
 
 	}

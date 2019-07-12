@@ -50,9 +50,9 @@ public abstract class BaseController<Model extends BaseModel<Model>, DTO extends
 		return baseService.removeByPK(PK);
 	}
 
-	@RequestMapping(value = "/remove", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public int remove(Model model) {
-		return baseService.remove(model);
+	@RequestMapping(value = "/removeBy", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public int removeBy(Model model) {
+		return baseService.removeBy(model);
 	}
 
 	@RequestMapping(value = "/modifyByPK", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -65,14 +65,14 @@ public abstract class BaseController<Model extends BaseModel<Model>, DTO extends
 		return baseService.modifyWithSelectiveByPK(model);
 	}
 
-	@RequestMapping(value = "/modify", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public int modify(Model model, Model condiModel) {
-		return baseService.modify(model, condiModel);
+	@RequestMapping(value = "/modifyBy", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public int modifyBy(Model model, Model condiModel) {
+		return baseService.modifyBy(model, condiModel);
 	}
 
-	@RequestMapping(value = "/modifyWithSelective", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public int modifyWithSelective(Model model, Model condiModel) {
-		return baseService.modifyWithSelective(model, condiModel);
+	@RequestMapping(value = "/modifyWithSelectiveBy", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public int modifyWithSelectiveBy(Model model, Model condiModel) {
+		return baseService.modifyWithSelectiveBy(model, condiModel);
 	}
 
 	@RequestMapping(value = "/getByPK", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -80,9 +80,14 @@ public abstract class BaseController<Model extends BaseModel<Model>, DTO extends
 		return baseService.getByPK(PK);
 	}
 
+	@RequestMapping(value = "/getBy", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public Model getBy(Model model) {
+		return baseService.getBy(model);
+	}
+
 	@RequestMapping(value = "/get", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public Model get(Model model) {
-		return baseService.get(model);
+	public Model get() {
+		return baseService.get();
 	}
 
 	@RequestMapping(value = "/getsBy", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -95,13 +100,13 @@ public abstract class BaseController<Model extends BaseModel<Model>, DTO extends
 		return baseService.gets();
 	}
 
-	@RequestMapping(value = "/getsWithPage", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public PageDTO<Model> getsWithPage(
+	@RequestMapping(value = "/getsByPage", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public PageDTO<Model> getsByPage(
 			Model model, 
 			@RequestParam(required = false, defaultValue = "1") int page, 
 			@RequestParam(required = false, defaultValue = "10") int size
 			) {
-		return baseService.getsWithPage(model, page, size);
+		return baseService.getsByPage(model, page, size);
 	}
 
 }

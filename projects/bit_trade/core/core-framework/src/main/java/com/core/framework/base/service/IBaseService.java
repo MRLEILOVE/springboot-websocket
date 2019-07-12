@@ -54,7 +54,7 @@ public abstract interface IBaseService<Model extends BaseModel<Model>, DTO exten
 	 * @param model
 	 * @return
 	 */
-	public int remove(Model model);
+	public int removeBy(Model model);
 
 	/**
 	 * 修改根据主键
@@ -76,7 +76,7 @@ public abstract interface IBaseService<Model extends BaseModel<Model>, DTO exten
 	 * @param condiModel
 	 * @return
 	 */
-	public int modify(Model model, Model condiModel);
+	public int modifyBy(Model model, Model condiModel);
 
 	/**
 	 * 修改根据实体（会使用数据库默认值）
@@ -84,7 +84,7 @@ public abstract interface IBaseService<Model extends BaseModel<Model>, DTO exten
 	 * @param condiModel
 	 * @return
 	 */
-	public int modifyWithSelective(Model model, Model condiModel);
+	public int modifyWithSelectiveBy(Model model, Model condiModel);
 
 	/**
 	 * 查询一个根据主键
@@ -98,7 +98,14 @@ public abstract interface IBaseService<Model extends BaseModel<Model>, DTO exten
 	 * @param model
 	 * @return
 	 */
-	public Model get(Model model);
+	public Model getBy(Model model);
+
+	/**
+	 * 查询一个（默认取第一个）
+	 * @param model
+	 * @return
+	 */
+	public Model get();
 
 	/**
 	 * 查询多个根据实体
@@ -120,6 +127,6 @@ public abstract interface IBaseService<Model extends BaseModel<Model>, DTO exten
 	 * @param size
 	 * @return
 	 */
-	public PageDTO<Model> getsWithPage(Model model, int page, int size);
+	public PageDTO<Model> getsByPage(Model model, int page, int size);
 
 }

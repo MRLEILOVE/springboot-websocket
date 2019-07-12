@@ -112,7 +112,7 @@
 		</where>
 	</delete>
 	
-	<delete id="remove" parameterType="com.bittrade.pojo.model.TUserCapitalAccountRecord">
+	<delete id="removeBy" parameterType="com.bittrade.pojo.model.TUserCapitalAccountRecord">
 		DELETE FROM t_user_capital_account_record
 		<where>
 			<if test="userId != null">
@@ -199,7 +199,7 @@
 		</where>
 	</update>
 	
-	<update id="modify">
+	<update id="modifyBy">
 		UPDATE t_user_capital_account_record
 		<set>
 			`user_id` = #{tUserCapitalAccountRecord.userId,jdbcType=BIGINT}, 
@@ -248,7 +248,7 @@
 		</where>
 	</update>
 	
-	<update id="modifyWithSelective">
+	<update id="modifyWithSelectiveBy">
 		UPDATE t_user_capital_account_record
 		<set>
 		<if test="tUserCapitalAccountRecord != null">
@@ -335,7 +335,7 @@
 		</where>
 	</select>
 	
-	<select id="get" resultType="com.bittrade.pojo.model.TUserCapitalAccountRecord">
+	<select id="getBy" resultType="com.bittrade.pojo.model.TUserCapitalAccountRecord">
 		SELECT 
 			`id`, 
 			`user_id`, 
@@ -377,6 +377,22 @@
 			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
 			</if>
 		</where>
+		LIMIT 1
+	</select>
+	
+	<select id="get" resultType="com.bittrade.pojo.model.TUserCapitalAccountRecord">
+		SELECT 
+			`id`, 
+			`user_id`, 
+			`currency_id`, 
+			`count`, 
+			`adderess`, 
+			`fees`, 
+			`type`, 
+			`status`, 
+			`create_time`, 
+			`update_time`
+		FROM t_user_capital_account_record
 		LIMIT 1
 	</select>
 	
@@ -439,7 +455,7 @@
 		FROM t_user_capital_account_record
 	</select>
 	
-	<select id="getCntWithPage" resultType="int">
+	<select id="getCntBy" resultType="int">
 		SELECT COUNT(1)
 		FROM t_user_capital_account_record
 		<where>
@@ -475,7 +491,7 @@
 		</where>
 	</select>
 	
-	<select id="getsWithPage" resultType="com.bittrade.pojo.model.TUserCapitalAccountRecord">
+	<select id="getsByPage" resultType="com.bittrade.pojo.model.TUserCapitalAccountRecord">
 		SELECT 
 			`id`, 
 			`user_id`, 

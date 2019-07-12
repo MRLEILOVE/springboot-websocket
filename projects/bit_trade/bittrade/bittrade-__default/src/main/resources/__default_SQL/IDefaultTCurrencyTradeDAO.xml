@@ -154,7 +154,7 @@
 		</where>
 	</delete>
 	
-	<delete id="remove" parameterType="com.bittrade.pojo.model.TCurrencyTrade">
+	<delete id="removeBy" parameterType="com.bittrade.pojo.model.TCurrencyTrade">
 		DELETE FROM t_currency_trade
 		<where>
 			<if test="symbol != null">
@@ -283,7 +283,7 @@
 		</where>
 	</update>
 	
-	<update id="modify">
+	<update id="modifyBy">
 		UPDATE t_currency_trade
 		<set>
 			`symbol` = #{tCurrencyTrade.symbol,jdbcType=VARCHAR}, 
@@ -356,7 +356,7 @@
 		</where>
 	</update>
 	
-	<update id="modifyWithSelective">
+	<update id="modifyWithSelectiveBy">
 		UPDATE t_currency_trade
 		<set>
 		<if test="tCurrencyTrade != null">
@@ -485,7 +485,7 @@
 		</where>
 	</select>
 	
-	<select id="get" resultType="com.bittrade.pojo.model.TCurrencyTrade">
+	<select id="getBy" resultType="com.bittrade.pojo.model.TCurrencyTrade">
 		SELECT 
 			`id`, 
 			`symbol`, 
@@ -551,6 +551,28 @@
 			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
 			</if>
 		</where>
+		LIMIT 1
+	</select>
+	
+	<select id="get" resultType="com.bittrade.pojo.model.TCurrencyTrade">
+		SELECT 
+			`id`, 
+			`symbol`, 
+			`currency_id1`, 
+			`currency_id2`, 
+			`price_decimal_digits`, 
+			`count_decimal_digits`, 
+			`min_buy_count`, 
+			`min_Buy_price`, 
+			`min_buy_amount`, 
+			`max_buy_count`, 
+			`max_buy_amount`, 
+			`max_buy_price`, 
+			`status`, 
+			`sort`, 
+			`create_time`, 
+			`update_time`
+		FROM t_currency_trade
 		LIMIT 1
 	</select>
 	
@@ -643,7 +665,7 @@
 		FROM t_currency_trade
 	</select>
 	
-	<select id="getCntWithPage" resultType="int">
+	<select id="getCntBy" resultType="int">
 		SELECT COUNT(1)
 		FROM t_currency_trade
 		<where>
@@ -697,7 +719,7 @@
 		</where>
 	</select>
 	
-	<select id="getsWithPage" resultType="com.bittrade.pojo.model.TCurrencyTrade">
+	<select id="getsByPage" resultType="com.bittrade.pojo.model.TCurrencyTrade">
 		SELECT 
 			`id`, 
 			`symbol`, 

@@ -65,8 +65,8 @@ public abstract class BaseServiceImpl<Model extends BaseModel<Model>, DTO extend
 	}
 
 	@Override
-	public int remove(Model model) {
-		return baseDAO.remove(model);
+	public int removeBy(Model model) {
+		return baseDAO.removeBy(model);
 	}
 
 	@Override
@@ -82,15 +82,15 @@ public abstract class BaseServiceImpl<Model extends BaseModel<Model>, DTO extend
 	}
 
 	@Override
-	public int modify(Model model, Model condiModel) {
+	public int modifyBy(Model model, Model condiModel) {
 		setUpdateTime(model);
-		return baseDAO.modify(model, condiModel);
+		return baseDAO.modifyBy(model, condiModel);
 	}
 
 	@Override
-	public int modifyWithSelective(Model model, Model condiModel) {
+	public int modifyWithSelectiveBy(Model model, Model condiModel) {
 		setUpdateTime(model);
-		return baseDAO.modifyWithSelective(model, condiModel);
+		return baseDAO.modifyWithSelectiveBy(model, condiModel);
 	}
 
 	@Override
@@ -99,8 +99,13 @@ public abstract class BaseServiceImpl<Model extends BaseModel<Model>, DTO extend
 	}
 
 	@Override
-	public Model get(Model model) {
-		return baseDAO.get(model);
+	public Model getBy(Model model) {
+		return baseDAO.getBy(model);
+	}
+	
+	@Override
+	public Model get() {
+		return baseDAO.get();
 	}
 
 	@Override
@@ -114,13 +119,13 @@ public abstract class BaseServiceImpl<Model extends BaseModel<Model>, DTO extend
 	}
 
 	@Override
-	public PageDTO<Model> getsWithPage(Model model, int page, int size) {
+	public PageDTO<Model> getsByPage(Model model, int page, int size) {
 		PageDTO<Model> pageDTO;
 		
 		int i_totalPage, i_totalSize;
-		i_totalSize = baseDAO.getCntWithPage(model);
+		i_totalSize = baseDAO.getCntBy(model);
 		i_totalPage = (i_totalSize - 1) / size + 1;
-		List<Model> list_data = baseDAO.getsWithPage(model, (page - 1) * size, size);
+		List<Model> list_data = baseDAO.getsByPage(model, (page - 1) * size, size);
 		
 		pageDTO = new PageDTO<Model>(page, size, i_totalPage, i_totalSize, list_data);
 		

@@ -186,7 +186,7 @@
 		</where>
 	</delete>
 	
-	<delete id="remove" parameterType="com.bittrade.pojo.model.WWithdrawWalletBill">
+	<delete id="removeBy" parameterType="com.bittrade.pojo.model.WWithdrawWalletBill">
 		DELETE FROM w_withdraw_wallet_bill
 		<where>
 			<if test="userId != null">
@@ -343,7 +343,7 @@
 		</where>
 	</update>
 	
-	<update id="modify">
+	<update id="modifyBy">
 		UPDATE w_withdraw_wallet_bill
 		<set>
 			`user_id` = #{wWithdrawWalletBill.userId,jdbcType=BIGINT}, 
@@ -432,7 +432,7 @@
 		</where>
 	</update>
 	
-	<update id="modifyWithSelective">
+	<update id="modifyWithSelectiveBy">
 		UPDATE w_withdraw_wallet_bill
 		<set>
 		<if test="wWithdrawWalletBill != null">
@@ -589,7 +589,7 @@
 		</where>
 	</select>
 	
-	<select id="get" resultType="com.bittrade.pojo.model.WWithdrawWalletBill">
+	<select id="getBy" resultType="com.bittrade.pojo.model.WWithdrawWalletBill">
 		SELECT 
 			`id`, 
 			`user_id`, 
@@ -671,6 +671,32 @@
 			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
 			</if>
 		</where>
+		LIMIT 1
+	</select>
+	
+	<select id="get" resultType="com.bittrade.pojo.model.WWithdrawWalletBill">
+		SELECT 
+			`id`, 
+			`user_id`, 
+			`platform`, 
+			`order_id`, 
+			`direction`, 
+			`coin_type`, 
+			`token`, 
+			`contract`, 
+			`sender_address`, 
+			`receiver_address`, 
+			`amount`, 
+			`block`, 
+			`tx`, 
+			`trade_step`, 
+			`operation_type`, 
+			`transfer_flag`, 
+			`flag`, 
+			`remark`, 
+			`create_time`, 
+			`update_time`
+		FROM w_withdraw_wallet_bill
 		LIMIT 1
 	</select>
 	
@@ -783,7 +809,7 @@
 		FROM w_withdraw_wallet_bill
 	</select>
 	
-	<select id="getCntWithPage" resultType="int">
+	<select id="getCntBy" resultType="int">
 		SELECT COUNT(1)
 		FROM w_withdraw_wallet_bill
 		<where>
@@ -849,7 +875,7 @@
 		</where>
 	</select>
 	
-	<select id="getsWithPage" resultType="com.bittrade.pojo.model.WWithdrawWalletBill">
+	<select id="getsByPage" resultType="com.bittrade.pojo.model.WWithdrawWalletBill">
 		SELECT 
 			`id`, 
 			`user_id`, 

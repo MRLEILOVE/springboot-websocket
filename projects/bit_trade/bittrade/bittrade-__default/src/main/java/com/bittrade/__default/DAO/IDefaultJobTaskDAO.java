@@ -47,7 +47,7 @@ public abstract interface IDefaultJobTaskDAO extends IBaseDAO<JobTask, JobTaskDT
 	 * @param jobTask
 	 * @return
 	 */
-	public int remove(JobTask jobTask);
+	public int removeBy(JobTask jobTask);
 	
 	/**
 	 * 
@@ -69,7 +69,7 @@ public abstract interface IDefaultJobTaskDAO extends IBaseDAO<JobTask, JobTaskDT
 	 * @param condiJobTask
 	 * @return
 	 */
-	public int modify(@Param(value="jobTask") JobTask jobTask, @Param(value="condiJobTask") JobTask condiJobTask);
+	public int modifyBy(@Param(value="jobTask") JobTask jobTask, @Param(value="condiJobTask") JobTask condiJobTask);
 	
 	/**
 	 * 
@@ -77,7 +77,7 @@ public abstract interface IDefaultJobTaskDAO extends IBaseDAO<JobTask, JobTaskDT
 	 * @param condiJobTask
 	 * @return
 	 */
-	public int modifyWithSelective(@Param(value="jobTask") JobTask jobTask, @Param(value="condiJobTask") JobTask condiJobTask);
+	public int modifyWithSelectiveBy(@Param(value="jobTask") JobTask jobTask, @Param(value="condiJobTask") JobTask condiJobTask);
 	
 	/**
 	 * 
@@ -91,7 +91,13 @@ public abstract interface IDefaultJobTaskDAO extends IBaseDAO<JobTask, JobTaskDT
 	 * @param jobTask
 	 * @return
 	 */
-	public JobTask get(JobTask jobTask);
+	public JobTask getBy(JobTask jobTask);
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public JobTask get();
 	
 	/**
 	 * 
@@ -111,7 +117,7 @@ public abstract interface IDefaultJobTaskDAO extends IBaseDAO<JobTask, JobTaskDT
 	 * @param jobTask
 	 * @return
 	 */
-	public int getCntWithPage(@Param(value="jobTask") JobTask jobTask);
+	public int getCntBy(@Param(value="jobTask") JobTask jobTask);
 	
 	/**
 	 * 
@@ -120,6 +126,6 @@ public abstract interface IDefaultJobTaskDAO extends IBaseDAO<JobTask, JobTaskDT
 	 * @param size
 	 * @return
 	 */
-	public List<JobTask> getsWithPage(@Param(value="jobTask") JobTask jobTask, @Param(value="page") int page, @Param(value="size") int size);
+	public List<JobTask> getsByPage(@Param(value="jobTask") JobTask jobTask, @Param(value="page") int page, @Param(value="size") int size);
 	
 }

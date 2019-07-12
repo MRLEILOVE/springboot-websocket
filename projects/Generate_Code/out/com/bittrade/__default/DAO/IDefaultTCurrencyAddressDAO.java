@@ -47,7 +47,7 @@ public abstract interface IDefaultTCurrencyAddressDAO extends IBaseDAO<TCurrency
 	 * @param tCurrencyAddress
 	 * @return
 	 */
-	public int remove(TCurrencyAddress tCurrencyAddress);
+	public int removeBy(TCurrencyAddress tCurrencyAddress);
 	
 	/**
 	 * 
@@ -69,7 +69,7 @@ public abstract interface IDefaultTCurrencyAddressDAO extends IBaseDAO<TCurrency
 	 * @param condiTCurrencyAddress
 	 * @return
 	 */
-	public int modify(@Param(value="tCurrencyAddress") TCurrencyAddress tCurrencyAddress, @Param(value="condiTCurrencyAddress") TCurrencyAddress condiTCurrencyAddress);
+	public int modifyBy(@Param(value="tCurrencyAddress") TCurrencyAddress tCurrencyAddress, @Param(value="condiTCurrencyAddress") TCurrencyAddress condiTCurrencyAddress);
 	
 	/**
 	 * 
@@ -77,7 +77,7 @@ public abstract interface IDefaultTCurrencyAddressDAO extends IBaseDAO<TCurrency
 	 * @param condiTCurrencyAddress
 	 * @return
 	 */
-	public int modifyWithSelective(@Param(value="tCurrencyAddress") TCurrencyAddress tCurrencyAddress, @Param(value="condiTCurrencyAddress") TCurrencyAddress condiTCurrencyAddress);
+	public int modifyWithSelectiveBy(@Param(value="tCurrencyAddress") TCurrencyAddress tCurrencyAddress, @Param(value="condiTCurrencyAddress") TCurrencyAddress condiTCurrencyAddress);
 	
 	/**
 	 * 
@@ -91,7 +91,13 @@ public abstract interface IDefaultTCurrencyAddressDAO extends IBaseDAO<TCurrency
 	 * @param tCurrencyAddress
 	 * @return
 	 */
-	public TCurrencyAddress get(TCurrencyAddress tCurrencyAddress);
+	public TCurrencyAddress getBy(TCurrencyAddress tCurrencyAddress);
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public TCurrencyAddress get();
 	
 	/**
 	 * 
@@ -111,7 +117,7 @@ public abstract interface IDefaultTCurrencyAddressDAO extends IBaseDAO<TCurrency
 	 * @param tCurrencyAddress
 	 * @return
 	 */
-	public int getCntWithPage(@Param(value="tCurrencyAddress") TCurrencyAddress tCurrencyAddress);
+	public int getCntBy(@Param(value="tCurrencyAddress") TCurrencyAddress tCurrencyAddress);
 	
 	/**
 	 * 
@@ -120,6 +126,6 @@ public abstract interface IDefaultTCurrencyAddressDAO extends IBaseDAO<TCurrency
 	 * @param size
 	 * @return
 	 */
-	public List<TCurrencyAddress> getsWithPage(@Param(value="tCurrencyAddress") TCurrencyAddress tCurrencyAddress, @Param(value="page") int page, @Param(value="size") int size);
+	public List<TCurrencyAddress> getsByPage(@Param(value="tCurrencyAddress") TCurrencyAddress tCurrencyAddress, @Param(value="page") int page, @Param(value="size") int size);
 	
 }

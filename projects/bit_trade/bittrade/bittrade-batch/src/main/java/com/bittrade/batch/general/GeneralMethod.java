@@ -22,7 +22,7 @@ public class GeneralMethod {
 		TParamConfig paramConfigCondi = new TParamConfig();
 		paramConfigCondi.setParamKey( key );
 		paramConfigCondi.setParamStatus( ParamStatus.ENABLE.getKey() );
-		TParamConfig paramConfig = paramConfigService.get( paramConfigCondi );
+		TParamConfig paramConfig = paramConfigService.getBy( paramConfigCondi );
 		if (null == paramConfig) {
 			throw new Exception( "key：" + key + "未配置" );
 		}

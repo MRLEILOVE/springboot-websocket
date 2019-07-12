@@ -47,7 +47,7 @@ public abstract interface IDefaultWUserWalletDAO extends IBaseDAO<WUserWallet, W
 	 * @param wUserWallet
 	 * @return
 	 */
-	public int remove(WUserWallet wUserWallet);
+	public int removeBy(WUserWallet wUserWallet);
 	
 	/**
 	 * 
@@ -69,7 +69,7 @@ public abstract interface IDefaultWUserWalletDAO extends IBaseDAO<WUserWallet, W
 	 * @param condiWUserWallet
 	 * @return
 	 */
-	public int modify(@Param(value="wUserWallet") WUserWallet wUserWallet, @Param(value="condiWUserWallet") WUserWallet condiWUserWallet);
+	public int modifyBy(@Param(value="wUserWallet") WUserWallet wUserWallet, @Param(value="condiWUserWallet") WUserWallet condiWUserWallet);
 	
 	/**
 	 * 
@@ -77,7 +77,7 @@ public abstract interface IDefaultWUserWalletDAO extends IBaseDAO<WUserWallet, W
 	 * @param condiWUserWallet
 	 * @return
 	 */
-	public int modifyWithSelective(@Param(value="wUserWallet") WUserWallet wUserWallet, @Param(value="condiWUserWallet") WUserWallet condiWUserWallet);
+	public int modifyWithSelectiveBy(@Param(value="wUserWallet") WUserWallet wUserWallet, @Param(value="condiWUserWallet") WUserWallet condiWUserWallet);
 	
 	/**
 	 * 
@@ -91,7 +91,13 @@ public abstract interface IDefaultWUserWalletDAO extends IBaseDAO<WUserWallet, W
 	 * @param wUserWallet
 	 * @return
 	 */
-	public WUserWallet get(WUserWallet wUserWallet);
+	public WUserWallet getBy(WUserWallet wUserWallet);
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public WUserWallet get();
 	
 	/**
 	 * 
@@ -111,7 +117,7 @@ public abstract interface IDefaultWUserWalletDAO extends IBaseDAO<WUserWallet, W
 	 * @param wUserWallet
 	 * @return
 	 */
-	public int getCntWithPage(@Param(value="wUserWallet") WUserWallet wUserWallet);
+	public int getCntBy(@Param(value="wUserWallet") WUserWallet wUserWallet);
 	
 	/**
 	 * 
@@ -120,6 +126,6 @@ public abstract interface IDefaultWUserWalletDAO extends IBaseDAO<WUserWallet, W
 	 * @param size
 	 * @return
 	 */
-	public List<WUserWallet> getsWithPage(@Param(value="wUserWallet") WUserWallet wUserWallet, @Param(value="page") int page, @Param(value="size") int size);
+	public List<WUserWallet> getsByPage(@Param(value="wUserWallet") WUserWallet wUserWallet, @Param(value="page") int page, @Param(value="size") int size);
 	
 }

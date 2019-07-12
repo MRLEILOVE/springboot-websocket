@@ -47,7 +47,7 @@ public abstract interface IDefaultTParamConfigDAO extends IBaseDAO<TParamConfig,
 	 * @param tParamConfig
 	 * @return
 	 */
-	public int remove(TParamConfig tParamConfig);
+	public int removeBy(TParamConfig tParamConfig);
 	
 	/**
 	 * 
@@ -69,7 +69,7 @@ public abstract interface IDefaultTParamConfigDAO extends IBaseDAO<TParamConfig,
 	 * @param condiTParamConfig
 	 * @return
 	 */
-	public int modify(@Param(value="tParamConfig") TParamConfig tParamConfig, @Param(value="condiTParamConfig") TParamConfig condiTParamConfig);
+	public int modifyBy(@Param(value="tParamConfig") TParamConfig tParamConfig, @Param(value="condiTParamConfig") TParamConfig condiTParamConfig);
 	
 	/**
 	 * 
@@ -77,7 +77,7 @@ public abstract interface IDefaultTParamConfigDAO extends IBaseDAO<TParamConfig,
 	 * @param condiTParamConfig
 	 * @return
 	 */
-	public int modifyWithSelective(@Param(value="tParamConfig") TParamConfig tParamConfig, @Param(value="condiTParamConfig") TParamConfig condiTParamConfig);
+	public int modifyWithSelectiveBy(@Param(value="tParamConfig") TParamConfig tParamConfig, @Param(value="condiTParamConfig") TParamConfig condiTParamConfig);
 	
 	/**
 	 * 
@@ -91,7 +91,13 @@ public abstract interface IDefaultTParamConfigDAO extends IBaseDAO<TParamConfig,
 	 * @param tParamConfig
 	 * @return
 	 */
-	public TParamConfig get(TParamConfig tParamConfig);
+	public TParamConfig getBy(TParamConfig tParamConfig);
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public TParamConfig get();
 	
 	/**
 	 * 
@@ -111,7 +117,7 @@ public abstract interface IDefaultTParamConfigDAO extends IBaseDAO<TParamConfig,
 	 * @param tParamConfig
 	 * @return
 	 */
-	public int getCntWithPage(@Param(value="tParamConfig") TParamConfig tParamConfig);
+	public int getCntBy(@Param(value="tParamConfig") TParamConfig tParamConfig);
 	
 	/**
 	 * 
@@ -120,6 +126,6 @@ public abstract interface IDefaultTParamConfigDAO extends IBaseDAO<TParamConfig,
 	 * @param size
 	 * @return
 	 */
-	public List<TParamConfig> getsWithPage(@Param(value="tParamConfig") TParamConfig tParamConfig, @Param(value="page") int page, @Param(value="size") int size);
+	public List<TParamConfig> getsByPage(@Param(value="tParamConfig") TParamConfig tParamConfig, @Param(value="page") int page, @Param(value="size") int size);
 	
 }

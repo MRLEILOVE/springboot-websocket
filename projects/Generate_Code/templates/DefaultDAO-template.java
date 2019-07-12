@@ -47,7 +47,7 @@ public abstract interface IDefault${struct.className}DAO extends IBaseDAO<${stru
 	 * @param ${struct.variableName}
 	 * @return
 	 */
-	public int remove(${struct.className} ${struct.variableName});
+	public int removeBy(${struct.className} ${struct.variableName});
 	
 	/**
 	 * 
@@ -69,7 +69,7 @@ public abstract interface IDefault${struct.className}DAO extends IBaseDAO<${stru
 	 * @param condi${struct.className}
 	 * @return
 	 */
-	public int modify(@Param(value="${struct.variableName}") ${struct.className} ${struct.variableName}, @Param(value="condi${struct.className}") ${struct.className} condi${struct.className});
+	public int modifyBy(@Param(value="${struct.variableName}") ${struct.className} ${struct.variableName}, @Param(value="condi${struct.className}") ${struct.className} condi${struct.className});
 	
 	/**
 	 * 
@@ -77,7 +77,7 @@ public abstract interface IDefault${struct.className}DAO extends IBaseDAO<${stru
 	 * @param condi${struct.className}
 	 * @return
 	 */
-	public int modifyWithSelective(@Param(value="${struct.variableName}") ${struct.className} ${struct.variableName}, @Param(value="condi${struct.className}") ${struct.className} condi${struct.className});
+	public int modifyWithSelectiveBy(@Param(value="${struct.variableName}") ${struct.className} ${struct.variableName}, @Param(value="condi${struct.className}") ${struct.className} condi${struct.className});
 	
 	/**
 	 * 
@@ -91,7 +91,13 @@ public abstract interface IDefault${struct.className}DAO extends IBaseDAO<${stru
 	 * @param ${struct.variableName}
 	 * @return
 	 */
-	public ${struct.className} get(${struct.className} ${struct.variableName});
+	public ${struct.className} getBy(${struct.className} ${struct.variableName});
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public ${struct.className} get();
 	
 	/**
 	 * 
@@ -111,7 +117,7 @@ public abstract interface IDefault${struct.className}DAO extends IBaseDAO<${stru
 	 * @param ${struct.variableName}
 	 * @return
 	 */
-	public int getCntWithPage(@Param(value="${struct.variableName}") ${struct.className} ${struct.variableName});
+	public int getCntBy(@Param(value="${struct.variableName}") ${struct.className} ${struct.variableName});
 	
 	/**
 	 * 
@@ -120,6 +126,6 @@ public abstract interface IDefault${struct.className}DAO extends IBaseDAO<${stru
 	 * @param size
 	 * @return
 	 */
-	public List<${struct.className}> getsWithPage(@Param(value="${struct.variableName}") ${struct.className} ${struct.variableName}, @Param(value="page") int page, @Param(value="size") int size);
+	public List<${struct.className}> getsByPage(@Param(value="${struct.variableName}") ${struct.className} ${struct.variableName}, @Param(value="page") int page, @Param(value="size") int size);
 	
 }
