@@ -74,22 +74,23 @@
 	
 	<delete id="remove" parameterType="com.bittrade.pojo.model.TCurrencyAddress">
 		DELETE FROM t_currency_address
-		WHERE
+		<where>
 			<if test="userId != null and userId != ''">
-			`user_id` = #{userId,jdbcType=BIGINT} AND
+			AND `user_id` = #{userId,jdbcType=BIGINT}
 			</if>
 			<if test="currencyId != null and currencyId != ''">
-			`currency_id` = #{currencyId,jdbcType=INTEGER} AND
+			AND `currency_id` = #{currencyId,jdbcType=INTEGER}
 			</if>
 			<if test="adderess != null and adderess != ''">
-			`adderess` = #{adderess,jdbcType=VARCHAR} AND
+			AND `adderess` = #{adderess,jdbcType=VARCHAR}
 			</if>
 			<if test="addressRemark != null and addressRemark != ''">
-			`address_remark` = #{addressRemark,jdbcType=VARCHAR} AND
+			AND `address_remark` = #{addressRemark,jdbcType=VARCHAR}
 			</if>
 			<if test="createTime != null and createTime != ''">
-			`create_time` = #{createTime,jdbcType=TIMESTAMP}
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
 			</if>
+		</where>
 	</delete>
 	
 	<update id="modifyByPK" parameterType="com.bittrade.pojo.model.TCurrencyAddress">
@@ -134,58 +135,60 @@
 			`adderess` = #{tCurrencyAddress.adderess,jdbcType=VARCHAR}, 
 			`address_remark` = #{tCurrencyAddress.addressRemark,jdbcType=VARCHAR}, 
 			`create_time` = #{tCurrencyAddress.createTime,jdbcType=TIMESTAMP}
-		WHERE 
+		<where>
 			<if test="condiTCurrencyAddress.userId != null and condiTCurrencyAddress.userId != ''">
-			`user_id` = #{condiTCurrencyAddress.userId,jdbcType=BIGINT} AND
+			AND `user_id` = #{condiTCurrencyAddress.userId,jdbcType=BIGINT}
 			</if>
 			<if test="condiTCurrencyAddress.currencyId != null and condiTCurrencyAddress.currencyId != ''">
-			`currency_id` = #{condiTCurrencyAddress.currencyId,jdbcType=INTEGER} AND
+			AND `currency_id` = #{condiTCurrencyAddress.currencyId,jdbcType=INTEGER}
 			</if>
 			<if test="condiTCurrencyAddress.adderess != null and condiTCurrencyAddress.adderess != ''">
-			`adderess` = #{condiTCurrencyAddress.adderess,jdbcType=VARCHAR} AND
+			AND `adderess` = #{condiTCurrencyAddress.adderess,jdbcType=VARCHAR}
 			</if>
 			<if test="condiTCurrencyAddress.addressRemark != null and condiTCurrencyAddress.addressRemark != ''">
-			`address_remark` = #{condiTCurrencyAddress.addressRemark,jdbcType=VARCHAR} AND
+			AND `address_remark` = #{condiTCurrencyAddress.addressRemark,jdbcType=VARCHAR}
 			</if>
 			<if test="condiTCurrencyAddress.createTime != null and condiTCurrencyAddress.createTime != ''">
-			`create_time` = #{condiTCurrencyAddress.createTime,jdbcType=TIMESTAMP}
+			AND `create_time` = #{condiTCurrencyAddress.createTime,jdbcType=TIMESTAMP}
 			</if>
+		</where>
 	</update>
 	
 	<update id="modifyWithSelective">
 		UPDATE t_currency_address
 		SET
-			<if test="userId != null and userId != ''">
+			<if test="tCurrencyAddress.userId != null and tCurrencyAddress.userId != ''">
 			`user_id` = #{tCurrencyAddress.userId,jdbcType=BIGINT}, 
 			</if>
-			<if test="currencyId != null and currencyId != ''">
+			<if test="tCurrencyAddress.currencyId != null and tCurrencyAddress.currencyId != ''">
 			`currency_id` = #{tCurrencyAddress.currencyId,jdbcType=INTEGER}, 
 			</if>
-			<if test="adderess != null and adderess != ''">
+			<if test="tCurrencyAddress.adderess != null and tCurrencyAddress.adderess != ''">
 			`adderess` = #{tCurrencyAddress.adderess,jdbcType=VARCHAR}, 
 			</if>
-			<if test="addressRemark != null and addressRemark != ''">
+			<if test="tCurrencyAddress.addressRemark != null and tCurrencyAddress.addressRemark != ''">
 			`address_remark` = #{tCurrencyAddress.addressRemark,jdbcType=VARCHAR}, 
 			</if>
-			<if test="createTime != null and createTime != ''">
+			<if test="tCurrencyAddress.createTime != null and tCurrencyAddress.createTime != ''">
 			`create_time` = #{tCurrencyAddress.createTime,jdbcType=TIMESTAMP}
 			</if>
-		WHERE 
+		<where>
 			<if test="condiTCurrencyAddress.userId != null and condiTCurrencyAddress.userId != ''">
-			`user_id` = #{condiTCurrencyAddress.userId,jdbcType=BIGINT} AND
+			AND `user_id` = #{condiTCurrencyAddress.userId,jdbcType=BIGINT}
 			</if>
 			<if test="condiTCurrencyAddress.currencyId != null and condiTCurrencyAddress.currencyId != ''">
-			`currency_id` = #{condiTCurrencyAddress.currencyId,jdbcType=INTEGER} AND
+			AND `currency_id` = #{condiTCurrencyAddress.currencyId,jdbcType=INTEGER}
 			</if>
 			<if test="condiTCurrencyAddress.adderess != null and condiTCurrencyAddress.adderess != ''">
-			`adderess` = #{condiTCurrencyAddress.adderess,jdbcType=VARCHAR} AND
+			AND `adderess` = #{condiTCurrencyAddress.adderess,jdbcType=VARCHAR}
 			</if>
 			<if test="condiTCurrencyAddress.addressRemark != null and condiTCurrencyAddress.addressRemark != ''">
-			`address_remark` = #{condiTCurrencyAddress.addressRemark,jdbcType=VARCHAR} AND
+			AND `address_remark` = #{condiTCurrencyAddress.addressRemark,jdbcType=VARCHAR}
 			</if>
 			<if test="condiTCurrencyAddress.createTime != null and condiTCurrencyAddress.createTime != ''">
-			`create_time` = #{condiTCurrencyAddress.createTime,jdbcType=TIMESTAMP}
+			AND `create_time` = #{condiTCurrencyAddress.createTime,jdbcType=TIMESTAMP}
 			</if>
+		</where>
 	</update>
 	
 	<select id="getByPK" resultType="com.bittrade.pojo.model.TCurrencyAddress">
@@ -197,9 +200,8 @@
 			`address_remark`, 
 			`create_time`
 		FROM t_currency_address
-		<where>
+		WHERE 
 			`id` = #{id,jdbcType=INTEGER}
-		</where>
 	</select>
 	
 	<select id="get" resultType="com.bittrade.pojo.model.TCurrencyAddress">

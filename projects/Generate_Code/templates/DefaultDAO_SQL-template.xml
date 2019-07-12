@@ -69,12 +69,13 @@
 	
 	<delete id="remove" parameterType="${POJO_BASE_PKG}.model${module_name}.${struct.className}">
 		DELETE FROM ${struct.tableName}
-		WHERE
+		<where>
 			<#list struct.list_item as item>
 			<if test="${item.name} != null and ${item.name} != ''">
-			`${item.columnName}` = ${r'#{'}${item.name}${r',jdbcType='}${item.jdbcType}${r'}'}<#if item_has_next> AND</#if>
+			AND `${item.columnName}` = ${r'#{'}${item.name}${r',jdbcType='}${item.jdbcType}${r'}'}
 			</if>
 			</#list>
+		</where>
 	</delete>
 	
 	<update id="modifyByPK" parameterType="${POJO_BASE_PKG}.model${module_name}.${struct.className}">
@@ -109,28 +110,30 @@
 			<#list struct.list_item as item>
 			`${item.columnName}` = ${r'#{'}${struct.variableName}.${item.name}${r',jdbcType='}${item.jdbcType}${r'}'}<#if item_has_next>, </#if>
 			</#list>
-		WHERE 
+		<where>
 			<#list struct.list_item as item>
 			<if test="condi${struct.className}.${item.name} != null and condi${struct.className}.${item.name} != ''">
-			`${item.columnName}` = ${r'#{'}condi${struct.className}.${item.name},jdbcType=${item.jdbcType}${r'}'}<#if item_has_next> AND</#if>
+			AND `${item.columnName}` = ${r'#{'}condi${struct.className}.${item.name},jdbcType=${item.jdbcType}${r'}'}
 			</if>
 			</#list>
+		</where>
 	</update>
 	
 	<update id="modifyWithSelective">
 		UPDATE ${struct.tableName}
 		SET
 			<#list struct.list_item as item>
-			<if test="${item.name} != null and ${item.name} != ''">
+			<if test="${struct.variableName}.${item.name} != null and ${struct.variableName}.${item.name} != ''">
 			`${item.columnName}` = ${r'#{'}${struct.variableName}.${item.name}${r',jdbcType='}${item.jdbcType}${r'}'}<#if item_has_next>, </#if>
 			</if>
 			</#list>
-		WHERE 
+		<where>
 			<#list struct.list_item as item>
 			<if test="condi${struct.className}.${item.name} != null and condi${struct.className}.${item.name} != ''">
-			`${item.columnName}` = ${r'#{'}condi${struct.className}.${item.name},jdbcType=${item.jdbcType}${r'}'}<#if item_has_next> AND</#if>
+			AND `${item.columnName}` = ${r'#{'}condi${struct.className}.${item.name},jdbcType=${item.jdbcType}${r'}'}
 			</if>
 			</#list>
+		</where>
 	</update>
 	
 	<select id="getByPK" resultType="${POJO_BASE_PKG}.model${module_name}.${struct.className}">
@@ -142,11 +145,10 @@
 			`${item.columnName}`<#if item_has_next>, </#if>
 			</#list>
 		FROM ${struct.tableName}
-		<where>
+		WHERE 
 			<#list struct.list_itemPK as itemPK>
 			`${itemPK.columnName}` = ${r'#{'}${itemPK.name},jdbcType=${itemPK.jdbcType}${r'}'}<#if itemPK_has_next> AND</#if>
 			</#list>
-		</where>
 	</select>
 	
 	<select id="get" resultType="${POJO_BASE_PKG}.model${module_name}.${struct.className}">
