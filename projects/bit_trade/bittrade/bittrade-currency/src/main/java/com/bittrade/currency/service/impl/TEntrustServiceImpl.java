@@ -3,6 +3,7 @@ package com.bittrade.currency.service.impl;
 import java.math.BigDecimal;
 import java.util.List;
 
+import com.bittrade.common.enums.EntrustStatusEnumer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -176,6 +177,9 @@ public class TEntrustServiceImpl extends DefaultTEntrustServiceImpl<ITEntrustDAO
         TEntrust tEntrust = entrustDAO.selectById(entrustId);
         if(tEntrust == null){
             return ReturnDTO.error("交易单不存在");
+        }
+        if(EntrustStatusEnumer.FINISH.getCode() == tEntrust.getStatus()){
+            return ReturnDTO.error("交易已经完成，不可撤单");
         }
         //撤单
         int result = entrustDAO.killOrder(tEntrust);
