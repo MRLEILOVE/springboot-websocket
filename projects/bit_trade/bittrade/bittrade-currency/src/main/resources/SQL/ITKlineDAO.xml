@@ -36,7 +36,7 @@
 		SELECT l.symbol,l.high,l.low,l.`open`,l.`close`,l.granularity,l.time,l.volume
 		FROM t_kline l
 		WHERE  l.symbol = #{symbol}
-		AND l.time >= #{beginTime}
+		AND l.time <![CDATA[>=]]> #{beginTime}
 		AND l.time <![CDATA[<=]]>  #{endTime}
 		AND granularity = #{granularity}
 	</select>

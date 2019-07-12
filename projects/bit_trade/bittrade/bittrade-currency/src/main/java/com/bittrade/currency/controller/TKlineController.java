@@ -3,6 +3,7 @@ package com.bittrade.currency.controller;
 import java.util.List;
 
 import com.core.framework.DTO.ReturnDTO;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -36,6 +37,7 @@ public class TKlineController extends BaseController<TKline, TKlineDTO, TKlineVO
     /**
      * k线查询
      */
+    @ApiOperation(value = "k线查询",notes = "k线查询")
     @RequestMapping(value = "/queryKLine",method = RequestMethod.POST)
     @ResponseBody
     public ReturnDTO<List<QueryKLineVO>> queryKLine(@RequestBody QueryKLineDto queryKLineDto) {
