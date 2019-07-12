@@ -14,8 +14,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 
+import com.alibaba.dubbo.common.utils.StringUtils;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
@@ -43,7 +43,7 @@ public class MyWebSocketClient {
 	private ITParamConfigService	paramConfigService;
 
 	@Autowired
-	private JedisCluster			jedisCluster;
+	private JedisCluster jedisCluster;
 
 	private final static String		PING	= "ping";
 

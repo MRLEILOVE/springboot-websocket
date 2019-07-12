@@ -332,7 +332,56 @@
 		</where>
 	</select>
 	
-	<select id="get" resultType="com.bittrade.pojo.dto.TOrderDTO">
+	<select id="get" resultType="com.bittrade.pojo.model.TOrder">
+		SELECT 
+			`id`, 
+			`userId`, 
+			`order_id`, 
+			`fee`, 
+			`token`, 
+			`amount`, 
+			`receiver_address`, 
+			`type`, 
+			`operator`, 
+			`create_time`, 
+			`update_time`
+		FROM t_order
+		<where>
+			<if test="userId != null and userId != ''">
+			AND `userId` = #{userId,jdbcType=INTEGER}
+			</if>
+			<if test="orderId != null and orderId != ''">
+			AND `order_id` = #{orderId,jdbcType=VARCHAR}
+			</if>
+			<if test="fee != null and fee != ''">
+			AND `fee` = #{fee,jdbcType=DECIMAL}
+			</if>
+			<if test="token != null and token != ''">
+			AND `token` = #{token,jdbcType=VARCHAR}
+			</if>
+			<if test="amount != null and amount != ''">
+			AND `amount` = #{amount,jdbcType=DECIMAL}
+			</if>
+			<if test="receiverAddress != null and receiverAddress != ''">
+			AND `receiver_address` = #{receiverAddress,jdbcType=VARCHAR}
+			</if>
+			<if test="type != null and type != ''">
+			AND `type` = #{type,jdbcType=VARCHAR}
+			</if>
+			<if test="operator != null and operator != ''">
+			AND `operator` = #{operator,jdbcType=VARCHAR}
+			</if>
+			<if test="createTime != null and createTime != ''">
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="updateTime != null and updateTime != ''">
+			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+		</where>
+		LIMIT 1
+	</select>
+	
+	<select id="getsBy" resultType="com.bittrade.pojo.model.TOrder">
 		SELECT 
 			`id`, 
 			`userId`, 
@@ -380,7 +429,7 @@
 		</where>
 	</select>
 	
-	<select id="gets" resultType="com.bittrade.pojo.dto.TOrderDTO">
+	<select id="gets" resultType="com.bittrade.pojo.model.TOrder">
 		SELECT 
 			`id`, 
 			`userId`, 
@@ -433,7 +482,7 @@
 		</where>
 	</select>
 	
-	<select id="getsWithPage" resultType="com.bittrade.pojo.dto.TOrderDTO">
+	<select id="getsWithPage" resultType="com.bittrade.pojo.model.TOrder">
 		SELECT 
 			`id`, 
 			`userId`, 

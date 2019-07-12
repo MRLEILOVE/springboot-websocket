@@ -3,6 +3,8 @@ package com.bittrade.currency.api.service;
 import java.math.BigDecimal;
 import java.util.List;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.segments.MergeSegments;
 import com.bittrade.__default.service.IDefaultTEntrustService;
 import com.bittrade.pojo.dto.DealDTO;
 import com.bittrade.pojo.dto.TEntrustDTO;
@@ -51,5 +53,8 @@ public interface ITEntrustService extends IDefaultTEntrustService<TEntrust, TEnt
 	 * @param ID
 	 */
 	void updateOnMatch(BigDecimal successAmount, BigDecimal leftCount, int status, long ID);
+	
+	String testPrm(QueryWrapper<TEntrust> qw);
+	String testPrm_2(MergeSegments ms);
 	
 }

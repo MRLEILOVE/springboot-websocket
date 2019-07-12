@@ -462,7 +462,76 @@
 		</where>
 	</select>
 	
-	<select id="get" resultType="com.bittrade.pojo.dto.TCurrencyTradeDTO">
+	<select id="get" resultType="com.bittrade.pojo.model.TCurrencyTrade">
+		SELECT 
+			`id`, 
+			`symbol`, 
+			`currency_id1`, 
+			`currency_id2`, 
+			`price_decimal_digits`, 
+			`count_decimal_digits`, 
+			`min_buy_count`, 
+			`min_Buy_price`, 
+			`min_buy_amount`, 
+			`max_buy_count`, 
+			`max_buy_amount`, 
+			`max_buy_price`, 
+			`status`, 
+			`sort`, 
+			`create_time`, 
+			`update_time`
+		FROM t_currency_trade
+		<where>
+			<if test="symbol != null and symbol != ''">
+			AND `symbol` = #{symbol,jdbcType=VARCHAR}
+			</if>
+			<if test="currencyId1 != null and currencyId1 != ''">
+			AND `currency_id1` = #{currencyId1,jdbcType=INTEGER}
+			</if>
+			<if test="currencyId2 != null and currencyId2 != ''">
+			AND `currency_id2` = #{currencyId2,jdbcType=INTEGER}
+			</if>
+			<if test="priceDecimalDigits != null and priceDecimalDigits != ''">
+			AND `price_decimal_digits` = #{priceDecimalDigits,jdbcType=INTEGER}
+			</if>
+			<if test="countDecimalDigits != null and countDecimalDigits != ''">
+			AND `count_decimal_digits` = #{countDecimalDigits,jdbcType=INTEGER}
+			</if>
+			<if test="minBuyCount != null and minBuyCount != ''">
+			AND `min_buy_count` = #{minBuyCount,jdbcType=DECIMAL}
+			</if>
+			<if test="minBuyPrice != null and minBuyPrice != ''">
+			AND `min_Buy_price` = #{minBuyPrice,jdbcType=DECIMAL}
+			</if>
+			<if test="minBuyAmount != null and minBuyAmount != ''">
+			AND `min_buy_amount` = #{minBuyAmount,jdbcType=DECIMAL}
+			</if>
+			<if test="maxBuyCount != null and maxBuyCount != ''">
+			AND `max_buy_count` = #{maxBuyCount,jdbcType=DECIMAL}
+			</if>
+			<if test="maxBuyAmount != null and maxBuyAmount != ''">
+			AND `max_buy_amount` = #{maxBuyAmount,jdbcType=DECIMAL}
+			</if>
+			<if test="maxBuyPrice != null and maxBuyPrice != ''">
+			AND `max_buy_price` = #{maxBuyPrice,jdbcType=DECIMAL}
+			</if>
+			<if test="status != null and status != ''">
+			AND `status` = #{status,jdbcType=INTEGER}
+			</if>
+			<if test="sort != null and sort != ''">
+			AND `sort` = #{sort,jdbcType=INTEGER}
+			</if>
+			<if test="createTime != null and createTime != ''">
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="updateTime != null and updateTime != ''">
+			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+		</where>
+		LIMIT 1
+	</select>
+	
+	<select id="getsBy" resultType="com.bittrade.pojo.model.TCurrencyTrade">
 		SELECT 
 			`id`, 
 			`symbol`, 
@@ -530,7 +599,7 @@
 		</where>
 	</select>
 	
-	<select id="gets" resultType="com.bittrade.pojo.dto.TCurrencyTradeDTO">
+	<select id="gets" resultType="com.bittrade.pojo.model.TCurrencyTrade">
 		SELECT 
 			`id`, 
 			`symbol`, 
@@ -603,7 +672,7 @@
 		</where>
 	</select>
 	
-	<select id="getsWithPage" resultType="com.bittrade.pojo.dto.TCurrencyTradeDTO">
+	<select id="getsWithPage" resultType="com.bittrade.pojo.model.TCurrencyTrade">
 		SELECT 
 			`id`, 
 			`symbol`, 

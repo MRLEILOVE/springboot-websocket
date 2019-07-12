@@ -91,13 +91,20 @@ public abstract interface IDefaultTCurrencyTradeDAO extends IBaseDAO<TCurrencyTr
 	 * @param tCurrencyTrade
 	 * @return
 	 */
-	public List<TCurrencyTradeDTO> get(TCurrencyTrade tCurrencyTrade);
+	public TCurrencyTrade get(TCurrencyTrade tCurrencyTrade);
+	
+	/**
+	 * 
+	 * @param tCurrencyTrade
+	 * @return
+	 */
+	public List<TCurrencyTrade> getsBy(TCurrencyTrade tCurrencyTrade);
 	
 	/**
 	 * 
 	 * @return
 	 */
-	public List<TCurrencyTradeDTO> gets();
+	public List<TCurrencyTrade> gets();
 	
 	/**
 	 * 
@@ -113,6 +120,6 @@ public abstract interface IDefaultTCurrencyTradeDAO extends IBaseDAO<TCurrencyTr
 	 * @param size
 	 * @return
 	 */
-	public List<TCurrencyTradeDTO> getsWithPage(@Param(value="tCurrencyTrade") TCurrencyTrade tCurrencyTrade, @Param(value="page") int page, @Param(value="size") int size);
+	public List<TCurrencyTrade> getsWithPage(@Param(value="tCurrencyTrade") TCurrencyTrade tCurrencyTrade, @Param(value="page") int page, @Param(value="size") int size);
 	
 }

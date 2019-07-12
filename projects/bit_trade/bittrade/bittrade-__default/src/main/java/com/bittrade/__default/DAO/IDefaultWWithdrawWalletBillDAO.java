@@ -91,13 +91,20 @@ public abstract interface IDefaultWWithdrawWalletBillDAO extends IBaseDAO<WWithd
 	 * @param wWithdrawWalletBill
 	 * @return
 	 */
-	public List<WWithdrawWalletBillDTO> get(WWithdrawWalletBill wWithdrawWalletBill);
+	public WWithdrawWalletBill get(WWithdrawWalletBill wWithdrawWalletBill);
+	
+	/**
+	 * 
+	 * @param wWithdrawWalletBill
+	 * @return
+	 */
+	public List<WWithdrawWalletBill> getsBy(WWithdrawWalletBill wWithdrawWalletBill);
 	
 	/**
 	 * 
 	 * @return
 	 */
-	public List<WWithdrawWalletBillDTO> gets();
+	public List<WWithdrawWalletBill> gets();
 	
 	/**
 	 * 
@@ -113,6 +120,6 @@ public abstract interface IDefaultWWithdrawWalletBillDAO extends IBaseDAO<WWithd
 	 * @param size
 	 * @return
 	 */
-	public List<WWithdrawWalletBillDTO> getsWithPage(@Param(value="wWithdrawWalletBill") WWithdrawWalletBill wWithdrawWalletBill, @Param(value="page") int page, @Param(value="size") int size);
+	public List<WWithdrawWalletBill> getsWithPage(@Param(value="wWithdrawWalletBill") WWithdrawWalletBill wWithdrawWalletBill, @Param(value="page") int page, @Param(value="size") int size);
 	
 }

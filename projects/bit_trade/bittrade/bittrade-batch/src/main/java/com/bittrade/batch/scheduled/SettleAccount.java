@@ -58,8 +58,8 @@ public class SettleAccount {
 	// @Scheduled(cron = "0/1 * * * * ?")
 	public void sellte() {
 		try {
-			List<TEntrustRecordDTO> list = entrustRecordService.gets();
-			for (TEntrustRecordDTO tEntrustRecord : list) {
+			List<TEntrustRecord> list = entrustRecordService.gets();
+			for (TEntrustRecord tEntrustRecord : list) {
 				System.out.println( tEntrustRecord.getId() );
 			}
 

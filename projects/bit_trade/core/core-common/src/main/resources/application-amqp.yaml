@@ -10,3 +10,7 @@ spring:
     password: o
     #虚拟空间地址
     virtual-host: /tmp
+    publisher-confirms: true
+    publisher-returns: true
+
+# https://www.cnblogs.com/hhhshct/p/9718063.html

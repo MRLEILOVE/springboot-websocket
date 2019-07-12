@@ -91,13 +91,20 @@ public abstract interface IDefaultTWalletRecordDAO extends IBaseDAO<TWalletRecor
 	 * @param tWalletRecord
 	 * @return
 	 */
-	public List<TWalletRecordDTO> get(TWalletRecord tWalletRecord);
+	public TWalletRecord get(TWalletRecord tWalletRecord);
+	
+	/**
+	 * 
+	 * @param tWalletRecord
+	 * @return
+	 */
+	public List<TWalletRecord> getsBy(TWalletRecord tWalletRecord);
 	
 	/**
 	 * 
 	 * @return
 	 */
-	public List<TWalletRecordDTO> gets();
+	public List<TWalletRecord> gets();
 	
 	/**
 	 * 
@@ -113,6 +120,6 @@ public abstract interface IDefaultTWalletRecordDAO extends IBaseDAO<TWalletRecor
 	 * @param size
 	 * @return
 	 */
-	public List<TWalletRecordDTO> getsWithPage(@Param(value="tWalletRecord") TWalletRecord tWalletRecord, @Param(value="page") int page, @Param(value="size") int size);
+	public List<TWalletRecord> getsWithPage(@Param(value="tWalletRecord") TWalletRecord tWalletRecord, @Param(value="page") int page, @Param(value="size") int size);
 	
 }

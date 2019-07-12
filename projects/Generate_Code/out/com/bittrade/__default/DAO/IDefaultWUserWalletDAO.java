@@ -91,13 +91,20 @@ public abstract interface IDefaultWUserWalletDAO extends IBaseDAO<WUserWallet, W
 	 * @param wUserWallet
 	 * @return
 	 */
-	public List<WUserWalletDTO> get(WUserWallet wUserWallet);
+	public WUserWallet get(WUserWallet wUserWallet);
+	
+	/**
+	 * 
+	 * @param wUserWallet
+	 * @return
+	 */
+	public List<WUserWallet> getsBy(WUserWallet wUserWallet);
 	
 	/**
 	 * 
 	 * @return
 	 */
-	public List<WUserWalletDTO> gets();
+	public List<WUserWallet> gets();
 	
 	/**
 	 * 
@@ -113,6 +120,6 @@ public abstract interface IDefaultWUserWalletDAO extends IBaseDAO<WUserWallet, W
 	 * @param size
 	 * @return
 	 */
-	public List<WUserWalletDTO> getsWithPage(@Param(value="wUserWallet") WUserWallet wUserWallet, @Param(value="page") int page, @Param(value="size") int size);
+	public List<WUserWallet> getsWithPage(@Param(value="wUserWallet") WUserWallet wUserWallet, @Param(value="page") int page, @Param(value="size") int size);
 	
 }

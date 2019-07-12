@@ -228,7 +228,40 @@
 		</where>
 	</select>
 	
-	<select id="get" resultType="com.bittrade.pojo.dto.TCurrencyDTO">
+	<select id="get" resultType="com.bittrade.pojo.model.TCurrency">
+		SELECT 
+			`id`, 
+			`name`, 
+			`short_name`, 
+			`status`, 
+			`type`, 
+			`desc`, 
+			`create_time`
+		FROM t_currency
+		<where>
+			<if test="name != null and name != ''">
+			AND `name` = #{name,jdbcType=VARCHAR}
+			</if>
+			<if test="shortName != null and shortName != ''">
+			AND `short_name` = #{shortName,jdbcType=VARCHAR}
+			</if>
+			<if test="status != null and status != ''">
+			AND `status` = #{status,jdbcType=INTEGER}
+			</if>
+			<if test="type != null and type != ''">
+			AND `type` = #{type,jdbcType=INTEGER}
+			</if>
+			<if test="desc != null and desc != ''">
+			AND `desc` = #{desc,jdbcType=VARCHAR}
+			</if>
+			<if test="createTime != null and createTime != ''">
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+		</where>
+		LIMIT 1
+	</select>
+	
+	<select id="getsBy" resultType="com.bittrade.pojo.model.TCurrency">
 		SELECT 
 			`id`, 
 			`name`, 
@@ -260,7 +293,7 @@
 		</where>
 	</select>
 	
-	<select id="gets" resultType="com.bittrade.pojo.dto.TCurrencyDTO">
+	<select id="gets" resultType="com.bittrade.pojo.model.TCurrency">
 		SELECT 
 			`id`, 
 			`name`, 
@@ -297,7 +330,7 @@
 		</where>
 	</select>
 	
-	<select id="getsWithPage" resultType="com.bittrade.pojo.dto.TCurrencyDTO">
+	<select id="getsWithPage" resultType="com.bittrade.pojo.model.TCurrency">
 		SELECT 
 			`id`, 
 			`name`, 

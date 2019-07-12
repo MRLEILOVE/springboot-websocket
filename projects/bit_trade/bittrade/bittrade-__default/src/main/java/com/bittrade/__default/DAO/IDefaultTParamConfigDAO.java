@@ -91,13 +91,20 @@ public abstract interface IDefaultTParamConfigDAO extends IBaseDAO<TParamConfig,
 	 * @param tParamConfig
 	 * @return
 	 */
-	public List<TParamConfigDTO> get(TParamConfig tParamConfig);
+	public TParamConfig get(TParamConfig tParamConfig);
+	
+	/**
+	 * 
+	 * @param tParamConfig
+	 * @return
+	 */
+	public List<TParamConfig> getsBy(TParamConfig tParamConfig);
 	
 	/**
 	 * 
 	 * @return
 	 */
-	public List<TParamConfigDTO> gets();
+	public List<TParamConfig> gets();
 	
 	/**
 	 * 
@@ -113,6 +120,6 @@ public abstract interface IDefaultTParamConfigDAO extends IBaseDAO<TParamConfig,
 	 * @param size
 	 * @return
 	 */
-	public List<TParamConfigDTO> getsWithPage(@Param(value="tParamConfig") TParamConfig tParamConfig, @Param(value="page") int page, @Param(value="size") int size);
+	public List<TParamConfig> getsWithPage(@Param(value="tParamConfig") TParamConfig tParamConfig, @Param(value="page") int page, @Param(value="size") int size);
 	
 }

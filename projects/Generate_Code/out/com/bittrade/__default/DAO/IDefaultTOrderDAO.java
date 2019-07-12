@@ -91,13 +91,20 @@ public abstract interface IDefaultTOrderDAO extends IBaseDAO<TOrder, TOrderDTO, 
 	 * @param tOrder
 	 * @return
 	 */
-	public List<TOrderDTO> get(TOrder tOrder);
+	public TOrder get(TOrder tOrder);
+	
+	/**
+	 * 
+	 * @param tOrder
+	 * @return
+	 */
+	public List<TOrder> getsBy(TOrder tOrder);
 	
 	/**
 	 * 
 	 * @return
 	 */
-	public List<TOrderDTO> gets();
+	public List<TOrder> gets();
 	
 	/**
 	 * 
@@ -113,6 +120,6 @@ public abstract interface IDefaultTOrderDAO extends IBaseDAO<TOrder, TOrderDTO, 
 	 * @param size
 	 * @return
 	 */
-	public List<TOrderDTO> getsWithPage(@Param(value="tOrder") TOrder tOrder, @Param(value="page") int page, @Param(value="size") int size);
+	public List<TOrder> getsWithPage(@Param(value="tOrder") TOrder tOrder, @Param(value="page") int page, @Param(value="size") int size);
 	
 }

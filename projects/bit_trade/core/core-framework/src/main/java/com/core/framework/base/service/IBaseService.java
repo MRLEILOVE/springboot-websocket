@@ -29,49 +29,49 @@ public abstract interface IBaseService<Model extends BaseModel<Model>, DTO exten
 		extends IService<Model> {
 
 	/**
-	 * 
+	 * 新增（不会使用数据库默认值）
 	 * @param model
 	 * @return
 	 */
 	public int add(Model model);
 
 	/**
-	 * 
+	 * 新增（会使用数据库默认值）
 	 * @param model
 	 * @return
 	 */
 	public int addWithSelective(Model model);
 
 	/**
-	 * 
+	 * 移除根据主键
 	 * @param PK
 	 * @return
 	 */
 	public int removeByPK(Serializable PK);
 
 	/**
-	 * 
+	 * 移除根据实体
 	 * @param model
 	 * @return
 	 */
 	public int remove(Model model);
 
 	/**
-	 * 
+	 * 修改根据主键
 	 * @param model
 	 * @return
 	 */
 	public int modifyByPK(Model model);
 
 	/**
-	 * 
+	 * 修改根据主键（会使用数据库默认值）
 	 * @param model
 	 * @return
 	 */
 	public int modifyWithSelectiveByPK(Model model);
 
 	/**
-	 * 
+	 * 修改根据实体
 	 * @param model
 	 * @param condiModel
 	 * @return
@@ -79,7 +79,7 @@ public abstract interface IBaseService<Model extends BaseModel<Model>, DTO exten
 	public int modify(Model model, Model condiModel);
 
 	/**
-	 * 
+	 * 修改根据实体（会使用数据库默认值）
 	 * @param model
 	 * @param condiModel
 	 * @return
@@ -87,32 +87,39 @@ public abstract interface IBaseService<Model extends BaseModel<Model>, DTO exten
 	public int modifyWithSelective(Model model, Model condiModel);
 
 	/**
-	 * 
+	 * 查询一个根据主键
 	 * @param PK
 	 * @return
 	 */
 	public Model getByPK(Serializable PK);
 
 	/**
-	 * 
+	 * 查询一个根据实体（默认取第一个）
 	 * @param model
 	 * @return
 	 */
-	public List<DTO> get(Model model);
+	public Model get(Model model);
 
 	/**
-	 * 
+	 * 查询多个根据实体
+	 * @param model
 	 * @return
 	 */
-	public List<DTO> gets();
+	public List<Model> getsBy(Model model);
 
 	/**
-	 * 
+	 * 查询所有
+	 * @return
+	 */
+	public List<Model> gets();
+
+	/**
+	 * 查询多个根据实体和分页
 	 * @param model
 	 * @param page
 	 * @param size
 	 * @return
 	 */
-	public PageDTO<DTO> getsWithPage(Model model, int page, int size);
+	public PageDTO<Model> getsWithPage(Model model, int page, int size);
 
 }

@@ -468,7 +468,76 @@
 		</where>
 	</select>
 	
-	<select id="get" resultType="com.bittrade.pojo.dto.TEntrustDTO">
+	<select id="get" resultType="com.bittrade.pojo.model.TEntrust">
+		SELECT 
+			`id`, 
+			`user_id`, 
+			`currency_trade_id`, 
+			`price`, 
+			`amount`, 
+			`success_amount`, 
+			`count`, 
+			`left_count`, 
+			`fees`, 
+			`left_fees`, 
+			`status`, 
+			`entrust_type`, 
+			`entrust_direction`, 
+			`version`, 
+			`create_time`, 
+			`update_time`
+		FROM t_entrust
+		<where>
+			<if test="userId != null and userId != ''">
+			AND `user_id` = #{userId,jdbcType=BIGINT}
+			</if>
+			<if test="currencyTradeId != null and currencyTradeId != ''">
+			AND `currency_trade_id` = #{currencyTradeId,jdbcType=INTEGER}
+			</if>
+			<if test="price != null and price != ''">
+			AND `price` = #{price,jdbcType=DECIMAL}
+			</if>
+			<if test="amount != null and amount != ''">
+			AND `amount` = #{amount,jdbcType=DECIMAL}
+			</if>
+			<if test="successAmount != null and successAmount != ''">
+			AND `success_amount` = #{successAmount,jdbcType=DECIMAL}
+			</if>
+			<if test="count != null and count != ''">
+			AND `count` = #{count,jdbcType=DECIMAL}
+			</if>
+			<if test="leftCount != null and leftCount != ''">
+			AND `left_count` = #{leftCount,jdbcType=DECIMAL}
+			</if>
+			<if test="fees != null and fees != ''">
+			AND `fees` = #{fees,jdbcType=DECIMAL}
+			</if>
+			<if test="leftFees != null and leftFees != ''">
+			AND `left_fees` = #{leftFees,jdbcType=DECIMAL}
+			</if>
+			<if test="status != null and status != ''">
+			AND `status` = #{status,jdbcType=INTEGER}
+			</if>
+			<if test="entrustType != null and entrustType != ''">
+			AND `entrust_type` = #{entrustType,jdbcType=INTEGER}
+			</if>
+			<if test="entrustDirection != null and entrustDirection != ''">
+			AND `entrust_direction` = #{entrustDirection,jdbcType=INTEGER}
+			</if>
+			<if test="version != null and version != ''">
+			AND `version` = #{version,jdbcType=INTEGER}
+			</if>
+			<if test="createTime != null and createTime != ''">
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="updateTime != null and updateTime != ''">
+			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+		</where>
+		LIMIT 1
+	</select>
+	
+	<select id="getsBy" resultType="com.bittrade.pojo.model.TEntrust">
 		SELECT 
 			`id`, 
 			`user_id`, 
@@ -536,7 +605,7 @@
 		</where>
 	</select>
 	
-	<select id="gets" resultType="com.bittrade.pojo.dto.TEntrustDTO">
+	<select id="gets" resultType="com.bittrade.pojo.model.TEntrust">
 		SELECT 
 			`id`, 
 			`user_id`, 
@@ -609,7 +678,7 @@
 		</where>
 	</select>
 	
-	<select id="getsWithPage" resultType="com.bittrade.pojo.dto.TEntrustDTO">
+	<select id="getsWithPage" resultType="com.bittrade.pojo.model.TEntrust">
 		SELECT 
 			`id`, 
 			`user_id`, 

@@ -1,13 +1,10 @@
 package org.bittrade.batch;
 
-import java.util.List;
-
 import org.bittrade.batch.base.BaseTester;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.bittrade.currency.api.service.ITParamConfigService;
-import com.bittrade.pojo.dto.TParamConfigDTO;
 import com.bittrade.pojo.model.TParamConfig;
 
 public class AppTester extends BaseTester {
@@ -25,8 +22,8 @@ public class AppTester extends BaseTester {
 
 		TParamConfig paramConfigQuery = new TParamConfig();
 		paramConfigQuery.setParamKey( "usdToCnyRateKey" );
-		List<TParamConfigDTO> list_data = paramConfigService.get( paramConfigQuery );
-		System.out.println( list_data.get( 0 ).getParamValue() );
+		TParamConfig paramConfig = paramConfigService.get( paramConfigQuery );
+		System.out.println( paramConfig.getParamValue() );
 
 	}
 

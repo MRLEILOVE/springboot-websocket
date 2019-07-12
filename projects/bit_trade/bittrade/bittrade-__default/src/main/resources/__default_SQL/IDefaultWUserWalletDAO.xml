@@ -306,7 +306,52 @@
 		</where>
 	</select>
 	
-	<select id="get" resultType="com.bittrade.pojo.dto.WUserWalletDTO">
+	<select id="get" resultType="com.bittrade.pojo.model.WUserWallet">
+		SELECT 
+			`id`, 
+			`platform`, 
+			`user_id`, 
+			`coin_type`, 
+			`address`, 
+			`private_key`, 
+			`flag`, 
+			`valid`, 
+			`create_time`, 
+			`update_time`
+		FROM w_user_wallet
+		<where>
+			<if test="platform != null and platform != ''">
+			AND `platform` = #{platform,jdbcType=VARCHAR}
+			</if>
+			<if test="userId != null and userId != ''">
+			AND `user_id` = #{userId,jdbcType=BIGINT}
+			</if>
+			<if test="coinType != null and coinType != ''">
+			AND `coin_type` = #{coinType,jdbcType=VARCHAR}
+			</if>
+			<if test="address != null and address != ''">
+			AND `address` = #{address,jdbcType=VARCHAR}
+			</if>
+			<if test="privateKey != null and privateKey != ''">
+			AND `private_key` = #{privateKey,jdbcType=VARCHAR}
+			</if>
+			<if test="flag != null and flag != ''">
+			AND `flag` = #{flag,jdbcType=INTEGER}
+			</if>
+			<if test="valid != null and valid != ''">
+			AND `valid` = #{valid,jdbcType=CHAR}
+			</if>
+			<if test="createTime != null and createTime != ''">
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="updateTime != null and updateTime != ''">
+			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+		</where>
+		LIMIT 1
+	</select>
+	
+	<select id="getsBy" resultType="com.bittrade.pojo.model.WUserWallet">
 		SELECT 
 			`id`, 
 			`platform`, 
@@ -350,7 +395,7 @@
 		</where>
 	</select>
 	
-	<select id="gets" resultType="com.bittrade.pojo.dto.WUserWalletDTO">
+	<select id="gets" resultType="com.bittrade.pojo.model.WUserWallet">
 		SELECT 
 			`id`, 
 			`platform`, 
@@ -399,7 +444,7 @@
 		</where>
 	</select>
 	
-	<select id="getsWithPage" resultType="com.bittrade.pojo.dto.WUserWalletDTO">
+	<select id="getsWithPage" resultType="com.bittrade.pojo.model.WUserWallet">
 		SELECT 
 			`id`, 
 			`platform`, 

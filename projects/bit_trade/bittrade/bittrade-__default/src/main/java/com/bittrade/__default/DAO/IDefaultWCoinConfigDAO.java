@@ -91,13 +91,20 @@ public abstract interface IDefaultWCoinConfigDAO extends IBaseDAO<WCoinConfig, W
 	 * @param wCoinConfig
 	 * @return
 	 */
-	public List<WCoinConfigDTO> get(WCoinConfig wCoinConfig);
+	public WCoinConfig get(WCoinConfig wCoinConfig);
+	
+	/**
+	 * 
+	 * @param wCoinConfig
+	 * @return
+	 */
+	public List<WCoinConfig> getsBy(WCoinConfig wCoinConfig);
 	
 	/**
 	 * 
 	 * @return
 	 */
-	public List<WCoinConfigDTO> gets();
+	public List<WCoinConfig> gets();
 	
 	/**
 	 * 
@@ -113,6 +120,6 @@ public abstract interface IDefaultWCoinConfigDAO extends IBaseDAO<WCoinConfig, W
 	 * @param size
 	 * @return
 	 */
-	public List<WCoinConfigDTO> getsWithPage(@Param(value="wCoinConfig") WCoinConfig wCoinConfig, @Param(value="page") int page, @Param(value="size") int size);
+	public List<WCoinConfig> getsWithPage(@Param(value="wCoinConfig") WCoinConfig wCoinConfig, @Param(value="page") int page, @Param(value="size") int size);
 	
 }

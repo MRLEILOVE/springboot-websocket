@@ -91,13 +91,20 @@ public abstract interface IDefaultTKlineDAO extends IBaseDAO<TKline, TKlineDTO, 
 	 * @param tKline
 	 * @return
 	 */
-	public List<TKlineDTO> get(TKline tKline);
+	public TKline get(TKline tKline);
+	
+	/**
+	 * 
+	 * @param tKline
+	 * @return
+	 */
+	public List<TKline> getsBy(TKline tKline);
 	
 	/**
 	 * 
 	 * @return
 	 */
-	public List<TKlineDTO> gets();
+	public List<TKline> gets();
 	
 	/**
 	 * 
@@ -113,6 +120,6 @@ public abstract interface IDefaultTKlineDAO extends IBaseDAO<TKline, TKlineDTO, 
 	 * @param size
 	 * @return
 	 */
-	public List<TKlineDTO> getsWithPage(@Param(value="tKline") TKline tKline, @Param(value="page") int page, @Param(value="size") int size);
+	public List<TKline> getsWithPage(@Param(value="tKline") TKline tKline, @Param(value="page") int page, @Param(value="size") int size);
 	
 }

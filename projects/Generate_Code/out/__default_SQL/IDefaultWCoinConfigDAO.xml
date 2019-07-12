@@ -384,7 +384,64 @@
 		</where>
 	</select>
 	
-	<select id="get" resultType="com.bittrade.pojo.dto.WCoinConfigDTO">
+	<select id="get" resultType="com.bittrade.pojo.model.WCoinConfig">
+		SELECT 
+			`id`, 
+			`coin_type`, 
+			`token`, 
+			`contract`, 
+			`scan_block`, 
+			`base_multiple`, 
+			`min_confirm`, 
+			`boss_address`, 
+			`min_collection_amount`, 
+			`valid`, 
+			`remark`, 
+			`create_time`, 
+			`update_time`
+		FROM w_coin_config
+		<where>
+			<if test="coinType != null and coinType != ''">
+			AND `coin_type` = #{coinType,jdbcType=VARCHAR}
+			</if>
+			<if test="token != null and token != ''">
+			AND `token` = #{token,jdbcType=VARCHAR}
+			</if>
+			<if test="contract != null and contract != ''">
+			AND `contract` = #{contract,jdbcType=VARCHAR}
+			</if>
+			<if test="scanBlock != null and scanBlock != ''">
+			AND `scan_block` = #{scanBlock,jdbcType=BIGINT}
+			</if>
+			<if test="baseMultiple != null and baseMultiple != ''">
+			AND `base_multiple` = #{baseMultiple,jdbcType=INTEGER}
+			</if>
+			<if test="minConfirm != null and minConfirm != ''">
+			AND `min_confirm` = #{minConfirm,jdbcType=INTEGER}
+			</if>
+			<if test="bossAddress != null and bossAddress != ''">
+			AND `boss_address` = #{bossAddress,jdbcType=VARCHAR}
+			</if>
+			<if test="minCollectionAmount != null and minCollectionAmount != ''">
+			AND `min_collection_amount` = #{minCollectionAmount,jdbcType=DECIMAL}
+			</if>
+			<if test="valid != null and valid != ''">
+			AND `valid` = #{valid,jdbcType=CHAR}
+			</if>
+			<if test="remark != null and remark != ''">
+			AND `remark` = #{remark,jdbcType=VARCHAR}
+			</if>
+			<if test="createTime != null and createTime != ''">
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="updateTime != null and updateTime != ''">
+			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+		</where>
+		LIMIT 1
+	</select>
+	
+	<select id="getsBy" resultType="com.bittrade.pojo.model.WCoinConfig">
 		SELECT 
 			`id`, 
 			`coin_type`, 
@@ -440,7 +497,7 @@
 		</where>
 	</select>
 	
-	<select id="gets" resultType="com.bittrade.pojo.dto.WCoinConfigDTO">
+	<select id="gets" resultType="com.bittrade.pojo.model.WCoinConfig">
 		SELECT 
 			`id`, 
 			`coin_type`, 
@@ -501,7 +558,7 @@
 		</where>
 	</select>
 	
-	<select id="getsWithPage" resultType="com.bittrade.pojo.dto.WCoinConfigDTO">
+	<select id="getsWithPage" resultType="com.bittrade.pojo.model.WCoinConfig">
 		SELECT 
 			`id`, 
 			`coin_type`, 

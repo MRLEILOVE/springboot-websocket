@@ -91,13 +91,20 @@ public abstract interface IDefaultWConfigWalletDAO extends IBaseDAO<WConfigWalle
 	 * @param wConfigWallet
 	 * @return
 	 */
-	public List<WConfigWalletDTO> get(WConfigWallet wConfigWallet);
+	public WConfigWallet get(WConfigWallet wConfigWallet);
+	
+	/**
+	 * 
+	 * @param wConfigWallet
+	 * @return
+	 */
+	public List<WConfigWallet> getsBy(WConfigWallet wConfigWallet);
 	
 	/**
 	 * 
 	 * @return
 	 */
-	public List<WConfigWalletDTO> gets();
+	public List<WConfigWallet> gets();
 	
 	/**
 	 * 
@@ -113,6 +120,6 @@ public abstract interface IDefaultWConfigWalletDAO extends IBaseDAO<WConfigWalle
 	 * @param size
 	 * @return
 	 */
-	public List<WConfigWalletDTO> getsWithPage(@Param(value="wConfigWallet") WConfigWallet wConfigWallet, @Param(value="page") int page, @Param(value="size") int size);
+	public List<WConfigWallet> getsWithPage(@Param(value="wConfigWallet") WConfigWallet wConfigWallet, @Param(value="page") int page, @Param(value="size") int size);
 	
 }

@@ -3,13 +3,10 @@ package com.bittrade.batch.general;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import org.springframework.beans.BeanUtils;
-
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.bittrade.batch.enumer.ParamConfigEnum.ParamStatus;
 import com.bittrade.currency.api.service.ITParamConfigService;
 import com.bittrade.currency.api.service.ITWalletService;
-import com.bittrade.pojo.dto.TParamConfigDTO;
 import com.bittrade.pojo.model.TParamConfig;
 import com.bittrade.pojo.model.TWallet;
 
@@ -22,14 +19,13 @@ public class GeneralMethod {
 		// queryWrapper.eq( TParamConfig.FieldNames.PARAM_STATUS,
 		// ParamStatus.ENABLE.getKey() );
 		// TParamConfig paramConfig = paramConfigService.getOne( queryWrapper );
-		TParamConfig paramConfig = new TParamConfig();
-		paramConfig.setParamKey( key );
-		paramConfig.setParamStatus( ParamStatus.ENABLE.getKey() );
-		TParamConfigDTO paramConfigDTO = paramConfigService.get( paramConfig ).get( 0 );
-		if (null == paramConfigDTO) {
+		TParamConfig paramConfigCondi = new TParamConfig();
+		paramConfigCondi.setParamKey( key );
+		paramConfigCondi.setParamStatus( ParamStatus.ENABLE.getKey() );
+		TParamConfig paramConfig = paramConfigService.get( paramConfigCondi );
+		if (null == paramConfig) {
 			throw new Exception( "key：" + key + "未配置" );
 		}
-		BeanUtils.copyProperties( paramConfigDTO, paramConfig );
 		return paramConfig;
 	}
 

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.segments.MergeSegments;
 import com.bittrade.__default.service.impl.DefaultTEntrustServiceImpl;
 import com.bittrade.common.enums.EntrustDirectionEnumer;
 import com.bittrade.currency.api.service.ITEntrustService;
@@ -158,6 +159,18 @@ public class TEntrustServiceImpl extends DefaultTEntrustServiceImpl<ITEntrustDAO
 	@Override
 	public void updateOnMatch(BigDecimal successAmount, BigDecimal leftCount, int status, long ID) {
 		entrustDAO.updateOnMatch(successAmount, leftCount, status, ID);
+	}
+
+	@Override
+	public String testPrm(QueryWrapper<TEntrust> qw) {
+		System.out.println("---------------------qw=" + qw);
+		return "--==";
+	}
+
+	@Override
+	public String testPrm_2(MergeSegments ms) {
+		System.out.println("---------------------ms=" + ms);
+		return "testPrm_2 --==";
 	}
 
 }

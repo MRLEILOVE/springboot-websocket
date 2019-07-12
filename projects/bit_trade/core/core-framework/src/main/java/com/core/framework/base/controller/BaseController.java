@@ -81,17 +81,22 @@ public abstract class BaseController<Model extends BaseModel<Model>, DTO extends
 	}
 
 	@RequestMapping(value = "/get", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public List<DTO> get(Model model) {
+	public Model get(Model model) {
 		return baseService.get(model);
 	}
 
+	@RequestMapping(value = "/getsBy", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public List<Model> getsBy(Model model) {
+		return baseService.getsBy(model);
+	}
+
 	@RequestMapping(value = "/gets", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public List<DTO> gets() {
+	public List<Model> gets() {
 		return baseService.gets();
 	}
 
 	@RequestMapping(value = "/getsWithPage", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public PageDTO<DTO> getsWithPage(
+	public PageDTO<Model> getsWithPage(
 			Model model, 
 			@RequestParam(required = false, defaultValue = "1") int page, 
 			@RequestParam(required = false, defaultValue = "10") int size

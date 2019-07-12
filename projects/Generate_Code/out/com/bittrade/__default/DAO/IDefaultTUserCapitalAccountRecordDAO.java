@@ -91,13 +91,20 @@ public abstract interface IDefaultTUserCapitalAccountRecordDAO extends IBaseDAO<
 	 * @param tUserCapitalAccountRecord
 	 * @return
 	 */
-	public List<TUserCapitalAccountRecordDTO> get(TUserCapitalAccountRecord tUserCapitalAccountRecord);
+	public TUserCapitalAccountRecord get(TUserCapitalAccountRecord tUserCapitalAccountRecord);
+	
+	/**
+	 * 
+	 * @param tUserCapitalAccountRecord
+	 * @return
+	 */
+	public List<TUserCapitalAccountRecord> getsBy(TUserCapitalAccountRecord tUserCapitalAccountRecord);
 	
 	/**
 	 * 
 	 * @return
 	 */
-	public List<TUserCapitalAccountRecordDTO> gets();
+	public List<TUserCapitalAccountRecord> gets();
 	
 	/**
 	 * 
@@ -113,6 +120,6 @@ public abstract interface IDefaultTUserCapitalAccountRecordDAO extends IBaseDAO<
 	 * @param size
 	 * @return
 	 */
-	public List<TUserCapitalAccountRecordDTO> getsWithPage(@Param(value="tUserCapitalAccountRecord") TUserCapitalAccountRecord tUserCapitalAccountRecord, @Param(value="page") int page, @Param(value="size") int size);
+	public List<TUserCapitalAccountRecord> getsWithPage(@Param(value="tUserCapitalAccountRecord") TUserCapitalAccountRecord tUserCapitalAccountRecord, @Param(value="page") int page, @Param(value="size") int size);
 	
 }
