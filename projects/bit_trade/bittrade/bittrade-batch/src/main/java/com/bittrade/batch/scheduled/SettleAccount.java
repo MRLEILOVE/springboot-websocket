@@ -2,7 +2,6 @@ package com.bittrade.batch.scheduled;
 
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -12,15 +11,11 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.alibaba.dubbo.config.annotation.Reference;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.bittrade.batch.general.GeneralMethod;
 import com.bittrade.currency.api.service.ITCurrencyTradeService;
 import com.bittrade.currency.api.service.ITEntrustRecordService;
 import com.bittrade.currency.api.service.ITWalletRecordService;
 import com.bittrade.currency.api.service.ITWalletService;
-import com.bittrade.pojo.dto.TCurrencyTradeDTO;
-import com.bittrade.pojo.dto.TEntrustRecordDTO;
 import com.bittrade.pojo.model.TCurrencyTrade;
 import com.bittrade.pojo.model.TEntrustRecord;
 import com.bittrade.pojo.model.TWallet;
@@ -55,7 +50,7 @@ public class SettleAccount {
 
 	private static final SnowFlake	SNOW_FLAKE			= new SnowFlake( 1, 1 );
 
-	@Scheduled(cron = "0/1 * * * * ?")
+	//@Scheduled(cron = "0/1 * * * * ?")
 	public void sellte() {
 		try {
 			// 1、查询卖方向的未结算的订单
