@@ -58,16 +58,17 @@
 	
 	<delete id="remove" parameterType="com.bittrade.pojo.model.TTicker">
 		DELETE FROM t_ticker
-		WHERE
+		<where>
 			<if test="symbol != null and symbol != ''">
-			`symbol` = #{symbol,jdbcType=VARCHAR} AND
+			AND `symbol` = #{symbol,jdbcType=VARCHAR}
 			</if>
 			<if test="last != null and last != ''">
-			`last` = #{last,jdbcType=VARCHAR} AND
+			AND `last` = #{last,jdbcType=VARCHAR}
 			</if>
 			<if test="createTime != null and createTime != ''">
-			`create_time` = #{createTime,jdbcType=TIMESTAMP}
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
 			</if>
+		</where>
 	</delete>
 	
 	<update id="modifyByPK" parameterType="com.bittrade.pojo.model.TTicker">
@@ -102,40 +103,42 @@
 			`symbol` = #{tTicker.symbol,jdbcType=VARCHAR}, 
 			`last` = #{tTicker.last,jdbcType=VARCHAR}, 
 			`create_time` = #{tTicker.createTime,jdbcType=TIMESTAMP}
-		WHERE 
+		<where>
 			<if test="condiTTicker.symbol != null and condiTTicker.symbol != ''">
-			`symbol` = #{condiTTicker.symbol,jdbcType=VARCHAR} AND
+			AND `symbol` = #{condiTTicker.symbol,jdbcType=VARCHAR}
 			</if>
 			<if test="condiTTicker.last != null and condiTTicker.last != ''">
-			`last` = #{condiTTicker.last,jdbcType=VARCHAR} AND
+			AND `last` = #{condiTTicker.last,jdbcType=VARCHAR}
 			</if>
 			<if test="condiTTicker.createTime != null and condiTTicker.createTime != ''">
-			`create_time` = #{condiTTicker.createTime,jdbcType=TIMESTAMP}
+			AND `create_time` = #{condiTTicker.createTime,jdbcType=TIMESTAMP}
 			</if>
+		</where>
 	</update>
 	
 	<update id="modifyWithSelective">
 		UPDATE t_ticker
 		SET
-			<if test="symbol != null and symbol != ''">
+			<if test="tTicker.symbol != null and tTicker.symbol != ''">
 			`symbol` = #{tTicker.symbol,jdbcType=VARCHAR}, 
 			</if>
-			<if test="last != null and last != ''">
+			<if test="tTicker.last != null and tTicker.last != ''">
 			`last` = #{tTicker.last,jdbcType=VARCHAR}, 
 			</if>
-			<if test="createTime != null and createTime != ''">
+			<if test="tTicker.createTime != null and tTicker.createTime != ''">
 			`create_time` = #{tTicker.createTime,jdbcType=TIMESTAMP}
 			</if>
-		WHERE 
+		<where>
 			<if test="condiTTicker.symbol != null and condiTTicker.symbol != ''">
-			`symbol` = #{condiTTicker.symbol,jdbcType=VARCHAR} AND
+			AND `symbol` = #{condiTTicker.symbol,jdbcType=VARCHAR}
 			</if>
 			<if test="condiTTicker.last != null and condiTTicker.last != ''">
-			`last` = #{condiTTicker.last,jdbcType=VARCHAR} AND
+			AND `last` = #{condiTTicker.last,jdbcType=VARCHAR}
 			</if>
 			<if test="condiTTicker.createTime != null and condiTTicker.createTime != ''">
-			`create_time` = #{condiTTicker.createTime,jdbcType=TIMESTAMP}
+			AND `create_time` = #{condiTTicker.createTime,jdbcType=TIMESTAMP}
 			</if>
+		</where>
 	</update>
 	
 	<select id="getByPK" resultType="com.bittrade.pojo.model.TTicker">
@@ -145,9 +148,8 @@
 			`last`, 
 			`create_time`
 		FROM t_ticker
-		<where>
+		WHERE 
 			`id` = #{id,jdbcType=INTEGER}
-		</where>
 	</select>
 	
 	<select id="get" resultType="com.bittrade.pojo.model.TTicker">

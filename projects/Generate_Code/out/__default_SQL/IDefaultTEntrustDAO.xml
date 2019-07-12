@@ -160,52 +160,53 @@
 	
 	<delete id="remove" parameterType="com.bittrade.pojo.model.TEntrust">
 		DELETE FROM t_entrust
-		WHERE
+		<where>
 			<if test="userId != null and userId != ''">
-			`user_id` = #{userId,jdbcType=BIGINT} AND
+			AND `user_id` = #{userId,jdbcType=BIGINT}
 			</if>
 			<if test="currencyTradeId != null and currencyTradeId != ''">
-			`currency_trade_id` = #{currencyTradeId,jdbcType=INTEGER} AND
+			AND `currency_trade_id` = #{currencyTradeId,jdbcType=INTEGER}
 			</if>
 			<if test="price != null and price != ''">
-			`price` = #{price,jdbcType=DECIMAL} AND
+			AND `price` = #{price,jdbcType=DECIMAL}
 			</if>
 			<if test="amount != null and amount != ''">
-			`amount` = #{amount,jdbcType=DECIMAL} AND
+			AND `amount` = #{amount,jdbcType=DECIMAL}
 			</if>
 			<if test="successAmount != null and successAmount != ''">
-			`success_amount` = #{successAmount,jdbcType=DECIMAL} AND
+			AND `success_amount` = #{successAmount,jdbcType=DECIMAL}
 			</if>
 			<if test="count != null and count != ''">
-			`count` = #{count,jdbcType=DECIMAL} AND
+			AND `count` = #{count,jdbcType=DECIMAL}
 			</if>
 			<if test="leftCount != null and leftCount != ''">
-			`left_count` = #{leftCount,jdbcType=DECIMAL} AND
+			AND `left_count` = #{leftCount,jdbcType=DECIMAL}
 			</if>
 			<if test="fees != null and fees != ''">
-			`fees` = #{fees,jdbcType=DECIMAL} AND
+			AND `fees` = #{fees,jdbcType=DECIMAL}
 			</if>
 			<if test="leftFees != null and leftFees != ''">
-			`left_fees` = #{leftFees,jdbcType=DECIMAL} AND
+			AND `left_fees` = #{leftFees,jdbcType=DECIMAL}
 			</if>
 			<if test="status != null and status != ''">
-			`status` = #{status,jdbcType=INTEGER} AND
+			AND `status` = #{status,jdbcType=INTEGER}
 			</if>
 			<if test="entrustType != null and entrustType != ''">
-			`entrust_type` = #{entrustType,jdbcType=INTEGER} AND
+			AND `entrust_type` = #{entrustType,jdbcType=INTEGER}
 			</if>
 			<if test="entrustDirection != null and entrustDirection != ''">
-			`entrust_direction` = #{entrustDirection,jdbcType=INTEGER} AND
+			AND `entrust_direction` = #{entrustDirection,jdbcType=INTEGER}
 			</if>
 			<if test="version != null and version != ''">
-			`version` = #{version,jdbcType=INTEGER} AND
+			AND `version` = #{version,jdbcType=INTEGER}
 			</if>
 			<if test="createTime != null and createTime != ''">
-			`create_time` = #{createTime,jdbcType=TIMESTAMP} AND
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
 			</if>
 			<if test="updateTime != null and updateTime != ''">
-			`update_time` = #{updateTime,jdbcType=TIMESTAMP}
+			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
 			</if>
+		</where>
 	</delete>
 	
 	<update id="modifyByPK" parameterType="com.bittrade.pojo.model.TEntrust">
@@ -300,148 +301,150 @@
 			`version` = #{tEntrust.version,jdbcType=INTEGER}, 
 			`create_time` = #{tEntrust.createTime,jdbcType=TIMESTAMP}, 
 			`update_time` = #{tEntrust.updateTime,jdbcType=TIMESTAMP}
-		WHERE 
+		<where>
 			<if test="condiTEntrust.userId != null and condiTEntrust.userId != ''">
-			`user_id` = #{condiTEntrust.userId,jdbcType=BIGINT} AND
+			AND `user_id` = #{condiTEntrust.userId,jdbcType=BIGINT}
 			</if>
 			<if test="condiTEntrust.currencyTradeId != null and condiTEntrust.currencyTradeId != ''">
-			`currency_trade_id` = #{condiTEntrust.currencyTradeId,jdbcType=INTEGER} AND
+			AND `currency_trade_id` = #{condiTEntrust.currencyTradeId,jdbcType=INTEGER}
 			</if>
 			<if test="condiTEntrust.price != null and condiTEntrust.price != ''">
-			`price` = #{condiTEntrust.price,jdbcType=DECIMAL} AND
+			AND `price` = #{condiTEntrust.price,jdbcType=DECIMAL}
 			</if>
 			<if test="condiTEntrust.amount != null and condiTEntrust.amount != ''">
-			`amount` = #{condiTEntrust.amount,jdbcType=DECIMAL} AND
+			AND `amount` = #{condiTEntrust.amount,jdbcType=DECIMAL}
 			</if>
 			<if test="condiTEntrust.successAmount != null and condiTEntrust.successAmount != ''">
-			`success_amount` = #{condiTEntrust.successAmount,jdbcType=DECIMAL} AND
+			AND `success_amount` = #{condiTEntrust.successAmount,jdbcType=DECIMAL}
 			</if>
 			<if test="condiTEntrust.count != null and condiTEntrust.count != ''">
-			`count` = #{condiTEntrust.count,jdbcType=DECIMAL} AND
+			AND `count` = #{condiTEntrust.count,jdbcType=DECIMAL}
 			</if>
 			<if test="condiTEntrust.leftCount != null and condiTEntrust.leftCount != ''">
-			`left_count` = #{condiTEntrust.leftCount,jdbcType=DECIMAL} AND
+			AND `left_count` = #{condiTEntrust.leftCount,jdbcType=DECIMAL}
 			</if>
 			<if test="condiTEntrust.fees != null and condiTEntrust.fees != ''">
-			`fees` = #{condiTEntrust.fees,jdbcType=DECIMAL} AND
+			AND `fees` = #{condiTEntrust.fees,jdbcType=DECIMAL}
 			</if>
 			<if test="condiTEntrust.leftFees != null and condiTEntrust.leftFees != ''">
-			`left_fees` = #{condiTEntrust.leftFees,jdbcType=DECIMAL} AND
+			AND `left_fees` = #{condiTEntrust.leftFees,jdbcType=DECIMAL}
 			</if>
 			<if test="condiTEntrust.status != null and condiTEntrust.status != ''">
-			`status` = #{condiTEntrust.status,jdbcType=INTEGER} AND
+			AND `status` = #{condiTEntrust.status,jdbcType=INTEGER}
 			</if>
 			<if test="condiTEntrust.entrustType != null and condiTEntrust.entrustType != ''">
-			`entrust_type` = #{condiTEntrust.entrustType,jdbcType=INTEGER} AND
+			AND `entrust_type` = #{condiTEntrust.entrustType,jdbcType=INTEGER}
 			</if>
 			<if test="condiTEntrust.entrustDirection != null and condiTEntrust.entrustDirection != ''">
-			`entrust_direction` = #{condiTEntrust.entrustDirection,jdbcType=INTEGER} AND
+			AND `entrust_direction` = #{condiTEntrust.entrustDirection,jdbcType=INTEGER}
 			</if>
 			<if test="condiTEntrust.version != null and condiTEntrust.version != ''">
-			`version` = #{condiTEntrust.version,jdbcType=INTEGER} AND
+			AND `version` = #{condiTEntrust.version,jdbcType=INTEGER}
 			</if>
 			<if test="condiTEntrust.createTime != null and condiTEntrust.createTime != ''">
-			`create_time` = #{condiTEntrust.createTime,jdbcType=TIMESTAMP} AND
+			AND `create_time` = #{condiTEntrust.createTime,jdbcType=TIMESTAMP}
 			</if>
 			<if test="condiTEntrust.updateTime != null and condiTEntrust.updateTime != ''">
-			`update_time` = #{condiTEntrust.updateTime,jdbcType=TIMESTAMP}
+			AND `update_time` = #{condiTEntrust.updateTime,jdbcType=TIMESTAMP}
 			</if>
+		</where>
 	</update>
 	
 	<update id="modifyWithSelective">
 		UPDATE t_entrust
 		SET
-			<if test="userId != null and userId != ''">
+			<if test="tEntrust.userId != null and tEntrust.userId != ''">
 			`user_id` = #{tEntrust.userId,jdbcType=BIGINT}, 
 			</if>
-			<if test="currencyTradeId != null and currencyTradeId != ''">
+			<if test="tEntrust.currencyTradeId != null and tEntrust.currencyTradeId != ''">
 			`currency_trade_id` = #{tEntrust.currencyTradeId,jdbcType=INTEGER}, 
 			</if>
-			<if test="price != null and price != ''">
+			<if test="tEntrust.price != null and tEntrust.price != ''">
 			`price` = #{tEntrust.price,jdbcType=DECIMAL}, 
 			</if>
-			<if test="amount != null and amount != ''">
+			<if test="tEntrust.amount != null and tEntrust.amount != ''">
 			`amount` = #{tEntrust.amount,jdbcType=DECIMAL}, 
 			</if>
-			<if test="successAmount != null and successAmount != ''">
+			<if test="tEntrust.successAmount != null and tEntrust.successAmount != ''">
 			`success_amount` = #{tEntrust.successAmount,jdbcType=DECIMAL}, 
 			</if>
-			<if test="count != null and count != ''">
+			<if test="tEntrust.count != null and tEntrust.count != ''">
 			`count` = #{tEntrust.count,jdbcType=DECIMAL}, 
 			</if>
-			<if test="leftCount != null and leftCount != ''">
+			<if test="tEntrust.leftCount != null and tEntrust.leftCount != ''">
 			`left_count` = #{tEntrust.leftCount,jdbcType=DECIMAL}, 
 			</if>
-			<if test="fees != null and fees != ''">
+			<if test="tEntrust.fees != null and tEntrust.fees != ''">
 			`fees` = #{tEntrust.fees,jdbcType=DECIMAL}, 
 			</if>
-			<if test="leftFees != null and leftFees != ''">
+			<if test="tEntrust.leftFees != null and tEntrust.leftFees != ''">
 			`left_fees` = #{tEntrust.leftFees,jdbcType=DECIMAL}, 
 			</if>
-			<if test="status != null and status != ''">
+			<if test="tEntrust.status != null and tEntrust.status != ''">
 			`status` = #{tEntrust.status,jdbcType=INTEGER}, 
 			</if>
-			<if test="entrustType != null and entrustType != ''">
+			<if test="tEntrust.entrustType != null and tEntrust.entrustType != ''">
 			`entrust_type` = #{tEntrust.entrustType,jdbcType=INTEGER}, 
 			</if>
-			<if test="entrustDirection != null and entrustDirection != ''">
+			<if test="tEntrust.entrustDirection != null and tEntrust.entrustDirection != ''">
 			`entrust_direction` = #{tEntrust.entrustDirection,jdbcType=INTEGER}, 
 			</if>
-			<if test="version != null and version != ''">
+			<if test="tEntrust.version != null and tEntrust.version != ''">
 			`version` = #{tEntrust.version,jdbcType=INTEGER}, 
 			</if>
-			<if test="createTime != null and createTime != ''">
+			<if test="tEntrust.createTime != null and tEntrust.createTime != ''">
 			`create_time` = #{tEntrust.createTime,jdbcType=TIMESTAMP}, 
 			</if>
-			<if test="updateTime != null and updateTime != ''">
+			<if test="tEntrust.updateTime != null and tEntrust.updateTime != ''">
 			`update_time` = #{tEntrust.updateTime,jdbcType=TIMESTAMP}
 			</if>
-		WHERE 
+		<where>
 			<if test="condiTEntrust.userId != null and condiTEntrust.userId != ''">
-			`user_id` = #{condiTEntrust.userId,jdbcType=BIGINT} AND
+			AND `user_id` = #{condiTEntrust.userId,jdbcType=BIGINT}
 			</if>
 			<if test="condiTEntrust.currencyTradeId != null and condiTEntrust.currencyTradeId != ''">
-			`currency_trade_id` = #{condiTEntrust.currencyTradeId,jdbcType=INTEGER} AND
+			AND `currency_trade_id` = #{condiTEntrust.currencyTradeId,jdbcType=INTEGER}
 			</if>
 			<if test="condiTEntrust.price != null and condiTEntrust.price != ''">
-			`price` = #{condiTEntrust.price,jdbcType=DECIMAL} AND
+			AND `price` = #{condiTEntrust.price,jdbcType=DECIMAL}
 			</if>
 			<if test="condiTEntrust.amount != null and condiTEntrust.amount != ''">
-			`amount` = #{condiTEntrust.amount,jdbcType=DECIMAL} AND
+			AND `amount` = #{condiTEntrust.amount,jdbcType=DECIMAL}
 			</if>
 			<if test="condiTEntrust.successAmount != null and condiTEntrust.successAmount != ''">
-			`success_amount` = #{condiTEntrust.successAmount,jdbcType=DECIMAL} AND
+			AND `success_amount` = #{condiTEntrust.successAmount,jdbcType=DECIMAL}
 			</if>
 			<if test="condiTEntrust.count != null and condiTEntrust.count != ''">
-			`count` = #{condiTEntrust.count,jdbcType=DECIMAL} AND
+			AND `count` = #{condiTEntrust.count,jdbcType=DECIMAL}
 			</if>
 			<if test="condiTEntrust.leftCount != null and condiTEntrust.leftCount != ''">
-			`left_count` = #{condiTEntrust.leftCount,jdbcType=DECIMAL} AND
+			AND `left_count` = #{condiTEntrust.leftCount,jdbcType=DECIMAL}
 			</if>
 			<if test="condiTEntrust.fees != null and condiTEntrust.fees != ''">
-			`fees` = #{condiTEntrust.fees,jdbcType=DECIMAL} AND
+			AND `fees` = #{condiTEntrust.fees,jdbcType=DECIMAL}
 			</if>
 			<if test="condiTEntrust.leftFees != null and condiTEntrust.leftFees != ''">
-			`left_fees` = #{condiTEntrust.leftFees,jdbcType=DECIMAL} AND
+			AND `left_fees` = #{condiTEntrust.leftFees,jdbcType=DECIMAL}
 			</if>
 			<if test="condiTEntrust.status != null and condiTEntrust.status != ''">
-			`status` = #{condiTEntrust.status,jdbcType=INTEGER} AND
+			AND `status` = #{condiTEntrust.status,jdbcType=INTEGER}
 			</if>
 			<if test="condiTEntrust.entrustType != null and condiTEntrust.entrustType != ''">
-			`entrust_type` = #{condiTEntrust.entrustType,jdbcType=INTEGER} AND
+			AND `entrust_type` = #{condiTEntrust.entrustType,jdbcType=INTEGER}
 			</if>
 			<if test="condiTEntrust.entrustDirection != null and condiTEntrust.entrustDirection != ''">
-			`entrust_direction` = #{condiTEntrust.entrustDirection,jdbcType=INTEGER} AND
+			AND `entrust_direction` = #{condiTEntrust.entrustDirection,jdbcType=INTEGER}
 			</if>
 			<if test="condiTEntrust.version != null and condiTEntrust.version != ''">
-			`version` = #{condiTEntrust.version,jdbcType=INTEGER} AND
+			AND `version` = #{condiTEntrust.version,jdbcType=INTEGER}
 			</if>
 			<if test="condiTEntrust.createTime != null and condiTEntrust.createTime != ''">
-			`create_time` = #{condiTEntrust.createTime,jdbcType=TIMESTAMP} AND
+			AND `create_time` = #{condiTEntrust.createTime,jdbcType=TIMESTAMP}
 			</if>
 			<if test="condiTEntrust.updateTime != null and condiTEntrust.updateTime != ''">
-			`update_time` = #{condiTEntrust.updateTime,jdbcType=TIMESTAMP}
+			AND `update_time` = #{condiTEntrust.updateTime,jdbcType=TIMESTAMP}
 			</if>
+		</where>
 	</update>
 	
 	<select id="getByPK" resultType="com.bittrade.pojo.model.TEntrust">
@@ -463,9 +466,8 @@
 			`create_time`, 
 			`update_time`
 		FROM t_entrust
-		<where>
+		WHERE 
 			`id` = #{id,jdbcType=BIGINT}
-		</where>
 	</select>
 	
 	<select id="get" resultType="com.bittrade.pojo.model.TEntrust">
