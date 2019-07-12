@@ -5,18 +5,18 @@
 	<!-- 通用查询映射结果 -->
 	<resultMap id="BaseResultMap" type="com.bittrade.pojo.model.TEntrustRecord">
 		<id javaType="int" property="id" jdbcType="INTEGER" column="id" />
-		<result javaType="long" property="userId" jdbcType="BIGINT" column="user_id" />
-		<result javaType="long" property="rivalUserId" jdbcType="BIGINT" column="rival_user_id" />
-		<result javaType="long" property="entrustId" jdbcType="BIGINT" column="entrust_id" />
-		<result javaType="long" property="rivalEntrustId" jdbcType="BIGINT" column="rival_entrust_id" />
+		<result javaType="Long" property="userId" jdbcType="BIGINT" column="user_id" />
+		<result javaType="Long" property="rivalUserId" jdbcType="BIGINT" column="rival_user_id" />
+		<result javaType="Long" property="entrustId" jdbcType="BIGINT" column="entrust_id" />
+		<result javaType="Long" property="rivalEntrustId" jdbcType="BIGINT" column="rival_entrust_id" />
 		<result javaType="java.math.BigDecimal" property="amount" jdbcType="DECIMAL" column="amount" />
 		<result javaType="java.math.BigDecimal" property="price" jdbcType="DECIMAL" column="price" />
 		<result javaType="java.math.BigDecimal" property="count" jdbcType="DECIMAL" column="count" />
 		<result javaType="java.math.BigDecimal" property="rate" jdbcType="DECIMAL" column="rate" />
 		<result javaType="java.math.BigDecimal" property="fees" jdbcType="DECIMAL" column="fees" />
-		<result javaType="int" property="currencyTradeId" jdbcType="INTEGER" column="currency_trade_id" />
-		<result javaType="byte" property="isActive" jdbcType="INTEGER" column="is_active" />
-		<result javaType="int" property="entrustDirection" jdbcType="INTEGER" column="entrust_direction" />
+		<result javaType="Integer" property="currencyTradeId" jdbcType="INTEGER" column="currency_trade_id" />
+		<result javaType="Byte" property="isActive" jdbcType="INTEGER" column="is_active" />
+		<result javaType="Integer" property="entrustDirection" jdbcType="INTEGER" column="entrust_direction" />
 		<result javaType="java.util.Date" property="createTime" jdbcType="TIMESTAMP" column="create_time" />
 	</resultMap>
 

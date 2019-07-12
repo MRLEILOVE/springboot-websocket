@@ -97,7 +97,7 @@ public class WCoinConfig extends BaseModel<WCoinConfig> {
 	/**
 	 * ID
 	 */
-	private long id;
+	private Long id;
 	
 	/**
 	 * 币种大类:BTC系列、BTC_TOKEN、EOS系列、ETH、ETH_TOKEN
@@ -117,17 +117,17 @@ public class WCoinConfig extends BaseModel<WCoinConfig> {
 	/**
 	 * 扫描区块的高度（主要查充值数据）
 	 */
-	private long scanBlock;
+	private Long scanBlock;
 	
 	/**
 	 * 基础倍数8【基础单位换成聪】ETH是18，有些ETHtoken不是18.需要注意
 	 */
-	private int baseMultiple;
+	private Integer baseMultiple;
 	
 	/**
 	 * 最低确认数
 	 */
-	private int minConfirm;
+	private Integer minConfirm;
 	
 	/**
 	 * boss钱包

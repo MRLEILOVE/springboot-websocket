@@ -16,14 +16,14 @@ public class TWalletRecordDTO extends BaseDTO<TWalletRecordDTO> {
 
 	private static final long serialVersionUID = 1L;
 
-	private long id;
-	private long userId;
-	private int currencyId;
+	private Long id;
+	private Long userId;
+	private Integer currencyId;
 	private java.math.BigDecimal beforeAmount;
 	private java.math.BigDecimal afterAmount;
 	private java.math.BigDecimal changeAmount;
-	private byte type;
-	private long entrustRecordId;
+	private Byte type;
+	private Long entrustRecordId;
 	private java.util.Date createTime;
 
 }

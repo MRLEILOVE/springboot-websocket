@@ -5,13 +5,13 @@
 	<!-- 通用查询映射结果 -->
 	<resultMap id="BaseResultMap" type="com.bittrade.pojo.model.TWalletTransfer">
 		<id javaType="int" property="id" jdbcType="INTEGER" column="id" />
-		<result javaType="long" property="userId" jdbcType="BIGINT" column="user_id" />
-		<result javaType="int" property="currency" jdbcType="INTEGER" column="currency" />
+		<result javaType="Long" property="userId" jdbcType="BIGINT" column="user_id" />
+		<result javaType="Integer" property="currency" jdbcType="INTEGER" column="currency" />
 		<result javaType="java.math.BigDecimal" property="count" jdbcType="DECIMAL" column="count" />
 		<result javaType="String" property="businessNumber" jdbcType="VARCHAR" column="business_number" />
-		<result javaType="byte" property="status" jdbcType="INTEGER" column="status" />
-		<result javaType="byte" property="typeChannel" jdbcType="INTEGER" column="typeChannel" />
-		<result javaType="byte" property="sourceChannel" jdbcType="INTEGER" column="sourceChannel" />
+		<result javaType="Byte" property="status" jdbcType="INTEGER" column="status" />
+		<result javaType="Byte" property="typeChannel" jdbcType="INTEGER" column="typeChannel" />
+		<result javaType="Byte" property="sourceChannel" jdbcType="INTEGER" column="sourceChannel" />
 		<result javaType="String" property="desc" jdbcType="VARCHAR" column="desc" />
 		<result javaType="java.util.Date" property="createTime" jdbcType="TIMESTAMP" column="create_time" />
 		<result javaType="java.util.Date" property="updateTime" jdbcType="TIMESTAMP" column="update_time" />

@@ -67,7 +67,7 @@ public class TCurrency extends BaseModel<TCurrency> {
 	/**
 	 * 主键id
 	 */
-	private int id;
+	private Integer id;
 	
 	/**
 	 * 名称
@@ -82,12 +82,12 @@ public class TCurrency extends BaseModel<TCurrency> {
 	/**
 	 * 状态:0禁用,1正常
 	 */
-	private byte status;
+	private Byte status;
 	
 	/**
 	 * 法币:0否,1是
 	 */
-	private byte type;
+	private Byte type;
 	
 	/**
 	 * 描述

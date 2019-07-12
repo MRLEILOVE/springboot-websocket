@@ -5,9 +5,9 @@
 	<!-- 通用查询映射结果 -->
 	<resultMap id="BaseResultMap" type="com.bittrade.pojo.model.TCurrencyOptional">
 		<id javaType="int" property="id" jdbcType="INTEGER" column="id" />
-		<result javaType="long" property="userId" jdbcType="BIGINT" column="user_id" />
-		<result javaType="int" property="currencyTradeId" jdbcType="INTEGER" column="currency_trade_id" />
-		<result javaType="byte" property="status" jdbcType="INTEGER" column="status" />
+		<result javaType="Long" property="userId" jdbcType="BIGINT" column="user_id" />
+		<result javaType="Integer" property="currencyTradeId" jdbcType="INTEGER" column="currency_trade_id" />
+		<result javaType="Byte" property="status" jdbcType="INTEGER" column="status" />
 		<result javaType="java.util.Date" property="createTime" jdbcType="TIMESTAMP" column="create_time" />
 		<result javaType="java.util.Date" property="updateTime" jdbcType="TIMESTAMP" column="update_time" />
 	</resultMap>

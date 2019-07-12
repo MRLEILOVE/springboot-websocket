@@ -16,13 +16,13 @@ public class WCoinConfigVO extends BaseVO<WCoinConfigVO> {
 
 	private static final long serialVersionUID = 1L;
 
-	private long id;
+	private Long id;
 	private String coinType;
 	private String token;
 	private String contract;
-	private long scanBlock;
-	private int baseMultiple;
-	private int minConfirm;
+	private Long scanBlock;
+	private Integer baseMultiple;
+	private Integer minConfirm;
 	private String bossAddress;
 	private java.math.BigDecimal minCollectionAmount;
 	private String valid;

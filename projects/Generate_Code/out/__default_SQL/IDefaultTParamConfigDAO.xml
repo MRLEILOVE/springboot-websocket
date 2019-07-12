@@ -2,15 +2,16 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!--
 	This code is generated automatically. Please do not edit it.
+	现在字段也可以要彻底动态？
 -->
 <mapper namespace="com.bittrade.__default.DAO.IDefaultTParamConfigDAO">
 
 	<!-- 通用查询映射结果 -->
 	<resultMap id="BaseResultMap" type="com.bittrade.pojo.model.TParamConfig">
-		<id javaType="int" property="id" jdbcType="INTEGER" column="id" />
+		<id javaType="Integer" property="id" jdbcType="INTEGER" column="id" />
 		<result javaType="String" property="paramKey" jdbcType="VARCHAR" column="param_key" />
 		<result javaType="String" property="paramValue" jdbcType="VARCHAR" column="param_value" />
-		<result javaType="int" property="paramStatus" jdbcType="INTEGER" column="param_status" />
+		<result javaType="Integer" property="paramStatus" jdbcType="INTEGER" column="param_status" />
 		<result javaType="String" property="paramRemark" jdbcType="VARCHAR" column="param_remark" />
 		<result javaType="java.util.Date" property="createTime" jdbcType="TIMESTAMP" column="create_time" />
 		<result javaType="String" property="creater" jdbcType="VARCHAR" column="creater" />
@@ -37,54 +38,54 @@
 	
 	<insert id="addWithSelective" parameterType="com.bittrade.pojo.model.TParamConfig">
 		INSERT INTO t_param_config(
-			<if test="paramKey != null and paramKey != ''">
+			<if test="paramKey != null">
 			`param_key`, 
 			</if>
-			<if test="paramValue != null and paramValue != ''">
+			<if test="paramValue != null">
 			`param_value`, 
 			</if>
-			<if test="paramStatus != null and paramStatus != ''">
+			<if test="paramStatus != null">
 			`param_status`, 
 			</if>
-			<if test="paramRemark != null and paramRemark != ''">
+			<if test="paramRemark != null">
 			`param_remark`, 
 			</if>
-			<if test="createTime != null and createTime != ''">
+			<if test="createTime != null">
 			`create_time`, 
 			</if>
-			<if test="creater != null and creater != ''">
+			<if test="creater != null">
 			`creater`, 
 			</if>
-			<if test="updateTime != null and updateTime != ''">
+			<if test="updateTime != null">
 			`update_time`, 
 			</if>
-			<if test="updater != null and updater != ''">
+			<if test="updater != null">
 			`updater`
 			</if>
 		)
 		VALUES(
-			<if test="paramKey != null and paramKey != ''">
+			<if test="paramKey != null">
 			#{paramKey,jdbcType=VARCHAR}, 
 			</if>
-			<if test="paramValue != null and paramValue != ''">
+			<if test="paramValue != null">
 			#{paramValue,jdbcType=VARCHAR}, 
 			</if>
-			<if test="paramStatus != null and paramStatus != ''">
+			<if test="paramStatus != null">
 			#{paramStatus,jdbcType=INTEGER}, 
 			</if>
-			<if test="paramRemark != null and paramRemark != ''">
+			<if test="paramRemark != null">
 			#{paramRemark,jdbcType=VARCHAR}, 
 			</if>
-			<if test="createTime != null and createTime != ''">
+			<if test="createTime != null">
 			#{createTime,jdbcType=TIMESTAMP}, 
 			</if>
-			<if test="creater != null and creater != ''">
+			<if test="creater != null">
 			#{creater,jdbcType=VARCHAR}, 
 			</if>
-			<if test="updateTime != null and updateTime != ''">
+			<if test="updateTime != null">
 			#{updateTime,jdbcType=TIMESTAMP}, 
 			</if>
-			<if test="updater != null and updater != ''">
+			<if test="updater != null">
 			#{updater,jdbcType=VARCHAR}
 			</if>
 		)
@@ -92,35 +93,36 @@
 	
 	<delete id="removeByPK">
 		DELETE FROM t_param_config
-		WHERE 
-			`id` = #{id,jdbcType=INTEGER}
+		<where>
+			AND `id` = #{id,jdbcType=INTEGER}
+		</where>
 	</delete>
 	
 	<delete id="remove" parameterType="com.bittrade.pojo.model.TParamConfig">
 		DELETE FROM t_param_config
 		<where>
-			<if test="paramKey != null and paramKey != ''">
+			<if test="paramKey != null">
 			AND `param_key` = #{paramKey,jdbcType=VARCHAR}
 			</if>
-			<if test="paramValue != null and paramValue != ''">
+			<if test="paramValue != null">
 			AND `param_value` = #{paramValue,jdbcType=VARCHAR}
 			</if>
-			<if test="paramStatus != null and paramStatus != ''">
+			<if test="paramStatus != null">
 			AND `param_status` = #{paramStatus,jdbcType=INTEGER}
 			</if>
-			<if test="paramRemark != null and paramRemark != ''">
+			<if test="paramRemark != null">
 			AND `param_remark` = #{paramRemark,jdbcType=VARCHAR}
 			</if>
-			<if test="createTime != null and createTime != ''">
+			<if test="createTime != null">
 			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
 			</if>
-			<if test="creater != null and creater != ''">
+			<if test="creater != null">
 			AND `creater` = #{creater,jdbcType=VARCHAR}
 			</if>
-			<if test="updateTime != null and updateTime != ''">
+			<if test="updateTime != null">
 			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
 			</if>
-			<if test="updater != null and updater != ''">
+			<if test="updater != null">
 			AND `updater` = #{updater,jdbcType=VARCHAR}
 			</if>
 		</where>
@@ -128,7 +130,7 @@
 	
 	<update id="modifyByPK" parameterType="com.bittrade.pojo.model.TParamConfig">
 		UPDATE t_param_config
-		SET
+		<set>
 			`param_key` = #{paramKey,jdbcType=VARCHAR}, 
 			`param_value` = #{paramValue,jdbcType=VARCHAR}, 
 			`param_status` = #{paramStatus,jdbcType=INTEGER}, 
@@ -136,45 +138,49 @@
 			`create_time` = #{createTime,jdbcType=TIMESTAMP}, 
 			`creater` = #{creater,jdbcType=VARCHAR}, 
 			`update_time` = #{updateTime,jdbcType=TIMESTAMP}, 
-			`updater` = #{updater,jdbcType=VARCHAR}
-		WHERE 
-			`id` = #{id,jdbcType=INTEGER}
+			`updater` = #{updater,jdbcType=VARCHAR}, 
+		</set>
+		<where>
+			AND `id` = #{id,jdbcType=INTEGER}
+		</where>
 	</update>
 	
 	<update id="modifyWithSelectiveByPK" parameterType="com.bittrade.pojo.model.TParamConfig">
 		UPDATE t_param_config
-		SET
-			<if test="paramKey != null and paramKey != ''">
+		<set>
+			<if test="paramKey != null">
 			`param_key` = #{paramKey,jdbcType=VARCHAR}, 
 			</if>
-			<if test="paramValue != null and paramValue != ''">
+			<if test="paramValue != null">
 			`param_value` = #{paramValue,jdbcType=VARCHAR}, 
 			</if>
-			<if test="paramStatus != null and paramStatus != ''">
+			<if test="paramStatus != null">
 			`param_status` = #{paramStatus,jdbcType=INTEGER}, 
 			</if>
-			<if test="paramRemark != null and paramRemark != ''">
+			<if test="paramRemark != null">
 			`param_remark` = #{paramRemark,jdbcType=VARCHAR}, 
 			</if>
-			<if test="createTime != null and createTime != ''">
+			<if test="createTime != null">
 			`create_time` = #{createTime,jdbcType=TIMESTAMP}, 
 			</if>
-			<if test="creater != null and creater != ''">
+			<if test="creater != null">
 			`creater` = #{creater,jdbcType=VARCHAR}, 
 			</if>
-			<if test="updateTime != null and updateTime != ''">
+			<if test="updateTime != null">
 			`update_time` = #{updateTime,jdbcType=TIMESTAMP}, 
 			</if>
-			<if test="updater != null and updater != ''">
-			`updater` = #{updater,jdbcType=VARCHAR}
+			<if test="updater != null">
+			`updater` = #{updater,jdbcType=VARCHAR}, 
 			</if>
-		WHERE 
-			`id` = #{id,jdbcType=INTEGER}
+		</set>
+		<where>
+			AND `id` = #{id,jdbcType=INTEGER}
+		</where>
 	</update>
 	
 	<update id="modify">
 		UPDATE t_param_config
-		SET
+		<set>
 			`param_key` = #{tParamConfig.paramKey,jdbcType=VARCHAR}, 
 			`param_value` = #{tParamConfig.paramValue,jdbcType=VARCHAR}, 
 			`param_status` = #{tParamConfig.paramStatus,jdbcType=INTEGER}, 
@@ -182,87 +188,101 @@
 			`create_time` = #{tParamConfig.createTime,jdbcType=TIMESTAMP}, 
 			`creater` = #{tParamConfig.creater,jdbcType=VARCHAR}, 
 			`update_time` = #{tParamConfig.updateTime,jdbcType=TIMESTAMP}, 
-			`updater` = #{tParamConfig.updater,jdbcType=VARCHAR}
+			`updater` = #{tParamConfig.updater,jdbcType=VARCHAR}, 
+		</set>
 		<where>
-			<if test="condiTParamConfig.paramKey != null and condiTParamConfig.paramKey != ''">
+		<if test="condiTParamConfig != null">
+			<if test="condiTParamConfig.id != null">
+			AND `id` = #{condiTParamConfig.id,jdbcType=INTEGER}
+			</if>
+			<if test="condiTParamConfig.paramKey != null">
 			AND `param_key` = #{condiTParamConfig.paramKey,jdbcType=VARCHAR}
 			</if>
-			<if test="condiTParamConfig.paramValue != null and condiTParamConfig.paramValue != ''">
+			<if test="condiTParamConfig.paramValue != null">
 			AND `param_value` = #{condiTParamConfig.paramValue,jdbcType=VARCHAR}
 			</if>
-			<if test="condiTParamConfig.paramStatus != null and condiTParamConfig.paramStatus != ''">
+			<if test="condiTParamConfig.paramStatus != null">
 			AND `param_status` = #{condiTParamConfig.paramStatus,jdbcType=INTEGER}
 			</if>
-			<if test="condiTParamConfig.paramRemark != null and condiTParamConfig.paramRemark != ''">
+			<if test="condiTParamConfig.paramRemark != null">
 			AND `param_remark` = #{condiTParamConfig.paramRemark,jdbcType=VARCHAR}
 			</if>
-			<if test="condiTParamConfig.createTime != null and condiTParamConfig.createTime != ''">
+			<if test="condiTParamConfig.createTime != null">
 			AND `create_time` = #{condiTParamConfig.createTime,jdbcType=TIMESTAMP}
 			</if>
-			<if test="condiTParamConfig.creater != null and condiTParamConfig.creater != ''">
+			<if test="condiTParamConfig.creater != null">
 			AND `creater` = #{condiTParamConfig.creater,jdbcType=VARCHAR}
 			</if>
-			<if test="condiTParamConfig.updateTime != null and condiTParamConfig.updateTime != ''">
+			<if test="condiTParamConfig.updateTime != null">
 			AND `update_time` = #{condiTParamConfig.updateTime,jdbcType=TIMESTAMP}
 			</if>
-			<if test="condiTParamConfig.updater != null and condiTParamConfig.updater != ''">
+			<if test="condiTParamConfig.updater != null">
 			AND `updater` = #{condiTParamConfig.updater,jdbcType=VARCHAR}
 			</if>
+		</if>
 		</where>
 	</update>
 	
 	<update id="modifyWithSelective">
 		UPDATE t_param_config
-		SET
-			<if test="tParamConfig.paramKey != null and tParamConfig.paramKey != ''">
+		<set>
+		<if test="tParamConfig != null">
+			<if test="tParamConfig.paramKey != null">
 			`param_key` = #{tParamConfig.paramKey,jdbcType=VARCHAR}, 
 			</if>
-			<if test="tParamConfig.paramValue != null and tParamConfig.paramValue != ''">
+			<if test="tParamConfig.paramValue != null">
 			`param_value` = #{tParamConfig.paramValue,jdbcType=VARCHAR}, 
 			</if>
-			<if test="tParamConfig.paramStatus != null and tParamConfig.paramStatus != ''">
+			<if test="tParamConfig.paramStatus != null">
 			`param_status` = #{tParamConfig.paramStatus,jdbcType=INTEGER}, 
 			</if>
-			<if test="tParamConfig.paramRemark != null and tParamConfig.paramRemark != ''">
+			<if test="tParamConfig.paramRemark != null">
 			`param_remark` = #{tParamConfig.paramRemark,jdbcType=VARCHAR}, 
 			</if>
-			<if test="tParamConfig.createTime != null and tParamConfig.createTime != ''">
+			<if test="tParamConfig.createTime != null">
 			`create_time` = #{tParamConfig.createTime,jdbcType=TIMESTAMP}, 
 			</if>
-			<if test="tParamConfig.creater != null and tParamConfig.creater != ''">
+			<if test="tParamConfig.creater != null">
 			`creater` = #{tParamConfig.creater,jdbcType=VARCHAR}, 
 			</if>
-			<if test="tParamConfig.updateTime != null and tParamConfig.updateTime != ''">
+			<if test="tParamConfig.updateTime != null">
 			`update_time` = #{tParamConfig.updateTime,jdbcType=TIMESTAMP}, 
 			</if>
-			<if test="tParamConfig.updater != null and tParamConfig.updater != ''">
-			`updater` = #{tParamConfig.updater,jdbcType=VARCHAR}
+			<if test="tParamConfig.updater != null">
+			`updater` = #{tParamConfig.updater,jdbcType=VARCHAR}, 
 			</if>
+		</if>
+		</set>
 		<where>
-			<if test="condiTParamConfig.paramKey != null and condiTParamConfig.paramKey != ''">
+		<if test="condiTParamConfig != null">
+			<if test="condiTParamConfig.id != null">
+			AND `id` = #{condiTParamConfig.id,jdbcType=INTEGER}
+			</if>
+			<if test="condiTParamConfig.paramKey != null">
 			AND `param_key` = #{condiTParamConfig.paramKey,jdbcType=VARCHAR}
 			</if>
-			<if test="condiTParamConfig.paramValue != null and condiTParamConfig.paramValue != ''">
+			<if test="condiTParamConfig.paramValue != null">
 			AND `param_value` = #{condiTParamConfig.paramValue,jdbcType=VARCHAR}
 			</if>
-			<if test="condiTParamConfig.paramStatus != null and condiTParamConfig.paramStatus != ''">
+			<if test="condiTParamConfig.paramStatus != null">
 			AND `param_status` = #{condiTParamConfig.paramStatus,jdbcType=INTEGER}
 			</if>
-			<if test="condiTParamConfig.paramRemark != null and condiTParamConfig.paramRemark != ''">
+			<if test="condiTParamConfig.paramRemark != null">
 			AND `param_remark` = #{condiTParamConfig.paramRemark,jdbcType=VARCHAR}
 			</if>
-			<if test="condiTParamConfig.createTime != null and condiTParamConfig.createTime != ''">
+			<if test="condiTParamConfig.createTime != null">
 			AND `create_time` = #{condiTParamConfig.createTime,jdbcType=TIMESTAMP}
 			</if>
-			<if test="condiTParamConfig.creater != null and condiTParamConfig.creater != ''">
+			<if test="condiTParamConfig.creater != null">
 			AND `creater` = #{condiTParamConfig.creater,jdbcType=VARCHAR}
 			</if>
-			<if test="condiTParamConfig.updateTime != null and condiTParamConfig.updateTime != ''">
+			<if test="condiTParamConfig.updateTime != null">
 			AND `update_time` = #{condiTParamConfig.updateTime,jdbcType=TIMESTAMP}
 			</if>
-			<if test="condiTParamConfig.updater != null and condiTParamConfig.updater != ''">
+			<if test="condiTParamConfig.updater != null">
 			AND `updater` = #{condiTParamConfig.updater,jdbcType=VARCHAR}
 			</if>
+		</if>
 		</where>
 	</update>
 	
@@ -278,8 +298,9 @@
 			`update_time`, 
 			`updater`
 		FROM t_param_config
-		WHERE 
-			`id` = #{id,jdbcType=INTEGER}
+		<where>
+			AND `id` = #{id,jdbcType=INTEGER}
+		</where>
 	</select>
 	
 	<select id="get" resultType="com.bittrade.pojo.model.TParamConfig">
@@ -295,28 +316,28 @@
 			`updater`
 		FROM t_param_config
 		<where>
-			<if test="paramKey != null and paramKey != ''">
+			<if test="paramKey != null">
 			AND `param_key` = #{paramKey,jdbcType=VARCHAR}
 			</if>
-			<if test="paramValue != null and paramValue != ''">
+			<if test="paramValue != null">
 			AND `param_value` = #{paramValue,jdbcType=VARCHAR}
 			</if>
-			<if test="paramStatus != null and paramStatus != ''">
+			<if test="paramStatus != null">
 			AND `param_status` = #{paramStatus,jdbcType=INTEGER}
 			</if>
-			<if test="paramRemark != null and paramRemark != ''">
+			<if test="paramRemark != null">
 			AND `param_remark` = #{paramRemark,jdbcType=VARCHAR}
 			</if>
-			<if test="createTime != null and createTime != ''">
+			<if test="createTime != null">
 			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
 			</if>
-			<if test="creater != null and creater != ''">
+			<if test="creater != null">
 			AND `creater` = #{creater,jdbcType=VARCHAR}
 			</if>
-			<if test="updateTime != null and updateTime != ''">
+			<if test="updateTime != null">
 			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
 			</if>
-			<if test="updater != null and updater != ''">
+			<if test="updater != null">
 			AND `updater` = #{updater,jdbcType=VARCHAR}
 			</if>
 		</where>
@@ -336,28 +357,28 @@
 			`updater`
 		FROM t_param_config
 		<where>
-			<if test="paramKey != null and paramKey != ''">
+			<if test="paramKey != null">
 			AND `param_key` = #{paramKey,jdbcType=VARCHAR}
 			</if>
-			<if test="paramValue != null and paramValue != ''">
+			<if test="paramValue != null">
 			AND `param_value` = #{paramValue,jdbcType=VARCHAR}
 			</if>
-			<if test="paramStatus != null and paramStatus != ''">
+			<if test="paramStatus != null">
 			AND `param_status` = #{paramStatus,jdbcType=INTEGER}
 			</if>
-			<if test="paramRemark != null and paramRemark != ''">
+			<if test="paramRemark != null">
 			AND `param_remark` = #{paramRemark,jdbcType=VARCHAR}
 			</if>
-			<if test="createTime != null and createTime != ''">
+			<if test="createTime != null">
 			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
 			</if>
-			<if test="creater != null and creater != ''">
+			<if test="creater != null">
 			AND `creater` = #{creater,jdbcType=VARCHAR}
 			</if>
-			<if test="updateTime != null and updateTime != ''">
+			<if test="updateTime != null">
 			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
 			</if>
-			<if test="updater != null and updater != ''">
+			<if test="updater != null">
 			AND `updater` = #{updater,jdbcType=VARCHAR}
 			</if>
 		</where>
@@ -381,30 +402,32 @@
 		SELECT COUNT(1)
 		FROM t_param_config
 		<where>
-			<if test="tParamConfig.paramKey != null and tParamConfig.paramKey != ''">
+		<if test="tParamConfig != null">
+			<if test="tParamConfig.paramKey != null">
 			AND `param_key` = #{tParamConfig.paramKey,jdbcType=VARCHAR}
 			</if>
-			<if test="tParamConfig.paramValue != null and tParamConfig.paramValue != ''">
+			<if test="tParamConfig.paramValue != null">
 			AND `param_value` = #{tParamConfig.paramValue,jdbcType=VARCHAR}
 			</if>
-			<if test="tParamConfig.paramStatus != null and tParamConfig.paramStatus != ''">
+			<if test="tParamConfig.paramStatus != null">
 			AND `param_status` = #{tParamConfig.paramStatus,jdbcType=INTEGER}
 			</if>
-			<if test="tParamConfig.paramRemark != null and tParamConfig.paramRemark != ''">
+			<if test="tParamConfig.paramRemark != null">
 			AND `param_remark` = #{tParamConfig.paramRemark,jdbcType=VARCHAR}
 			</if>
-			<if test="tParamConfig.createTime != null and tParamConfig.createTime != ''">
+			<if test="tParamConfig.createTime != null">
 			AND `create_time` = #{tParamConfig.createTime,jdbcType=TIMESTAMP}
 			</if>
-			<if test="tParamConfig.creater != null and tParamConfig.creater != ''">
+			<if test="tParamConfig.creater != null">
 			AND `creater` = #{tParamConfig.creater,jdbcType=VARCHAR}
 			</if>
-			<if test="tParamConfig.updateTime != null and tParamConfig.updateTime != ''">
+			<if test="tParamConfig.updateTime != null">
 			AND `update_time` = #{tParamConfig.updateTime,jdbcType=TIMESTAMP}
 			</if>
-			<if test="tParamConfig.updater != null and tParamConfig.updater != ''">
+			<if test="tParamConfig.updater != null">
 			AND `updater` = #{tParamConfig.updater,jdbcType=VARCHAR}
 			</if>
+		</if>
 		</where>
 	</select>
 	
@@ -421,30 +444,32 @@
 			`updater`
 		FROM t_param_config
 		<where>
-			<if test="tParamConfig.paramKey != null and tParamConfig.paramKey != ''">
+		<if test="tParamConfig != null">
+			<if test="tParamConfig.paramKey != null">
 			AND `param_key` = #{tParamConfig.paramKey,jdbcType=VARCHAR}
 			</if>
-			<if test="tParamConfig.paramValue != null and tParamConfig.paramValue != ''">
+			<if test="tParamConfig.paramValue != null">
 			AND `param_value` = #{tParamConfig.paramValue,jdbcType=VARCHAR}
 			</if>
-			<if test="tParamConfig.paramStatus != null and tParamConfig.paramStatus != ''">
+			<if test="tParamConfig.paramStatus != null">
 			AND `param_status` = #{tParamConfig.paramStatus,jdbcType=INTEGER}
 			</if>
-			<if test="tParamConfig.paramRemark != null and tParamConfig.paramRemark != ''">
+			<if test="tParamConfig.paramRemark != null">
 			AND `param_remark` = #{tParamConfig.paramRemark,jdbcType=VARCHAR}
 			</if>
-			<if test="tParamConfig.createTime != null and tParamConfig.createTime != ''">
+			<if test="tParamConfig.createTime != null">
 			AND `create_time` = #{tParamConfig.createTime,jdbcType=TIMESTAMP}
 			</if>
-			<if test="tParamConfig.creater != null and tParamConfig.creater != ''">
+			<if test="tParamConfig.creater != null">
 			AND `creater` = #{tParamConfig.creater,jdbcType=VARCHAR}
 			</if>
-			<if test="tParamConfig.updateTime != null and tParamConfig.updateTime != ''">
+			<if test="tParamConfig.updateTime != null">
 			AND `update_time` = #{tParamConfig.updateTime,jdbcType=TIMESTAMP}
 			</if>
-			<if test="tParamConfig.updater != null and tParamConfig.updater != ''">
+			<if test="tParamConfig.updater != null">
 			AND `updater` = #{tParamConfig.updater,jdbcType=VARCHAR}
 			</if>
+		</if>
 		</where>
 		LIMIT #{page}, #{size}
 	</select>

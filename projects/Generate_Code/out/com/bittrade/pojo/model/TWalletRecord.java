@@ -77,17 +77,17 @@ public class TWalletRecord extends BaseModel<TWalletRecord> {
 	/**
 	 * 主键id
 	 */
-	private long id;
+	private Long id;
 	
 	/**
 	 * 用户id
 	 */
-	private long userId;
+	private Long userId;
 	
 	/**
 	 * 货币id(t_currency.id)
 	 */
-	private int currencyId;
+	private Integer currencyId;
 	
 	/**
 	 * 成交前金额
@@ -107,12 +107,12 @@ public class TWalletRecord extends BaseModel<TWalletRecord> {
 	/**
 	 * 成交类型,1-充值 2-提现 3-币币交易 4-划转：币币钱包-->法币钱包 5-划转：法币钱包-->币币钱包
 	 */
-	private byte type;
+	private Byte type;
 	
 	/**
 	 * 关联的id,当前主要指成交id,t_entrust_record.id
 	 */
-	private long entrustRecordId;
+	private Long entrustRecordId;
 	
 	/**
 	 * 创建时间

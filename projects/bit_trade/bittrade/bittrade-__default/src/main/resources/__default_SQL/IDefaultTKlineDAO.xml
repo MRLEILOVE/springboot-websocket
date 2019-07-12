@@ -2,12 +2,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!--
 	This code is generated automatically. Please do not edit it.
+	现在字段也可以要彻底动态？
 -->
 <mapper namespace="com.bittrade.__default.DAO.IDefaultTKlineDAO">
 
 	<!-- 通用查询映射结果 -->
 	<resultMap id="BaseResultMap" type="com.bittrade.pojo.model.TKline">
-		<id javaType="int" property="id" jdbcType="INTEGER" column="id" />
+		<id javaType="Integer" property="id" jdbcType="INTEGER" column="id" />
 		<result javaType="String" property="symbol" jdbcType="VARCHAR" column="symbol" />
 		<result javaType="java.math.BigDecimal" property="low" jdbcType="DECIMAL" column="low" />
 		<result javaType="java.math.BigDecimal" property="high" jdbcType="DECIMAL" column="high" />
@@ -41,66 +42,66 @@
 	
 	<insert id="addWithSelective" parameterType="com.bittrade.pojo.model.TKline">
 		INSERT INTO t_kline(
-			<if test="symbol != null and symbol != ''">
+			<if test="symbol != null">
 			`symbol`, 
 			</if>
-			<if test="low != null and low != ''">
+			<if test="low != null">
 			`low`, 
 			</if>
-			<if test="high != null and high != ''">
+			<if test="high != null">
 			`high`, 
 			</if>
-			<if test="open != null and open != ''">
+			<if test="open != null">
 			`open`, 
 			</if>
-			<if test="close != null and close != ''">
+			<if test="close != null">
 			`close`, 
 			</if>
-			<if test="volume != null and volume != ''">
+			<if test="volume != null">
 			`volume`, 
 			</if>
-			<if test="granularity != null and granularity != ''">
+			<if test="granularity != null">
 			`granularity`, 
 			</if>
-			<if test="time != null and time != ''">
+			<if test="time != null">
 			`time`, 
 			</if>
-			<if test="createTime != null and createTime != ''">
+			<if test="createTime != null">
 			`create_time`, 
 			</if>
-			<if test="updateTime != null and updateTime != ''">
+			<if test="updateTime != null">
 			`update_time`
 			</if>
 		)
 		VALUES(
-			<if test="symbol != null and symbol != ''">
+			<if test="symbol != null">
 			#{symbol,jdbcType=VARCHAR}, 
 			</if>
-			<if test="low != null and low != ''">
+			<if test="low != null">
 			#{low,jdbcType=DECIMAL}, 
 			</if>
-			<if test="high != null and high != ''">
+			<if test="high != null">
 			#{high,jdbcType=DECIMAL}, 
 			</if>
-			<if test="open != null and open != ''">
+			<if test="open != null">
 			#{open,jdbcType=DECIMAL}, 
 			</if>
-			<if test="close != null and close != ''">
+			<if test="close != null">
 			#{close,jdbcType=DECIMAL}, 
 			</if>
-			<if test="volume != null and volume != ''">
+			<if test="volume != null">
 			#{volume,jdbcType=DECIMAL}, 
 			</if>
-			<if test="granularity != null and granularity != ''">
+			<if test="granularity != null">
 			#{granularity,jdbcType=VARCHAR}, 
 			</if>
-			<if test="time != null and time != ''">
+			<if test="time != null">
 			#{time,jdbcType=TIMESTAMP}, 
 			</if>
-			<if test="createTime != null and createTime != ''">
+			<if test="createTime != null">
 			#{createTime,jdbcType=TIMESTAMP}, 
 			</if>
-			<if test="updateTime != null and updateTime != ''">
+			<if test="updateTime != null">
 			#{updateTime,jdbcType=TIMESTAMP}
 			</if>
 		)
@@ -108,41 +109,42 @@
 	
 	<delete id="removeByPK">
 		DELETE FROM t_kline
-		WHERE 
-			`id` = #{id,jdbcType=INTEGER}
+		<where>
+			AND `id` = #{id,jdbcType=INTEGER}
+		</where>
 	</delete>
 	
 	<delete id="remove" parameterType="com.bittrade.pojo.model.TKline">
 		DELETE FROM t_kline
 		<where>
-			<if test="symbol != null and symbol != ''">
+			<if test="symbol != null">
 			AND `symbol` = #{symbol,jdbcType=VARCHAR}
 			</if>
-			<if test="low != null and low != ''">
+			<if test="low != null">
 			AND `low` = #{low,jdbcType=DECIMAL}
 			</if>
-			<if test="high != null and high != ''">
+			<if test="high != null">
 			AND `high` = #{high,jdbcType=DECIMAL}
 			</if>
-			<if test="open != null and open != ''">
+			<if test="open != null">
 			AND `open` = #{open,jdbcType=DECIMAL}
 			</if>
-			<if test="close != null and close != ''">
+			<if test="close != null">
 			AND `close` = #{close,jdbcType=DECIMAL}
 			</if>
-			<if test="volume != null and volume != ''">
+			<if test="volume != null">
 			AND `volume` = #{volume,jdbcType=DECIMAL}
 			</if>
-			<if test="granularity != null and granularity != ''">
+			<if test="granularity != null">
 			AND `granularity` = #{granularity,jdbcType=VARCHAR}
 			</if>
-			<if test="time != null and time != ''">
+			<if test="time != null">
 			AND `time` = #{time,jdbcType=TIMESTAMP}
 			</if>
-			<if test="createTime != null and createTime != ''">
+			<if test="createTime != null">
 			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
 			</if>
-			<if test="updateTime != null and updateTime != ''">
+			<if test="updateTime != null">
 			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
 			</if>
 		</where>
@@ -150,7 +152,7 @@
 	
 	<update id="modifyByPK" parameterType="com.bittrade.pojo.model.TKline">
 		UPDATE t_kline
-		SET
+		<set>
 			`symbol` = #{symbol,jdbcType=VARCHAR}, 
 			`low` = #{low,jdbcType=DECIMAL}, 
 			`high` = #{high,jdbcType=DECIMAL}, 
@@ -160,51 +162,55 @@
 			`granularity` = #{granularity,jdbcType=VARCHAR}, 
 			`time` = #{time,jdbcType=TIMESTAMP}, 
 			`create_time` = #{createTime,jdbcType=TIMESTAMP}, 
-			`update_time` = #{updateTime,jdbcType=TIMESTAMP}
-		WHERE 
-			`id` = #{id,jdbcType=INTEGER}
+			`update_time` = #{updateTime,jdbcType=TIMESTAMP}, 
+		</set>
+		<where>
+			AND `id` = #{id,jdbcType=INTEGER}
+		</where>
 	</update>
 	
 	<update id="modifyWithSelectiveByPK" parameterType="com.bittrade.pojo.model.TKline">
 		UPDATE t_kline
-		SET
-			<if test="symbol != null and symbol != ''">
+		<set>
+			<if test="symbol != null">
 			`symbol` = #{symbol,jdbcType=VARCHAR}, 
 			</if>
-			<if test="low != null and low != ''">
+			<if test="low != null">
 			`low` = #{low,jdbcType=DECIMAL}, 
 			</if>
-			<if test="high != null and high != ''">
+			<if test="high != null">
 			`high` = #{high,jdbcType=DECIMAL}, 
 			</if>
-			<if test="open != null and open != ''">
+			<if test="open != null">
 			`open` = #{open,jdbcType=DECIMAL}, 
 			</if>
-			<if test="close != null and close != ''">
+			<if test="close != null">
 			`close` = #{close,jdbcType=DECIMAL}, 
 			</if>
-			<if test="volume != null and volume != ''">
+			<if test="volume != null">
 			`volume` = #{volume,jdbcType=DECIMAL}, 
 			</if>
-			<if test="granularity != null and granularity != ''">
+			<if test="granularity != null">
 			`granularity` = #{granularity,jdbcType=VARCHAR}, 
 			</if>
-			<if test="time != null and time != ''">
+			<if test="time != null">
 			`time` = #{time,jdbcType=TIMESTAMP}, 
 			</if>
-			<if test="createTime != null and createTime != ''">
+			<if test="createTime != null">
 			`create_time` = #{createTime,jdbcType=TIMESTAMP}, 
 			</if>
-			<if test="updateTime != null and updateTime != ''">
-			`update_time` = #{updateTime,jdbcType=TIMESTAMP}
+			<if test="updateTime != null">
+			`update_time` = #{updateTime,jdbcType=TIMESTAMP}, 
 			</if>
-		WHERE 
-			`id` = #{id,jdbcType=INTEGER}
+		</set>
+		<where>
+			AND `id` = #{id,jdbcType=INTEGER}
+		</where>
 	</update>
 	
 	<update id="modify">
 		UPDATE t_kline
-		SET
+		<set>
 			`symbol` = #{tKline.symbol,jdbcType=VARCHAR}, 
 			`low` = #{tKline.low,jdbcType=DECIMAL}, 
 			`high` = #{tKline.high,jdbcType=DECIMAL}, 
@@ -214,105 +220,119 @@
 			`granularity` = #{tKline.granularity,jdbcType=VARCHAR}, 
 			`time` = #{tKline.time,jdbcType=TIMESTAMP}, 
 			`create_time` = #{tKline.createTime,jdbcType=TIMESTAMP}, 
-			`update_time` = #{tKline.updateTime,jdbcType=TIMESTAMP}
+			`update_time` = #{tKline.updateTime,jdbcType=TIMESTAMP}, 
+		</set>
 		<where>
-			<if test="condiTKline.symbol != null and condiTKline.symbol != ''">
+		<if test="condiTKline != null">
+			<if test="condiTKline.id != null">
+			AND `id` = #{condiTKline.id,jdbcType=INTEGER}
+			</if>
+			<if test="condiTKline.symbol != null">
 			AND `symbol` = #{condiTKline.symbol,jdbcType=VARCHAR}
 			</if>
-			<if test="condiTKline.low != null and condiTKline.low != ''">
+			<if test="condiTKline.low != null">
 			AND `low` = #{condiTKline.low,jdbcType=DECIMAL}
 			</if>
-			<if test="condiTKline.high != null and condiTKline.high != ''">
+			<if test="condiTKline.high != null">
 			AND `high` = #{condiTKline.high,jdbcType=DECIMAL}
 			</if>
-			<if test="condiTKline.open != null and condiTKline.open != ''">
+			<if test="condiTKline.open != null">
 			AND `open` = #{condiTKline.open,jdbcType=DECIMAL}
 			</if>
-			<if test="condiTKline.close != null and condiTKline.close != ''">
+			<if test="condiTKline.close != null">
 			AND `close` = #{condiTKline.close,jdbcType=DECIMAL}
 			</if>
-			<if test="condiTKline.volume != null and condiTKline.volume != ''">
+			<if test="condiTKline.volume != null">
 			AND `volume` = #{condiTKline.volume,jdbcType=DECIMAL}
 			</if>
-			<if test="condiTKline.granularity != null and condiTKline.granularity != ''">
+			<if test="condiTKline.granularity != null">
 			AND `granularity` = #{condiTKline.granularity,jdbcType=VARCHAR}
 			</if>
-			<if test="condiTKline.time != null and condiTKline.time != ''">
+			<if test="condiTKline.time != null">
 			AND `time` = #{condiTKline.time,jdbcType=TIMESTAMP}
 			</if>
-			<if test="condiTKline.createTime != null and condiTKline.createTime != ''">
+			<if test="condiTKline.createTime != null">
 			AND `create_time` = #{condiTKline.createTime,jdbcType=TIMESTAMP}
 			</if>
-			<if test="condiTKline.updateTime != null and condiTKline.updateTime != ''">
+			<if test="condiTKline.updateTime != null">
 			AND `update_time` = #{condiTKline.updateTime,jdbcType=TIMESTAMP}
 			</if>
+		</if>
 		</where>
 	</update>
 	
 	<update id="modifyWithSelective">
 		UPDATE t_kline
-		SET
-			<if test="tKline.symbol != null and tKline.symbol != ''">
+		<set>
+		<if test="tKline != null">
+			<if test="tKline.symbol != null">
 			`symbol` = #{tKline.symbol,jdbcType=VARCHAR}, 
 			</if>
-			<if test="tKline.low != null and tKline.low != ''">
+			<if test="tKline.low != null">
 			`low` = #{tKline.low,jdbcType=DECIMAL}, 
 			</if>
-			<if test="tKline.high != null and tKline.high != ''">
+			<if test="tKline.high != null">
 			`high` = #{tKline.high,jdbcType=DECIMAL}, 
 			</if>
-			<if test="tKline.open != null and tKline.open != ''">
+			<if test="tKline.open != null">
 			`open` = #{tKline.open,jdbcType=DECIMAL}, 
 			</if>
-			<if test="tKline.close != null and tKline.close != ''">
+			<if test="tKline.close != null">
 			`close` = #{tKline.close,jdbcType=DECIMAL}, 
 			</if>
-			<if test="tKline.volume != null and tKline.volume != ''">
+			<if test="tKline.volume != null">
 			`volume` = #{tKline.volume,jdbcType=DECIMAL}, 
 			</if>
-			<if test="tKline.granularity != null and tKline.granularity != ''">
+			<if test="tKline.granularity != null">
 			`granularity` = #{tKline.granularity,jdbcType=VARCHAR}, 
 			</if>
-			<if test="tKline.time != null and tKline.time != ''">
+			<if test="tKline.time != null">
 			`time` = #{tKline.time,jdbcType=TIMESTAMP}, 
 			</if>
-			<if test="tKline.createTime != null and tKline.createTime != ''">
+			<if test="tKline.createTime != null">
 			`create_time` = #{tKline.createTime,jdbcType=TIMESTAMP}, 
 			</if>
-			<if test="tKline.updateTime != null and tKline.updateTime != ''">
-			`update_time` = #{tKline.updateTime,jdbcType=TIMESTAMP}
+			<if test="tKline.updateTime != null">
+			`update_time` = #{tKline.updateTime,jdbcType=TIMESTAMP}, 
 			</if>
+		</if>
+		</set>
 		<where>
-			<if test="condiTKline.symbol != null and condiTKline.symbol != ''">
+		<if test="condiTKline != null">
+			<if test="condiTKline.id != null">
+			AND `id` = #{condiTKline.id,jdbcType=INTEGER}
+			</if>
+			<if test="condiTKline.symbol != null">
 			AND `symbol` = #{condiTKline.symbol,jdbcType=VARCHAR}
 			</if>
-			<if test="condiTKline.low != null and condiTKline.low != ''">
+			<if test="condiTKline.low != null">
 			AND `low` = #{condiTKline.low,jdbcType=DECIMAL}
 			</if>
-			<if test="condiTKline.high != null and condiTKline.high != ''">
+			<if test="condiTKline.high != null">
 			AND `high` = #{condiTKline.high,jdbcType=DECIMAL}
 			</if>
-			<if test="condiTKline.open != null and condiTKline.open != ''">
+			<if test="condiTKline.open != null">
 			AND `open` = #{condiTKline.open,jdbcType=DECIMAL}
 			</if>
-			<if test="condiTKline.close != null and condiTKline.close != ''">
+			<if test="condiTKline.close != null">
 			AND `close` = #{condiTKline.close,jdbcType=DECIMAL}
 			</if>
-			<if test="condiTKline.volume != null and condiTKline.volume != ''">
+			<if test="condiTKline.volume != null">
 			AND `volume` = #{condiTKline.volume,jdbcType=DECIMAL}
 			</if>
-			<if test="condiTKline.granularity != null and condiTKline.granularity != ''">
+			<if test="condiTKline.granularity != null">
 			AND `granularity` = #{condiTKline.granularity,jdbcType=VARCHAR}
 			</if>
-			<if test="condiTKline.time != null and condiTKline.time != ''">
+			<if test="condiTKline.time != null">
 			AND `time` = #{condiTKline.time,jdbcType=TIMESTAMP}
 			</if>
-			<if test="condiTKline.createTime != null and condiTKline.createTime != ''">
+			<if test="condiTKline.createTime != null">
 			AND `create_time` = #{condiTKline.createTime,jdbcType=TIMESTAMP}
 			</if>
-			<if test="condiTKline.updateTime != null and condiTKline.updateTime != ''">
+			<if test="condiTKline.updateTime != null">
 			AND `update_time` = #{condiTKline.updateTime,jdbcType=TIMESTAMP}
 			</if>
+		</if>
 		</where>
 	</update>
 	
@@ -330,8 +350,9 @@
 			`create_time`, 
 			`update_time`
 		FROM t_kline
-		WHERE 
-			`id` = #{id,jdbcType=INTEGER}
+		<where>
+			AND `id` = #{id,jdbcType=INTEGER}
+		</where>
 	</select>
 	
 	<select id="get" resultType="com.bittrade.pojo.model.TKline">
@@ -349,34 +370,34 @@
 			`update_time`
 		FROM t_kline
 		<where>
-			<if test="symbol != null and symbol != ''">
+			<if test="symbol != null">
 			AND `symbol` = #{symbol,jdbcType=VARCHAR}
 			</if>
-			<if test="low != null and low != ''">
+			<if test="low != null">
 			AND `low` = #{low,jdbcType=DECIMAL}
 			</if>
-			<if test="high != null and high != ''">
+			<if test="high != null">
 			AND `high` = #{high,jdbcType=DECIMAL}
 			</if>
-			<if test="open != null and open != ''">
+			<if test="open != null">
 			AND `open` = #{open,jdbcType=DECIMAL}
 			</if>
-			<if test="close != null and close != ''">
+			<if test="close != null">
 			AND `close` = #{close,jdbcType=DECIMAL}
 			</if>
-			<if test="volume != null and volume != ''">
+			<if test="volume != null">
 			AND `volume` = #{volume,jdbcType=DECIMAL}
 			</if>
-			<if test="granularity != null and granularity != ''">
+			<if test="granularity != null">
 			AND `granularity` = #{granularity,jdbcType=VARCHAR}
 			</if>
-			<if test="time != null and time != ''">
+			<if test="time != null">
 			AND `time` = #{time,jdbcType=TIMESTAMP}
 			</if>
-			<if test="createTime != null and createTime != ''">
+			<if test="createTime != null">
 			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
 			</if>
-			<if test="updateTime != null and updateTime != ''">
+			<if test="updateTime != null">
 			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
 			</if>
 		</where>
@@ -398,34 +419,34 @@
 			`update_time`
 		FROM t_kline
 		<where>
-			<if test="symbol != null and symbol != ''">
+			<if test="symbol != null">
 			AND `symbol` = #{symbol,jdbcType=VARCHAR}
 			</if>
-			<if test="low != null and low != ''">
+			<if test="low != null">
 			AND `low` = #{low,jdbcType=DECIMAL}
 			</if>
-			<if test="high != null and high != ''">
+			<if test="high != null">
 			AND `high` = #{high,jdbcType=DECIMAL}
 			</if>
-			<if test="open != null and open != ''">
+			<if test="open != null">
 			AND `open` = #{open,jdbcType=DECIMAL}
 			</if>
-			<if test="close != null and close != ''">
+			<if test="close != null">
 			AND `close` = #{close,jdbcType=DECIMAL}
 			</if>
-			<if test="volume != null and volume != ''">
+			<if test="volume != null">
 			AND `volume` = #{volume,jdbcType=DECIMAL}
 			</if>
-			<if test="granularity != null and granularity != ''">
+			<if test="granularity != null">
 			AND `granularity` = #{granularity,jdbcType=VARCHAR}
 			</if>
-			<if test="time != null and time != ''">
+			<if test="time != null">
 			AND `time` = #{time,jdbcType=TIMESTAMP}
 			</if>
-			<if test="createTime != null and createTime != ''">
+			<if test="createTime != null">
 			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
 			</if>
-			<if test="updateTime != null and updateTime != ''">
+			<if test="updateTime != null">
 			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
 			</if>
 		</where>
@@ -451,36 +472,38 @@
 		SELECT COUNT(1)
 		FROM t_kline
 		<where>
-			<if test="tKline.symbol != null and tKline.symbol != ''">
+		<if test="tKline != null">
+			<if test="tKline.symbol != null">
 			AND `symbol` = #{tKline.symbol,jdbcType=VARCHAR}
 			</if>
-			<if test="tKline.low != null and tKline.low != ''">
+			<if test="tKline.low != null">
 			AND `low` = #{tKline.low,jdbcType=DECIMAL}
 			</if>
-			<if test="tKline.high != null and tKline.high != ''">
+			<if test="tKline.high != null">
 			AND `high` = #{tKline.high,jdbcType=DECIMAL}
 			</if>
-			<if test="tKline.open != null and tKline.open != ''">
+			<if test="tKline.open != null">
 			AND `open` = #{tKline.open,jdbcType=DECIMAL}
 			</if>
-			<if test="tKline.close != null and tKline.close != ''">
+			<if test="tKline.close != null">
 			AND `close` = #{tKline.close,jdbcType=DECIMAL}
 			</if>
-			<if test="tKline.volume != null and tKline.volume != ''">
+			<if test="tKline.volume != null">
 			AND `volume` = #{tKline.volume,jdbcType=DECIMAL}
 			</if>
-			<if test="tKline.granularity != null and tKline.granularity != ''">
+			<if test="tKline.granularity != null">
 			AND `granularity` = #{tKline.granularity,jdbcType=VARCHAR}
 			</if>
-			<if test="tKline.time != null and tKline.time != ''">
+			<if test="tKline.time != null">
 			AND `time` = #{tKline.time,jdbcType=TIMESTAMP}
 			</if>
-			<if test="tKline.createTime != null and tKline.createTime != ''">
+			<if test="tKline.createTime != null">
 			AND `create_time` = #{tKline.createTime,jdbcType=TIMESTAMP}
 			</if>
-			<if test="tKline.updateTime != null and tKline.updateTime != ''">
+			<if test="tKline.updateTime != null">
 			AND `update_time` = #{tKline.updateTime,jdbcType=TIMESTAMP}
 			</if>
+		</if>
 		</where>
 	</select>
 	
@@ -499,36 +522,38 @@
 			`update_time`
 		FROM t_kline
 		<where>
-			<if test="tKline.symbol != null and tKline.symbol != ''">
+		<if test="tKline != null">
+			<if test="tKline.symbol != null">
 			AND `symbol` = #{tKline.symbol,jdbcType=VARCHAR}
 			</if>
-			<if test="tKline.low != null and tKline.low != ''">
+			<if test="tKline.low != null">
 			AND `low` = #{tKline.low,jdbcType=DECIMAL}
 			</if>
-			<if test="tKline.high != null and tKline.high != ''">
+			<if test="tKline.high != null">
 			AND `high` = #{tKline.high,jdbcType=DECIMAL}
 			</if>
-			<if test="tKline.open != null and tKline.open != ''">
+			<if test="tKline.open != null">
 			AND `open` = #{tKline.open,jdbcType=DECIMAL}
 			</if>
-			<if test="tKline.close != null and tKline.close != ''">
+			<if test="tKline.close != null">
 			AND `close` = #{tKline.close,jdbcType=DECIMAL}
 			</if>
-			<if test="tKline.volume != null and tKline.volume != ''">
+			<if test="tKline.volume != null">
 			AND `volume` = #{tKline.volume,jdbcType=DECIMAL}
 			</if>
-			<if test="tKline.granularity != null and tKline.granularity != ''">
+			<if test="tKline.granularity != null">
 			AND `granularity` = #{tKline.granularity,jdbcType=VARCHAR}
 			</if>
-			<if test="tKline.time != null and tKline.time != ''">
+			<if test="tKline.time != null">
 			AND `time` = #{tKline.time,jdbcType=TIMESTAMP}
 			</if>
-			<if test="tKline.createTime != null and tKline.createTime != ''">
+			<if test="tKline.createTime != null">
 			AND `create_time` = #{tKline.createTime,jdbcType=TIMESTAMP}
 			</if>
-			<if test="tKline.updateTime != null and tKline.updateTime != ''">
+			<if test="tKline.updateTime != null">
 			AND `update_time` = #{tKline.updateTime,jdbcType=TIMESTAMP}
 			</if>
+		</if>
 		</where>
 		LIMIT #{page}, #{size}
 	</select>

@@ -16,13 +16,13 @@ public class TWalletVO extends BaseVO<TWalletVO> {
 
 	private static final long serialVersionUID = 1L;
 
-	private long id;
-	private long userId;
-	private int currencyId;
+	private Long id;
+	private Long userId;
+	private Integer currencyId;
 	private java.math.BigDecimal total;
 	private java.math.BigDecimal tradeFrozen;
 	private java.math.BigDecimal transferFrozen;
-	private int version;
+	private Integer version;
 	private java.util.Date createTime;
 	private java.util.Date updateTime;
 

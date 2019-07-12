@@ -62,22 +62,22 @@ public class TCurrencyOptional extends BaseModel<TCurrencyOptional> {
 	/**
 	 * 主键id
 	 */
-	private int id;
+	private Integer id;
 	
 	/**
 	 * 用户id
 	 */
-	private long userId;
+	private Long userId;
 	
 	/**
 	 * 交易对id,t_currency_trade中的id
 	 */
-	private int currencyTradeId;
+	private Integer currencyTradeId;
 	
 	/**
 	 * 状态：0删除，1启用
 	 */
-	private byte status;
+	private Byte status;
 	
 	/**
 	 * 创建时间

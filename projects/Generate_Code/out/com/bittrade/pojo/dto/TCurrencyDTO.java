@@ -16,11 +16,11 @@ public class TCurrencyDTO extends BaseDTO<TCurrencyDTO> {
 
 	private static final long serialVersionUID = 1L;
 
-	private int id;
+	private Integer id;
 	private String name;
 	private String shortName;
-	private byte status;
-	private byte type;
+	private Byte status;
+	private Byte type;
 	private String desc;
 	private java.util.Date createTime;
 

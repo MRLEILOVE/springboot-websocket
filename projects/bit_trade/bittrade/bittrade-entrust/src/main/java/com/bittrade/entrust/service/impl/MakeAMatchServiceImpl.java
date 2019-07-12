@@ -535,14 +535,14 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 	public void test() {
 //		Tester.test(this);
 		TEntrust entrust1 = new TEntrust();
-		entrust1.setUserId(101);
+		entrust1.setUserId(101L);
 		entrust1.setCurrencyTradeId(102);
 		entrust1.setEntrustDirection(EntrustDirectionEnumer.BUY.getCode());
 		entrust1.setEntrustType(EntrustTypeEnumer.MARKET.getCode());
 		entrust1.setCount(new BigDecimal(50));
 		makeAMatch(entrust1);
 		TEntrust entrust2 = new TEntrust();
-		entrust2.setUserId(102);
+		entrust2.setUserId(102L);
 		entrust2.setCurrencyTradeId(102);
 		entrust2.setEntrustDirection(EntrustDirectionEnumer.BUY.getCode());
 		entrust2.setEntrustType(EntrustTypeEnumer.LIMIT.getCode());
@@ -550,7 +550,7 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 		entrust2.setCount(new BigDecimal(28));
 		makeAMatch(entrust2);
 		TEntrust entrust3 = new TEntrust();
-		entrust3.setUserId(103);
+		entrust3.setUserId(103L);
 		entrust3.setCurrencyTradeId(102);
 		entrust3.setEntrustDirection(EntrustDirectionEnumer.SELL.getCode());
 		entrust3.setEntrustType(EntrustTypeEnumer.LIMIT.getCode());
@@ -558,14 +558,14 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 		entrust3.setCount(new BigDecimal(37));
 		makeAMatch(entrust3);
 		TEntrust entrust4 = new TEntrust();
-		entrust4.setUserId(104);
+		entrust4.setUserId(104L);
 		entrust4.setCurrencyTradeId(102);
 		entrust4.setEntrustDirection(EntrustDirectionEnumer.SELL.getCode());
 		entrust4.setEntrustType(EntrustTypeEnumer.MARKET.getCode());
 		entrust4.setCount(new BigDecimal(80));
 		makeAMatch(entrust4);
 		TEntrust entrust5 = new TEntrust();
-		entrust5.setUserId(105);
+		entrust5.setUserId(105L);
 		entrust5.setCurrencyTradeId(102);
 		entrust5.setEntrustDirection(EntrustDirectionEnumer.BUY.getCode());
 		entrust5.setEntrustType(EntrustTypeEnumer.MARKET.getCode());

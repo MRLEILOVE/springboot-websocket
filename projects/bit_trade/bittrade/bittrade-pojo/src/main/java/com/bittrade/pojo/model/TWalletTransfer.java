@@ -87,17 +87,17 @@ public class TWalletTransfer extends BaseModel<TWalletTransfer> {
 	/**
 	 * id
 	 */
-	private long id;
+	private Long id;
 	
 	/**
 	 * 用户id
 	 */
-	private long userId;
+	private Long userId;
 	
 	/**
 	 * 货币id(t_currency的id)
 	 */
-	private int currency;
+	private Integer currency;
 	
 	/**
 	 * 数量
@@ -112,17 +112,17 @@ public class TWalletTransfer extends BaseModel<TWalletTransfer> {
 	/**
 	 * 状态，1.待处理，2.成功，3.失败，4.状态未明
 	 */
-	private byte status;
+	private Byte status;
 	
 	/**
 	 * 操作渠道：1.C2C钱包划转到币币钱包，2.币币钱包划转到C2C钱包
 	 */
-	private byte typeChannel;
+	private Byte typeChannel;
 	
 	/**
 	 * 来源渠道：1.app，2.后台，3.PC
 	 */
-	private byte sourceChannel;
+	private Byte sourceChannel;
 	
 	/**
 	 * 描述

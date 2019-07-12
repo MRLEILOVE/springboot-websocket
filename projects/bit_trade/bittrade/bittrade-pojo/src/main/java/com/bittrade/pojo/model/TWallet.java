@@ -77,17 +77,17 @@ public class TWallet extends BaseModel<TWallet> {
 	/**
 	 * 主键id
 	 */
-	private long id;
+	private Long id;
 	
 	/**
 	 * 用户id
 	 */
-	private long userId;
+	private Long userId;
 	
 	/**
 	 * 货币id(t_currency.id)
 	 */
-	private int currencyId;
+	private Integer currencyId;
 	
 	/**
 	 * 总数量
@@ -107,7 +107,7 @@ public class TWallet extends BaseModel<TWallet> {
 	/**
 	 * 版本号，每更新一次数据加1
 	 */
-	private int version;
+	private Integer version;
 	
 	/**
 	 * 创建时间

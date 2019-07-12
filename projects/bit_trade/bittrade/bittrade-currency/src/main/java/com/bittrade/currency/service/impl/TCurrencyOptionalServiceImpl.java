@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -60,13 +61,17 @@ public class TCurrencyOptionalServiceImpl extends DefaultTCurrencyOptionalServic
             }
         }else{
             //不存在就添加
-            TCurrencyOptional tCurrencyOptional = new TCurrencyOptional();
-            tCurrencyOptional.setUserId(currencyOptionalDTO.getUserId());
-            tCurrencyOptional.setCurrencyTradeId(currencyOptionalDTO.getCurrencyTradeId());
-            tCurrencyOptional.setStatus((byte) 1);
-            tCurrencyOptional.setUpdateTime(new Date());
-            tCurrencyOptional.setCreateTime(new Date());
-            int add = currencyOptionalDAO.add(tCurrencyOptional);
+            TCurrencyOptional currencyOptional =
+                    TCurrencyOptional.builder()
+                    .userId(currencyOptionalDTO.getUserId())
+                    .currencyTradeId(currencyOptionalDTO.getCurrencyTradeId())
+                    .status((byte) 1)
+                    .updateTime(new Date())
+                    .createTime(new Date())
+                    .build();
+            int add = currencyOptionalDAO.add(currencyOptional);
+
+
             if(add == 0){
                 return ReturnDTO.error("添加失败");
             }else{
@@ -80,14 +85,14 @@ public class TCurrencyOptionalServiceImpl extends DefaultTCurrencyOptionalServic
      */
     @Override
     public ReturnDTO<String> deleteOptional(TCurrencyOptionalDTO currencyOptionalDTO) {
-        Map<String,Object> map = new HashMap<>();
-        map.put(TCurrencyOptional.FieldNames.USER_ID,currencyOptionalDTO.getUserId());
-        map.put(TCurrencyOptional.FieldNames.CURRENCY_TRADE_ID,currencyOptionalDTO.getCurrencyTradeId());
-        List<TCurrencyOptional> tCurrencyOptionals = currencyOptionalDAO.selectByMap(map);
+        QueryWrapper<TCurrencyOptional> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq(TCurrencyOptional.FieldNames.USER_ID,currencyOptionalDTO.getUserId())
+                    .eq(TCurrencyOptional.FieldNames.CURRENCY_TRADE_ID,currencyOptionalDTO.getCurrencyTradeId());
 
-        if(tCurrencyOptionals != null && tCurrencyOptionals.size() > 0){
+        TCurrencyOptional tCurrencyOptional = currencyOptionalDAO.selectOne(queryWrapper);
+
+        if(tCurrencyOptional != null){
             //存在就更新
-            TCurrencyOptional tCurrencyOptional = tCurrencyOptionals.get(0);
             tCurrencyOptional.setUpdateTime(new Date());
             tCurrencyOptional.setStatus((byte) 0);
             int update = currencyOptionalDAO.updateById(tCurrencyOptional);
@@ -99,20 +104,5 @@ public class TCurrencyOptionalServiceImpl extends DefaultTCurrencyOptionalServic
         }else{
             return ReturnDTO.error("删除失败,不存在该信息");
         }
-
-//        TCurrencyOptional tCurrencyOptional = new TCurrencyOptional();
-//        tCurrencyOptional.setUserId(currencyOptionalDTO.getUserId());
-//        tCurrencyOptional.setCurrencyTradeId(currencyOptionalDTO.getCurrencyTradeId());
-//
-//        QueryWrapper w = new QueryWrapper(tCurrencyOptional);
-//        w.eq("user_id",currencyOptionalDTO.getUserId());
-//        w.eq("currency_trade_id",currencyOptionalDTO.getCurrencyTradeId());
-//        int update = currencyOptionalDAO.update(tCurrencyOptional, w);
-//
-//        if(update != 0){
-//            return ReturnDTO.ok("删除成功");
-//        }else{
-//            return ReturnDTO.error("删除失败");
-//        }
     }
 }

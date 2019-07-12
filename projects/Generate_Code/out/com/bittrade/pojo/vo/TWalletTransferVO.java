@@ -16,14 +16,14 @@ public class TWalletTransferVO extends BaseVO<TWalletTransferVO> {
 
 	private static final long serialVersionUID = 1L;
 
-	private long id;
-	private long userId;
-	private int currency;
+	private Long id;
+	private Long userId;
+	private Integer currency;
 	private java.math.BigDecimal count;
 	private String businessNumber;
-	private byte status;
-	private byte typeChannel;
-	private byte sourceChannel;
+	private Byte status;
+	private Byte typeChannel;
+	private Byte sourceChannel;
 	private String desc;
 	private java.util.Date createTime;
 	private java.util.Date updateTime;

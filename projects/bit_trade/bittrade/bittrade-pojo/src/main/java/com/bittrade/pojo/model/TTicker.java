@@ -52,7 +52,7 @@ public class TTicker extends BaseModel<TTicker> {
 	/**
 	 * 主键ID
 	 */
-	private int id;
+	private Integer id;
 	
 	/**
 	 * 币对名称

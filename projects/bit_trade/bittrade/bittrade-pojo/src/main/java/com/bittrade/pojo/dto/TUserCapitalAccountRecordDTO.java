@@ -16,14 +16,14 @@ public class TUserCapitalAccountRecordDTO extends BaseDTO<TUserCapitalAccountRec
 
 	private static final long serialVersionUID = 1L;
 
-	private long id;
-	private long userId;
-	private int currencyId;
+	private Long id;
+	private Long userId;
+	private Integer currencyId;
 	private java.math.BigDecimal count;
 	private String adderess;
 	private java.math.BigDecimal fees;
-	private byte type;
-	private byte status;
+	private Byte type;
+	private Byte status;
 	private java.util.Date createTime;
 	private java.util.Date updateTime;
 

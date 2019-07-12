@@ -7,7 +7,7 @@
 		<id javaType="int" property="id" jdbcType="INTEGER" column="id" />
 		<result javaType="String" property="paramKey" jdbcType="VARCHAR" column="param_key" />
 		<result javaType="String" property="paramValue" jdbcType="VARCHAR" column="param_value" />
-		<result javaType="int" property="paramStatus" jdbcType="INTEGER" column="param_status" />
+		<result javaType="Integer" property="paramStatus" jdbcType="INTEGER" column="param_status" />
 		<result javaType="String" property="paramRemark" jdbcType="VARCHAR" column="param_remark" />
 		<result javaType="java.util.Date" property="createTime" jdbcType="TIMESTAMP" column="create_time" />
 		<result javaType="String" property="creater" jdbcType="VARCHAR" column="creater" />

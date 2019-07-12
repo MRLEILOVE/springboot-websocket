@@ -87,7 +87,7 @@ public class TKline extends BaseModel<TKline> {
 	/**
 	 * 主键ID
 	 */
-	private int id;
+	private Integer id;
 	
 	/**
 	 * 如:btc_usdt

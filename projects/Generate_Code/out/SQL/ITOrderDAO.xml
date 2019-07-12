@@ -5,7 +5,7 @@
 	<!-- 通用查询映射结果 -->
 	<resultMap id="BaseResultMap" type="com.bittrade.pojo.model.TOrder">
 		<id javaType="int" property="id" jdbcType="INTEGER" column="id" />
-		<result javaType="int" property="userId" jdbcType="INTEGER" column="userId" />
+		<result javaType="Integer" property="userId" jdbcType="INTEGER" column="userId" />
 		<result javaType="String" property="orderId" jdbcType="VARCHAR" column="order_id" />
 		<result javaType="java.math.BigDecimal" property="fee" jdbcType="DECIMAL" column="fee" />
 		<result javaType="String" property="token" jdbcType="VARCHAR" column="token" />

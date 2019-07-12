@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <items>
-	<item key="TINYINT" javaType="byte" jdbcType="INTEGER" />
-	<item key="SMALLINT" javaType="short" jdbcType="SMALLINT" />
-	<item key="INT" javaType="int" jdbcType="INTEGER" />
-	<item key="BIGINT" javaType="long" jdbcType="BIGINT" />
+	<item key="TINYINT" javaType="Byte" jdbcType="INTEGER" />
+	<item key="SMALLINT" javaType="Short" jdbcType="SMALLINT" />
+	<item key="INT" javaType="Integer" jdbcType="INTEGER" />
+	<item key="BIGINT" javaType="Long" jdbcType="BIGINT" />
 	<!-- double -->
 	<item key="NUMERIC" javaType="java.math.BigDecimal" jdbcType="NUMERIC" />
 	<item key="DECIMAL" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />

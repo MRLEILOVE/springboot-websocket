@@ -62,17 +62,17 @@ public class TCurrencyAddress extends BaseModel<TCurrencyAddress> {
 	/**
 	 * 主键id
 	 */
-	private int id;
+	private Integer id;
 	
 	/**
 	 * 用户id
 	 */
-	private long userId;
+	private Long userId;
 	
 	/**
 	 * 货币id，t_currency表中的id
 	 */
-	private int currencyId;
+	private Integer currencyId;
 	
 	/**
 	 * 钱包地址

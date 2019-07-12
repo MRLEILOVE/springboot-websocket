@@ -112,7 +112,7 @@ public class TCurrencyTrade extends BaseModel<TCurrencyTrade> {
 	/**
 	 * 主键id
 	 */
-	private int id;
+	private Integer id;
 	
 	/**
 	 * 交易对,如BTC/USDT
@@ -122,22 +122,22 @@ public class TCurrencyTrade extends BaseModel<TCurrencyTrade> {
 	/**
 	 * 货币id，t_currency表中的id
 	 */
-	private int currencyId1;
+	private Integer currencyId1;
 	
 	/**
 	 * 法币id，t_currency表中的id
 	 */
-	private int currencyId2;
+	private Integer currencyId2;
 	
 	/**
 	 * 单价小数位
 	 */
-	private int priceDecimalDigits;
+	private Integer priceDecimalDigits;
 	
 	/**
 	 * 数量小数位
 	 */
-	private int countDecimalDigits;
+	private Integer countDecimalDigits;
 	
 	/**
 	 * 最小挂单数量
@@ -172,12 +172,12 @@ public class TCurrencyTrade extends BaseModel<TCurrencyTrade> {
 	/**
 	 * 状态：0禁用，1启用
 	 */
-	private byte status;
+	private Byte status;
 	
 	/**
 	 * 排序
 	 */
-	private int sort;
+	private Integer sort;
 	
 	/**
 	 * 创建时间

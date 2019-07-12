@@ -16,10 +16,10 @@ public class TParamConfigVO extends BaseVO<TParamConfigVO> {
 
 	private static final long serialVersionUID = 1L;
 
-	private int id;
+	private Integer id;
 	private String paramKey;
 	private String paramValue;
-	private int paramStatus;
+	private Integer paramStatus;
 	private String paramRemark;
 	private java.util.Date createTime;
 	private String creater;

@@ -1,7 +1,6 @@
 package com.bittrade.pojo.model;
 
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.core.framework.base.interfaces.ICreateTime;
 import com.core.framework.base.model.BaseModel;
 
 import lombok.Data;
@@ -16,7 +15,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @TableName(value="t_entrust_record")
-public class TEntrustRecord extends BaseModel<TEntrustRecord> implements ICreateTime {
+public class TEntrustRecord extends BaseModel<TEntrustRecord> {
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -103,27 +102,27 @@ public class TEntrustRecord extends BaseModel<TEntrustRecord> implements ICreate
 	/**
 	 * 委托明细表id
 	 */
-	private long id;
+	private Long id;
 	
 	/**
 	 * 用户id
 	 */
-	private long userId;
+	private Long userId;
 	
 	/**
 	 * 对手方用户id
 	 */
-	private long rivalUserId;
+	private Long rivalUserId;
 	
 	/**
 	 * 委托单id,t_fentrust.id
 	 */
-	private long entrustId;
+	private Long entrustId;
 	
 	/**
 	 * 对手委托单id,t_fentrust.id
 	 */
-	private long rivalEntrustId;
+	private Long rivalEntrustId;
 	
 	/**
 	 * 总金额
@@ -153,17 +152,17 @@ public class TEntrustRecord extends BaseModel<TEntrustRecord> implements ICreate
 	/**
 	 * 交易对id,t_currency_trade中的id
 	 */
-	private int currencyTradeId;
+	private Integer currencyTradeId;
 	
 	/**
 	 * 是否主动:1-主买主卖，0-被买被卖
 	 */
-	private byte isActive;
+	private Byte isActive;
 	
 	/**
 	 * 交易类型:0-买，1-卖
 	 */
-	private int entrustDirection;
+	private Integer entrustDirection;
 	
 	/**
 	 * 创建时间

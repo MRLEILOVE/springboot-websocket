@@ -112,17 +112,17 @@ public class TEntrust extends BaseModel<TEntrust> {
 	/**
 	 * 委托表ID
 	 */
-	private long id;
+	private Long id;
 	
 	/**
 	 * 用户id
 	 */
-	private long userId;
+	private Long userId;
 	
 	/**
 	 * 交易对id,t_currency_trade中的id
 	 */
-	private int currencyTradeId;
+	private Integer currencyTradeId;
 	
 	/**
 	 * 价格
@@ -162,22 +162,22 @@ public class TEntrust extends BaseModel<TEntrust> {
 	/**
 	 * 状态:1未完成,2部分成交,3完全成交,4用户撤销
 	 */
-	private int status;
+	private Integer status;
 	
 	/**
 	 * 委托类型:0市价交易,1限价交易
 	 */
-	private int entrustType;
+	private Integer entrustType;
 	
 	/**
 	 * 委托方向:0买入,1卖出
 	 */
-	private int entrustDirection;
+	private Integer entrustDirection;
 	
 	/**
 	 * 版本号，每更新一次数据加1
 	 */
-	private int version;
+	private Integer version;
 	
 	/**
 	 * 创建日期

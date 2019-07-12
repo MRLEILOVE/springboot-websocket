@@ -16,7 +16,7 @@ public class TKlineDTO extends BaseDTO<TKlineDTO> {
 
 	private static final long serialVersionUID = 1L;
 
-	private int id;
+	private Integer id;
 	private String symbol;
 	private java.math.BigDecimal low;
 	private java.math.BigDecimal high;

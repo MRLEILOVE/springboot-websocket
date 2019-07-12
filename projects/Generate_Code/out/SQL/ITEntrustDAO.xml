@@ -5,8 +5,8 @@
 	<!-- 通用查询映射结果 -->
 	<resultMap id="BaseResultMap" type="com.bittrade.pojo.model.TEntrust">
 		<id javaType="int" property="id" jdbcType="INTEGER" column="id" />
-		<result javaType="long" property="userId" jdbcType="BIGINT" column="user_id" />
-		<result javaType="int" property="currencyTradeId" jdbcType="INTEGER" column="currency_trade_id" />
+		<result javaType="Long" property="userId" jdbcType="BIGINT" column="user_id" />
+		<result javaType="Integer" property="currencyTradeId" jdbcType="INTEGER" column="currency_trade_id" />
 		<result javaType="java.math.BigDecimal" property="price" jdbcType="DECIMAL" column="price" />
 		<result javaType="java.math.BigDecimal" property="amount" jdbcType="DECIMAL" column="amount" />
 		<result javaType="java.math.BigDecimal" property="successAmount" jdbcType="DECIMAL" column="success_amount" />
@@ -14,10 +14,10 @@
 		<result javaType="java.math.BigDecimal" property="leftCount" jdbcType="DECIMAL" column="left_count" />
 		<result javaType="java.math.BigDecimal" property="fees" jdbcType="DECIMAL" column="fees" />
 		<result javaType="java.math.BigDecimal" property="leftFees" jdbcType="DECIMAL" column="left_fees" />
-		<result javaType="int" property="status" jdbcType="INTEGER" column="status" />
-		<result javaType="int" property="entrustType" jdbcType="INTEGER" column="entrust_type" />
-		<result javaType="int" property="entrustDirection" jdbcType="INTEGER" column="entrust_direction" />
-		<result javaType="int" property="version" jdbcType="INTEGER" column="version" />
+		<result javaType="Integer" property="status" jdbcType="INTEGER" column="status" />
+		<result javaType="Integer" property="entrustType" jdbcType="INTEGER" column="entrust_type" />
+		<result javaType="Integer" property="entrustDirection" jdbcType="INTEGER" column="entrust_direction" />
+		<result javaType="Integer" property="version" jdbcType="INTEGER" column="version" />
 		<result javaType="java.util.Date" property="createTime" jdbcType="TIMESTAMP" column="create_time" />
 		<result javaType="java.util.Date" property="updateTime" jdbcType="TIMESTAMP" column="update_time" />
 	</resultMap>

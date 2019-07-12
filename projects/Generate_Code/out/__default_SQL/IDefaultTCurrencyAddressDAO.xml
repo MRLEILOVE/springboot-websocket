@@ -2,14 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!--
 	This code is generated automatically. Please do not edit it.
+	现在字段也可以要彻底动态？
 -->
 <mapper namespace="com.bittrade.__default.DAO.IDefaultTCurrencyAddressDAO">
 
 	<!-- 通用查询映射结果 -->
 	<resultMap id="BaseResultMap" type="com.bittrade.pojo.model.TCurrencyAddress">
-		<id javaType="int" property="id" jdbcType="INTEGER" column="id" />
-		<result javaType="long" property="userId" jdbcType="BIGINT" column="user_id" />
-		<result javaType="int" property="currencyId" jdbcType="INTEGER" column="currency_id" />
+		<id javaType="Integer" property="id" jdbcType="INTEGER" column="id" />
+		<result javaType="Long" property="userId" jdbcType="BIGINT" column="user_id" />
+		<result javaType="Integer" property="currencyId" jdbcType="INTEGER" column="currency_id" />
 		<result javaType="String" property="adderess" jdbcType="VARCHAR" column="adderess" />
 		<result javaType="String" property="addressRemark" jdbcType="VARCHAR" column="address_remark" />
 		<result javaType="java.util.Date" property="createTime" jdbcType="TIMESTAMP" column="create_time" />
@@ -31,36 +32,36 @@
 	
 	<insert id="addWithSelective" parameterType="com.bittrade.pojo.model.TCurrencyAddress">
 		INSERT INTO t_currency_address(
-			<if test="userId != null and userId != ''">
+			<if test="userId != null">
 			`user_id`, 
 			</if>
-			<if test="currencyId != null and currencyId != ''">
+			<if test="currencyId != null">
 			`currency_id`, 
 			</if>
-			<if test="adderess != null and adderess != ''">
+			<if test="adderess != null">
 			`adderess`, 
 			</if>
-			<if test="addressRemark != null and addressRemark != ''">
+			<if test="addressRemark != null">
 			`address_remark`, 
 			</if>
-			<if test="createTime != null and createTime != ''">
+			<if test="createTime != null">
 			`create_time`
 			</if>
 		)
 		VALUES(
-			<if test="userId != null and userId != ''">
+			<if test="userId != null">
 			#{userId,jdbcType=BIGINT}, 
 			</if>
-			<if test="currencyId != null and currencyId != ''">
+			<if test="currencyId != null">
 			#{currencyId,jdbcType=INTEGER}, 
 			</if>
-			<if test="adderess != null and adderess != ''">
+			<if test="adderess != null">
 			#{adderess,jdbcType=VARCHAR}, 
 			</if>
-			<if test="addressRemark != null and addressRemark != ''">
+			<if test="addressRemark != null">
 			#{addressRemark,jdbcType=VARCHAR}, 
 			</if>
-			<if test="createTime != null and createTime != ''">
+			<if test="createTime != null">
 			#{createTime,jdbcType=TIMESTAMP}
 			</if>
 		)
@@ -68,26 +69,27 @@
 	
 	<delete id="removeByPK">
 		DELETE FROM t_currency_address
-		WHERE 
-			`id` = #{id,jdbcType=INTEGER}
+		<where>
+			AND `id` = #{id,jdbcType=INTEGER}
+		</where>
 	</delete>
 	
 	<delete id="remove" parameterType="com.bittrade.pojo.model.TCurrencyAddress">
 		DELETE FROM t_currency_address
 		<where>
-			<if test="userId != null and userId != ''">
+			<if test="userId != null">
 			AND `user_id` = #{userId,jdbcType=BIGINT}
 			</if>
-			<if test="currencyId != null and currencyId != ''">
+			<if test="currencyId != null">
 			AND `currency_id` = #{currencyId,jdbcType=INTEGER}
 			</if>
-			<if test="adderess != null and adderess != ''">
+			<if test="adderess != null">
 			AND `adderess` = #{adderess,jdbcType=VARCHAR}
 			</if>
-			<if test="addressRemark != null and addressRemark != ''">
+			<if test="addressRemark != null">
 			AND `address_remark` = #{addressRemark,jdbcType=VARCHAR}
 			</if>
-			<if test="createTime != null and createTime != ''">
+			<if test="createTime != null">
 			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
 			</if>
 		</where>
@@ -95,99 +97,117 @@
 	
 	<update id="modifyByPK" parameterType="com.bittrade.pojo.model.TCurrencyAddress">
 		UPDATE t_currency_address
-		SET
+		<set>
 			`user_id` = #{userId,jdbcType=BIGINT}, 
 			`currency_id` = #{currencyId,jdbcType=INTEGER}, 
 			`adderess` = #{adderess,jdbcType=VARCHAR}, 
 			`address_remark` = #{addressRemark,jdbcType=VARCHAR}, 
-			`create_time` = #{createTime,jdbcType=TIMESTAMP}
-		WHERE 
-			`id` = #{id,jdbcType=INTEGER}
+			`create_time` = #{createTime,jdbcType=TIMESTAMP}, 
+		</set>
+		<where>
+			AND `id` = #{id,jdbcType=INTEGER}
+		</where>
 	</update>
 	
 	<update id="modifyWithSelectiveByPK" parameterType="com.bittrade.pojo.model.TCurrencyAddress">
 		UPDATE t_currency_address
-		SET
-			<if test="userId != null and userId != ''">
+		<set>
+			<if test="userId != null">
 			`user_id` = #{userId,jdbcType=BIGINT}, 
 			</if>
-			<if test="currencyId != null and currencyId != ''">
+			<if test="currencyId != null">
 			`currency_id` = #{currencyId,jdbcType=INTEGER}, 
 			</if>
-			<if test="adderess != null and adderess != ''">
+			<if test="adderess != null">
 			`adderess` = #{adderess,jdbcType=VARCHAR}, 
 			</if>
-			<if test="addressRemark != null and addressRemark != ''">
+			<if test="addressRemark != null">
 			`address_remark` = #{addressRemark,jdbcType=VARCHAR}, 
 			</if>
-			<if test="createTime != null and createTime != ''">
-			`create_time` = #{createTime,jdbcType=TIMESTAMP}
+			<if test="createTime != null">
+			`create_time` = #{createTime,jdbcType=TIMESTAMP}, 
 			</if>
-		WHERE 
-			`id` = #{id,jdbcType=INTEGER}
+		</set>
+		<where>
+			AND `id` = #{id,jdbcType=INTEGER}
+		</where>
 	</update>
 	
 	<update id="modify">
 		UPDATE t_currency_address
-		SET
+		<set>
 			`user_id` = #{tCurrencyAddress.userId,jdbcType=BIGINT}, 
 			`currency_id` = #{tCurrencyAddress.currencyId,jdbcType=INTEGER}, 
 			`adderess` = #{tCurrencyAddress.adderess,jdbcType=VARCHAR}, 
 			`address_remark` = #{tCurrencyAddress.addressRemark,jdbcType=VARCHAR}, 
-			`create_time` = #{tCurrencyAddress.createTime,jdbcType=TIMESTAMP}
+			`create_time` = #{tCurrencyAddress.createTime,jdbcType=TIMESTAMP}, 
+		</set>
 		<where>
-			<if test="condiTCurrencyAddress.userId != null and condiTCurrencyAddress.userId != ''">
+		<if test="condiTCurrencyAddress != null">
+			<if test="condiTCurrencyAddress.id != null">
+			AND `id` = #{condiTCurrencyAddress.id,jdbcType=INTEGER}
+			</if>
+			<if test="condiTCurrencyAddress.userId != null">
 			AND `user_id` = #{condiTCurrencyAddress.userId,jdbcType=BIGINT}
 			</if>
-			<if test="condiTCurrencyAddress.currencyId != null and condiTCurrencyAddress.currencyId != ''">
+			<if test="condiTCurrencyAddress.currencyId != null">
 			AND `currency_id` = #{condiTCurrencyAddress.currencyId,jdbcType=INTEGER}
 			</if>
-			<if test="condiTCurrencyAddress.adderess != null and condiTCurrencyAddress.adderess != ''">
+			<if test="condiTCurrencyAddress.adderess != null">
 			AND `adderess` = #{condiTCurrencyAddress.adderess,jdbcType=VARCHAR}
 			</if>
-			<if test="condiTCurrencyAddress.addressRemark != null and condiTCurrencyAddress.addressRemark != ''">
+			<if test="condiTCurrencyAddress.addressRemark != null">
 			AND `address_remark` = #{condiTCurrencyAddress.addressRemark,jdbcType=VARCHAR}
 			</if>
-			<if test="condiTCurrencyAddress.createTime != null and condiTCurrencyAddress.createTime != ''">
+			<if test="condiTCurrencyAddress.createTime != null">
 			AND `create_time` = #{condiTCurrencyAddress.createTime,jdbcType=TIMESTAMP}
 			</if>
+		</if>
 		</where>
 	</update>
 	
 	<update id="modifyWithSelective">
 		UPDATE t_currency_address
-		SET
-			<if test="tCurrencyAddress.userId != null and tCurrencyAddress.userId != ''">
+		<set>
+		<if test="tCurrencyAddress != null">
+			<if test="tCurrencyAddress.userId != null">
 			`user_id` = #{tCurrencyAddress.userId,jdbcType=BIGINT}, 
 			</if>
-			<if test="tCurrencyAddress.currencyId != null and tCurrencyAddress.currencyId != ''">
+			<if test="tCurrencyAddress.currencyId != null">
 			`currency_id` = #{tCurrencyAddress.currencyId,jdbcType=INTEGER}, 
 			</if>
-			<if test="tCurrencyAddress.adderess != null and tCurrencyAddress.adderess != ''">
+			<if test="tCurrencyAddress.adderess != null">
 			`adderess` = #{tCurrencyAddress.adderess,jdbcType=VARCHAR}, 
 			</if>
-			<if test="tCurrencyAddress.addressRemark != null and tCurrencyAddress.addressRemark != ''">
+			<if test="tCurrencyAddress.addressRemark != null">
 			`address_remark` = #{tCurrencyAddress.addressRemark,jdbcType=VARCHAR}, 
 			</if>
-			<if test="tCurrencyAddress.createTime != null and tCurrencyAddress.createTime != ''">
-			`create_time` = #{tCurrencyAddress.createTime,jdbcType=TIMESTAMP}
+			<if test="tCurrencyAddress.createTime != null">
+			`create_time` = #{tCurrencyAddress.createTime,jdbcType=TIMESTAMP}, 
 			</if>
+		</if>
+		</set>
 		<where>
-			<if test="condiTCurrencyAddress.userId != null and condiTCurrencyAddress.userId != ''">
+		<if test="condiTCurrencyAddress != null">
+			<if test="condiTCurrencyAddress.id != null">
+			AND `id` = #{condiTCurrencyAddress.id,jdbcType=INTEGER}
+			</if>
+			<if test="condiTCurrencyAddress.userId != null">
 			AND `user_id` = #{condiTCurrencyAddress.userId,jdbcType=BIGINT}
 			</if>
-			<if test="condiTCurrencyAddress.currencyId != null and condiTCurrencyAddress.currencyId != ''">
+			<if test="condiTCurrencyAddress.currencyId != null">
 			AND `currency_id` = #{condiTCurrencyAddress.currencyId,jdbcType=INTEGER}
 			</if>
-			<if test="condiTCurrencyAddress.adderess != null and condiTCurrencyAddress.adderess != ''">
+			<if test="condiTCurrencyAddress.adderess != null">
 			AND `adderess` = #{condiTCurrencyAddress.adderess,jdbcType=VARCHAR}
 			</if>
-			<if test="condiTCurrencyAddress.addressRemark != null and condiTCurrencyAddress.addressRemark != ''">
+			<if test="condiTCurrencyAddress.addressRemark != null">
 			AND `address_remark` = #{condiTCurrencyAddress.addressRemark,jdbcType=VARCHAR}
 			</if>
-			<if test="condiTCurrencyAddress.createTime != null and condiTCurrencyAddress.createTime != ''">
+			<if test="condiTCurrencyAddress.createTime != null">
 			AND `create_time` = #{condiTCurrencyAddress.createTime,jdbcType=TIMESTAMP}
 			</if>
+		</if>
 		</where>
 	</update>
 	
@@ -200,8 +220,9 @@
 			`address_remark`, 
 			`create_time`
 		FROM t_currency_address
-		WHERE 
-			`id` = #{id,jdbcType=INTEGER}
+		<where>
+			AND `id` = #{id,jdbcType=INTEGER}
+		</where>
 	</select>
 	
 	<select id="get" resultType="com.bittrade.pojo.model.TCurrencyAddress">
@@ -214,19 +235,19 @@
 			`create_time`
 		FROM t_currency_address
 		<where>
-			<if test="userId != null and userId != ''">
+			<if test="userId != null">
 			AND `user_id` = #{userId,jdbcType=BIGINT}
 			</if>
-			<if test="currencyId != null and currencyId != ''">
+			<if test="currencyId != null">
 			AND `currency_id` = #{currencyId,jdbcType=INTEGER}
 			</if>
-			<if test="adderess != null and adderess != ''">
+			<if test="adderess != null">
 			AND `adderess` = #{adderess,jdbcType=VARCHAR}
 			</if>
-			<if test="addressRemark != null and addressRemark != ''">
+			<if test="addressRemark != null">
 			AND `address_remark` = #{addressRemark,jdbcType=VARCHAR}
 			</if>
-			<if test="createTime != null and createTime != ''">
+			<if test="createTime != null">
 			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
 			</if>
 		</where>
@@ -243,19 +264,19 @@
 			`create_time`
 		FROM t_currency_address
 		<where>
-			<if test="userId != null and userId != ''">
+			<if test="userId != null">
 			AND `user_id` = #{userId,jdbcType=BIGINT}
 			</if>
-			<if test="currencyId != null and currencyId != ''">
+			<if test="currencyId != null">
 			AND `currency_id` = #{currencyId,jdbcType=INTEGER}
 			</if>
-			<if test="adderess != null and adderess != ''">
+			<if test="adderess != null">
 			AND `adderess` = #{adderess,jdbcType=VARCHAR}
 			</if>
-			<if test="addressRemark != null and addressRemark != ''">
+			<if test="addressRemark != null">
 			AND `address_remark` = #{addressRemark,jdbcType=VARCHAR}
 			</if>
-			<if test="createTime != null and createTime != ''">
+			<if test="createTime != null">
 			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
 			</if>
 		</where>
@@ -276,21 +297,23 @@
 		SELECT COUNT(1)
 		FROM t_currency_address
 		<where>
-			<if test="tCurrencyAddress.userId != null and tCurrencyAddress.userId != ''">
+		<if test="tCurrencyAddress != null">
+			<if test="tCurrencyAddress.userId != null">
 			AND `user_id` = #{tCurrencyAddress.userId,jdbcType=BIGINT}
 			</if>
-			<if test="tCurrencyAddress.currencyId != null and tCurrencyAddress.currencyId != ''">
+			<if test="tCurrencyAddress.currencyId != null">
 			AND `currency_id` = #{tCurrencyAddress.currencyId,jdbcType=INTEGER}
 			</if>
-			<if test="tCurrencyAddress.adderess != null and tCurrencyAddress.adderess != ''">
+			<if test="tCurrencyAddress.adderess != null">
 			AND `adderess` = #{tCurrencyAddress.adderess,jdbcType=VARCHAR}
 			</if>
-			<if test="tCurrencyAddress.addressRemark != null and tCurrencyAddress.addressRemark != ''">
+			<if test="tCurrencyAddress.addressRemark != null">
 			AND `address_remark` = #{tCurrencyAddress.addressRemark,jdbcType=VARCHAR}
 			</if>
-			<if test="tCurrencyAddress.createTime != null and tCurrencyAddress.createTime != ''">
+			<if test="tCurrencyAddress.createTime != null">
 			AND `create_time` = #{tCurrencyAddress.createTime,jdbcType=TIMESTAMP}
 			</if>
+		</if>
 		</where>
 	</select>
 	
@@ -304,21 +327,23 @@
 			`create_time`
 		FROM t_currency_address
 		<where>
-			<if test="tCurrencyAddress.userId != null and tCurrencyAddress.userId != ''">
+		<if test="tCurrencyAddress != null">
+			<if test="tCurrencyAddress.userId != null">
 			AND `user_id` = #{tCurrencyAddress.userId,jdbcType=BIGINT}
 			</if>
-			<if test="tCurrencyAddress.currencyId != null and tCurrencyAddress.currencyId != ''">
+			<if test="tCurrencyAddress.currencyId != null">
 			AND `currency_id` = #{tCurrencyAddress.currencyId,jdbcType=INTEGER}
 			</if>
-			<if test="tCurrencyAddress.adderess != null and tCurrencyAddress.adderess != ''">
+			<if test="tCurrencyAddress.adderess != null">
 			AND `adderess` = #{tCurrencyAddress.adderess,jdbcType=VARCHAR}
 			</if>
-			<if test="tCurrencyAddress.addressRemark != null and tCurrencyAddress.addressRemark != ''">
+			<if test="tCurrencyAddress.addressRemark != null">
 			AND `address_remark` = #{tCurrencyAddress.addressRemark,jdbcType=VARCHAR}
 			</if>
-			<if test="tCurrencyAddress.createTime != null and tCurrencyAddress.createTime != ''">
+			<if test="tCurrencyAddress.createTime != null">
 			AND `create_time` = #{tCurrencyAddress.createTime,jdbcType=TIMESTAMP}
 			</if>
+		</if>
 		</where>
 		LIMIT #{page}, #{size}
 	</select>

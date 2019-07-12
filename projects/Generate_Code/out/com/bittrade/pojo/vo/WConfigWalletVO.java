@@ -16,7 +16,7 @@ public class WConfigWalletVO extends BaseVO<WConfigWalletVO> {
 
 	private static final long serialVersionUID = 1L;
 
-	private long id;
+	private Long id;
 	private String coinType;
 	private String walletType;
 	private String address;
