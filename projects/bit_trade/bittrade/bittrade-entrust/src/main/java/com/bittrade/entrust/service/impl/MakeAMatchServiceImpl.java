@@ -17,17 +17,18 @@ import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
+import com.alibaba.dubbo.config.annotation.Service;
 import com.bittrade.common.constant.IConstant;
 import com.bittrade.common.constant.IQueueConstants;
 import com.bittrade.common.enums.EntrustDirectionEnumer;
 import com.bittrade.common.enums.EntrustStatusEnumer;
 import com.bittrade.common.enums.EntrustTypeEnumer;
 import com.bittrade.common.enums.IsActiveEnumer;
-import com.bittrade.currency.api.service.ITEntrustRecordService;
-import com.bittrade.currency.api.service.ITEntrustService;
-import com.bittrade.entrust.service.IMakeAMatchService;
+import com.bittrade.entrust.api.service.IMakeAMatchService;
+import com.bittrade.entrust.api.service.ITEntrustRecordService;
+import com.bittrade.entrust.api.service.ITEntrustService;
 import com.bittrade.pojo.model.TEntrust;
 import com.bittrade.pojo.model.TEntrustRecord;
 import com.core.common.constant.ICompareResultConstant;
@@ -35,7 +36,19 @@ import com.core.tool.BigDecimalUtil;
 import com.core.tool.SnowFlake;
 import com.rabbitmq.client.Channel;
 
+/**
+ * 
+ * ClassName: MakeAMatchServiceImpl <br/>  
+ * Function: TODO ADD FUNCTION. <br/>  
+ * Reason: TODO ADD REASON(可选). <br/>  
+ * DateTime: Jul 12, 2019 2:56:04 PM <br />
+ *  
+ * @author Administrator  
+ * @version   
+ * @since JDK 1.8
+ */
 @Service
+@Component
 public class MakeAMatchServiceImpl implements IMakeAMatchService {
 	
 	private static final Logger LOG = LoggerFactory.getLogger(MakeAMatchServiceImpl.class);
@@ -60,12 +73,11 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 	 */
 	private static final ArrayList<TEntrust> LIST_SELL_LIMIT = new ArrayList<>();
 	
-	private static final SnowFlake SNOW_FLAKE__ENTRUST = new SnowFlake(1, 1);
 	private static final SnowFlake SNOW_FLAKE__ENTRUST_RECORD = new SnowFlake(1, 1);
 	
-	@com.alibaba.dubbo.config.annotation.Reference
+	@Autowired
 	private ITEntrustService entrustService;
-	@com.alibaba.dubbo.config.annotation.Reference
+	@Autowired
 	private ITEntrustRecordService entrustRecordService;
 	
 	/**
@@ -271,7 +283,7 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 		if (LINE_PRICE.compareTo(dealPrice) != ICompareResultConstant.EQUAL) {
 			LINE_PRICE = dealPrice;
 			// 异步通知。
-			rabbitTemplate.convertAndSend(IQueueConstants.MESSAGE_EXCHANGE, IQueueConstants.MESSAGE_ROUTE_KEY, LINE_PRICE);
+			rabbitTemplate.convertAndSend(IQueueConstants.EXCHANGE, IQueueConstants.ROUTE_KEY__LINE_PRICE, LINE_PRICE.toString());
 //			rabbitTemplate.setConfirmCallback((correlationData, ack, cause) -> {
 //				System.out.println("消息唯一标识：" + correlationData);
 //				System.out.println("消息确认结果：" + ack);
@@ -284,7 +296,7 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 		}
 	}
 	
-	@RabbitListener(queues = { IQueueConstants.MESSAGE_QUEUE_NAME })
+	@RabbitListener(queues = { IQueueConstants.QUEUE__LINE_PRICE })
 	public void processMessage(Channel channel, Message message) {
 		System.out.println("MessageConsumer收到消息：" + new String(message.getBody()));
 		try {
@@ -343,22 +355,6 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 	}
 	
 	public void makeAMatch(TEntrust entrust) {
-		// 入库。
-		{
-			entrust.setId(SNOW_FLAKE__ENTRUST.nextId());
-			{
-				if (entrust.getPrice() != null) {
-					entrust.setPrice(entrust.getPrice().setScale(IConstant.PRICE_DECIMAL_LENGTH, BigDecimal.ROUND_HALF_DOWN));
-					entrust.setAmount(entrust.getPrice().multiply(entrust.getCount()).setScale(IConstant.AMOUNT_DECIMAL_LENGTH, BigDecimal.ROUND_HALF_DOWN));
-				}
-				entrust.setCount(entrust.getCount().setScale(IConstant.COUNT_DECIMAL_LENGTH, BigDecimal.ROUND_HALF_DOWN));
-			}
-			entrust.setSuccessAmount(BigDecimal.ZERO);
-			entrust.setLeftCount(entrust.getCount());
-			entrust.setStatus(EntrustStatusEnumer.UNFINISH.getCode());
-			entrustService.add(entrust);
-//			System.out.println(entrust);
-		}
 		if (entrust.getEntrustDirection() == EntrustDirectionEnumer.BUY.getCode()) {
 			int i_idx;
 			LOCK_BUY.lock();

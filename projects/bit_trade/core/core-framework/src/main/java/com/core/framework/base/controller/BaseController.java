@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.core.framework.DTO.PageDTO;
-import com.core.framework.base.DAO.IBaseDAO;
 import com.core.framework.base.DTO.BaseDTO;
 import com.core.framework.base.VO.BaseVO;
 import com.core.framework.base.model.BaseModel;
@@ -27,10 +26,9 @@ import com.core.framework.base.service.IBaseService;
  * @param <Model>
  * @param <DTO>
  * @param <VO>
- * @param <DAO>
  * @param <Service>
  */
-public abstract class BaseController<Model extends BaseModel<Model>, DTO extends BaseDTO<DTO>, VO extends BaseVO<VO>, DAO extends IBaseDAO<Model, DTO, VO>, Service extends IBaseService<Model, DTO, VO>> {
+public abstract class BaseController<Model extends BaseModel<Model>, DTO extends BaseDTO<DTO>, VO extends BaseVO<VO>, Service extends IBaseService<Model, DTO, VO>> {
 
 	@Autowired
 	protected Service baseService;

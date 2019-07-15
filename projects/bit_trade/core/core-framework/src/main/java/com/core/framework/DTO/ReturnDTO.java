@@ -36,6 +36,21 @@ public class ReturnDTO<T> {
 	/**
 	 * ok
 	 * @param <T>
+	 * @param msg
+	 * @return
+	 */
+	public static final <T> ReturnDTO<T> ok(String msg) {
+		ReturnDTO<T> ret = new ReturnDTO<T>();
+		
+		ret.setCode(IConstant.SUCCESS);
+		ret.setMsg(msg);
+		
+		return ret;
+	}
+	
+	/**
+	 * ok
+	 * @param <T>
 	 * @param data
 	 * @return
 	 */

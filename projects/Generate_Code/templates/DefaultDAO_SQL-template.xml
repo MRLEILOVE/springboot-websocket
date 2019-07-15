@@ -31,6 +31,9 @@ WHERE是使用的 prefixOverrides（前缀）， SET是使用的 suffixOverrides
 
 	<!-- 通用查询结果列 -->
 	<sql id="Base_Column_List">
+		<#list struct.list_itemPK as itemPK>
+		`${itemPK.columnName}` AS ${itemPK.name}, 
+		</#list>
 		<#list struct.list_item as item>
 		`${item.columnName}` AS ${item.name}<#if item_has_next>, </#if>
 		</#list>

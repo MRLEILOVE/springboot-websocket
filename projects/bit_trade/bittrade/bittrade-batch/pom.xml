@@ -22,6 +22,10 @@
 			<groupId>com.bittrade</groupId>
 			<artifactId>bittrade-currency-api</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>com.bittrade</groupId>
+			<artifactId>bittrade-entrust-api</artifactId>
+		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

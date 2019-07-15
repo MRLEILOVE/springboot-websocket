@@ -1,4 +1,4 @@
-package com.bittrade.entrust.service;
+package com.bittrade.entrust.api.service;
 
 import com.bittrade.pojo.model.TEntrust;
 

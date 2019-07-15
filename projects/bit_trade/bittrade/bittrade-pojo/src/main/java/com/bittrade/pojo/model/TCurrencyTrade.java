@@ -58,19 +58,24 @@ public class TCurrencyTrade extends BaseModel<TCurrencyTrade> {
 		public static final String COUNT_DECIMAL_DIGITS = "count_decimal_digits";
 		
 		/**
+		 * 最小挂单单价
+		 */
+		public static final String MIN_BUY_PRICE = "min_buy_price";
+		
+		/**
 		 * 最小挂单数量
 		 */
 		public static final String MIN_BUY_COUNT = "min_buy_count";
 		
 		/**
-		 * 最小挂单单价
-		 */
-		public static final String MIN_BUY_PRICE = "min_Buy_price";
-		
-		/**
 		 * 最小挂单金额
 		 */
 		public static final String MIN_BUY_AMOUNT = "min_buy_amount";
+		
+		/**
+		 * 最大可买单价
+		 */
+		public static final String MAX_BUY_PRICE = "max_buy_price";
 		
 		/**
 		 * 最大可买数量
@@ -81,11 +86,6 @@ public class TCurrencyTrade extends BaseModel<TCurrencyTrade> {
 		 * 最大可买金额
 		 */
 		public static final String MAX_BUY_AMOUNT = "max_buy_amount";
-		
-		/**
-		 * 最大可买价格
-		 */
-		public static final String MAX_BUY_PRICE = "max_buy_price";
 		
 		/**
 		 * 状态：0禁用，1启用
@@ -140,19 +140,24 @@ public class TCurrencyTrade extends BaseModel<TCurrencyTrade> {
 	private Integer countDecimalDigits;
 	
 	/**
-	 * 最小挂单数量
-	 */
-	private java.math.BigDecimal minBuyCount;
-	
-	/**
 	 * 最小挂单单价
 	 */
 	private java.math.BigDecimal minBuyPrice;
 	
 	/**
+	 * 最小挂单数量
+	 */
+	private java.math.BigDecimal minBuyCount;
+	
+	/**
 	 * 最小挂单金额
 	 */
 	private java.math.BigDecimal minBuyAmount;
+	
+	/**
+	 * 最大可买单价
+	 */
+	private java.math.BigDecimal maxBuyPrice;
 	
 	/**
 	 * 最大可买数量
@@ -163,11 +168,6 @@ public class TCurrencyTrade extends BaseModel<TCurrencyTrade> {
 	 * 最大可买金额
 	 */
 	private java.math.BigDecimal maxBuyAmount;
-	
-	/**
-	 * 最大可买价格
-	 */
-	private java.math.BigDecimal maxBuyPrice;
 	
 	/**
 	 * 状态：0禁用，1启用

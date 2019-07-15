@@ -14,12 +14,12 @@
 		<result javaType="Integer" property="currencyId2" jdbcType="INTEGER" column="currency_id2" />
 		<result javaType="Integer" property="priceDecimalDigits" jdbcType="INTEGER" column="price_decimal_digits" />
 		<result javaType="Integer" property="countDecimalDigits" jdbcType="INTEGER" column="count_decimal_digits" />
+		<result javaType="java.math.BigDecimal" property="minBuyPrice" jdbcType="DECIMAL" column="min_buy_price" />
 		<result javaType="java.math.BigDecimal" property="minBuyCount" jdbcType="DECIMAL" column="min_buy_count" />
-		<result javaType="java.math.BigDecimal" property="minBuyPrice" jdbcType="DECIMAL" column="min_Buy_price" />
 		<result javaType="java.math.BigDecimal" property="minBuyAmount" jdbcType="DECIMAL" column="min_buy_amount" />
+		<result javaType="java.math.BigDecimal" property="maxBuyPrice" jdbcType="DECIMAL" column="max_buy_price" />
 		<result javaType="java.math.BigDecimal" property="maxBuyCount" jdbcType="DECIMAL" column="max_buy_count" />
 		<result javaType="java.math.BigDecimal" property="maxBuyAmount" jdbcType="DECIMAL" column="max_buy_amount" />
-		<result javaType="java.math.BigDecimal" property="maxBuyPrice" jdbcType="DECIMAL" column="max_buy_price" />
 		<result javaType="Byte" property="status" jdbcType="INTEGER" column="status" />
 		<result javaType="Integer" property="sort" jdbcType="INTEGER" column="sort" />
 		<result javaType="java.util.Date" property="createTime" jdbcType="TIMESTAMP" column="create_time" />
@@ -28,17 +28,18 @@
 
 	<!-- 通用查询结果列 -->
 	<sql id="Base_Column_List">
+		`id` AS id, 
 		`symbol` AS symbol, 
 		`currency_id1` AS currencyId1, 
 		`currency_id2` AS currencyId2, 
 		`price_decimal_digits` AS priceDecimalDigits, 
 		`count_decimal_digits` AS countDecimalDigits, 
+		`min_buy_price` AS minBuyPrice, 
 		`min_buy_count` AS minBuyCount, 
-		`min_Buy_price` AS minBuyPrice, 
 		`min_buy_amount` AS minBuyAmount, 
+		`max_buy_price` AS maxBuyPrice, 
 		`max_buy_count` AS maxBuyCount, 
 		`max_buy_amount` AS maxBuyAmount, 
-		`max_buy_price` AS maxBuyPrice, 
 		`status` AS status, 
 		`sort` AS sort, 
 		`create_time` AS createTime, 
@@ -46,8 +47,8 @@
 	</sql>
 	
 	<insert id="add" parameterType="com.bittrade.pojo.model.TCurrencyTrade">
-		INSERT INTO t_currency_trade(`symbol`, `currency_id1`, `currency_id2`, `price_decimal_digits`, `count_decimal_digits`, `min_buy_count`, `min_Buy_price`, `min_buy_amount`, `max_buy_count`, `max_buy_amount`, `max_buy_price`, `status`, `sort`, `create_time`, `update_time`)
-		VALUES(#{symbol,jdbcType=VARCHAR}, #{currencyId1,jdbcType=INTEGER}, #{currencyId2,jdbcType=INTEGER}, #{priceDecimalDigits,jdbcType=INTEGER}, #{countDecimalDigits,jdbcType=INTEGER}, #{minBuyCount,jdbcType=DECIMAL}, #{minBuyPrice,jdbcType=DECIMAL}, #{minBuyAmount,jdbcType=DECIMAL}, #{maxBuyCount,jdbcType=DECIMAL}, #{maxBuyAmount,jdbcType=DECIMAL}, #{maxBuyPrice,jdbcType=DECIMAL}, #{status,jdbcType=INTEGER}, #{sort,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+		INSERT INTO t_currency_trade(`symbol`, `currency_id1`, `currency_id2`, `price_decimal_digits`, `count_decimal_digits`, `min_buy_price`, `min_buy_count`, `min_buy_amount`, `max_buy_price`, `max_buy_count`, `max_buy_amount`, `status`, `sort`, `create_time`, `update_time`)
+		VALUES(#{symbol,jdbcType=VARCHAR}, #{currencyId1,jdbcType=INTEGER}, #{currencyId2,jdbcType=INTEGER}, #{priceDecimalDigits,jdbcType=INTEGER}, #{countDecimalDigits,jdbcType=INTEGER}, #{minBuyPrice,jdbcType=DECIMAL}, #{minBuyCount,jdbcType=DECIMAL}, #{minBuyAmount,jdbcType=DECIMAL}, #{maxBuyPrice,jdbcType=DECIMAL}, #{maxBuyCount,jdbcType=DECIMAL}, #{maxBuyAmount,jdbcType=DECIMAL}, #{status,jdbcType=INTEGER}, #{sort,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
 	</insert>
 	
 	<insert id="addWithSelective" parameterType="com.bittrade.pojo.model.TCurrencyTrade">
@@ -67,23 +68,23 @@
 			<if test="countDecimalDigits != null">
 			`count_decimal_digits`, 
 			</if>
+			<if test="minBuyPrice != null">
+			`min_buy_price`, 
+			</if>
 			<if test="minBuyCount != null">
 			`min_buy_count`, 
 			</if>
-			<if test="minBuyPrice != null">
-			`min_Buy_price`, 
-			</if>
 			<if test="minBuyAmount != null">
 			`min_buy_amount`, 
+			</if>
+			<if test="maxBuyPrice != null">
+			`max_buy_price`, 
 			</if>
 			<if test="maxBuyCount != null">
 			`max_buy_count`, 
 			</if>
 			<if test="maxBuyAmount != null">
 			`max_buy_amount`, 
-			</if>
-			<if test="maxBuyPrice != null">
-			`max_buy_price`, 
 			</if>
 			<if test="status != null">
 			`status`, 
@@ -114,23 +115,23 @@
 			<if test="countDecimalDigits != null">
 			#{countDecimalDigits,jdbcType=INTEGER}, 
 			</if>
-			<if test="minBuyCount != null">
-			#{minBuyCount,jdbcType=DECIMAL}, 
-			</if>
 			<if test="minBuyPrice != null">
 			#{minBuyPrice,jdbcType=DECIMAL}, 
 			</if>
+			<if test="minBuyCount != null">
+			#{minBuyCount,jdbcType=DECIMAL}, 
+			</if>
 			<if test="minBuyAmount != null">
 			#{minBuyAmount,jdbcType=DECIMAL}, 
+			</if>
+			<if test="maxBuyPrice != null">
+			#{maxBuyPrice,jdbcType=DECIMAL}, 
 			</if>
 			<if test="maxBuyCount != null">
 			#{maxBuyCount,jdbcType=DECIMAL}, 
 			</if>
 			<if test="maxBuyAmount != null">
 			#{maxBuyAmount,jdbcType=DECIMAL}, 
-			</if>
-			<if test="maxBuyPrice != null">
-			#{maxBuyPrice,jdbcType=DECIMAL}, 
 			</if>
 			<if test="status != null">
 			#{status,jdbcType=INTEGER}, 
@@ -172,23 +173,23 @@
 			<if test="countDecimalDigits != null">
 			AND `count_decimal_digits` = #{countDecimalDigits,jdbcType=INTEGER}
 			</if>
+			<if test="minBuyPrice != null">
+			AND `min_buy_price` = #{minBuyPrice,jdbcType=DECIMAL}
+			</if>
 			<if test="minBuyCount != null">
 			AND `min_buy_count` = #{minBuyCount,jdbcType=DECIMAL}
 			</if>
-			<if test="minBuyPrice != null">
-			AND `min_Buy_price` = #{minBuyPrice,jdbcType=DECIMAL}
-			</if>
 			<if test="minBuyAmount != null">
 			AND `min_buy_amount` = #{minBuyAmount,jdbcType=DECIMAL}
+			</if>
+			<if test="maxBuyPrice != null">
+			AND `max_buy_price` = #{maxBuyPrice,jdbcType=DECIMAL}
 			</if>
 			<if test="maxBuyCount != null">
 			AND `max_buy_count` = #{maxBuyCount,jdbcType=DECIMAL}
 			</if>
 			<if test="maxBuyAmount != null">
 			AND `max_buy_amount` = #{maxBuyAmount,jdbcType=DECIMAL}
-			</if>
-			<if test="maxBuyPrice != null">
-			AND `max_buy_price` = #{maxBuyPrice,jdbcType=DECIMAL}
 			</if>
 			<if test="status != null">
 			AND `status` = #{status,jdbcType=INTEGER}
@@ -213,12 +214,12 @@
 			`currency_id2` = #{currencyId2,jdbcType=INTEGER}, 
 			`price_decimal_digits` = #{priceDecimalDigits,jdbcType=INTEGER}, 
 			`count_decimal_digits` = #{countDecimalDigits,jdbcType=INTEGER}, 
+			`min_buy_price` = #{minBuyPrice,jdbcType=DECIMAL}, 
 			`min_buy_count` = #{minBuyCount,jdbcType=DECIMAL}, 
-			`min_Buy_price` = #{minBuyPrice,jdbcType=DECIMAL}, 
 			`min_buy_amount` = #{minBuyAmount,jdbcType=DECIMAL}, 
+			`max_buy_price` = #{maxBuyPrice,jdbcType=DECIMAL}, 
 			`max_buy_count` = #{maxBuyCount,jdbcType=DECIMAL}, 
 			`max_buy_amount` = #{maxBuyAmount,jdbcType=DECIMAL}, 
-			`max_buy_price` = #{maxBuyPrice,jdbcType=DECIMAL}, 
 			`status` = #{status,jdbcType=INTEGER}, 
 			`sort` = #{sort,jdbcType=INTEGER}, 
 			`create_time` = #{createTime,jdbcType=TIMESTAMP}, 
@@ -247,23 +248,23 @@
 			<if test="countDecimalDigits != null">
 			`count_decimal_digits` = #{countDecimalDigits,jdbcType=INTEGER}, 
 			</if>
+			<if test="minBuyPrice != null">
+			`min_buy_price` = #{minBuyPrice,jdbcType=DECIMAL}, 
+			</if>
 			<if test="minBuyCount != null">
 			`min_buy_count` = #{minBuyCount,jdbcType=DECIMAL}, 
 			</if>
-			<if test="minBuyPrice != null">
-			`min_Buy_price` = #{minBuyPrice,jdbcType=DECIMAL}, 
-			</if>
 			<if test="minBuyAmount != null">
 			`min_buy_amount` = #{minBuyAmount,jdbcType=DECIMAL}, 
+			</if>
+			<if test="maxBuyPrice != null">
+			`max_buy_price` = #{maxBuyPrice,jdbcType=DECIMAL}, 
 			</if>
 			<if test="maxBuyCount != null">
 			`max_buy_count` = #{maxBuyCount,jdbcType=DECIMAL}, 
 			</if>
 			<if test="maxBuyAmount != null">
 			`max_buy_amount` = #{maxBuyAmount,jdbcType=DECIMAL}, 
-			</if>
-			<if test="maxBuyPrice != null">
-			`max_buy_price` = #{maxBuyPrice,jdbcType=DECIMAL}, 
 			</if>
 			<if test="status != null">
 			`status` = #{status,jdbcType=INTEGER}, 
@@ -291,12 +292,12 @@
 			`currency_id2` = #{tCurrencyTrade.currencyId2,jdbcType=INTEGER}, 
 			`price_decimal_digits` = #{tCurrencyTrade.priceDecimalDigits,jdbcType=INTEGER}, 
 			`count_decimal_digits` = #{tCurrencyTrade.countDecimalDigits,jdbcType=INTEGER}, 
+			`min_buy_price` = #{tCurrencyTrade.minBuyPrice,jdbcType=DECIMAL}, 
 			`min_buy_count` = #{tCurrencyTrade.minBuyCount,jdbcType=DECIMAL}, 
-			`min_Buy_price` = #{tCurrencyTrade.minBuyPrice,jdbcType=DECIMAL}, 
 			`min_buy_amount` = #{tCurrencyTrade.minBuyAmount,jdbcType=DECIMAL}, 
+			`max_buy_price` = #{tCurrencyTrade.maxBuyPrice,jdbcType=DECIMAL}, 
 			`max_buy_count` = #{tCurrencyTrade.maxBuyCount,jdbcType=DECIMAL}, 
 			`max_buy_amount` = #{tCurrencyTrade.maxBuyAmount,jdbcType=DECIMAL}, 
-			`max_buy_price` = #{tCurrencyTrade.maxBuyPrice,jdbcType=DECIMAL}, 
 			`status` = #{tCurrencyTrade.status,jdbcType=INTEGER}, 
 			`sort` = #{tCurrencyTrade.sort,jdbcType=INTEGER}, 
 			`create_time` = #{tCurrencyTrade.createTime,jdbcType=TIMESTAMP}, 
@@ -322,23 +323,23 @@
 			<if test="condiTCurrencyTrade.countDecimalDigits != null">
 			AND `count_decimal_digits` = #{condiTCurrencyTrade.countDecimalDigits,jdbcType=INTEGER}
 			</if>
+			<if test="condiTCurrencyTrade.minBuyPrice != null">
+			AND `min_buy_price` = #{condiTCurrencyTrade.minBuyPrice,jdbcType=DECIMAL}
+			</if>
 			<if test="condiTCurrencyTrade.minBuyCount != null">
 			AND `min_buy_count` = #{condiTCurrencyTrade.minBuyCount,jdbcType=DECIMAL}
 			</if>
-			<if test="condiTCurrencyTrade.minBuyPrice != null">
-			AND `min_Buy_price` = #{condiTCurrencyTrade.minBuyPrice,jdbcType=DECIMAL}
-			</if>
 			<if test="condiTCurrencyTrade.minBuyAmount != null">
 			AND `min_buy_amount` = #{condiTCurrencyTrade.minBuyAmount,jdbcType=DECIMAL}
+			</if>
+			<if test="condiTCurrencyTrade.maxBuyPrice != null">
+			AND `max_buy_price` = #{condiTCurrencyTrade.maxBuyPrice,jdbcType=DECIMAL}
 			</if>
 			<if test="condiTCurrencyTrade.maxBuyCount != null">
 			AND `max_buy_count` = #{condiTCurrencyTrade.maxBuyCount,jdbcType=DECIMAL}
 			</if>
 			<if test="condiTCurrencyTrade.maxBuyAmount != null">
 			AND `max_buy_amount` = #{condiTCurrencyTrade.maxBuyAmount,jdbcType=DECIMAL}
-			</if>
-			<if test="condiTCurrencyTrade.maxBuyPrice != null">
-			AND `max_buy_price` = #{condiTCurrencyTrade.maxBuyPrice,jdbcType=DECIMAL}
 			</if>
 			<if test="condiTCurrencyTrade.status != null">
 			AND `status` = #{condiTCurrencyTrade.status,jdbcType=INTEGER}
@@ -375,23 +376,23 @@
 			<if test="tCurrencyTrade.countDecimalDigits != null">
 			`count_decimal_digits` = #{tCurrencyTrade.countDecimalDigits,jdbcType=INTEGER}, 
 			</if>
+			<if test="tCurrencyTrade.minBuyPrice != null">
+			`min_buy_price` = #{tCurrencyTrade.minBuyPrice,jdbcType=DECIMAL}, 
+			</if>
 			<if test="tCurrencyTrade.minBuyCount != null">
 			`min_buy_count` = #{tCurrencyTrade.minBuyCount,jdbcType=DECIMAL}, 
 			</if>
-			<if test="tCurrencyTrade.minBuyPrice != null">
-			`min_Buy_price` = #{tCurrencyTrade.minBuyPrice,jdbcType=DECIMAL}, 
-			</if>
 			<if test="tCurrencyTrade.minBuyAmount != null">
 			`min_buy_amount` = #{tCurrencyTrade.minBuyAmount,jdbcType=DECIMAL}, 
+			</if>
+			<if test="tCurrencyTrade.maxBuyPrice != null">
+			`max_buy_price` = #{tCurrencyTrade.maxBuyPrice,jdbcType=DECIMAL}, 
 			</if>
 			<if test="tCurrencyTrade.maxBuyCount != null">
 			`max_buy_count` = #{tCurrencyTrade.maxBuyCount,jdbcType=DECIMAL}, 
 			</if>
 			<if test="tCurrencyTrade.maxBuyAmount != null">
 			`max_buy_amount` = #{tCurrencyTrade.maxBuyAmount,jdbcType=DECIMAL}, 
-			</if>
-			<if test="tCurrencyTrade.maxBuyPrice != null">
-			`max_buy_price` = #{tCurrencyTrade.maxBuyPrice,jdbcType=DECIMAL}, 
 			</if>
 			<if test="tCurrencyTrade.status != null">
 			`status` = #{tCurrencyTrade.status,jdbcType=INTEGER}, 
@@ -427,23 +428,23 @@
 			<if test="condiTCurrencyTrade.countDecimalDigits != null">
 			AND `count_decimal_digits` = #{condiTCurrencyTrade.countDecimalDigits,jdbcType=INTEGER}
 			</if>
+			<if test="condiTCurrencyTrade.minBuyPrice != null">
+			AND `min_buy_price` = #{condiTCurrencyTrade.minBuyPrice,jdbcType=DECIMAL}
+			</if>
 			<if test="condiTCurrencyTrade.minBuyCount != null">
 			AND `min_buy_count` = #{condiTCurrencyTrade.minBuyCount,jdbcType=DECIMAL}
 			</if>
-			<if test="condiTCurrencyTrade.minBuyPrice != null">
-			AND `min_Buy_price` = #{condiTCurrencyTrade.minBuyPrice,jdbcType=DECIMAL}
-			</if>
 			<if test="condiTCurrencyTrade.minBuyAmount != null">
 			AND `min_buy_amount` = #{condiTCurrencyTrade.minBuyAmount,jdbcType=DECIMAL}
+			</if>
+			<if test="condiTCurrencyTrade.maxBuyPrice != null">
+			AND `max_buy_price` = #{condiTCurrencyTrade.maxBuyPrice,jdbcType=DECIMAL}
 			</if>
 			<if test="condiTCurrencyTrade.maxBuyCount != null">
 			AND `max_buy_count` = #{condiTCurrencyTrade.maxBuyCount,jdbcType=DECIMAL}
 			</if>
 			<if test="condiTCurrencyTrade.maxBuyAmount != null">
 			AND `max_buy_amount` = #{condiTCurrencyTrade.maxBuyAmount,jdbcType=DECIMAL}
-			</if>
-			<if test="condiTCurrencyTrade.maxBuyPrice != null">
-			AND `max_buy_price` = #{condiTCurrencyTrade.maxBuyPrice,jdbcType=DECIMAL}
 			</if>
 			<if test="condiTCurrencyTrade.status != null">
 			AND `status` = #{condiTCurrencyTrade.status,jdbcType=INTEGER}
@@ -469,12 +470,12 @@
 			`currency_id2`, 
 			`price_decimal_digits`, 
 			`count_decimal_digits`, 
+			`min_buy_price`, 
 			`min_buy_count`, 
-			`min_Buy_price`, 
 			`min_buy_amount`, 
+			`max_buy_price`, 
 			`max_buy_count`, 
 			`max_buy_amount`, 
-			`max_buy_price`, 
 			`status`, 
 			`sort`, 
 			`create_time`, 
@@ -493,12 +494,12 @@
 			`currency_id2`, 
 			`price_decimal_digits`, 
 			`count_decimal_digits`, 
+			`min_buy_price`, 
 			`min_buy_count`, 
-			`min_Buy_price`, 
 			`min_buy_amount`, 
+			`max_buy_price`, 
 			`max_buy_count`, 
 			`max_buy_amount`, 
-			`max_buy_price`, 
 			`status`, 
 			`sort`, 
 			`create_time`, 
@@ -520,23 +521,23 @@
 			<if test="countDecimalDigits != null">
 			AND `count_decimal_digits` = #{countDecimalDigits,jdbcType=INTEGER}
 			</if>
+			<if test="minBuyPrice != null">
+			AND `min_buy_price` = #{minBuyPrice,jdbcType=DECIMAL}
+			</if>
 			<if test="minBuyCount != null">
 			AND `min_buy_count` = #{minBuyCount,jdbcType=DECIMAL}
 			</if>
-			<if test="minBuyPrice != null">
-			AND `min_Buy_price` = #{minBuyPrice,jdbcType=DECIMAL}
-			</if>
 			<if test="minBuyAmount != null">
 			AND `min_buy_amount` = #{minBuyAmount,jdbcType=DECIMAL}
+			</if>
+			<if test="maxBuyPrice != null">
+			AND `max_buy_price` = #{maxBuyPrice,jdbcType=DECIMAL}
 			</if>
 			<if test="maxBuyCount != null">
 			AND `max_buy_count` = #{maxBuyCount,jdbcType=DECIMAL}
 			</if>
 			<if test="maxBuyAmount != null">
 			AND `max_buy_amount` = #{maxBuyAmount,jdbcType=DECIMAL}
-			</if>
-			<if test="maxBuyPrice != null">
-			AND `max_buy_price` = #{maxBuyPrice,jdbcType=DECIMAL}
 			</if>
 			<if test="status != null">
 			AND `status` = #{status,jdbcType=INTEGER}
@@ -562,12 +563,12 @@
 			`currency_id2`, 
 			`price_decimal_digits`, 
 			`count_decimal_digits`, 
+			`min_buy_price`, 
 			`min_buy_count`, 
-			`min_Buy_price`, 
 			`min_buy_amount`, 
+			`max_buy_price`, 
 			`max_buy_count`, 
 			`max_buy_amount`, 
-			`max_buy_price`, 
 			`status`, 
 			`sort`, 
 			`create_time`, 
@@ -584,12 +585,12 @@
 			`currency_id2`, 
 			`price_decimal_digits`, 
 			`count_decimal_digits`, 
+			`min_buy_price`, 
 			`min_buy_count`, 
-			`min_Buy_price`, 
 			`min_buy_amount`, 
+			`max_buy_price`, 
 			`max_buy_count`, 
 			`max_buy_amount`, 
-			`max_buy_price`, 
 			`status`, 
 			`sort`, 
 			`create_time`, 
@@ -611,23 +612,23 @@
 			<if test="countDecimalDigits != null">
 			AND `count_decimal_digits` = #{countDecimalDigits,jdbcType=INTEGER}
 			</if>
+			<if test="minBuyPrice != null">
+			AND `min_buy_price` = #{minBuyPrice,jdbcType=DECIMAL}
+			</if>
 			<if test="minBuyCount != null">
 			AND `min_buy_count` = #{minBuyCount,jdbcType=DECIMAL}
 			</if>
-			<if test="minBuyPrice != null">
-			AND `min_Buy_price` = #{minBuyPrice,jdbcType=DECIMAL}
-			</if>
 			<if test="minBuyAmount != null">
 			AND `min_buy_amount` = #{minBuyAmount,jdbcType=DECIMAL}
+			</if>
+			<if test="maxBuyPrice != null">
+			AND `max_buy_price` = #{maxBuyPrice,jdbcType=DECIMAL}
 			</if>
 			<if test="maxBuyCount != null">
 			AND `max_buy_count` = #{maxBuyCount,jdbcType=DECIMAL}
 			</if>
 			<if test="maxBuyAmount != null">
 			AND `max_buy_amount` = #{maxBuyAmount,jdbcType=DECIMAL}
-			</if>
-			<if test="maxBuyPrice != null">
-			AND `max_buy_price` = #{maxBuyPrice,jdbcType=DECIMAL}
 			</if>
 			<if test="status != null">
 			AND `status` = #{status,jdbcType=INTEGER}
@@ -652,12 +653,12 @@
 			`currency_id2`, 
 			`price_decimal_digits`, 
 			`count_decimal_digits`, 
+			`min_buy_price`, 
 			`min_buy_count`, 
-			`min_Buy_price`, 
 			`min_buy_amount`, 
+			`max_buy_price`, 
 			`max_buy_count`, 
 			`max_buy_amount`, 
-			`max_buy_price`, 
 			`status`, 
 			`sort`, 
 			`create_time`, 
@@ -685,23 +686,23 @@
 			<if test="tCurrencyTrade.countDecimalDigits != null">
 			AND `count_decimal_digits` = #{tCurrencyTrade.countDecimalDigits,jdbcType=INTEGER}
 			</if>
+			<if test="tCurrencyTrade.minBuyPrice != null">
+			AND `min_buy_price` = #{tCurrencyTrade.minBuyPrice,jdbcType=DECIMAL}
+			</if>
 			<if test="tCurrencyTrade.minBuyCount != null">
 			AND `min_buy_count` = #{tCurrencyTrade.minBuyCount,jdbcType=DECIMAL}
 			</if>
-			<if test="tCurrencyTrade.minBuyPrice != null">
-			AND `min_Buy_price` = #{tCurrencyTrade.minBuyPrice,jdbcType=DECIMAL}
-			</if>
 			<if test="tCurrencyTrade.minBuyAmount != null">
 			AND `min_buy_amount` = #{tCurrencyTrade.minBuyAmount,jdbcType=DECIMAL}
+			</if>
+			<if test="tCurrencyTrade.maxBuyPrice != null">
+			AND `max_buy_price` = #{tCurrencyTrade.maxBuyPrice,jdbcType=DECIMAL}
 			</if>
 			<if test="tCurrencyTrade.maxBuyCount != null">
 			AND `max_buy_count` = #{tCurrencyTrade.maxBuyCount,jdbcType=DECIMAL}
 			</if>
 			<if test="tCurrencyTrade.maxBuyAmount != null">
 			AND `max_buy_amount` = #{tCurrencyTrade.maxBuyAmount,jdbcType=DECIMAL}
-			</if>
-			<if test="tCurrencyTrade.maxBuyPrice != null">
-			AND `max_buy_price` = #{tCurrencyTrade.maxBuyPrice,jdbcType=DECIMAL}
 			</if>
 			<if test="tCurrencyTrade.status != null">
 			AND `status` = #{tCurrencyTrade.status,jdbcType=INTEGER}
@@ -727,12 +728,12 @@
 			`currency_id2`, 
 			`price_decimal_digits`, 
 			`count_decimal_digits`, 
+			`min_buy_price`, 
 			`min_buy_count`, 
-			`min_Buy_price`, 
 			`min_buy_amount`, 
+			`max_buy_price`, 
 			`max_buy_count`, 
 			`max_buy_amount`, 
-			`max_buy_price`, 
 			`status`, 
 			`sort`, 
 			`create_time`, 
@@ -755,23 +756,23 @@
 			<if test="tCurrencyTrade.countDecimalDigits != null">
 			AND `count_decimal_digits` = #{tCurrencyTrade.countDecimalDigits,jdbcType=INTEGER}
 			</if>
+			<if test="tCurrencyTrade.minBuyPrice != null">
+			AND `min_buy_price` = #{tCurrencyTrade.minBuyPrice,jdbcType=DECIMAL}
+			</if>
 			<if test="tCurrencyTrade.minBuyCount != null">
 			AND `min_buy_count` = #{tCurrencyTrade.minBuyCount,jdbcType=DECIMAL}
 			</if>
-			<if test="tCurrencyTrade.minBuyPrice != null">
-			AND `min_Buy_price` = #{tCurrencyTrade.minBuyPrice,jdbcType=DECIMAL}
-			</if>
 			<if test="tCurrencyTrade.minBuyAmount != null">
 			AND `min_buy_amount` = #{tCurrencyTrade.minBuyAmount,jdbcType=DECIMAL}
+			</if>
+			<if test="tCurrencyTrade.maxBuyPrice != null">
+			AND `max_buy_price` = #{tCurrencyTrade.maxBuyPrice,jdbcType=DECIMAL}
 			</if>
 			<if test="tCurrencyTrade.maxBuyCount != null">
 			AND `max_buy_count` = #{tCurrencyTrade.maxBuyCount,jdbcType=DECIMAL}
 			</if>
 			<if test="tCurrencyTrade.maxBuyAmount != null">
 			AND `max_buy_amount` = #{tCurrencyTrade.maxBuyAmount,jdbcType=DECIMAL}
-			</if>
-			<if test="tCurrencyTrade.maxBuyPrice != null">
-			AND `max_buy_price` = #{tCurrencyTrade.maxBuyPrice,jdbcType=DECIMAL}
 			</if>
 			<if test="tCurrencyTrade.status != null">
 			AND `status` = #{tCurrencyTrade.status,jdbcType=INTEGER}

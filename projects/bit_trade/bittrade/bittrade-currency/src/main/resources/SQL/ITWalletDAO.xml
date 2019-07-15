@@ -41,4 +41,14 @@
 		INNER JOIN t_wallet w2 ON w2.currency_id = t.currency_id2 AND w2.user_id = #{userId}
 		WHERE t.id = #{currencyTradeId}
 	</select>
+	
+	<update id="modifyTradeFrozen">
+		UPDATE t_wallet
+		SET 
+			total = total - #{tradeFrozen}, 
+			trade_frozen = trade_frozen + #{tradeFrozen}, 
+			version = version + 1
+		WHERE id = #{id} AND version = #{version}
+	</update>
+	
 </mapper>
