@@ -14,10 +14,11 @@
 	<packaging>pom</packaging>
 	
 	<modules>
-		<module>test-bittrade-pojo</module>
-		<module>test-bittrade-api</module>
-		<module>test-bittrade-client</module>
-		<module>test-bittrade-svc</module>
+		<module>test-pojo</module>
+		<module>test-__default</module>
+		<module>test-api</module>
+		<module>test-client</module>
+		<module>test-svc</module>
 		<module>test</module>
 	</modules>
 	
@@ -33,12 +34,17 @@
 			
 			<dependency>
 				<groupId>com.bittrade</groupId>
-				<artifactId>test-bittrade-pojo</artifactId>
+				<artifactId>test-pojo</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.bittrade</groupId>
-				<artifactId>test-bittrade-api</artifactId>
+				<artifactId>test-__default</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.bittrade</groupId>
+				<artifactId>test-api</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 		</dependencies>

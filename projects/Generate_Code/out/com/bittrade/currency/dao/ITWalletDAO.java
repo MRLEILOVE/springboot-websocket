@@ -1,6 +1,6 @@
 package com.bittrade.currency.dao;
 
-import com.bittrade.currency.api.__default.DAO.IDefaultTWalletDAO;
+import com.bittrade.__default.DAO.IDefaultTWalletDAO;
 
 /**
  * 

@@ -1,0 +1,29 @@
+data:
+  #model-package: com.*.pojo.model.*
+  #mapper-locations: classpath*:/__default/DAO_SQL/**/I*DAO.xml,classpath*:/dao_SQL/**/I*DAO.xml
+  application:
+    name: svc
+
+server:
+  port: 8900
+
+spring:
+#  application:
+#    name: svc
+  profiles:
+    active: common
+
+  ###ThymeLeaf配置
+  thymeleaf:
+    #模板的模式，支持 HTML, XML TEXT JAVASCRIPT HTML5
+    mode: LEGACYHTML5
+    #编码 可不用配置
+    encoding: UTF-8
+    #内容类别,可不用配置
+    content-type: text/html; charset=UTF-8
+    #开发配置为false,避免修改模板还要重启服务器
+    cache: false
+    #配置模板路径，默认是templates，可以不用配置
+    prefix: classpath:/templates/
+    #配置页面后缀 
+    suffix: .html

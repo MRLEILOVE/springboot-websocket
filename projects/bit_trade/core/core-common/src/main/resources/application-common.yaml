@@ -46,13 +46,23 @@ spring:
           - 154.222.138.5:7004
           - 154.222.138.5:7005
         password: Qdsemmde_sde@#!Bitrade
+  transaction: 
+    attributes: 
+      add*=PROPAGATION_REQUIRED,-Exception
+      
+      remove*=PROPAGATION_REQUIRED,-Exception
+      
+      modify*=PROPAGATION_REQUIRED,-Exception
+      
+      get*=PROPAGATION_REQUIRED,-Exception,readOnly
+    expression: execution (* com..service.*.*(..))
   application_name: bittrade-${data.application.name}
   profiles:
     include:
       - eureka
 
 mybatis-plus:
-  mapper-locations: classpath*:/__default_SQL/**/I*DAO.xml,classpath*:/SQL/**/I*DAO.xml
+  mapper-locations: classpath*:/__default_SQL/**/IDefault*DAO.xml,classpath*:/SQL/**/I*DAO.xml
   #mapper-locations: ${data.mapper-locations}
   #实体扫描，多个package用逗号或者分号分隔
   typeAliasesPackage: ${data.model-package:com.**.pojo.model.*}

@@ -24,6 +24,7 @@
 
 	<!-- 通用查询结果列 -->
 	<sql id="Base_Column_List">
+		`id` AS id, 
 		`symbol` AS symbol, 
 		`currency_id1` AS currencyId1, 
 		`currency_id2` AS currencyId2, 

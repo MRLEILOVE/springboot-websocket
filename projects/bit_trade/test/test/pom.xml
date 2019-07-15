@@ -15,7 +15,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>com.bittrade</groupId>
-			<artifactId>test-bittrade-api</artifactId>
+			<artifactId>test-api</artifactId>
 		</dependency>
 		
 		<!-- <dependency>

@@ -1,6 +1,6 @@
 package ${BASE_PKG}.${DAO}${module_name};
 
-import ${API_BASE_PKG}.__default.DAO${module_name}.IDefault${struct.className}DAO;
+import ${DEFAULT_BASE_PKG}.DAO${module_name}.IDefault${struct.className}DAO;
 
 /**
  * 

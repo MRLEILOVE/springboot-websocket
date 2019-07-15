@@ -3,8 +3,11 @@ package com.bittrade.pojo.model;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.core.framework.base.model.BaseModel;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 /**
  * 
@@ -13,6 +16,9 @@ import lombok.EqualsAndHashCode;
  *
  */
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 @TableName(value="t_currency")
 public class TCurrency extends BaseModel<TCurrency> {
@@ -67,6 +73,7 @@ public class TCurrency extends BaseModel<TCurrency> {
 	/**
 	 * 主键id
 	 */
+	@com.baomidou.mybatisplus.annotation.TableId(value = "id", type = com.baomidou.mybatisplus.annotation.IdType.AUTO)
 	private Integer id;
 	
 	/**
