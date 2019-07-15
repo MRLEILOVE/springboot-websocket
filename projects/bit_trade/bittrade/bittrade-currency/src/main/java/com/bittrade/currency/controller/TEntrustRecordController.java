@@ -2,7 +2,6 @@ package com.bittrade.currency.controller;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.alibaba.dubbo.config.annotation.Reference;
 import com.bittrade.entrust.api.service.ITEntrustRecordService;
 import com.bittrade.pojo.dto.TEntrustRecordDTO;
 import com.bittrade.pojo.model.TEntrustRecord;
@@ -29,7 +29,7 @@ import io.swagger.annotations.ApiOperation;
 @ResponseBody
 @RequestMapping(value = { "/tEntrustRecord" }, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class TEntrustRecordController extends BaseController<TEntrustRecord, TEntrustRecordDTO, TEntrustRecordVO, ITEntrustRecordService> {
-    @Autowired
+	@Reference
     private ITEntrustRecordService entrustRecordService;
 
     @ApiOperation(value = "查询用户成交记录")

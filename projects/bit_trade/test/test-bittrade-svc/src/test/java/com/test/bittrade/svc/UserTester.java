@@ -60,4 +60,9 @@ public class UserTester extends BaseTester {
 		System.out.println("==" + userService.getsByPage(u, 1, 3));
 	}
 
+	@Test
+	public void testTrans() {
+		userService.testTrans();
+	}
+
 }

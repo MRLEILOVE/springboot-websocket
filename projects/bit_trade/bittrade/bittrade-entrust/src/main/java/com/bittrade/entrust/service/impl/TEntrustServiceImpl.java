@@ -2,6 +2,9 @@ package com.bittrade.entrust.service.impl;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -16,6 +19,7 @@ import com.bittrade.common.enums.EntrustTypeEnumer;
 import com.bittrade.common.enums.StatusEnumer;
 import com.bittrade.currency.api.service.ITCurrencyTradeService;
 import com.bittrade.currency.api.service.ITWalletService;
+import com.bittrade.entrust.api.service.IMakeAMatchService;
 import com.bittrade.entrust.api.service.ITEntrustService;
 import com.bittrade.entrust.dao.ITEntrustDAO;
 import com.bittrade.pojo.dto.DealDTO;
@@ -38,14 +42,17 @@ import com.core.tool.SnowFlake;
 public class TEntrustServiceImpl extends DefaultTEntrustServiceImpl<ITEntrustDAO, TEntrust, TEntrustDTO, TEntrustVO> implements ITEntrustService {
 
 	@Autowired
-	private ITEntrustDAO			entrustDAO;
+	private ITEntrustDAO					entrustDAO;
 
 	@Reference
-	private ITCurrencyTradeService	currencyTradeService;
+	private ITCurrencyTradeService			currencyTradeService;
 	@Reference
-	private ITWalletService			walletService;
+	private ITWalletService					walletService;
+	@Autowired
+	private IMakeAMatchService				makeAMatchService;
 
-	private static final SnowFlake	SNOW_FLAKE__ENTRUST	= new SnowFlake( 1, 1 );
+	private static final SnowFlake			SNOW_FLAKE__ENTRUST	= new SnowFlake( 1, 1 );
+	private static final ExecutorService	ES					= Executors.newFixedThreadPool( 50 );
 
 	/**
 	 * 查询用户当前委托
@@ -151,10 +158,14 @@ public class TEntrustServiceImpl extends DefaultTEntrustServiceImpl<ITEntrustDAO
 		entrust.setPrice( bd_price );
 		entrust.setCount( bd_count );
 		{
-//			entrust.setCount( entrust.getCount().setScale( IConstant.COUNT_DECIMAL_LENGTH, BigDecimal.ROUND_HALF_DOWN ) );
+			// entrust.setCount( entrust.getCount().setScale(
+			// IConstant.COUNT_DECIMAL_LENGTH, BigDecimal.ROUND_HALF_DOWN ) );
 			if (entrust.getPrice() != null) {
-//				entrust.setPrice( entrust.getPrice().setScale( IConstant.PRICE_DECIMAL_LENGTH, BigDecimal.ROUND_HALF_DOWN ) );
-				entrust.setAmount( entrust.getPrice().multiply( entrust.getCount() ).setScale( IConstant.AMOUNT_DECIMAL_LENGTH, BigDecimal.ROUND_HALF_DOWN ) );
+				// entrust.setPrice( entrust.getPrice().setScale(
+				// IConstant.PRICE_DECIMAL_LENGTH, BigDecimal.ROUND_HALF_DOWN )
+				// );
+				entrust.setAmount(
+						entrust.getPrice().multiply( entrust.getCount() ).setScale( IConstant.AMOUNT_DECIMAL_LENGTH, BigDecimal.ROUND_HALF_DOWN ) );
 			}
 		}
 		entrust.setSuccessAmount( BigDecimal.ZERO );
@@ -162,6 +173,14 @@ public class TEntrustServiceImpl extends DefaultTEntrustServiceImpl<ITEntrustDAO
 		entrust.setStatus( EntrustStatusEnumer.UNFINISH.getCode() );
 		entrust.setVersion( 0 );
 		add( entrust );
+
+		ES.submit( new Callable<String>() {
+			@Override
+			public String call() throws Exception {
+				makeAMatchService.makeAMatch( entrust );
+				return null;
+			}
+		} );
 
 		return ReturnDTO.ok( "委托成功" );
 	}

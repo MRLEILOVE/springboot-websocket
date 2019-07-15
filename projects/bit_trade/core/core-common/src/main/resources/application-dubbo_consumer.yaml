@@ -7,7 +7,11 @@ dubbo:
   registry:
     #address: zookeeper://127.0.0.1:2181
     address: N/A
+    check: false
   monitor:
     protocol: registry
   consumer:
+    check: false
     timeout: 3000
+#  reference:
+#    check: false

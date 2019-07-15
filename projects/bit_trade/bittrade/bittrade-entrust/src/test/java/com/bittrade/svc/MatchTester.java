@@ -3,6 +3,7 @@ package com.bittrade.svc;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.bittrade.entrust.api.service.ITEntrustService;
 import com.bittrade.entrust.service.impl.MakeAMatchServiceImpl;
 import com.bittrade.svc.base.BaseTester;
 
@@ -36,5 +37,8 @@ public class MatchTester extends BaseTester {
 //			}
 //		}
 	}
+	
+	@Autowired
+	ITEntrustService entrustService;
 
 }

@@ -15,4 +15,4 @@ spring:
 #  application:
 #    name: currency
   profiles:
-    active: common, dubbo_provider
+    active: common, dubbo_provider, dubbo_consumer
