@@ -50,7 +50,7 @@ public class SettleAccount {
 
 	private static final SnowFlake	SNOW_FLAKE			= new SnowFlake( 1, 1 );
 
-	//@Scheduled(cron = "0/1 * * * * ?")
+	@Scheduled(cron = "0/1 * * * * ?")
 	public void sellte() {
 		try {
 			// 1、查询卖方向的未结算的订单
@@ -103,6 +103,16 @@ public class SettleAccount {
 		}
 	}
 
+	/**
+	 * updateUserWallet:(操作用户钱包). <br/>
+	 * 
+	 * @author Administrator
+	 * @param wallet
+	 * @param val
+	 * @param entrustRecordId
+	 * @param bool
+	 * @since JDK 1.8
+	 */
 	private void updateUserWallet(TWallet wallet, BigDecimal val, long entrustRecordId, boolean bool) {
 		TWallet updateWallet = new TWallet();// 修改的对象
 		if (bool) {
@@ -142,7 +152,6 @@ public class SettleAccount {
 		walletRecord.setAfterAmount( beforeAmount.add( val ) );
 		// 插入流水
 		walletRecordService.add( walletRecord );
-
 	}
 
 }

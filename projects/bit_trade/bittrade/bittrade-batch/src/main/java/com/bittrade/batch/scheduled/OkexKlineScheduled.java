@@ -52,7 +52,7 @@ public class OkexKlineScheduled {
 	/**
 	 * 拉取交易对历史K线数据
 	 */
-	//@Scheduled(cron = "0/10 * * * * ?")
+	@Scheduled(cron = "0/10 * * * * ?")
 	public void kline() {
 		try {
 			String klineSwitch = GeneralMethod.qryParamConfigInfo( paramConfigService, ParamKeyEnum.OKEX_KLINE_HISTORY_SWITCH_KEY.getKey() )
