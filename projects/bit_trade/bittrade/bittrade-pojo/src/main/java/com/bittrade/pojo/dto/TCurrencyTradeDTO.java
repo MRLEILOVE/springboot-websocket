@@ -22,12 +22,12 @@ public class TCurrencyTradeDTO extends BaseDTO<TCurrencyTradeDTO> {
 	private Integer currencyId2;
 	private Integer priceDecimalDigits;
 	private Integer countDecimalDigits;
-	private java.math.BigDecimal minBuyCount;
 	private java.math.BigDecimal minBuyPrice;
+	private java.math.BigDecimal minBuyCount;
 	private java.math.BigDecimal minBuyAmount;
+	private java.math.BigDecimal maxBuyPrice;
 	private java.math.BigDecimal maxBuyCount;
 	private java.math.BigDecimal maxBuyAmount;
-	private java.math.BigDecimal maxBuyPrice;
 	private Byte status;
 	private Integer sort;
 	private java.util.Date createTime;

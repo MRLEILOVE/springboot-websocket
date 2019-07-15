@@ -81,7 +81,8 @@
 		SET 
 			success_amount = #{successAmount}, 
 			left_count = #{leftCount}, 
-			status = #{status}
+			status = #{status}, 
+			version = version + 1
 		WHERE id = #{ID}
 	</update>
 

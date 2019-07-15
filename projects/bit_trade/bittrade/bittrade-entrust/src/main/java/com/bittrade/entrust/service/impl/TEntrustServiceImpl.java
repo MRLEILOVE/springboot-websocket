@@ -8,12 +8,12 @@ import org.springframework.stereotype.Component;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.alibaba.dubbo.config.annotation.Service;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.segments.MergeSegments;
 import com.bittrade.__default.service.impl.DefaultTEntrustServiceImpl;
 import com.bittrade.common.constant.IConstant;
 import com.bittrade.common.enums.EntrustDirectionEnumer;
 import com.bittrade.common.enums.EntrustStatusEnumer;
+import com.bittrade.common.enums.EntrustTypeEnumer;
+import com.bittrade.common.enums.StatusEnumer;
 import com.bittrade.currency.api.service.ITCurrencyTradeService;
 import com.bittrade.currency.api.service.ITWalletService;
 import com.bittrade.entrust.api.service.ITEntrustService;
@@ -38,14 +38,14 @@ import com.core.tool.SnowFlake;
 public class TEntrustServiceImpl extends DefaultTEntrustServiceImpl<ITEntrustDAO, TEntrust, TEntrustDTO, TEntrustVO> implements ITEntrustService {
 
 	@Autowired
-	private ITEntrustDAO		entrustDAO;
+	private ITEntrustDAO			entrustDAO;
 
 	@Reference
-	private ITCurrencyTradeService currencyTradeService;
+	private ITCurrencyTradeService	currencyTradeService;
 	@Reference
-	private ITWalletService walletService;
+	private ITWalletService			walletService;
 
-	private static final SnowFlake SNOW_FLAKE__ENTRUST = new SnowFlake(1, 1);
+	private static final SnowFlake	SNOW_FLAKE__ENTRUST	= new SnowFlake( 1, 1 );
 
 	/**
 	 * 查询用户当前委托
@@ -72,12 +72,22 @@ public class TEntrustServiceImpl extends DefaultTEntrustServiceImpl<ITEntrustDAO
 		if (currencyTrade == null) {
 			return ReturnDTO.error( "交易对不存在" );
 		}
+		if (currencyTrade.getStatus() != StatusEnumer.ENABLE.getCode()) {
+			return ReturnDTO.error( "交易对状态不可用" );
+		}
 
-		String[] split_price = dealDTO.getPrice().split( "." );
-		if (split_price != null && split_price.length == 2) {
-			int length = split_price[ 1 ].length();
-			if (length > currencyTrade.getPriceDecimalDigits()) {
-				return ReturnDTO.error( "单价小数位过长" );
+		BigDecimal bd_price = null;
+		if (dealDTO.getEntrustType() == EntrustTypeEnumer.LIMIT.getCode()) {
+			String[] split_price = dealDTO.getPrice().split( "." );
+			if (split_price != null && split_price.length == 2) {
+				int length = split_price[ 1 ].length();
+				if (length > currencyTrade.getPriceDecimalDigits()) {
+					return ReturnDTO.error( "单价小数位过长" );
+				}
+			}
+			bd_price = new BigDecimal( dealDTO.getPrice() ).setScale( IConstant.PRICE_DECIMAL_LENGTH, BigDecimal.ROUND_HALF_DOWN );
+			if (bd_price.compareTo( currencyTrade.getMinBuyPrice() ) == -1) {
+				return ReturnDTO.error( "单价低于最小可买/可卖单价" );
 			}
 		}
 
@@ -89,32 +99,23 @@ public class TEntrustServiceImpl extends DefaultTEntrustServiceImpl<ITEntrustDAO
 			}
 		}
 
-		BigDecimal bd_count = new BigDecimal( dealDTO.getCount() );
-		BigDecimal bd_price = new BigDecimal( dealDTO.getPrice() );
-		BigDecimal bd_amount = new BigDecimal( dealDTO.getAmount() );
+		BigDecimal bd_count = new BigDecimal( dealDTO.getCount() ).setScale( IConstant.COUNT_DECIMAL_LENGTH, BigDecimal.ROUND_HALF_DOWN );
 
 		if (bd_count.compareTo( currencyTrade.getMinBuyCount() ) == -1) {
 			return ReturnDTO.error( "数量低于最小可买/可卖数量" );
 		}
-		if (bd_price.compareTo( currencyTrade.getMinBuyPrice() ) == -1) {
-			return ReturnDTO.error( "单价低于最小可买/可卖单价" );
-		}
-		if (bd_amount.compareTo( currencyTrade.getMinBuyAmount() ) == -1) {
-			return ReturnDTO.error( "总价低于最小可买/可卖总价" );
-		}
-		if (bd_count.compareTo( currencyTrade.getMaxBuyCount() ) == 1) {
-			return ReturnDTO.error( "数量高于最大可买/可卖数量" );
-		}
-		if (bd_price.compareTo( currencyTrade.getMaxBuyPrice() ) == 1) {
-			return ReturnDTO.error( "单价高于最大可买/可卖单价" );
-		}
-		if (bd_amount.compareTo( currencyTrade.getMaxBuyAmount() ) == 1) {
-			return ReturnDTO.error( "总价高于最大可买/可卖总价" );
-		}
-
-		if (currencyTrade.getStatus() != 1) {
-			return ReturnDTO.error( "交易对状态不可用" );
-		}
+		// if (bd_amount.compareTo( currencyTrade.getMinBuyAmount() ) == -1) {
+		// return ReturnDTO.error( "总价低于最小可买/可卖总价" );
+		// }
+		// if (bd_price.compareTo( currencyTrade.getMaxBuyPrice() ) == 1) {
+		// return ReturnDTO.error( "单价高于最大可买/可卖单价" );
+		// }
+		// if (bd_count.compareTo( currencyTrade.getMaxBuyCount() ) == 1) {
+		// return ReturnDTO.error( "数量高于最大可买/可卖数量" );
+		// }
+		// if (bd_amount.compareTo( currencyTrade.getMaxBuyAmount() ) == 1) {
+		// return ReturnDTO.error( "总价高于最大可买/可卖总价" );
+		// }
 
 		// 2.校验用户钱包
 		TWallet queryWallet = new TWallet();
@@ -133,35 +134,36 @@ public class TEntrustServiceImpl extends DefaultTEntrustServiceImpl<ITEntrustDAO
 			return ReturnDTO.error( "用户钱包不存在" );
 		}
 		BigDecimal total = tWallet.getTotal();
-		if (total == null || total.compareTo( bd_amount ) == -1) {
+		if (total == null || total.compareTo( bd_count ) == -1) {
 			return ReturnDTO.error( "用户钱包余额不足" );
 		}
-		
+
+		// 修改钱包。 版本不对，要继续轮询？
+		walletService.modifyTradeFrozen( bd_count, tWallet.getVersion(), tWallet.getId() );
+
 		// 入库委托。
 		TEntrust entrust = new TEntrust();
-		entrust.setId(SNOW_FLAKE__ENTRUST.nextId());
+		entrust.setId( SNOW_FLAKE__ENTRUST.nextId() );
 		entrust.setUserId( dealDTO.getUserId() );
 		entrust.setCurrencyTradeId( dealDTO.getCurrencyTradeId() );
-		// 有待续
+		entrust.setEntrustType( dealDTO.getEntrustType() );
+		entrust.setEntrustDirection( dealDTO.getEntrustDirection() );
 		entrust.setPrice( bd_price );
 		entrust.setCount( bd_count );
 		{
+//			entrust.setCount( entrust.getCount().setScale( IConstant.COUNT_DECIMAL_LENGTH, BigDecimal.ROUND_HALF_DOWN ) );
 			if (entrust.getPrice() != null) {
-				entrust.setPrice(entrust.getPrice().setScale(IConstant.PRICE_DECIMAL_LENGTH, BigDecimal.ROUND_HALF_DOWN));
-				entrust.setAmount(entrust.getPrice().multiply(entrust.getCount()).setScale(IConstant.AMOUNT_DECIMAL_LENGTH, BigDecimal.ROUND_HALF_DOWN));
+//				entrust.setPrice( entrust.getPrice().setScale( IConstant.PRICE_DECIMAL_LENGTH, BigDecimal.ROUND_HALF_DOWN ) );
+				entrust.setAmount( entrust.getPrice().multiply( entrust.getCount() ).setScale( IConstant.AMOUNT_DECIMAL_LENGTH, BigDecimal.ROUND_HALF_DOWN ) );
 			}
-			entrust.setCount(entrust.getCount().setScale(IConstant.COUNT_DECIMAL_LENGTH, BigDecimal.ROUND_HALF_DOWN));
 		}
-		entrust.setSuccessAmount(BigDecimal.ZERO);
-		entrust.setLeftCount(entrust.getCount());
-		entrust.setStatus(EntrustStatusEnumer.UNFINISH.getCode());
-		add(entrust);
-		
-		// 修改钱包。
-//		walletService
+		entrust.setSuccessAmount( BigDecimal.ZERO );
+		entrust.setLeftCount( entrust.getCount() );
+		entrust.setStatus( EntrustStatusEnumer.UNFINISH.getCode() );
+		entrust.setVersion( 0 );
+		add( entrust );
 
-		// #TODO 调用接口
-		return ReturnDTO.ok( "" );
+		return ReturnDTO.ok( "委托成功" );
 	}
 
 	/**
@@ -197,18 +199,6 @@ public class TEntrustServiceImpl extends DefaultTEntrustServiceImpl<ITEntrustDAO
 	@Override
 	public void updateOnMatch(BigDecimal successAmount, BigDecimal leftCount, int status, long ID) {
 		entrustDAO.updateOnMatch( successAmount, leftCount, status, ID );
-	}
-
-	@Override
-	public String testPrm(QueryWrapper<TEntrust> qw) {
-		System.out.println( "---------------------qw=" + qw );
-		return "--==";
-	}
-
-	@Override
-	public String testPrm_2(MergeSegments ms) {
-		System.out.println( "---------------------ms=" + ms );
-		return "testPrm_2 --==";
 	}
 
 }

@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.dubbo.config.annotation.Reference;
+import com.bittrade.common.enums.EntrustDirectionEnumer;
+import com.bittrade.common.enums.EntrustTypeEnumer;
 import com.bittrade.entrust.api.service.ITEntrustService;
 import com.bittrade.pojo.dto.DealDTO;
 import com.bittrade.pojo.dto.TEntrustDTO;
@@ -66,30 +68,37 @@ public class TEntrustController extends BaseController<TEntrust, TEntrustDTO, TE
 	@ApiOperation(value = "买/卖交易对")
 	@PostMapping(value = "/deal")
 	@ResponseBody
-	public ReturnDTO<String> queryDealEntrustByUserId(@RequestBody DealDTO dealDTO) {
+	public ReturnDTO<String> deal(@RequestBody DealDTO dealDTO) {
 		// 1.校验参数
-		String price = dealDTO.getPrice(); // 单价
-		String count = dealDTO.getCount(); // 数量
-		String amount = dealDTO.getAmount(); // 总价
-		if (price == null || Double.parseDouble( price ) <= 0.0) {
-			return ReturnDTO.error( "价格异常" );
-		}
-		if (count == null || Double.parseDouble( count ) <= 0) {
-			return ReturnDTO.error( "数量异常" );
-		}
-		if (amount == null || Double.parseDouble( amount ) <= 0.0) {
-			return ReturnDTO.error( "总价异常" );
+		if (StringUtils.isEmpty( dealDTO.getUserId() )) {
+			return ReturnDTO.error( "用户id为空" );
 		}
 		if (StringUtils.isEmpty( dealDTO.getCurrencyTradeId() )) {
 			return ReturnDTO.error( "交易对id为空" );
 		}
+		if (StringUtils.isEmpty( dealDTO.getEntrustType() )) {
+			return ReturnDTO.error( "委托类型为空" );
+		}
+		if (EntrustTypeEnumer.getEnumer( dealDTO.getEntrustType() ) == null) {
+			return ReturnDTO.error( "委托类型错误" );
+		}
 		if (StringUtils.isEmpty( dealDTO.getEntrustDirection() )) {
 			return ReturnDTO.error( "买卖方向为空" );
 		}
-		if (StringUtils.isEmpty( dealDTO.getUserId() )) {
-			return ReturnDTO.error( "用户id为空" );
+		if (EntrustDirectionEnumer.getEnumer( dealDTO.getEntrustDirection() ) == null) {
+			return ReturnDTO.error( "买卖方向错误" );
 		}
-		
+		if (dealDTO.getEntrustType() == EntrustTypeEnumer.LIMIT.getCode()) {
+			String price = dealDTO.getPrice();
+			if (price == null || Double.parseDouble( price ) <= 0.0) {
+				return ReturnDTO.error( "价格异常" );
+			}
+		}
+		String count = dealDTO.getCount();
+		if (count == null || Double.parseDouble( count ) <= 0) {
+			return ReturnDTO.error( "数量异常" );
+		}
+
 		return entrustService.deal( dealDTO );
 	}
 

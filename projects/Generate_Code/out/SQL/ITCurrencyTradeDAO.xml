@@ -10,12 +10,12 @@
 		<result javaType="Integer" property="currencyId2" jdbcType="INTEGER" column="currency_id2" />
 		<result javaType="Integer" property="priceDecimalDigits" jdbcType="INTEGER" column="price_decimal_digits" />
 		<result javaType="Integer" property="countDecimalDigits" jdbcType="INTEGER" column="count_decimal_digits" />
+		<result javaType="java.math.BigDecimal" property="minBuyPrice" jdbcType="DECIMAL" column="min_buy_price" />
 		<result javaType="java.math.BigDecimal" property="minBuyCount" jdbcType="DECIMAL" column="min_buy_count" />
-		<result javaType="java.math.BigDecimal" property="minBuyPrice" jdbcType="DECIMAL" column="min_Buy_price" />
 		<result javaType="java.math.BigDecimal" property="minBuyAmount" jdbcType="DECIMAL" column="min_buy_amount" />
+		<result javaType="java.math.BigDecimal" property="maxBuyPrice" jdbcType="DECIMAL" column="max_buy_price" />
 		<result javaType="java.math.BigDecimal" property="maxBuyCount" jdbcType="DECIMAL" column="max_buy_count" />
 		<result javaType="java.math.BigDecimal" property="maxBuyAmount" jdbcType="DECIMAL" column="max_buy_amount" />
-		<result javaType="java.math.BigDecimal" property="maxBuyPrice" jdbcType="DECIMAL" column="max_buy_price" />
 		<result javaType="Byte" property="status" jdbcType="INTEGER" column="status" />
 		<result javaType="Integer" property="sort" jdbcType="INTEGER" column="sort" />
 		<result javaType="java.util.Date" property="createTime" jdbcType="TIMESTAMP" column="create_time" />
@@ -29,12 +29,12 @@
 		`currency_id2` AS currencyId2, 
 		`price_decimal_digits` AS priceDecimalDigits, 
 		`count_decimal_digits` AS countDecimalDigits, 
+		`min_buy_price` AS minBuyPrice, 
 		`min_buy_count` AS minBuyCount, 
-		`min_Buy_price` AS minBuyPrice, 
 		`min_buy_amount` AS minBuyAmount, 
+		`max_buy_price` AS maxBuyPrice, 
 		`max_buy_count` AS maxBuyCount, 
 		`max_buy_amount` AS maxBuyAmount, 
-		`max_buy_price` AS maxBuyPrice, 
 		`status` AS status, 
 		`sort` AS sort, 
 		`create_time` AS createTime, 
