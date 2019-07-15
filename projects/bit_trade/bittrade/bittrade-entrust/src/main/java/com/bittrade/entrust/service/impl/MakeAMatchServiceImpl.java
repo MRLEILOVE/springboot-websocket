@@ -19,7 +19,6 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.alibaba.dubbo.config.annotation.Service;
 import com.bittrade.common.constant.IConstant;
 import com.bittrade.common.constant.IQueueConstants;
 import com.bittrade.common.enums.EntrustDirectionEnumer;
@@ -47,7 +46,6 @@ import com.rabbitmq.client.Channel;
  * @version   
  * @since JDK 1.8
  */
-@Service
 @Component
 public class MakeAMatchServiceImpl implements IMakeAMatchService {
 	

@@ -8,6 +8,8 @@ data:
   register-with-eureka: false
   fetch-registry: false
 
+dubbo.protocol.port: 20882
+
 #server:
 #  port: 8910
 
@@ -15,4 +17,4 @@ spring:
 #  application:
 #    name: currency
   profiles:
-    active: common, dubbo_consumer, amqp
+    active: common, dubbo_provider, dubbo_consumer, amqp

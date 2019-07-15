@@ -8,6 +8,8 @@ data:
   register-with-eureka: false
   fetch-registry: false
 
+dubbo.protocol.port: 20881
+
 server:
   port: 8901
 

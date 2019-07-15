@@ -8,7 +8,7 @@ dubbo:
   protocol:
     id: dubbo
     name: dubbo
-    port: 20880
+    #port: 20880
   # 注册中心信息
   registry:
     id: my-registry
