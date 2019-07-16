@@ -103,7 +103,6 @@ public class OkexKlineScheduled {
 				// okex返回数据处理，并入库
 				JSONArray jsonArray = JSONArray.parseArray( result.getContent() );
 				List<TKline> addList = new ArrayList<TKline>();
-				List<TKline> updateList = new ArrayList<TKline>();
 				for (int i = 0; i < jsonArray.size(); i++) {
 					JSONArray object = JSONArray.parseArray( jsonArray.get( i ).toString() );
 					Date time = isoToUtc( object.getString( 0 ) );
@@ -119,16 +118,16 @@ public class OkexKlineScheduled {
 					kline.setHigh( high );
 					kline.setLow( low );
 					kline.setOpen( open );
-					kline.setSymbol( symbol.replace( "-", "/" ) );
+					kline.setSymbol( symbol );
 					kline.setTime( time );
 					kline.setVolume( volume );
 					kline.setCreateTime( date );
 
-					QueryWrapper<TKline> queryWrapper = new QueryWrapper<TKline>();
-					queryWrapper.eq( TKline.FieldNames.SYMBOL, symbol.replace( "-", "/" ) );
-					queryWrapper.eq( TKline.FieldNames.GRANULARITY, granularity );
-					queryWrapper.eq( TKline.FieldNames.TIME, time );
-					TKline resultKline = klineService.getOne( queryWrapper );
+					TKline qryKline = new TKline();
+					qryKline.setSymbol( symbol );
+					qryKline.setGranularity( granularity );
+					qryKline.setTime( time );
+					TKline resultKline = klineService.getBy( qryKline );
 					if (null == resultKline) {
 						addList.add( kline );
 					} else {
@@ -136,17 +135,14 @@ public class OkexKlineScheduled {
 							kline.setId( resultKline.getId() );
 							kline.setCreateTime( null );
 							kline.setUpdateTime( date );
-							updateList.add( kline );
+							boolean bool = klineService.updateById( kline );
+							LOG.info( "更新t_kLine：id=" + kline.getId() + "，是否更新成功：" + bool );
 						}
 					}
 				}
 				if (addList.size() > 0) {
 					klineService.saveBatch( addList );
 					LOG.info( "插入t_kLine表条数：" + addList.size() );
-				}
-				if (updateList.size() > 0) {
-					klineService.updateBatchById( updateList );
-					LOG.info( "更新t_kLine表条数：" + updateList.size() + "，id=" + updateList.get( 0 ).getId() );
 				}
 			} else {
 				LOG.error( "OkexKlineScheduled.OkexKlineScheduled.http.request.okex.result.code=" + result.getCode() + ",result.getContent="

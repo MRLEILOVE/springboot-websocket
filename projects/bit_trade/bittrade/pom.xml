@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	
+
 	<modelVersion>4.0.0</modelVersion>
-	
+
 	<parent>
 		<groupId>com.bittrade</groupId>
 		<artifactId>bit_trade</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	
+
 	<artifactId>bittrade</artifactId>
 	<packaging>pom</packaging>
-	
+
 	<modules>
 		<module>bittrade-pojo</module>
 		<module>bittrade-__default</module>
@@ -24,7 +25,7 @@
 		<module>bittrade-netty-websocket</module>
 		<module>bittrade-batch</module>
 	</modules>
-	
+
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -34,7 +35,7 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
-			
+
 			<dependency>
 				<groupId>com.bittrade</groupId>
 				<artifactId>bittrade-pojo</artifactId>
