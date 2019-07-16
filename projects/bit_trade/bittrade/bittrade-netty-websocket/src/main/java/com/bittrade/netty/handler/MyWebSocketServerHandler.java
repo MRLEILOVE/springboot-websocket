@@ -1,6 +1,15 @@
 package com.bittrade.netty.handler;
 
+import java.util.Random;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.util.StringUtils;
+
+import com.alibaba.fastjson.JSON;
 import com.bittrade.netty.dto.TickerDto;
+import com.bittrade.netty.dto.WebSocketParamDto;
+import com.bittrade.netty.enums.WebSocketEnum.KlineEnum;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -8,6 +17,8 @@ import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import io.netty.channel.group.ChannelGroup;
+import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.handler.codec.http.DefaultFullHttpResponse;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.HttpResponseStatus;
@@ -23,8 +34,11 @@ import io.netty.handler.codec.http.websocketx.WebSocketServerHandshakerFactory;
 import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
 import io.netty.util.CharsetUtil;
+import io.netty.util.concurrent.GlobalEventExecutor;
 
 public class MyWebSocketServerHandler extends SimpleChannelInboundHandler<TickerDto> {
+
+	private static final Logger			LOG					= LoggerFactory.getLogger( MyWebSocketServerHandler.class );
 
 	private WebSocketServerHandshaker	handshaker;
 	private int							lossConnectCount	= 0;
@@ -36,8 +50,10 @@ public class MyWebSocketServerHandler extends SimpleChannelInboundHandler<Ticker
 	@Override
 	public void channelActive(ChannelHandlerContext ctx) throws Exception {
 		// 添加
-		Global.group.add( ctx.channel() );
-		System.out.println( "客户端与服务端连接开启：" + ctx.channel().remoteAddress().toString() );
+		// Global.group.add( ctx.channel() );
+		LOG.info( "客户端与服务端握手成功..." + ctx.channel().remoteAddress().toString() );
+		// TextWebSocketFrame contws = new TextWebSocketFrame( "pong" );
+		// ctx.writeAndFlush( contws );
 	}
 
 	/**
@@ -47,8 +63,8 @@ public class MyWebSocketServerHandler extends SimpleChannelInboundHandler<Ticker
 	@Override
 	public void channelInactive(ChannelHandlerContext ctx) throws Exception {
 		// 分组移除
-		Global.group.remove( ctx.channel() );
-		System.out.println( "客户端与服务端连接关闭：" + ctx.channel().remoteAddress().toString() );
+		// Global.group.remove( ctx.channel() );
+		LOG.info( "客户端与服务端连接关闭：" + ctx.channel().remoteAddress().toString() );
 	}
 
 	/**
@@ -102,13 +118,13 @@ public class MyWebSocketServerHandler extends SimpleChannelInboundHandler<Ticker
 
 	@Override
 	public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
-		System.out.println( "已经30秒未收到客户端的消息了！" );
+		LOG.info( "已经30秒未收到客户端的消息了！" );
 		if (evt instanceof IdleStateEvent) {
 			IdleStateEvent event = (IdleStateEvent) evt;
 			if (event.state() == IdleState.READER_IDLE) {
 				lossConnectCount++;
 				if (lossConnectCount > 2) {
-					System.out.println( "关闭这个不活跃通道！" + ctx.channel() );
+					LOG.info( "关闭这个不活跃通道！" + ctx.channel() );
 					ctx.channel().close();
 				}
 			}
@@ -127,11 +143,11 @@ public class MyWebSocketServerHandler extends SimpleChannelInboundHandler<Ticker
 		if (msg instanceof FullHttpRequest) {
 			handleHttpRequest( ctx, ((FullHttpRequest) msg) );
 		} else if (msg instanceof WebSocketFrame) {
-			System.out.println( handshaker.uri() );
+			LOG.info( handshaker.uri() );
 			handlerWebSocketFrame( handshaker, ctx, (WebSocketFrame) msg );
 		}
 	}
-	
+
 	protected void handlerWebSocketFrame(WebSocketServerHandshaker handshaker, ChannelHandlerContext ctx, WebSocketFrame frame) {
 		// 判断是否关闭链路的指令
 		if (frame instanceof CloseWebSocketFrame) {
@@ -143,24 +159,73 @@ public class MyWebSocketServerHandler extends SimpleChannelInboundHandler<Ticker
 			ctx.channel().write( new PongWebSocketFrame( frame.content().retain() ) );
 			return;
 		}
-		// 本例程仅支持文本消息，不支持二进制消息
+		// 支持文本消息，不支持二进制消息
 		if (!(frame instanceof TextWebSocketFrame)) {
-			System.out.println( "本例程仅支持文本消息，不支持二进制消息" );
+			LOG.error( "仅支持文本消息，不支持二进制消息" );
 			throw new UnsupportedOperationException( String.format( "%s frame types not supported", frame.getClass().getName() ) );
 		}
 		// 返回应答消息
-		String request = ((TextWebSocketFrame) frame).text();
-		System.out.println( "服务端收到：" + request );
+		String message = ((TextWebSocketFrame) frame).text();
+		LOG.info( "服务端收到：" + message );
 
-		TextWebSocketFrame tws = new TextWebSocketFrame( "服务端返回：" + request );
-
-		// 行情
-		TickerManager.invoked( tws, ctx, null );
+		// 判断是否ping消息
+		if ("ping".equals( message )) {
+			ctx.channel().writeAndFlush( new TextWebSocketFrame( "pong" ) );
+			return;
+		}
+		messageHandle( message, ctx );
 	}
 
 	@Override
 	protected void channelRead0(ChannelHandlerContext ctx, TickerDto msg) throws Exception {
-		System.out.println( "msg:" + msg );
+		LOG.info( "msg:" + msg );
+	}
+
+	// 订阅
+	private void messageHandle(String message, ChannelHandlerContext ctx) {
+		try {
+			// message = "{\"op\":\"subscribe\",\"args\":\"BTC_USDT_1_MIN}";
+			WebSocketParamDto webSocketParamDto = JSON.parseObject( message, WebSocketParamDto.class );
+			String args = KlineEnum.parse( webSocketParamDto.getArgs() );
+			if (StringUtils.isEmpty( args )) {
+				failure( ctx, message );
+				return;
+			}
+			String key = args;
+			ChannelGroup channelGroup = Global.concurrentHashMap.get( key );
+			if (webSocketParamDto.getOp().equals( KlineEnum.SUBSCRIBE.getKey() )) {
+				if (null == channelGroup) {
+					channelGroup = new DefaultChannelGroup( GlobalEventExecutor.INSTANCE );
+				}
+				channelGroup.add( ctx.channel() );
+				Global.concurrentHashMap.put( key, channelGroup );
+			} else if (webSocketParamDto.getOp().equals( KlineEnum.UNSUBSCRIBE.getKey() )) {
+				if (null != channelGroup) {
+					if (channelGroup.size() > 0) {
+						channelGroup.remove( ctx.channel() );
+					}
+					if (Global.concurrentHashMap.get( key ).size() > 0) {
+						Global.concurrentHashMap.put( key, channelGroup );
+					} else {
+						Global.concurrentHashMap.remove( key, channelGroup );
+					}
+				}
+			} else {
+				failure( ctx, message );
+			}
+		} catch (Exception e) {
+			LOG.error( "订阅格式异常" );
+			failure( ctx, message );
+		}
+	}
+
+	private void failure(ChannelHandlerContext ctx, String message) {
+		try {
+			TextWebSocketFrame contws = new TextWebSocketFrame( "订阅格式错误：" + message );
+			ctx.channel().writeAndFlush( contws );
+		} catch (Exception e) {
+			e.getStackTrace();
+		}
 	}
 
 }

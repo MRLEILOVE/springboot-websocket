@@ -36,6 +36,7 @@ public class GeneralMethod {
 			wallet.setTradeFrozen( BigDecimal.ZERO );
 			wallet.setTransferFrozen( BigDecimal.ZERO );
 			wallet.setCreateTime( new Date() );
+			wallet.setVersion( 0 );// 版本号默认从0开始
 			int row = walletService.add( wallet );
 			if (row > 0) {
 				return wallet;

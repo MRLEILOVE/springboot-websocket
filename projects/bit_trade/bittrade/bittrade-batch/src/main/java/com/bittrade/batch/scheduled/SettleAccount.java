@@ -1,5 +1,6 @@
 package com.bittrade.batch.scheduled;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.concurrent.ExecutorService;
@@ -7,11 +8,16 @@ import java.util.concurrent.Executors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.amqp.core.Message;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.bittrade.batch.general.GeneralMethod;
+import com.bittrade.common.constant.IQueueConstants;
 import com.bittrade.currency.api.service.ITCurrencyTradeService;
 import com.bittrade.currency.api.service.ITWalletRecordService;
 import com.bittrade.currency.api.service.ITWalletService;
@@ -21,6 +27,7 @@ import com.bittrade.pojo.model.TEntrustRecord;
 import com.bittrade.pojo.model.TWallet;
 import com.bittrade.pojo.model.TWalletRecord;
 import com.core.tool.SnowFlake;
+import com.rabbitmq.client.Channel;
 
 /**
  * 结算
@@ -47,11 +54,29 @@ public class SettleAccount {
 
 	@Reference
 	private ITWalletRecordService	walletRecordService;
+	
+	@Autowired
+	private RabbitTemplate rabbitTemplate;
 
 	private static final SnowFlake	SNOW_FLAKE			= new SnowFlake( 1, 1 );
+	
+	@RabbitListener(queues = { IQueueConstants.QUEUE__LINE_PRICE })
+	public void processMessage(Channel channel, Message message) {
+		System.out.println("MessageConsumer收到消息：" + new String(message.getBody()));
+		try {
+			channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
-	@Scheduled(cron = "0/1 * * * * ?")
+	//@Scheduled(cron = "0/1 * * * * ?")
 	public void sellte() {
+		if(true) {
+			rabbitTemplate.convertAndSend(IQueueConstants.EXCHANGE, IQueueConstants.ROUTE_KEY__LINE_PRICE,"1.00");
+			return;
+		}
+		
 		try {
 			// 1、查询卖方向的未结算的订单
 			TEntrustRecord entrustRecords = new TEntrustRecord();
