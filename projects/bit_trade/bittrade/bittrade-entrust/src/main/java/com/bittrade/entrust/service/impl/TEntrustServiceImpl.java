@@ -54,6 +54,24 @@ public class TEntrustServiceImpl extends DefaultTEntrustServiceImpl<ITEntrustDAO
 	private static final SnowFlake			SNOW_FLAKE__ENTRUST	= new SnowFlake( 1, 1 );
 	private static final ExecutorService	ES					= Executors.newFixedThreadPool( 50 );
 
+	@Override
+	public int add(TEntrust entrust) {
+		entrust.setId( SNOW_FLAKE__ENTRUST.nextId() );
+		{
+			entrust.setCount( entrust.getCount().setScale( IConstant.COUNT_DECIMAL_LENGTH, BigDecimal.ROUND_HALF_DOWN ) );
+			if (entrust.getPrice() != null) {
+				entrust.setPrice( entrust.getPrice().setScale(IConstant.PRICE_DECIMAL_LENGTH, BigDecimal.ROUND_HALF_DOWN) );
+				entrust.setAmount( entrust.getPrice().multiply( entrust.getCount() ).setScale( IConstant.AMOUNT_DECIMAL_LENGTH, BigDecimal.ROUND_HALF_DOWN ) );
+			}
+		}
+		entrust.setSuccessAmount( BigDecimal.ZERO );
+		entrust.setLeftCount( entrust.getCount() );
+		entrust.setStatus( EntrustStatusEnumer.UNFINISH.getCode() );
+		entrust.setVersion( 0 );
+		
+		return super.add(entrust);
+	}
+	
 	/**
 	 * 查询用户当前委托
 	 */
@@ -92,7 +110,7 @@ public class TEntrustServiceImpl extends DefaultTEntrustServiceImpl<ITEntrustDAO
 					return ReturnDTO.error( "单价小数位过长" );
 				}
 			}
-			bd_price = new BigDecimal( dealDTO.getPrice() ).setScale( IConstant.PRICE_DECIMAL_LENGTH, BigDecimal.ROUND_HALF_DOWN );
+			bd_price = new BigDecimal( dealDTO.getPrice() );
 			if (bd_price.compareTo( currencyTrade.getMinPrice() ) == -1) {
 				return ReturnDTO.error( "单价低于最小可买/可卖单价" );
 			}
@@ -106,7 +124,7 @@ public class TEntrustServiceImpl extends DefaultTEntrustServiceImpl<ITEntrustDAO
 			}
 		}
 
-		BigDecimal bd_count = new BigDecimal( dealDTO.getCount() ).setScale( IConstant.COUNT_DECIMAL_LENGTH, BigDecimal.ROUND_HALF_DOWN );
+		BigDecimal bd_count = new BigDecimal( dealDTO.getCount() );
 
 		if (bd_count.compareTo( currencyTrade.getMinCount() ) == -1) {
 			return ReturnDTO.error( "数量低于最小可买/可卖数量" );
@@ -150,28 +168,12 @@ public class TEntrustServiceImpl extends DefaultTEntrustServiceImpl<ITEntrustDAO
 
 		// 入库委托。
 		TEntrust entrust = new TEntrust();
-		entrust.setId( SNOW_FLAKE__ENTRUST.nextId() );
 		entrust.setUserId( dealDTO.getUserId() );
 		entrust.setCurrencyTradeId( dealDTO.getCurrencyTradeId() );
 		entrust.setEntrustType( dealDTO.getEntrustType() );
 		entrust.setEntrustDirection( dealDTO.getEntrustDirection() );
 		entrust.setPrice( bd_price );
 		entrust.setCount( bd_count );
-		{
-			// entrust.setCount( entrust.getCount().setScale(
-			// IConstant.COUNT_DECIMAL_LENGTH, BigDecimal.ROUND_HALF_DOWN ) );
-			if (entrust.getPrice() != null) {
-				// entrust.setPrice( entrust.getPrice().setScale(
-				// IConstant.PRICE_DECIMAL_LENGTH, BigDecimal.ROUND_HALF_DOWN )
-				// );
-				entrust.setAmount(
-						entrust.getPrice().multiply( entrust.getCount() ).setScale( IConstant.AMOUNT_DECIMAL_LENGTH, BigDecimal.ROUND_HALF_DOWN ) );
-			}
-		}
-		entrust.setSuccessAmount( BigDecimal.ZERO );
-		entrust.setLeftCount( entrust.getCount() );
-		entrust.setStatus( EntrustStatusEnumer.UNFINISH.getCode() );
-		entrust.setVersion( 0 );
 		add( entrust );
 
 		ES.submit( new Callable<String>() {

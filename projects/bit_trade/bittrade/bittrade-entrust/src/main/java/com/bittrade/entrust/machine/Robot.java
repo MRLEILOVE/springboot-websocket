@@ -1,8 +1,6 @@
 package com.bittrade.entrust.machine;
 
-import java.io.IOException;
 import java.math.BigDecimal;
-import java.net.UnknownHostException;
 import java.util.Random;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CountDownLatch;
@@ -13,8 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.alibaba.dubbo.config.annotation.Reference;
-import com.bittrade.common.constant.IConstant;
-import com.bittrade.common.enums.EntrustStatusEnumer;
 import com.bittrade.common.enums.EntrustTypeEnumer;
 import com.bittrade.currency.api.service.ITCurrencyTradeService;
 import com.bittrade.entrust.api.service.IMakeAMatchService;
@@ -47,6 +43,8 @@ public /* static */final class Robot {
 	private ITCurrencyTradeService	currencyTradeService;
 	@Autowired
 	private JedisCluster			jedisCluster;
+	@Autowired
+	private ITEntrustService		entrustService;
 	@Autowired
 	private IMakeAMatchService		makeAMatch;
 
@@ -182,7 +180,7 @@ public /* static */final class Robot {
 	}
 
 	public void test() {
-		final int CNT = 5; // 500 50 5
+		final int CNT = 50; // 500 50 5
 
 		ExecutorService es = Executors.newFixedThreadPool( CNT );
 		// CountDownLatch cdl = new CountDownLatch( CNT );
@@ -202,23 +200,8 @@ public /* static */final class Robot {
 						entrust.setPrice( getPrice( getCurrencyTradeID() ) );
 					}
 					entrust.setCount( getCount() );
+					entrustService.add(entrust);
 
-					{
-						// entrust.setCount( entrust.getCount().setScale(
-						// IConstant.COUNT_DECIMAL_LENGTH, BigDecimal.ROUND_HALF_DOWN ) );
-						if (entrust.getPrice() != null) {
-							// entrust.setPrice( entrust.getPrice().setScale(
-							// IConstant.PRICE_DECIMAL_LENGTH, BigDecimal.ROUND_HALF_DOWN )
-							// );
-							entrust.setAmount(
-									entrust.getPrice().multiply( entrust.getCount() ).setScale( IConstant.AMOUNT_DECIMAL_LENGTH, BigDecimal.ROUND_HALF_DOWN ) );
-						}
-					}
-					entrust.setSuccessAmount( BigDecimal.ZERO );
-					entrust.setLeftCount( entrust.getCount() );
-					entrust.setStatus( EntrustStatusEnumer.UNFINISH.getCode() );
-					entrust.setVersion( 0 );
-					
 					System.out.println( "1111111111" );
 					makeAMatch.makeAMatch( entrust );
 					System.out.println( "2222222222" );

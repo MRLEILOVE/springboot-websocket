@@ -81,8 +81,7 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 	 */
 	public static /* final */BigDecimal LINE_PRICE = new BigDecimal(0);
 	
-	private static final ConcurrentHashMap<Integer, ReentrantLock> MAP_LOCK_BUY = new ConcurrentHashMap<>();
-	private static final ConcurrentHashMap<Integer, ReentrantLock> MAP_LOCK_SELL = new ConcurrentHashMap<>();
+	private static final ConcurrentHashMap<Integer, ReentrantLock> MAP_LOCK__BUY_AND_SELL = new ConcurrentHashMap<>();
 	
 	@Autowired
 	private RabbitTemplate rabbitTemplate;
@@ -365,7 +364,7 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 	private ArrayList<TEntrust> getList(ConcurrentHashMap<Integer, ArrayList<TEntrust>> map, Integer key) {
 		ArrayList<TEntrust> list;
 		
-		if (map.contains( key )) {
+		if (map.containsKey( key )) {
 			list = map.get( key );
 		} else {
 			map.put( key, list = new ArrayList<>() );
@@ -374,8 +373,33 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 		return list;
 	}
 	
+	private void makeAMatch(
+			TEntrust entrust, 
+			int limitCompareVal, 
+			ArrayList<TEntrust> list_market_after, 
+			ArrayList<TEntrust> list_limit_after, 
+			ArrayList<TEntrust> list_market_before, 
+			ArrayList<TEntrust> list_limit_before
+			) {
+		ReentrantLock lock = getLock( MAP_LOCK__BUY_AND_SELL, entrust.getCurrencyTradeId() );
+		lock.lock();
+		try {
+			int i_idx;
+			if (entrust.getEntrustType() == EntrustTypeEnumer.MARKET.getCode()) { // 市价
+				i_idx = findIndexFromMarket(entrust, list_market_after);
+				addTo(i_idx, entrust, list_market_after, list_market_before, list_limit_before);
+			} else /*if (entrust.getEntrustType() == EntrustTypeEnumer.LIMIT.getCode()) */{ // 限价
+				i_idx = findIndexFromLimit(entrust, list_limit_after, limitCompareVal);
+				addTo(i_idx, entrust, list_limit_after, list_market_before, list_limit_before);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			lock.unlock();
+		}
+	}
+	
 	public void makeAMatch(TEntrust entrust) {
-		ReentrantLock lock = getLock( MAP_LOCK_BUY, entrust.getCurrencyTradeId() );
 		ArrayList<TEntrust> 
 			list_buy_market = getList( MAP_BUY_MARKET, entrust.getCurrencyTradeId() ), 
 			list_buy_limit = getList( MAP_BUY_LIMIT, entrust.getCurrencyTradeId() ), 
@@ -383,28 +407,22 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 			list_sell_limit = getList( MAP_SELL_LIMIT, entrust.getCurrencyTradeId() )
 			;
 		
-		if (entrust.getEntrustDirection() == EntrustDirectionEnumer.BUY.getCode()) {
-			int i_idx;
-			lock.lock();
-			if (entrust.getEntrustType() == EntrustTypeEnumer.MARKET.getCode()) { // 市价
-				i_idx = findIndexFromMarket(entrust, list_buy_market);
-				addTo(i_idx, entrust, list_buy_market, list_sell_market, list_sell_limit);
-			} else { // 限价
-				i_idx = findIndexFromLimit(entrust, list_buy_limit, ICompareResultConstant.LESS_THAN);
-				addTo(i_idx, entrust, list_buy_limit, list_sell_market, list_sell_limit);
-			}
-			lock.unlock();
-		} else if (entrust.getEntrustDirection() == EntrustDirectionEnumer.SELL.getCode()) {
-			int i_idx;
-			lock.lock();
-			if (entrust.getEntrustType() == EntrustTypeEnumer.MARKET.getCode()) { // 市价
-				i_idx = findIndexFromMarket(entrust, list_sell_market);
-				addTo(i_idx, entrust, list_sell_market, list_buy_market, list_buy_limit);
-			} else { // 限价
-				i_idx = findIndexFromLimit(entrust, list_sell_limit, ICompareResultConstant.GREATER_THAN);
-				addTo(i_idx, entrust, list_sell_limit, list_buy_market, list_buy_limit);
-			}
-			lock.unlock();
+		if (entrust.getEntrustDirection() == EntrustDirectionEnumer.BUY.getCode()) { // 买
+			makeAMatch(
+					entrust, 
+					ICompareResultConstant.LESS_THAN, 
+					list_buy_market, 
+					list_buy_limit, 
+					list_sell_market, list_sell_limit
+					);
+		} else /*if (entrust.getEntrustDirection() == EntrustDirectionEnumer.SELL.getCode()) */{ // 卖
+			makeAMatch(
+					entrust, 
+					ICompareResultConstant.GREATER_THAN, 
+					list_sell_market, 
+					list_sell_limit, 
+					list_buy_market, list_buy_limit
+					);
 		}
 	}
 	
@@ -441,6 +459,7 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 		entrust1.setEntrustDirection(EntrustDirectionEnumer.BUY.getCode());
 		entrust1.setEntrustType(EntrustTypeEnumer.MARKET.getCode());
 		entrust1.setCount(new BigDecimal(50));
+		entrustService.add(entrust1);
 		makeAMatch(entrust1);
 		TEntrust entrust2 = new TEntrust();
 		entrust2.setUserId(102L);
@@ -449,6 +468,7 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 		entrust2.setEntrustType(EntrustTypeEnumer.LIMIT.getCode());
 		entrust2.setPrice(new BigDecimal(157));
 		entrust2.setCount(new BigDecimal(28));
+		entrustService.add(entrust2);
 		makeAMatch(entrust2);
 		TEntrust entrust3 = new TEntrust();
 		entrust3.setUserId(103L);
@@ -457,6 +477,7 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 		entrust3.setEntrustType(EntrustTypeEnumer.LIMIT.getCode());
 		entrust3.setPrice(new BigDecimal(101));
 		entrust3.setCount(new BigDecimal(37));
+		entrustService.add(entrust3);
 		makeAMatch(entrust3);
 		TEntrust entrust4 = new TEntrust();
 		entrust4.setUserId(104L);
@@ -464,6 +485,7 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 		entrust4.setEntrustDirection(EntrustDirectionEnumer.SELL.getCode());
 		entrust4.setEntrustType(EntrustTypeEnumer.MARKET.getCode());
 		entrust4.setCount(new BigDecimal(80));
+		entrustService.add(entrust4);
 		makeAMatch(entrust4);
 		TEntrust entrust5 = new TEntrust();
 		entrust5.setUserId(105L);
@@ -471,6 +493,7 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 		entrust5.setEntrustDirection(EntrustDirectionEnumer.BUY.getCode());
 		entrust5.setEntrustType(EntrustTypeEnumer.MARKET.getCode());
 		entrust5.setCount(new BigDecimal(83));
+		entrustService.add(entrust5);
 		makeAMatch(entrust5);
 		
 		// print .
