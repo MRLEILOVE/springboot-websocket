@@ -3,12 +3,10 @@ package com.bittrade.entrust.service.impl;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Random;
-import java.util.concurrent.Callable;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.Map.Entry;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.ReentrantLock;
 
 import org.slf4j.Logger;
@@ -54,22 +52,22 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 	/**
 	 * 市价买
 	 */
-	private static final ArrayList<TEntrust> LIST_BUY_MARKET = new ArrayList<>();
+	private static final ConcurrentHashMap<Integer, ArrayList<TEntrust>> MAP_BUY_MARKET = new ConcurrentHashMap<>();
 	
 	/**
 	 * 限价买
 	 */
-	private static final ArrayList<TEntrust> LIST_BUY_LIMIT = new ArrayList<>();
+	private static final ConcurrentHashMap<Integer, ArrayList<TEntrust>> MAP_BUY_LIMIT = new ConcurrentHashMap<>();
 	
 	/**
 	 * 市价卖
 	 */
-	private static final ArrayList<TEntrust> LIST_SELL_MARKET = new ArrayList<>();
+	private static final ConcurrentHashMap<Integer, ArrayList<TEntrust>> MAP_SELL_MARKET = new ConcurrentHashMap<>();
 	
 	/**
 	 * 限价卖
 	 */
-	private static final ArrayList<TEntrust> LIST_SELL_LIMIT = new ArrayList<>();
+	private static final ConcurrentHashMap<Integer, ArrayList<TEntrust>> MAP_SELL_LIMIT = new ConcurrentHashMap<>();
 	
 	private static final SnowFlake SNOW_FLAKE__ENTRUST_RECORD = new SnowFlake(1, 1);
 	
@@ -81,10 +79,10 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 	/**
 	 * 行情价
 	 */
-	private static /* final */BigDecimal LINE_PRICE = new BigDecimal(0);
+	public static /* final */BigDecimal LINE_PRICE = new BigDecimal(0);
 	
-	private static final ReentrantLock LOCK_BUY = new ReentrantLock();
-	private static final ReentrantLock LOCK_SELL = new ReentrantLock();
+	private static final ConcurrentHashMap<Integer, ReentrantLock> MAP_LOCK_BUY = new ConcurrentHashMap<>();
+	private static final ConcurrentHashMap<Integer, ReentrantLock> MAP_LOCK_SELL = new ConcurrentHashMap<>();
 	
 	@Autowired
 	private RabbitTemplate rabbitTemplate;
@@ -352,185 +350,91 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 		}
 	}
 	
+	private ReentrantLock getLock(ConcurrentHashMap<Integer, ReentrantLock> map, Integer key) {
+		ReentrantLock lock;
+		
+		if (map.contains( key )) {
+			lock = map.get( key );
+		} else {
+			map.put( key, lock = new ReentrantLock() );
+		}
+		
+		return lock;
+	}
+	
+	private ArrayList<TEntrust> getList(ConcurrentHashMap<Integer, ArrayList<TEntrust>> map, Integer key) {
+		ArrayList<TEntrust> list;
+		
+		if (map.contains( key )) {
+			list = map.get( key );
+		} else {
+			map.put( key, list = new ArrayList<>() );
+		}
+		
+		return list;
+	}
+	
 	public void makeAMatch(TEntrust entrust) {
+		ReentrantLock lock = getLock( MAP_LOCK_BUY, entrust.getCurrencyTradeId() );
+		ArrayList<TEntrust> 
+			list_buy_market = getList( MAP_BUY_MARKET, entrust.getCurrencyTradeId() ), 
+			list_buy_limit = getList( MAP_BUY_LIMIT, entrust.getCurrencyTradeId() ), 
+			list_sell_market = getList( MAP_SELL_MARKET, entrust.getCurrencyTradeId() ), 
+			list_sell_limit = getList( MAP_SELL_LIMIT, entrust.getCurrencyTradeId() )
+			;
+		
 		if (entrust.getEntrustDirection() == EntrustDirectionEnumer.BUY.getCode()) {
 			int i_idx;
-			LOCK_BUY.lock();
+			lock.lock();
 			if (entrust.getEntrustType() == EntrustTypeEnumer.MARKET.getCode()) { // 市价
-				i_idx = findIndexFromMarket(entrust, LIST_BUY_MARKET);
-				addTo(i_idx, entrust, LIST_BUY_MARKET, LIST_SELL_MARKET, LIST_SELL_LIMIT);
+				i_idx = findIndexFromMarket(entrust, list_buy_market);
+				addTo(i_idx, entrust, list_buy_market, list_sell_market, list_sell_limit);
 			} else { // 限价
-				i_idx = findIndexFromLimit(entrust, LIST_BUY_LIMIT, ICompareResultConstant.LESS_THAN);
-				addTo(i_idx, entrust, LIST_BUY_LIMIT, LIST_SELL_MARKET, LIST_SELL_LIMIT);
+				i_idx = findIndexFromLimit(entrust, list_buy_limit, ICompareResultConstant.LESS_THAN);
+				addTo(i_idx, entrust, list_buy_limit, list_sell_market, list_sell_limit);
 			}
-			LOCK_BUY.unlock();
+			lock.unlock();
 		} else if (entrust.getEntrustDirection() == EntrustDirectionEnumer.SELL.getCode()) {
 			int i_idx;
-			LOCK_BUY.lock();
+			lock.lock();
 			if (entrust.getEntrustType() == EntrustTypeEnumer.MARKET.getCode()) { // 市价
-				i_idx = findIndexFromMarket(entrust, LIST_SELL_MARKET);
-				addTo(i_idx, entrust, LIST_SELL_MARKET, LIST_BUY_MARKET, LIST_BUY_LIMIT);
+				i_idx = findIndexFromMarket(entrust, list_sell_market);
+				addTo(i_idx, entrust, list_sell_market, list_buy_market, list_buy_limit);
 			} else { // 限价
-				i_idx = findIndexFromLimit(entrust, LIST_SELL_LIMIT, ICompareResultConstant.GREATER_THAN);
-				addTo(i_idx, entrust, LIST_SELL_LIMIT, LIST_BUY_MARKET, LIST_BUY_LIMIT);
+				i_idx = findIndexFromLimit(entrust, list_sell_limit, ICompareResultConstant.GREATER_THAN);
+				addTo(i_idx, entrust, list_sell_limit, list_buy_market, list_buy_limit);
 			}
-			LOCK_BUY.unlock();
+			lock.unlock();
+		}
+	}
+	
+	private static final void print(ConcurrentHashMap<Integer, ArrayList<TEntrust>> map) {
+		for (Iterator<Entry<Integer, ArrayList<TEntrust>>> iterator = map.entrySet().iterator(); iterator.hasNext();) {
+			Entry<Integer, ArrayList<TEntrust>> entry = iterator.next();
+			
+			ArrayList<TEntrust> list = entry.getValue();
+			System.out.println( "entry.getKey()=" + entry.getKey() + ", list.size()=" + list.size() );
+			for (int i = 0, len = list.size(); i < len; i++) {
+				TEntrust e = list.get(i);
+				System.out.println(e.getUserId() + ", " + e.getCurrencyTradeId() + ", " + e.getEntrustDirection() + ", " + e.getEntrustType() + ", " + e.getPrice() + ", " + e.getCount());
+			}
 		}
 	}
 	
 	private static void print() {
-		System.out.println("LIST_BUY_MARKET.size()=" + LIST_BUY_MARKET.size());
-		System.out.println("LIST_BUY_LIMIT.size()=" + LIST_BUY_LIMIT.size());
-		System.out.println("LIST_SELL_MARKET.size()=" + LIST_SELL_MARKET.size());
-		System.out.println("LIST_SELL_LIMIT.size()=" + LIST_SELL_LIMIT.size());
+		System.out.println("MAP_BUY_MARKET.size()=" + MAP_BUY_MARKET.size());
+		System.out.println("MAP_BUY_LIMIT.size()=" + MAP_BUY_LIMIT.size());
+		System.out.println("MAP_SELL_MARKET.size()=" + MAP_SELL_MARKET.size());
+		System.out.println("MAP_SELL_LIMIT.size()=" + MAP_SELL_LIMIT.size());
 		System.out.println("buy ---------------------------------------------");
-		for (int i = 0, len = LIST_BUY_MARKET.size(); i < len; i++) {
-			TEntrust e = LIST_BUY_MARKET.get(i);
-			System.out.println(e.getUserId() + ", " + e.getCurrencyTradeId() + ", " + e.getEntrustDirection() + ", " + e.getEntrustType() + ", " + e.getPrice() + ", " + e.getCount());
-		}
-		for (int i = 0, len = LIST_BUY_LIMIT.size(); i < len; i++) {
-			TEntrust e = LIST_BUY_LIMIT.get(i);
-			System.out.println(e.getUserId() + ", " + e.getCurrencyTradeId() + ", " + e.getEntrustDirection() + ", " + e.getEntrustType() + ", " + e.getPrice() + ", " + e.getCount());
-		}
+		print(MAP_BUY_MARKET);
+		print(MAP_BUY_LIMIT);
 		System.out.println("sell ---------------------------------------------");
-		for (int i = 0, len = LIST_SELL_MARKET.size(); i < len; i++) {
-			TEntrust e = LIST_SELL_MARKET.get(i);
-			System.out.println(e.getUserId() + ", " + e.getCurrencyTradeId() + ", " + e.getEntrustDirection() + ", " + e.getEntrustType() + ", " + e.getPrice() + ", " + e.getCount());
-		}
-		for (int i = 0, len = LIST_SELL_LIMIT.size(); i < len; i++) {
-			TEntrust e = LIST_SELL_LIMIT.get(i);
-			System.out.println(e.getUserId() + ", " + e.getCurrencyTradeId() + ", " + e.getEntrustDirection() + ", " + e.getEntrustType() + ", " + e.getPrice() + ", " + e.getCount());
-		}
-	}
-	
-	private static final class Tester {
-		
-		private static final Random R = new Random(System.currentTimeMillis());
-		
-		private static long getUserID() {
-			Random r = new Random(R.nextLong());
-			return r.nextInt(1000);
-		}
-		
-		private static int getCurrencyTradeID() {
-			Random r = new Random(R.nextLong());
-			return r.nextInt(100);
-		}
-		
-		private static int getEntrustDirection() {
-			Random r = new Random(R.nextLong());
-			return r.nextInt(2);
-		}
-		
-		private static int getEntrustType() {
-			Random r = new Random(R.nextLong());
-			return r.nextInt(2);
-		}
-		
-		private static BigDecimal getPrice() {
-			Random r = new Random(R.nextLong());
-			return new BigDecimal(r.nextDouble() * 100)/*.setScale(IConstant.PRICE_DECIMAL_LENGTH, BigDecimal.ROUND_HALF_DOWN)*/;
-		}
-		
-		private static BigDecimal getCount() {
-			Random r = new Random(R.nextLong());
-			return new BigDecimal(r.nextDouble() * 100)/*.setScale(IConstant.COUNT_DECIMAL_LENGTH, BigDecimal.ROUND_HALF_DOWN)*/;
-		}
-		
-		private static final class MyCallable implements Callable<String> {
-			
-			private ITEntrustService entrustService;
-			private ITEntrustRecordService entrustRecordService;
-			private MakeAMatchServiceImpl makeAMatch;
-			private CountDownLatch cdl;
-			
-			private MyCallable(MakeAMatchServiceImpl makeAMatch, ITEntrustService entrustService, ITEntrustRecordService entrustRecordService, CountDownLatch cdl) {
-				this.makeAMatch = makeAMatch;
-				this.entrustService = entrustService;
-				this.entrustRecordService = entrustRecordService;
-				this.cdl = cdl;
-			}
-
-			@Override
-			public String call() throws Exception {
-				TEntrust entrust = new TEntrust();
-				entrust.setUserId(getUserID());
-				entrust.setCurrencyTradeId(getCurrencyTradeID());
-				entrust.setEntrustDirection(getEntrustDirection());
-				entrust.setEntrustType(getEntrustType());
-				if (entrust.getEntrustType() == EntrustTypeEnumer.LIMIT.getCode()) {
-					entrust.setPrice(getPrice());
-				}
-				entrust.setCount(getCount());
-				System.out.println("11 com.bittrade.entrust.service.impl.MakeAMatchServiceImpl.makeAMatch(TEntrust)");
-				makeAMatch.makeAMatch(entrust);
-				System.out.println("22 com.bittrade.entrust.service.impl.MakeAMatchServiceImpl.makeAMatch(TEntrust)");
-				
-				System.out.println("countDown before");
-				cdl.countDown();
-				System.out.println("countDown after");
-				
-				return null;
-			}
-			
-		}
-		
-		private static void test(IMakeAMatchService makeAMatch) {
-			final int CNT = 5; // 50 5
-			
-			ExecutorService es = Executors.newFixedThreadPool(CNT);
-			CountDownLatch cdl = new CountDownLatch(CNT);
-//			MyCallable MyCallable = new MyCallable(makeAMatch, entrustService, entrustRecordService, cdl);
-			
-			for (int i = 0; i < CNT; i++) {
-//				/* Future<String> future = */es.submit(MyCallable);
-				/* Future<String> future = */es.submit(() -> {
-					TEntrust entrust = new TEntrust();
-					entrust.setUserId(getUserID());
-					entrust.setCurrencyTradeId(getCurrencyTradeID());
-					entrust.setEntrustDirection(getEntrustDirection());
-					entrust.setEntrustType(getEntrustType());
-					if (entrust.getEntrustType() == EntrustTypeEnumer.LIMIT.getCode()) {
-						entrust.setPrice(getPrice());
-					}
-					entrust.setCount(getCount());
-					System.out.println("11 com.bittrade.entrust.service.impl.MakeAMatchServiceImpl.makeAMatch(TEntrust)");
-					makeAMatch.makeAMatch(entrust);
-					System.out.println("22 com.bittrade.entrust.service.impl.MakeAMatchServiceImpl.makeAMatch(TEntrust)");
-					
-					System.out.println("countDown before");
-					cdl.countDown();
-					System.out.println("countDown after");
-					
-					return null;
-				});
-//				try {
-//					System.out.println(future.get());
-//				} catch (InterruptedException e) {
-//					e.printStackTrace();
-//				} catch (ExecutionException e) {
-//					e.printStackTrace();
-//				}
-			}
-			
-			try {
-				System.out.println("await before");
-				cdl.await();
-				System.out.println("await after");
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			
-			es.shutdown();
-			
-			// print .
-			print();
-		}
-		
+		print(MAP_SELL_MARKET);
+		print(MAP_SELL_LIMIT);
 	}
 	
 	public void test() {
-//		Tester.test(this);
 		TEntrust entrust1 = new TEntrust();
 		entrust1.setUserId(101L);
 		entrust1.setCurrencyTradeId(102);
@@ -568,6 +472,9 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 		entrust5.setEntrustType(EntrustTypeEnumer.MARKET.getCode());
 		entrust5.setCount(new BigDecimal(83));
 		makeAMatch(entrust5);
+		
+		// print .
+		print();
 	}
 	
 	public static void _main(String[] args) {

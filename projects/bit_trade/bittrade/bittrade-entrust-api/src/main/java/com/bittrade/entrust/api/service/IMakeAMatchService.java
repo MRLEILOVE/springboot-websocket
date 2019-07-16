@@ -10,7 +10,7 @@ import com.bittrade.pojo.model.TEntrust;
 public interface IMakeAMatchService {
 
 	/**
-	 * 
+	 * 撮合
 	 * @param entrust
 	 */
 	void makeAMatch(TEntrust entrust);

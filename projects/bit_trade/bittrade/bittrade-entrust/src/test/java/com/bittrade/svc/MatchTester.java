@@ -3,20 +3,27 @@ package com.bittrade.svc;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.bittrade.entrust.service.impl.MakeAMatchServiceImpl;
+import com.alibaba.dubbo.config.annotation.Reference;
+import com.bittrade.currency.api.service.ITCurrencyTradeService;
+import com.bittrade.entrust.machine.Robot;
+import com.bittrade.pojo.model.TCurrencyTrade;
 import com.bittrade.svc.base.BaseTester;
 
 public class MatchTester extends BaseTester {
 
 	@Autowired
-	private MakeAMatchServiceImpl makeAMatchService;
+	private Robot robot;
+	@Reference
+	private ITCurrencyTradeService currencyTradeService;
 //	@Reference
 //	ITEntrustService es;
 	
 	@Test
 	public void test() {
-		System.out.println("makeAMatchService ========" + makeAMatchService);
-		makeAMatchService.test();
+//		makeAMatchService.test();
+		robot.test();
+//		TCurrencyTrade currencyTrade = currencyTradeService.getByPK( 1 );
+//		System.out.println( "currencyTrade=" + currencyTrade );
 		
 //		QueryWrapper<TEntrust> qw = new QueryWrapper<TEntrust>();
 //		qw.eq("ab", "bc");

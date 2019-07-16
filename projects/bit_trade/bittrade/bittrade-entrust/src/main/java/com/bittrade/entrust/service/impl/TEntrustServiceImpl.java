@@ -93,7 +93,7 @@ public class TEntrustServiceImpl extends DefaultTEntrustServiceImpl<ITEntrustDAO
 				}
 			}
 			bd_price = new BigDecimal( dealDTO.getPrice() ).setScale( IConstant.PRICE_DECIMAL_LENGTH, BigDecimal.ROUND_HALF_DOWN );
-			if (bd_price.compareTo( currencyTrade.getMinBuyPrice() ) == -1) {
+			if (bd_price.compareTo( currencyTrade.getMinPrice() ) == -1) {
 				return ReturnDTO.error( "单价低于最小可买/可卖单价" );
 			}
 		}
@@ -108,19 +108,19 @@ public class TEntrustServiceImpl extends DefaultTEntrustServiceImpl<ITEntrustDAO
 
 		BigDecimal bd_count = new BigDecimal( dealDTO.getCount() ).setScale( IConstant.COUNT_DECIMAL_LENGTH, BigDecimal.ROUND_HALF_DOWN );
 
-		if (bd_count.compareTo( currencyTrade.getMinBuyCount() ) == -1) {
+		if (bd_count.compareTo( currencyTrade.getMinCount() ) == -1) {
 			return ReturnDTO.error( "数量低于最小可买/可卖数量" );
 		}
-		// if (bd_amount.compareTo( currencyTrade.getMinBuyAmount() ) == -1) {
+		// if (bd_amount.compareTo( currencyTrade.getMinAmount() ) == -1) {
 		// return ReturnDTO.error( "总价低于最小可买/可卖总价" );
 		// }
-		// if (bd_price.compareTo( currencyTrade.getMaxBuyPrice() ) == 1) {
+		// if (bd_price.compareTo( currencyTrade.getMaxPrice() ) == 1) {
 		// return ReturnDTO.error( "单价高于最大可买/可卖单价" );
 		// }
-		// if (bd_count.compareTo( currencyTrade.getMaxBuyCount() ) == 1) {
+		// if (bd_count.compareTo( currencyTrade.getMaxCount() ) == 1) {
 		// return ReturnDTO.error( "数量高于最大可买/可卖数量" );
 		// }
-		// if (bd_amount.compareTo( currencyTrade.getMaxBuyAmount() ) == 1) {
+		// if (bd_amount.compareTo( currencyTrade.getMaxAmount() ) == 1) {
 		// return ReturnDTO.error( "总价高于最大可买/可卖总价" );
 		// }
 

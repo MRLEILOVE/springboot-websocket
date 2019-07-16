@@ -149,32 +149,32 @@ public class TCurrencyTrade extends BaseModel<TCurrencyTrade> {
 	/**
 	 * 最小挂单单价
 	 */
-	private java.math.BigDecimal minBuyPrice;
+	private java.math.BigDecimal minPrice;
 	
 	/**
 	 * 最小挂单数量
 	 */
-	private java.math.BigDecimal minBuyCount;
+	private java.math.BigDecimal minCount;
 	
 	/**
 	 * 最小挂单金额
 	 */
-	private java.math.BigDecimal minBuyAmount;
+	private java.math.BigDecimal minAmount;
 	
 	/**
 	 * 最大可买单价
 	 */
-	private java.math.BigDecimal maxBuyPrice;
+	private java.math.BigDecimal maxPrice;
 	
 	/**
 	 * 最大可买数量
 	 */
-	private java.math.BigDecimal maxBuyCount;
+	private java.math.BigDecimal maxCount;
 	
 	/**
 	 * 最大可买金额
 	 */
-	private java.math.BigDecimal maxBuyAmount;
+	private java.math.BigDecimal maxAmount;
 	
 	/**
 	 * 状态：0禁用，1启用
