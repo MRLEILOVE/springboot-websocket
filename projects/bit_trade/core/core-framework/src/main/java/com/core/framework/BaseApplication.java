@@ -3,6 +3,7 @@ package com.core.framework;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 //@EnableAutoConfiguration(exclude = { DataSourceAutoConfiguration.class })
 @MapperScan(value = {
@@ -10,6 +11,7 @@ import org.springframework.context.annotation.ComponentScan;
 		"com.**.dao"
 		})
 @ComponentScan(basePackages = { "com.core.framework.props", "com.core.framework.config" })
+@EnableTransactionManagement
 public abstract class BaseApplication {
 
 	/**

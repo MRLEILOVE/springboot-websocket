@@ -44,7 +44,7 @@ public class TEntrustServiceImpl extends DefaultTEntrustServiceImpl<ITEntrustDAO
 	@Autowired
 	private ITEntrustDAO					entrustDAO;
 
-	@Reference
+	@Reference(check=false)
 	private ITCurrencyTradeService			currencyTradeService;
 	@Reference
 	private ITWalletService					walletService;

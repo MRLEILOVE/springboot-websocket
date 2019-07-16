@@ -1,10 +1,12 @@
 package com.core.framework.DTO;
 
+import java.io.Serializable;
+import java.time.LocalDateTime;
+
 import com.core.common.constant.IConstant;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 /**
  * 公共返回信息。
@@ -14,9 +16,14 @@ import lombok.NoArgsConstructor;
  * @param <T>
  */
 @Data
-@NoArgsConstructor
+//@lombok.NoArgsConstructor
 @AllArgsConstructor
-public class ReturnDTO<T> {
+public class ReturnDTO<T> implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * 错误码
@@ -32,7 +39,16 @@ public class ReturnDTO<T> {
 	 * 数据
 	 */
 	private T data;
-	
+
+	/**
+	 * 时间
+	 */
+	private LocalDateTime time;
+
+	private ReturnDTO() {
+		time = LocalDateTime.now();
+	}
+
 	/**
 	 * ok
 	 * @param <T>
@@ -77,5 +93,5 @@ public class ReturnDTO<T> {
 		
 		return ret;
 	}
-	
+
 }

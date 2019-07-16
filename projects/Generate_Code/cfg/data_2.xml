@@ -15,6 +15,7 @@
 	<entry key="framework_package">com.core.framework</entry>
 	<!--
 		test.
+		bittrade.
 	-->
 	<entry key="POJO_base_package">com.bittrade.pojo</entry>
 	<entry key="default_base_package">com.bittrade.__default</entry>
@@ -23,8 +24,8 @@
 		下面是增量更新
 	-->
 	<!--
-		currency
-		svc
+		bittrade.currency
+		test.svc
 	-->
 	<entry key="API_base_package">com.bittrade.currency.api</entry>
 	<entry key="base_package">com.bittrade.currency</entry>

@@ -15,6 +15,7 @@
 
 	<!-- 通用查询结果列 -->
 	<sql id="Base_Column_List">
+		`id` AS id, 
 		`name` AS name, 
 		`short_name` AS shortName, 
 		`status` AS status, 

@@ -11,11 +11,11 @@ import lombok.Data;
 public class RedisProperties {
 
 	private String[] nodes;
-	public int maxTotal;
-	public int maxIdle;
-	public int minIdle;
-	public long maxWait;
-	public String password;
-	public int commandTimeout;
+	private int maxTotal;
+	private int maxIdle;
+	private int minIdle;
+	private long maxWait;
+	private String password;
+	private int commandTimeout;
 
 }

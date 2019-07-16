@@ -17,6 +17,7 @@
 
 	<!-- 通用查询结果列 -->
 	<sql id="Base_Column_List">
+		`id` AS id, 
 		`param_key` AS paramKey, 
 		`param_value` AS paramValue, 
 		`param_status` AS paramStatus, 
