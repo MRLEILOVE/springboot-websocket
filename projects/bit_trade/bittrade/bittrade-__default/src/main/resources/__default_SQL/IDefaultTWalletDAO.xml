@@ -32,6 +32,19 @@
 		`update_time` AS updateTime
 	</sql>
 	
+	<!-- 其他的也可以类似的加， yes， 类似蕾丝的。 -->
+	<sql id="sql_WHERE">
+		<if test="tWallet.map_in != null">
+		<foreach collection="tWallet.map_in.entrySet()" index="map_index" item="map_item">
+		AND `${map_index}` IN 
+		<foreach collection="map_item" index="arr_index" item="arr_item" open="(" separator="," close=")">
+			#{arr_item}
+		</foreach>
+		</foreach>
+		</if>
+	</sql>
+	
+	
 	<insert id="add" parameterType="com.bittrade.pojo.model.TWallet">
 		INSERT INTO t_wallet(`user_id`, `currency_id`, `total`, `trade_frozen`, `transfer_frozen`, `version`, `create_time`, `update_time`)
 		VALUES(#{userId,jdbcType=BIGINT}, #{currencyId,jdbcType=INTEGER}, #{total,jdbcType=DECIMAL}, #{tradeFrozen,jdbcType=DECIMAL}, #{transferFrozen,jdbcType=DECIMAL}, #{version,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
@@ -443,6 +456,7 @@
 			<if test="tWallet.updateTime != null">
 			AND `update_time` = #{tWallet.updateTime,jdbcType=TIMESTAMP}
 			</if>
+			<include refid="sql_WHERE"></include>
 		</if>
 		</where>
 	</select>
@@ -485,6 +499,7 @@
 			<if test="tWallet.updateTime != null">
 			AND `update_time` = #{tWallet.updateTime,jdbcType=TIMESTAMP}
 			</if>
+			<include refid="sql_WHERE"></include>
 		</if>
 		</where>
 		LIMIT #{page}, #{size}

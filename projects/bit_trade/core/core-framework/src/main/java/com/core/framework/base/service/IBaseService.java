@@ -129,4 +129,13 @@ public abstract interface IBaseService<Model extends BaseModel<Model>, DTO exten
 	 */
 	public PageDTO<Model> getsByPage(Model model, int page, int size);
 
+	/**
+	 * 查询多个根据实体和分页
+	 * @param model
+	 * @param page
+	 * @param size
+	 * @return
+	 */
+	public PageDTO<Model> getsByPagination(Model model);
+
 }

@@ -62,6 +62,8 @@ spring:
       - eureka
 
 mybatis-plus:
+  # Property 'configuration' and 'configLocation' can not specified with together
+  #config-location: classpath:mybatis/mybatis-config.xml
   mapper-locations: classpath*:/__default_SQL/**/IDefault*DAO.xml,classpath*:/SQL/**/I*DAO.xml
   #mapper-locations: ${data.mapper-locations}
   #实体扫描，多个package用逗号或者分号分隔
@@ -69,6 +71,7 @@ mybatis-plus:
   configuration:
     map-underscore-to-camel-case: true
     cache-enabled: false
+    logImpl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 ---
 server:

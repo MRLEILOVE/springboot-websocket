@@ -40,6 +40,19 @@
 		`update_time` AS updateTime
 	</sql>
 	
+	<!-- 其他的也可以类似的加， yes， 类似蕾丝的。 -->
+	<sql id="sql_WHERE">
+		<if test="wCoinConfig.map_in != null">
+		<foreach collection="wCoinConfig.map_in.entrySet()" index="map_index" item="map_item">
+		AND `${map_index}` IN 
+		<foreach collection="map_item" index="arr_index" item="arr_item" open="(" separator="," close=")">
+			#{arr_item}
+		</foreach>
+		</foreach>
+		</if>
+	</sql>
+	
+	
 	<insert id="add" parameterType="com.bittrade.pojo.model.WCoinConfig">
 		INSERT INTO w_coin_config(`coin_type`, `token`, `contract`, `scan_block`, `base_multiple`, `min_confirm`, `boss_address`, `min_collection_amount`, `valid`, `remark`, `create_time`, `update_time`)
 		VALUES(#{coinType,jdbcType=VARCHAR}, #{token,jdbcType=VARCHAR}, #{contract,jdbcType=VARCHAR}, #{scanBlock,jdbcType=BIGINT}, #{baseMultiple,jdbcType=INTEGER}, #{minConfirm,jdbcType=INTEGER}, #{bossAddress,jdbcType=VARCHAR}, #{minCollectionAmount,jdbcType=DECIMAL}, #{valid,jdbcType=CHAR}, #{remark,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
@@ -599,6 +612,7 @@
 			<if test="wCoinConfig.updateTime != null">
 			AND `update_time` = #{wCoinConfig.updateTime,jdbcType=TIMESTAMP}
 			</if>
+			<include refid="sql_WHERE"></include>
 		</if>
 		</where>
 	</select>
@@ -657,6 +671,7 @@
 			<if test="wCoinConfig.updateTime != null">
 			AND `update_time` = #{wCoinConfig.updateTime,jdbcType=TIMESTAMP}
 			</if>
+			<include refid="sql_WHERE"></include>
 		</if>
 		</where>
 		LIMIT #{page}, #{size}

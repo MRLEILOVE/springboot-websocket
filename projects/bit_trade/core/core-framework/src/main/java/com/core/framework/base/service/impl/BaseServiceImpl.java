@@ -145,5 +145,10 @@ public abstract class BaseServiceImpl<Model extends BaseModel<Model>, DTO extend
 		
 		return pageDTO;
 	}
+	
+	@Override
+	public PageDTO<Model> getsByPagination(Model model) {
+		return getsByPage(model, model.getCurrent(), model.getSize());
+	}
 
 }

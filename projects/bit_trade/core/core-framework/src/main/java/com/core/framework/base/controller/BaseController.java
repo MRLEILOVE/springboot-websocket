@@ -3,7 +3,6 @@ package com.core.framework.base.controller;
 import java.io.Serializable;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -30,7 +29,8 @@ import com.core.framework.base.service.IBaseService;
  */
 public abstract class BaseController<Model extends BaseModel<Model>, DTO extends BaseDTO<DTO>, VO extends BaseVO<VO>, Service extends IBaseService<Model, DTO, VO>> {
 
-	@Autowired(required = false)
+//	@com.alibaba.dubbo.config.annotation.Reference
+	@org.springframework.beans.factory.annotation.Autowired(required = false)
 	protected Service baseService;
 
 	@RequestMapping(value = "/add", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
