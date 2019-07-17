@@ -55,7 +55,8 @@ spring:
       modify*=PROPAGATION_REQUIRED,-Exception
       
       get*=PROPAGATION_REQUIRED,-Exception,readOnly
-    expression: execution (* com..service.*.*(..))
+    # AspectJ的切入点表达式---execution表达式 .
+    expression: execution (* com..service.impl..*ServiceImpl.*(..))
   application_name: bittrade-${data.application.name}
   profiles:
     include:

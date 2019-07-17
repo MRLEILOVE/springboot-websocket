@@ -32,6 +32,8 @@ public interface ITUserService extends IDefaultTUserService<TUser, TUserDTO, TUs
 	 */
 //	@org.springframework.transaction.annotation.Transactional(rollbackFor = { IndexOutOfBoundsException.class })
 //	@org.springframework.transaction.annotation.Transactional(noRollbackFor = { Exception.class })
-	int modifyTrans(TUser user, TUserInfo userInfo) throws Exception;
+	int modifyWithTrans(TUser user, TUserInfo userInfo) throws Exception;
+
+//	int modifyWithTrans2(TUser user, TUserInfo userInfo) throws Exception;
 	
 }

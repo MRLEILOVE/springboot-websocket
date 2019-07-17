@@ -193,7 +193,7 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 		return bd_dealPrice;
 	}
 	
-	private void addEntrustRecord(TEntrust entrust_before, TEntrust entrust_after, BigDecimal dealPrice) {
+	public void addEntrustRecord(TEntrust entrust_before, TEntrust entrust_after, BigDecimal dealPrice) {
 		BigDecimal count;
 		BigDecimal amount;
 		if (entrust_before.getLeftCount().compareTo(entrust_after.getLeftCount()) == ICompareResultConstant.LESS_THAN) {
@@ -339,8 +339,8 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 	
 	private void addTo(int idx, TEntrust entrust, List<TEntrust> list_after, List<TEntrust> list_beforeMarket, List<TEntrust> list_beforeLimit) {
 		if (idx == list_after.size()) { // isFirst
-			matchWith(entrust, list_beforeMarket); // 市价和对手盘（卖）进行撮合。
-			matchWith(entrust, list_beforeLimit); // 市价和对手盘（卖）进行撮合。
+			matchWith(entrust, list_beforeMarket); // 和对手盘（市价）进行撮合。
+			matchWith(entrust, list_beforeLimit); // 和对手盘（限价）进行撮合。
 			if (entrust.getLeftCount().compareTo(BigDecimal.ZERO) == ICompareResultConstant.GREATER_THAN) { // 有剩余的则加入列表。
 				list_after.add(entrust);
 			}
