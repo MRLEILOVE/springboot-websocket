@@ -1,25 +1,5 @@
 package com.bittrade.batch.socket.test;
 
-import org.java_websocket.WebSocket;
-import org.java_websocket.WebSocketListener;
-import org.java_websocket.drafts.Draft;
-import org.java_websocket.drafts.Draft.CloseHandshakeType;
-import org.java_websocket.drafts.Draft.HandshakeState;
-import org.java_websocket.drafts.Draft_6455;
-import org.java_websocket.exceptions.IncompleteHandshakeException;
-import org.java_websocket.exceptions.InvalidDataException;
-import org.java_websocket.exceptions.InvalidHandshakeException;
-import org.java_websocket.exceptions.NotSendableException;
-import org.java_websocket.exceptions.WebsocketNotConnectedException;
-import org.java_websocket.framing.BinaryFrame;
-import org.java_websocket.framing.CloseFrame;
-import org.java_websocket.framing.Framedata;
-import org.java_websocket.framing.Framedata.Opcode;
-import org.java_websocket.framing.PingFrame;
-import org.java_websocket.handshake.*;
-import org.java_websocket.server.WebSocketServer.WebSocketWorker;
-import org.java_websocket.util.Charsetfunctions;
-
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
@@ -33,6 +13,31 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
+
+import org.java_websocket.WebSocket;
+import org.java_websocket.WebSocketListener;
+import org.java_websocket.drafts.Draft;
+import org.java_websocket.drafts.Draft.CloseHandshakeType;
+import org.java_websocket.drafts.Draft.HandshakeState;
+import org.java_websocket.drafts.Draft_6455;
+import org.java_websocket.exceptions.IncompleteHandshakeException;
+import org.java_websocket.exceptions.InvalidDataException;
+import org.java_websocket.exceptions.InvalidHandshakeException;
+import org.java_websocket.exceptions.NotSendableException;
+import org.java_websocket.exceptions.WebsocketNotConnectedException;
+import org.java_websocket.framing.CloseFrame;
+import org.java_websocket.framing.ControlFrame;
+import org.java_websocket.framing.Framedata;
+import org.java_websocket.framing.Framedata.Opcode;
+import org.java_websocket.framing.PingFrame;
+import org.java_websocket.framing.PongFrame;
+import org.java_websocket.handshake.ClientHandshake;
+import org.java_websocket.handshake.ClientHandshakeBuilder;
+import org.java_websocket.handshake.Handshakedata;
+import org.java_websocket.handshake.ServerHandshake;
+import org.java_websocket.handshake.ServerHandshakeBuilder;
+import org.java_websocket.server.WebSocketServer.WebSocketWorker;
+import org.java_websocket.util.Charsetfunctions;
 
 /**
  * Represents one end (client or server) of a single WebSocketImpl connection.
@@ -119,6 +124,8 @@ public class WebSocketImpl implements WebSocket {
 	 * Attribute to cache a ping frame
 	 */
 	private PingFrame pingFrame;
+	
+	private PongFrame pongFrame;
 
 	/**
 	 * Creates a websocket with server role
@@ -564,7 +571,13 @@ public class WebSocketImpl implements WebSocket {
 
 	public List<Framedata> createFrames( ByteBuffer binary, boolean mask ) {
 //		BinaryFrame curframe = new BinaryFrame();
-		PingFrame curframe = new PingFrame();
+		ControlFrame curframe;
+		if (binary.array()[0] == -119)
+			curframe = new PingFrame();
+		else if (binary.array()[0] == -118) {
+			curframe = new PongFrame();
+		} else 
+			curframe = null;
 		curframe.setPayload( binary );
 		curframe.setTransferemasked( mask );
 		try {
@@ -630,6 +643,13 @@ public class WebSocketImpl implements WebSocket {
 			pingFrame = new PingFrame();
 		}
 		sendFrame( pingFrame );
+	}
+
+	public void sendPong() throws NotYetConnectedException {
+		if( pongFrame == null ) {
+			pongFrame = new PongFrame();
+		}
+		sendFrame( pongFrame );
 	}
 
 	@Override

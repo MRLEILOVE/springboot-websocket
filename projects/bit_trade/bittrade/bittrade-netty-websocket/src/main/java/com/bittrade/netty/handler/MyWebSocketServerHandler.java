@@ -163,8 +163,14 @@ public class MyWebSocketServerHandler extends SimpleChannelInboundHandler<Ticker
 		}
 		// 判断是否ping消息
 		if (frame instanceof PingWebSocketFrame) {
-//			LOG.info( arg0 );
+			LOG.info( "-------- if (frame instanceof PingWebSocketFrame) { --------" );
 			ctx.channel().write( new PongWebSocketFrame( frame.content().retain() ) );
+			return;
+		}
+		// 判断是否pong消息
+		if (frame instanceof PongWebSocketFrame) {
+			LOG.info( "-------- if (frame instanceof PongWebSocketFrame) { --------" );
+//			ctx.channel().write( new PongWebSocketFrame( frame.content().retain() ) );
 			return;
 		}
 		// 支持文本消息，不支持二进制消息
