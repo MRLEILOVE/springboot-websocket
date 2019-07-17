@@ -43,7 +43,7 @@
 
 	<!-- 查询用户当前委托	-->
 	<select id="queryPresentEntrustByUserId" resultMap="BaseResultMap">
-		SELECT *
+		SELECT <include refid="Base_Column_List"/>
 		FROM t_entrust t
 		WHERE t.`status` in (1,2) AND t.user_id = #{userId}
 		order by t.id desc
@@ -51,7 +51,7 @@
 
 	<!-- 查询用户历史委托	-->
 	<select id="queryHistoryEntrustByUserId" resultMap="BaseResultMap">
-		SELECT *
+		SELECT <include refid="Base_Column_List"/>
 		FROM t_entrust t
 		WHERE user_id = #{userId}
 		order by t.id desc
@@ -60,7 +60,7 @@
 	<!-- 查询用户的委托单成交明细	-->
 	<select id="queryEntrustInfoByUserId" resultType="com.bittrade.pojo.vo.TEntrustInfoVO">
 		SELECT e.create_time as  entrustTime,IFNULL(c1.name,c2.name) as currencyName,e.count,e.left_count as leftCount,
-			   e.status,e.entrust_direction as entrustDirection,e.amount,e.price
+			   e.status,e.entrust_direction as entrustDirection,e.amount,e.price,e.entrust_type as entrustType
 		FROM t_entrust e
 		INNER JOIN t_currency_trade t ON e.currency_trade_id = t.id
 		LEFT JOIN t_currency c1 ON t.currency_id1 = c1.id
