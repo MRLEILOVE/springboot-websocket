@@ -46,6 +46,19 @@
 		`update_time` AS updateTime
 	</sql>
 	
+	<!-- 其他的也可以类似的加， yes， 类似蕾丝的。 -->
+	<sql id="sql_WHERE">
+		<if test="tEntrust.map_in != null">
+		<foreach collection="tEntrust.map_in.entrySet()" index="map_index" item="map_item">
+		AND `${map_index}` IN 
+		<foreach collection="map_item" index="arr_index" item="arr_item" open="(" separator="," close=")">
+			#{arr_item}
+		</foreach>
+		</foreach>
+		</if>
+	</sql>
+	
+	
 	<insert id="add" parameterType="com.bittrade.pojo.model.TEntrust">
 		INSERT INTO t_entrust(`id`, `user_id`, `currency_trade_id`, `price`, `amount`, `success_amount`, `count`, `left_count`, `fees`, `left_fees`, `status`, `entrust_type`, `entrust_direction`, `version`, `create_time`, `update_time`)
 		VALUES(#{id,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{currencyTradeId,jdbcType=INTEGER}, #{price,jdbcType=DECIMAL}, #{amount,jdbcType=DECIMAL}, #{successAmount,jdbcType=DECIMAL}, #{count,jdbcType=DECIMAL}, #{leftCount,jdbcType=DECIMAL}, #{fees,jdbcType=DECIMAL}, #{leftFees,jdbcType=DECIMAL}, #{status,jdbcType=INTEGER}, #{entrustType,jdbcType=INTEGER}, #{entrustDirection,jdbcType=INTEGER}, #{version,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
@@ -722,6 +735,7 @@
 			<if test="tEntrust.updateTime != null">
 			AND `update_time` = #{tEntrust.updateTime,jdbcType=TIMESTAMP}
 			</if>
+			<include refid="sql_WHERE"></include>
 		</if>
 		</where>
 	</select>
@@ -792,6 +806,7 @@
 			<if test="tEntrust.updateTime != null">
 			AND `update_time` = #{tEntrust.updateTime,jdbcType=TIMESTAMP}
 			</if>
+			<include refid="sql_WHERE"></include>
 		</if>
 		</where>
 		LIMIT #{page}, #{size}

@@ -46,6 +46,19 @@
 		`update_time` AS updateTime
 	</sql>
 	
+	<!-- 其他的也可以类似的加， yes， 类似蕾丝的。 -->
+	<sql id="sql_WHERE">
+		<if test="tCurrencyTrade.map_in != null">
+		<foreach collection="tCurrencyTrade.map_in.entrySet()" index="map_index" item="map_item">
+		AND `${map_index}` IN 
+		<foreach collection="map_item" index="arr_index" item="arr_item" open="(" separator="," close=")">
+			#{arr_item}
+		</foreach>
+		</foreach>
+		</if>
+	</sql>
+	
+	
 	<insert id="add" parameterType="com.bittrade.pojo.model.TCurrencyTrade">
 		INSERT INTO t_currency_trade(`symbol`, `currency_id1`, `currency_id2`, `price_decimal_digits`, `count_decimal_digits`, `min_price`, `min_count`, `min_amount`, `max_price`, `max_count`, `max_amount`, `status`, `sort`, `create_time`, `update_time`)
 		VALUES(#{symbol,jdbcType=VARCHAR}, #{currencyId1,jdbcType=INTEGER}, #{currencyId2,jdbcType=INTEGER}, #{priceDecimalDigits,jdbcType=INTEGER}, #{countDecimalDigits,jdbcType=INTEGER}, #{minPrice,jdbcType=DECIMAL}, #{minCount,jdbcType=DECIMAL}, #{minAmount,jdbcType=DECIMAL}, #{maxPrice,jdbcType=DECIMAL}, #{maxCount,jdbcType=DECIMAL}, #{maxAmount,jdbcType=DECIMAL}, #{status,jdbcType=INTEGER}, #{sort,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
@@ -716,6 +729,7 @@
 			<if test="tCurrencyTrade.updateTime != null">
 			AND `update_time` = #{tCurrencyTrade.updateTime,jdbcType=TIMESTAMP}
 			</if>
+			<include refid="sql_WHERE"></include>
 		</if>
 		</where>
 	</select>
@@ -786,6 +800,7 @@
 			<if test="tCurrencyTrade.updateTime != null">
 			AND `update_time` = #{tCurrencyTrade.updateTime,jdbcType=TIMESTAMP}
 			</if>
+			<include refid="sql_WHERE"></include>
 		</if>
 		</where>
 		LIMIT #{page}, #{size}

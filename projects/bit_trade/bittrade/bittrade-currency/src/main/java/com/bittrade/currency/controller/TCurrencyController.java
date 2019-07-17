@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -27,19 +28,24 @@ import io.swagger.annotations.ApiOperation;
 @ResponseBody
 @RequestMapping(value = { "/tCurrency" }, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class TCurrencyController extends BaseController<TCurrency, TCurrencyDTO, TCurrencyVO, ITCurrencyService> {
-    @Autowired
-    private ITCurrencyService tCurrencyService;
+	@Autowired
+	private ITCurrencyService tCurrencyService;
 
-    @ApiOperation(value = "查找所有法币")
-    @RequestMapping(value = "/findAllLegalCurrency",method = RequestMethod.GET)
-    @ResponseBody
-    public ReturnDTO<List<TCurrency>> findAllLegalCurrency() {
-        try{
-            return ReturnDTO.ok(tCurrencyService.findAllLegalCurrency());
-        }catch (Exception e){
-            e.printStackTrace();
-            return ReturnDTO.error("服务器异常");
-        }
+	@ApiOperation(value = "查找所有法币")
+	@RequestMapping(value = "/findAllLegalCurrency", method = RequestMethod.GET)
+	@ResponseBody
+	public ReturnDTO<List<TCurrency>> findAllLegalCurrency() {
+		try {
+			return ReturnDTO.ok( tCurrencyService.findAllLegalCurrency() );
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ReturnDTO.error( "服务器异常" );
+		}
+	}
 
-    }
+	@RequestMapping(value = "/ta", method = RequestMethod.GET)
+	public ReturnDTO<List<TCurrency>> ta(@RequestBody TCurrencyDTO CurrencyDTO) {
+		System.out.println( "CurrencyDTO.getName()=" + CurrencyDTO.getName() );
+		return ReturnDTO.ok( CurrencyDTO.getName() );
+	}
 }

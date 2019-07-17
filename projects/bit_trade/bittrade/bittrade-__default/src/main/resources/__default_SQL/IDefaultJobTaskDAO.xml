@@ -22,6 +22,19 @@
 		`status` AS status
 	</sql>
 	
+	<!-- 其他的也可以类似的加， yes， 类似蕾丝的。 -->
+	<sql id="sql_WHERE">
+		<if test="jobTask.map_in != null">
+		<foreach collection="jobTask.map_in.entrySet()" index="map_index" item="map_item">
+		AND `${map_index}` IN 
+		<foreach collection="map_item" index="arr_index" item="arr_item" open="(" separator="," close=")">
+			#{arr_item}
+		</foreach>
+		</foreach>
+		</if>
+	</sql>
+	
+	
 	<insert id="add" parameterType="com.bittrade.pojo.model.JobTask">
 		INSERT INTO job_task(`content`, `send_time`, `status`)
 		VALUES(#{content,jdbcType=VARCHAR}, #{sendTime,jdbcType=BIGINT}, #{status,jdbcType=INTEGER})
@@ -248,6 +261,7 @@
 			<if test="jobTask.status != null">
 			AND `status` = #{jobTask.status,jdbcType=INTEGER}
 			</if>
+			<include refid="sql_WHERE"></include>
 		</if>
 		</where>
 	</select>
@@ -270,6 +284,7 @@
 			<if test="jobTask.status != null">
 			AND `status` = #{jobTask.status,jdbcType=INTEGER}
 			</if>
+			<include refid="sql_WHERE"></include>
 		</if>
 		</where>
 		LIMIT #{page}, #{size}

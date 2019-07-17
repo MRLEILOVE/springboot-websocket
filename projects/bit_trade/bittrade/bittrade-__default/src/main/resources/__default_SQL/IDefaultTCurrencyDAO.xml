@@ -28,6 +28,19 @@
 		`create_time` AS createTime
 	</sql>
 	
+	<!-- 其他的也可以类似的加， yes， 类似蕾丝的。 -->
+	<sql id="sql_WHERE">
+		<if test="tCurrency.map_in != null">
+		<foreach collection="tCurrency.map_in.entrySet()" index="map_index" item="map_item">
+		AND `${map_index}` IN 
+		<foreach collection="map_item" index="arr_index" item="arr_item" open="(" separator="," close=")">
+			#{arr_item}
+		</foreach>
+		</foreach>
+		</if>
+	</sql>
+	
+	
 	<insert id="add" parameterType="com.bittrade.pojo.model.TCurrency">
 		INSERT INTO t_currency(`name`, `short_name`, `status`, `type`, `desc`, `create_time`)
 		VALUES(#{name,jdbcType=VARCHAR}, #{shortName,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{desc,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP})
@@ -365,6 +378,7 @@
 			<if test="tCurrency.createTime != null">
 			AND `create_time` = #{tCurrency.createTime,jdbcType=TIMESTAMP}
 			</if>
+			<include refid="sql_WHERE"></include>
 		</if>
 		</where>
 	</select>
@@ -399,6 +413,7 @@
 			<if test="tCurrency.createTime != null">
 			AND `create_time` = #{tCurrency.createTime,jdbcType=TIMESTAMP}
 			</if>
+			<include refid="sql_WHERE"></include>
 		</if>
 		</where>
 		LIMIT #{page}, #{size}

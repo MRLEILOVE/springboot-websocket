@@ -54,6 +54,19 @@
 		`update_time` AS updateTime
 	</sql>
 	
+	<!-- 其他的也可以类似的加， yes， 类似蕾丝的。 -->
+	<sql id="sql_WHERE">
+		<if test="wWithdrawWalletBill.map_in != null">
+		<foreach collection="wWithdrawWalletBill.map_in.entrySet()" index="map_index" item="map_item">
+		AND `${map_index}` IN 
+		<foreach collection="map_item" index="arr_index" item="arr_item" open="(" separator="," close=")">
+			#{arr_item}
+		</foreach>
+		</foreach>
+		</if>
+	</sql>
+	
+	
 	<insert id="add" parameterType="com.bittrade.pojo.model.WWithdrawWalletBill">
 		INSERT INTO w_withdraw_wallet_bill(`user_id`, `platform`, `order_id`, `direction`, `coin_type`, `token`, `contract`, `sender_address`, `receiver_address`, `amount`, `block`, `tx`, `trade_step`, `operation_type`, `transfer_flag`, `flag`, `remark`, `create_time`, `update_time`)
 		VALUES(#{userId,jdbcType=BIGINT}, #{platform,jdbcType=VARCHAR}, #{orderId,jdbcType=VARCHAR}, #{direction,jdbcType=INTEGER}, #{coinType,jdbcType=VARCHAR}, #{token,jdbcType=VARCHAR}, #{contract,jdbcType=VARCHAR}, #{senderAddress,jdbcType=VARCHAR}, #{receiverAddress,jdbcType=VARCHAR}, #{amount,jdbcType=DECIMAL}, #{block,jdbcType=BIGINT}, #{tx,jdbcType=VARCHAR}, #{tradeStep,jdbcType=CHAR}, #{operationType,jdbcType=VARCHAR}, #{transferFlag,jdbcType=INTEGER}, #{flag,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
@@ -872,6 +885,7 @@
 			<if test="wWithdrawWalletBill.updateTime != null">
 			AND `update_time` = #{wWithdrawWalletBill.updateTime,jdbcType=TIMESTAMP}
 			</if>
+			<include refid="sql_WHERE"></include>
 		</if>
 		</where>
 	</select>
@@ -958,6 +972,7 @@
 			<if test="wWithdrawWalletBill.updateTime != null">
 			AND `update_time` = #{wWithdrawWalletBill.updateTime,jdbcType=TIMESTAMP}
 			</if>
+			<include refid="sql_WHERE"></include>
 		</if>
 		</where>
 		LIMIT #{page}, #{size}

@@ -39,6 +39,19 @@ WHERE是使用的 prefixOverrides（前缀）， SET是使用的 suffixOverrides
 		</#list>
 	</sql>
 	
+	<!-- 其他的也可以类似的加， yes， 类似蕾丝的。 -->
+	<sql id="sql_WHERE">
+		<if test="${struct.variableName}.map_in != null">
+		<foreach collection="${struct.variableName}.map_in.entrySet()" index="map_index" item="map_item">
+		AND `${r'${'}map_index${r'}'}` IN 
+		<foreach collection="map_item" index="arr_index" item="arr_item" open="(" separator="," close=")">
+			${r'#{'}arr_item${r'}'}
+		</foreach>
+		</foreach>
+		</if>
+	</sql>
+	
+	
 	<insert id="add" parameterType="${POJO_BASE_PKG}.model${module_name}.${struct.className}">
 		INSERT INTO ${struct.tableName}(<#list struct.list_itemPK as itemPK><#if !itemPK.autoIncrement>`${itemPK.columnName}`, </#if></#list><#list struct.list_item as item>`${item.columnName}`<#if item_has_next>, </#if></#list>)
 		VALUES(<#list struct.list_itemPK as itemPK><#if !itemPK.autoIncrement>${r'#{'}${itemPK.name}${r',jdbcType='}${itemPK.jdbcType}${r'}'}, </#if></#list><#list struct.list_item as item>${r'#{'}${item.name}${r',jdbcType='}${item.jdbcType}${r'}'}<#if item_has_next>, </#if></#list>)
@@ -261,6 +274,7 @@ WHERE是使用的 prefixOverrides（前缀）， SET是使用的 suffixOverrides
 			AND `${item.columnName}` = ${r'#{'}${struct.variableName}.${item.name},jdbcType=${item.jdbcType}${r'}'}
 			</if>
 			</#list>
+			<include refid="sql_WHERE"></include>
 		</if>
 		</where>
 	</select>
@@ -281,6 +295,7 @@ WHERE是使用的 prefixOverrides（前缀）， SET是使用的 suffixOverrides
 			AND `${item.columnName}` = ${r'#{'}${struct.variableName}.${item.name},jdbcType=${item.jdbcType}${r'}'}
 			</if>
 			</#list>
+			<include refid="sql_WHERE"></include>
 		</if>
 		</where>
 		LIMIT ${r'#{'}page${r'}'}, ${r'#{'}size${r'}'}

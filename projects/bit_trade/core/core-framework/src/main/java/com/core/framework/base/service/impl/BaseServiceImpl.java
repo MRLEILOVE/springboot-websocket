@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.core.common.constant.IConstant;
 import com.core.framework.DTO.PageDTO;
 import com.core.framework.base.DAO.IBaseDAO;
 import com.core.framework.base.DTO.BaseDTO;
@@ -122,14 +123,32 @@ public abstract class BaseServiceImpl<Model extends BaseModel<Model>, DTO extend
 	public PageDTO<Model> getsByPage(Model model, int page, int size) {
 		PageDTO<Model> pageDTO;
 		
-		int i_totalPage, i_totalSize;
+		if (page <= 0) {
+			page = IConstant.PAGE_INDEX;
+		}
+		if (size <= 0) {
+			size = IConstant.PAGE_SIZE;
+		}
+		
+		int i_totalPage = 0, i_totalSize;
+		List<Model> list_data = null;
 		i_totalSize = baseDAO.getCntBy(model);
-		i_totalPage = (i_totalSize - 1) / size + 1;
-		List<Model> list_data = baseDAO.getsByPage(model, (page - 1) * size, size);
+		if (i_totalSize > 0) {
+			if (size > i_totalSize) {
+				size = i_totalSize;
+			}
+			i_totalPage = (i_totalSize - 1) / size + 1;
+			list_data = baseDAO.getsByPage(model, (page - 1) * size, size);
+		}
 		
 		pageDTO = new PageDTO<Model>(page, size, i_totalPage, i_totalSize, list_data);
 		
 		return pageDTO;
+	}
+	
+	@Override
+	public PageDTO<Model> getsByPagination(Model model) {
+		return getsByPage(model, model.getCurrent(), model.getSize());
 	}
 
 }

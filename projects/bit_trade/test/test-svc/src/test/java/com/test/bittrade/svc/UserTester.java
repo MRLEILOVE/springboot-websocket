@@ -78,7 +78,11 @@ public class UserTester extends BaseTester {
 				setAge( i_age );
 			}
 		};
-		System.out.println( "userService.testTrans=" + userService.modifyTrans(tUser, tUserInfo) );
+		try {
+			System.out.println( "userService.testTrans=" + userService.modifyTrans(tUser, tUserInfo) );
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 }

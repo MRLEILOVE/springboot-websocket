@@ -42,8 +42,19 @@ public class TEntrustController extends BaseController<TEntrust, TEntrustDTO, TE
 	@ApiOperation(value = "查询用户当前委托")
 	@GetMapping(value = "/queryPresentEntrustByUserId/{userId}")
 	@ResponseBody
-	public ReturnDTO<List<TEntrustVO>> queryPresentEntrustByUserId(@PathVariable("userId") String userId) {
+	public ReturnDTO<List<TEntrustVO>> queryPresentEntrustByUserId(@PathVariable("userId") String userId
+			, @RequestBody TEntrust ent
+			) {
 		try {
+			ent.in(TEntrust.FieldNames.STATUS, new java.util.ArrayList<Object>() {
+				private static final long serialVersionUID = 1L;
+				{
+					add( 1 );
+					add( 2 );
+				}
+				});
+			ent.in(TEntrust.FieldNames.STATUS, new Object[] { 1, 2 });
+			entrustService.getsByPagination( ent );
 			return ReturnDTO.ok( entrustService.queryPresentEntrustByUserId( userId ) );
 		} catch (Exception e) {
 			e.printStackTrace();
