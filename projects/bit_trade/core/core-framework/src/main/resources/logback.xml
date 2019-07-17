@@ -56,13 +56,19 @@
 			<maxFileSize>50MB</maxFileSize>
 		</rollingPolicy>
 	</appender>
+	
 	<!-- <logger name="com.td" level="info">
 		<appender-ref ref="stdout" />
 		<appender-ref ref="infoFile" />
 	</logger> -->
+	<logger name="springfox.documentation.spring.web.readers.operation" level="WARN"></logger>
+	<logger name="com.alibaba.dubbo.config" level="WARN"></logger>
+	<logger name="org.springframework.web.servlet.handler" level="WARN"></logger>
+	
 	<root level="INFO">
 		<appender-ref ref="stdout" />
 		<appender-ref ref="infoFile" />
 		<appender-ref ref="errorFile" />
 	</root>
+	
 </configuration>
