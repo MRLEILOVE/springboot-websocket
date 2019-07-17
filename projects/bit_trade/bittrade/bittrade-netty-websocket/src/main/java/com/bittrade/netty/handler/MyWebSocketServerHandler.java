@@ -1,12 +1,17 @@
 package com.bittrade.netty.handler;
 
-import java.util.Random;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import com.alibaba.fastjson.JSON;
+import com.bittrade.common.utils.RedisKeyUtil;
 import com.bittrade.netty.dto.TickerDto;
 import com.bittrade.netty.dto.WebSocketParamDto;
 import com.bittrade.netty.enums.WebSocketEnum.KlineEnum;
@@ -35,6 +40,7 @@ import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
 import io.netty.util.CharsetUtil;
 import io.netty.util.concurrent.GlobalEventExecutor;
+import redis.clients.jedis.JedisCluster;
 
 public class MyWebSocketServerHandler extends SimpleChannelInboundHandler<TickerDto> {
 
@@ -42,6 +48,9 @@ public class MyWebSocketServerHandler extends SimpleChannelInboundHandler<Ticker
 
 	private WebSocketServerHandshaker	handshaker;
 	private int							lossConnectCount	= 0;
+
+	@Autowired
+	private JedisCluster				jedisCluster;
 
 	/**
 	 * channel 通道 action 活跃的
@@ -52,8 +61,6 @@ public class MyWebSocketServerHandler extends SimpleChannelInboundHandler<Ticker
 		// 添加
 		// Global.group.add( ctx.channel() );
 		LOG.info( "客户端与服务端握手成功..." + ctx.channel().remoteAddress().toString() );
-		// TextWebSocketFrame contws = new TextWebSocketFrame( "pong" );
-		// ctx.writeAndFlush( contws );
 	}
 
 	/**
@@ -64,6 +71,21 @@ public class MyWebSocketServerHandler extends SimpleChannelInboundHandler<Ticker
 	public void channelInactive(ChannelHandlerContext ctx) throws Exception {
 		// 分组移除
 		// Global.group.remove( ctx.channel() );
+		System.out.println( Global.concurrentHashMap.size() );
+		List<String> keys = Global.channelGroups.get( String.valueOf( ctx.channel().id() ) );
+		for (String key : keys) {
+			ChannelGroup channelGroup = Global.concurrentHashMap.get( key );
+			System.out.println( "开始：" + channelGroup.size() );
+			if (channelGroup.remove( ctx.channel() )) {
+				if (channelGroup.size() > 0) {
+					Global.concurrentHashMap.put( key, channelGroup );
+				} else {
+					Global.concurrentHashMap.remove( key );
+				}
+			}
+			System.out.println( "结束：" + channelGroup.size() );
+		}
+		Global.channelGroups.remove( ctx );
 		LOG.info( "客户端与服务端连接关闭：" + ctx.channel().remoteAddress().toString() );
 	}
 
@@ -186,36 +208,42 @@ public class MyWebSocketServerHandler extends SimpleChannelInboundHandler<Ticker
 		try {
 			// message = "{\"op\":\"subscribe\",\"args\":\"BTC_USDT_1_MIN}";
 			WebSocketParamDto webSocketParamDto = JSON.parseObject( message, WebSocketParamDto.class );
-			String args = KlineEnum.parse( webSocketParamDto.getArgs() );
-			if (StringUtils.isEmpty( args )) {
+			String args = webSocketParamDto.getArgs();
+			String symbol = args.split( "_" )[ 0 ]; // 交易对
+			String granularity = args.split( "_" )[ 1 ]; // 时间粒度
+
+			// 简单基础校验
+			if (!Global.granularitys.contains( granularity ) || symbol.split( "-" ).length != 2) {
 				failure( ctx, message );
 				return;
 			}
-			String key = args;
-			ChannelGroup channelGroup = Global.concurrentHashMap.get( key );
+			ChannelGroup channelGroup = Global.concurrentHashMap.get( args );
 			if (webSocketParamDto.getOp().equals( KlineEnum.SUBSCRIBE.getKey() )) {
 				if (null == channelGroup) {
 					channelGroup = new DefaultChannelGroup( GlobalEventExecutor.INSTANCE );
 				}
 				channelGroup.add( ctx.channel() );
-				Global.concurrentHashMap.put( key, channelGroup );
+				Global.concurrentHashMap.put( args, channelGroup );
+
+				List<String> ctxs = Global.channelGroups.get( String.valueOf( ctx.channel().id() ) );
+				if (null == ctxs) {
+					ctxs = new ArrayList<String>();
+				}
+				ctxs.add( args );
+				Global.channelGroups.put( String.valueOf( ctx.channel().id() ), ctxs );
 			} else if (webSocketParamDto.getOp().equals( KlineEnum.UNSUBSCRIBE.getKey() )) {
-				if (null != channelGroup) {
-					if (channelGroup.size() > 0) {
-						channelGroup.remove( ctx.channel() );
-					}
-					if (Global.concurrentHashMap.get( key ).size() > 0) {
-						Global.concurrentHashMap.put( key, channelGroup );
-					} else {
-						Global.concurrentHashMap.remove( key, channelGroup );
-					}
+				System.out.println( channelGroup.remove( ctx.channel() ) );
+				if (channelGroup.size() > 0) {
+					Global.concurrentHashMap.put( args, channelGroup );
+				} else {
+					Global.concurrentHashMap.remove( args );
 				}
 			} else {
 				failure( ctx, message );
 			}
 		} catch (Exception e) {
 			LOG.error( "订阅格式异常" );
-			failure( ctx, message );
+			failure( ctx, e.getMessage() );
 		}
 	}
 
@@ -226,6 +254,11 @@ public class MyWebSocketServerHandler extends SimpleChannelInboundHandler<Ticker
 		} catch (Exception e) {
 			e.getStackTrace();
 		}
+	}
+
+	public static void main(String[] args) {
+		String symbol = "BTC-USDT";
+		System.out.println( symbol.split( "-" ).length );
 	}
 
 }

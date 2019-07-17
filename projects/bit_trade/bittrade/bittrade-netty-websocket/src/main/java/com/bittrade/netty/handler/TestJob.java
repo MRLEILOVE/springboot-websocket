@@ -1,9 +1,7 @@
 package com.bittrade.netty.handler;
 
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -26,6 +24,7 @@ public class TestJob {
 		ConcurrentHashMap<String, ChannelGroup> concurrentHashMap = Global.concurrentHashMap;
 		for (Map.Entry<String, ChannelGroup> map : concurrentHashMap.entrySet()) {
 			String key = map.getKey();
+			System.out.println( "**********************************************" + key );
 			ChannelGroup channelGroup = map.getValue();
 			TextWebSocketFrame contws = new TextWebSocketFrame( "zale服务端返回：" + (int) new Random().nextInt( 100 ) );
 			channelGroup.writeAndFlush( contws );

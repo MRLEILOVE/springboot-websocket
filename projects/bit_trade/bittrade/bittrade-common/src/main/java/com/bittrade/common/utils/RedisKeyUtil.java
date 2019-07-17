@@ -20,6 +20,18 @@ public class RedisKeyUtil {
 
 	public static final String	OKEX				= "OKEX_";
 
+	public static final String	BIT_TRADE_			= "BIT_TRADE_";
+
+	// BIT-TRADE-SYMBOL
+	public static String getBitTradeSymbol() {
+		return BIT_TRADE_ + "ALL_SYMBOL_KEY";
+	}
+
+	// OKEX-时间粒度[1min,5min,15min,30min,60min,4hour,1day,1mon,1week,1year]
+	public static String getOkexGranularity() {
+		return OKEX + "GRANULARITY";
+	}
+
 	// symbol最新价
 	public static String getOkexSymbolLast(String symbol) {
 		return OKEX + symbol + "_LAST_KEY";

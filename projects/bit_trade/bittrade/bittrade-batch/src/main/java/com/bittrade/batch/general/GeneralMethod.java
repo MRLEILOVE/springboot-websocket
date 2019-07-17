@@ -3,7 +3,6 @@ package com.bittrade.batch.general;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.bittrade.batch.enumer.ParamConfigEnum.ParamStatus;
 import com.bittrade.currency.api.service.ITParamConfigService;
 import com.bittrade.currency.api.service.ITWalletService;
