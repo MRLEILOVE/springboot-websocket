@@ -11,6 +11,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 public class NetyWebsocketApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run( NetyWebsocketApplication.class, args );
+		System.setProperty( "svc_name", "netty-websocket" );
+		SpringApplication sa = new SpringApplication( NetyWebsocketApplication.class );
+		sa.run( args );
 	}
 }
