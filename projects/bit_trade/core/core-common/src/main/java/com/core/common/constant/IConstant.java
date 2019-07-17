@@ -18,4 +18,14 @@ public interface IConstant {
 	 */
 	public static final int FAILURE = -1;
 
+	/**
+	 * 默认页码
+	 */
+	public static final int PAGE_INDEX = 1;
+
+	/**
+	 * 默认页条数
+	 */
+	public static final int PAGE_SIZE = 10;
+
 }

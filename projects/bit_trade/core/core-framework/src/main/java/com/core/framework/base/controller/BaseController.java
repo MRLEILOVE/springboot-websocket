@@ -107,4 +107,11 @@ public abstract class BaseController<Model extends BaseModel<Model>, DTO extends
 		return baseService.getsByPage(model, page, size);
 	}
 
+	@RequestMapping(value = "/getsByPagination", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public PageDTO<Model> getsByPagination(
+			Model model
+			) {
+		return baseService.getsByPage(model, model.getCurrent(), model.getSize());
+	}
+
 }

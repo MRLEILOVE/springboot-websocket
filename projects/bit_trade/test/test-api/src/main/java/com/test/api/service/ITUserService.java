@@ -27,10 +27,11 @@ public interface ITUserService extends IDefaultTUserService<TUser, TUserDTO, TUs
 	 * @param user
 	 * @param userInfo
 	 * @return  
+	 * @throws Exception 
 	 * @since JDK 1.8
 	 */
 //	@org.springframework.transaction.annotation.Transactional(rollbackFor = { IndexOutOfBoundsException.class })
 //	@org.springframework.transaction.annotation.Transactional(noRollbackFor = { Exception.class })
-	int modifyTrans(TUser user, TUserInfo userInfo);
+	int modifyTrans(TUser user, TUserInfo userInfo) throws Exception;
 	
 }

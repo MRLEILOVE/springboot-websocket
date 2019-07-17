@@ -193,7 +193,7 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 		return bd_dealPrice;
 	}
 	
-	private void matchWith(TEntrust entrust_before, TEntrust entrust_after, BigDecimal dealPrice) {
+	private void addEntrustRecord(TEntrust entrust_before, TEntrust entrust_after, BigDecimal dealPrice) {
 		BigDecimal count;
 		BigDecimal amount;
 		if (entrust_before.getLeftCount().compareTo(entrust_after.getLeftCount()) == ICompareResultConstant.LESS_THAN) {
@@ -323,7 +323,7 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 				if (bd_dealPrice == null) {
 					break;
 				} else {
-					matchWith(entrust_, entrust, bd_dealPrice);
+					addEntrustRecord(entrust_, entrust, bd_dealPrice);
 					changeLinePrice(bd_dealPrice);
 					
 					if (entrust_.getLeftCount().compareTo(BigDecimal.ZERO) == ICompareResultConstant.EQUAL) {
@@ -352,7 +352,7 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 	private ReentrantLock getLock(ConcurrentHashMap<Integer, ReentrantLock> map, Integer key) {
 		ReentrantLock lock;
 		
-		if (map.contains( key )) {
+		if (map.containsKey( key )) {
 			lock = map.get( key );
 		} else {
 			map.put( key, lock = new ReentrantLock() );

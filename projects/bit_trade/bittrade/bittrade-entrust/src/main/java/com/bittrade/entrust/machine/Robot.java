@@ -202,9 +202,7 @@ public /* static */final class Robot {
 					entrust.setCount( getCount() );
 					entrustService.add(entrust);
 
-					System.out.println( "1111111111" );
 					makeAMatch.makeAMatch( entrust );
-					System.out.println( "2222222222" );
 
 					Thread.sleep( getSleepMillis() );
 				}
