@@ -27,7 +27,22 @@ public class TUserServiceImpl extends DefaultTUserServiceImpl<ITUserDAO, TUser, 
 	private ITUserInfoDAO	userInfoDAO;
 
 	@Override
-	public int modifyTrans(TUser user, TUserInfo userInfo) throws Exception {
+	public int modifyWithTrans(TUser user, TUserInfo userInfo) throws Exception {
+		try {
+			System.out.println( "userDAO.modifyByPK=" + userDAO.modifyByPK( user ) );
+//			if (user != null) {
+//				throw new Exception("--");
+//			}
+			System.out.println( "userInfoDAO.add=" + userInfoDAO.add( userInfo ) );
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+		return 0;
+	}
+
+//	@Override
+	public int modifyWithTrans2(TUser user, TUserInfo userInfo) throws Exception {
 		try {
 			System.out.println( "userDAO.modifyByPK=" + userDAO.modifyByPK( user ) );
 //			if (user != null) {
