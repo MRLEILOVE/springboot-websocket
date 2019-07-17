@@ -42,6 +42,19 @@
 		`create_time` AS createTime
 	</sql>
 	
+	<!-- 其他的也可以类似的加， yes， 类似蕾丝的。 -->
+	<sql id="sql_WHERE">
+		<if test="tEntrustRecord.map_in != null">
+		<foreach collection="tEntrustRecord.map_in.entrySet()" index="map_index" item="map_item">
+		AND `${map_index}` IN 
+		<foreach collection="map_item" index="arr_index" item="arr_item" open="(" separator="," close=")">
+			#{arr_item}
+		</foreach>
+		</foreach>
+		</if>
+	</sql>
+	
+	
 	<insert id="add" parameterType="com.bittrade.pojo.model.TEntrustRecord">
 		INSERT INTO t_entrust_record(`id`, `user_id`, `rival_user_id`, `entrust_id`, `rival_entrust_id`, `amount`, `price`, `count`, `rate`, `fees`, `currency_trade_id`, `is_active`, `entrust_direction`, `create_time`)
 		VALUES(#{id,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{rivalUserId,jdbcType=BIGINT}, #{entrustId,jdbcType=BIGINT}, #{rivalEntrustId,jdbcType=BIGINT}, #{amount,jdbcType=DECIMAL}, #{price,jdbcType=DECIMAL}, #{count,jdbcType=DECIMAL}, #{rate,jdbcType=DECIMAL}, #{fees,jdbcType=DECIMAL}, #{currencyTradeId,jdbcType=INTEGER}, #{isActive,jdbcType=INTEGER}, #{entrustDirection,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP})
@@ -644,6 +657,7 @@
 			<if test="tEntrustRecord.createTime != null">
 			AND `create_time` = #{tEntrustRecord.createTime,jdbcType=TIMESTAMP}
 			</if>
+			<include refid="sql_WHERE"></include>
 		</if>
 		</where>
 	</select>
@@ -706,6 +720,7 @@
 			<if test="tEntrustRecord.createTime != null">
 			AND `create_time` = #{tEntrustRecord.createTime,jdbcType=TIMESTAMP}
 			</if>
+			<include refid="sql_WHERE"></include>
 		</if>
 		</where>
 		LIMIT #{page}, #{size}
