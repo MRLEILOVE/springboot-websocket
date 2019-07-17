@@ -1,17 +1,11 @@
 package com.bittrade.netty.handler;
 
-import java.io.IOException;
 import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.springframework.amqp.core.Message;
-import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-
-import com.bittrade.common.constant.IQueueConstants;
-import com.rabbitmq.client.Channel;
 
 import io.netty.channel.group.ChannelGroup;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
@@ -31,16 +25,6 @@ public class TestJob {
 		}
 		// 群发组
 		// Global.group.writeAndFlush( contws );
-	}
-
-	@RabbitListener(queues = { IQueueConstants.QUEUE__LINE_PRICE })
-	public void processMessage(Channel channel, Message message) {
-		System.out.println( "MessageConsumer收到消息：" + new String( message.getBody() ) );
-		try {
-			channel.basicAck( message.getMessageProperties().getDeliveryTag(), false );
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 
 }
