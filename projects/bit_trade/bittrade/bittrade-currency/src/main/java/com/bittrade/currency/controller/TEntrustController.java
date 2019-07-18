@@ -2,6 +2,7 @@ package com.bittrade.currency.controller;
 
 import java.util.List;
 
+import com.core.framework.DTO.PageDTO;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -40,22 +41,19 @@ public class TEntrustController extends BaseController<TEntrust, TEntrustDTO, TE
 	private ITEntrustService entrustService;
 
 	@ApiOperation(value = "查询用户当前委托")
-	@GetMapping(value = "/queryPresentEntrustByUserId/{userId}")
+	@GetMapping(value = "/queryPresentEntrustByUserId")
 	@ResponseBody
-	public ReturnDTO<List<TEntrustVO>> queryPresentEntrustByUserId(@PathVariable("userId") String userId
-			, @RequestBody TEntrust ent
-			) {
+	public ReturnDTO<PageDTO<TEntrust>> queryPresentEntrustByUserId(TEntrust ent) {
 		try {
-			ent.in(TEntrust.FieldNames.STATUS, new java.util.ArrayList<Object>() {
-				private static final long serialVersionUID = 1L;
-				{
-					add( 1 );
-					add( 2 );
-				}
-				});
 			ent.in(TEntrust.FieldNames.STATUS, new Object[] { 1, 2 });
-			entrustService.getsByPagination( ent );
-			return ReturnDTO.ok( entrustService.queryPresentEntrustByUserId( userId ) );
+			PageDTO<TEntrust> tEntrustPageDTO = entrustService.getsByPagination(ent);
+			if(tEntrustPageDTO != null && tEntrustPageDTO.getData() != null && tEntrustPageDTO.getData().size() > 0){
+				tEntrustPageDTO.getData().stream().forEach(x ->{
+					//给前端计算好成加量（借用leftCount返回）
+					x.setLeftCount(x.getCount().subtract(x.getLeftCount()));
+				});
+			}
+			return ReturnDTO.ok(tEntrustPageDTO);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return ReturnDTO.error( "服务器异常" );
@@ -64,11 +62,18 @@ public class TEntrustController extends BaseController<TEntrust, TEntrustDTO, TE
 	}
 
 	@ApiOperation(value = "查询用户历史委托")
-	@GetMapping(value = "/queryHistoryEntrustByUserId/{userId}")
+	@GetMapping(value = "/queryHistoryEntrustByUserId")
 	@ResponseBody
-	public ReturnDTO<List<TEntrustVO>> queryHistoryEntrustByUserId(@PathVariable("userId") String userId) {
+	public ReturnDTO<PageDTO<TEntrust>> queryHistoryEntrustByUserId(TEntrust ent) {
 		try {
-			return ReturnDTO.ok( entrustService.queryHistoryEntrustByUserId( userId ) );
+			PageDTO<TEntrust> tEntrustPageDTO = entrustService.getsByPagination(ent);
+			if(tEntrustPageDTO != null && tEntrustPageDTO.getData() != null && tEntrustPageDTO.getData().size() > 0){
+				tEntrustPageDTO.getData().stream().forEach(x ->{
+					//给前端计算好成加量（借用leftCount返回）
+					x.setLeftCount(x.getCount().subtract(x.getLeftCount()));
+				});
+			}
+			return ReturnDTO.ok(tEntrustPageDTO);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return ReturnDTO.error( "服务器异常" );
@@ -116,12 +121,17 @@ public class TEntrustController extends BaseController<TEntrust, TEntrustDTO, TE
 	@ApiOperation(value = "查询用户的委托单成交明细")
 	@RequestMapping(value = "/queryEntrustInfoByUserId/{userId}/{entrustId}", method = RequestMethod.GET)
 	@ResponseBody
-	public TEntrustInfoVO queryEntrustInfoByUserId(@PathVariable("userId") String userId, @PathVariable("entrustId") String entrustId) {
-		return entrustService.queryEntrustInfoByUserId( userId, entrustId );
+	public ReturnDTO<TEntrustInfoVO> queryEntrustInfoByUserId(@PathVariable("userId") String userId, @PathVariable("entrustId") String entrustId) {
+		TEntrustInfoVO infoVO = entrustService.queryEntrustInfoByUserId(userId, entrustId);
+		if(infoVO != null){
+			//计算完成数量
+			infoVO.setCompletedCount(infoVO.getCount().subtract(infoVO.getLeftCount()));
+		}
+		return ReturnDTO.ok(infoVO);
 	}
 
 	@ApiOperation(value = "用户撤单")
-	@RequestMapping(value = "/killOrder/{entrustId}", method = RequestMethod.GET)
+	@RequestMapping(value = "/killOrder/{entrustId}", method = RequestMethod.POST)
 	@ResponseBody
 	public ReturnDTO<Object> killOrder(@PathVariable("entrustId") String entrustId) {
 		return entrustService.killOrder( entrustId );

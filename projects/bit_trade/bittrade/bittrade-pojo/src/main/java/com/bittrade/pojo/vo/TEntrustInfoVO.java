@@ -3,6 +3,8 @@ package com.bittrade.pojo.vo;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 
@@ -11,7 +13,7 @@ import java.util.Date;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class TEntrustInfoVO {
+public class TEntrustInfoVO implements Serializable {
 
     /**
      * 委托时间
@@ -26,12 +28,17 @@ public class TEntrustInfoVO {
     /**
      * 委托总量
      */
-    private Double count;
+    private BigDecimal count;
 
     /**
      * 未完成数量
      */
-    private Double leftCount;
+    private BigDecimal leftCount;
+
+    /**
+     * 未完成数量
+     */
+    private BigDecimal completedCount;
 
     /**
      * 状态:1未完成,2部分成交,3完全成交,4用户撤销
@@ -46,11 +53,16 @@ public class TEntrustInfoVO {
     /**
      * 委托价
      */
-    private Double amount;
+    private BigDecimal amount;
 
     /**
      * 平均价
      */
-    private Double price;
+    private BigDecimal price;
+
+    /**
+     * 委托类型
+     */
+    private Integer entrustType;
 
 }

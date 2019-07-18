@@ -3,6 +3,8 @@ package com.bittrade.pojo.model;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.core.framework.base.model.BaseModel;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,6 +23,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 @TableName(value="t_entrust")
+@ApiModel(value = "委托表")
 public class TEntrust extends BaseModel<TEntrust> {
 	
 	private static final long serialVersionUID = 1L;
@@ -36,6 +39,7 @@ public class TEntrust extends BaseModel<TEntrust> {
 		/**
 		 * 委托表ID
 		 */
+		@ApiModelProperty(value = "id")
 		public static final String ID = "id";
 		
 		/**

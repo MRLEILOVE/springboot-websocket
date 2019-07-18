@@ -163,6 +163,7 @@ public class MyWebSocketServerHandler extends SimpleChannelInboundHandler<Ticker
 		}
 		// 判断是否ping消息
 		if (frame instanceof PingWebSocketFrame) {
+//			LOG.info( arg0 );
 			ctx.channel().write( new PongWebSocketFrame( frame.content().retain() ) );
 			return;
 		}
@@ -257,6 +258,11 @@ public class MyWebSocketServerHandler extends SimpleChannelInboundHandler<Ticker
 		} catch (Exception e) {
 			e.getStackTrace();
 		}
+	}
+
+	public static void _main(String[] args) {
+		String symbol = "BTC-USDT";
+		System.out.println( symbol.split( "-" ).length );
 	}
 
 }
