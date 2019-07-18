@@ -2,6 +2,8 @@ package com.bittrade.netty.server;
 
 import javax.annotation.PostConstruct;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import com.bittrade.netty.handler.ChildChannelHandler;
@@ -17,16 +19,18 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
  * 
  * @author Administrator
  */
-@Service
+@Component
 public class NettyServer {
 
-	private final static int port = 7397;
+	@Value("${spring.websocket.port}")
+	private int port;
 
 	@PostConstruct
 	public void initNetty() {
+		NettyServer nettyServer = this;
 		new Thread() {
 			public void run() {
-				new NettyServer().run();
+				nettyServer.run();
 			}
 		}.start();
 	}

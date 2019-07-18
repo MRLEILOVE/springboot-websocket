@@ -10,6 +10,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.alibaba.fastjson.JSONArray;
+import com.bittrade.common.constant.IQueueConstants;
 import com.rabbitmq.client.Channel;
 
 import io.netty.channel.group.ChannelGroup;
@@ -56,13 +57,13 @@ public class TestJob {
 		channelGroup.writeAndFlush( contws );
 	}
 
-	@RabbitListener(queues = "abc")
+	@RabbitListener(queues = IQueueConstants.QUEUE__KLINE)
 	public void processMessage(Channel channel, Message message) {
-		String context = new String( message.getBody() );
-		context = "[\"BTC-USDT\",\"2019-07-18 17:00:00.00\",\"9783.2\",\"9787.9\",\"9778.3\",\"9782\",\"3.40246089\"]";
+		System.out.println( new String(message.getBody()) );
+		String context = "[\"BTC-USDT\",\"2019-07-18 17:00:00\",\"9783.2\",\"9787.9\",\"9778.3\",\"9782\",\"3.40246089\"]";
 		JSONArray object = JSONArray.parseArray( context );
 		String symbol = object.getString( 0 );
-		String key = symbol + "-" + 60;
+		String key = symbol + "_" + 60;
 		ConcurrentHashMap<String, ChannelGroup> concurrentHashMap = Global.concurrentHashMap;
 		if (concurrentHashMap.size() == 0) {
 			return;
