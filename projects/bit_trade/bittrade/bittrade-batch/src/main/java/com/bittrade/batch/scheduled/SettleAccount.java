@@ -51,7 +51,8 @@ public class SettleAccount {
 	private static final SnowFlake	SNOW_FLAKE			= new SnowFlake( 1, 1 );
 
 	// @Scheduled(cron = "0/1 * * * * ?")
-	public void sellte() {
+	@Transactional(rollbackFor = Exception.class)
+	public void sellte() throws Exception {
 		try {
 			// 1、查询卖方向的未结算的订单
 			TEntrustRecord entrustRecords = new TEntrustRecord();
@@ -100,6 +101,7 @@ public class SettleAccount {
 			updateUserWallet( buyCurrencyIdWallet, count, entrustRecordId, false );// 加count
 		} catch (Exception e) {
 			LOG.error( e.getMessage(), e );
+			throw new Exception( e );
 		}
 	}
 
