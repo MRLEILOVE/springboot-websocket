@@ -195,7 +195,14 @@ public class MyWebSocketServerHandler extends SimpleChannelInboundHandler<Ticker
 		LOG.info( "msg:" + msg );
 	}
 
-	// 订阅
+	/**
+	 * messageHandle:(消息处理). <br/>
+	 * 
+	 * @author Administrator
+	 * @param message
+	 * @param ctx
+	 * @since JDK 1.8
+	 */
 	private void messageHandle(String message, ChannelHandlerContext ctx) {
 		try {
 			WebSocketParamDto webSocketParamDto = JSON.parseObject( message, WebSocketParamDto.class );
@@ -242,6 +249,14 @@ public class MyWebSocketServerHandler extends SimpleChannelInboundHandler<Ticker
 		}
 	}
 
+	/**
+	 * failure:(异常处理). <br/>
+	 * 
+	 * @author Administrator
+	 * @param ctx
+	 * @param message
+	 * @since JDK 1.8
+	 */
 	private void failure(ChannelHandlerContext ctx, String message) {
 		try {
 			TextWebSocketFrame contws = new TextWebSocketFrame( "订阅格式错误：" + message );
