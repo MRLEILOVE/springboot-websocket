@@ -7,6 +7,7 @@ import org.springframework.amqp.core.ExchangeBuilder;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.core.QueueBuilder;
 import org.springframework.amqp.core.TopicExchange;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -14,6 +15,26 @@ import com.bittrade.common.constant.IQueueConstants;
 
 @Configuration
 public class MQConfiguration {
+
+	/**
+	 * 消息队列声明
+	 *
+	 * @return
+	 */
+	@Bean(name = IQueueConstants.QUEUE__ENTRUST_RECORD)
+	public Queue messageQueue__ENTRUST_RECORD() {
+		return QueueBuilder.durable(IQueueConstants.QUEUE__ENTRUST_RECORD).build();
+	}
+
+	/**
+	 * 消息队列声明
+	 *
+	 * @return
+	 */
+	@Bean(name = IQueueConstants.QUEUE__KLINE)
+	public Queue messageQueue__KLINE() {
+		return QueueBuilder.durable(IQueueConstants.QUEUE__KLINE).build();
+	}
 
 	/**
 	 * 交换配置
@@ -31,18 +52,22 @@ public class MQConfiguration {
 	 * @return
 	 */
 	@Bean
-	public TopicExchange topicDirectExchange() {
+	public TopicExchange messageTopicExchange() {
 		return (TopicExchange) ExchangeBuilder.topicExchange(IQueueConstants.EXCHANGE_TOPIC).durable(true).build();
 	}
 
 	/**
-	 * 消息队列声明
-	 *
+	 * 消息绑定
+	 * @param queue
 	 * @return
 	 */
 	@Bean
-	public Queue messageQueue() {
-		return QueueBuilder.durable(IQueueConstants.QUEUE__KLINE).build();
+	public Binding messageBinding__ENTRUST_RECORD(@Qualifier(value = IQueueConstants.QUEUE__ENTRUST_RECORD) Queue queue) {
+		return BindingBuilder.
+				bind(messageQueue__ENTRUST_RECORD()/*queue*/).
+//				to(messageDirectExchange()).
+				to(messageTopicExchange()).
+				with(IQueueConstants.ROUTE_KEY__ENTRUST_RECORD);
 	}
 
 	/**
@@ -51,8 +76,8 @@ public class MQConfiguration {
 	 * @return
 	 */
 	@Bean
-	public Binding messageBinding() {
-		return BindingBuilder.bind(messageQueue()).to(messageDirectExchange()).with(IQueueConstants.ROUTE_KEY__KLINE);
+	public Binding messageBinding__KLINE() {
+		return BindingBuilder.bind(messageQueue__KLINE()).to(messageTopicExchange()).with(IQueueConstants.ROUTE_KEY__KLINE);
 	}
 
 }

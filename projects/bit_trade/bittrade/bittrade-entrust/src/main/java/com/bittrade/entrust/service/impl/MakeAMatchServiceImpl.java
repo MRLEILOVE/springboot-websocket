@@ -410,16 +410,6 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 		return linePrice;
 	}
 	
-//	@RabbitListener(queues = { IQueueConstants.QUEUE__LINE_PRICE })
-//	public void processMessage(Channel channel, Message message) {
-//		System.out.println("MessageConsumer收到消息：" + new String(message.getBody()));
-//		try {
-//			channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-//	}
-	
 	/**
 	 * 撮合
 	 * <p>
@@ -652,9 +642,9 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 //		System.out.println(bd1.multiply(bd2).setScale(8, BigDecimal.ROUND_HALF_DOWN).multiply(BigDecimal.valueOf(2)));
 	}
 
-	@RabbitListener(queues = { "queue.entrustRecord" })
+	@RabbitListener(queues = { IQueueConstants.QUEUE__ENTRUST_RECORD })
 	public void processMessage(Channel channel, Message message) {
-		System.out.println("-- MessageConsumer收到消息：" + new String(message.getBody()));
+		System.out.println("QUEUE__ENTRUST_RECORD -- MessageConsumer收到消息：" + new String(message.getBody()));
 		try {
 			channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
 		} catch (IOException e) {
@@ -662,9 +652,9 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 		}
 	}
 
-	@RabbitListener(queues = { "queue.abc.entrustRecord" })
+	@RabbitListener(queues = { IQueueConstants.QUEUE__KLINE })
 	public void processMessage_2(Channel channel, Message message) {
-		System.out.println("abc -- MessageConsumer收到消息：" + new String(message.getBody()));
+		System.out.println("QUEUE__KLINE -- MessageConsumer收到所有消息：" + new String(message.getBody()));
 		try {
 			channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
 		} catch (IOException e) {
@@ -675,8 +665,9 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 	public void testMQ() {
 		try {
 //			rabbitTemplate.convertAndSend(IQueueConstants.EXCHANGE, IQueueConstants.ROUTE_KEY__ENTRUST_RECORD, "-toString()-");
-			rabbitTemplate.convertAndSend(IQueueConstants.EXCHANGE_TOPIC, "route.key.#", "-toString()-");
-			rabbitTemplate.convertAndSend(IQueueConstants.EXCHANGE_TOPIC, "route.key.abc.#", "-toString()-");
+			rabbitTemplate.convertAndSend(IQueueConstants.EXCHANGE_TOPIC, IQueueConstants.ROUTE_KEY__ENTRUST_RECORD, IQueueConstants.ROUTE_KEY__ENTRUST_RECORD);
+			rabbitTemplate.convertAndSend(IQueueConstants.EXCHANGE_TOPIC, IQueueConstants.ROUTE_KEY__KLINE, IQueueConstants.ROUTE_KEY__KLINE);
+			rabbitTemplate.convertAndSend(IQueueConstants.EXCHANGE_TOPIC, "route.key..1", "route.key..1");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
