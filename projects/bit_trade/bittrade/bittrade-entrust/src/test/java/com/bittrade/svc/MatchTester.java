@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.bittrade.currency.api.service.ITCurrencyTradeService;
 import com.bittrade.entrust.machine.Robot;
-import com.bittrade.pojo.model.TCurrencyTrade;
+import com.bittrade.entrust.service.impl.MakeAMatchServiceImpl;
 import com.bittrade.svc.base.BaseTester;
 
 public class MatchTester extends BaseTester {
@@ -15,8 +15,8 @@ public class MatchTester extends BaseTester {
 	private Robot robot;
 	@Reference
 	private ITCurrencyTradeService currencyTradeService;
-//	@Reference
-//	ITEntrustService es;
+	@Autowired
+	MakeAMatchServiceImpl ms;
 	
 	@Test
 	public void test() {
@@ -42,6 +42,11 @@ public class MatchTester extends BaseTester {
 //				e.printStackTrace();
 //			}
 //		}
+	}
+	
+	@Test
+	public void testMQ() {
+		ms.testMQ();
 	}
 
 }

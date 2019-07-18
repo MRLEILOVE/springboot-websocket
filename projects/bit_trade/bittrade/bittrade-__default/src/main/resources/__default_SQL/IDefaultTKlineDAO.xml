@@ -15,7 +15,7 @@
 		<result javaType="java.math.BigDecimal" property="open" jdbcType="DECIMAL" column="open" />
 		<result javaType="java.math.BigDecimal" property="close" jdbcType="DECIMAL" column="close" />
 		<result javaType="java.math.BigDecimal" property="volume" jdbcType="DECIMAL" column="volume" />
-		<result javaType="String" property="granularity" jdbcType="VARCHAR" column="granularity" />
+		<result javaType="Integer" property="granularity" jdbcType="INTEGER" column="granularity" />
 		<result javaType="java.util.Date" property="time" jdbcType="TIMESTAMP" column="time" />
 		<result javaType="java.util.Date" property="createTime" jdbcType="TIMESTAMP" column="create_time" />
 		<result javaType="java.util.Date" property="updateTime" jdbcType="TIMESTAMP" column="update_time" />
@@ -51,7 +51,7 @@
 	
 	<insert id="add" parameterType="com.bittrade.pojo.model.TKline">
 		INSERT INTO t_kline(`symbol`, `low`, `high`, `open`, `close`, `volume`, `granularity`, `time`, `create_time`, `update_time`)
-		VALUES(#{symbol,jdbcType=VARCHAR}, #{low,jdbcType=DECIMAL}, #{high,jdbcType=DECIMAL}, #{open,jdbcType=DECIMAL}, #{close,jdbcType=DECIMAL}, #{volume,jdbcType=DECIMAL}, #{granularity,jdbcType=VARCHAR}, #{time,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+		VALUES(#{symbol,jdbcType=VARCHAR}, #{low,jdbcType=DECIMAL}, #{high,jdbcType=DECIMAL}, #{open,jdbcType=DECIMAL}, #{close,jdbcType=DECIMAL}, #{volume,jdbcType=DECIMAL}, #{granularity,jdbcType=INTEGER}, #{time,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
 	</insert>
 	
 	<insert id="addWithSelective" parameterType="com.bittrade.pojo.model.TKline">
@@ -107,7 +107,7 @@
 			#{volume,jdbcType=DECIMAL}, 
 			</if>
 			<if test="granularity != null">
-			#{granularity,jdbcType=VARCHAR}, 
+			#{granularity,jdbcType=INTEGER}, 
 			</if>
 			<if test="time != null">
 			#{time,jdbcType=TIMESTAMP}, 
@@ -150,7 +150,7 @@
 			AND `volume` = #{volume,jdbcType=DECIMAL}
 			</if>
 			<if test="granularity != null">
-			AND `granularity` = #{granularity,jdbcType=VARCHAR}
+			AND `granularity` = #{granularity,jdbcType=INTEGER}
 			</if>
 			<if test="time != null">
 			AND `time` = #{time,jdbcType=TIMESTAMP}
@@ -173,7 +173,7 @@
 			`open` = #{open,jdbcType=DECIMAL}, 
 			`close` = #{close,jdbcType=DECIMAL}, 
 			`volume` = #{volume,jdbcType=DECIMAL}, 
-			`granularity` = #{granularity,jdbcType=VARCHAR}, 
+			`granularity` = #{granularity,jdbcType=INTEGER}, 
 			`time` = #{time,jdbcType=TIMESTAMP}, 
 			`create_time` = #{createTime,jdbcType=TIMESTAMP}, 
 			`update_time` = #{updateTime,jdbcType=TIMESTAMP}, 
@@ -205,7 +205,7 @@
 			`volume` = #{volume,jdbcType=DECIMAL}, 
 			</if>
 			<if test="granularity != null">
-			`granularity` = #{granularity,jdbcType=VARCHAR}, 
+			`granularity` = #{granularity,jdbcType=INTEGER}, 
 			</if>
 			<if test="time != null">
 			`time` = #{time,jdbcType=TIMESTAMP}, 
@@ -231,7 +231,7 @@
 			`open` = #{tKline.open,jdbcType=DECIMAL}, 
 			`close` = #{tKline.close,jdbcType=DECIMAL}, 
 			`volume` = #{tKline.volume,jdbcType=DECIMAL}, 
-			`granularity` = #{tKline.granularity,jdbcType=VARCHAR}, 
+			`granularity` = #{tKline.granularity,jdbcType=INTEGER}, 
 			`time` = #{tKline.time,jdbcType=TIMESTAMP}, 
 			`create_time` = #{tKline.createTime,jdbcType=TIMESTAMP}, 
 			`update_time` = #{tKline.updateTime,jdbcType=TIMESTAMP}, 
@@ -260,7 +260,7 @@
 			AND `volume` = #{condiTKline.volume,jdbcType=DECIMAL}
 			</if>
 			<if test="condiTKline.granularity != null">
-			AND `granularity` = #{condiTKline.granularity,jdbcType=VARCHAR}
+			AND `granularity` = #{condiTKline.granularity,jdbcType=INTEGER}
 			</if>
 			<if test="condiTKline.time != null">
 			AND `time` = #{condiTKline.time,jdbcType=TIMESTAMP}
@@ -298,7 +298,7 @@
 			`volume` = #{tKline.volume,jdbcType=DECIMAL}, 
 			</if>
 			<if test="tKline.granularity != null">
-			`granularity` = #{tKline.granularity,jdbcType=VARCHAR}, 
+			`granularity` = #{tKline.granularity,jdbcType=INTEGER}, 
 			</if>
 			<if test="tKline.time != null">
 			`time` = #{tKline.time,jdbcType=TIMESTAMP}, 
@@ -335,7 +335,7 @@
 			AND `volume` = #{condiTKline.volume,jdbcType=DECIMAL}
 			</if>
 			<if test="condiTKline.granularity != null">
-			AND `granularity` = #{condiTKline.granularity,jdbcType=VARCHAR}
+			AND `granularity` = #{condiTKline.granularity,jdbcType=INTEGER}
 			</if>
 			<if test="condiTKline.time != null">
 			AND `time` = #{condiTKline.time,jdbcType=TIMESTAMP}
@@ -403,7 +403,7 @@
 			AND `volume` = #{volume,jdbcType=DECIMAL}
 			</if>
 			<if test="granularity != null">
-			AND `granularity` = #{granularity,jdbcType=VARCHAR}
+			AND `granularity` = #{granularity,jdbcType=INTEGER}
 			</if>
 			<if test="time != null">
 			AND `time` = #{time,jdbcType=TIMESTAMP}
@@ -469,7 +469,7 @@
 			AND `volume` = #{volume,jdbcType=DECIMAL}
 			</if>
 			<if test="granularity != null">
-			AND `granularity` = #{granularity,jdbcType=VARCHAR}
+			AND `granularity` = #{granularity,jdbcType=INTEGER}
 			</if>
 			<if test="time != null">
 			AND `time` = #{time,jdbcType=TIMESTAMP}
@@ -523,7 +523,7 @@
 			AND `volume` = #{tKline.volume,jdbcType=DECIMAL}
 			</if>
 			<if test="tKline.granularity != null">
-			AND `granularity` = #{tKline.granularity,jdbcType=VARCHAR}
+			AND `granularity` = #{tKline.granularity,jdbcType=INTEGER}
 			</if>
 			<if test="tKline.time != null">
 			AND `time` = #{tKline.time,jdbcType=TIMESTAMP}
@@ -574,7 +574,7 @@
 			AND `volume` = #{tKline.volume,jdbcType=DECIMAL}
 			</if>
 			<if test="tKline.granularity != null">
-			AND `granularity` = #{tKline.granularity,jdbcType=VARCHAR}
+			AND `granularity` = #{tKline.granularity,jdbcType=INTEGER}
 			</if>
 			<if test="tKline.time != null">
 			AND `time` = #{tKline.time,jdbcType=TIMESTAMP}

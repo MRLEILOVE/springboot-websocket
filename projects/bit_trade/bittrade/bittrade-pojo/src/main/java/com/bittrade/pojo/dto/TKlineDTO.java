@@ -23,7 +23,7 @@ public class TKlineDTO extends BaseDTO<TKlineDTO> {
 	private java.math.BigDecimal open;
 	private java.math.BigDecimal close;
 	private java.math.BigDecimal volume;
-	private String granularity;
+	private Integer granularity;
 	private java.util.Date time;
 	private java.util.Date createTime;
 	private java.util.Date updateTime;

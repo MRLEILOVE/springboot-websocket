@@ -82,8 +82,9 @@
 			success_amount = #{successAmount}, 
 			left_count = #{leftCount}, 
 			status = #{status}, 
-			version = version + 1
-		WHERE id = #{ID}
+			version = version + 1, 
+			update_time = #{updateTime}
+		WHERE id = #{ID} AND version = #{version}
 	</update>
 
 </mapper>

@@ -20,13 +20,15 @@ public interface IQueueConstants {
 //	// 消息路由键-**
 //	String ROUTE_KEY__ = "route.key.**";
 
-	// 消息交换器
-	String EXCHANGE = "exchange.direct";
+	// 消息交换器-路由
+	String EXCHANGE_DIRECT = "exchange.direct";
+	// 消息交换器-主题
+	String EXCHANGE_TOPIC = "exchange.topic";
 	
-	// 消息队列-行情价
-	String QUEUE__LINE_PRICE = "queue.linePrice";
-	// 消息路由键-行情价
-	String ROUTE_KEY__LINE_PRICE = "route.key.linePrice";
+	// 消息队列-K线
+	String QUEUE__KLINE = "queue.kLine.60";
+	// 消息路由键-K线
+	String ROUTE_KEY__KLINE = "route.key.kLine.60";
 	// 消息队列-成交
 	String QUEUE__ENTRUST_RECORD = "queue.entrustRecord";
 	// 消息路由键-成交

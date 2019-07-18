@@ -7,6 +7,7 @@ import com.bittrade.pojo.vo.TEntrustVO;
 import org.apache.ibatis.annotations.Param;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -41,9 +42,17 @@ public interface ITEntrustDAO extends IDefaultTEntrustDAO {
 	 * @param successAmount
 	 * @param leftCount
 	 * @param status
+	 * @param updateTime
 	 * @param ID
+	 * @param version
 	 */
-	void updateOnMatch(@Param("successAmount") BigDecimal successAmount, @Param("leftCount") BigDecimal leftCount,
-			@Param("status") long status, @Param("ID") long ID);
+	int updateOnMatch(
+			@Param("successAmount") BigDecimal successAmount, 
+			@Param("leftCount") BigDecimal leftCount,
+			@Param("status") long status, 
+			@Param("updateTime") Date updateTime, 
+			@Param("ID") long ID, 
+			@Param("version") long version
+			);
 
 }

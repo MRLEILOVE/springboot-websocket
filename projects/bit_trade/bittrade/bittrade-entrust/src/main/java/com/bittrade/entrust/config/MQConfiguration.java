@@ -6,6 +6,7 @@ import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.core.ExchangeBuilder;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.core.QueueBuilder;
+import org.springframework.amqp.core.TopicExchange;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -21,7 +22,17 @@ public class MQConfiguration {
 	 */
 	@Bean
 	public DirectExchange messageDirectExchange() {
-		return (DirectExchange) ExchangeBuilder.directExchange(IQueueConstants.EXCHANGE).durable(true).build();
+		return (DirectExchange) ExchangeBuilder.directExchange(IQueueConstants.EXCHANGE_DIRECT).durable(true).build();
+	}
+
+	/**
+	 * 交换配置
+	 *
+	 * @return
+	 */
+	@Bean
+	public TopicExchange topicDirectExchange() {
+		return (TopicExchange) ExchangeBuilder.topicExchange(IQueueConstants.EXCHANGE_TOPIC).durable(true).build();
 	}
 
 	/**
@@ -31,7 +42,7 @@ public class MQConfiguration {
 	 */
 	@Bean
 	public Queue messageQueue() {
-		return QueueBuilder.durable(IQueueConstants.QUEUE__LINE_PRICE).build();
+		return QueueBuilder.durable(IQueueConstants.QUEUE__KLINE).build();
 	}
 
 	/**
@@ -41,7 +52,7 @@ public class MQConfiguration {
 	 */
 	@Bean
 	public Binding messageBinding() {
-		return BindingBuilder.bind(messageQueue()).to(messageDirectExchange()).with(IQueueConstants.ROUTE_KEY__LINE_PRICE);
+		return BindingBuilder.bind(messageQueue()).to(messageDirectExchange()).with(IQueueConstants.ROUTE_KEY__KLINE);
 	}
 
 }
