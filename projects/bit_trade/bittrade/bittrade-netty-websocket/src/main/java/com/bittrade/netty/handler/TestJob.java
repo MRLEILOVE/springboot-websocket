@@ -59,7 +59,7 @@ public class TestJob {
 
 	@RabbitListener(queues = IQueueConstants.QUEUE__KLINE)
 	public void processMessage(Channel channel, Message message) {
-		System.out.println( new String(message.getBody()) );
+		//System.out.println( new String(message.getBody()) );
 		String context = "[\"BTC-USDT\",\"2019-07-18 17:00:00\",\"9783.2\",\"9787.9\",\"9778.3\",\"9782\",\"3.40246089\"]";
 		JSONArray object = JSONArray.parseArray( context );
 		String symbol = object.getString( 0 );
