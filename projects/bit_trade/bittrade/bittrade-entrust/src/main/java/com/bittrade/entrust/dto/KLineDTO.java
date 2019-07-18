@@ -31,11 +31,27 @@ public class KLineDTO {
 	// ["BTC-USDT","2019-07-18
 	// 17:00:00.00","9783.2","9787.9","9778.3","9782","3.40246089"]
 	private int			symbol;
+	private int			symbolCode;
 	private Date		time;
 	private BigDecimal	open;
 	private BigDecimal	high;
 	private BigDecimal	low;
 	private BigDecimal	close;
 	private int			volume;
+	
+	@java.lang.Override
+	public String toString() {
+		return new StringBuilder("[")
+				.append('\"').append(symbolCode).append("\",")
+				.append('\"').append(time).append("\",")
+				.append(open).append(',')
+				.append(high).append(',')
+				.append(low).append(',')
+				.append(close).append(',')
+				.append(volume)
+				.append(']')
+				.toString()
+				;
+	}
 
 }
