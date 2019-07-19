@@ -1,4 +1,4 @@
-package com.bittrade.batch.scheduled;
+package com.bittrade.batch.socket;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -31,9 +31,9 @@ import com.rabbitmq.client.Channel;
  *
  */
 @Component
-public class SettleAccount {
+public class MQConsumerSettleHandler {
 
-	private static final Logger	LOG	= LoggerFactory.getLogger( SettleAccount.class );
+	private static final Logger	LOG	= LoggerFactory.getLogger( MQConsumerSettleHandler.class );
 
 	@Reference
 	private ITWalletService		walletService;

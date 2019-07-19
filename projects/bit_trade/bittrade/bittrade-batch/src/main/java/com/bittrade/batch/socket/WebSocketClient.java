@@ -33,19 +33,19 @@ import okio.ByteString;
 import redis.clients.jedis.JedisCluster;
 
 @Component
-public class MyWebSocketClient {
+public class WebSocketClient {
 
-	private static final Logger		LOG		= LoggerFactory.getLogger( MyWebSocketClient.class );
+	private static final Logger		LOG		= LoggerFactory.getLogger( WebSocketClient.class );
 
 	@Reference
 	private ITParamConfigService	paramConfigService;
 
 	@Autowired
-	private JedisCluster jedisCluster;
+	private JedisCluster			jedisCluster;
 
 	private final static String		PING	= "ping";
 
-	//@PostConstruct
+	// @PostConstruct
 	public void init() {
 		connect();
 	}
@@ -103,7 +103,7 @@ public class MyWebSocketClient {
 						JSONArray jSONArray = jsonObject.getJSONArray( "data" );
 						jSONArray.forEach( data -> {
 							OkexTickerDto okexTickerDto = (OkexTickerDto) JSONObject.parseObject( data.toString(), OkexTickerDto.class );
-							jedisCluster.set( RedisKeyUtil.getOkexSymbolLast( okexTickerDto.getInstrument_id() ),
+							jedisCluster.setex( RedisKeyUtil.getOkexSymbolLast( okexTickerDto.getInstrument_id() ), 30,
 									String.valueOf( okexTickerDto.getLast() ) );
 						} );
 					}

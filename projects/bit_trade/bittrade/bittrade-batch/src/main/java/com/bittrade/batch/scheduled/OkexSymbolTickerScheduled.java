@@ -79,7 +79,7 @@ public class OkexSymbolTickerScheduled {
 		if (IConstant.OKEX_SUCCESS_CODE == result.getCode()) {
 			JSONObject jsonObject = (JSONObject) JSON.parse( result.getContent() );
 			OkexTickerDto okexTickerDto = JSONObject.parseObject( jsonObject.toString(), OkexTickerDto.class );
-			jedisCluster.set( RedisKeyUtil.getOkexSymbolLast( okexTickerDto.getInstrument_id() ), String.valueOf( okexTickerDto.getLast() ) );
+			jedisCluster.setex( RedisKeyUtil.getOkexSymbolLast( okexTickerDto.getInstrument_id() ), 30, String.valueOf( okexTickerDto.getLast() ) );
 		} else {
 			throw new Exception( "获取" + symbol + "ticker信息异常，resultCode=" + result.getCode() + ",resultContent=" + result.getContent() );
 		}
