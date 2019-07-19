@@ -45,7 +45,7 @@
 	<select id="findTradeByCurrencyId2" resultType="com.bittrade.pojo.vo.TransactionPairVO" parameterType="java.lang.String">
 		SELECT t.id,t.symbol,t.currency_id1 as  currencyId1,t.currency_id2 as currencyId2,o.id as optionalId
 		FROM t_currency_trade t
-		LEFT JOIN t_currency_optional o ON o.currency_trade_id = t.id AND o.user_id = #{userId}
+		LEFT JOIN t_currency_optional o ON o.currency_trade_id = t.id AND o.status = 1 AND o.user_id = #{userId}
 		WHERE t.`status` = 1
 		AND t.currency_id2 = #{currencyId2}
 	</select>
