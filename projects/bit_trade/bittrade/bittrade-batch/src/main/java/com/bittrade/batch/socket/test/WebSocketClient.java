@@ -202,6 +202,10 @@ public abstract class WebSocketClient extends AbstractWebSocket implements Runna
 	public void sendPing() throws NotYetConnectedException {
 		engine.sendPing( );
 	}
+	
+	public void sendPong() throws NotYetConnectedException {
+		engine.sendPong( );
+	}
 
 	public void run() {
 
@@ -443,6 +447,16 @@ public abstract class WebSocketClient extends AbstractWebSocket implements Runna
 					ByteBuffer buffer = engine.outQueue.take();
 					byte[] bArr = buffer.array();
 					int limit = buffer.limit();
+					StringBuilder strBud = new StringBuilder();
+					for (int i = 0; i < bArr.length; strBud.append( bArr[i++] + ", " ));
+					System.out.println( "limit=" + limit + ", strBud=" + strBud );
+					if (limit == 12 && bArr[0] == -119) {
+						bArr = Client.BARR_PING;
+						System.out.println( "set Client.BARR_PING" );
+					} else if (limit == 12 && bArr[0] == -118) {
+						bArr = Client.BARR_PONG;
+						System.out.println( "set Client.BARR_PONG" );
+					}
 					ostream.write( bArr, 0, limit );
 					ostream.flush();
 				}

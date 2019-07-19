@@ -3,6 +3,7 @@ package com.bittrade.batch.scheduled;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.alibaba.dubbo.config.annotation.Reference;
@@ -34,7 +35,7 @@ public class OkexRateScheduled {
 	@Autowired
 	private JedisCluster			jedisCluster;
 
-	// @Scheduled(cron = "0 0 0/2 * * ?") // 两个小时执行一次
+	@Scheduled(cron = "0 0 0/2 * * ?") // 两个小时执行一次
 	public void rate() {
 		try {
 			LOG.info( "获取okex法币汇率开始" );

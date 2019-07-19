@@ -18,7 +18,6 @@ import org.springframework.stereotype.Component;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.alibaba.fastjson.JSONArray;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.bittrade.batch.enumer.ParamConfigEnum.ParamKeyEnum;
 import com.bittrade.batch.enumer.ParamConfigEnum.ParamValue;
 import com.bittrade.batch.general.GeneralMethod;
@@ -94,7 +93,8 @@ public class OkexKlineScheduled {
 		Date date = new Date();
 		String[] granularitys = GeneralMethod.qryParamConfigInfo( paramConfigService, ParamKeyEnum.OKEX_GRANULARITYS_KEY.getKey() ).getParamValue()
 				.split( "," );
-		for (String granularity : granularitys) {
+		for (int i = 0; i < granularitys.length; i++) {
+			int granularity = Integer.parseInt( granularitys[ i ] );
 			String klineUrl = GeneralMethod.qryParamConfigInfo( paramConfigService, ParamKeyEnum.OKEX_KLINE_URL_KEY.getKey() ).getParamValue();
 			klineUrl = MessageFormat.format( klineUrl, symbol, granularity );
 
@@ -103,8 +103,8 @@ public class OkexKlineScheduled {
 				// okex返回数据处理，并入库
 				JSONArray jsonArray = JSONArray.parseArray( result.getContent() );
 				List<TKline> addList = new ArrayList<TKline>();
-				for (int i = 0; i < jsonArray.size(); i++) {
-					JSONArray object = JSONArray.parseArray( jsonArray.get( i ).toString() );
+				for (int j = 0; j < jsonArray.size(); j++) {
+					JSONArray object = JSONArray.parseArray( jsonArray.get( j ).toString() );
 					Date time = isoToUtc( object.getString( 0 ) );
 					BigDecimal open = object.getBigDecimal( 1 );
 					BigDecimal high = object.getBigDecimal( 2 );
@@ -131,7 +131,7 @@ public class OkexKlineScheduled {
 					if (null == resultKline) {
 						addList.add( kline );
 					} else {
-						if (i == 0) { // 只有第一条才需要更新
+						if (j == 0) { // 只有第一条才需要更新
 							kline.setId( resultKline.getId() );
 							kline.setCreateTime( null );
 							kline.setUpdateTime( date );
@@ -141,8 +141,8 @@ public class OkexKlineScheduled {
 					}
 				}
 				if (addList.size() > 0) {
-					klineService.saveBatch( addList );
-					LOG.info( "插入t_kLine表条数：" + addList.size() );
+					boolean bool = klineService.saveBatch( addList );
+					LOG.info( "插入t_kLine表是否成功：" + bool + "插入条数：" + addList.size() );
 				}
 			} else {
 				LOG.error( "OkexKlineScheduled.OkexKlineScheduled.http.request.okex.result.code=" + result.getCode() + ",result.getContent="

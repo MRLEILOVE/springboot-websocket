@@ -25,8 +25,6 @@ import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.codec.http.HttpUtil;
 import io.netty.handler.codec.http.HttpVersion;
 import io.netty.handler.codec.http.websocketx.CloseWebSocketFrame;
-import io.netty.handler.codec.http.websocketx.PingWebSocketFrame;
-import io.netty.handler.codec.http.websocketx.PongWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketServerHandshaker;
@@ -36,9 +34,9 @@ import io.netty.handler.timeout.IdleStateEvent;
 import io.netty.util.CharsetUtil;
 import io.netty.util.concurrent.GlobalEventExecutor;
 
-public class MyWebSocketServerHandler extends SimpleChannelInboundHandler<TickerDto> {
+public class WebSocketServerHandler extends SimpleChannelInboundHandler<TickerDto> {
 
-	private static final Logger			LOG					= LoggerFactory.getLogger( MyWebSocketServerHandler.class );
+	private static final Logger			LOG					= LoggerFactory.getLogger( WebSocketServerHandler.class );
 
 	private WebSocketServerHandshaker	handshaker;
 	private int							lossConnectCount	= 0;
@@ -162,11 +160,23 @@ public class MyWebSocketServerHandler extends SimpleChannelInboundHandler<Ticker
 			return;
 		}
 		// 判断是否ping消息
-		if (frame instanceof PingWebSocketFrame) {
-//			LOG.info( arg0 );
-			ctx.channel().write( new PongWebSocketFrame( frame.content().retain() ) );
-			return;
-		}
+		// if (frame instanceof PingWebSocketFrame) {
+		// LOG.info( "-------- if (frame instanceof PingWebSocketFrame) {
+		// --------" );
+		// ctx.channel().write( new PongWebSocketFrame( frame.content().retain()
+		// ) );
+		// return;
+		// }
+
+		// 判断是否pong消息
+		// if (frame instanceof PongWebSocketFrame) {
+		// LOG.info( "-------- if (frame instanceof PongWebSocketFrame) {
+		// --------" );
+		// ctx.channel().write( new PongWebSocketFrame( frame.content().retain()
+		// ) );
+		// return;
+		// }
+
 		// 支持文本消息，不支持二进制消息
 		if (!(frame instanceof TextWebSocketFrame)) {
 			LOG.error( "仅支持文本消息，不支持二进制消息" );
@@ -189,7 +199,14 @@ public class MyWebSocketServerHandler extends SimpleChannelInboundHandler<Ticker
 		LOG.info( "msg:" + msg );
 	}
 
-	// 订阅
+	/**
+	 * messageHandle:(消息处理). <br/>
+	 * 
+	 * @author Administrator
+	 * @param message
+	 * @param ctx
+	 * @since JDK 1.8
+	 */
 	private void messageHandle(String message, ChannelHandlerContext ctx) {
 		try {
 			WebSocketParamDto webSocketParamDto = JSON.parseObject( message, WebSocketParamDto.class );
@@ -236,6 +253,14 @@ public class MyWebSocketServerHandler extends SimpleChannelInboundHandler<Ticker
 		}
 	}
 
+	/**
+	 * failure:(异常处理). <br/>
+	 * 
+	 * @author Administrator
+	 * @param ctx
+	 * @param message
+	 * @since JDK 1.8
+	 */
 	private void failure(ChannelHandlerContext ctx, String message) {
 		try {
 			TextWebSocketFrame contws = new TextWebSocketFrame( "订阅格式错误：" + message );
@@ -243,11 +268,6 @@ public class MyWebSocketServerHandler extends SimpleChannelInboundHandler<Ticker
 		} catch (Exception e) {
 			e.getStackTrace();
 		}
-	}
-
-	public static void _main(String[] args) {
-		String symbol = "BTC-USDT";
-		System.out.println( symbol.split( "-" ).length );
 	}
 
 }

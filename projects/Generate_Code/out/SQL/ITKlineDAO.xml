@@ -11,7 +11,7 @@
 		<result javaType="java.math.BigDecimal" property="open" jdbcType="DECIMAL" column="open" />
 		<result javaType="java.math.BigDecimal" property="close" jdbcType="DECIMAL" column="close" />
 		<result javaType="java.math.BigDecimal" property="volume" jdbcType="DECIMAL" column="volume" />
-		<result javaType="String" property="granularity" jdbcType="VARCHAR" column="granularity" />
+		<result javaType="Integer" property="granularity" jdbcType="INTEGER" column="granularity" />
 		<result javaType="java.util.Date" property="time" jdbcType="TIMESTAMP" column="time" />
 		<result javaType="java.util.Date" property="createTime" jdbcType="TIMESTAMP" column="create_time" />
 		<result javaType="java.util.Date" property="updateTime" jdbcType="TIMESTAMP" column="update_time" />

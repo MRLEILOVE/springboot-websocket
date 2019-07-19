@@ -3,11 +3,15 @@ package com.bittrade.entrust.service.impl;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.ReentrantLock;
+
+import javax.annotation.PostConstruct;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,13 +27,16 @@ import com.bittrade.common.enums.EntrustDirectionEnumer;
 import com.bittrade.common.enums.EntrustStatusEnumer;
 import com.bittrade.common.enums.EntrustTypeEnumer;
 import com.bittrade.common.enums.IsActiveEnumer;
+import com.bittrade.common.enums.KLineGranularityEnumer;
 import com.bittrade.entrust.api.service.IMakeAMatchService;
 import com.bittrade.entrust.api.service.ITEntrustRecordService;
 import com.bittrade.entrust.api.service.ITEntrustService;
+import com.bittrade.entrust.dto.KLineDTO;
 import com.bittrade.pojo.model.TEntrust;
 import com.bittrade.pojo.model.TEntrustRecord;
 import com.core.common.constant.ICompareResultConstant;
 import com.core.tool.BigDecimalUtil;
+import com.core.tool.DateUtil;
 import com.core.tool.SnowFlake;
 import com.rabbitmq.client.Channel;
 
@@ -79,12 +86,39 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 	/**
 	 * 行情价
 	 */
-	public static /* final */BigDecimal LINE_PRICE = new BigDecimal(0);
+	public static /* final */ConcurrentHashMap<Integer, BigDecimal> MAP_LINE_PRICE = new ConcurrentHashMap<>();
 	
 	private static final ConcurrentHashMap<Integer, ReentrantLock> MAP_LOCK__BUY_AND_SELL = new ConcurrentHashMap<>();
 	
 	@Autowired
 	private RabbitTemplate rabbitTemplate;
+	
+	private void initialLinePrice() {
+	}
+	
+	private void initialEntrust() {
+		// to be continue .
+	}
+	
+	/**
+	 * <p>
+	 *   首次需要从数据库加载是否有未撮合的委托信息。
+	 * </p>
+	 * initialData:(这里用一句话描述这个方法的作用). <br/>  
+	 * TODO(这里描述这个方法适用条件 – 可选).<br/>  
+	 * TODO(这里描述这个方法的执行流程 – 可选).<br/>  
+	 * TODO(这里描述这个方法的使用方法 – 可选).<br/>  
+	 * TODO(这里描述这个方法的注意事项 – 可选).<br/>  
+	 *  
+	 * @author Administrator    
+	 * @since JDK 1.8
+	 */
+	@PostConstruct
+	private void initialData() {
+		initialLinePrice();
+		initialEntrust();
+	}
+	
 	
 	/**
 	 * <pre>
@@ -143,23 +177,25 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 	/**
 	 * 获取成交价。
 	 * @param price
+	 * @param linePrice
 	 * @return
 	 */
-	private BigDecimal getPrice(BigDecimal price) {
-		return BigDecimalUtil.isNullOrZero(price) ? LINE_PRICE : price;
+	private BigDecimal getPrice(BigDecimal price, BigDecimal linePrice) {
+		return BigDecimalUtil.isNullOrZero(price) ? linePrice : price;
 	}
 	
 	/**
 	 * 获取成交价根据行情价。
 	 * @param price_buy
 	 * @param price_sell
+	 * @param linePrice
 	 * @return
 	 */
-	private BigDecimal getPriceWithLinePrice(BigDecimal price_buy, BigDecimal price_sell) {
+	private BigDecimal getPriceWithLinePrice(BigDecimal price_buy, BigDecimal price_sell, BigDecimal linePrice) {
 		return price_buy.compareTo(price_sell) >= ICompareResultConstant.EQUAL ?
-				price_buy.compareTo(LINE_PRICE) >= ICompareResultConstant.EQUAL && LINE_PRICE.compareTo(price_sell) >= ICompareResultConstant.EQUAL ?
-						LINE_PRICE : 
-							LINE_PRICE.compareTo(price_buy) == ICompareResultConstant.GREATER_THAN ? price_buy : price_sell
+				price_buy.compareTo(linePrice) >= ICompareResultConstant.EQUAL && linePrice.compareTo(price_sell) >= ICompareResultConstant.EQUAL ?
+						linePrice : 
+							linePrice.compareTo(price_buy) == ICompareResultConstant.GREATER_THAN ? price_buy : price_sell
 				:
 				null
 				;
@@ -169,30 +205,47 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 	 * （市市、限限、市限、限市）四种类型  获取成交价。
 	 * @param entrust_before
 	 * @param entrust_after
+	 * @param linePrice
 	 * @return
 	 */
-	private BigDecimal getDealPrice(TEntrust entrust_before, TEntrust entrust_after) {
+	private BigDecimal getDealPrice(TEntrust entrust_before, TEntrust entrust_after, BigDecimal linePrice) {
 		BigDecimal bd_dealPrice = null;
 		
-		BigDecimal bd_beforePrice = getPrice(entrust_before.getPrice()), bd_afterPrice = getPrice(entrust_after.getPrice());
+		BigDecimal bd_beforePrice = getPrice(entrust_before.getPrice(), linePrice), bd_afterPrice = getPrice(entrust_after.getPrice(), linePrice);
 		if (
 				entrust_before.getEntrustDirection() == EntrustDirectionEnumer.BUY.getCode()
 				&& 
 				entrust_after.getEntrustDirection() == EntrustDirectionEnumer.SELL.getCode()
 				) {
-			bd_dealPrice = getPriceWithLinePrice(bd_beforePrice, bd_afterPrice);
+			bd_dealPrice = getPriceWithLinePrice(bd_beforePrice, bd_afterPrice, linePrice);
 		}
 		if (
 				entrust_before.getEntrustDirection() == EntrustDirectionEnumer.SELL.getCode()
 				&& 
 				entrust_after.getEntrustDirection() == EntrustDirectionEnumer.BUY.getCode()
 				) {
-			bd_dealPrice = getPriceWithLinePrice(bd_afterPrice, bd_beforePrice);
+			bd_dealPrice = getPriceWithLinePrice(bd_afterPrice, bd_beforePrice, linePrice);
 		}
 		
 		return bd_dealPrice;
 	}
 	
+	/**
+	 * <p>
+	 *   撮合成功， 修改委托信息和新增撮合信息。
+	 * </p>
+	 * addEntrustRecord:(这里用一句话描述这个方法的作用). <br/>  
+	 * TODO(这里描述这个方法适用条件 – 可选).<br/>  
+	 * TODO(这里描述这个方法的执行流程 – 可选).<br/>  
+	 * TODO(这里描述这个方法的使用方法 – 可选).<br/>  
+	 * TODO(这里描述这个方法的注意事项 – 可选).<br/>  
+	 *  
+	 * @author Administrator  
+	 * @param entrust_before
+	 * @param entrust_after
+	 * @param dealPrice  
+	 * @since JDK 1.8
+	 */
 	public void addEntrustRecord(TEntrust entrust_before, TEntrust entrust_after, BigDecimal dealPrice) {
 		BigDecimal count;
 		BigDecimal amount;
@@ -202,17 +255,22 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 			count = entrust_after.getLeftCount();
 		}
 		amount = dealPrice.multiply(count).setScale(IConstant.AMOUNT_DECIMAL_LENGTH, BigDecimal.ROUND_HALF_DOWN);
+		Date createTime = new Date();
 		
 		// 修改委托
 		{
 			entrust_before.setLeftCount(entrust_before.getLeftCount().subtract(count).setScale(IConstant.COUNT_DECIMAL_LENGTH, BigDecimal.ROUND_HALF_DOWN));
 			entrust_before.setSuccessAmount(entrust_before.getSuccessAmount().add(amount).setScale(IConstant.AMOUNT_DECIMAL_LENGTH, BigDecimal.ROUND_HALF_DOWN));
+			entrust_before.setUpdateTime( createTime );
 			entrustService.updateOnMatch(
 					entrust_before.getSuccessAmount(), 
 					entrust_before.getLeftCount(), 
 					BigDecimalUtil.isZero(entrust_before.getLeftCount()) ? EntrustStatusEnumer.FINISH.getCode() : EntrustStatusEnumer.PART_FINISH.getCode(), 
-					entrust_before.getId()
+					entrust_before.getUpdateTime(), 
+					entrust_before.getId(), 
+					entrust_before.getVersion()
 					);
+			entrust_before.setVersion( entrust_before.getVersion() + 1 );
 //			System.out.println(
 //					"entrust_before.getSuccessAmount()=" + entrust_before.getSuccessAmount() + ", " + 
 //					"entrust_before.getLeftCount()=" + entrust_before.getLeftCount() + ", " + 
@@ -223,12 +281,16 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 		{
 			entrust_after.setLeftCount(entrust_after.getLeftCount().subtract(count).setScale(IConstant.COUNT_DECIMAL_LENGTH, BigDecimal.ROUND_HALF_DOWN));
 			entrust_after.setSuccessAmount(entrust_after.getSuccessAmount().add(amount).setScale(IConstant.AMOUNT_DECIMAL_LENGTH, BigDecimal.ROUND_HALF_DOWN));
+			entrust_after.setUpdateTime( createTime );
 			entrustService.updateOnMatch(
 					entrust_after.getSuccessAmount(), 
 					entrust_after.getLeftCount(), 
 					BigDecimalUtil.isZero(entrust_after.getLeftCount()) ? EntrustStatusEnumer.FINISH.getCode() : EntrustStatusEnumer.PART_FINISH.getCode(), 
-					entrust_after.getId()
+					entrust_after.getUpdateTime(), 
+					entrust_after.getId(), 
+					entrust_after.getVersion()
 					);
+			entrust_after.setVersion( entrust_after.getVersion() + 1 );
 //			System.out.println(
 //					"entrust_after.getSuccessAmount()=" + entrust_after.getSuccessAmount() + ", " + 
 //					"entrust_after.getLeftCount()=" + entrust_after.getLeftCount() + ", " + 
@@ -251,6 +313,7 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 		entrustRecord_before.setCurrencyTradeId(entrust_before.getCurrencyTradeId());
 		entrustRecord_before.setIsActive(IsActiveEnumer.ACTIVE.getCode());
 		entrustRecord_before.setEntrustDirection(entrust_before.getEntrustDirection());
+		entrustRecord_before.setCreateTime( createTime );
 		entrustRecordService.add(entrustRecord_before);
 //		System.out.println(entrustRecord_before);
 		// 被动
@@ -266,19 +329,75 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 		entrustRecord_after.setCurrencyTradeId(entrust_after.getCurrencyTradeId());
 		entrustRecord_after.setIsActive(IsActiveEnumer.UNACTIVE.getCode());
 		entrustRecord_after.setEntrustDirection(entrust_after.getEntrustDirection());
+		entrustRecord_before.setCreateTime( createTime );
 		entrustRecordService.add(entrustRecord_after);
 //		System.out.println(entrustRecord_after);
+	}
+	
+	private static final ConcurrentHashMap<Byte, ConcurrentHashMap<Integer, KLineDTO>> MAP_KLINE_LAST = new ConcurrentHashMap<Byte, ConcurrentHashMap<Integer, KLineDTO>>() {
+		private static final long serialVersionUID = 1L;
+		{
+			// 等会儿  在上面再初始化。
+			
+			put( KLineGranularityEnumer.ONE_MINUTE.getCode(), new ConcurrentHashMap<Integer, KLineDTO>() );
+		}
+	};
+	
+	private KLineDTO getKLineDTO(Map<Integer, KLineDTO> map, int key) {
+		KLineDTO kLineDTO;
+		
+		if (map.containsKey( key )) {
+			kLineDTO = map.get( key );
+		} else {
+			map.put( key, kLineDTO = new KLineDTO() );
+		}
+		
+		return kLineDTO;
+	}
+	
+	private String kLine2String(KLineDTO kLineDTO) {
+		return new StringBuilder()
+				.append( kLineDTO.getSymbol() )
+				.toString();
 	}
 	
 	/**
 	 * 修改行情价根据成交价
 	 * @param dealPrice
+	 * @param linePrice
+	 * @param entrust
+	 * @return
 	 */
-	private void changeLinePrice(BigDecimal dealPrice) {
-		if (LINE_PRICE.compareTo(dealPrice) != ICompareResultConstant.EQUAL) {
-			LINE_PRICE = dealPrice;
+	private BigDecimal onEntrustRecord(BigDecimal dealPrice, BigDecimal linePrice, TEntrust entrust) {
+		if (linePrice.compareTo(dealPrice) != ICompareResultConstant.EQUAL) {
+//			linePrice = dealPrice;
+			MAP_LINE_PRICE.put( entrust.getCurrencyTradeId(), linePrice = dealPrice );
+			LOG.info("修改行情价为：" + linePrice);
+		}
+		{
+			KLineDTO kLineDTO = getKLineDTO( MAP_KLINE_LAST.get( KLineGranularityEnumer.ONE_MINUTE.getCode() ), entrust.getCurrencyTradeId() );
+			Date dt_updateTime = DateUtil.getBeginMinute( entrust.getUpdateTime() );
+			if (kLineDTO.getTime() == null || kLineDTO.getTime().compareTo(dt_updateTime) == -1) {
+				kLineDTO.setSymbol( entrust.getCurrencyTradeId() );
+				kLineDTO.setTime( dt_updateTime );
+				kLineDTO.setOpen( dealPrice );
+				kLineDTO.setHigh( dealPrice );
+				kLineDTO.setLow( dealPrice );
+				kLineDTO.setClose( dealPrice );
+				kLineDTO.setVolume( 1 );
+			} else /*if (kLineDTO.getTime().compareTo(dt_updateTime) == 0) */{
+				if (dealPrice.compareTo(kLineDTO.getHigh()) == ICompareResultConstant.GREATER_THAN) {
+					kLineDTO.setHigh( dealPrice );
+				}
+				if (dealPrice.compareTo(kLineDTO.getLow()) == ICompareResultConstant.LESS_THAN) {
+					kLineDTO.setLow( dealPrice );
+				}
+				kLineDTO.setClose( dealPrice );
+				kLineDTO.setVolume( kLineDTO.getVolume() + 1 );
+			}
+			
 			// 异步通知。
-			rabbitTemplate.convertAndSend(IQueueConstants.EXCHANGE, IQueueConstants.ROUTE_KEY__LINE_PRICE, LINE_PRICE.toString());
+			rabbitTemplate.convertAndSend(IQueueConstants.EXCHANGE_DIRECT, IQueueConstants.ROUTE_KEY__KLINE, linePrice.toString());
 //			rabbitTemplate.setConfirmCallback((correlationData, ack, cause) -> {
 //				System.out.println("消息唯一标识：" + correlationData);
 //				System.out.println("消息确认结果：" + ack);
@@ -287,18 +406,8 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 //			rabbitTemplate.setReturnCallback((Message message, int replyCode, String replyText, String exchange, String routingKey) -> {
 //				
 //			});
-			LOG.info("修改行情价为：" + LINE_PRICE);
 		}
-	}
-	
-	@RabbitListener(queues = { IQueueConstants.QUEUE__LINE_PRICE })
-	public void processMessage(Channel channel, Message message) {
-		System.out.println("MessageConsumer收到消息：" + new String(message.getBody()));
-		try {
-			channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		return linePrice;
 	}
 	
 	/**
@@ -316,15 +425,16 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 				&& 
 				list.size() > 0
 				) {
+			BigDecimal bd_linePrice = getLinePrice( MAP_LINE_PRICE, entrust.getCurrencyTradeId() );
 			for (int i = list.size() - 1; i > -1; i--) {
 				TEntrust entrust_ = list.get(i);
 				
-				BigDecimal bd_dealPrice = getDealPrice(entrust_, entrust);
+				BigDecimal bd_dealPrice = getDealPrice(entrust_, entrust, bd_linePrice);
 				if (bd_dealPrice == null) {
 					break;
 				} else {
 					addEntrustRecord(entrust_, entrust, bd_dealPrice);
-					changeLinePrice(bd_dealPrice);
+					bd_linePrice = onEntrustRecord(bd_dealPrice, bd_linePrice, entrust);
 					
 					if (entrust_.getLeftCount().compareTo(BigDecimal.ZERO) == ICompareResultConstant.EQUAL) {
 						list.remove(i);
@@ -371,6 +481,18 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 		}
 		
 		return list;
+	}
+	
+	private BigDecimal getLinePrice(ConcurrentHashMap<Integer, BigDecimal> map, Integer key) {
+		BigDecimal linePrice;
+		
+		if (map.containsKey( key )) {
+			linePrice = map.get( key );
+		} else {
+			map.put( key, linePrice = new BigDecimal(0) );
+		}
+		
+		return linePrice;
 	}
 	
 	private void makeAMatch(
@@ -518,6 +640,38 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 //		System.out.println(bd1.multiply(bd2).multiply(BigDecimal.valueOf(2)));
 //		System.out.println(bd1.multiply(bd2, new MathContext(9, RoundingMode.HALF_DOWN)).multiply(BigDecimal.valueOf(2)));
 //		System.out.println(bd1.multiply(bd2).setScale(8, BigDecimal.ROUND_HALF_DOWN).multiply(BigDecimal.valueOf(2)));
+	}
+
+	@RabbitListener(queues = { IQueueConstants.QUEUE__ENTRUST_RECORD })
+	public void processMessage(Channel channel, Message message) {
+		System.out.println("QUEUE__ENTRUST_RECORD -- MessageConsumer收到消息：" + new String(message.getBody()));
+		try {
+			channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@RabbitListener(queues = { IQueueConstants.QUEUE__KLINE })
+	public void processMessage_2(Channel channel, Message message) {
+		System.out.println("QUEUE__KLINE -- MessageConsumer收到所有消息：" + new String(message.getBody()));
+		try {
+			channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void testMQ() {
+		try {
+//			rabbitTemplate.convertAndSend(IQueueConstants.EXCHANGE, IQueueConstants.ROUTE_KEY__ENTRUST_RECORD, "-toString()-");
+			rabbitTemplate.convertAndSend(IQueueConstants.EXCHANGE_TOPIC, IQueueConstants.ROUTE_KEY__ENTRUST_RECORD, IQueueConstants.ROUTE_KEY__ENTRUST_RECORD);
+			rabbitTemplate.convertAndSend(IQueueConstants.EXCHANGE_TOPIC, IQueueConstants.ROUTE_KEY__KLINE, IQueueConstants.ROUTE_KEY__KLINE);
+			rabbitTemplate.convertAndSend(IQueueConstants.EXCHANGE_TOPIC, "route.key..1", "route.key..1");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		System.out.println( "----------- convertAndSend() OK ~~" );
 	}
 	
 }

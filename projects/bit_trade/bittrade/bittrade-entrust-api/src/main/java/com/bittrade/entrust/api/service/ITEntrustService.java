@@ -1,6 +1,7 @@
 package com.bittrade.entrust.api.service;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 import com.bittrade.__default.service.IDefaultTEntrustService;
@@ -44,12 +45,14 @@ public interface ITEntrustService extends IDefaultTEntrustService<TEntrust, TEnt
     ReturnDTO<Object> killOrder(String entrustId);
 
 	/**
-	 * 修改信息在撮合时
+	 * 修改信息在撮合时（要轮询？）
 	 * @param successAmount
 	 * @param leftCount
 	 * @param status
+	 * @param updateTime
 	 * @param ID
+	 * @param version
 	 */
-	void updateOnMatch(BigDecimal successAmount, BigDecimal leftCount, int status, long ID);
+	int updateOnMatch(BigDecimal successAmount, BigDecimal leftCount, int status, Date updateTime, long ID, int version);
 	
 }

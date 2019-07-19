@@ -1,0 +1,5 @@
+spring:
+  profiles:
+    active: common, amqp
+  websocket:
+    port: 9999

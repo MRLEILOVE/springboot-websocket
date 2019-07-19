@@ -69,7 +69,7 @@ public class TKline extends BaseModel<TKline> {
 		public static final String VOLUME = "volume";
 		
 		/**
-		 * 时间粒度[1min,5min,15min,30min,60min,4hour,1day,1mon,1week,1year]
+		 * 时间粒度，以秒为单位，如[60/180/300 900/1800/3600/7200/14400/21600/43200/86400/604800]
 		 */
 		public static final String GRANULARITY = "granularity";
 		
@@ -127,9 +127,9 @@ public class TKline extends BaseModel<TKline> {
 	private java.math.BigDecimal volume;
 	
 	/**
-	 * 时间粒度[1min,5min,15min,30min,60min,4hour,1day,1mon,1week,1year]
+	 * 时间粒度，以秒为单位，如[60/180/300 900/1800/3600/7200/14400/21600/43200/86400/604800]
 	 */
-	private String granularity;
+	private Integer granularity;
 	
 	/**
 	 * 开始时间
