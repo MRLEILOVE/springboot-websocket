@@ -109,7 +109,7 @@ public class TParamConfig extends BaseModel<TParamConfig> {
 	/**
 	 * 创建时间
 	 */
-	private java.util.Date createTime;
+	private java.time.LocalDateTime createTime;
 	
 	/**
 	 * 创建人
@@ -119,7 +119,7 @@ public class TParamConfig extends BaseModel<TParamConfig> {
 	/**
 	 * 更新时间
 	 */
-	private java.util.Date updateTime;
+	private java.time.LocalDateTime updateTime;
 	
 	/**
 	 * 更新人

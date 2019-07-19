@@ -24,7 +24,7 @@ public class WUserWalletDTO extends BaseDTO<WUserWalletDTO> {
 	private String privateKey;
 	private Byte flag;
 	private String valid;
-	private java.util.Date createTime;
-	private java.util.Date updateTime;
+	private java.time.LocalDateTime createTime;
+	private java.time.LocalDateTime updateTime;
 
 }

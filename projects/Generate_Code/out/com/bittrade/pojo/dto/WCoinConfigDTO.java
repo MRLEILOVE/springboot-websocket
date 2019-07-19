@@ -27,7 +27,7 @@ public class WCoinConfigDTO extends BaseDTO<WCoinConfigDTO> {
 	private java.math.BigDecimal minCollectionAmount;
 	private String valid;
 	private String remark;
-	private java.util.Date createTime;
-	private java.util.Date updateTime;
+	private java.time.LocalDateTime createTime;
+	private java.time.LocalDateTime updateTime;
 
 }

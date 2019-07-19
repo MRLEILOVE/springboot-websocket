@@ -19,6 +19,6 @@ public class TTickerDTO extends BaseDTO<TTickerDTO> {
 	private Integer id;
 	private String symbol;
 	private String last;
-	private java.util.Date createTime;
+	private java.time.LocalDateTime createTime;
 
 }

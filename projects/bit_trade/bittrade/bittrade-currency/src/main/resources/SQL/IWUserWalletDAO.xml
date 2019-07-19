@@ -12,8 +12,8 @@
 		<result javaType="String" property="privateKey" jdbcType="VARCHAR" column="private_key" />
 		<result javaType="byte" property="flag" jdbcType="INTEGER" column="flag" />
 		<result javaType="String" property="valid" jdbcType="CHAR" column="valid" />
-		<result javaType="java.util.Date" property="createTime" jdbcType="TIMESTAMP" column="create_time" />
-		<result javaType="java.util.Date" property="updateTime" jdbcType="TIMESTAMP" column="update_time" />
+		<result javaType="java.time.LocalDateTime" property="createTime" jdbcType="TIMESTAMP" column="create_time" />
+		<result javaType="java.time.LocalDateTime" property="updateTime" jdbcType="TIMESTAMP" column="update_time" />
 	</resultMap>
 
 	<!-- 通用查询结果列 -->

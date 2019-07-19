@@ -1,7 +1,7 @@
 package com.bittrade.batch.general;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import com.bittrade.batch.enumer.ParamConfigEnum.ParamStatus;
 import com.bittrade.currency.api.service.ITParamConfigService;
@@ -34,7 +34,7 @@ public class GeneralMethod {
 			wallet.setTotal( BigDecimal.ZERO );
 			wallet.setTradeFrozen( BigDecimal.ZERO );
 			wallet.setTransferFrozen( BigDecimal.ZERO );
-			wallet.setCreateTime( new Date() );
+			wallet.setCreateTime( LocalDateTime.now() );
 			wallet.setVersion( 0 );// 版本号默认从0开始
 			int row = walletService.add( wallet );
 			if (row > 0) {

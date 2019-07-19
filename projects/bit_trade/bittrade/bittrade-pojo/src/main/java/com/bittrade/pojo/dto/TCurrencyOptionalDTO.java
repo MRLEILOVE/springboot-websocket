@@ -20,7 +20,7 @@ public class TCurrencyOptionalDTO extends BaseDTO<TCurrencyOptionalDTO> {
 	private Long userId;
 	private Integer currencyTradeId;
 	private Byte status;
-	private java.util.Date createTime;
-	private java.util.Date updateTime;
+	private java.time.LocalDateTime createTime;
+	private java.time.LocalDateTime updateTime;
 
 }

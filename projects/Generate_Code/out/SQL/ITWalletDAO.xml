@@ -11,8 +11,8 @@
 		<result javaType="java.math.BigDecimal" property="tradeFrozen" jdbcType="DECIMAL" column="trade_frozen" />
 		<result javaType="java.math.BigDecimal" property="transferFrozen" jdbcType="DECIMAL" column="transfer_frozen" />
 		<result javaType="Integer" property="version" jdbcType="INTEGER" column="version" />
-		<result javaType="java.util.Date" property="createTime" jdbcType="TIMESTAMP" column="create_time" />
-		<result javaType="java.util.Date" property="updateTime" jdbcType="TIMESTAMP" column="update_time" />
+		<result javaType="java.time.LocalDateTime" property="createTime" jdbcType="TIMESTAMP" column="create_time" />
+		<result javaType="java.time.LocalDateTime" property="updateTime" jdbcType="TIMESTAMP" column="update_time" />
 	</resultMap>
 
 	<!-- 通用查询结果列 -->

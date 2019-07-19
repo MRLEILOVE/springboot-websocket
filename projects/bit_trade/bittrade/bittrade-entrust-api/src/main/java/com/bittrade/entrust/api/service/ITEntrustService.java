@@ -1,7 +1,7 @@
 package com.bittrade.entrust.api.service;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import com.bittrade.__default.service.IDefaultTEntrustService;
@@ -53,6 +53,6 @@ public interface ITEntrustService extends IDefaultTEntrustService<TEntrust, TEnt
 	 * @param ID
 	 * @param version
 	 */
-	int updateOnMatch(BigDecimal successAmount, BigDecimal leftCount, int status, Date updateTime, long ID, int version);
+	int updateOnMatch(BigDecimal successAmount, BigDecimal leftCount, int status, LocalDateTime updateTime, long ID, int version);
 	
 }

@@ -21,6 +21,6 @@ public class TCurrencyAddressDTO extends BaseDTO<TCurrencyAddressDTO> {
 	private Integer currencyId;
 	private String adderess;
 	private String addressRemark;
-	private java.util.Date createTime;
+	private java.time.LocalDateTime createTime;
 
 }

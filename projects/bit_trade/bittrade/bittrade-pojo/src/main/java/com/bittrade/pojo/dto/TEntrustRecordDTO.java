@@ -29,6 +29,6 @@ public class TEntrustRecordDTO extends BaseDTO<TEntrustRecordDTO> {
 	private Integer currencyTradeId;
 	private Byte isActive;
 	private Integer entrustDirection;
-	private java.util.Date createTime;
+	private java.time.LocalDateTime createTime;
 
 }

@@ -22,6 +22,6 @@ public class TCurrencyDTO extends BaseDTO<TCurrencyDTO> {
 	private Byte status;
 	private Byte type;
 	private String desc;
-	private java.util.Date createTime;
+	private java.time.LocalDateTime createTime;
 
 }

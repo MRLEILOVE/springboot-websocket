@@ -30,7 +30,7 @@ public class TEntrustVO extends BaseVO<TEntrustVO> {
 	private Integer entrustType;
 	private Integer entrustDirection;
 	private Integer version;
-	private java.util.Date createTime;
-	private java.util.Date updateTime;
+	private java.time.LocalDateTime createTime;
+	private java.time.LocalDateTime updateTime;
 
 }

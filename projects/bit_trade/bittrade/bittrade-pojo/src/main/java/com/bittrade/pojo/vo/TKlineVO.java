@@ -24,8 +24,8 @@ public class TKlineVO extends BaseVO<TKlineVO> {
 	private java.math.BigDecimal close;
 	private java.math.BigDecimal volume;
 	private Integer granularity;
-	private java.util.Date time;
-	private java.util.Date createTime;
-	private java.util.Date updateTime;
+	private java.time.LocalDateTime time;
+	private java.time.LocalDateTime createTime;
+	private java.time.LocalDateTime updateTime;
 
 }

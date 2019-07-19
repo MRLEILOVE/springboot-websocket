@@ -20,6 +20,7 @@
 		<module>test-client</module>
 		<module>test-svc</module>
 		<module>test</module>
+		<module>test-2</module>
 	</modules>
 	
 	<dependencyManagement>

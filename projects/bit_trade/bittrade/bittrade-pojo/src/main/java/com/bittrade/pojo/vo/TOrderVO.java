@@ -25,7 +25,7 @@ public class TOrderVO extends BaseVO<TOrderVO> {
 	private String receiverAddress;
 	private String type;
 	private String operator;
-	private java.util.Date createTime;
-	private java.util.Date updateTime;
+	private java.time.LocalDateTime createTime;
+	private java.time.LocalDateTime updateTime;
 
 }

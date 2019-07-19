@@ -9,7 +9,7 @@
 		<result javaType="Integer" property="currencyId" jdbcType="INTEGER" column="currency_id" />
 		<result javaType="String" property="adderess" jdbcType="VARCHAR" column="adderess" />
 		<result javaType="String" property="addressRemark" jdbcType="VARCHAR" column="address_remark" />
-		<result javaType="java.util.Date" property="createTime" jdbcType="TIMESTAMP" column="create_time" />
+		<result javaType="java.time.LocalDateTime" property="createTime" jdbcType="TIMESTAMP" column="create_time" />
 	</resultMap>
 
 	<!-- 通用查询结果列 -->

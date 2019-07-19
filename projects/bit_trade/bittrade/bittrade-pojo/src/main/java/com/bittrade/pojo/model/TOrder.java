@@ -139,11 +139,11 @@ public class TOrder extends BaseModel<TOrder> {
 	/**
 	 * 
 	 */
-	private java.util.Date createTime;
+	private java.time.LocalDateTime createTime;
 	
 	/**
 	 * 
 	 */
-	private java.util.Date updateTime;
+	private java.time.LocalDateTime updateTime;
 	
 }

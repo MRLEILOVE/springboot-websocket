@@ -25,7 +25,7 @@ public class TWalletTransferDTO extends BaseDTO<TWalletTransferDTO> {
 	private Byte typeChannel;
 	private Byte sourceChannel;
 	private String desc;
-	private java.util.Date createTime;
-	private java.util.Date updateTime;
+	private java.time.LocalDateTime createTime;
+	private java.time.LocalDateTime updateTime;
 
 }

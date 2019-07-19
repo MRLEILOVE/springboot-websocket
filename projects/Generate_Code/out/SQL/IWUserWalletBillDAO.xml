@@ -22,8 +22,8 @@
 		<result javaType="Byte" property="transferFlag" jdbcType="INTEGER" column="transfer_flag" />
 		<result javaType="Byte" property="flag" jdbcType="INTEGER" column="flag" />
 		<result javaType="String" property="remark" jdbcType="VARCHAR" column="remark" />
-		<result javaType="java.util.Date" property="createTime" jdbcType="TIMESTAMP" column="create_time" />
-		<result javaType="java.util.Date" property="updateTime" jdbcType="TIMESTAMP" column="update_time" />
+		<result javaType="java.time.LocalDateTime" property="createTime" jdbcType="TIMESTAMP" column="create_time" />
+		<result javaType="java.time.LocalDateTime" property="updateTime" jdbcType="TIMESTAMP" column="update_time" />
 	</resultMap>
 
 	<!-- 通用查询结果列 -->

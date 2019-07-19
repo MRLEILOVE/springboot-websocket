@@ -19,6 +19,6 @@ public class TTickerVO extends BaseVO<TTickerVO> {
 	private Integer id;
 	private String symbol;
 	private String last;
-	private java.util.Date createTime;
+	private java.time.LocalDateTime createTime;
 
 }

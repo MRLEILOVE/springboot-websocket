@@ -1,7 +1,7 @@
 package com.bittrade.entrust.service.impl;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
@@ -219,7 +219,7 @@ public class TEntrustServiceImpl extends DefaultTEntrustServiceImpl<ITEntrustDAO
 	}
 
 	@Override
-	public int updateOnMatch(BigDecimal successAmount, BigDecimal leftCount, int status, Date updateTime, long ID, int version) {
+	public int updateOnMatch(BigDecimal successAmount, BigDecimal leftCount, int status, LocalDateTime updateTime, long ID, int version) {
 		return entrustDAO.updateOnMatch( successAmount, leftCount, status, updateTime, ID, version );
 	}
 

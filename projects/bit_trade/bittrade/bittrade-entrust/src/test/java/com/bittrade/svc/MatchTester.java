@@ -21,9 +21,10 @@ public class MatchTester extends BaseTester {
 	@Test
 	public void test() {
 //		makeAMatchService.test();
-		robot.test();
+//		robot.test();
 //		TCurrencyTrade currencyTrade = currencyTradeService.getByPK( 1 );
 //		System.out.println( "currencyTrade=" + currencyTrade );
+		ms.test_2();
 		
 //		QueryWrapper<TEntrust> qw = new QueryWrapper<TEntrust>();
 //		qw.eq("ab", "bc");

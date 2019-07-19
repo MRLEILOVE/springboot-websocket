@@ -21,9 +21,9 @@ public class TParamConfigVO extends BaseVO<TParamConfigVO> {
 	private String paramValue;
 	private Integer paramStatus;
 	private String paramRemark;
-	private java.util.Date createTime;
+	private java.time.LocalDateTime createTime;
 	private String creater;
-	private java.util.Date updateTime;
+	private java.time.LocalDateTime updateTime;
 	private String updater;
 
 }

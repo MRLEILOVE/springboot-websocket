@@ -229,11 +229,11 @@ public class WWithdrawWalletBill extends BaseModel<WWithdrawWalletBill> {
 	/**
 	 * 创建时间
 	 */
-	private java.util.Date createTime;
+	private java.time.LocalDateTime createTime;
 	
 	/**
 	 * 更新时间
 	 */
-	private java.util.Date updateTime;
+	private java.time.LocalDateTime updateTime;
 	
 }

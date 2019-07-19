@@ -1,14 +1,15 @@
 package com.bittrade.entrust.dao;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
 import com.bittrade.__default.DAO.IDefaultTEntrustDAO;
 import com.bittrade.pojo.model.TEntrust;
 import com.bittrade.pojo.vo.TEntrustInfoVO;
 import com.bittrade.pojo.vo.TEntrustVO;
-import org.apache.ibatis.annotations.Param;
-
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
 
 /**
  * 
@@ -50,7 +51,7 @@ public interface ITEntrustDAO extends IDefaultTEntrustDAO {
 			@Param("successAmount") BigDecimal successAmount, 
 			@Param("leftCount") BigDecimal leftCount,
 			@Param("status") long status, 
-			@Param("updateTime") Date updateTime, 
+			@Param("updateTime") LocalDateTime updateTime, 
 			@Param("ID") long ID, 
 			@Param("version") long version
 			);

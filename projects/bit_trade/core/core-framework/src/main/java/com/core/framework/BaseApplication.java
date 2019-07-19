@@ -2,6 +2,7 @@ package com.core.framework;
 
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
@@ -19,15 +20,16 @@ public abstract class BaseApplication {
 	 * @param cls
 	 * @param args
 	 * @param name
+	 * @return
 	 */
-	protected static final void run(Class<?> cls, String[] args, String name) {
+	protected static final ConfigurableApplicationContext run(Class<?> cls, String[] args, String name) {
 		System.setProperty("svc_name", name);
 //		System.setProperty("spring.devtools.restart.enabled", "false");
 
 //		SpringApplication.run(cls, args);
 		SpringApplication sa = new SpringApplication(cls);
 //		sa.setWebApplicationType(org.springframework.boot.WebApplicationType.NONE);
-		sa.run(args);
+		return sa.run(args);
 	}
 
 }

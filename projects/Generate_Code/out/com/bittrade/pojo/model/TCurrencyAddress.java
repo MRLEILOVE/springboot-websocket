@@ -94,6 +94,6 @@ public class TCurrencyAddress extends BaseModel<TCurrencyAddress> {
 	/**
 	 * 创建日期
 	 */
-	private java.util.Date createTime;
+	private java.time.LocalDateTime createTime;
 	
 }

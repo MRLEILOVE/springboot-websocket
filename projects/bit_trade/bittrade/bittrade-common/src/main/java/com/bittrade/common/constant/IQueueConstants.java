@@ -23,7 +23,7 @@ public interface IQueueConstants {
 	// 消息队列-成交
 	String QUEUE__ENTRUST_RECORD = "queue..entrust.Record";
 	// 消息队列-K线
-	String QUEUE__KLINE = "queue..kLine.60";
+	String QUEUE__KLINE = "queue..kLine.";
 
 	// 消息交换器-路由
 	String EXCHANGE_DIRECT = "exchange.direct";

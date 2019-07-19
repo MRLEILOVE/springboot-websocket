@@ -30,7 +30,7 @@ public class TCurrencyTradeDTO extends BaseDTO<TCurrencyTradeDTO> {
 	private java.math.BigDecimal maxAmount;
 	private Byte status;
 	private Integer sort;
-	private java.util.Date createTime;
-	private java.util.Date updateTime;
+	private java.time.LocalDateTime createTime;
+	private java.time.LocalDateTime updateTime;
 
 }

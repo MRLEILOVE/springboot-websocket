@@ -173,6 +173,6 @@ public class TEntrustRecord extends BaseModel<TEntrustRecord> {
 	/**
 	 * 创建时间
 	 */
-	private java.util.Date createTime;
+	private java.time.LocalDateTime createTime;
 	
 }
