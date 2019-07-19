@@ -2,7 +2,6 @@ package com.bittrade.entrust.config;
 
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
-import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.core.ExchangeBuilder;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.core.QueueBuilder;
@@ -10,9 +9,12 @@ import org.springframework.amqp.core.TopicExchange;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
+import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.BeanDefinitionRegistryPostProcessor;
 import org.springframework.beans.factory.support.GenericBeanDefinition;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -20,8 +22,10 @@ import com.bittrade.common.constant.IQueueConstants;
 import com.bittrade.common.enums.KLineGranularityEnumer;
 
 @Configuration
-public class MQConfiguration implements BeanDefinitionRegistryPostProcessor {
+public class MQConfiguration implements BeanDefinitionRegistryPostProcessor, ApplicationContextAware {
 
+	private ApplicationContext applicationContext;
+	
 	/**
 	 * 消息队列声明
 	 *
@@ -47,10 +51,10 @@ public class MQConfiguration implements BeanDefinitionRegistryPostProcessor {
 	 *
 	 * @return
 	 */
-	@Bean
-	public DirectExchange messageDirectExchange() {
-		return (DirectExchange) ExchangeBuilder.directExchange(IQueueConstants.EXCHANGE_DIRECT).durable(true).build();
-	}
+//	@Bean
+//	public DirectExchange messageDirectExchange() {
+//		return (DirectExchange) ExchangeBuilder.directExchange(IQueueConstants.EXCHANGE_DIRECT).durable(true).build();
+//	}
 
 	/**
 	 * 交换配置
@@ -88,16 +92,45 @@ public class MQConfiguration implements BeanDefinitionRegistryPostProcessor {
 	
 	private void initialize(BeanDefinitionRegistry registry) {
 		KLineGranularityEnumer objArr_enum[] = KLineGranularityEnumer.values();
-		for (int i = 0; i < objArr_enum.length; i++) {
-			Integer i_code = objArr_enum[i].getCode();
-			String str_name = IQueueConstants.QUEUE__KLINE + i_code;
-			
-			GenericBeanDefinition beanDefinition = new GenericBeanDefinition();
-			beanDefinition.setBeanClass(Queue.class);
-			beanDefinition.getConstructorArgumentValues().addGenericArgumentValue( str_name );
-//			beanDefinition.getPropertyValues().add("name", "张三");
-			
-			registry.registerBeanDefinition(str_name, beanDefinition);
+		if (objArr_enum != null && objArr_enum.length > 0) {
+			for (int i = 0; i < objArr_enum.length; i++) {
+				Integer i_code = objArr_enum[i].getCode();
+				String str_queueName = IQueueConstants.QUEUE__KLINE + i_code;
+				
+				GenericBeanDefinition beanDefinition_queue = new GenericBeanDefinition();
+				beanDefinition_queue.setBeanClass(Queue.class);
+				beanDefinition_queue.getConstructorArgumentValues().addGenericArgumentValue( str_queueName );
+	//			beanDefinition.getPropertyValues().add("name", "张三");
+				registry.registerBeanDefinition(str_queueName, beanDefinition_queue);
+				
+				Queue queue = applicationContext.getBean(str_queueName, Queue.class);
+//				Binding binding = BindingBuilder.bind(queue).to(messageTopicExchange()).with(IQueueConstants.ROUTE_KEY__KLINE + i_code);
+//				GenericBeanDefinition beanDefinition_binding = new GenericBeanDefinition();
+//				beanDefinition_binding.setBeanClass(Binding.class);
+//				beanDefinition_binding.getConstructorArgumentValues().addGenericArgumentValue( str_queueName );
+//				beanDefinition_binding.getConstructorArgumentValues().addGenericArgumentValue( Binding.DestinationType.QUEUE );
+//				beanDefinition_binding.getConstructorArgumentValues().addGenericArgumentValue( IQueueConstants.EXCHANGE_TOPIC );
+//				beanDefinition_binding.getConstructorArgumentValues().addGenericArgumentValue( IQueueConstants.ROUTE_KEY__KLINE + i_code );
+//				registry.registerBeanDefinition("beanDefinition_binding." + i_code, beanDefinition_binding);
+//				BeanDefinitionBuilder beanDefinitionBuilder_binding = BeanDefinitionBuilder.genericBeanDefinition(Binding.class);
+//				beanDefinitionBuilder_binding.addConstructorArgValue(str_queueName);
+//				beanDefinitionBuilder_binding.addConstructorArgValue(Binding.DestinationType.QUEUE);
+//				beanDefinitionBuilder_binding.addConstructorArgValue(IQueueConstants.EXCHANGE_TOPIC);
+//				beanDefinitionBuilder_binding.addConstructorArgValue(IQueueConstants.ROUTE_KEY__KLINE + i_code);
+//				beanDefinitionBuilder_binding.setAutowireMode(AUTOWIRE_CONSTRUCTOR);
+//				registry.registerBeanDefinition("beanDefinition_binding." + i_code, beanDefinitionBuilder_binding.getBeanDefinition());
+				
+				registry.registerBeanDefinition("beanDefinition_binding." + i_code, 
+						BeanDefinitionBuilder.genericBeanDefinition(
+								Binding.class, 
+								() -> BindingBuilder
+								.bind(queue)
+								.to(messageTopicExchange())
+								.with(IQueueConstants.ROUTE_KEY__KLINE + i_code)
+								)
+						.getBeanDefinition()
+						);
+			}
 		}
 	}
 
@@ -109,6 +142,11 @@ public class MQConfiguration implements BeanDefinitionRegistryPostProcessor {
 	@Override
 	public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry) throws BeansException {
 		initialize(registry);
+	}
+
+	@Override
+	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+		MQConfiguration.this.applicationContext = applicationContext;
 	}
 
 }

@@ -21,7 +21,7 @@ public interface IQueueConstants {
 //	String ROUTE_KEY__ = "route.key.**";
 
 	// 消息队列-成交
-	String QUEUE__ENTRUST_RECORD = "queue..entrust.Record";
+	String QUEUE__ENTRUST_RECORD = "queue..entrustRecord";
 	// 消息队列-K线
 	String QUEUE__KLINE = "queue..kLine.";
 
@@ -33,6 +33,6 @@ public interface IQueueConstants {
 	// 消息路由键-成交
 	String ROUTE_KEY__ENTRUST_RECORD = "route.key..entrustRecord";
 	// 消息路由键-K线
-	String ROUTE_KEY__KLINE = "route.key..#"; // route.key..kLine.60 route.key..#
+	String ROUTE_KEY__KLINE = "route.key..kLine."; // route.key..kLine.60 route.key..#
 
 }

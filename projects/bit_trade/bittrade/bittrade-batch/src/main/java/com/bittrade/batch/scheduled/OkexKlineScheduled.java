@@ -21,8 +21,8 @@ import com.bittrade.batch.general.GeneralMethod;
 import com.bittrade.common.constant.IConstant;
 import com.bittrade.common.utils.HttpClientResult;
 import com.bittrade.common.utils.HttpClientUtils;
-import com.bittrade.currency.api.service.ITKlineService;
 import com.bittrade.currency.api.service.ITParamConfigService;
+import com.bittrade.entrust.api.service.ITKlineService;
 import com.bittrade.pojo.model.TKline;
 import com.core.tool.DateTimeUtil;
 
