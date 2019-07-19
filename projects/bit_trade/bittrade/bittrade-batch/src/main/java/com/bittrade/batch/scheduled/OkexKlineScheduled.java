@@ -51,7 +51,7 @@ public class OkexKlineScheduled {
 	/**
 	 * 拉取交易对历史K线数据
 	 */
-	@Scheduled(cron = "0/10 * * * * ?")
+	//@Scheduled(cron = "0/10 * * * * ?")
 	public void kline() {
 		try {
 			String klineSwitch = GeneralMethod.qryParamConfigInfo( paramConfigService, ParamKeyEnum.OKEX_KLINE_HISTORY_SWITCH_KEY.getKey() )
@@ -94,7 +94,7 @@ public class OkexKlineScheduled {
 		String[] granularitys = GeneralMethod.qryParamConfigInfo( paramConfigService, ParamKeyEnum.OKEX_GRANULARITYS_KEY.getKey() ).getParamValue()
 				.split( "," );
 		for (int i = 0; i < granularitys.length; i++) {
-			int granularity = Integer.parseInt( granularitys[i] );
+			int granularity = Integer.parseInt( granularitys[ i ] );
 			String klineUrl = GeneralMethod.qryParamConfigInfo( paramConfigService, ParamKeyEnum.OKEX_KLINE_URL_KEY.getKey() ).getParamValue();
 			klineUrl = MessageFormat.format( klineUrl, symbol, granularity );
 
@@ -141,8 +141,8 @@ public class OkexKlineScheduled {
 					}
 				}
 				if (addList.size() > 0) {
-					klineService.saveBatch( addList );
-					LOG.info( "插入t_kLine表条数：" + addList.size() );
+					boolean bool = klineService.saveBatch( addList );
+					LOG.info( "插入t_kLine表是否成功：" + bool + "插入条数：" + addList.size() );
 				}
 			} else {
 				LOG.error( "OkexKlineScheduled.OkexKlineScheduled.http.request.okex.result.code=" + result.getCode() + ",result.getContent="

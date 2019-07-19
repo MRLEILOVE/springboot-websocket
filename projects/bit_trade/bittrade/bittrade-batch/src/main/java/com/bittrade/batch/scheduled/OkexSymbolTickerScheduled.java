@@ -44,15 +44,9 @@ public class OkexSymbolTickerScheduled {
 	/**
 	 * 获取交易对ticker信息
 	 */
-//	@Scheduled(cron = "0/1 * * * * ?")
+	// @Scheduled(cron = "0/1 * * * * ?")
 	public void symbolTicker() {
 		try {
-			QueryWrapper<TParamConfig> queryWrapper = new QueryWrapper<TParamConfig>();
-			queryWrapper.eq( TParamConfig.FieldNames.PARAM_KEY, ParamKeyEnum.OKEX_SYMBOL_KLINE_HISTORY_DATA_KEY.getKey() );
-			queryWrapper.eq( TParamConfig.FieldNames.PARAM_STATUS, ParamStatus.ENABLE.getKey() );
-			TParamConfig paramConfig = paramConfigService.getOne( queryWrapper );
-			System.out.println( "paramConfig=" + paramConfig );
-			
 			String[] symbols = GeneralMethod.qryParamConfigInfo( paramConfigService, ParamKeyEnum.OKEX_SYMBOL_KLINE_HISTORY_DATA_KEY.getKey() )
 					.getParamValue().split( "," );
 			for (String symbol : symbols) {
