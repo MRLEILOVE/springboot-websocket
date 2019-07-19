@@ -119,7 +119,6 @@ public class MQConfiguration implements BeanDefinitionRegistryPostProcessor, App
 //				beanDefinitionBuilder_binding.addConstructorArgValue(IQueueConstants.ROUTE_KEY__KLINE + i_code);
 //				beanDefinitionBuilder_binding.setAutowireMode(AUTOWIRE_CONSTRUCTOR);
 //				registry.registerBeanDefinition("beanDefinition_binding." + i_code, beanDefinitionBuilder_binding.getBeanDefinition());
-				
 				registry.registerBeanDefinition("beanDefinition_binding." + i_code, 
 						BeanDefinitionBuilder.genericBeanDefinition(
 								Binding.class, 
