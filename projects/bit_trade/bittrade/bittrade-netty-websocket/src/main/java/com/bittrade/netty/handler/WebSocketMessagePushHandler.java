@@ -4,8 +4,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -17,10 +15,7 @@ import io.netty.channel.group.ChannelGroup;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 
 @Component
-public class TestJob {
-
-	@Autowired
-	private RabbitTemplate rabbitTemplate;
+public class WebSocketMessagePushHandler {
 
 	@Scheduled(cron = "0/10 * * * * ?")
 	public void sendMsg() {

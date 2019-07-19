@@ -2,16 +2,17 @@ package com.bittrade.batch.scheduled;
 
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.amqp.core.Message;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.alibaba.dubbo.config.annotation.Reference;
+import com.alibaba.fastjson.JSONObject;
 import com.bittrade.batch.general.GeneralMethod;
+import com.bittrade.common.constant.IQueueConstants;
 import com.bittrade.currency.api.service.ITCurrencyTradeService;
 import com.bittrade.currency.api.service.ITWalletRecordService;
 import com.bittrade.currency.api.service.ITWalletService;
@@ -21,6 +22,7 @@ import com.bittrade.pojo.model.TEntrustRecord;
 import com.bittrade.pojo.model.TWallet;
 import com.bittrade.pojo.model.TWalletRecord;
 import com.core.tool.SnowFlake;
+import com.rabbitmq.client.Channel;
 
 /**
  * 结算
@@ -31,10 +33,7 @@ import com.core.tool.SnowFlake;
 @Component
 public class SettleAccount {
 
-	// 创建一个可缓存线程池，如果线程池长度超过处理需要，可灵活回收空闲线程，若无可回收，则新建线程。
-	private ExecutorService			cachedThreadPool	= Executors.newFixedThreadPool( 20 );
-
-	private static final Logger		LOG					= LoggerFactory.getLogger( SettleAccount.class );
+	private static final Logger		LOG			= LoggerFactory.getLogger( SettleAccount.class );
 
 	@Reference
 	private ITEntrustRecordService	entrustRecordService;
@@ -48,16 +47,20 @@ public class SettleAccount {
 	@Reference
 	private ITWalletRecordService	walletRecordService;
 
-	private static final SnowFlake	SNOW_FLAKE			= new SnowFlake( 1, 1 );
+	private static final SnowFlake	SNOW_FLAKE	= new SnowFlake( 1, 1 );
 
-	// @Scheduled(cron = "0/1 * * * * ?")
-	@Transactional(rollbackFor = Exception.class)
-	public void sellte() throws Exception {
+	@RabbitListener(queues = IQueueConstants.QUEUE__KLINE)
+	public void processMessage(Channel channel, Message message) {
 		try {
+			String msg = new String( message.getBody() );
+			// msg =
+			// "{\"amount\":100,\"count\":10,\"userId\":1,\"current\":0,\"size\":0,\"rivalUserId\":2,\"id\":300012213121331322,\"currencyTradeId\":1}";
+			TEntrustRecord entrustRecords = JSONObject.parseObject( msg, TEntrustRecord.class );
+
 			// 1、查询卖方向的未结算的订单
-			TEntrustRecord entrustRecords = new TEntrustRecord();
-			entrustRecords.setEntrustDirection( 1 );
-			entrustRecords = entrustRecordService.getBy( entrustRecords );
+			// TEntrustRecord entrustRecords = new TEntrustRecord();
+			// entrustRecords.setEntrustDirection( 1 );
+			// entrustRecords = entrustRecordService.getBy( entrustRecords );
 
 			long currentUserId = entrustRecords.getUserId();// 用户id
 			long rivalUserId = entrustRecords.getRivalUserId();// 对手方用户id
@@ -101,7 +104,6 @@ public class SettleAccount {
 			updateUserWallet( buyCurrencyIdWallet, count, entrustRecordId, false );// 加count
 		} catch (Exception e) {
 			LOG.error( e.getMessage(), e );
-			throw new Exception( e );
 		}
 	}
 
