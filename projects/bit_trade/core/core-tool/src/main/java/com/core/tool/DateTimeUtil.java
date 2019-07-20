@@ -81,8 +81,48 @@ public class DateTimeUtil {
 		return val;
 	}
 	
+	/**
+	 * <p>
+	 *   得到分的开始
+	 * </p>
+	 * getMinuteBegin:(这里用一句话描述这个方法的作用). <br/>  
+	 * TODO(这里描述这个方法适用条件 – 可选).<br/>  
+	 * TODO(这里描述这个方法的执行流程 – 可选).<br/>  
+	 * TODO(这里描述这个方法的使用方法 – 可选).<br/>  
+	 * TODO(这里描述这个方法的注意事项 – 可选).<br/>  
+	 *  
+	 * @author Administrator  
+	 * @param dt
+	 * @param minutes
+	 * @return  
+	 * @since JDK 1.8
+	 */
 	public static final LocalDateTime getMinuteBegin(LocalDateTime dt, int minutes) {
 		int i_rangeBegin = getRangeBegin(dt.getMinute(), minutes);
+		
+		LocalDateTime dt_ret = LocalDateTime.of( dt.getYear(), dt.getMonth(), dt.getDayOfMonth(), dt.getHour(), i_rangeBegin, 0, 0 );
+		
+		return dt_ret;
+	}
+	
+	/**
+	 * <p>
+	 *   得到时的开始
+	 * </p>
+	 * getMinuteBegin:(这里用一句话描述这个方法的作用). <br/>  
+	 * TODO(这里描述这个方法适用条件 – 可选).<br/>  
+	 * TODO(这里描述这个方法的执行流程 – 可选).<br/>  
+	 * TODO(这里描述这个方法的使用方法 – 可选).<br/>  
+	 * TODO(这里描述这个方法的注意事项 – 可选).<br/>  
+	 *  
+	 * @author Administrator  
+	 * @param dt
+	 * @param minutes
+	 * @return  
+	 * @since JDK 1.8
+	 */
+	public static final LocalDateTime getHourBegin(LocalDateTime dt, int hours) {
+		int i_rangeBegin = getRangeBegin(dt.getMinute(), hours);
 		
 		LocalDateTime dt_ret = LocalDateTime.of( dt.getYear(), dt.getMonth(), dt.getDayOfMonth(), dt.getHour(), i_rangeBegin, 0, 0 );
 		

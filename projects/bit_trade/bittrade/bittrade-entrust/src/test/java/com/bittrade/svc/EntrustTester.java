@@ -26,9 +26,9 @@ public class EntrustTester extends BaseTester {
 		// });
 		// PageDTO<TEntrust> pageDTO = es.getsByPagination( model );
 		// System.out.println( "pageDTO=" + pageDTO );
-		TEntrust entrust = es.getById( 348909575002525696L );
+		TEntrust entrust = es.getById( 1L );
 		System.out.println( "entrust=" + entrust );
-		TEntrust entrust2 = es.getByPK( 348909575002525696L );
+		TEntrust entrust2 = es.getByPK( 1 );
 		System.out.println( "2 entrust2=" + entrust2 );
 	}
 	
