@@ -8,6 +8,7 @@
 		FROM t_currency_optional o
 		INNER JOIN t_currency_trade t ON o.currency_trade_id = t.id
 		WHERE o.`status` = 1 AND o.user_id = #{userId}
+		ORDER BY o.update_time DESC
 	</select>
 
 </mapper>

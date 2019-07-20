@@ -2,7 +2,6 @@ package com.bittrade.currency.controller;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -10,7 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.bittrade.currency.api.service.ITKlineService;
+import com.alibaba.dubbo.config.annotation.Reference;
+import com.bittrade.entrust.api.service.ITKlineService;
 import com.bittrade.pojo.dto.QueryKLineDto;
 import com.bittrade.pojo.dto.TKlineDTO;
 import com.bittrade.pojo.model.TKline;
@@ -31,7 +31,7 @@ import io.swagger.annotations.ApiOperation;
 @RequestMapping(value = { "/tKline" }, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class TKlineController extends BaseController<TKline, TKlineDTO, TKlineVO, ITKlineService> {
 
-    @Autowired
+    @Reference
     private ITKlineService tKlineService;
 
     /**

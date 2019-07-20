@@ -66,32 +66,32 @@ public class TCurrencyTrade extends BaseModel<TCurrencyTrade> {
 		/**
 		 * 最小挂单单价
 		 */
-		public static final String MIN_BUY_PRICE = "min_buy_price";
+		public static final String MIN_PRICE = "min_price";
 		
 		/**
 		 * 最小挂单数量
 		 */
-		public static final String MIN_BUY_COUNT = "min_buy_count";
+		public static final String MIN_COUNT = "min_count";
 		
 		/**
 		 * 最小挂单金额
 		 */
-		public static final String MIN_BUY_AMOUNT = "min_buy_amount";
+		public static final String MIN_AMOUNT = "min_amount";
 		
 		/**
 		 * 最大可买单价
 		 */
-		public static final String MAX_BUY_PRICE = "max_buy_price";
+		public static final String MAX_PRICE = "max_price";
 		
 		/**
 		 * 最大可买数量
 		 */
-		public static final String MAX_BUY_COUNT = "max_buy_count";
+		public static final String MAX_COUNT = "max_count";
 		
 		/**
 		 * 最大可买金额
 		 */
-		public static final String MAX_BUY_AMOUNT = "max_buy_amount";
+		public static final String MAX_AMOUNT = "max_amount";
 		
 		/**
 		 * 状态：0禁用，1启用
@@ -189,11 +189,11 @@ public class TCurrencyTrade extends BaseModel<TCurrencyTrade> {
 	/**
 	 * 创建时间
 	 */
-	private java.util.Date createTime;
+	private java.time.LocalDateTime createTime;
 	
 	/**
 	 * 修改时间
 	 */
-	private java.util.Date updateTime;
+	private java.time.LocalDateTime updateTime;
 	
 }

@@ -1,7 +1,7 @@
 package com.bittrade.currency.service.impl;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -174,7 +174,7 @@ public class TWalletServiceImpl extends DefaultTWalletServiceImpl<ITWalletDAO, T
 			updateWallet.setTotal( wallet.getTotal().add( val ) );
 		}
 		updateWallet.setVersion( wallet.getVersion() + 1 );
-		updateWallet.setUpdateTime( new Date() );
+		updateWallet.setUpdateTime( LocalDateTime.now() );
 
 		TWallet updateSellMarketIdWallet = new TWallet(); // 条件
 		updateSellMarketIdWallet.setId( wallet.getId() );
@@ -193,7 +193,7 @@ public class TWalletServiceImpl extends DefaultTWalletServiceImpl<ITWalletDAO, T
 		walletRecord.setCurrencyId( wallet.getCurrencyId() );
 		walletRecord.setType( (byte) 3 );
 		walletRecord.setEntrustRecordId( entrustRecordId );
-		walletRecord.setCreateTime( new Date() );
+		walletRecord.setCreateTime( LocalDateTime.now() );
 
 		BigDecimal beforeAmount = wallet.getTotal().add( wallet.getTradeFrozen() ).add( wallet.getTransferFrozen() );
 		walletRecord.setBeforeAmount( beforeAmount );
@@ -220,7 +220,7 @@ public class TWalletServiceImpl extends DefaultTWalletServiceImpl<ITWalletDAO, T
 			wallet.setTotal( BigDecimal.ZERO );
 			wallet.setTradeFrozen( BigDecimal.ZERO );
 			wallet.setTransferFrozen( BigDecimal.ZERO );
-			wallet.setCreateTime( new Date() );
+			wallet.setCreateTime( LocalDateTime.now() );
 			wallet.setVersion( 0 );// 版本号默认从0开始
 			int row = walletDAO.add( wallet );
 			if (row > 0) {

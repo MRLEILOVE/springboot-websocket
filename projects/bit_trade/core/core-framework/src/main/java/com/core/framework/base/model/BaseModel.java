@@ -14,7 +14,7 @@ import lombok.EqualsAndHashCode;
  *
  * @param <Model>
  */
-//@com.fasterxml.jackson.annotation.JsonFilter(value = "")
+// @com.fasterxml.jackson.annotation.JsonFilter(value = "")
 @Data
 @EqualsAndHashCode(callSuper = false)
 public abstract class BaseModel<Model extends com.baomidou.mybatisplus.extension.activerecord.Model<Model>>
@@ -23,17 +23,17 @@ public abstract class BaseModel<Model extends com.baomidou.mybatisplus.extension
 	/**
 	 * 
 	 */
-	private static final long		serialVersionUID	= 1L;
+	private static final long						serialVersionUID	= 1L;
 
 	@TableField(exist = false)
-//	@com.alibaba.fastjson.annotation.JSONField(serialize = false, deserialize = false)
-//	@com.fasterxml.jackson.annotation.JsonIgnore
-	/*transient */protected int					current, size;
+	// @com.alibaba.fastjson.annotation.JSONField(serialize = false, deserialize = false)
+	// @com.fasterxml.jackson.annotation.JsonIgnore
+	/* transient */protected Integer				current, size;
 
 	@TableField(exist = false)
-//	@com.alibaba.fastjson.annotation.JSONField(serialize = false, deserialize = false)
-//	@com.fasterxml.jackson.annotation.JsonIgnore
-	/*transient */private Map<String, Object[]>	map_in, map_like;			// 其他的也可以类似的加， yes， 类似蕾丝的。
+	// @com.alibaba.fastjson.annotation.JSONField(serialize = false, deserialize = false)
+	// @com.fasterxml.jackson.annotation.JsonIgnore
+	/* transient */private Map<String, Object[]>	map_in, map_like;			// 其他的也可以类似的加，yes，类似蕾丝的。
 
 	public BaseModel<Model> in(String name, Object[] values) {
 		if (map_in == null) {

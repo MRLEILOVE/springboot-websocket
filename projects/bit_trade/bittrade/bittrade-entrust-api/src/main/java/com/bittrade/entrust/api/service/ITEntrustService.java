@@ -1,7 +1,7 @@
 package com.bittrade.entrust.api.service;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import com.bittrade.__default.service.IDefaultTEntrustService;
@@ -18,17 +18,6 @@ import com.core.framework.DTO.ReturnDTO;
  *
  */
 public interface ITEntrustService extends IDefaultTEntrustService<TEntrust, TEntrustDTO, TEntrustVO> {
-
-    /**
-     * 查询用户当前委托
-     */
-    List<TEntrustVO> queryPresentEntrustByUserId(String userId);
-
-    /**
-     * 查询用户历史委托
-     */
-    List<TEntrustVO> queryHistoryEntrustByUserId(String userId);
-
     /**
      * 买/卖交易对
      */
@@ -53,6 +42,6 @@ public interface ITEntrustService extends IDefaultTEntrustService<TEntrust, TEnt
 	 * @param ID
 	 * @param version
 	 */
-	int updateOnMatch(BigDecimal successAmount, BigDecimal leftCount, int status, Date updateTime, long ID, int version);
+	int updateOnMatch(BigDecimal successAmount, BigDecimal leftCount, int status, LocalDateTime updateTime, long ID, int version);
 	
 }

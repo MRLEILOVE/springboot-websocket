@@ -189,11 +189,11 @@ public class TCurrencyTrade extends BaseModel<TCurrencyTrade> {
 	/**
 	 * 创建时间
 	 */
-	private java.util.Date createTime;
+	private java.time.LocalDateTime createTime;
 	
 	/**
 	 * 修改时间
 	 */
-	private java.util.Date updateTime;
+	private java.time.LocalDateTime updateTime;
 	
 }

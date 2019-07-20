@@ -1,4 +1,4 @@
-package com.bittrade.currency.dao;
+package com.bittrade.entrust.dao;
 
 import java.util.List;
 

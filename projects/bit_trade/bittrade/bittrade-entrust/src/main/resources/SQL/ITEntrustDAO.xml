@@ -18,8 +18,8 @@
 		<result javaType="int" property="entrustType" jdbcType="INTEGER" column="entrust_type" />
 		<result javaType="int" property="entrustDirection" jdbcType="INTEGER" column="entrust_direction" />
 		<result javaType="int" property="version" jdbcType="INTEGER" column="version" />
-		<result javaType="java.util.Date" property="createTime" jdbcType="TIMESTAMP" column="create_time" />
-		<result javaType="java.util.Date" property="updateTime" jdbcType="TIMESTAMP" column="update_time" />
+		<result javaType="java.time.LocalDateTime" property="createTime" jdbcType="TIMESTAMP" column="create_time" />
+		<result javaType="java.time.LocalDateTime" property="updateTime" jdbcType="TIMESTAMP" column="update_time" />
 	</resultMap>
 
 	<!-- 通用查询结果列 -->
@@ -41,22 +41,6 @@
 		`update_time` AS updateTime
 	</sql>
 
-	<!-- 查询用户当前委托	-->
-	<select id="queryPresentEntrustByUserId" resultMap="BaseResultMap">
-		SELECT <include refid="Base_Column_List"/>
-		FROM t_entrust t
-		WHERE t.`status` in (1,2) AND t.user_id = #{userId}
-		order by t.id desc
-	</select>
-
-	<!-- 查询用户历史委托	-->
-	<select id="queryHistoryEntrustByUserId" resultMap="BaseResultMap">
-		SELECT <include refid="Base_Column_List"/>
-		FROM t_entrust t
-		WHERE user_id = #{userId}
-		order by t.id desc
-	</select>
-
 	<!-- 查询用户的委托单成交明细	-->
 	<select id="queryEntrustInfoByUserId" resultType="com.bittrade.pojo.vo.TEntrustInfoVO">
 		SELECT e.create_time as  entrustTime,IFNULL(c1.name,c2.name) as currencyName,e.count,e.left_count as leftCount,
@@ -72,7 +56,7 @@
 	<!-- 撤单	-->
 	<update id="killOrder" parameterType="com.bittrade.pojo.model.TEntrust">
 		UPDATE t_entrust
-		SET status = 4,version = version + 1
+		SET status = #{status},version = version + 1
 		WHERE id = #{id} AND version = #{version}
 	</update>
 	

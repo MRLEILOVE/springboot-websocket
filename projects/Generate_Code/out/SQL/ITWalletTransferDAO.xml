@@ -13,8 +13,8 @@
 		<result javaType="Byte" property="typeChannel" jdbcType="INTEGER" column="typeChannel" />
 		<result javaType="Byte" property="sourceChannel" jdbcType="INTEGER" column="sourceChannel" />
 		<result javaType="String" property="desc" jdbcType="VARCHAR" column="desc" />
-		<result javaType="java.util.Date" property="createTime" jdbcType="TIMESTAMP" column="create_time" />
-		<result javaType="java.util.Date" property="updateTime" jdbcType="TIMESTAMP" column="update_time" />
+		<result javaType="java.time.LocalDateTime" property="createTime" jdbcType="TIMESTAMP" column="create_time" />
+		<result javaType="java.time.LocalDateTime" property="updateTime" jdbcType="TIMESTAMP" column="update_time" />
 	</resultMap>
 
 	<!-- 通用查询结果列 -->

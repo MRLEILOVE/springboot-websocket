@@ -34,7 +34,7 @@ public class WWithdrawWalletBillDTO extends BaseDTO<WWithdrawWalletBillDTO> {
 	private Byte transferFlag;
 	private Byte flag;
 	private String remark;
-	private java.util.Date createTime;
-	private java.util.Date updateTime;
+	private java.time.LocalDateTime createTime;
+	private java.time.LocalDateTime updateTime;
 
 }

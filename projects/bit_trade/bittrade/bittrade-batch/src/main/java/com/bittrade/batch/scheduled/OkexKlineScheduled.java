@@ -2,12 +2,9 @@ package com.bittrade.batch.scheduled;
 
 import java.math.BigDecimal;
 import java.text.MessageFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -24,9 +21,10 @@ import com.bittrade.batch.general.GeneralMethod;
 import com.bittrade.common.constant.IConstant;
 import com.bittrade.common.utils.HttpClientResult;
 import com.bittrade.common.utils.HttpClientUtils;
-import com.bittrade.currency.api.service.ITKlineService;
 import com.bittrade.currency.api.service.ITParamConfigService;
+import com.bittrade.entrust.api.service.ITKlineService;
 import com.bittrade.pojo.model.TKline;
+import com.core.tool.DateTimeUtil;
 
 /**
  * 获取okex法币汇率
@@ -92,7 +90,7 @@ public class OkexKlineScheduled {
 	 * @throws Exception
 	 */
 	private void symbolKlineDataHandle(String symbol) throws Exception {
-		Date date = new Date();
+		LocalDateTime now = LocalDateTime.now();
 		String[] granularitys = GeneralMethod.qryParamConfigInfo( paramConfigService, ParamKeyEnum.OKEX_GRANULARITYS_KEY.getKey() ).getParamValue()
 				.split( "," );
 		for (int i = 0; i < granularitys.length; i++) {
@@ -107,7 +105,7 @@ public class OkexKlineScheduled {
 				List<TKline> addList = new ArrayList<TKline>();
 				for (int j = 0; j < jsonArray.size(); j++) {
 					JSONArray object = JSONArray.parseArray( jsonArray.get( j ).toString() );
-					Date time = isoToUtc( object.getString( 0 ) );
+					LocalDateTime dateTime = DateTimeUtil._UTC2ISO( object.getString( 0 ) );
 					BigDecimal open = object.getBigDecimal( 1 );
 					BigDecimal high = object.getBigDecimal( 2 );
 					BigDecimal low = object.getBigDecimal( 3 );
@@ -121,14 +119,14 @@ public class OkexKlineScheduled {
 					kline.setLow( low );
 					kline.setOpen( open );
 					kline.setSymbol( symbol );
-					kline.setTime( time );
+					kline.setTime( dateTime );
 					kline.setVolume( volume );
-					kline.setCreateTime( date );
+					kline.setCreateTime( now );
 
 					TKline qryKline = new TKline();
 					qryKline.setSymbol( symbol );
 					qryKline.setGranularity( granularity );
-					qryKline.setTime( time );
+					qryKline.setTime( dateTime );
 					TKline resultKline = klineService.getBy( qryKline );
 					if (null == resultKline) {
 						addList.add( kline );
@@ -136,7 +134,7 @@ public class OkexKlineScheduled {
 						if (j == 0) { // 只有第一条才需要更新
 							kline.setId( resultKline.getId() );
 							kline.setCreateTime( null );
-							kline.setUpdateTime( date );
+							kline.setUpdateTime( now );
 							boolean bool = klineService.updateById( kline );
 							LOG.info( "更新t_kLine：id=" + kline.getId() + "，是否更新成功：" + bool );
 						}
@@ -151,19 +149,6 @@ public class OkexKlineScheduled {
 						+ result.getContent() );
 			}
 		}
-	}
-
-	/**
-	 * isoToUtc:(iso转utc). <br/>
-	 * 
-	 * @author zale
-	 * @param iso
-	 * @throws ParseException
-	 */
-	private static Date isoToUtc(String iso) throws ParseException {
-		SimpleDateFormat format = new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'" );
-		format.setTimeZone( TimeZone.getTimeZone( "UTC" ) );
-		return format.parse( iso );
 	}
 
 }

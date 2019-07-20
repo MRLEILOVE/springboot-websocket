@@ -1,8 +1,6 @@
 package com.bittrade.currency.controller;
 
-import java.util.List;
-
-import com.core.framework.DTO.PageDTO;
+import com.bittrade.common.enums.EntrustStatusEnumer;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -14,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.alibaba.dubbo.common.json.JSONObject;
 import com.alibaba.dubbo.config.annotation.Reference;
+import com.alibaba.fastjson.JSON;
 import com.bittrade.common.enums.EntrustDirectionEnumer;
 import com.bittrade.common.enums.EntrustTypeEnumer;
 import com.bittrade.entrust.api.service.ITEntrustService;
@@ -23,6 +23,7 @@ import com.bittrade.pojo.dto.TEntrustDTO;
 import com.bittrade.pojo.model.TEntrust;
 import com.bittrade.pojo.vo.TEntrustInfoVO;
 import com.bittrade.pojo.vo.TEntrustVO;
+import com.core.framework.DTO.PageDTO;
 import com.core.framework.DTO.ReturnDTO;
 import com.core.framework.base.controller.BaseController;
 
@@ -45,14 +46,15 @@ public class TEntrustController extends BaseController<TEntrust, TEntrustDTO, TE
 	@ResponseBody
 	public ReturnDTO<PageDTO<TEntrust>> queryPresentEntrustByUserId(TEntrust ent) {
 		try {
-			ent.in(TEntrust.FieldNames.STATUS, new Object[] { 1, 2 });
+			ent.in(TEntrust.FieldNames.STATUS, new Object[] {EntrustStatusEnumer.UNFINISH.getCode(), EntrustStatusEnumer.PART_FINISH.getCode() });
 			PageDTO<TEntrust> tEntrustPageDTO = entrustService.getsByPagination(ent);
 			if(tEntrustPageDTO != null && tEntrustPageDTO.getData() != null && tEntrustPageDTO.getData().size() > 0){
 				tEntrustPageDTO.getData().stream().forEach(x ->{
-					//给前端计算好成加量（借用leftCount返回）
+					//给前端计算好成交量（借用leftCount返回）
 					x.setLeftCount(x.getCount().subtract(x.getLeftCount()));
 				});
 			}
+			System.out.println( JSON.toJSONString( tEntrustPageDTO ) );
 			return ReturnDTO.ok(tEntrustPageDTO);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -69,7 +71,7 @@ public class TEntrustController extends BaseController<TEntrust, TEntrustDTO, TE
 			PageDTO<TEntrust> tEntrustPageDTO = entrustService.getsByPagination(ent);
 			if(tEntrustPageDTO != null && tEntrustPageDTO.getData() != null && tEntrustPageDTO.getData().size() > 0){
 				tEntrustPageDTO.getData().stream().forEach(x ->{
-					//给前端计算好成加量（借用leftCount返回）
+					//给前端计算好成交量（借用leftCount返回）
 					x.setLeftCount(x.getCount().subtract(x.getLeftCount()));
 				});
 			}

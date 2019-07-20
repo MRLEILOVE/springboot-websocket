@@ -18,8 +18,8 @@
 		<result javaType="Integer" property="entrustType" jdbcType="INTEGER" column="entrust_type" />
 		<result javaType="Integer" property="entrustDirection" jdbcType="INTEGER" column="entrust_direction" />
 		<result javaType="Integer" property="version" jdbcType="INTEGER" column="version" />
-		<result javaType="java.util.Date" property="createTime" jdbcType="TIMESTAMP" column="create_time" />
-		<result javaType="java.util.Date" property="updateTime" jdbcType="TIMESTAMP" column="update_time" />
+		<result javaType="java.time.LocalDateTime" property="createTime" jdbcType="TIMESTAMP" column="create_time" />
+		<result javaType="java.time.LocalDateTime" property="updateTime" jdbcType="TIMESTAMP" column="update_time" />
 	</resultMap>
 
 	<!-- 通用查询结果列 -->

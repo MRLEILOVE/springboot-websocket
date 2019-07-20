@@ -1,7 +1,7 @@
 package com.bittrade.entrust.service.impl;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
@@ -73,22 +73,6 @@ public class TEntrustServiceImpl extends DefaultTEntrustServiceImpl<ITEntrustDAO
 		return super.add(entrust);
 	}
 	
-	/**
-	 * 查询用户当前委托
-	 */
-	@Override
-	public List<TEntrustVO> queryPresentEntrustByUserId(String userId) {
-		return entrustDAO.queryPresentEntrustByUserId( userId );
-	}
-
-	/**
-	 * 查询用户历史委托
-	 */
-	@Override
-	public List<TEntrustVO> queryHistoryEntrustByUserId(String userId) {
-		return entrustDAO.queryHistoryEntrustByUserId( userId );
-	}
-
 	/**
 	 * 买/卖交易对
 	 */
@@ -210,6 +194,7 @@ public class TEntrustServiceImpl extends DefaultTEntrustServiceImpl<ITEntrustDAO
 			return ReturnDTO.error( "交易已经完成，不可撤单" );
 		}
 		// 撤单
+		tEntrust.setStatus(EntrustStatusEnumer.CANCEL.getCode());
 		int result = entrustDAO.killOrder( tEntrust );
 		if (result == 0) {
 			return ReturnDTO.error( "撤单失败" );
@@ -219,7 +204,7 @@ public class TEntrustServiceImpl extends DefaultTEntrustServiceImpl<ITEntrustDAO
 	}
 
 	@Override
-	public int updateOnMatch(BigDecimal successAmount, BigDecimal leftCount, int status, Date updateTime, long ID, int version) {
+	public int updateOnMatch(BigDecimal successAmount, BigDecimal leftCount, int status, LocalDateTime updateTime, long ID, int version) {
 		return entrustDAO.updateOnMatch( successAmount, leftCount, status, updateTime, ID, version );
 	}
 

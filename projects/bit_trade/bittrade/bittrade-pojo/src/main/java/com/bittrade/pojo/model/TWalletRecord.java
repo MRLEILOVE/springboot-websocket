@@ -124,6 +124,6 @@ public class TWalletRecord extends BaseModel<TWalletRecord> {
 	/**
 	 * 创建时间
 	 */
-	private java.util.Date createTime;
+	private java.time.LocalDateTime createTime;
 	
 }

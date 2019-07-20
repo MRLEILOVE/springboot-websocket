@@ -12,9 +12,9 @@
 		<result javaType="java.math.BigDecimal" property="close" jdbcType="DECIMAL" column="close" />
 		<result javaType="java.math.BigDecimal" property="volume" jdbcType="DECIMAL" column="volume" />
 		<result javaType="Integer" property="granularity" jdbcType="INTEGER" column="granularity" />
-		<result javaType="java.util.Date" property="time" jdbcType="TIMESTAMP" column="time" />
-		<result javaType="java.util.Date" property="createTime" jdbcType="TIMESTAMP" column="create_time" />
-		<result javaType="java.util.Date" property="updateTime" jdbcType="TIMESTAMP" column="update_time" />
+		<result javaType="java.time.LocalDateTime" property="time" jdbcType="TIMESTAMP" column="time" />
+		<result javaType="java.time.LocalDateTime" property="createTime" jdbcType="TIMESTAMP" column="create_time" />
+		<result javaType="java.time.LocalDateTime" property="updateTime" jdbcType="TIMESTAMP" column="update_time" />
 	</resultMap>
 
 	<!-- 通用查询结果列 -->

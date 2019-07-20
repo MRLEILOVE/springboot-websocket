@@ -2,11 +2,10 @@ package com.bittrade.entrust.service.impl;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.ReentrantLock;
@@ -27,16 +26,14 @@ import com.bittrade.common.enums.EntrustDirectionEnumer;
 import com.bittrade.common.enums.EntrustStatusEnumer;
 import com.bittrade.common.enums.EntrustTypeEnumer;
 import com.bittrade.common.enums.IsActiveEnumer;
-import com.bittrade.common.enums.KLineGranularityEnumer;
 import com.bittrade.entrust.api.service.IMakeAMatchService;
 import com.bittrade.entrust.api.service.ITEntrustRecordService;
 import com.bittrade.entrust.api.service.ITEntrustService;
-import com.bittrade.entrust.dto.KLineDTO;
+import com.bittrade.entrust.api.service.ITKlineService;
 import com.bittrade.pojo.model.TEntrust;
 import com.bittrade.pojo.model.TEntrustRecord;
 import com.core.common.constant.ICompareResultConstant;
 import com.core.tool.BigDecimalUtil;
-import com.core.tool.DateUtil;
 import com.core.tool.SnowFlake;
 import com.rabbitmq.client.Channel;
 
@@ -57,24 +54,34 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 	private static final Logger LOG = LoggerFactory.getLogger(MakeAMatchServiceImpl.class);
 	
 	/**
+	 * 悲观锁
+	 */
+	private static final ConcurrentHashMap<Integer, ReentrantLock> MAP_LOCK__BUY_AND_SELL = new ConcurrentHashMap<>();
+	
+	/**
 	 * 市价买
 	 */
-	private static final ConcurrentHashMap<Integer, ArrayList<TEntrust>> MAP_BUY_MARKET = new ConcurrentHashMap<>();
+	private static final ConcurrentHashMap<Integer, ArrayList<TEntrust>> MAP__BUY_MARKET = new ConcurrentHashMap<>();
 	
 	/**
 	 * 限价买
 	 */
-	private static final ConcurrentHashMap<Integer, ArrayList<TEntrust>> MAP_BUY_LIMIT = new ConcurrentHashMap<>();
+	private static final ConcurrentHashMap<Integer, ArrayList<TEntrust>> MAP__BUY_LIMIT = new ConcurrentHashMap<>();
 	
 	/**
 	 * 市价卖
 	 */
-	private static final ConcurrentHashMap<Integer, ArrayList<TEntrust>> MAP_SELL_MARKET = new ConcurrentHashMap<>();
+	private static final ConcurrentHashMap<Integer, ArrayList<TEntrust>> MAP__SELL_MARKET = new ConcurrentHashMap<>();
 	
 	/**
 	 * 限价卖
 	 */
-	private static final ConcurrentHashMap<Integer, ArrayList<TEntrust>> MAP_SELL_LIMIT = new ConcurrentHashMap<>();
+	private static final ConcurrentHashMap<Integer, ArrayList<TEntrust>> MAP__SELL_LIMIT = new ConcurrentHashMap<>();
+	
+	/**
+	 * 行情价
+	 */
+	public static final ConcurrentHashMap<Integer, BigDecimal> MAP__LINE_PRICE = new ConcurrentHashMap<>();
 	
 	private static final SnowFlake SNOW_FLAKE__ENTRUST_RECORD = new SnowFlake(1, 1);
 	
@@ -82,27 +89,72 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 	private ITEntrustService entrustService;
 	@Autowired
 	private ITEntrustRecordService entrustRecordService;
-	
-	/**
-	 * 行情价
-	 */
-	public static /* final */ConcurrentHashMap<Integer, BigDecimal> MAP_LINE_PRICE = new ConcurrentHashMap<>();
-	
-	private static final ConcurrentHashMap<Integer, ReentrantLock> MAP_LOCK__BUY_AND_SELL = new ConcurrentHashMap<>();
-	
+	@Autowired
+	private ITKlineService klineService;
 	@Autowired
 	private RabbitTemplate rabbitTemplate;
+	
+	
+	private ReentrantLock getLock(ConcurrentHashMap<Integer, ReentrantLock> map, Integer key) {
+		ReentrantLock lock;
+		
+		if (map.containsKey( key )) {
+			lock = map.get( key );
+		} else {
+			map.put( key, lock = new ReentrantLock() );
+		}
+		
+		return lock;
+	}
+	
+	private ArrayList<TEntrust> getList(ConcurrentHashMap<Integer, ArrayList<TEntrust>> map, Integer key) {
+		ArrayList<TEntrust> list;
+		
+		if (map.containsKey( key )) {
+			list = map.get( key );
+		} else {
+			map.put( key, list = new ArrayList<>() );
+		}
+		
+		return list;
+	}
+	
+	private BigDecimal getLinePrice(ConcurrentHashMap<Integer, BigDecimal> map, Integer key) {
+		BigDecimal linePrice;
+		
+		if (map.containsKey( key )) {
+			linePrice = map.get( key );
+		} else {
+			map.put( key, linePrice = new BigDecimal(0) );
+		}
+		
+		return linePrice;
+	}
+	
 	
 	private void initialLinePrice() {
 	}
 	
+	/**
+	 * <p>
+	 *   首次需要从数据库加载是否有未撮合的委托信息。
+	 * </p>
+	 * initialEntrust:(这里用一句话描述这个方法的作用). <br/>  
+	 * TODO(这里描述这个方法适用条件 – 可选).<br/>  
+	 * TODO(这里描述这个方法的执行流程 – 可选).<br/>  
+	 * TODO(这里描述这个方法的使用方法 – 可选).<br/>  
+	 * TODO(这里描述这个方法的注意事项 – 可选).<br/>  
+	 *  
+	 * @author Administrator    
+	 * @since JDK 1.8
+	 */
 	private void initialEntrust() {
 		// to be continue .
 	}
 	
 	/**
 	 * <p>
-	 *   首次需要从数据库加载是否有未撮合的委托信息。
+	 *   
 	 * </p>
 	 * initialData:(这里用一句话描述这个方法的作用). <br/>  
 	 * TODO(这里描述这个方法适用条件 – 可选).<br/>  
@@ -244,9 +296,10 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 	 * @param entrust_before
 	 * @param entrust_after
 	 * @param dealPrice  
+	 * @return 
 	 * @since JDK 1.8
 	 */
-	public void addEntrustRecord(TEntrust entrust_before, TEntrust entrust_after, BigDecimal dealPrice) {
+	public TEntrustRecord addEntrustRecord(TEntrust entrust_before, TEntrust entrust_after, BigDecimal dealPrice) {
 		BigDecimal count;
 		BigDecimal amount;
 		if (entrust_before.getLeftCount().compareTo(entrust_after.getLeftCount()) == ICompareResultConstant.LESS_THAN) {
@@ -255,7 +308,7 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 			count = entrust_after.getLeftCount();
 		}
 		amount = dealPrice.multiply(count).setScale(IConstant.AMOUNT_DECIMAL_LENGTH, BigDecimal.ROUND_HALF_DOWN);
-		Date createTime = new Date();
+		LocalDateTime createTime = LocalDateTime.now();
 		
 		// 修改委托
 		{
@@ -329,36 +382,11 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 		entrustRecord_after.setCurrencyTradeId(entrust_after.getCurrencyTradeId());
 		entrustRecord_after.setIsActive(IsActiveEnumer.UNACTIVE.getCode());
 		entrustRecord_after.setEntrustDirection(entrust_after.getEntrustDirection());
-		entrustRecord_before.setCreateTime( createTime );
+		entrustRecord_after.setCreateTime( createTime );
 		entrustRecordService.add(entrustRecord_after);
 //		System.out.println(entrustRecord_after);
-	}
-	
-	private static final ConcurrentHashMap<Byte, ConcurrentHashMap<Integer, KLineDTO>> MAP_KLINE_LAST = new ConcurrentHashMap<Byte, ConcurrentHashMap<Integer, KLineDTO>>() {
-		private static final long serialVersionUID = 1L;
-		{
-			// 等会儿  在上面再初始化。
-			
-			put( KLineGranularityEnumer.ONE_MINUTE.getCode(), new ConcurrentHashMap<Integer, KLineDTO>() );
-		}
-	};
-	
-	private KLineDTO getKLineDTO(Map<Integer, KLineDTO> map, int key) {
-		KLineDTO kLineDTO;
 		
-		if (map.containsKey( key )) {
-			kLineDTO = map.get( key );
-		} else {
-			map.put( key, kLineDTO = new KLineDTO() );
-		}
-		
-		return kLineDTO;
-	}
-	
-	private String kLine2String(KLineDTO kLineDTO) {
-		return new StringBuilder()
-				.append( kLineDTO.getSymbol() )
-				.toString();
+		return entrustRecord_before;
 	}
 	
 	/**
@@ -366,38 +394,18 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 	 * @param dealPrice
 	 * @param linePrice
 	 * @param entrust
+	 * @param entrustRecord
 	 * @return
 	 */
-	private BigDecimal onEntrustRecord(BigDecimal dealPrice, BigDecimal linePrice, TEntrust entrust) {
+	private BigDecimal onEntrustRecord(BigDecimal dealPrice, BigDecimal linePrice, TEntrust entrust, TEntrustRecord entrustRecord) {
 		if (linePrice.compareTo(dealPrice) != ICompareResultConstant.EQUAL) {
 //			linePrice = dealPrice;
-			MAP_LINE_PRICE.put( entrust.getCurrencyTradeId(), linePrice = dealPrice );
+			MAP__LINE_PRICE.put( entrust.getCurrencyTradeId(), linePrice = dealPrice );
 			LOG.info("修改行情价为：" + linePrice);
 		}
 		{
-			KLineDTO kLineDTO = getKLineDTO( MAP_KLINE_LAST.get( KLineGranularityEnumer.ONE_MINUTE.getCode() ), entrust.getCurrencyTradeId() );
-			Date dt_updateTime = DateUtil.getBeginMinute( entrust.getUpdateTime() );
-			if (kLineDTO.getTime() == null || kLineDTO.getTime().compareTo(dt_updateTime) == -1) {
-				kLineDTO.setSymbol( entrust.getCurrencyTradeId() );
-				kLineDTO.setTime( dt_updateTime );
-				kLineDTO.setOpen( dealPrice );
-				kLineDTO.setHigh( dealPrice );
-				kLineDTO.setLow( dealPrice );
-				kLineDTO.setClose( dealPrice );
-				kLineDTO.setVolume( 1 );
-			} else /*if (kLineDTO.getTime().compareTo(dt_updateTime) == 0) */{
-				if (dealPrice.compareTo(kLineDTO.getHigh()) == ICompareResultConstant.GREATER_THAN) {
-					kLineDTO.setHigh( dealPrice );
-				}
-				if (dealPrice.compareTo(kLineDTO.getLow()) == ICompareResultConstant.LESS_THAN) {
-					kLineDTO.setLow( dealPrice );
-				}
-				kLineDTO.setClose( dealPrice );
-				kLineDTO.setVolume( kLineDTO.getVolume() + 1 );
-			}
-			
 			// 异步通知。
-			rabbitTemplate.convertAndSend(IQueueConstants.EXCHANGE_DIRECT, IQueueConstants.ROUTE_KEY__KLINE, linePrice.toString());
+			rabbitTemplate.convertAndSend(IQueueConstants.EXCHANGE_TOPIC, IQueueConstants.ROUTE_KEY__ENTRUST_RECORD, entrustRecord); // linePrice.toString()
 //			rabbitTemplate.setConfirmCallback((correlationData, ack, cause) -> {
 //				System.out.println("消息唯一标识：" + correlationData);
 //				System.out.println("消息确认结果：" + ack);
@@ -406,6 +414,8 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 //			rabbitTemplate.setReturnCallback((Message message, int replyCode, String replyText, String exchange, String routingKey) -> {
 //				
 //			});
+			
+			klineService.modifyKLine( entrust, dealPrice );
 		}
 		return linePrice;
 	}
@@ -425,7 +435,7 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 				&& 
 				list.size() > 0
 				) {
-			BigDecimal bd_linePrice = getLinePrice( MAP_LINE_PRICE, entrust.getCurrencyTradeId() );
+			BigDecimal bd_linePrice = getLinePrice( MAP__LINE_PRICE, entrust.getCurrencyTradeId() );
 			for (int i = list.size() - 1; i > -1; i--) {
 				TEntrust entrust_ = list.get(i);
 				
@@ -433,8 +443,8 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 				if (bd_dealPrice == null) {
 					break;
 				} else {
-					addEntrustRecord(entrust_, entrust, bd_dealPrice);
-					bd_linePrice = onEntrustRecord(bd_dealPrice, bd_linePrice, entrust);
+					TEntrustRecord entrustRecord = addEntrustRecord(entrust_, entrust, bd_dealPrice);
+					bd_linePrice = onEntrustRecord(bd_dealPrice, bd_linePrice, entrust, entrustRecord);
 					
 					if (entrust_.getLeftCount().compareTo(BigDecimal.ZERO) == ICompareResultConstant.EQUAL) {
 						list.remove(i);
@@ -459,42 +469,6 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 		}
 	}
 	
-	private ReentrantLock getLock(ConcurrentHashMap<Integer, ReentrantLock> map, Integer key) {
-		ReentrantLock lock;
-		
-		if (map.containsKey( key )) {
-			lock = map.get( key );
-		} else {
-			map.put( key, lock = new ReentrantLock() );
-		}
-		
-		return lock;
-	}
-	
-	private ArrayList<TEntrust> getList(ConcurrentHashMap<Integer, ArrayList<TEntrust>> map, Integer key) {
-		ArrayList<TEntrust> list;
-		
-		if (map.containsKey( key )) {
-			list = map.get( key );
-		} else {
-			map.put( key, list = new ArrayList<>() );
-		}
-		
-		return list;
-	}
-	
-	private BigDecimal getLinePrice(ConcurrentHashMap<Integer, BigDecimal> map, Integer key) {
-		BigDecimal linePrice;
-		
-		if (map.containsKey( key )) {
-			linePrice = map.get( key );
-		} else {
-			map.put( key, linePrice = new BigDecimal(0) );
-		}
-		
-		return linePrice;
-	}
-	
 	private void makeAMatch(
 			TEntrust entrust, 
 			int limitCompareVal, 
@@ -515,7 +489,8 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 				addTo(i_idx, entrust, list_limit_after, list_market_before, list_limit_before);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+//			e.printStackTrace();
+			LOG.error( e.toString() );
 		} finally {
 			lock.unlock();
 		}
@@ -523,10 +498,10 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 	
 	public void makeAMatch(TEntrust entrust) {
 		ArrayList<TEntrust> 
-			list_buy_market = getList( MAP_BUY_MARKET, entrust.getCurrencyTradeId() ), 
-			list_buy_limit = getList( MAP_BUY_LIMIT, entrust.getCurrencyTradeId() ), 
-			list_sell_market = getList( MAP_SELL_MARKET, entrust.getCurrencyTradeId() ), 
-			list_sell_limit = getList( MAP_SELL_LIMIT, entrust.getCurrencyTradeId() )
+			list_buy_market = getList( MAP__BUY_MARKET, entrust.getCurrencyTradeId() ), 
+			list_buy_limit = getList( MAP__BUY_LIMIT, entrust.getCurrencyTradeId() ), 
+			list_sell_market = getList( MAP__SELL_MARKET, entrust.getCurrencyTradeId() ), 
+			list_sell_limit = getList( MAP__SELL_LIMIT, entrust.getCurrencyTradeId() )
 			;
 		
 		if (entrust.getEntrustDirection() == EntrustDirectionEnumer.BUY.getCode()) { // 买
@@ -562,16 +537,16 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 	}
 	
 	private static void print() {
-		System.out.println("MAP_BUY_MARKET.size()=" + MAP_BUY_MARKET.size());
-		System.out.println("MAP_BUY_LIMIT.size()=" + MAP_BUY_LIMIT.size());
-		System.out.println("MAP_SELL_MARKET.size()=" + MAP_SELL_MARKET.size());
-		System.out.println("MAP_SELL_LIMIT.size()=" + MAP_SELL_LIMIT.size());
+		System.out.println("MAP_BUY_MARKET.size()=" + MAP__BUY_MARKET.size());
+		System.out.println("MAP_BUY_LIMIT.size()=" + MAP__BUY_LIMIT.size());
+		System.out.println("MAP_SELL_MARKET.size()=" + MAP__SELL_MARKET.size());
+		System.out.println("MAP_SELL_LIMIT.size()=" + MAP__SELL_LIMIT.size());
 		System.out.println("buy ---------------------------------------------");
-		print(MAP_BUY_MARKET);
-		print(MAP_BUY_LIMIT);
+		print(MAP__BUY_MARKET);
+		print(MAP__BUY_LIMIT);
 		System.out.println("sell ---------------------------------------------");
-		print(MAP_SELL_MARKET);
-		print(MAP_SELL_LIMIT);
+		print(MAP__SELL_MARKET);
+		print(MAP__SELL_LIMIT);
 	}
 	
 	public void test() {
@@ -621,6 +596,27 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 		// print .
 		print();
 	}
+
+	public void test_2() {
+		TEntrust entrust1 = new TEntrust();
+		entrust1.setUserId(101L);
+		entrust1.setCurrencyTradeId(1);
+		entrust1.setEntrustDirection(EntrustDirectionEnumer.BUY.getCode());
+		entrust1.setEntrustType(EntrustTypeEnumer.LIMIT.getCode());
+		entrust1.setPrice(new BigDecimal(2));
+		entrust1.setCount(new BigDecimal(2));
+		entrustService.add(entrust1);
+		makeAMatch(entrust1);
+		TEntrust entrust2 = new TEntrust();
+		entrust2.setUserId(102L);
+		entrust2.setCurrencyTradeId(1);
+		entrust2.setEntrustDirection(EntrustDirectionEnumer.SELL.getCode());
+		entrust2.setEntrustType(EntrustTypeEnumer.LIMIT.getCode());
+		entrust2.setPrice(new BigDecimal(3));
+		entrust2.setCount(new BigDecimal(2));
+		entrustService.add(entrust2);
+		makeAMatch(entrust2);
+	}
 	
 	public static void _main(String[] args) {
 //		Tester.test(null);
@@ -652,15 +648,15 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 		}
 	}
 
-	@RabbitListener(queues = { IQueueConstants.QUEUE__KLINE })
-	public void processMessage_2(Channel channel, Message message) {
-		System.out.println("QUEUE__KLINE -- MessageConsumer收到所有消息：" + new String(message.getBody()));
-		try {
-			channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+//	@RabbitListener(queues = { IQueueConstants.QUEUE__KLINE })
+//	public void processMessage_2(Channel channel, Message message) {
+//		System.out.println("QUEUE__KLINE -- MessageConsumer收到所有消息：" + new String(message.getBody()));
+//		try {
+//			channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//	}
 	
 	public void testMQ() {
 		try {

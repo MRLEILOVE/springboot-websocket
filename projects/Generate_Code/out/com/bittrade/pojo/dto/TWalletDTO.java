@@ -23,7 +23,7 @@ public class TWalletDTO extends BaseDTO<TWalletDTO> {
 	private java.math.BigDecimal tradeFrozen;
 	private java.math.BigDecimal transferFrozen;
 	private Integer version;
-	private java.util.Date createTime;
-	private java.util.Date updateTime;
+	private java.time.LocalDateTime createTime;
+	private java.time.LocalDateTime updateTime;
 
 }

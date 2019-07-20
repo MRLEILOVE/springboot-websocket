@@ -1,14 +1,15 @@
 package com.bittrade.currency.service.impl;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.bittrade.__default.service.impl.DefaultTCurrencyOptionalServiceImpl;
 import com.bittrade.currency.api.service.ITCurrencyOptionalService;
 import com.bittrade.currency.dao.ITCurrencyOptionalDAO;
@@ -51,7 +52,7 @@ public class TCurrencyOptionalServiceImpl extends DefaultTCurrencyOptionalServic
         if(tCurrencyOptionals != null && tCurrencyOptionals.size() > 0){
             //存在就更新
             TCurrencyOptional tCurrencyOptional = tCurrencyOptionals.get(0);
-            tCurrencyOptional.setUpdateTime(new Date());
+            tCurrencyOptional.setUpdateTime(LocalDateTime.now());
             tCurrencyOptional.setStatus((byte) 1);
             int update = currencyOptionalDAO.updateById(tCurrencyOptional);
             if(update == 0){
@@ -66,8 +67,8 @@ public class TCurrencyOptionalServiceImpl extends DefaultTCurrencyOptionalServic
                     .userId(currencyOptionalDTO.getUserId())
                     .currencyTradeId(currencyOptionalDTO.getCurrencyTradeId())
                     .status((byte) 1)
-                    .updateTime(new Date())
-                    .createTime(new Date())
+                    .updateTime(LocalDateTime.now())
+                    .createTime(LocalDateTime.now())
                     .build();
             int add = currencyOptionalDAO.add(currencyOptional);
 
@@ -93,7 +94,7 @@ public class TCurrencyOptionalServiceImpl extends DefaultTCurrencyOptionalServic
 
         if(tCurrencyOptional != null){
             //存在就更新
-            tCurrencyOptional.setUpdateTime(new Date());
+            tCurrencyOptional.setUpdateTime(LocalDateTime.now());
             tCurrencyOptional.setStatus((byte) 0);
             int update = currencyOptionalDAO.updateById(tCurrencyOptional);
             if(update == 0){

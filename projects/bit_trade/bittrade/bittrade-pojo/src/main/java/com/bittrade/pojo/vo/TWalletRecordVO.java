@@ -24,6 +24,6 @@ public class TWalletRecordVO extends BaseVO<TWalletRecordVO> {
 	private java.math.BigDecimal changeAmount;
 	private Byte type;
 	private Long entrustRecordId;
-	private java.util.Date createTime;
+	private java.time.LocalDateTime createTime;
 
 }

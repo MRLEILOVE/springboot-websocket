@@ -103,7 +103,7 @@ public /* static */final class Robot {
 		
 		TCurrencyTrade currencyTrade = currencyTradeService.getByPK( currencyTradeID );
 //		String str_linePrice = jedisCluster.get( String.format( "OKEX_%s_LAST_KEY", currencyTrade.getSymbol() ) );
-		BigDecimal bd_selfPrice = MakeAMatchServiceImpl.MAP_LINE_PRICE.get( currencyTradeID );
+		BigDecimal bd_selfPrice = MakeAMatchServiceImpl.MAP__LINE_PRICE.get( currencyTradeID );
 		String str_otherLinePrice = jedisCluster.get( String.format( "OKEX_%s_LAST_KEY", currencyTrade.getSymbol() ) );
 		if (str_otherLinePrice != null && str_otherLinePrice.length() > 0) {
 			BigDecimal bd_otherPrice = new BigDecimal(str_otherLinePrice);
