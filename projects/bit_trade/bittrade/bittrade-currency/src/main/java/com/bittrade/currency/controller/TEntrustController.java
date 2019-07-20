@@ -1,5 +1,6 @@
 package com.bittrade.currency.controller;
 
+import com.bittrade.common.enums.EntrustStatusEnumer;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -43,11 +44,11 @@ public class TEntrustController extends BaseController<TEntrust, TEntrustDTO, TE
 	@ResponseBody
 	public ReturnDTO<PageDTO<TEntrust>> queryPresentEntrustByUserId(TEntrust ent) {
 		try {
-			ent.in(TEntrust.FieldNames.STATUS, new Object[] { 1, 2 });
+			ent.in(TEntrust.FieldNames.STATUS, new Object[] {EntrustStatusEnumer.UNFINISH.getCode(), EntrustStatusEnumer.PART_FINISH.getCode() });
 			PageDTO<TEntrust> tEntrustPageDTO = entrustService.getsByPagination(ent);
 			if(tEntrustPageDTO != null && tEntrustPageDTO.getData() != null && tEntrustPageDTO.getData().size() > 0){
 				tEntrustPageDTO.getData().stream().forEach(x ->{
-					//给前端计算好成加量（借用leftCount返回）
+					//给前端计算好成交量（借用leftCount返回）
 					x.setLeftCount(x.getCount().subtract(x.getLeftCount()));
 				});
 			}
@@ -67,7 +68,7 @@ public class TEntrustController extends BaseController<TEntrust, TEntrustDTO, TE
 			PageDTO<TEntrust> tEntrustPageDTO = entrustService.getsByPagination(ent);
 			if(tEntrustPageDTO != null && tEntrustPageDTO.getData() != null && tEntrustPageDTO.getData().size() > 0){
 				tEntrustPageDTO.getData().stream().forEach(x ->{
-					//给前端计算好成加量（借用leftCount返回）
+					//给前端计算好成交量（借用leftCount返回）
 					x.setLeftCount(x.getCount().subtract(x.getLeftCount()));
 				});
 			}
