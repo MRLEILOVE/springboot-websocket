@@ -39,12 +39,12 @@
 	</sql>
 	
 	
-	<insert id="add" parameterType="com.bittrade.pojo.model.TCurrencyAddress">
+	<insert id="add" parameterType="com.bittrade.pojo.model.TCurrencyAddress" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO t_currency_address(`user_id`, `currency_id`, `adderess`, `address_remark`, `create_time`)
 		VALUES(#{userId,jdbcType=BIGINT}, #{currencyId,jdbcType=INTEGER}, #{adderess,jdbcType=VARCHAR}, #{addressRemark,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP})
 	</insert>
 	
-	<insert id="addWithSelective" parameterType="com.bittrade.pojo.model.TCurrencyAddress">
+	<insert id="addWithSelective" parameterType="com.bittrade.pojo.model.TCurrencyAddress" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO t_currency_address(
 			<if test="userId != null">
 			`user_id`, 

@@ -13,7 +13,6 @@ import org.springframework.stereotype.Component;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.bittrade.common.enums.EntrustTypeEnumer;
 import com.bittrade.currency.api.service.ITCurrencyTradeService;
-import com.bittrade.entrust.api.service.IMakeAMatchService;
 import com.bittrade.entrust.api.service.ITEntrustRecordService;
 import com.bittrade.entrust.api.service.ITEntrustService;
 import com.bittrade.entrust.service.impl.MakeAMatchServiceImpl;
@@ -46,7 +45,7 @@ public /* static */final class Robot {
 	@Autowired
 	private ITEntrustService		entrustService;
 	@Autowired
-	private IMakeAMatchService		makeAMatch;
+	private MakeAMatchServiceImpl	makeAMatchService;
 
 	private static final BigDecimal bd_priceRangePercent = new BigDecimal("0.05"); // 5%
 	private static final Random		R	= new Random( System.currentTimeMillis() );
@@ -103,7 +102,7 @@ public /* static */final class Robot {
 		
 		TCurrencyTrade currencyTrade = currencyTradeService.getByPK( currencyTradeID );
 //		String str_linePrice = jedisCluster.get( String.format( "OKEX_%s_LAST_KEY", currencyTrade.getSymbol() ) );
-		BigDecimal bd_selfPrice = MakeAMatchServiceImpl.MAP__LINE_PRICE.get( currencyTradeID );
+		BigDecimal bd_selfPrice = makeAMatchService.getLinePrice( currencyTradeID );
 		String str_otherLinePrice = jedisCluster.get( String.format( "OKEX_%s_LAST_KEY", currencyTrade.getSymbol() ) );
 		if (str_otherLinePrice != null && str_otherLinePrice.length() > 0) {
 			BigDecimal bd_otherPrice = new BigDecimal(str_otherLinePrice);
@@ -202,7 +201,7 @@ public /* static */final class Robot {
 					entrust.setCount( getCount() );
 					entrustService.add(entrust);
 
-					makeAMatch.makeAMatch( entrust );
+					makeAMatchService.makeAMatch( entrust );
 
 					Thread.sleep( getSleepMillis() );
 				}

@@ -35,12 +35,12 @@
 	</sql>
 	
 	
-	<insert id="add" parameterType="com.bittrade.pojo.model.JobTask">
+	<insert id="add" parameterType="com.bittrade.pojo.model.JobTask" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO job_task(`content`, `send_time`, `status`)
 		VALUES(#{content,jdbcType=VARCHAR}, #{sendTime,jdbcType=BIGINT}, #{status,jdbcType=INTEGER})
 	</insert>
 	
-	<insert id="addWithSelective" parameterType="com.bittrade.pojo.model.JobTask">
+	<insert id="addWithSelective" parameterType="com.bittrade.pojo.model.JobTask" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO job_task(
 			<if test="content != null">
 			`content`, 

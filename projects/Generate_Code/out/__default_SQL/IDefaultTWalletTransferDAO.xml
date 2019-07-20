@@ -49,12 +49,12 @@
 	</sql>
 	
 	
-	<insert id="add" parameterType="com.bittrade.pojo.model.TWalletTransfer">
+	<insert id="add" parameterType="com.bittrade.pojo.model.TWalletTransfer" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO t_wallet_transfer(`user_id`, `currency`, `count`, `business_number`, `status`, `typeChannel`, `sourceChannel`, `desc`, `create_time`, `update_time`)
 		VALUES(#{userId,jdbcType=BIGINT}, #{currency,jdbcType=INTEGER}, #{count,jdbcType=DECIMAL}, #{businessNumber,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{typeChannel,jdbcType=INTEGER}, #{sourceChannel,jdbcType=INTEGER}, #{desc,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
 	</insert>
 	
-	<insert id="addWithSelective" parameterType="com.bittrade.pojo.model.TWalletTransfer">
+	<insert id="addWithSelective" parameterType="com.bittrade.pojo.model.TWalletTransfer" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO t_wallet_transfer(
 			<if test="userId != null">
 			`user_id`, 

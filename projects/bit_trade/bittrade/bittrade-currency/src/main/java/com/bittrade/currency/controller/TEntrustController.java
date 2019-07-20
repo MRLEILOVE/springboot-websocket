@@ -11,9 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.alibaba.dubbo.common.json.JSONObject;
 import com.alibaba.dubbo.config.annotation.Reference;
-import com.alibaba.fastjson.JSON;
 import com.bittrade.common.enums.EntrustDirectionEnumer;
 import com.bittrade.common.enums.EntrustTypeEnumer;
 import com.bittrade.entrust.api.service.ITEntrustService;
@@ -53,7 +51,6 @@ public class TEntrustController extends BaseController<TEntrust, TEntrustDTO, TE
 					x.setLeftCount(x.getCount().subtract(x.getLeftCount()));
 				});
 			}
-			System.out.println( JSON.toJSONString( tEntrustPageDTO ) );
 			return ReturnDTO.ok(tEntrustPageDTO);
 		} catch (Exception e) {
 			e.printStackTrace();

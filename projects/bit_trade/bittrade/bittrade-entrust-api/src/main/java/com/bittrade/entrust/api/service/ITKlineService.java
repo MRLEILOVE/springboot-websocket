@@ -6,7 +6,7 @@ import java.util.List;
 import com.bittrade.__default.service.IDefaultTKlineService;
 import com.bittrade.pojo.dto.QueryKLineDto;
 import com.bittrade.pojo.dto.TKlineDTO;
-import com.bittrade.pojo.model.TEntrust;
+import com.bittrade.pojo.model.TEntrustRecord;
 import com.bittrade.pojo.model.TKline;
 import com.bittrade.pojo.vo.QueryKLineVO;
 import com.bittrade.pojo.vo.TKlineVO;
@@ -27,9 +27,9 @@ public interface ITKlineService extends IDefaultTKlineService<TKline, TKlineDTO,
 	/**
 	 * 生成K线
 	 * 
-	 * @param entrust
+	 * @param entrustRecord
 	 * @param dealPrice
 	 */
-	void modifyKLine(TEntrust entrust, BigDecimal dealPrice);
+	void modifyKLine(TEntrustRecord entrustRecord, BigDecimal dealPrice);
 
 }

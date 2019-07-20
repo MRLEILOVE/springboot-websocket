@@ -53,12 +53,12 @@
 	</sql>
 	
 	
-	<insert id="add" parameterType="com.bittrade.pojo.model.WCoinConfig">
+	<insert id="add" parameterType="com.bittrade.pojo.model.WCoinConfig" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO w_coin_config(`coin_type`, `token`, `contract`, `scan_block`, `base_multiple`, `min_confirm`, `boss_address`, `min_collection_amount`, `valid`, `remark`, `create_time`, `update_time`)
 		VALUES(#{coinType,jdbcType=VARCHAR}, #{token,jdbcType=VARCHAR}, #{contract,jdbcType=VARCHAR}, #{scanBlock,jdbcType=BIGINT}, #{baseMultiple,jdbcType=INTEGER}, #{minConfirm,jdbcType=INTEGER}, #{bossAddress,jdbcType=VARCHAR}, #{minCollectionAmount,jdbcType=DECIMAL}, #{valid,jdbcType=CHAR}, #{remark,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
 	</insert>
 	
-	<insert id="addWithSelective" parameterType="com.bittrade.pojo.model.WCoinConfig">
+	<insert id="addWithSelective" parameterType="com.bittrade.pojo.model.WCoinConfig" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO w_coin_config(
 			<if test="coinType != null">
 			`coin_type`, 

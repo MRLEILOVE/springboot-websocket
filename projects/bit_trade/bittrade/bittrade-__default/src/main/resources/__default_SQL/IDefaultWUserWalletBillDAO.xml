@@ -67,12 +67,12 @@
 	</sql>
 	
 	
-	<insert id="add" parameterType="com.bittrade.pojo.model.WUserWalletBill">
+	<insert id="add" parameterType="com.bittrade.pojo.model.WUserWalletBill" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO w_user_wallet_bill(`user_id`, `platform`, `order_id`, `direction`, `coin_type`, `token`, `contract`, `sender_address`, `receiver_address`, `amount`, `block`, `tx`, `trade_step`, `operation_type`, `transfer_flag`, `flag`, `remark`, `create_time`, `update_time`)
 		VALUES(#{userId,jdbcType=BIGINT}, #{platform,jdbcType=VARCHAR}, #{orderId,jdbcType=VARCHAR}, #{direction,jdbcType=INTEGER}, #{coinType,jdbcType=VARCHAR}, #{token,jdbcType=VARCHAR}, #{contract,jdbcType=VARCHAR}, #{senderAddress,jdbcType=VARCHAR}, #{receiverAddress,jdbcType=VARCHAR}, #{amount,jdbcType=DECIMAL}, #{block,jdbcType=BIGINT}, #{tx,jdbcType=VARCHAR}, #{tradeStep,jdbcType=CHAR}, #{operationType,jdbcType=VARCHAR}, #{transferFlag,jdbcType=INTEGER}, #{flag,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
 	</insert>
 	
-	<insert id="addWithSelective" parameterType="com.bittrade.pojo.model.WUserWalletBill">
+	<insert id="addWithSelective" parameterType="com.bittrade.pojo.model.WUserWalletBill" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO w_user_wallet_bill(
 			<if test="userId != null">
 			`user_id`, 
