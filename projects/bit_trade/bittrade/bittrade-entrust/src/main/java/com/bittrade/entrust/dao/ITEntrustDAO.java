@@ -17,17 +17,6 @@ import com.bittrade.pojo.vo.TEntrustVO;
  *
  */
 public interface ITEntrustDAO extends IDefaultTEntrustDAO {
-
-	/**
-	 * 查询用户当前委托
-	 */
-	List<TEntrustVO> queryPresentEntrustByUserId(@Param("userId") String userId);
-
-	/**
-	 * 查询用户历史委托
-	 */
-	List<TEntrustVO> queryHistoryEntrustByUserId(@Param("userId") String userId);
-
 	/**
 	 * 查询用户的委托单成交明细
 	 */

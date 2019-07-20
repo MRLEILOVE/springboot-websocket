@@ -18,17 +18,6 @@ import com.core.framework.DTO.ReturnDTO;
  *
  */
 public interface ITEntrustService extends IDefaultTEntrustService<TEntrust, TEntrustDTO, TEntrustVO> {
-
-    /**
-     * 查询用户当前委托
-     */
-    List<TEntrustVO> queryPresentEntrustByUserId(String userId);
-
-    /**
-     * 查询用户历史委托
-     */
-    List<TEntrustVO> queryHistoryEntrustByUserId(String userId);
-
     /**
      * 买/卖交易对
      */

@@ -74,22 +74,6 @@ public class TEntrustServiceImpl extends DefaultTEntrustServiceImpl<ITEntrustDAO
 	}
 	
 	/**
-	 * 查询用户当前委托
-	 */
-	@Override
-	public List<TEntrustVO> queryPresentEntrustByUserId(String userId) {
-		return entrustDAO.queryPresentEntrustByUserId( userId );
-	}
-
-	/**
-	 * 查询用户历史委托
-	 */
-	@Override
-	public List<TEntrustVO> queryHistoryEntrustByUserId(String userId) {
-		return entrustDAO.queryHistoryEntrustByUserId( userId );
-	}
-
-	/**
 	 * 买/卖交易对
 	 */
 	@Override
@@ -210,6 +194,7 @@ public class TEntrustServiceImpl extends DefaultTEntrustServiceImpl<ITEntrustDAO
 			return ReturnDTO.error( "交易已经完成，不可撤单" );
 		}
 		// 撤单
+		tEntrust.setStatus(EntrustStatusEnumer.CANCEL.getCode());
 		int result = entrustDAO.killOrder( tEntrust );
 		if (result == 0) {
 			return ReturnDTO.error( "撤单失败" );
