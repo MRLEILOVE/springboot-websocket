@@ -54,6 +54,7 @@ public class OkexKlineScheduled {
 	@Scheduled(cron = "0/10 * * * * ?")
 	public void kline() {
 		try {
+			LOG.info( "========================开始拉取OKEX的K先历史数据========================" );
 			String klineSwitch = GeneralMethod.qryParamConfigInfo( paramConfigService, ParamKeyEnum.OKEX_KLINE_HISTORY_SWITCH_KEY.getKey() )
 					.getParamValue();
 			if (ParamValue.OFF.getKey().equals( klineSwitch )) {
@@ -78,6 +79,7 @@ public class OkexKlineScheduled {
 					}
 				} );
 			}
+			LOG.info( "========================结束拉取OKEX的K先历史数据========================" );
 		} catch (Exception e) {
 			LOG.error( "OkexKlineScheduled.OkexKlineScheduled.error=" + e.getMessage(), e );
 		}

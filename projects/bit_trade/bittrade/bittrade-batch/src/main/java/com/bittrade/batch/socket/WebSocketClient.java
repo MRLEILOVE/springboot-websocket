@@ -81,7 +81,7 @@ public class WebSocketClient {
 
 				@Override
 				public void onMessage(WebSocket webSocket, String text) {
-
+					LOG.info( text );
 				}
 
 				@Override

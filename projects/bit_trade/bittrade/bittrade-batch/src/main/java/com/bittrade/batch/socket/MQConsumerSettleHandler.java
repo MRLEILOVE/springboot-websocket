@@ -42,11 +42,13 @@ public class MQConsumerSettleHandler {
 	@Scheduled(cron = "0/10 * * * * ?")
 	public void processMessage() { // Channel channel, Message message
 		try {
+			LOG.info( "开始结算....................................................." );
 			// 1、处理mq推送过来的撮合数据，进行结算
 			// String msg = new String( message.getBody() );
 			String msg = "{\"amount\":100,\"count\":10,\"userId\":1,\"current\":0,\"size\":0,\"rivalUserId\":2,\"id\":300012213121331322,\"currencyTradeId\":1}";
 			TEntrustRecord entrustRecords = JSONObject.parseObject( msg, TEntrustRecord.class );
 			walletService.modifyWalletSellte( entrustRecords );
+			LOG.info( "结算成功....................................................." );
 		} catch (Exception e) {
 			LOG.error( e.getMessage(), e );
 		}
