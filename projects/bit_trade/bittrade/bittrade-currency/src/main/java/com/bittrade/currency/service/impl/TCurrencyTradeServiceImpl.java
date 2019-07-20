@@ -40,8 +40,8 @@ public class TCurrencyTradeServiceImpl extends
 		if(vos != null && vos.size() > 0){
 			vos.stream().forEach(vo ->{
 				//#TODO 价格跟涨幅待完善
-                String price = jedisCluster.get(RedisKeyUtil.getOkexSymbolLast(vo.getSymbol().replace('/', '_')));
-                vo.setPrice(price);
+//                String price = jedisCluster.get(RedisKeyUtil.getOkexSymbolLast(vo.getSymbol().replace('/', '_')));
+                vo.setPrice("100.00");
                 //涨跌幅
 				vo.setChg("0.5");
 			});
