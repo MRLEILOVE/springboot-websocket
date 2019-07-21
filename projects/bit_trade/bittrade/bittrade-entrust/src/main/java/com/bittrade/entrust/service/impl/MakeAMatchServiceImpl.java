@@ -8,6 +8,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.locks.ReentrantLock;
 
 import javax.annotation.PostConstruct;
@@ -107,6 +109,11 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 	private JedisCluster jedisCluster;
 	@Autowired
 	private RabbitTemplate rabbitTemplate;
+	
+	/**
+	 * 异步调用K线生成。
+	 */
+	private static final ExecutorService ES = Executors.newFixedThreadPool(50);
 	
 	
 	private ReentrantLock getLock(int key) {
@@ -333,6 +340,7 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 		BigDecimal bd_dealPrice = null;
 		
 		BigDecimal bd_beforePrice = getPrice(entrust_before.getPrice(), linePrice), bd_afterPrice = getPrice(entrust_after.getPrice(), linePrice);
+		// 这里的买卖判断也可以由外面判断了， 再丢标志进来。
 		if (
 				entrust_before.getEntrustDirection() == EntrustDirectionEnumer.BUY.getCode()
 				&& 
@@ -340,6 +348,7 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 				) {
 			bd_dealPrice = getPriceWithLinePrice(bd_beforePrice, bd_afterPrice, linePrice);
 		}
+		// 这里的买卖判断也可以由外面判断了， 再丢标志进来。
 		if (
 				entrust_before.getEntrustDirection() == EntrustDirectionEnumer.SELL.getCode()
 				&& 
@@ -482,7 +491,10 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 //				
 //			});
 			
-			klineService.modifyKLine( entrustRecord, dealPrice );
+			ES.submit(() -> {
+				klineService.modifyKLine( entrustRecord, dealPrice );
+				return null;
+			});
 		}
 		return dealPrice;
 	}
