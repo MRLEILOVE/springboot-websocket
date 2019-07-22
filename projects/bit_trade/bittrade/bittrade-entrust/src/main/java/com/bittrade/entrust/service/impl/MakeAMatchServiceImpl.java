@@ -31,10 +31,12 @@ import com.bittrade.entrust.api.service.IMakeAMatchService;
 import com.bittrade.entrust.api.service.ITEntrustRecordService;
 import com.bittrade.entrust.api.service.ITEntrustService;
 import com.bittrade.entrust.api.service.ITKlineService;
+import com.bittrade.pojo.model.TCurrencyTrade;
 import com.bittrade.pojo.model.TEntrust;
 import com.bittrade.pojo.model.TEntrustRecord;
 import com.core.common.constant.ICompareResultConstant;
 import com.core.tool.BigDecimalUtil;
+import com.core.tool.JSONUtil;
 import com.core.tool.SnowFlake;
 
 import redis.clients.jedis.JedisCluster;
@@ -152,21 +154,29 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 	 * @return  
 	 * @since JDK 1.8
 	 */
-	String getSymbol(int currencyTradeID) {
-		String str_symbol;
+	public String getSymbol(int currencyTradeID) {
+		String str_symbol = null;
 		
 		if (MAP__SYMBOL.containsKey( currencyTradeID )) {
 			str_symbol = MAP__SYMBOL.get( currencyTradeID );
 		} else {
-			LOG.info("------------ currencyTradeService.getByPK() once , currencyTradeID=" + currencyTradeID);
-			MAP__SYMBOL.put( currencyTradeID, str_symbol = currencyTradeService.getByPK( currencyTradeID ).getSymbol() );
+//			LOG.info("------------ currencyTradeService.getByPK() once , currencyTradeID=" + currencyTradeID);
+			TCurrencyTrade currencyTrade = currencyTradeService.getByPK( currencyTradeID );
+			if (currencyTrade != null) {
+				str_symbol = currencyTrade.getSymbol();
+				MAP__SYMBOL.put( currencyTradeID, str_symbol );
+			}
 		}
 		
 		return str_symbol;
 	}
 	
 	private String getLinePriceRedisKey(int currencyTradeID) {
-		return IConstant.REDIS_PREFIX__LINE_PRICE + getSymbol( currencyTradeID );
+		String str_symbol = getSymbol( currencyTradeID );
+		if (str_symbol != null && str_symbol.length() > 0) {
+			return IConstant.REDIS_PREFIX__LINE_PRICE + str_symbol;
+		}
+		return null;
 	}
 
 	private void setLinePrice(int currencyTradeID, BigDecimal linePrice) {
@@ -191,15 +201,22 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 	 * @since JDK 1.8
 	 */
 	public BigDecimal getLinePrice(int currencyTradeID) {
-		BigDecimal linePrice;
+		BigDecimal bd_linePrice = null;
 		
 		if (MAP__LINE_PRICE.containsKey( currencyTradeID )) {
-			linePrice = MAP__LINE_PRICE.get( currencyTradeID );
+			bd_linePrice = MAP__LINE_PRICE.get( currencyTradeID );
 		} else {
-			MAP__LINE_PRICE.put( currencyTradeID, linePrice = BigDecimalUtil.convert( jedisCluster.get( getLinePriceRedisKey( currencyTradeID ) ) ) );
+			String str_linePriceRedisKey = getLinePriceRedisKey( currencyTradeID );
+			if (str_linePriceRedisKey != null && str_linePriceRedisKey.length() > 0) {
+				String str_linePriceRedisVal = jedisCluster.get( str_linePriceRedisKey );
+				if (str_linePriceRedisVal != null && str_linePriceRedisVal.length() > 0) {
+					bd_linePrice = new BigDecimal(str_linePriceRedisVal);
+					MAP__LINE_PRICE.put( currencyTradeID, bd_linePrice );
+				}
+			}
 		}
 		
-		return linePrice;
+		return bd_linePrice;
 	}
 	
 	
@@ -527,8 +544,9 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 			setLinePrice( entrust.getCurrencyTradeId(), dealPrice );
 		}
 		{
+			String str_entrustRecord = JSONUtil.toString(entrustRecord);
 			// 异步通知。
-			rabbitTemplate.convertAndSend(IQueueConstants.EXCHANGE_TOPIC, IQueueConstants.ROUTE_KEY__ENTRUST_RECORD, entrustRecord); // linePrice.toString()
+			rabbitTemplate.convertAndSend(IQueueConstants.EXCHANGE_TOPIC, IQueueConstants.ROUTE_KEY__ENTRUST_RECORD, str_entrustRecord); // linePrice.toString()
 //			rabbitTemplate.setConfirmCallback((correlationData, ack, cause) -> {
 //				System.out.println("消息唯一标识：" + correlationData);
 //				System.out.println("消息确认结果：" + ack);
@@ -623,7 +641,7 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 				addTo(i_idx, entrust, list_limit_after, list_market_before, list_limit_before);
 			}
 		} catch (Exception e) {
-//			e.printStackTrace();
+			e.printStackTrace();
 			LOG.error( e.toString() );
 		} finally {
 			lock.unlock();
@@ -763,12 +781,6 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 //		System.out.println(bd1.multiply(bd2, new MathContext(9, RoundingMode.HALF_DOWN)).multiply(BigDecimal.valueOf(2)));
 //		System.out.println(bd1.multiply(bd2).setScale(8, BigDecimal.ROUND_HALF_DOWN).multiply(BigDecimal.valueOf(2)));
 		
-		BigDecimal 
-			bd_amount = new BigDecimal(35), 
-			bd_successAmount = new BigDecimal(5), 
-			bd_dealPrice = new BigDecimal(10)
-			;
-		System.out.println( bd_amount.subtract(bd_successAmount).divide( bd_dealPrice ) );
 	}
 
 //	@RabbitListener(queues = { IQueueConstants.QUEUE__ENTRUST_RECORD })
@@ -781,7 +793,7 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 //		}
 //	}
 
-//	@RabbitListener(queues = { IQueueConstants.QUEUE__KLINE })
+//	@RabbitListener(queues = { IQueueConstants.QUEUE__KLINE + 60 })
 //	public void processMessage_2(Channel channel, Message message) {
 //		System.out.println("QUEUE__KLINE -- MessageConsumer收到所有消息：" + new String(message.getBody()));
 //		try {

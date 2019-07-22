@@ -16,11 +16,13 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
+import com.core.common.constant.IConstant;
+
 /**
  * <p>
  *   日期时间实用类
  * </p>
- * ClassName:DateUtil <br/>
+ * ClassName:DateTimeUtil <br/>
  * Description: TODO 添加描述. <br/>
  * DateTime: Jul 18, 2019 6:03:17 PM <br />
  * 
@@ -32,7 +34,7 @@ import java.time.temporal.ChronoUnit;
 public class DateTimeUtil {
 	
 	private static final String PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
-	private static final DateTimeFormatter DTF = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
+	private static final DateTimeFormatter DTF = DateTimeFormatter.ofPattern(IConstant.DATETIME_PATTERN);
 	
 	/**
 	 * 

@@ -114,7 +114,7 @@ public class TKlineServiceImpl extends DefaultTKlineServiceImpl<ITKlineDAO, TKli
 		// ["BTC-USDT","2019-07-18 17:00:00.00",9783.2,9787.9,9778.3,9782,3.40246089]
 		return new StringBuilder("[")
 				.append('\"').append(kline.getSymbol()).append("\",")
-				.append('\"').append(kline.getTime()).append("\",")
+				.append('\"').append(DateTimeUtil.toString( kline.getTime() )).append("\",")
 				.append(kline.getOpen()).append(',')
 				.append(kline.getHigh()).append(',')
 				.append(kline.getLow()).append(',')

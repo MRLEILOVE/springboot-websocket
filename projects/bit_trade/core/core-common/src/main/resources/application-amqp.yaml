@@ -13,5 +13,8 @@ spring:
     virtual-host: /tmp
     publisher-confirms: true
     publisher-returns: true
+    listener:
+      # 手动方式应答
+      acknowledge-mode: MANUAL
 
 # https://www.cnblogs.com/hhhshct/p/9718063.html

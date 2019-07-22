@@ -10,14 +10,12 @@ import java.util.concurrent.Executors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.alibaba.dubbo.config.annotation.Reference;
 import com.bittrade.common.enums.EntrustDirectionEnumer;
 import com.bittrade.common.enums.EntrustTypeEnumer;
-import com.bittrade.currency.api.service.ITCurrencyTradeService;
+import com.bittrade.common.utils.RedisKeyUtil;
 import com.bittrade.entrust.api.service.ITEntrustRecordService;
 import com.bittrade.entrust.api.service.ITEntrustService;
 import com.bittrade.entrust.service.impl.MakeAMatchServiceImpl;
-import com.bittrade.pojo.model.TCurrencyTrade;
 import com.bittrade.pojo.model.TEntrust;
 import com.core.common.constant.ICompareResultConstant;
 
@@ -39,8 +37,6 @@ import redis.clients.jedis.JedisCluster;
 @Component
 public /* static */final class Robot {
 
-	@Reference
-	private ITCurrencyTradeService	currencyTradeService;
 	@Autowired
 	private JedisCluster			jedisCluster;
 	@Autowired
@@ -48,6 +44,7 @@ public /* static */final class Robot {
 	@Autowired
 	private MakeAMatchServiceImpl	makeAMatchService;
 
+	private static final int MAX_CURRENCY_TRADE_ID = 2;
 	private static final BigDecimal bd_priceRangePercent = new BigDecimal("0.05"); // 5%
 	private static final Random		R	= new Random( System.currentTimeMillis() );
 
@@ -58,7 +55,7 @@ public /* static */final class Robot {
 
 	private static int getCurrencyTradeID() {
 		Random r = new Random( R.nextLong() );
-		return 1 + r.nextInt( 1 ); // 2
+		return 1 + r.nextInt( MAX_CURRENCY_TRADE_ID );
 	}
 
 	private static int getEntrustDirection() {
@@ -101,10 +98,8 @@ public /* static */final class Robot {
 		BigDecimal bd_min, bd_max;
 		double d_min, d_max;
 		
-		TCurrencyTrade currencyTrade = currencyTradeService.getByPK( currencyTradeID );
-//		String str_linePrice = jedisCluster.get( String.format( "OKEX_%s_LAST_KEY", currencyTrade.getSymbol() ) );
 		BigDecimal bd_selfPrice = makeAMatchService.getLinePrice( currencyTradeID );
-		String str_otherLinePrice = jedisCluster.get( String.format( "OKEX_%s_LAST_KEY", currencyTrade.getSymbol() ) );
+		String str_otherLinePrice = jedisCluster.get( String.format( RedisKeyUtil.OKEX_SYMBOL_LAST_KEY, makeAMatchService.getSymbol( currencyTradeID ) ) );
 		if (str_otherLinePrice != null && str_otherLinePrice.length() > 0) {
 			BigDecimal bd_otherPrice = new BigDecimal(str_otherLinePrice);
 			if (bd_selfPrice.compareTo(bd_otherPrice) == ICompareResultConstant.LESS_THAN) {
@@ -145,7 +140,8 @@ public /* static */final class Robot {
 
 	private static long getSleepMillis() {
 		Random r = new Random( R.nextLong() );
-		return r.nextInt( 1000 );
+//		return r.nextInt( 1000 );
+		return r.nextInt( 10000 );
 	}
 
 	private static final class MyCallable implements Callable<String> {
@@ -172,7 +168,7 @@ public /* static */final class Robot {
 			entrust.setEntrustDirection( getEntrustDirection() );
 			entrust.setEntrustType( getEntrustType() );
 			if (entrust.getEntrustType() == EntrustTypeEnumer.LIMIT.getCode()) {
-				entrust.setPrice( robot.getPrice( getCurrencyTradeID() ) );
+				entrust.setPrice( robot.getPrice( entrust.getCurrencyTradeId() ) );
 			}
 			entrust.setCount( getCount() );
 			System.out.println( "11 com.bittrade.entrust.service.impl.MakeAMatchServiceImpl.makeAMatch(TEntrust)" );
@@ -187,8 +183,20 @@ public /* static */final class Robot {
 		}
 
 	}
+	
+	private void checkLinePrice() {
+		for (int i = 1; i <= MAX_CURRENCY_TRADE_ID; i++) {
+			BigDecimal bd_selfPrice = makeAMatchService.getLinePrice( i );
+			if (bd_selfPrice == null) {
+				throw new RuntimeException( "currencyTradeID:" + i + ", LinePrice Is NullOrEmpty !" );
+			}
+		}
+	}
 
 	public void test() {
+		checkLinePrice();
+		
+		
 		final int CNT = 50; // 500 50 5
 
 		ExecutorService es = Executors.newFixedThreadPool( CNT );
@@ -209,12 +217,12 @@ public /* static */final class Robot {
 						if (entrust.getEntrustType() == EntrustTypeEnumer.LIMIT.getCode()) {
 							if (entrust.getEntrustDirection() == EntrustDirectionEnumer.BUY.getCode()) {
 								
-								entrust.setPrice( getPrice( getCurrencyTradeID() ) );
+								entrust.setPrice( getPrice( entrust.getCurrencyTradeId() ) );
 								entrust.setCount( getCount() );
 								
 							} else /*if (entrust.getEntrustDirection() == EntrustDirectionEnumer.SELL.getCode()) */{
 								
-								entrust.setPrice( getPrice( getCurrencyTradeID() ) );
+								entrust.setPrice( getPrice( entrust.getCurrencyTradeId() ) );
 								entrust.setCount( getCount() );
 								
 							}

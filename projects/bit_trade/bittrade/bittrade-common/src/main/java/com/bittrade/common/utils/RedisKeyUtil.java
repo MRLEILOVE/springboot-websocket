@@ -1,5 +1,7 @@
 package com.bittrade.common.utils;
 
+import com.bittrade.common.constant.IConstant;
+
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -16,11 +18,12 @@ import lombok.NoArgsConstructor;
 public class RedisKeyUtil {
 
 	// usd对cny汇率key
-	public static final String	USD_TO_CNY_RATE_KEY	= "USD_TO_CNY_RATE_KEY";
+	public static final String	USD_TO_CNY_RATE_KEY		= "USD_TO_CNY_RATE_KEY";
 
-	public static final String	OKEX				= "OKEX_";
+	public static final String	OKEX					= "OKEX_";
+	public static final String	OKEX_SYMBOL_LAST_KEY	= IConstant.REDIS_PREFIX__LINE_PRICE + OKEX + "%s" + "_LAST_KEY";
 
-	public static final String	BIT_TRADE_			= "BIT_TRADE_";
+	public static final String	BIT_TRADE_				= "BIT_TRADE_";
 
 	// BIT-TRADE-SYMBOL
 	public static String getBitTradeSymbol() {
@@ -34,7 +37,7 @@ public class RedisKeyUtil {
 
 	// symbol最新价
 	public static String getOkexSymbolLast(String symbol) {
-		return OKEX + symbol + "_LAST_KEY";
+		return String.format( OKEX_SYMBOL_LAST_KEY, symbol );
 	}
 
 	public static final String OKEX_PING_KEY = "PING_KEY";
