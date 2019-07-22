@@ -34,6 +34,11 @@ public abstract class BaseModel<Model extends com.baomidou.mybatisplus.extension
 	// @com.alibaba.fastjson.annotation.JSONField(serialize = false, deserialize = false)
 	// @com.fasterxml.jackson.annotation.JsonIgnore
 	/* transient */private Map<String, Object[]>	map_in, map_like;			// 其他的也可以类似的加，yes，类似蕾丝的。
+	
+	@TableField(exist = false)
+	// @com.alibaba.fastjson.annotation.JSONField(serialize = false, deserialize = false)
+	// @com.fasterxml.jackson.annotation.JsonIgnore
+	/* transient */private Map<String, Object[]>	map_orderBy;				// 其他的也可以类似的加，yes，类似蕾丝的。
 
 	public BaseModel<Model> in(String name, Object[] values) {
 		if (map_in == null) {
@@ -59,6 +64,19 @@ public abstract class BaseModel<Model extends com.baomidou.mybatisplus.extension
 
 	public BaseModel<Model> like(String name, List<Object> values) {
 		return like( name, values.toArray( /* new Object[values.size()] */ ) );
+	}
+
+	public BaseModel<Model> orderBy(String name, Object[] values) {
+		if (map_orderBy == null) {
+			map_orderBy = new java.util./* concurrent.Concurrent */HashMap<>();
+		}
+		map_orderBy.put( name, values );
+
+		return this;
+	}
+
+	public BaseModel<Model> orderBy(String name, List<Object> values) {
+		return orderBy( name, values.toArray( /* new Object[values.size()] */ ) );
 	}
 
 }

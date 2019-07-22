@@ -221,7 +221,7 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 	 */
 	private void initialEntrust() {
 		TEntrust entrustQuery = new TEntrust();
-		List<TEntrust> list_ent = entrustService.getsBy( entrustQuery );
+		List<TEntrust> list_ent = entrustService.getsBy( entrustQuery ); // 需要按照时间或者ID升序排序。
 		if (list_ent != null && list_ent.size() > 0) {
 			for (int i = 0; i < list_ent.size(); i++) {
 				makeAMatch( list_ent.get( i ) );
@@ -362,6 +362,44 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 	
 	/**
 	 * <p>
+	 *   设置委托的撮合状态。 （完成金额数、未完成数量、状态）
+	 * </p>
+	 * setRecordStatus:(这里用一句话描述这个方法的作用). <br/>  
+	 * TODO(这里描述这个方法适用条件 – 可选).<br/>  
+	 * TODO(这里描述这个方法的执行流程 – 可选).<br/>  
+	 * TODO(这里描述这个方法的使用方法 – 可选).<br/>  
+	 * TODO(这里描述这个方法的注意事项 – 可选).<br/>  
+	 *  
+	 * @author Administrator  
+	 * @param entrust
+	 * @param recordAmount
+	 * @param recordCount  
+	 * @since JDK 1.8
+	 */
+	private void setRecordStatus(TEntrust entrust, BigDecimal recordAmount, BigDecimal recordCount) {
+		entrust.setSuccessAmount(entrust.getSuccessAmount().add(recordAmount).setScale(IConstant.AMOUNT_DECIMAL_LENGTH, BigDecimal.ROUND_HALF_DOWN));
+		if (
+				entrust.getEntrustType() == EntrustTypeEnumer.LIMIT.getCode()
+				|| 
+				entrust.getEntrustDirection() == EntrustDirectionEnumer.SELL.getCode()
+				) {
+			entrust.setLeftCount(entrust.getLeftCount().subtract(recordCount).setScale(IConstant.COUNT_DECIMAL_LENGTH, BigDecimal.ROUND_HALF_DOWN));
+			entrust.setStatus(
+					BigDecimalUtil.isZero(entrust.getLeftCount()) ? 
+							EntrustStatusEnumer.FINISH.getCode() : 
+								EntrustStatusEnumer.PART_FINISH.getCode()
+								);
+		} else {
+			entrust.setStatus(
+					entrust.getSuccessAmount().compareTo(entrust.getAmount()) >= ICompareResultConstant.EQUAL ? 
+							EntrustStatusEnumer.FINISH.getCode() : 
+								EntrustStatusEnumer.PART_FINISH.getCode()
+								);
+		}
+	}
+	
+	/**
+	 * <p>
 	 *   撮合成功， 修改委托信息和新增撮合信息。
 	 * </p>
 	 * addEntrustRecord:(这里用一句话描述这个方法的作用). <br/>  
@@ -378,56 +416,57 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 	 * @since JDK 1.8
 	 */
 	public TEntrustRecord addEntrustRecord(TEntrust entrust_before, TEntrust entrust_after, BigDecimal dealPrice) {
-		BigDecimal count;
-		BigDecimal amount;
-		if (entrust_before.getLeftCount().compareTo(entrust_after.getLeftCount()) == ICompareResultConstant.LESS_THAN) {
-			count = entrust_before.getLeftCount();
+		BigDecimal bd_leftCount_before, bd_leftCount_after;
+		BigDecimal bd_count, bd_amount;
+		
+		if (
+				entrust_before.getEntrustType() == EntrustTypeEnumer.MARKET.getCode()
+				&&
+				entrust_before.getEntrustDirection() == EntrustDirectionEnumer.BUY.getCode()
+				) {
+			bd_leftCount_before = entrust_before.getAmount().subtract(entrust_before.getSuccessAmount()).divide( dealPrice, IConstant.COUNT_DECIMAL_LENGTH, BigDecimal.ROUND_HALF_DOWN );
+			bd_leftCount_after = entrust_after.getLeftCount();
+		} else if (
+				entrust_after.getEntrustType() == EntrustTypeEnumer.MARKET.getCode()
+				&&
+				entrust_after.getEntrustDirection() == EntrustDirectionEnumer.BUY.getCode()
+				) {
+			bd_leftCount_before = entrust_before.getLeftCount();
+			bd_leftCount_after = entrust_after.getAmount().subtract(entrust_after.getSuccessAmount()).divide( dealPrice, IConstant.COUNT_DECIMAL_LENGTH, BigDecimal.ROUND_HALF_DOWN );
 		} else {
-			count = entrust_after.getLeftCount();
+			bd_leftCount_before = entrust_before.getLeftCount();
+			bd_leftCount_after = entrust_after.getLeftCount();
 		}
-		amount = dealPrice.multiply(count).setScale(IConstant.AMOUNT_DECIMAL_LENGTH, BigDecimal.ROUND_HALF_DOWN);
+		bd_count = bd_leftCount_before.compareTo(bd_leftCount_after) == ICompareResultConstant.LESS_THAN ? bd_leftCount_before : bd_leftCount_after;
+		bd_amount = dealPrice.multiply(bd_count).setScale(IConstant.AMOUNT_DECIMAL_LENGTH, BigDecimal.ROUND_HALF_DOWN);
 		LocalDateTime createTime = LocalDateTime.now();
 		
 		// 修改委托
 		{
-			entrust_before.setLeftCount(entrust_before.getLeftCount().subtract(count).setScale(IConstant.COUNT_DECIMAL_LENGTH, BigDecimal.ROUND_HALF_DOWN));
-			entrust_before.setSuccessAmount(entrust_before.getSuccessAmount().add(amount).setScale(IConstant.AMOUNT_DECIMAL_LENGTH, BigDecimal.ROUND_HALF_DOWN));
+			setRecordStatus(entrust_before, bd_amount, bd_count);
 			entrust_before.setUpdateTime( createTime );
 			entrustService.updateOnMatch(
 					entrust_before.getSuccessAmount(), 
 					entrust_before.getLeftCount(), 
-					BigDecimalUtil.isZero(entrust_before.getLeftCount()) ? EntrustStatusEnumer.FINISH.getCode() : EntrustStatusEnumer.PART_FINISH.getCode(), 
+					entrust_before.getStatus(), 
 					entrust_before.getUpdateTime(), 
 					entrust_before.getId(), 
 					entrust_before.getVersion()
 					);
 			entrust_before.setVersion( entrust_before.getVersion() + 1 );
-//			System.out.println(
-//					"entrust_before.getSuccessAmount()=" + entrust_before.getSuccessAmount() + ", " + 
-//					"entrust_before.getLeftCount()=" + entrust_before.getLeftCount() + ", " + 
-//					(BigDecimalUtil.isZero(entrust_before.getLeftCount()) ? EntrustStatusEnumer.FINISH.getCode() : EntrustStatusEnumer.PART_FINISH.getCode()) + ", " + 
-//					entrust_before.getId()
-//					);
 		}
 		{
-			entrust_after.setLeftCount(entrust_after.getLeftCount().subtract(count).setScale(IConstant.COUNT_DECIMAL_LENGTH, BigDecimal.ROUND_HALF_DOWN));
-			entrust_after.setSuccessAmount(entrust_after.getSuccessAmount().add(amount).setScale(IConstant.AMOUNT_DECIMAL_LENGTH, BigDecimal.ROUND_HALF_DOWN));
+			setRecordStatus(entrust_after, bd_amount, bd_count);
 			entrust_after.setUpdateTime( createTime );
 			entrustService.updateOnMatch(
 					entrust_after.getSuccessAmount(), 
 					entrust_after.getLeftCount(), 
-					BigDecimalUtil.isZero(entrust_after.getLeftCount()) ? EntrustStatusEnumer.FINISH.getCode() : EntrustStatusEnumer.PART_FINISH.getCode(), 
+					entrust_after.getStatus(), 
 					entrust_after.getUpdateTime(), 
 					entrust_after.getId(), 
 					entrust_after.getVersion()
 					);
 			entrust_after.setVersion( entrust_after.getVersion() + 1 );
-//			System.out.println(
-//					"entrust_after.getSuccessAmount()=" + entrust_after.getSuccessAmount() + ", " + 
-//					"entrust_after.getLeftCount()=" + entrust_after.getLeftCount() + ", " + 
-//					(BigDecimalUtil.isZero(entrust_after.getLeftCount()) ? EntrustStatusEnumer.FINISH.getCode() : EntrustStatusEnumer.PART_FINISH.getCode()) + ", " + 
-//					entrust_after.getId()
-//					);
 		}
 		
 		// 新增撮合
@@ -439,14 +478,13 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 		entrustRecord_before.setEntrustId(entrust_before.getId());
 		entrustRecord_before.setRivalEntrustId(entrust_after.getId());
 		entrustRecord_before.setPrice(dealPrice);
-		entrustRecord_before.setCount(count);
-		entrustRecord_before.setAmount(amount);
+		entrustRecord_before.setCount(bd_count);
+		entrustRecord_before.setAmount(bd_amount);
 		entrustRecord_before.setCurrencyTradeId(entrust_before.getCurrencyTradeId());
 		entrustRecord_before.setIsActive(IsActiveEnumer.ACTIVE.getCode());
 		entrustRecord_before.setEntrustDirection(entrust_before.getEntrustDirection());
 		entrustRecord_before.setCreateTime( createTime );
 		entrustRecordService.add(entrustRecord_before);
-//		System.out.println(entrustRecord_before);
 		// 被动
 		TEntrustRecord entrustRecord_after = new TEntrustRecord();
 		entrustRecord_after.setId(SNOW_FLAKE__ENTRUST_RECORD.nextId());
@@ -455,14 +493,13 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 		entrustRecord_after.setEntrustId(entrust_after.getId());
 		entrustRecord_after.setRivalEntrustId(entrust_before.getId());
 		entrustRecord_after.setPrice(dealPrice);
-		entrustRecord_after.setCount(count);
-		entrustRecord_after.setAmount(amount);
+		entrustRecord_after.setCount(bd_count);
+		entrustRecord_after.setAmount(bd_amount);
 		entrustRecord_after.setCurrencyTradeId(entrust_after.getCurrencyTradeId());
 		entrustRecord_after.setIsActive(IsActiveEnumer.UNACTIVE.getCode());
 		entrustRecord_after.setEntrustDirection(entrust_after.getEntrustDirection());
 		entrustRecord_after.setCreateTime( createTime );
 		entrustRecordService.add(entrustRecord_after);
-//		System.out.println(entrustRecord_after);
 		
 		return entrustRecord_before;
 	}
@@ -510,7 +547,11 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 	 */
 	private void matchWith(TEntrust entrust, List<TEntrust> list) {
 		if (
-				entrust.getLeftCount().compareTo(BigDecimal.ZERO) == ICompareResultConstant.GREATER_THAN // 还有未成交数
+				( // 还有未成交数
+					entrust.getStatus() == EntrustStatusEnumer.UNFINISH.getCode()
+					||
+					entrust.getStatus() == EntrustStatusEnumer.PART_FINISH.getCode()
+				)
 				&& 
 				list.size() > 0
 				) {
@@ -519,16 +560,16 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 				TEntrust entrust_ = list.get(i);
 				
 				BigDecimal bd_dealPrice = getDealPrice(entrust_, entrust, bd_linePrice);
-				if (bd_dealPrice == null) {
+				if (bd_dealPrice == null) { // 首个都不满足条件的话， 那后面的就更不满足条件了。 因为这里已经是按照价格排好序了的。
 					break;
 				} else {
 					TEntrustRecord entrustRecord = addEntrustRecord(entrust_, entrust, bd_dealPrice);
 					bd_linePrice = onEntrustRecord(bd_dealPrice, bd_linePrice, entrust, entrustRecord);
 					
-					if (entrust_.getLeftCount().compareTo(BigDecimal.ZERO) == ICompareResultConstant.EQUAL) {
+					if (entrust_.getStatus() == EntrustStatusEnumer.FINISH.getCode()) {
 						list.remove(i);
 					}
-					if (entrust.getLeftCount().compareTo(BigDecimal.ZERO) == ICompareResultConstant.EQUAL) {
+					if (entrust.getStatus() == EntrustStatusEnumer.FINISH.getCode()) {
 						break;
 					}
 				}
@@ -540,7 +581,11 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 		if (idx == list_after.size()) { // isFirst
 			matchWith(entrust, list_beforeMarket); // 和对手盘（市价）进行撮合。
 			matchWith(entrust, list_beforeLimit); // 和对手盘（限价）进行撮合。
-			if (entrust.getLeftCount().compareTo(BigDecimal.ZERO) == ICompareResultConstant.GREATER_THAN) { // 有剩余的则加入列表。
+			if (
+					entrust.getStatus() == EntrustStatusEnumer.UNFINISH.getCode()
+					||
+					entrust.getStatus() == EntrustStatusEnumer.PART_FINISH.getCode()
+					) { // 有剩余的则加入列表。
 				list_after.add(entrust);
 			}
 		} else {
@@ -631,70 +676,54 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 	public void test() {
 		TEntrust entrust1 = new TEntrust();
 		entrust1.setUserId(101L);
-		entrust1.setCurrencyTradeId(102);
+		entrust1.setCurrencyTradeId(1);
 		entrust1.setEntrustDirection(EntrustDirectionEnumer.BUY.getCode());
 		entrust1.setEntrustType(EntrustTypeEnumer.MARKET.getCode());
-		entrust1.setCount(new BigDecimal(50));
+		entrust1.setAmount(new BigDecimal(505));
 		entrustService.add(entrust1);
 		makeAMatch(entrust1);
+		
 		TEntrust entrust2 = new TEntrust();
 		entrust2.setUserId(102L);
-		entrust2.setCurrencyTradeId(102);
+		entrust2.setCurrencyTradeId(1);
 		entrust2.setEntrustDirection(EntrustDirectionEnumer.BUY.getCode());
 		entrust2.setEntrustType(EntrustTypeEnumer.LIMIT.getCode());
 		entrust2.setPrice(new BigDecimal(157));
 		entrust2.setCount(new BigDecimal(28));
 		entrustService.add(entrust2);
 		makeAMatch(entrust2);
+		
 		TEntrust entrust3 = new TEntrust();
 		entrust3.setUserId(103L);
-		entrust3.setCurrencyTradeId(102);
+		entrust3.setCurrencyTradeId(1);
 		entrust3.setEntrustDirection(EntrustDirectionEnumer.SELL.getCode());
 		entrust3.setEntrustType(EntrustTypeEnumer.LIMIT.getCode());
-		entrust3.setPrice(new BigDecimal(101));
+		entrust3.setPrice(new BigDecimal(100.5));
 		entrust3.setCount(new BigDecimal(37));
 		entrustService.add(entrust3);
 		makeAMatch(entrust3);
+		
 		TEntrust entrust4 = new TEntrust();
 		entrust4.setUserId(104L);
-		entrust4.setCurrencyTradeId(102);
+		entrust4.setCurrencyTradeId(1);
 		entrust4.setEntrustDirection(EntrustDirectionEnumer.SELL.getCode());
 		entrust4.setEntrustType(EntrustTypeEnumer.MARKET.getCode());
 		entrust4.setCount(new BigDecimal(80));
 		entrustService.add(entrust4);
 		makeAMatch(entrust4);
+		
 		TEntrust entrust5 = new TEntrust();
 		entrust5.setUserId(105L);
-		entrust5.setCurrencyTradeId(102);
+		entrust5.setCurrencyTradeId(1);
 		entrust5.setEntrustDirection(EntrustDirectionEnumer.BUY.getCode());
 		entrust5.setEntrustType(EntrustTypeEnumer.MARKET.getCode());
-		entrust5.setCount(new BigDecimal(83));
+		entrust5.setAmount(new BigDecimal(830));
 		entrustService.add(entrust5);
 		makeAMatch(entrust5);
 		
+		
 		// print .
 		print();
-	}
-
-	public void test_2() {
-		TEntrust entrust1 = new TEntrust();
-		entrust1.setUserId(101L);
-		entrust1.setCurrencyTradeId(1);
-		entrust1.setEntrustDirection(EntrustDirectionEnumer.BUY.getCode());
-		entrust1.setEntrustType(EntrustTypeEnumer.LIMIT.getCode());
-		entrust1.setPrice(new BigDecimal(2));
-		entrust1.setCount(new BigDecimal(2));
-		entrustService.add(entrust1);
-		makeAMatch(entrust1);
-		TEntrust entrust2 = new TEntrust();
-		entrust2.setUserId(102L);
-		entrust2.setCurrencyTradeId(1);
-		entrust2.setEntrustDirection(EntrustDirectionEnumer.SELL.getCode());
-		entrust2.setEntrustType(EntrustTypeEnumer.LIMIT.getCode());
-		entrust2.setPrice(new BigDecimal(3));
-		entrust2.setCount(new BigDecimal(2));
-		entrustService.add(entrust2);
-		makeAMatch(entrust2);
 	}
 	
 	public static void _main(String[] args) {
@@ -715,6 +744,13 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 //		System.out.println(bd1.multiply(bd2).multiply(BigDecimal.valueOf(2)));
 //		System.out.println(bd1.multiply(bd2, new MathContext(9, RoundingMode.HALF_DOWN)).multiply(BigDecimal.valueOf(2)));
 //		System.out.println(bd1.multiply(bd2).setScale(8, BigDecimal.ROUND_HALF_DOWN).multiply(BigDecimal.valueOf(2)));
+		
+		BigDecimal 
+			bd_amount = new BigDecimal(35), 
+			bd_successAmount = new BigDecimal(5), 
+			bd_dealPrice = new BigDecimal(10)
+			;
+		System.out.println( bd_amount.subtract(bd_successAmount).divide( bd_dealPrice ) );
 	}
 
 	@RabbitListener(queues = { IQueueConstants.QUEUE__ENTRUST_RECORD })

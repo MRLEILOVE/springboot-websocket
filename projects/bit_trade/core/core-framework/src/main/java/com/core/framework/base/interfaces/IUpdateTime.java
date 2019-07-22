@@ -1,6 +1,6 @@
 package com.core.framework.base.interfaces;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * 
@@ -14,6 +14,6 @@ public interface IUpdateTime {
 	 * 
 	 * @param updateTime
 	 */
-	public void setUpdateTime(Date updateTime);
+	public void setUpdateTime(LocalDateTime updateTime);
 	
 }

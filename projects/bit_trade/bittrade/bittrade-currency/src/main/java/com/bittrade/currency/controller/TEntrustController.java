@@ -1,6 +1,9 @@
 package com.bittrade.currency.controller;
 
 import com.bittrade.common.enums.EntrustStatusEnumer;
+
+import java.math.BigDecimal;
+
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -21,6 +24,7 @@ import com.bittrade.pojo.dto.TEntrustDTO;
 import com.bittrade.pojo.model.TEntrust;
 import com.bittrade.pojo.vo.TEntrustInfoVO;
 import com.bittrade.pojo.vo.TEntrustVO;
+import com.core.common.constant.ICompareResultConstant;
 import com.core.framework.DTO.PageDTO;
 import com.core.framework.DTO.ReturnDTO;
 import com.core.framework.base.controller.BaseController;
@@ -85,6 +89,9 @@ public class TEntrustController extends BaseController<TEntrust, TEntrustDTO, TE
 	@ResponseBody
 	public ReturnDTO<String> deal(@RequestBody DealDTO dealDTO) {
 		// 1.校验参数
+//		if (dealDTO == null) {
+//			return ReturnDTO.error( "参数为空" );
+//		}
 		if (StringUtils.isEmpty( dealDTO.getUserId() )) {
 			return ReturnDTO.error( "用户id为空" );
 		}
@@ -103,17 +110,30 @@ public class TEntrustController extends BaseController<TEntrust, TEntrustDTO, TE
 		if (EntrustDirectionEnumer.getEnumer( dealDTO.getEntrustDirection() ) == null) {
 			return ReturnDTO.error( "买卖方向错误" );
 		}
+		
+		// 交易规则值的校验
 		if (dealDTO.getEntrustType() == EntrustTypeEnumer.LIMIT.getCode()) {
 			String price = dealDTO.getPrice();
-			if (price == null || Double.parseDouble( price ) <= 0.0) {
-				return ReturnDTO.error( "价格异常" );
+			if (price == null || new BigDecimal( price ).compareTo( BigDecimal.ZERO ) <= ICompareResultConstant.EQUAL) {
+				return ReturnDTO.error( "价格为空或异常" );
 			}
 		}
-		String count = dealDTO.getCount();
-		if (count == null || Double.parseDouble( count ) <= 0) {
-			return ReturnDTO.error( "数量异常" );
+		if (
+				dealDTO.getEntrustType() == EntrustTypeEnumer.MARKET.getCode()
+				&& 
+				dealDTO.getEntrustDirection() == EntrustDirectionEnumer.BUY.getCode()
+				) {
+			String amount = dealDTO.getAmount();
+			if (amount == null || new BigDecimal( amount ).compareTo( BigDecimal.ZERO ) <= ICompareResultConstant.EQUAL) {
+				return ReturnDTO.error( "交易额为空或异常" );
+			}
+		} else {
+			String count = dealDTO.getCount();
+			if (count == null || new BigDecimal( count ).compareTo( BigDecimal.ZERO ) <= ICompareResultConstant.EQUAL) {
+				return ReturnDTO.error( "数量为空或异常" );
+			}
 		}
-
+		
 		return entrustService.deal( dealDTO );
 	}
 

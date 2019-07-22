@@ -12,6 +12,6 @@ dubbo:
     protocol: registry
   consumer:
     check: false
-    timeout: 3000
+    timeout: 10000
 #  reference:
 #    check: false

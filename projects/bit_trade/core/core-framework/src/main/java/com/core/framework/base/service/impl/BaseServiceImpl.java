@@ -1,7 +1,7 @@
 package com.core.framework.base.service.impl;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,14 +36,14 @@ public abstract class BaseServiceImpl<Model extends BaseModel<Model>, DTO extend
 
 	private void setCreateTime/*AndModify*/(Model model) {
 		if (model instanceof ICreateTime/* && model.getClass() == ICreateAndModifyTime.class*/) { // equals() ?
-			Date now = new Date();
+			LocalDateTime now = LocalDateTime.now();
 			((ICreateTime) model).setCreateTime(now);
 		}
 	}
 
 	private void setUpdateTime(Model model) {
 		if (model instanceof IUpdateTime/* && model.getClass() == ICreateAndModifyTime.class*/) { // equals() ?
-			Date now = new Date();
+			LocalDateTime now = LocalDateTime.now();
 			((IUpdateTime) model).setUpdateTime(now);
 		}
 	}

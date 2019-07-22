@@ -1,6 +1,6 @@
 package com.core.framework.base.interfaces;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * 
@@ -14,6 +14,6 @@ public interface ICreateTime {
 	 * 
 	 * @param createTime
 	 */
-	public void setCreateTime(Date createTime);
+	public void setCreateTime(LocalDateTime createTime);
 	
 }

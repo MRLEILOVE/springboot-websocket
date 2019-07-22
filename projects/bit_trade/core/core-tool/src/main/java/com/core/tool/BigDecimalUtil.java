@@ -23,6 +23,26 @@ public /*static */final class BigDecimalUtil {
 	
 	/**
 	 * 
+	 * @param bd1
+	 * @param bd2
+	 * @return
+	 */
+	public static final boolean isEqual(BigDecimal bd1, BigDecimal bd2) {
+		return bd1.compareTo(bd2) == ICompareResultConstant.EQUAL;
+	}
+	
+	/**
+	 * 
+	 * @param bd1
+	 * @param bd2
+	 * @return
+	 */
+	public static final boolean isLess(BigDecimal bd1, BigDecimal bd2) {
+		return bd1.compareTo(bd2) == ICompareResultConstant.LESS_THAN;
+	}
+	
+	/**
+	 * 
 	 * @param bd
 	 * @return
 	 */

@@ -2,7 +2,6 @@ package com.bittrade.entrust.service.impl;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -59,14 +58,20 @@ public class TEntrustServiceImpl extends DefaultTEntrustServiceImpl<ITEntrustDAO
 	public int add(TEntrust entrust) {
 		entrust.setId( SNOW_FLAKE__ENTRUST.nextId() );
 		{
-			entrust.setCount( entrust.getCount().setScale( IConstant.COUNT_DECIMAL_LENGTH, BigDecimal.ROUND_HALF_DOWN ) );
-			if (entrust.getPrice() != null) {
-				entrust.setPrice( entrust.getPrice().setScale(IConstant.PRICE_DECIMAL_LENGTH, BigDecimal.ROUND_HALF_DOWN) );
+			if (
+					entrust.getEntrustType() == EntrustTypeEnumer.LIMIT.getCode()
+					||
+					entrust.getEntrustDirection() == EntrustDirectionEnumer.SELL.getCode()
+					) {
+				entrust.setCount( entrust.getCount().setScale( IConstant.COUNT_DECIMAL_LENGTH, BigDecimal.ROUND_HALF_DOWN ) ); // 设置精度
+				entrust.setLeftCount( entrust.getCount() );
+			}
+			if (entrust.getEntrustType() == EntrustTypeEnumer.LIMIT.getCode()) {
+				entrust.setPrice( entrust.getPrice().setScale(IConstant.PRICE_DECIMAL_LENGTH, BigDecimal.ROUND_HALF_DOWN) ); // 设置精度
 				entrust.setAmount( entrust.getPrice().multiply( entrust.getCount() ).setScale( IConstant.AMOUNT_DECIMAL_LENGTH, BigDecimal.ROUND_HALF_DOWN ) );
 			}
 		}
 		entrust.setSuccessAmount( BigDecimal.ZERO );
-		entrust.setLeftCount( entrust.getCount() );
 		entrust.setStatus( EntrustStatusEnumer.UNFINISH.getCode() );
 		entrust.setVersion( 0 );
 		
@@ -87,6 +92,8 @@ public class TEntrustServiceImpl extends DefaultTEntrustServiceImpl<ITEntrustDAO
 		}
 
 		BigDecimal bd_price = null;
+		BigDecimal bd_count = null;
+		BigDecimal bd_amount = null;
 		if (dealDTO.getEntrustType() == EntrustTypeEnumer.LIMIT.getCode()) {
 			String[] split_price = dealDTO.getPrice().split( "." );
 			if (split_price != null && split_price.length == 2) {
@@ -109,10 +116,29 @@ public class TEntrustServiceImpl extends DefaultTEntrustServiceImpl<ITEntrustDAO
 			}
 		}
 
-		BigDecimal bd_count = new BigDecimal( dealDTO.getCount() );
-
-		if (bd_count.compareTo( currencyTrade.getMinCount() ) == -1) {
-			return ReturnDTO.error( "数量低于最小可买/可卖数量" );
+		/**
+		 * <p>
+		 * 也可以把这些 限市、买卖 各种情况综合起来， 按照每一种类型来分别判断一次， 这样代码会有冗余， 但是思路更清晰。
+		 * <br />
+		 * 货币： 物品、币 （意思）
+		 * 法币： 金钱 （意思）
+		 * </p>
+		 * <pre>
+		 * 1、限价、买：price、count单位货币，检查钱包单位需要转换成法币。
+		 * 2、限价、卖：price、count单位货币，检查钱包单位不需要转换。
+		 * 3、市价、买：amount单位法币，检查钱包单位不需要转换。
+		 * 4、市价、卖：count单位货币，检查钱包单位不需要转换。
+		 * </pre>
+		 */
+		if (
+				dealDTO.getEntrustType() == EntrustTypeEnumer.LIMIT.getCode()
+				||
+				dealDTO.getEntrustDirection() == EntrustDirectionEnumer.SELL.getCode()
+				) {
+			bd_count = new BigDecimal( dealDTO.getCount() );
+			if (bd_count.compareTo( currencyTrade.getMinCount() ) == -1) {
+				return ReturnDTO.error( "数量低于最小可买/可卖数量" );
+			}
 		}
 		// if (bd_amount.compareTo( currencyTrade.getMinAmount() ) == -1) {
 		// return ReturnDTO.error( "总价低于最小可买/可卖总价" );
@@ -144,8 +170,23 @@ public class TEntrustServiceImpl extends DefaultTEntrustServiceImpl<ITEntrustDAO
 			return ReturnDTO.error( "用户钱包不存在" );
 		}
 		BigDecimal total = tWallet.getTotal();
-		if (total == null || total.compareTo( bd_count ) == -1) {
-			return ReturnDTO.error( "用户钱包余额不足" );
+		if (EntrustDirectionEnumer.BUY.getCode() == dealDTO.getEntrustDirection()) {
+			BigDecimal bd_amount_;
+			if (EntrustTypeEnumer.LIMIT.getCode() == dealDTO.getEntrustType()) {
+				bd_amount_ = bd_price.multiply( bd_count );
+				if (total == null || total.compareTo( bd_amount_ ) == -1) {
+					return ReturnDTO.error( "用户钱包余额不足" );
+				}
+			} else /*if (EntrustTypeEnumer.MARKET.getCode() == dealDTO.getEntrustType()) */{
+				bd_amount = new BigDecimal( dealDTO.getAmount() );
+				if (total == null || total.compareTo( bd_amount ) == -1) {
+					return ReturnDTO.error( "用户钱包余额不足" );
+				}
+			}
+		} else /*if (EntrustDirectionEnumer.SELL.getCode() == dealDTO.getEntrustDirection()) */{
+			if (total == null || total.compareTo( bd_count ) == -1) {
+				return ReturnDTO.error( "用户钱包余额不足" );
+			}
 		}
 
 		// 修改钱包。 版本不对，要继续轮询？
@@ -159,6 +200,7 @@ public class TEntrustServiceImpl extends DefaultTEntrustServiceImpl<ITEntrustDAO
 		entrust.setEntrustDirection( dealDTO.getEntrustDirection() );
 		entrust.setPrice( bd_price );
 		entrust.setCount( bd_count );
+		entrust.setAmount( bd_amount );
 		add( entrust );
 
 		ES.submit( new Callable<String>() {
