@@ -6,7 +6,7 @@ package com.bittrade.common.constant;
  * @datetime Jul 4, 2019 11:30:30 AM
  *
  */
-public interface IConstant {
+public interface IConstant extends com.core.common.constant.IConstant {
 
 	/**
 	 * 价格的小数位长度： 10
@@ -28,4 +28,9 @@ public interface IConstant {
 	 */
 	public static final int	OKEX_SUCCESS_CODE		= 200;
 
+	/**
+	 * 行情价的redis前缀
+	 */
+	public static final String REDIS_PREFIX__LINE_PRICE = "line_price:";
+	
 }

@@ -45,12 +45,12 @@
 	</sql>
 	
 	
-	<insert id="add" parameterType="com.bittrade.pojo.model.WConfigWallet">
+	<insert id="add" parameterType="com.bittrade.pojo.model.WConfigWallet" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO w_config_wallet(`coin_type`, `wallet_type`, `address`, `keystore`, `valid`, `remark`, `create_time`, `update_time`)
 		VALUES(#{coinType,jdbcType=VARCHAR}, #{walletType,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{keystore,jdbcType=VARCHAR}, #{valid,jdbcType=CHAR}, #{remark,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
 	</insert>
 	
-	<insert id="addWithSelective" parameterType="com.bittrade.pojo.model.WConfigWallet">
+	<insert id="addWithSelective" parameterType="com.bittrade.pojo.model.WConfigWallet" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO w_config_wallet(
 			<if test="coinType != null">
 			`coin_type`, 

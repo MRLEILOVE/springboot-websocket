@@ -27,5 +27,10 @@ public interface IConstant {
 	 * 默认页条数
 	 */
 	public static final int PAGE_SIZE = 10;
+	
+	/**
+	 * 日期时间的格式
+	 */
+	public static final String DATETIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
 
 }

@@ -47,12 +47,12 @@
 	</sql>
 	
 	
-	<insert id="add" parameterType="com.bittrade.pojo.model.WUserWallet">
+	<insert id="add" parameterType="com.bittrade.pojo.model.WUserWallet" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO w_user_wallet(`platform`, `user_id`, `coin_type`, `address`, `private_key`, `flag`, `valid`, `create_time`, `update_time`)
 		VALUES(#{platform,jdbcType=VARCHAR}, #{userId,jdbcType=BIGINT}, #{coinType,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{privateKey,jdbcType=VARCHAR}, #{flag,jdbcType=INTEGER}, #{valid,jdbcType=CHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
 	</insert>
 	
-	<insert id="addWithSelective" parameterType="com.bittrade.pojo.model.WUserWallet">
+	<insert id="addWithSelective" parameterType="com.bittrade.pojo.model.WUserWallet" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO w_user_wallet(
 			<if test="platform != null">
 			`platform`, 

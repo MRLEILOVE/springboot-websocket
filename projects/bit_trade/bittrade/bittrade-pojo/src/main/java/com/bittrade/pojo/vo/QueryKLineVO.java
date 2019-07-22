@@ -3,11 +3,14 @@ package com.bittrade.pojo.vo;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.io.Serializable;
 import java.util.Date;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class QueryKLineVO {
+public class QueryKLineVO implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     /**
      * 交易对
      */

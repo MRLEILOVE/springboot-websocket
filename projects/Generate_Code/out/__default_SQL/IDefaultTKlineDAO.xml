@@ -49,12 +49,12 @@
 	</sql>
 	
 	
-	<insert id="add" parameterType="com.bittrade.pojo.model.TKline">
+	<insert id="add" parameterType="com.bittrade.pojo.model.TKline" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO t_kline(`symbol`, `low`, `high`, `open`, `close`, `volume`, `granularity`, `time`, `create_time`, `update_time`)
 		VALUES(#{symbol,jdbcType=VARCHAR}, #{low,jdbcType=DECIMAL}, #{high,jdbcType=DECIMAL}, #{open,jdbcType=DECIMAL}, #{close,jdbcType=DECIMAL}, #{volume,jdbcType=DECIMAL}, #{granularity,jdbcType=INTEGER}, #{time,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
 	</insert>
 	
-	<insert id="addWithSelective" parameterType="com.bittrade.pojo.model.TKline">
+	<insert id="addWithSelective" parameterType="com.bittrade.pojo.model.TKline" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO t_kline(
 			<if test="symbol != null">
 			`symbol`, 

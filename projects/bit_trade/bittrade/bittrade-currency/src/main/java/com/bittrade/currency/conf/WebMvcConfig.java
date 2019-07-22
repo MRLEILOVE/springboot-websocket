@@ -12,6 +12,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
+import com.core.common.constant.IConstant;
 
 @Configuration
 @EnableWebMvc
@@ -50,16 +51,12 @@ public class WebMvcConfig implements WebMvcConfigurer {
 	 */
 	@Override
 	public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-		/**
-		 * 1.定义一个Converter 转换消息 2.添加fastjson配置信息, 比如 是否格式化数据 3.在Converter中添加配置信息
-		 * 4.将Converter 添加到 List converters当中
-		 */
 		// 1.定义一个Converter 转换消息
 		FastJsonHttpMessageConverter fastConverter = new FastJsonHttpMessageConverter();
 		// 2.添加fastjson配置信息, 比如 是否格式化数据
 		FastJsonConfig fastJsonConfig = new FastJsonConfig();
 		fastJsonConfig.setSerializerFeatures( SerializerFeature.PrettyFormat );
-		fastJsonConfig.setDateFormat( "yyyy-MM-dd HH:mm:ss" );
+		fastJsonConfig.setDateFormat( IConstant.DATETIME_PATTERN );
 		// 3.在Converter中添加配置信息
 		fastConverter.setFastJsonConfig( fastJsonConfig );
 		// 4.将Converter 添加到 List converters当中

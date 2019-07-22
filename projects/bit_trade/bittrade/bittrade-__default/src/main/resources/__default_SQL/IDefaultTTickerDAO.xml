@@ -35,12 +35,12 @@
 	</sql>
 	
 	
-	<insert id="add" parameterType="com.bittrade.pojo.model.TTicker">
+	<insert id="add" parameterType="com.bittrade.pojo.model.TTicker" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO t_ticker(`symbol`, `last`, `create_time`)
 		VALUES(#{symbol,jdbcType=VARCHAR}, #{last,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP})
 	</insert>
 	
-	<insert id="addWithSelective" parameterType="com.bittrade.pojo.model.TTicker">
+	<insert id="addWithSelective" parameterType="com.bittrade.pojo.model.TTicker" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO t_ticker(
 			<if test="symbol != null">
 			`symbol`, 

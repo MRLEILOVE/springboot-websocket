@@ -49,12 +49,12 @@
 	</sql>
 	
 	
-	<insert id="add" parameterType="com.bittrade.pojo.model.TOrder">
+	<insert id="add" parameterType="com.bittrade.pojo.model.TOrder" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO t_order(`userId`, `order_id`, `fee`, `token`, `amount`, `receiver_address`, `type`, `operator`, `create_time`, `update_time`)
 		VALUES(#{userId,jdbcType=INTEGER}, #{orderId,jdbcType=VARCHAR}, #{fee,jdbcType=DECIMAL}, #{token,jdbcType=VARCHAR}, #{amount,jdbcType=DECIMAL}, #{receiverAddress,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR}, #{operator,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
 	</insert>
 	
-	<insert id="addWithSelective" parameterType="com.bittrade.pojo.model.TOrder">
+	<insert id="addWithSelective" parameterType="com.bittrade.pojo.model.TOrder" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO t_order(
 			<if test="userId != null">
 			`userId`, 

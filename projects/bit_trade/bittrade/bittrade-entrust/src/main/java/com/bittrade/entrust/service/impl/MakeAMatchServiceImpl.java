@@ -8,6 +8,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.locks.ReentrantLock;
 
 import javax.annotation.PostConstruct;
@@ -20,12 +22,14 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.alibaba.dubbo.config.annotation.Reference;
 import com.bittrade.common.constant.IConstant;
 import com.bittrade.common.constant.IQueueConstants;
 import com.bittrade.common.enums.EntrustDirectionEnumer;
 import com.bittrade.common.enums.EntrustStatusEnumer;
 import com.bittrade.common.enums.EntrustTypeEnumer;
 import com.bittrade.common.enums.IsActiveEnumer;
+import com.bittrade.currency.api.service.ITCurrencyTradeService;
 import com.bittrade.entrust.api.service.IMakeAMatchService;
 import com.bittrade.entrust.api.service.ITEntrustRecordService;
 import com.bittrade.entrust.api.service.ITEntrustService;
@@ -36,6 +40,8 @@ import com.core.common.constant.ICompareResultConstant;
 import com.core.tool.BigDecimalUtil;
 import com.core.tool.SnowFlake;
 import com.rabbitmq.client.Channel;
+
+import redis.clients.jedis.JedisCluster;
 
 /**
  * 
@@ -56,7 +62,7 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 	/**
 	 * 悲观锁
 	 */
-	private static final ConcurrentHashMap<Integer, ReentrantLock> MAP_LOCK__BUY_AND_SELL = new ConcurrentHashMap<>();
+	private static final ConcurrentHashMap<Integer, ReentrantLock> MAP__LOCK__BUY_AND_SELL = new ConcurrentHashMap<>();
 	
 	/**
 	 * 市价买
@@ -79,9 +85,14 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 	private static final ConcurrentHashMap<Integer, ArrayList<TEntrust>> MAP__SELL_LIMIT = new ConcurrentHashMap<>();
 	
 	/**
+	 * 交易对
+	 */
+	private static final ConcurrentHashMap<Integer, String> MAP__SYMBOL = new ConcurrentHashMap<>();
+	
+	/**
 	 * 行情价
 	 */
-	public static final ConcurrentHashMap<Integer, BigDecimal> MAP__LINE_PRICE = new ConcurrentHashMap<>();
+	private static final ConcurrentHashMap<Integer, BigDecimal> MAP__LINE_PRICE = new ConcurrentHashMap<>();
 	
 	private static final SnowFlake SNOW_FLAKE__ENTRUST_RECORD = new SnowFlake(1, 1);
 	
@@ -91,13 +102,24 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 	private ITEntrustRecordService entrustRecordService;
 	@Autowired
 	private ITKlineService klineService;
+	@Reference
+	private ITCurrencyTradeService currencyTradeService;
+	
+	@Autowired
+	private JedisCluster jedisCluster;
 	@Autowired
 	private RabbitTemplate rabbitTemplate;
 	
+	/**
+	 * 异步调用K线生成。
+	 */
+	private static final ExecutorService ES = Executors.newFixedThreadPool(50);
 	
-	private ReentrantLock getLock(ConcurrentHashMap<Integer, ReentrantLock> map, Integer key) {
+	
+	private ReentrantLock getLock(int key) {
 		ReentrantLock lock;
 		
+		ConcurrentHashMap<Integer, ReentrantLock> map = MAP__LOCK__BUY_AND_SELL;
 		if (map.containsKey( key )) {
 			lock = map.get( key );
 		} else {
@@ -119,21 +141,70 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 		return list;
 	}
 	
-	private BigDecimal getLinePrice(ConcurrentHashMap<Integer, BigDecimal> map, Integer key) {
+	/**
+	 * <p>
+	 *   懒加载（非勤加载）
+	 * </p>
+	 * getSymbol:(这里用一句话描述这个方法的作用). <br/>  
+	 * TODO(这里描述这个方法适用条件 – 可选).<br/>  
+	 * TODO(这里描述这个方法的执行流程 – 可选).<br/>  
+	 * TODO(这里描述这个方法的使用方法 – 可选).<br/>  
+	 * TODO(这里描述这个方法的注意事项 – 可选).<br/>  
+	 *  
+	 * @author Administrator  
+	 * @param currencyTradeID 
+	 * @return  
+	 * @since JDK 1.8
+	 */
+	String getSymbol(int currencyTradeID) {
+		String str_symbol;
+		
+		if (MAP__SYMBOL.containsKey( currencyTradeID )) {
+			str_symbol = MAP__SYMBOL.get( currencyTradeID );
+		} else {
+			MAP__SYMBOL.put( currencyTradeID, str_symbol = currencyTradeService.getByPK( currencyTradeID ).getSymbol() );
+		}
+		
+		return str_symbol;
+	}
+	
+	private String getLinePriceRedisKey(int currencyTradeID) {
+		return IConstant.REDIS_PREFIX__LINE_PRICE + getSymbol( currencyTradeID );
+	}
+
+	private void setLinePrice(int currencyTradeID, BigDecimal linePrice) {
+		MAP__LINE_PRICE.put( currencyTradeID, linePrice );
+		jedisCluster.set( getLinePriceRedisKey( currencyTradeID ), linePrice.toString() );
+		LOG.info("修改行情价为：" + linePrice);
+	}
+	
+	/**
+	 * <p>
+	 *   懒加载（非勤加载）
+	 * </p>
+	 * getLinePrice:(这里用一句话描述这个方法的作用). <br/>  
+	 * TODO(这里描述这个方法适用条件 – 可选).<br/>  
+	 * TODO(这里描述这个方法的执行流程 – 可选).<br/>  
+	 * TODO(这里描述这个方法的使用方法 – 可选).<br/>  
+	 * TODO(这里描述这个方法的注意事项 – 可选).<br/>  
+	 *  
+	 * @author Administrator  
+	 * @param currencyTradeID
+	 * @return  
+	 * @since JDK 1.8
+	 */
+	public BigDecimal getLinePrice(int currencyTradeID) {
 		BigDecimal linePrice;
 		
-		if (map.containsKey( key )) {
-			linePrice = map.get( key );
+		if (MAP__LINE_PRICE.containsKey( currencyTradeID )) {
+			linePrice = MAP__LINE_PRICE.get( currencyTradeID );
 		} else {
-			map.put( key, linePrice = new BigDecimal(0) );
+			MAP__LINE_PRICE.put( currencyTradeID, linePrice = BigDecimalUtil.convert( jedisCluster.get( getLinePriceRedisKey( currencyTradeID ) ) ) );
 		}
 		
 		return linePrice;
 	}
 	
-	
-	private void initialLinePrice() {
-	}
 	
 	/**
 	 * <p>
@@ -149,7 +220,13 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 	 * @since JDK 1.8
 	 */
 	private void initialEntrust() {
-		// to be continue .
+		TEntrust entrustQuery = new TEntrust();
+		List<TEntrust> list_ent = entrustService.getsBy( entrustQuery );
+		if (list_ent != null && list_ent.size() > 0) {
+			for (int i = 0; i < list_ent.size(); i++) {
+				makeAMatch( list_ent.get( i ) );
+			}
+		}
 	}
 	
 	/**
@@ -167,7 +244,6 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 	 */
 	@PostConstruct
 	private void initialData() {
-		initialLinePrice();
 		initialEntrust();
 	}
 	
@@ -264,6 +340,7 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 		BigDecimal bd_dealPrice = null;
 		
 		BigDecimal bd_beforePrice = getPrice(entrust_before.getPrice(), linePrice), bd_afterPrice = getPrice(entrust_after.getPrice(), linePrice);
+		// 这里的买卖判断也可以由外面判断了， 再丢标志进来。
 		if (
 				entrust_before.getEntrustDirection() == EntrustDirectionEnumer.BUY.getCode()
 				&& 
@@ -271,6 +348,7 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 				) {
 			bd_dealPrice = getPriceWithLinePrice(bd_beforePrice, bd_afterPrice, linePrice);
 		}
+		// 这里的买卖判断也可以由外面判断了， 再丢标志进来。
 		if (
 				entrust_before.getEntrustDirection() == EntrustDirectionEnumer.SELL.getCode()
 				&& 
@@ -399,9 +477,7 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 	 */
 	private BigDecimal onEntrustRecord(BigDecimal dealPrice, BigDecimal linePrice, TEntrust entrust, TEntrustRecord entrustRecord) {
 		if (linePrice.compareTo(dealPrice) != ICompareResultConstant.EQUAL) {
-//			linePrice = dealPrice;
-			MAP__LINE_PRICE.put( entrust.getCurrencyTradeId(), linePrice = dealPrice );
-			LOG.info("修改行情价为：" + linePrice);
+			setLinePrice( entrust.getCurrencyTradeId(), dealPrice );
 		}
 		{
 			// 异步通知。
@@ -415,9 +491,12 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 //				
 //			});
 			
-			klineService.modifyKLine( entrust, dealPrice );
+			ES.submit(() -> {
+				klineService.modifyKLine( entrustRecord, dealPrice );
+				return null;
+			});
 		}
-		return linePrice;
+		return dealPrice;
 	}
 	
 	/**
@@ -435,7 +514,7 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 				&& 
 				list.size() > 0
 				) {
-			BigDecimal bd_linePrice = getLinePrice( MAP__LINE_PRICE, entrust.getCurrencyTradeId() );
+			BigDecimal bd_linePrice = getLinePrice( entrust.getCurrencyTradeId() );
 			for (int i = list.size() - 1; i > -1; i--) {
 				TEntrust entrust_ = list.get(i);
 				
@@ -477,7 +556,7 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 			ArrayList<TEntrust> list_market_before, 
 			ArrayList<TEntrust> list_limit_before
 			) {
-		ReentrantLock lock = getLock( MAP_LOCK__BUY_AND_SELL, entrust.getCurrencyTradeId() );
+		ReentrantLock lock = getLock( entrust.getCurrencyTradeId() );
 		lock.lock();
 		try {
 			int i_idx;

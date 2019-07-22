@@ -45,12 +45,12 @@
 	</sql>
 	
 	
-	<insert id="add" parameterType="com.bittrade.pojo.model.TParamConfig">
+	<insert id="add" parameterType="com.bittrade.pojo.model.TParamConfig" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO t_param_config(`param_key`, `param_value`, `param_status`, `param_remark`, `create_time`, `creater`, `update_time`, `updater`)
 		VALUES(#{paramKey,jdbcType=VARCHAR}, #{paramValue,jdbcType=VARCHAR}, #{paramStatus,jdbcType=INTEGER}, #{paramRemark,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{creater,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{updater,jdbcType=VARCHAR})
 	</insert>
 	
-	<insert id="addWithSelective" parameterType="com.bittrade.pojo.model.TParamConfig">
+	<insert id="addWithSelective" parameterType="com.bittrade.pojo.model.TParamConfig" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO t_param_config(
 			<if test="paramKey != null">
 			`param_key`, 

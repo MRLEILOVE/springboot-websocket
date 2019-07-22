@@ -52,12 +52,12 @@ WHERE是使用的 prefixOverrides（前缀）， SET是使用的 suffixOverrides
 	</sql>
 	
 	
-	<insert id="add" parameterType="${POJO_BASE_PKG}.model${module_name}.${struct.className}">
+	<insert id="add" parameterType="${POJO_BASE_PKG}.model${module_name}.${struct.className}"<#list struct.list_itemPK as itemPK><#if itemPK.autoIncrement> useGeneratedKeys="true" keyProperty="${itemPK.name}"<#break></#if></#list>>
 		INSERT INTO ${struct.tableName}(<#list struct.list_itemPK as itemPK><#if !itemPK.autoIncrement>`${itemPK.columnName}`, </#if></#list><#list struct.list_item as item>`${item.columnName}`<#if item_has_next>, </#if></#list>)
 		VALUES(<#list struct.list_itemPK as itemPK><#if !itemPK.autoIncrement>${r'#{'}${itemPK.name}${r',jdbcType='}${itemPK.jdbcType}${r'}'}, </#if></#list><#list struct.list_item as item>${r'#{'}${item.name}${r',jdbcType='}${item.jdbcType}${r'}'}<#if item_has_next>, </#if></#list>)
 	</insert>
 	
-	<insert id="addWithSelective" parameterType="${POJO_BASE_PKG}.model${module_name}.${struct.className}">
+	<insert id="addWithSelective" parameterType="${POJO_BASE_PKG}.model${module_name}.${struct.className}"<#list struct.list_itemPK as itemPK><#if itemPK.autoIncrement> useGeneratedKeys="true" keyProperty="${itemPK.name}"<#break></#if></#list>>
 		INSERT INTO ${struct.tableName}(
 			<#list struct.list_itemPK as itemPK>
 			<#if !itemPK.autoIncrement>
