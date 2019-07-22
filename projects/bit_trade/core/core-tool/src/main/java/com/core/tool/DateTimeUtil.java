@@ -196,19 +196,20 @@ public class DateTimeUtil {
 		}
 	};
 	
-	public static void main(String[] args) {
+	public static void _main(String[] args) {
 //		Tester.test_1();
 //		Tester.test_2();
-		LocalDateTime ldt = LocalDateTime.now();
-		System.out.println( toString(ldt) );
-		System.out.println(  );
-		System.out.println( toString(getMinuteBegin(ldt)) );
-		System.out.println( toString(getMinuteBegin(ldt, 3)) );
-		System.out.println( toString(getMinuteBegin(ldt, 5)) );
-		System.out.println( toString(getMinuteBegin(ldt, 15)) );
-		System.out.println(  );
-		System.out.println( toString(getHourBegin(ldt, 15)) );
-		System.out.println( toString(getHourBegin(ldt, 4)) );
+		
+//		LocalDateTime ldt = LocalDateTime.now();
+//		System.out.println( toString(ldt) );
+//		System.out.println(  );
+//		System.out.println( toString(getMinuteBegin(ldt)) );
+//		System.out.println( toString(getMinuteBegin(ldt, 3)) );
+//		System.out.println( toString(getMinuteBegin(ldt, 5)) );
+//		System.out.println( toString(getMinuteBegin(ldt, 15)) );
+//		System.out.println(  );
+//		System.out.println( toString(getHourBegin(ldt, 15)) );
+//		System.out.println( toString(getHourBegin(ldt, 4)) );
 	}
 	
 }

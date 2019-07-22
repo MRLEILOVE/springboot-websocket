@@ -74,6 +74,7 @@ public class TEntrustServiceImpl extends DefaultTEntrustServiceImpl<ITEntrustDAO
 		entrust.setSuccessAmount( BigDecimal.ZERO );
 		entrust.setStatus( EntrustStatusEnumer.UNFINISH.getCode() );
 		entrust.setVersion( 0 );
+		entrust.setCreateTime(LocalDateTime.now());
 		
 		return super.add(entrust);
 	}
@@ -91,6 +92,20 @@ public class TEntrustServiceImpl extends DefaultTEntrustServiceImpl<ITEntrustDAO
 			return ReturnDTO.error( "交易对状态不可用" );
 		}
 
+		/**
+		 * <p>
+		 * 也可以把这些 限市、买卖 各种情况综合起来， 按照每一种类型来分别判断一次， 这样代码会有冗余， 但是思路更清晰。
+		 * <br />
+		 * 货币： 物品、币 （意思）
+		 * 法币： 金钱 （意思）
+		 * </p>
+		 * <pre>
+		 * 1、限价、买：price、count单位货币，检查钱包单位需要转换成法币。
+		 * 2、限价、卖：price、count单位货币，检查钱包单位不需要转换。
+		 * 3、市价、买：amount单位法币，检查钱包单位不需要转换。
+		 * 4、市价、卖：count单位货币，检查钱包单位不需要转换。
+		 * </pre>
+		 */
 		BigDecimal bd_price = null;
 		BigDecimal bd_count = null;
 		BigDecimal bd_amount = null;
@@ -107,34 +122,18 @@ public class TEntrustServiceImpl extends DefaultTEntrustServiceImpl<ITEntrustDAO
 				return ReturnDTO.error( "单价低于最小可买/可卖单价" );
 			}
 		}
-
-		String[] split_count = dealDTO.getCount().split( "\\." );
-		if (split_count != null && split_count.length == 2) {
-			int length = split_count[ 1 ].length();
-			if (length > currencyTrade.getCountDecimalDigits()) {
-				return ReturnDTO.error( "数量小数位过长" );
-			}
-		}
-
-		/**
-		 * <p>
-		 * 也可以把这些 限市、买卖 各种情况综合起来， 按照每一种类型来分别判断一次， 这样代码会有冗余， 但是思路更清晰。
-		 * <br />
-		 * 货币： 物品、币 （意思）
-		 * 法币： 金钱 （意思）
-		 * </p>
-		 * <pre>
-		 * 1、限价、买：price、count单位货币，检查钱包单位需要转换成法币。
-		 * 2、限价、卖：price、count单位货币，检查钱包单位不需要转换。
-		 * 3、市价、买：amount单位法币，检查钱包单位不需要转换。
-		 * 4、市价、卖：count单位货币，检查钱包单位不需要转换。
-		 * </pre>
-		 */
 		if (
 				dealDTO.getEntrustType() == EntrustTypeEnumer.LIMIT.getCode()
 				||
 				dealDTO.getEntrustDirection() == EntrustDirectionEnumer.SELL.getCode()
 				) {
+			String[] split_count = dealDTO.getCount().split( "\\." );
+			if (split_count != null && split_count.length == 2) {
+				int length = split_count[ 1 ].length();
+				if (length > currencyTrade.getCountDecimalDigits()) {
+					return ReturnDTO.error( "数量小数位过长" );
+				}
+			}
 			bd_count = new BigDecimal( dealDTO.getCount() );
 			if (bd_count.compareTo( currencyTrade.getMinCount() ) == -1) {
 				return ReturnDTO.error( "数量低于最小可买/可卖数量" );

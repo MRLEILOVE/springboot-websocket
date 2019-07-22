@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.alibaba.dubbo.config.annotation.Reference;
+import com.bittrade.common.enums.EntrustDirectionEnumer;
 import com.bittrade.common.enums.EntrustTypeEnumer;
 import com.bittrade.currency.api.service.ITCurrencyTradeService;
 import com.bittrade.entrust.api.service.ITEntrustRecordService;
@@ -133,6 +134,15 @@ public /* static */final class Robot {
 						 */;
 	}
 
+	private static BigDecimal getAmount() {
+		Random r = new Random( R.nextLong() );
+		return new BigDecimal( r.nextDouble()
+				* 10000 )/*
+						 * .setScale(IConstant.COUNT_DECIMAL_LENGTH,
+						 * BigDecimal.ROUND_HALF_DOWN)
+						 */;
+	}
+
 	private static long getSleepMillis() {
 		Random r = new Random( R.nextLong() );
 		return r.nextInt( 1000 );
@@ -195,10 +205,31 @@ public /* static */final class Robot {
 					entrust.setCurrencyTradeId( getCurrencyTradeID() );
 					entrust.setEntrustDirection( getEntrustDirection() );
 					entrust.setEntrustType( getEntrustType() );
-					if (entrust.getEntrustType() == EntrustTypeEnumer.LIMIT.getCode()) {
-						entrust.setPrice( getPrice( getCurrencyTradeID() ) );
+					{
+						if (entrust.getEntrustType() == EntrustTypeEnumer.LIMIT.getCode()) {
+							if (entrust.getEntrustDirection() == EntrustDirectionEnumer.BUY.getCode()) {
+								
+								entrust.setPrice( getPrice( getCurrencyTradeID() ) );
+								entrust.setCount( getCount() );
+								
+							} else /*if (entrust.getEntrustDirection() == EntrustDirectionEnumer.SELL.getCode()) */{
+								
+								entrust.setPrice( getPrice( getCurrencyTradeID() ) );
+								entrust.setCount( getCount() );
+								
+							}
+						} else /*if (entrust.getEntrustType() == EntrustTypeEnumer.MARKET.getCode()) */{
+							if (entrust.getEntrustDirection() == EntrustDirectionEnumer.BUY.getCode()) {
+								
+								entrust.setAmount( getAmount() );
+								
+							} else /*if (entrust.getEntrustDirection() == EntrustDirectionEnumer.SELL.getCode()) */{
+								
+								entrust.setCount( getCount() );
+								
+							}
+						}
 					}
-					entrust.setCount( getCount() );
 					entrustService.add(entrust);
 
 					makeAMatchService.makeAMatch( entrust );

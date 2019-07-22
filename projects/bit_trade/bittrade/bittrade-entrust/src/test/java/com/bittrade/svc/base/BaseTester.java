@@ -9,7 +9,7 @@ import com.bittrade.entrust.EntrustApplication;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = { EntrustApplication.class })
-public abstract class BaseTester {
+public abstract class BaseTester extends com.core.framework.BaseTest {
 
 	@org.junit.Before
 	public void setUp() {

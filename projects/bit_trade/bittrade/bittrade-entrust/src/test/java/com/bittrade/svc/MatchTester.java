@@ -5,14 +5,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.bittrade.currency.api.service.ITCurrencyTradeService;
-import com.bittrade.entrust.machine.Robot;
 import com.bittrade.entrust.service.impl.MakeAMatchServiceImpl;
 import com.bittrade.svc.base.BaseTester;
 
 public class MatchTester extends BaseTester {
 
-	@Autowired
-	private Robot robot;
 	@Reference
 	private ITCurrencyTradeService currencyTradeService;
 	@Autowired
@@ -21,7 +18,6 @@ public class MatchTester extends BaseTester {
 	@Test
 	public void test() {
 		makeAMatchService.test();
-//		robot.test();
 //		TCurrencyTrade currencyTrade = currencyTradeService.getByPK( 1 );
 //		System.out.println( "currencyTrade=" + currencyTrade );
 		

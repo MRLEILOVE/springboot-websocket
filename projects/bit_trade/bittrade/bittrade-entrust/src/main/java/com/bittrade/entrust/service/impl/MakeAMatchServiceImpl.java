@@ -1,6 +1,5 @@
 package com.bittrade.entrust.service.impl;
 
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -16,8 +15,6 @@ import javax.annotation.PostConstruct;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.amqp.core.Message;
-import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -39,7 +36,6 @@ import com.bittrade.pojo.model.TEntrustRecord;
 import com.core.common.constant.ICompareResultConstant;
 import com.core.tool.BigDecimalUtil;
 import com.core.tool.SnowFlake;
-import com.rabbitmq.client.Channel;
 
 import redis.clients.jedis.JedisCluster;
 
@@ -162,6 +158,7 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 		if (MAP__SYMBOL.containsKey( currencyTradeID )) {
 			str_symbol = MAP__SYMBOL.get( currencyTradeID );
 		} else {
+			LOG.info("------------ currencyTradeService.getByPK() once , currencyTradeID=" + currencyTradeID);
 			MAP__SYMBOL.put( currencyTradeID, str_symbol = currencyTradeService.getByPK( currencyTradeID ).getSymbol() );
 		}
 		
@@ -384,17 +381,17 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 				entrust.getEntrustDirection() == EntrustDirectionEnumer.SELL.getCode()
 				) {
 			entrust.setLeftCount(entrust.getLeftCount().subtract(recordCount).setScale(IConstant.COUNT_DECIMAL_LENGTH, BigDecimal.ROUND_HALF_DOWN));
-			entrust.setStatus(
-					BigDecimalUtil.isZero(entrust.getLeftCount()) ? 
-							EntrustStatusEnumer.FINISH.getCode() : 
-								EntrustStatusEnumer.PART_FINISH.getCode()
-								);
+//			entrust.setStatus(
+//					BigDecimalUtil.isZero(entrust.getLeftCount()) ? 
+//							EntrustStatusEnumer.FINISH.getCode() : 
+//								EntrustStatusEnumer.PART_FINISH.getCode()
+//								);
 		} else {
-			entrust.setStatus(
-					entrust.getSuccessAmount().compareTo(entrust.getAmount()) >= ICompareResultConstant.EQUAL ? 
-							EntrustStatusEnumer.FINISH.getCode() : 
-								EntrustStatusEnumer.PART_FINISH.getCode()
-								);
+//			entrust.setStatus(
+//					entrust.getSuccessAmount().compareTo(entrust.getAmount()) >= ICompareResultConstant.EQUAL ? 
+//							EntrustStatusEnumer.FINISH.getCode() : 
+//								EntrustStatusEnumer.PART_FINISH.getCode()
+//								);
 		}
 	}
 	
@@ -437,7 +434,20 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 			bd_leftCount_before = entrust_before.getLeftCount();
 			bd_leftCount_after = entrust_after.getLeftCount();
 		}
-		bd_count = bd_leftCount_before.compareTo(bd_leftCount_after) == ICompareResultConstant.LESS_THAN ? bd_leftCount_before : bd_leftCount_after;
+		int i_compareTo = bd_leftCount_before.compareTo(bd_leftCount_after);
+		if (i_compareTo == ICompareResultConstant.LESS_THAN) {
+			bd_count = bd_leftCount_before;
+			entrust_before.setStatus(EntrustStatusEnumer.FINISH.getCode());
+			entrust_after.setStatus(EntrustStatusEnumer.PART_FINISH.getCode());
+		} else if (i_compareTo == ICompareResultConstant.EQUAL) {
+			bd_count = bd_leftCount_before;
+			entrust_before.setStatus(EntrustStatusEnumer.FINISH.getCode());
+			entrust_after.setStatus(EntrustStatusEnumer.FINISH.getCode());
+		} else /*if (i_compareTo == ICompareResultConstant.GREATER_THAN) */{
+			bd_count = bd_leftCount_after;
+			entrust_before.setStatus(EntrustStatusEnumer.PART_FINISH.getCode());
+			entrust_after.setStatus(EntrustStatusEnumer.FINISH.getCode());
+		}
 		bd_amount = dealPrice.multiply(bd_count).setScale(IConstant.AMOUNT_DECIMAL_LENGTH, BigDecimal.ROUND_HALF_DOWN);
 		LocalDateTime createTime = LocalDateTime.now();
 		
@@ -724,6 +734,14 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 		
 		// print .
 		print();
+		
+		synchronized (MakeAMatchServiceImpl.class) {
+			try {
+				MakeAMatchServiceImpl.class.wait();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	public static void _main(String[] args) {
@@ -753,15 +771,15 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 		System.out.println( bd_amount.subtract(bd_successAmount).divide( bd_dealPrice ) );
 	}
 
-	@RabbitListener(queues = { IQueueConstants.QUEUE__ENTRUST_RECORD })
-	public void processMessage(Channel channel, Message message) {
-		System.out.println("QUEUE__ENTRUST_RECORD -- MessageConsumer收到消息：" + new String(message.getBody()));
-		try {
-			channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+//	@RabbitListener(queues = { IQueueConstants.QUEUE__ENTRUST_RECORD })
+//	public void processMessage(Channel channel, Message message) {
+//		System.out.println("QUEUE__ENTRUST_RECORD -- MessageConsumer收到消息：" + new String(message.getBody()));
+//		try {
+//			channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//	}
 
 //	@RabbitListener(queues = { IQueueConstants.QUEUE__KLINE })
 //	public void processMessage_2(Channel channel, Message message) {

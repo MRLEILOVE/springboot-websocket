@@ -99,11 +99,11 @@ public class TKlineServiceImpl extends DefaultTKlineServiceImpl<ITKlineDAO, TKli
 		
 		// 先这样判断吧， 要不然呢？
 		if (granularity <= KLineGranularityEnumer.THIRTY_MINUTE.getCode()) {
-			ldt = DateTimeUtil.getMinuteBegin( dt, granularity );
+			ldt = DateTimeUtil.getMinuteBegin( dt, granularity /= 60 );
 		} else if (granularity <= KLineGranularityEnumer.TWELVE_HOUR.getCode()) {
-			ldt = DateTimeUtil.getHourBegin( dt, granularity );
-		} else {
-			ldt = DateTimeUtil.getDayBegin( dt, granularity );
+			ldt = DateTimeUtil.getHourBegin( dt, granularity /= 3600 );
+		} else /*if (granularity <= KLineGranularityEnumer.ONE_WEEK.getCode()) */{
+			ldt = DateTimeUtil.getDayBegin( dt, granularity /= 86400 );
 		}
 		
 		return ldt;
@@ -141,6 +141,8 @@ public class TKlineServiceImpl extends DefaultTKlineServiceImpl<ITKlineDAO, TKli
 				kLine.setLow( dealPrice );
 				kLine.setClose( dealPrice );
 				kLine.setVolume( entrustRecord.getCount() );
+				kLine.setGranularity(i_code);
+				kLine.setCreateTime(LocalDateTime.now());
 				klineDAO.add( kLine );
 				LOG.info( "kLine.getId()=" + kLine.getId() );
 			} else /*if (kLine.getTime().compareTo(dt_updateTime) == 0) */{
@@ -152,6 +154,7 @@ public class TKlineServiceImpl extends DefaultTKlineServiceImpl<ITKlineDAO, TKli
 				}
 				kLine.setClose( dealPrice );
 				kLine.setVolume( kLine.getVolume().add( entrustRecord.getCount() ) );
+				kLine.setUpdateTime(LocalDateTime.now());
 				klineDAO.modifyByPK( kLine );
 			}
 			
