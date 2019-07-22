@@ -88,7 +88,7 @@ public class TEntrustServiceImpl extends DefaultTEntrustServiceImpl<ITEntrustDAO
 
 		BigDecimal bd_price = null;
 		if (dealDTO.getEntrustType() == EntrustTypeEnumer.LIMIT.getCode()) {
-			String[] split_price = dealDTO.getPrice().split( "." );
+			String[] split_price = dealDTO.getPrice().split( "\\." );
 			if (split_price != null && split_price.length == 2) {
 				int length = split_price[ 1 ].length();
 				if (length > currencyTrade.getPriceDecimalDigits()) {
@@ -101,7 +101,7 @@ public class TEntrustServiceImpl extends DefaultTEntrustServiceImpl<ITEntrustDAO
 			}
 		}
 
-		String[] split_count = dealDTO.getCount().split( "." );
+		String[] split_count = dealDTO.getCount().split( "\\." );
 		if (split_count != null && split_count.length == 2) {
 			int length = split_count[ 1 ].length();
 			if (length > currencyTrade.getCountDecimalDigits()) {
