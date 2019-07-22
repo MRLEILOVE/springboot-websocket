@@ -4,11 +4,13 @@ package com.bittrade.pojo.dto;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.io.Serializable;
 import java.util.Date;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class QueryKLineDto {
+public class QueryKLineDto implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     /**
      * 开始时间
