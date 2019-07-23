@@ -1,27 +1,17 @@
 package com.bittrade.batch.socket;
 
-import java.math.BigDecimal;
-import java.util.Date;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.Message;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.alibaba.fastjson.JSONObject;
-import com.bittrade.batch.general.GeneralMethod;
-import com.bittrade.currency.api.service.ITCurrencyTradeService;
-import com.bittrade.currency.api.service.ITWalletRecordService;
+import com.bittrade.common.constant.IQueueConstants;
 import com.bittrade.currency.api.service.ITWalletService;
-import com.bittrade.entrust.api.service.ITEntrustRecordService;
-import com.bittrade.pojo.model.TCurrencyTrade;
 import com.bittrade.pojo.model.TEntrustRecord;
-import com.bittrade.pojo.model.TWallet;
-import com.bittrade.pojo.model.TWalletRecord;
-import com.core.tool.SnowFlake;
 import com.rabbitmq.client.Channel;
 
 /**
@@ -38,14 +28,14 @@ public class MQConsumerSettleHandler {
 	@Reference
 	private ITWalletService		walletService;
 
-	// @RabbitListener(queues = IQueueConstants.QUEUE__KLINE)
-	@Scheduled(cron = "0/10 * * * * ?")
-	public void processMessage() { // Channel channel, Message message
+	@RabbitListener(queues = IQueueConstants.QUEUE__ENTRUST_RECORD)
+	public void processMessage(Channel channel, Message message) {
 		try {
 			LOG.info( "开始结算....................................................." );
 			// 1、处理mq推送过来的撮合数据，进行结算
-			// String msg = new String( message.getBody() );
-			String msg = "{\"amount\":100,\"count\":10,\"userId\":1,\"current\":0,\"size\":0,\"rivalUserId\":2,\"id\":300012213121331322,\"currencyTradeId\":1}";
+			String msg = new String( message.getBody() );
+			// String msg =
+			// "{\"amount\":100,\"count\":10,\"userId\":1,\"current\":0,\"size\":0,\"rivalUserId\":2,\"id\":300012213121331322,\"currencyTradeId\":1}";
 			TEntrustRecord entrustRecords = JSONObject.parseObject( msg, TEntrustRecord.class );
 			walletService.modifyWalletSellte( entrustRecords );
 			LOG.info( "结算成功....................................................." );
@@ -53,6 +43,7 @@ public class MQConsumerSettleHandler {
 			LOG.error( e.getMessage(), e );
 		}
 	}
+	
 
 	// private void walletSettle(TEntrustRecord entrustRecords) throws Exception
 	// {

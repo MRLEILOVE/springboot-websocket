@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.bittrade.common.enums.KLineGranularityEnumer;
+
 import io.netty.channel.group.ChannelGroup;
 
 public class Global {
@@ -13,17 +15,10 @@ public class Global {
 	public static List<String>								granularitys		= new ArrayList<String>();
 
 	static {
-		granularitys.add( "60" );
-		granularitys.add( "180" );
-		granularitys.add( "300" );
-		granularitys.add( "900" );
-		granularitys.add( "1800" );
-		granularitys.add( "3600" );
-		granularitys.add( "7200" );
-		granularitys.add( "14400" );
-		granularitys.add( "21600" );
-		granularitys.add( "43200" );
-		granularitys.add( "86400" );
+		for (KLineGranularityEnumer str : KLineGranularityEnumer.values()) {
+			granularitys.add( str.getCode().toString() );
+		}
+
 	}
 
 }

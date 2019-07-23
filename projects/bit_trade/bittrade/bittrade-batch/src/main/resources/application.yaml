@@ -1,8 +1,8 @@
 data:
-   application:
-      name: batch
+  application:
+    name: batch
 server:
-   port: 8902
+  port: 8902
 spring:
-   profiles:
-      active: common,dubbo_consumer
+  profiles:
+    active: common,dubbo_consumer,amqp
