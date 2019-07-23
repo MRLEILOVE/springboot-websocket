@@ -7,6 +7,8 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import javax.annotation.PostConstruct;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -193,6 +195,7 @@ public /* static */final class Robot {
 		}
 	}
 
+	@PostConstruct
 	public void test() {
 		checkLinePrice();
 		
