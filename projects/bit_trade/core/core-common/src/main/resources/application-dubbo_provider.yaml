@@ -12,10 +12,11 @@ dubbo:
   # 注册中心信息
   registry:
     id: my-registry
-    #protocol: zookeeper
+    protocol: zookeeper
+    address: N/A
     #address: 127.0.0.1:2181
     #address: zookeeper://127.0.0.1:2181
-    address: N/A
+    #address: zookeeper://192.168.1.180:2181?backup=192.168.1.180:2182,192.168.1.180:2183
   monitor:
     protocol: registry
   provider:
