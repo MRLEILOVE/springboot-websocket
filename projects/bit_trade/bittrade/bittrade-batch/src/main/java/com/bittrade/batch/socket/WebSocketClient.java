@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+
 import org.apache.commons.compress.compressors.deflate64.Deflate64CompressorInputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,7 +47,7 @@ public class WebSocketClient {
 
 	private final static String		PING	= "ping";
 
-	// @PostConstruct
+	@PostConstruct
 	public void init() {
 		connect();
 	}
@@ -68,7 +70,10 @@ public class WebSocketClient {
 			requestString.append( JSON.toJSON( symbolList.toArray() ) );
 			requestString.append( "}" );
 
-			Request request = new Request.Builder().url( "wss://real.okex.com:10442/ws/v3" ).build();
+			String okexWebsocketUrl = GeneralMethod
+					.qryParamConfigInfo( paramConfigService, ParamConfigEnum.ParamKeyEnum.OKEX_WEB_SOCKET_URL_KEY.getKey() ).getParamValue();
+
+			Request request = new Request.Builder().url( okexWebsocketUrl ).build();
 
 			OkHttpClient client = new OkHttpClient();
 			client.newWebSocket( request, new WebSocketListener() {
