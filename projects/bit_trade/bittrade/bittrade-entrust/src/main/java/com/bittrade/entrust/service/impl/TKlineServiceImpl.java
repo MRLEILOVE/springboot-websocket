@@ -75,6 +75,14 @@ public class TKlineServiceImpl extends DefaultTKlineServiceImpl<ITKlineDAO, TKli
 	 * @since JDK 1.8
 	 */
 	private void initializeKLineLast() {
+//		KLineGranularityEnumer objArr_enum[] = KLineGranularityEnumer.values();
+//		if (objArr_enum != null && objArr_enum.length > 0) {
+//			for (int i = 0; i < objArr_enum.length; i++) {
+//				KLineGranularityEnumer obj_enum = objArr_enum[i];
+//				
+//				
+//			}
+//		}
 	}
 	
 	@PostConstruct

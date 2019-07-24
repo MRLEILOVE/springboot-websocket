@@ -9,14 +9,22 @@ spring:
     password: woaini123
     # hikari
     type: com.zaxxer.hikari.HikariDataSource
+    # Hikari 连接池配置 ------ 详细配置请访问：https://github.com/brettwooldridge/HikariCP
     hikari:
-      connection-timeout: 5000
-      auto-commit: true
-      max-lifetime: 1800000
+      # 连接池名称
       pool-name: HikariCP
+      # 此属性控制从池返回的连接的默认自动提交行为,默认值：true
+      auto-commit: true
+      # 数据库连接超时时间,默认30秒，即30000
+      connection-timeout: 5000
+      #connection-test-query: SELECT 1
+      # 空闲连接存活最大时间，默认600000（10分钟）
+      idle-timeout: 180000
+      # 此属性控制池中连接的最长生命周期，值0表示无限生命周期，默认1800000即30分钟
+      max-lifetime: 1800000
+      # 最小空闲连接数量
       minimum-idle: 5
-      connection-test-query: SELECT 1
-      idle-timeout: 30000
+      # 连接池最大连接数，默认是10
       maximum-pool-size: 15
   # redis .
   redis:
