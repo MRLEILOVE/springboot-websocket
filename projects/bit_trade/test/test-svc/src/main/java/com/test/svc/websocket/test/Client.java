@@ -1,4 +1,4 @@
-package com.bittrade.batch.socket.test;
+package com.test.svc.websocket.test;
 
 import java.io.IOException;
 import java.io.OutputStream;
