@@ -30,15 +30,13 @@ public class MQConsumerSettleHandler {
 	@RabbitListener(queues = IQueueConstants.QUEUE__ENTRUST_RECORD)
 	public void processMessage(Channel channel, Message message) {
 		try {
-			LOG.info( "开始结算....................................................." );
 			// 1、处理mq推送过来的撮合数据，进行结算
 			String msg = new String( message.getBody() );
 			TEntrustRecord entrustRecords = JSONObject.parseObject( msg, TEntrustRecord.class );
 			walletService.modifyWalletSellte( entrustRecords );
-			LOG.info( "结算成功....................................................." );
 		} catch (Exception e) {
-			LOG.error( e.getMessage(), e );
+			LOG.error( e.toString() );
 		}
 	}
-
+	
 }

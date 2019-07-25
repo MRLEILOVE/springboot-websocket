@@ -100,7 +100,6 @@ public class WebSocketMessagePushHandler {
 	 */
 	private void msgHandler(Message message, String granularity) {
 		String context = new String( message.getBody() );
-		System.out.println( "message=" + context + "granularity=" + granularity );
 		JSONArray object = JSONArray.parseArray( context );
 		String symbol = object.getString( 0 );
 		String key = symbol + "_" + granularity;
