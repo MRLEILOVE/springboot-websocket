@@ -92,7 +92,7 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 	 */
 	private static final ConcurrentHashMap<Integer, BigDecimal> MAP__LINE_PRICE = new ConcurrentHashMap<>();
 	
-	private static final SnowFlake SNOW_FLAKE__ENTRUST_RECORD = new SnowFlake(1, 1);
+	private static final SnowFlake SNOW_FLAKE__ENTRUST_RECORD = new SnowFlake(2, 2);
 	
 	@Autowired
 	private ITEntrustService entrustService;
@@ -235,6 +235,7 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 	 */
 	private void initialEntrust() {
 		TEntrust entrustQuery = new TEntrust();
+		entrustQuery.in( TEntrust.FieldNames.STATUS, new Object[] { EntrustStatusEnumer.UNFINISH, EntrustStatusEnumer.PART_FINISH } );
 		List<TEntrust> list_ent = entrustService.getsBy( entrustQuery ); // 需要按照时间或者ID升序排序。
 		if (list_ent != null && list_ent.size() > 0) {
 			for (int i = 0; i < list_ent.size(); i++) {
@@ -258,7 +259,7 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 	 */
 	@PostConstruct
 	private void initialData() {
-		initialEntrust();
+//		initialEntrust();
 	}
 	
 	

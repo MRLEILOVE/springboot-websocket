@@ -195,21 +195,22 @@ public /* static */final class Robot {
 		}
 	}
 
+	private static final int CNT = 50; // 500 50 5
+
+	private static final ExecutorService ES = Executors.newFixedThreadPool( CNT );
+	
 	@PostConstruct
 	public void test() {
 		checkLinePrice();
 		
 		
-		final int CNT = 50; // 500 50 5
-
-		ExecutorService es = Executors.newFixedThreadPool( CNT );
 		// CountDownLatch cdl = new CountDownLatch( CNT );
 		// MyCallable MyCallable = new MyCallable(makeAMatch, entrustService,
 		// entrustRecordService, cdl);
 
 		for (int i = 0; i < CNT; i++) {
 			// /* Future<String> future = */es.submit(MyCallable);
-			/* Future<String> future = */es.submit( () -> {
+			/* Future<String> future = */ES.submit( () -> {
 				while (true) {
 					TEntrust entrust = new TEntrust();
 					entrust.setUserId( getUserID() );
@@ -270,15 +271,15 @@ public /* static */final class Robot {
 		// } catch (InterruptedException e) {
 		// e.printStackTrace();
 		// }
-		synchronized (Robot.class) {
-			try {
-				Robot.class.wait();
-			} catch (InterruptedException e) {
-				e.printStackTrace();  
-			}
-		}
-
-		es.shutdown();
+//		synchronized (Robot.class) {
+//			try {
+//				Robot.class.wait();
+//			} catch (InterruptedException e) {
+//				e.printStackTrace();  
+//			}
+//		}
+//
+//		ES.shutdown();
 	}
 
 	public static void _main(String[] args) {

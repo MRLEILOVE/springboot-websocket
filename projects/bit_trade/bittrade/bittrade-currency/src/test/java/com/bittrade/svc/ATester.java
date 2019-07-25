@@ -5,16 +5,26 @@ import java.math.BigDecimal;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.bittrade.currency.api.service.ITCurrencyTradeService;
 import com.bittrade.currency.api.service.ITWalletService;
+import com.bittrade.pojo.model.TCurrencyTrade;
 import com.bittrade.pojo.model.TWallet;
 import com.bittrade.svc.base.BaseTester;
 
 public class ATester extends BaseTester {
 
+	@Autowired
+	private ITCurrencyTradeService currencyTradeService;
 //	@Autowired
 //	ITParamConfigService paramConfigService;
 	@Autowired
 	private ITWalletService walletService;
+	
+	@Test
+	public void getCT() {
+		TCurrencyTrade currencyTrade = currencyTradeService.getByPK( 2 );
+		System.out.println( "currencyTrade=" + currencyTrade );
+	}
 	
 	@Test
 	public void test() {
