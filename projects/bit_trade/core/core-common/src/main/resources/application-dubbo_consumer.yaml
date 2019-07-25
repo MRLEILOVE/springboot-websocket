@@ -5,9 +5,12 @@ dubbo:
     id: service-consumer
     name: service-consumer
   registry:
-    address: N/A
+    
+    #address: N/A
     #address: zookeeper://127.0.0.1:2181
     #address: zookeeper://192.168.1.180:2181?backup=192.168.1.180:2182,192.168.1.180:2183
+    #address: ${data.dubbo.registry.address}
+    
     check: false
   monitor:
     protocol: registry

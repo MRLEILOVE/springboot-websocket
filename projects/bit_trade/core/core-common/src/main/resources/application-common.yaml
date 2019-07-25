@@ -1,13 +1,15 @@
+
+
 ---
 spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
     #url: jdbc:mysql://localhost:3306/test?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull
     # 47.107.74.74 woaini123
-    url: jdbc:mysql://154.222.138.249:3306/bit_trade_dev?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false
+    url: jdbc:mysql://${data.datasource.ip}:3306/${data.datasource.db}?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false
     username: root
     #password: z012345
-    password: xlkj@lm20190627
+    password: ${data.datasource.password}
     # hikari
     type: com.zaxxer.hikari.HikariDataSource
     # Hikari 连接池配置 ------ 详细配置请访问：https://github.com/brettwooldridge/HikariCP
@@ -69,6 +71,7 @@ spring:
   application_name: bittrade-${data.application.name:}
   profiles:
     include:
+      - data
       - eureka
 
 mybatis-plus:

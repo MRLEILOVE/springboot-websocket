@@ -119,9 +119,66 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+	
+	<profiles>
+		<profile>
+			<id>dev</id>
+			<properties>
+				<env>dev</env>
+			</properties>
+			<!-- 默认激活开发配制，使用app_dev.properties来替换设置过虑的资源文件中的${key} -->
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<!-- <build>
+				<filters>
+					<filter>src/test/resources/app_dev.properties</filter>
+				</filters>
+			</build> -->
+		</profile>
+		<profile>
+			<id>test</id>
+			<properties>
+				<env>test</env>
+			</properties>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<!-- <build>
+				<filters>
+					<filter>src/test/resources/app_test.properties</filter>
+				</filters>
+			</build> -->
+		</profile>
+		<profile>
+			<id>uat</id>
+			<properties>
+				<env>uat</env>
+			</properties>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<!-- <build>
+				<filters>
+					<filter>src/test/resources/app_uat.properties</filter>
+				</filters>
+			</build> -->
+		</profile>
+	</profiles>
 
 	<build>
 		<finalName>${project.artifactId}</finalName>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<excludes>
+					<exclude>profile/*/*</exclude>
+				</excludes>
+			</resource>
+			<resource>
+				<directory>src/main/resources/profile/${env}</directory>
+			</resource>
+		</resources>
 		<plugins>
 			<!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-compiler-plugin</artifactId> 
 				<configuration> <source>1.8</source> <target>1.8</target> </configuration> 

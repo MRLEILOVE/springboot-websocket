@@ -1,0 +1,13 @@
+
+### 测试环境。
+
+---
+data:
+  datasource:
+    ip: 154.222.138.249
+    db: bit_trade_test
+    password: xlkj@lm20190627
+
+dubbo:
+  registry:
+    address: zookeeper://192.168.1.180:2181?backup=192.168.1.180:2182,192.168.1.180:2183

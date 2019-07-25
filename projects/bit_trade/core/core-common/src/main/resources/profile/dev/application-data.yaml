@@ -1,0 +1,13 @@
+
+### 开发环境。
+
+---
+data:
+  datasource:
+    ip: 154.222.138.249
+    db: bit_trade_dev
+    password: xlkj@lm20190627
+
+dubbo:
+  registry:
+    address: N/A

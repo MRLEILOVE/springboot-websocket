@@ -195,7 +195,7 @@ public /* static */final class Robot {
 		}
 	}
 
-	private static final int CNT = 50; // 500 50 5
+	private static final int CNT = 30; // 500 50 5
 
 	private static final ExecutorService ES = Executors.newFixedThreadPool( CNT );
 	
