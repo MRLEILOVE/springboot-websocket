@@ -47,7 +47,9 @@ public /* static */final class Robot {
 	private MakeAMatchServiceImpl	makeAMatchService;
 
 	private static final int MAX_CURRENCY_TRADE_ID = 2;
-	private static final BigDecimal bd_priceRangePercent = new BigDecimal("0.05"); // 5%
+	private static final BigDecimal BD_PRICE_RANGE_PERCENT = new BigDecimal("0.05"); // 5%
+	private static final BigDecimal BD_ADD = new BigDecimal(+1);
+	private static final BigDecimal BD_SUB = new BigDecimal(-1);
 	private static final Random		R	= new Random( System.currentTimeMillis() );
 
 	private static long getUserID() {
@@ -91,10 +93,11 @@ public /* static */final class Robot {
 	 * 
 	 * @author Administrator
 	 * @param currencyTradeID
+	 * @param rate
 	 * @return
 	 * @since JDK 1.8
 	 */
-	private BigDecimal getPrice(int currencyTradeID) {
+	private BigDecimal getPrice(int currencyTradeID, BigDecimal rate) {
 		BigDecimal bd_price;
 		
 		BigDecimal bd_min, bd_max;
@@ -115,9 +118,10 @@ public /* static */final class Robot {
 			bd_min = bd_max = bd_selfPrice;
 		}
 		
-		d_min = bd_min.subtract( bd_min.multiply( bd_priceRangePercent ) ).doubleValue();
-		d_max = bd_max.add( bd_max.multiply( bd_priceRangePercent ) ).doubleValue();
+		d_min = bd_min.subtract( bd_min.multiply( BD_PRICE_RANGE_PERCENT ) ).doubleValue();
+		d_max = bd_max.add( bd_max.multiply( BD_PRICE_RANGE_PERCENT ) ).doubleValue();
 		bd_price = getPrice(d_min, d_max);
+		bd_price = bd_price.add( bd_price.multiply( BD_PRICE_RANGE_PERCENT ).multiply( rate ) );
 		
 		return bd_price;
 	}
@@ -170,7 +174,7 @@ public /* static */final class Robot {
 			entrust.setEntrustDirection( getEntrustDirection() );
 			entrust.setEntrustType( getEntrustType() );
 			if (entrust.getEntrustType() == EntrustTypeEnumer.LIMIT.getCode()) {
-				entrust.setPrice( robot.getPrice( entrust.getCurrencyTradeId() ) );
+				entrust.setPrice( robot.getPrice( entrust.getCurrencyTradeId(), null ) );
 			}
 			entrust.setCount( getCount() );
 			System.out.println( "11 com.bittrade.entrust.service.impl.MakeAMatchServiceImpl.makeAMatch(TEntrust)" );
@@ -195,7 +199,7 @@ public /* static */final class Robot {
 		}
 	}
 
-	private static final int CNT = 30; // 500 50 5
+	private static final int CNT = 50; // 500 50 5
 
 	private static final ExecutorService ES = Executors.newFixedThreadPool( CNT );
 	
@@ -221,12 +225,12 @@ public /* static */final class Robot {
 						if (entrust.getEntrustType() == EntrustTypeEnumer.LIMIT.getCode()) {
 							if (entrust.getEntrustDirection() == EntrustDirectionEnumer.BUY.getCode()) {
 								
-								entrust.setPrice( getPrice( entrust.getCurrencyTradeId() ) );
+								entrust.setPrice( getPrice( entrust.getCurrencyTradeId(), BD_ADD ) );
 								entrust.setCount( getCount() );
 								
 							} else /*if (entrust.getEntrustDirection() == EntrustDirectionEnumer.SELL.getCode()) */{
 								
-								entrust.setPrice( getPrice( entrust.getCurrencyTradeId() ) );
+								entrust.setPrice( getPrice( entrust.getCurrencyTradeId(), BD_SUB ) );
 								entrust.setCount( getCount() );
 								
 							}
