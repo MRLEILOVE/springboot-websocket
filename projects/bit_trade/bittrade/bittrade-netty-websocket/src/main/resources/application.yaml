@@ -2,4 +2,4 @@ spring:
   profiles:
     active: common, amqp
   websocket:
-    port: 9999
+    port: 10001
