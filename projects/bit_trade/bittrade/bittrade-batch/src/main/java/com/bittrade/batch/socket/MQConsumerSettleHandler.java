@@ -28,14 +28,14 @@ import com.rabbitmq.client.Channel;
 @Component
 public class MQConsumerSettleHandler {
 
-	private static final Logger	LOG					= LoggerFactory.getLogger( MQConsumerSettleHandler.class );
+	private static final Logger						LOG					= LoggerFactory.getLogger( MQConsumerSettleHandler.class );
 
 	@Reference
-	private ITWalletService		walletService;
+	private ITWalletService							walletService;
 
-	Map<Long, ReentrantLock>	map					= new ConcurrentHashMap<Long, ReentrantLock>();
+	private ConcurrentHashMap<Long, ReentrantLock>	map					= new ConcurrentHashMap<Long, ReentrantLock>();
 
-	private ExecutorService		cachedThreadPool	= Executors.newFixedThreadPool( 200 );
+	private ExecutorService							cachedThreadPool	= Executors.newFixedThreadPool( 200 );
 
 	public ReentrantLock getLock(Long userId) {
 		ReentrantLock lock = null;
