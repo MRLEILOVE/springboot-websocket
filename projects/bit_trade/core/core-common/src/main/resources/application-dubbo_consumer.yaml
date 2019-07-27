@@ -13,7 +13,8 @@ dubbo:
     
     check: false
   monitor:
-    protocol: registry
+    #protocol: registry
+    #address: 监控IP:7070
   consumer:
     check: false
     timeout: 10000

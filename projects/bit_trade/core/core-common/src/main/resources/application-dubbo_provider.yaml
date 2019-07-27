@@ -25,7 +25,8 @@ dubbo:
     #address: ${data.dubbo.registry.address}
     
   monitor:
-    protocol: registry
+    #protocol: registry
+    #address: 监控IP:7070
   provider:
     timeout: 10000
   scan:
