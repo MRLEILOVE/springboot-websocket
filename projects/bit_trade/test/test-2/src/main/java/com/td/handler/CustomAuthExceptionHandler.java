@@ -1,4 +1,4 @@
-package com.td.config;
+package com.td.handler;
 
 import java.io.IOException;
 
@@ -19,6 +19,11 @@ import com.td.vo.ResponseVO;
 
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * @author Zhifeng.Zeng
+ * @description 自定义未授权 token无效 权限不足返回信息处理类
+ * @date 2019/3/4 15:49
+ */
 @Component
 @Slf4j
 public class CustomAuthExceptionHandler implements AuthenticationEntryPoint, AccessDeniedHandler {

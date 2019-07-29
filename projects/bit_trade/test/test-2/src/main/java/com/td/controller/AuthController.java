@@ -1,33 +1,123 @@
 package com.td.controller;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.td.model.User;
+import com.td.dto.LoginUserDTO;
+import com.td.dto.UserDTO;
+import com.td.service.RoleService;
+import com.td.service.UserService;
+import com.td.utils.AssertUtils;
+import com.td.vo.ResponseVO;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
+ * @description 用户权限管理
+ * @author Zhifeng.Zeng
+ * @date 2019/4/19 13:58
  */
+@Slf4j
 @Validated
 @RestController
 @RequestMapping("/auth/")
 public class AuthController {
 
-//	@Autowired
-//	private RedisTokenStore redisTokenStore;
+    @Autowired
+    private UserService userService;
 
-	@GetMapping("t1")
-	public String t1(@Valid @RequestBody User user) {
-		return "t-1";
-	}
+    @Autowired
+    private RoleService roleService;
 
-	@GetMapping("t2")
-	public String t2(@Valid @RequestBody User user) {
-		return "t-2";
-	}
+    @Autowired
+    private RedisTokenStore redisTokenStore;
+
+    /**
+     * @description 添加用户
+     * @param userDTO
+     * @return
+     */
+    @PostMapping("user")
+    public ResponseVO add(@Valid @RequestBody UserDTO userDTO) throws Exception {
+        userService.addUser(userDTO);
+        return ResponseVO.success();
+    }
+
+    /**
+     * @description 删除用户
+     * @param id
+     * @return
+     */
+    @DeleteMapping("user/{id}")
+    public ResponseVO deleteUser(@PathVariable("id")Integer id) throws Exception {
+        userService.deleteUser(id);
+        return ResponseVO.success();
+    }
+
+    /**
+     * @descripiton 修改用户
+     * @param userDTO
+     * @return
+     */
+    @PutMapping("user")
+    public ResponseVO updateUser(@Valid @RequestBody UserDTO userDTO){
+        userService.updateUser(userDTO);
+        return ResponseVO.success();
+    }
+
+    /**
+     * @description 获取用户列表
+     * @return
+     */
+    @GetMapping("user")
+    public ResponseVO findAllUser(){
+        return userService.findAllUserVO();
+    }
+
+    /**
+     * @description 用户登录
+     * @param loginUserDTO
+     * @return
+     */
+    @PostMapping("user/login")
+    public ResponseVO login(LoginUserDTO loginUserDTO){
+        return userService.login(loginUserDTO);
+    }
+
+
+    /**
+     * @description 用户注销
+     * @param authorization
+     * @return
+     */
+    @GetMapping("user/logout")
+    public ResponseVO logout(@RequestHeader("Authorization") String authorization, HttpServletRequest request){
+        redisTokenStore.removeAccessToken(AssertUtils.extracteToken(authorization));
+//        request.getSession().invalidate();
+        return ResponseVO.success();
+    }
+
+    /**
+     * @description 获取所有角色列表
+     * @return
+     */
+    @GetMapping("role")
+    public ResponseVO findAllRole(){
+        return roleService.findAllRoleVO();
+    }
+
 
 }

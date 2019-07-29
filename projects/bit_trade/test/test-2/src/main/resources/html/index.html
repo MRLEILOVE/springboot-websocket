@@ -1,0 +1,53 @@
+<script type="text/javascript" src="jquery-3.4.1.js"></script>
+<script>
+	function ajaxSetup() {
+		$.ajaxSetup({
+			timeout : 30000,
+			beforeSend : function(xhr) {
+				if(this.url.endsWith('/oauth/token')){
+					return true;
+				}
+				if (getAuth() == null){
+					fetchToken();
+				}
+				var auth = getAuth();
+				if(auth != null){
+					xhr.setRequestHeader("Authorization", auth.token_type + ' ' + auth.access_token);
+				} else {
+					return false;
+				}
+				return true;
+			},
+			complete : function(xhr, ts) {
+				if (xhr.status == 401 && xhr.responseJSON.error =='invalid_token') {
+				   refreshToken();
+				}
+			}
+		});
+	}
+
+	$(function() {
+		//ajaxSetup();
+	});
+
+	console.log("welcome");
+	var str_change = "?" + new Date().getTime();
+	$.ajax({
+		"type": "GET", 
+		"url": "http://localhost:8080/auth/user" + str_change, 
+		"beforeSend": function(request) {
+			request.setRequestHeader("Authorization", "bearer a7530e54-b633-44d4-8ba7-889adccb29b0");
+		}, 
+		"success": function(data) {
+			console.log(data);
+			document.write(JSON.stringify(data));
+		}, 
+		"error": function(errorData) {
+			console.error(errorData);
+			document.write(JSON.stringify(errorData));
+		}
+	});
+</script>
+
+<form method="get" action="">
+</form>

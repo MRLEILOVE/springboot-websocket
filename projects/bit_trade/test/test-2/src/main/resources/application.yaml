@@ -11,13 +11,15 @@ spring:
     host: 127.0.0.1
     port: 6379
     password: z012345
+    database: 2
 
   application:
     name: td
  #####################################################################################################
  
   thymeleaf:
-    prefix: classpath:/templates/
+    #prefix: classpath:/templates/
+    prefix: classpath:/html/
     suffix: .html
     cache: false #关闭缓存
     mode: LEGACYHTML5
@@ -27,10 +29,10 @@ spring:
 #      name: o
 #      password: o
 #
-#security:
-#  oauth2:
-#    client:
-#      client-id: clientId
-#      client-secret: clientSecret
-#      scope: scope1, scope2, scope3, scope4
-#      registered-redirect-uri: http://www.baidu.com
+security:
+  oauth2:
+    client:
+      client-id: clientId
+      client-secret: clientSecret
+      scope: scope1, scope2, scope3, scope4
+      registered-redirect-uri: http://www.baidu.com
