@@ -36,7 +36,7 @@
 		"type": "GET", 
 		"url": "http://localhost:8080/auth/user" + str_change, 
 		"beforeSend": function(request) {
-			request.setRequestHeader("Authorization", "bearer a7530e54-b633-44d4-8ba7-889adccb29b0");
+			request.setRequestHeader("Authorization", "Bearer a7530e54-b633-44d4-8ba7-889adccb29b0"); // Basic
 		}, 
 		"success": function(data) {
 			console.log(data);

@@ -67,7 +67,7 @@ public class OAuth2Config {
                 .antMatchers(
                 		"/oauth/*", "/auth/user/login", 
                 		// test
-                		"/html/*", 
+                		"/html/index", // "/html/*", 
                 		// swagger
                 		"/swagger-ui.html", "/webjars/**", "/**/swagger-resources/**", "/v2/**"
                 		).permitAll()

@@ -52,7 +52,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected UserDetailsService userDetailsService() {
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
        return new UserDetailsService(){
-           @Override
+           @SuppressWarnings({ "serial", "unused" })
+		@Override
            public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
                log.info("username:{}",username);
 //               User user = userRepository.findUserByAccount(username);
