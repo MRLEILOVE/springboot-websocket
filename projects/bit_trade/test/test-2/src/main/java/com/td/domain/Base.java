@@ -8,8 +8,8 @@ import lombok.Data;
 
 /**
  * @description:
- * @date 2019/02/19 18:01:22
- * @author Rong.Jia
+ * @date 
+ * @author 
  */
 @Data
 //@MappedSuperclass

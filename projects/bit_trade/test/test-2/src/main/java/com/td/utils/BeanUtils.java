@@ -17,15 +17,15 @@ import java.util.*;
 
 /**
  * @description: bean工具类
- * @date 2019/02/21 09:22
- * @author Zhifeng.Zeng
+ * @date 
+ * @author 
  */
 @Slf4j
 public class BeanUtils<DO, VO> {
 
     /**
      * 属性拷贝方法，忽略入参值为空
-     * @author Zhifeng.Zeng
+     * @author 
      * @param src
      * @param target
      */

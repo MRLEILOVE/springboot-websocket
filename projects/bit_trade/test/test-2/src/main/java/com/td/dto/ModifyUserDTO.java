@@ -4,8 +4,8 @@ import lombok.Data;
 
 /**
  * @description 用户修改密码传输参数
- * @author Zhifeng.Zeng
- * @date 2019/4/19 14:26
+ * @author 
+ * @date 
  */
 @Data
 public class ModifyUserDTO {

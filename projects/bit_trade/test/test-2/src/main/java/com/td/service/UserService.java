@@ -10,8 +10,8 @@ import com.td.vo.UserVO;
 
 /**
  * @description 用户业务接口
- * @author Zhifeng.Zeng
- * @date 2019/2/21 14:06
+ * @author 
+ * @date 
  */
 public interface UserService {
 

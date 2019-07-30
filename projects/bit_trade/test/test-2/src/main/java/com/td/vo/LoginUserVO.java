@@ -8,8 +8,8 @@ import java.util.List;
 
 /**
  * @description 用户登录后返回参数对象
- * @author Zhifeng.Zeng
- * @date 2019/3/7
+ * @author 
+ * @date 
  */
 @Setter
 @Getter

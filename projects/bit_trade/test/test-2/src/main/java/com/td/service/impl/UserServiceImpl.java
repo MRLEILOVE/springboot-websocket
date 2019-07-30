@@ -190,8 +190,8 @@ public class UserServiceImpl implements UserService {
     /**
      * @description oauth2客户端刷新token
      * @param refreshToken
-     * @date 2019/03/05 14:27:22
-     * @author Zhifeng.Zeng
+     * @date 
+     * @author 
      * @return
      */
     private Token oauthRefreshToken(String refreshToken) {

@@ -15,8 +15,8 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * @description: redis 工具类
- * @author: Rong.Jia
- * @date: 2018年6月13日 22:58:22
+ * @author 
+ * @date 
  */
 @Slf4j
 @Component

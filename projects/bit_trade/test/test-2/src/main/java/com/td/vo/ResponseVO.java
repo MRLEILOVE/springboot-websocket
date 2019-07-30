@@ -16,8 +16,8 @@ import lombok.Data;
 
 /**
  * @description:  数据格式返回统一
- * @author Zhifeng.Zeng
- * @date 2019/02/19 16:00:22
+ * @author 
+ * @date 
  */
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)

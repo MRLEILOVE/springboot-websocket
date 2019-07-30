@@ -26,7 +26,6 @@ import com.td.handler.CustomAuthExceptionHandler;
 
 
 /**
- * @author Zhifeng.Zeng
  * @description OAuth2服务器配置
  */
 @Configuration
@@ -67,7 +66,7 @@ public class OAuth2Config {
                 .antMatchers(
                 		"/oauth/*", "/auth/user/login", 
                 		// test
-                		"/html/index", // "/html/*", 
+                		"/html/*", 
                 		// swagger
                 		"/swagger-ui.html", "/webjars/**", "/**/swagger-resources/**", "/v2/**"
                 		).permitAll()

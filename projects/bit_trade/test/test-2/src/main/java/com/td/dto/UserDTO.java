@@ -6,8 +6,8 @@ import lombok.Data;
 
 /**
  * @description 添加、修改用户传输参数
- * @author Zhifeng.Zeng
- * @date 2019/4/19
+ * @author 
+ * @date 
  */
 @Data
 public class UserDTO extends Base {

@@ -8,8 +8,8 @@ import lombok.ToString;
 
 /**
  * @description 用户返回参数对象
- * @author Zhifeng.Zeng
- * @date 2019/3/7
+ * @author 
+ * @date 
  */
 @Setter
 @Getter

@@ -5,8 +5,8 @@ import lombok.Data;
 
 /**
  * @description 登录用户传输参数
- * @author Zhifeng.Zeng
- * @date 2019/4/19 14:26
+ * @author 
+ * @date 
  */
 @Data
 public class LoginUserDTO {

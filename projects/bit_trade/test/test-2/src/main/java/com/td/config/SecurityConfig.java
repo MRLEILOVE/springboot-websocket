@@ -25,7 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 
 /**
  * @description Security核心配置
- * @author Zhifeng.Zeng
+ * @author 
  */
 @Configuration
 @EnableWebSecurity

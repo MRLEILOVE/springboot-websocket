@@ -5,9 +5,9 @@ import java.util.List;
 import com.td.domain.bean.RefreshTokenBean;
 
 /**
- * @author Zhifeng.Zeng
+ * @author 
  * @description oauth2客户端token参数
- * @date 2019/3/8
+ * @date 
  */
 public class Token {
 

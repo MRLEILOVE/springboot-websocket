@@ -26,8 +26,8 @@ public class HttpMessageConverterConfig {
     /**
      * @return StringHttpMessageConverter
      * @descrption: http消息转换器。
-     * @author Rong.Jia
-     * @date 2019/01/07 25:16:44
+     * @author 
+     * @date 
      */
     @Bean
     public StringHttpMessageConverter stringHttpMessageConverter() {

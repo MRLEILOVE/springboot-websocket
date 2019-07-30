@@ -4,8 +4,8 @@ import lombok.ToString;
 
 /**
  * @description: 数据信息状态枚举类
- * @author Rong.Jia
- * @date 2019/02/19 15:54:22
+ * @author 
+ * @date 
  */
 @ToString
 public enum ResponseEnum {

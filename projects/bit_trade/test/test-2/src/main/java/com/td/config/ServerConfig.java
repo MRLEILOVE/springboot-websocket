@@ -9,9 +9,9 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 /**
- * @author Rong.Jia
+ * @author 
  * @description: server 配置
- * @date 2019/02/19 15:24:22
+ * @date 
  */
 @Component
 public class ServerConfig implements ApplicationListener<WebServerInitializedEvent> {

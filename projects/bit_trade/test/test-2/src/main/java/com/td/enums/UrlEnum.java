@@ -2,8 +2,8 @@ package com.td.enums;
 
 /**
  * @description: url 枚举类
- * @author: Rong.Jia
- * @date: 2019/02/28 09:22:22
+ * @author 
+ * @date 
  */
 public enum UrlEnum {
 

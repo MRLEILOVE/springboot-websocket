@@ -8,9 +8,9 @@ import java.io.Serializable;
 import java.util.Collection;
 
 /**
- * @author Zhifeng.Zeng
+ * @author 
  * @description 自定义userDetail 关联security oauth2
- * @date 2019/3/4
+ * @date 
  */
 @Setter
 public class CustomUserDetail implements UserDetails, Serializable {
