@@ -1,4 +1,4 @@
-**WebSocket地址：ws://ip:port**
+**websocket测试环境地址：ws://154.222.138.5:10001**
 
 
 
