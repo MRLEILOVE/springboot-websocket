@@ -1,7 +1,6 @@
 package com.bittrade.currency.service.impl;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,7 +16,7 @@ import com.bittrade.pojo.dto.TCurrencyOptionalDTO;
 import com.bittrade.pojo.model.TCurrencyOptional;
 import com.bittrade.pojo.vo.TCurrencyOptionalVO;
 import com.bittrade.pojo.vo.TransactionPairVO;
-import com.core.framework.DTO.ReturnDTO;
+import com.core.common.DTO.ReturnDTO;
 
 /**
  * 

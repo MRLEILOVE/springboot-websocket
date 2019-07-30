@@ -14,7 +14,7 @@ import com.bittrade.currency.api.service.ITCurrencyService;
 import com.bittrade.pojo.dto.TCurrencyDTO;
 import com.bittrade.pojo.model.TCurrency;
 import com.bittrade.pojo.vo.TCurrencyVO;
-import com.core.framework.DTO.ReturnDTO;
+import com.core.common.DTO.ReturnDTO;
 import com.core.framework.base.controller.BaseController;
 
 import io.swagger.annotations.ApiOperation;
@@ -35,12 +35,7 @@ public class TCurrencyController extends BaseController<TCurrency, TCurrencyDTO,
 	@RequestMapping(value = "/findAllLegalCurrency", method = RequestMethod.GET)
 	@ResponseBody
 	public ReturnDTO<List<TCurrency>> findAllLegalCurrency() {
-		try {
-			return ReturnDTO.ok( tCurrencyService.findAllLegalCurrency() );
-		} catch (Exception e) {
-			e.printStackTrace();
-			return ReturnDTO.error( "服务器异常" );
-		}
+		return ReturnDTO.ok( tCurrencyService.findAllLegalCurrency() );
 	}
 
 	@RequestMapping(value = "/ta", method = RequestMethod.GET)

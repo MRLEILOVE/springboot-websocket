@@ -67,11 +67,11 @@
 	<dependencies>
 		<dependency>
 			<groupId>com.bittrade</groupId>
-			<artifactId>core-framework</artifactId>
+			<artifactId>core-tool</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>com.bittrade</groupId>
-			<artifactId>core-tool</artifactId>
+			<artifactId>core-framework</artifactId>
 		</dependency>
 	</dependencies>
 

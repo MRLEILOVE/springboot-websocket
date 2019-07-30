@@ -1,7 +1,5 @@
 package com.bittrade.currency.controller;
 
-import com.bittrade.common.enums.EntrustStatusEnumer;
-
 import java.math.BigDecimal;
 
 import org.springframework.http.MediaType;
@@ -17,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.bittrade.common.enums.EntrustDirectionEnumer;
+import com.bittrade.common.enums.EntrustStatusEnumer;
 import com.bittrade.common.enums.EntrustTypeEnumer;
 import com.bittrade.entrust.api.service.ITEntrustService;
 import com.bittrade.pojo.dto.DealDTO;
@@ -24,9 +23,9 @@ import com.bittrade.pojo.dto.TEntrustDTO;
 import com.bittrade.pojo.model.TEntrust;
 import com.bittrade.pojo.vo.TEntrustInfoVO;
 import com.bittrade.pojo.vo.TEntrustVO;
+import com.core.common.DTO.PageDTO;
+import com.core.common.DTO.ReturnDTO;
 import com.core.common.constant.ICompareResultConstant;
-import com.core.framework.DTO.PageDTO;
-import com.core.framework.DTO.ReturnDTO;
 import com.core.framework.base.controller.BaseController;
 
 import io.swagger.annotations.ApiOperation;
@@ -47,41 +46,29 @@ public class TEntrustController extends BaseController<TEntrust, TEntrustDTO, TE
 	@GetMapping(value = "/queryPresentEntrustByUserId")
 	@ResponseBody
 	public ReturnDTO<PageDTO<TEntrust>> queryPresentEntrustByUserId(TEntrust ent) {
-		try {
-			ent.in(TEntrust.FieldNames.STATUS, new Object[] {EntrustStatusEnumer.UNFINISH.getCode(), EntrustStatusEnumer.PART_FINISH.getCode() });
-			PageDTO<TEntrust> tEntrustPageDTO = entrustService.getsByPagination(ent);
-			if(tEntrustPageDTO != null && tEntrustPageDTO.getData() != null && tEntrustPageDTO.getData().size() > 0){
-				tEntrustPageDTO.getData().stream().forEach(x ->{
-					//给前端计算好成交量（借用leftCount返回）
-					x.setLeftCount(x.getCount().subtract(x.getLeftCount()));
-				});
-			}
-			return ReturnDTO.ok(tEntrustPageDTO);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return ReturnDTO.error( "服务器异常" );
+		ent.in( TEntrust.FieldNames.STATUS, new Object[] { EntrustStatusEnumer.UNFINISH.getCode(), EntrustStatusEnumer.PART_FINISH.getCode() } );
+		PageDTO<TEntrust> tEntrustPageDTO = entrustService.getsByPagination( ent );
+		if (tEntrustPageDTO != null && tEntrustPageDTO.getData() != null && tEntrustPageDTO.getData().size() > 0) {
+			tEntrustPageDTO.getData().stream().forEach( x -> {
+				// 给前端计算好成交量（借用leftCount返回）
+				x.setLeftCount( x.getCount().subtract( x.getLeftCount() ) );
+			} );
 		}
-
+		return ReturnDTO.ok( tEntrustPageDTO );
 	}
 
 	@ApiOperation(value = "查询用户历史委托")
 	@GetMapping(value = "/queryHistoryEntrustByUserId")
 	@ResponseBody
 	public ReturnDTO<PageDTO<TEntrust>> queryHistoryEntrustByUserId(TEntrust ent) {
-		try {
-			PageDTO<TEntrust> tEntrustPageDTO = entrustService.getsByPagination(ent);
-			if(tEntrustPageDTO != null && tEntrustPageDTO.getData() != null && tEntrustPageDTO.getData().size() > 0){
-				tEntrustPageDTO.getData().stream().forEach(x ->{
-					//给前端计算好成交量（借用leftCount返回）
-					x.setLeftCount(x.getCount().subtract(x.getLeftCount()));
-				});
-			}
-			return ReturnDTO.ok(tEntrustPageDTO);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return ReturnDTO.error( "服务器异常" );
+		PageDTO<TEntrust> tEntrustPageDTO = entrustService.getsByPagination( ent );
+		if (tEntrustPageDTO != null && tEntrustPageDTO.getData() != null && tEntrustPageDTO.getData().size() > 0) {
+			tEntrustPageDTO.getData().stream().forEach( x -> {
+				// 给前端计算好成交量（借用leftCount返回）
+				x.setLeftCount( x.getCount().subtract( x.getLeftCount() ) );
+			} );
 		}
-
+		return ReturnDTO.ok( tEntrustPageDTO );
 	}
 
 	@ApiOperation(value = "买/卖交易对")
@@ -89,9 +76,9 @@ public class TEntrustController extends BaseController<TEntrust, TEntrustDTO, TE
 	@ResponseBody
 	public ReturnDTO<String> deal(@RequestBody DealDTO dealDTO) {
 		// 1.校验参数
-//		if (dealDTO == null) {
-//			return ReturnDTO.error( "参数为空" );
-//		}
+		// if (dealDTO == null) {
+		// return ReturnDTO.error( "参数为空" );
+		// }
 		if (StringUtils.isEmpty( dealDTO.getUserId() )) {
 			return ReturnDTO.error( "用户id为空" );
 		}
@@ -110,7 +97,7 @@ public class TEntrustController extends BaseController<TEntrust, TEntrustDTO, TE
 		if (EntrustDirectionEnumer.getEnumer( dealDTO.getEntrustDirection() ) == null) {
 			return ReturnDTO.error( "买卖方向错误" );
 		}
-		
+
 		// 交易规则值的校验
 		if (dealDTO.getEntrustType() == EntrustTypeEnumer.LIMIT.getCode()) {
 			String price = dealDTO.getPrice();
@@ -118,11 +105,7 @@ public class TEntrustController extends BaseController<TEntrust, TEntrustDTO, TE
 				return ReturnDTO.error( "价格为空或异常" );
 			}
 		}
-		if (
-				dealDTO.getEntrustType() == EntrustTypeEnumer.MARKET.getCode()
-				&& 
-				dealDTO.getEntrustDirection() == EntrustDirectionEnumer.BUY.getCode()
-				) {
+		if (dealDTO.getEntrustType() == EntrustTypeEnumer.MARKET.getCode() && dealDTO.getEntrustDirection() == EntrustDirectionEnumer.BUY.getCode()) {
 			String amount = dealDTO.getAmount();
 			if (amount == null || new BigDecimal( amount ).compareTo( BigDecimal.ZERO ) <= ICompareResultConstant.EQUAL) {
 				return ReturnDTO.error( "交易额为空或异常" );
@@ -133,7 +116,7 @@ public class TEntrustController extends BaseController<TEntrust, TEntrustDTO, TE
 				return ReturnDTO.error( "数量为空或异常" );
 			}
 		}
-		
+
 		return entrustService.deal( dealDTO );
 	}
 
@@ -141,12 +124,12 @@ public class TEntrustController extends BaseController<TEntrust, TEntrustDTO, TE
 	@RequestMapping(value = "/queryEntrustInfoByUserId/{userId}/{entrustId}", method = RequestMethod.GET)
 	@ResponseBody
 	public ReturnDTO<TEntrustInfoVO> queryEntrustInfoByUserId(@PathVariable("userId") String userId, @PathVariable("entrustId") String entrustId) {
-		TEntrustInfoVO infoVO = entrustService.queryEntrustInfoByUserId(userId, entrustId);
-		if(infoVO != null){
-			//计算完成数量
-			infoVO.setCompletedCount(infoVO.getCount().subtract(infoVO.getLeftCount()));
+		TEntrustInfoVO infoVO = entrustService.queryEntrustInfoByUserId( userId, entrustId );
+		if (infoVO != null) {
+			// 计算完成数量
+			infoVO.setCompletedCount( infoVO.getCount().subtract( infoVO.getLeftCount() ) );
 		}
-		return ReturnDTO.ok(infoVO);
+		return ReturnDTO.ok( infoVO );
 	}
 
 	@ApiOperation(value = "用户撤单")

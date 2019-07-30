@@ -9,6 +9,8 @@ import java.util.concurrent.Executors;
 
 import javax.annotation.PostConstruct;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -38,6 +40,8 @@ import redis.clients.jedis.JedisCluster;
  */
 @Component
 public /* static */final class Robot {
+	
+	private static final Logger LOG = LoggerFactory.getLogger( Robot.class );
 
 	@Autowired
 	private JedisCluster			jedisCluster;
@@ -193,24 +197,30 @@ public /* static */final class Robot {
 
 	}
 	
-	private void checkLinePrice() {
+	private boolean checkLinePrice() {
 		for (int i = 1; i <= MAX_CURRENCY_TRADE_ID; i++) {
 			BigDecimal bd_selfPrice = makeAMatchService.getLinePrice( i );
 			if (bd_selfPrice == null) {
-				throw new RuntimeException( "currencyTradeID:" + i + ", LinePrice Is NullOrEmpty !" );
+//				throw new RuntimeException( "currencyTradeID:" + i + ", LinePrice Is NullOrEmpty !" );
+				LOG.warn( "currencyTradeID:" + i + ", LinePrice Is NullOrEmpty !" );
+				return false;
 			}
 		}
+		return true;
 	}
 
 	private static final int CNT = 50; // 500 50 5
 
-	private static final ExecutorService ES = Executors.newFixedThreadPool( CNT );
+	private static /* final */ExecutorService ES;
 	
 	@PostConstruct
 	public void test() {
-		checkLinePrice();
+		if (!checkLinePrice()) {
+			return;
+		}
 		
 		
+		ES = Executors.newFixedThreadPool( CNT );
 		// CountDownLatch cdl = new CountDownLatch( CNT );
 		// MyCallable MyCallable = new MyCallable(makeAMatch, entrustService,
 		// entrustRecordService, cdl);

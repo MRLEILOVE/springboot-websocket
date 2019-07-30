@@ -16,7 +16,7 @@ import com.bittrade.pojo.dto.TKlineDTO;
 import com.bittrade.pojo.model.TKline;
 import com.bittrade.pojo.vo.QueryKLineVO;
 import com.bittrade.pojo.vo.TKlineVO;
-import com.core.framework.DTO.ReturnDTO;
+import com.core.common.DTO.ReturnDTO;
 import com.core.framework.base.controller.BaseController;
 
 import io.swagger.annotations.ApiOperation;

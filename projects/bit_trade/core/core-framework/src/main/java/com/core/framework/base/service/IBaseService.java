@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.core.framework.DTO.PageDTO;
+import com.core.common.DTO.PageDTO;
 import com.core.framework.base.DTO.BaseDTO;
 import com.core.framework.base.VO.BaseVO;
 import com.core.framework.base.model.BaseModel;

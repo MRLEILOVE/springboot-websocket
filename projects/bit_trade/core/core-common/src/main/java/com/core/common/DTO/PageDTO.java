@@ -1,4 +1,4 @@
-package com.core.framework.DTO;
+package com.core.common.DTO;
 
 import java.io.Serializable;
 import java.util.List;

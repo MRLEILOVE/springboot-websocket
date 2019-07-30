@@ -15,7 +15,7 @@ import com.bittrade.pojo.dto.TEntrustRecordDTO;
 import com.bittrade.pojo.model.TEntrustRecord;
 import com.bittrade.pojo.vo.TEntrustRecordVO;
 import com.bittrade.pojo.vo.TRealTimeTransactionVO;
-import com.core.framework.DTO.ReturnDTO;
+import com.core.common.DTO.ReturnDTO;
 import com.core.framework.base.controller.BaseController;
 
 import io.swagger.annotations.ApiOperation;
@@ -30,31 +30,19 @@ import io.swagger.annotations.ApiOperation;
 @RequestMapping(value = { "/tEntrustRecord" }, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class TEntrustRecordController extends BaseController<TEntrustRecord, TEntrustRecordDTO, TEntrustRecordVO, ITEntrustRecordService> {
 	@Reference
-    private ITEntrustRecordService entrustRecordService;
+	private ITEntrustRecordService entrustRecordService;
 
-    @ApiOperation(value = "查询用户成交记录")
-    @GetMapping(value = "/queryDealEntrustByUserId/{userId}")
-    @ResponseBody
-    public ReturnDTO<List<TEntrustRecord>> queryDealEntrustByUserId(@PathVariable("userId") String userId) {
-        try{
-            return ReturnDTO.ok(entrustRecordService.queryDealEntrustByUserId(userId));
-        }catch (Exception e){
-            e.printStackTrace();
-            return ReturnDTO.error("服务器异常");
-        }
+	@ApiOperation(value = "查询用户成交记录")
+	@GetMapping(value = "/queryDealEntrustByUserId/{userId}")
+	@ResponseBody
+	public ReturnDTO<List<TEntrustRecord>> queryDealEntrustByUserId(@PathVariable("userId") String userId) {
+		return ReturnDTO.ok( entrustRecordService.queryDealEntrustByUserId( userId ) );
+	}
 
-    }
-
-    @ApiOperation(value = "实时成交")
-    @GetMapping(value = "/realTimeTransaction/{currencyTradeId}")
-    @ResponseBody
-    public ReturnDTO<List<TRealTimeTransactionVO>> realTimeTransaction(@PathVariable("currencyTradeId") String currencyTradeId) {
-        try{
-            return ReturnDTO.ok(entrustRecordService.realTimeTransaction(currencyTradeId));
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ReturnDTO.error("服务器异常");
-        }
-
-    }
+	@ApiOperation(value = "实时成交")
+	@GetMapping(value = "/realTimeTransaction/{currencyTradeId}")
+	@ResponseBody
+	public ReturnDTO<List<TRealTimeTransactionVO>> realTimeTransaction(@PathVariable("currencyTradeId") String currencyTradeId) {
+		return ReturnDTO.ok( entrustRecordService.realTimeTransaction( currencyTradeId ) );
+	}
 }

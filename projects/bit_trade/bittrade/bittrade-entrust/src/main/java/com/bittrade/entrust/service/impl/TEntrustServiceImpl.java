@@ -29,7 +29,7 @@ import com.bittrade.pojo.model.TEntrust;
 import com.bittrade.pojo.model.TWallet;
 import com.bittrade.pojo.vo.TEntrustInfoVO;
 import com.bittrade.pojo.vo.TEntrustVO;
-import com.core.framework.DTO.ReturnDTO;
+import com.core.common.DTO.ReturnDTO;
 import com.core.tool.SnowFlake;
 
 /**

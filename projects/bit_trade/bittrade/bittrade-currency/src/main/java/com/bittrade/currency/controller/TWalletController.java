@@ -14,7 +14,7 @@ import com.bittrade.pojo.model.TWallet;
 import com.bittrade.pojo.vo.CoinAccountVO;
 import com.bittrade.pojo.vo.TWalletVO;
 import com.bittrade.pojo.vo.UserWalletVO;
-import com.core.framework.DTO.ReturnDTO;
+import com.core.common.DTO.ReturnDTO;
 import com.core.framework.base.controller.BaseController;
 
 import io.swagger.annotations.ApiOperation;

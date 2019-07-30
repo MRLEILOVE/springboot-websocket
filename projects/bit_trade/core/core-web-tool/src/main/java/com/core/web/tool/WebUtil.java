@@ -7,7 +7,7 @@
  *  
 */
 
-package com.core.tool;
+package com.core.web.tool;
 
 import javax.servlet.http.HttpServletRequest;
 
