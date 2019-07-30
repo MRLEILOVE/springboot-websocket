@@ -44,5 +44,11 @@ public class MatchTester extends BaseTester {
 	public void testMQ() {
 		makeAMatchService.testMQ();
 	}
+	
+	@Test
+	public void test_addEntrustRecord() {
+		makeAMatchService.addEntrustRecord(null, null, null);
+		System.out.println("over ~~");
+	}
 
 }
