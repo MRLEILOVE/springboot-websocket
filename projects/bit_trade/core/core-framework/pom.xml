@@ -15,7 +15,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>com.bittrade</groupId>
-			<artifactId>core-common</artifactId>
+			<artifactId>core-tool</artifactId>
 		</dependency>
 		
 		<dependency>

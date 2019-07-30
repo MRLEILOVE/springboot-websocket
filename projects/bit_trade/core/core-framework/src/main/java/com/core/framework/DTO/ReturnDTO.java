@@ -94,4 +94,19 @@ public class ReturnDTO<T> implements Serializable {
 		return ret;
 	}
 
+	/**
+	 * error
+	 * @param <T>
+	 * @param ex
+	 * @return
+	 */
+	public static final <T> ReturnDTO<T> error(Exception ex) {
+		ReturnDTO<T> ret = new ReturnDTO<T>();
+		
+		ret.setCode(IConstant.FAILURE);
+		ret.setMsg(ex.toString());
+		
+		return ret;
+	}
+
 }

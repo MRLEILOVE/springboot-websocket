@@ -31,22 +31,16 @@ import io.swagger.annotations.ApiOperation;
 @RequestMapping(value = { "/tKline" }, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class TKlineController extends BaseController<TKline, TKlineDTO, TKlineVO, ITKlineService> {
 
-    @Reference
-    private ITKlineService tKlineService;
+	@Reference
+	private ITKlineService tKlineService;
 
-    /**
-     * k线查询
-     */
-    @ApiOperation(value = "k线查询",notes = "k线查询")
-    @RequestMapping(value = "/queryKLine",method = RequestMethod.POST)
-    @ResponseBody
-    public ReturnDTO<List<QueryKLineVO>> queryKLine(@RequestBody QueryKLineDto queryKLineDto) {
-        try{
-            return ReturnDTO.ok(tKlineService.queryKLine(queryKLineDto));
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ReturnDTO.error("服务器异常");
-        }
-
-    }
+	/**
+	 * k线查询
+	 */
+	@ApiOperation(value = "k线查询", notes = "k线查询")
+	@RequestMapping(value = "/queryKLine", method = RequestMethod.POST)
+	@ResponseBody
+	public ReturnDTO<List<QueryKLineVO>> queryKLine(@RequestBody QueryKLineDto queryKLineDto) {
+		return ReturnDTO.ok( tKlineService.queryKLine( queryKLineDto ) );
+	}
 }

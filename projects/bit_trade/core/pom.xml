@@ -29,12 +29,12 @@
 			</dependency>
 			<dependency>
 				<groupId>com.bittrade</groupId>
-				<artifactId>core-framework</artifactId>
+				<artifactId>core-tool</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.bittrade</groupId>
-				<artifactId>core-tool</artifactId>
+				<artifactId>core-framework</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 		</dependencies>

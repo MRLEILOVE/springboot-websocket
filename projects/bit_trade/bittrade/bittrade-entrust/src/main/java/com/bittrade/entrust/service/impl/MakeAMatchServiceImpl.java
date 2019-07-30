@@ -111,7 +111,7 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 	/**
 	 * 异步调用K线生成。
 	 */
-	private static final ExecutorService ES = Executors.newFixedThreadPool(50);
+	private static final ExecutorService ES_KLINE = Executors.newFixedThreadPool(50);
 	
 	
 	private ReentrantLock getLock(int key) {
@@ -137,6 +137,32 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 		}
 		
 		return list;
+	}
+	
+	/**
+	 * 获得内存中买和卖的数量差，好让均衡器程序均衡机器人下单。
+	 * getSubCount:(这里用一句话描述这个方法的作用). <br/>  
+	 * TODO(这里描述这个方法适用条件 – 可选).<br/>  
+	 * TODO(这里描述这个方法的执行流程 – 可选).<br/>  
+	 * TODO(这里描述这个方法的使用方法 – 可选).<br/>  
+	 * TODO(这里描述这个方法的注意事项 – 可选).<br/>  
+	 *  
+	 * @author Administrator  
+	 * @param currencyTradeID
+	 * @return  
+	 * @since JDK 1.8
+	 */
+	public int getSubCount(int currencyTradeID) {
+		int i_subCount = 0;
+		
+		ArrayList<TEntrust> list__buyMarket = getList( MAP__BUY_MARKET, currencyTradeID );
+		ArrayList<TEntrust> list__buyLimit = getList( MAP__BUY_LIMIT, currencyTradeID );
+		ArrayList<TEntrust> list__sellMarket = getList( MAP__SELL_MARKET, currencyTradeID );
+		ArrayList<TEntrust> list__sellLimit = getList( MAP__SELL_LIMIT, currencyTradeID );
+		
+		i_subCount = list__buyMarket.size() + list__buyLimit.size() - (list__sellMarket.size() + list__sellLimit.size());
+		
+		return i_subCount;
 	}
 	
 	/**
@@ -557,7 +583,7 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 //				
 //			});
 			
-			ES.submit(() -> {
+			ES_KLINE.submit(() -> {
 				klineService.modifyKLine( entrustRecord, dealPrice );
 				return null;
 			});
@@ -571,34 +597,34 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 	 *   当然程序也可以写成专门针对某种类型的操作， 比如：市市、市限、限限、限市。 <br />
 	 *   这样程序会多写一份类似的， 少部分一样， 但是准确从效率来讲会高一些。 不过现在应该这个可以忽略不计。
 	 * </p>
-	 * @param entrust 市价或者限价类型
+	 * @param entrust_after 市价或者限价类型
 	 * @param list
 	 */
-	private void matchWith(TEntrust entrust, List<TEntrust> list) {
+	private void matchWith(TEntrust entrust_after, List<TEntrust> list) {
 		if (
 				( // 还有未成交数
-					entrust.getStatus() == EntrustStatusEnumer.UNFINISH.getCode()
+					entrust_after.getStatus() == EntrustStatusEnumer.UNFINISH.getCode()
 					||
-					entrust.getStatus() == EntrustStatusEnumer.PART_FINISH.getCode()
+					entrust_after.getStatus() == EntrustStatusEnumer.PART_FINISH.getCode()
 				)
 				&& 
 				list.size() > 0
 				) {
-			BigDecimal bd_linePrice = getLinePrice( entrust.getCurrencyTradeId() );
+			BigDecimal bd_linePrice = getLinePrice( entrust_after.getCurrencyTradeId() );
 			for (int i = list.size() - 1; i > -1; i--) {
-				TEntrust entrust_ = list.get(i);
+				TEntrust entrust_before = list.get(i);
 				
-				BigDecimal bd_dealPrice = getDealPrice(entrust_, entrust, bd_linePrice);
+				BigDecimal bd_dealPrice = getDealPrice(entrust_before, entrust_after, bd_linePrice);
 				if (bd_dealPrice == null) { // 首个都不满足条件的话， 那后面的就更不满足条件了。 因为这里已经是按照价格排好序了的。
 					break;
 				} else {
-					TEntrustRecord entrustRecord = addEntrustRecord(entrust_, entrust, bd_dealPrice);
-					bd_linePrice = onEntrustRecord(bd_dealPrice, bd_linePrice, entrust, entrustRecord);
+					TEntrustRecord entrustRecord = addEntrustRecord(entrust_before, entrust_after, bd_dealPrice);
+					bd_linePrice = onEntrustRecord(bd_dealPrice, bd_linePrice, entrust_after, entrustRecord);
 					
-					if (entrust_.getStatus() == EntrustStatusEnumer.FINISH.getCode()) {
+					if (entrust_before.getStatus() == EntrustStatusEnumer.FINISH.getCode()) {
 						list.remove(i);
 					}
-					if (entrust.getStatus() == EntrustStatusEnumer.FINISH.getCode()) {
+					if (entrust_after.getStatus() == EntrustStatusEnumer.FINISH.getCode()) {
 						break;
 					}
 				}

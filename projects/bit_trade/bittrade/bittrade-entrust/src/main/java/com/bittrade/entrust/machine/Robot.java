@@ -47,9 +47,11 @@ public /* static */final class Robot {
 	private MakeAMatchServiceImpl	makeAMatchService;
 
 	private static final int MAX_CURRENCY_TRADE_ID = 2;
-	private static final BigDecimal BD_PRICE_RANGE_PERCENT = new BigDecimal("0.05"); // 5%
-	private static final BigDecimal BD_ADD = new BigDecimal(+1);
-	private static final BigDecimal BD_SUB = new BigDecimal(-1);
+	private static final BigDecimal BD__PRICE_RANGE_PERCENT = new BigDecimal("0.05"); // 5%
+	private static final BigDecimal BD__ADD = new BigDecimal(+1);
+	private static final BigDecimal BD__SUB = new BigDecimal(-1);
+	private static final BigDecimal BD__BUY_RATE = new BigDecimal(1);
+	private static final BigDecimal BD__SELL_RATE = new BigDecimal(1);
 	private static final Random		R	= new Random( System.currentTimeMillis() );
 
 	private static long getUserID() {
@@ -118,10 +120,11 @@ public /* static */final class Robot {
 			bd_min = bd_max = bd_selfPrice;
 		}
 		
-		d_min = bd_min.subtract( bd_min.multiply( BD_PRICE_RANGE_PERCENT ) ).doubleValue();
-		d_max = bd_max.add( bd_max.multiply( BD_PRICE_RANGE_PERCENT ) ).doubleValue();
+		d_min = bd_min.subtract( bd_min.multiply( BD__PRICE_RANGE_PERCENT ) ).doubleValue();
+		d_max = bd_max.add( bd_max.multiply( BD__PRICE_RANGE_PERCENT ) ).doubleValue();
 		bd_price = getPrice(d_min, d_max);
-		bd_price = bd_price.add( bd_price.multiply( BD_PRICE_RANGE_PERCENT ).multiply( rate ) );
+		// 根据买卖方向平衡买卖单价（买价加5%， 卖价减5%）。
+		bd_price = bd_price.add( bd_price.multiply( BD__PRICE_RANGE_PERCENT ).multiply( rate ) );
 		
 		return bd_price;
 	}
@@ -225,13 +228,13 @@ public /* static */final class Robot {
 						if (entrust.getEntrustType() == EntrustTypeEnumer.LIMIT.getCode()) {
 							if (entrust.getEntrustDirection() == EntrustDirectionEnumer.BUY.getCode()) {
 								
-								entrust.setPrice( getPrice( entrust.getCurrencyTradeId(), BD_ADD ) );
-								entrust.setCount( getCount() );
+								entrust.setPrice( getPrice( entrust.getCurrencyTradeId(), BD__ADD ) );
+								entrust.setCount( getCount().multiply( BD__BUY_RATE ) );
 								
 							} else /*if (entrust.getEntrustDirection() == EntrustDirectionEnumer.SELL.getCode()) */{
 								
-								entrust.setPrice( getPrice( entrust.getCurrencyTradeId(), BD_SUB ) );
-								entrust.setCount( getCount() );
+								entrust.setPrice( getPrice( entrust.getCurrencyTradeId(), BD__SUB ) );
+								entrust.setCount( getCount().multiply( BD__SELL_RATE ) );
 								
 							}
 						} else /*if (entrust.getEntrustType() == EntrustTypeEnumer.MARKET.getCode()) */{

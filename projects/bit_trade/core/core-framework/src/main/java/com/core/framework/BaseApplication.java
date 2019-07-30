@@ -11,7 +11,11 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 		//"com.**.__default.DAO", 
 		"com.**.dao"
 		})
-@ComponentScan(basePackages = { "com.core.framework.props", "com.core.framework.config" })
+@ComponentScan(basePackages = { 
+		"com.core.framework.props", 
+		"com.core.framework.config", 
+		"com.core.framework.exception" 
+		})
 @EnableTransactionManagement
 public abstract class BaseApplication {
 

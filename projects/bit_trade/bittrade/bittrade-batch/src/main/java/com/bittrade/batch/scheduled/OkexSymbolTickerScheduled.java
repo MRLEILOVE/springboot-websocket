@@ -7,7 +7,6 @@ import java.util.concurrent.Executors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.alibaba.dubbo.config.annotation.Reference;
@@ -41,7 +40,7 @@ public class OkexSymbolTickerScheduled {
 	/**
 	 * 获取交易对ticker信息
 	 */
-	@Scheduled(cron = "0/1 * * * * ?")
+//	@org.springframework.scheduling.annotation.Scheduled(cron = "0/1 * * * * ?")
 	public void symbolTicker() {
 		try {
 			String[] symbols = GeneralMethod.qryParamConfigInfo( paramConfigService, ParamKeyEnum.OKEX_SYMBOL_KLINE_HISTORY_DATA_KEY.getKey() )
