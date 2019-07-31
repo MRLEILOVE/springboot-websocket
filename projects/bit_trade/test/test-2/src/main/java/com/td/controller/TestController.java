@@ -2,6 +2,7 @@ package com.td.controller;
 
 import java.security.Principal;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,6 +34,13 @@ public class TestController {
 	public Principal principal(Principal principal) {
 		System.out.println( "com.td.controller.TestController.principal(Principal)" );
 		return principal;
+	}
+
+	@ApiOperation(value = "查询通过 OAuth2.0 授权后获取的用户信息", notes = "通过 OAuth2.0 授权后获取的用户信息")
+	@GetMapping("/me")
+	@ResponseBody
+	public Authentication me(Authentication authentication) {
+		return authentication;
 	}
 
 }
