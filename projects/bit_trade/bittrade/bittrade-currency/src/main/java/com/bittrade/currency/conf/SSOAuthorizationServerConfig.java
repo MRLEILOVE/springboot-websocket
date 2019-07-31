@@ -22,7 +22,7 @@ public class SSOAuthorizationServerConfig extends AuthorizationServerConfigurerA
 	public static final String SECRET_2 = "secret";
 
 	@Bean
-	private TokenStore _JWTTokenStore() {
+	public TokenStore _JWTTokenStore() {
 		return new JwtTokenStore(_JWTAccessTokenConverter());
 	}
 
