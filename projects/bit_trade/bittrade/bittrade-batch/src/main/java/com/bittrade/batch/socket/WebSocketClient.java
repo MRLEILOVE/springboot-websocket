@@ -47,6 +47,8 @@ public class WebSocketClient {
 
 	private final static String		PING	= "ping";
 
+	private final static String		PONG	= "pong";
+
 	@PostConstruct
 	public void init() {
 		LOG.info( "==============================socket开始连接==============================" );
@@ -101,6 +103,9 @@ public class WebSocketClient {
 					}
 
 					String text = uncompress( bytes.toByteArray() );
+					if(PONG.equals(text)){
+						return;
+					}
 					LOG.info( "*******************text*******************" + text );
 					JSONObject jsonObject = (JSONObject) JSON.parse( text );
 
