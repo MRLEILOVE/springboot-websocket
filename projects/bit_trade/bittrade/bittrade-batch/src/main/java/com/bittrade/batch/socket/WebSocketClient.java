@@ -49,7 +49,7 @@ public class WebSocketClient {
 
 	@PostConstruct
 	public void init() {
-		LOG.info("==============================socket开始连接==============================");
+		LOG.info( "==============================socket开始连接==============================" );
 		connect();
 	}
 
@@ -150,7 +150,7 @@ public class WebSocketClient {
 				}
 			} );
 		} catch (Exception e) {
-			LOG.error( e.getMessage(), e );
+			LOG.error( "WebSocket.Exception,e=" + e.toString(), "五秒后重新连接......" );
 			try {
 				Thread.sleep( 5000 );
 				connect();
