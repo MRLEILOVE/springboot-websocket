@@ -49,6 +49,7 @@ public class WebSocketClient {
 
 	@PostConstruct
 	public void init() {
+		LOG.info("==============================socket开始连接==============================");
 		connect();
 	}
 
@@ -100,6 +101,7 @@ public class WebSocketClient {
 					}
 
 					String text = uncompress( bytes.toByteArray() );
+					LOG.info( "*******************text*******************" + text );
 					JSONObject jsonObject = (JSONObject) JSON.parse( text );
 
 					String table = jsonObject.getString( "table" );
@@ -108,7 +110,7 @@ public class WebSocketClient {
 						JSONArray jSONArray = jsonObject.getJSONArray( "data" );
 						jSONArray.forEach( data -> {
 							OkexTickerDto okexTickerDto = (OkexTickerDto) JSONObject.parseObject( data.toString(), OkexTickerDto.class );
-							jedisCluster.setex( RedisKeyUtil.getOkexSymbolLast( okexTickerDto.getInstrument_id() ), 30,
+							jedisCluster.setex( RedisKeyUtil.getOkexSymbolLast( okexTickerDto.getInstrument_id() ), 300,
 									String.valueOf( okexTickerDto.getLast() ) );
 						} );
 					}
@@ -149,6 +151,12 @@ public class WebSocketClient {
 			} );
 		} catch (Exception e) {
 			LOG.error( e.getMessage(), e );
+			try {
+				Thread.sleep( 5000 );
+				connect();
+			} catch (Exception e1) {
+				e1.getStackTrace();
+			}
 		}
 	}
 
