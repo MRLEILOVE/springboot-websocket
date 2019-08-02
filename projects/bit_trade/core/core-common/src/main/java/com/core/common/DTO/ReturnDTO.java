@@ -38,7 +38,7 @@ public class ReturnDTO<T> implements Serializable {
 	/**
 	 * 数据
 	 */
-	private T data;
+	private T result;
 
 	/**
 	 * 时间
@@ -67,14 +67,14 @@ public class ReturnDTO<T> implements Serializable {
 	/**
 	 * ok
 	 * @param <T>
-	 * @param data
+	 * @param result
 	 * @return
 	 */
-	public static final <T> ReturnDTO<T> ok(T data) {
+	public static final <T> ReturnDTO<T> ok(T result) {
 		ReturnDTO<T> ret = new ReturnDTO<T>();
 		
 		ret.setCode(IConstant.SUCCESS);
-		ret.setData(data);
+		ret.setResult(result);
 		
 		return ret;
 	}
