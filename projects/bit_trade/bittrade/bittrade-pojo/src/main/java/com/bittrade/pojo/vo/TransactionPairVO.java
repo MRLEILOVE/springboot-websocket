@@ -9,7 +9,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = false)
 @ApiModel(description = "交易对列表")
 public class TransactionPairVO {
-    @ApiModelProperty(value = "id")
+    @ApiModelProperty(value = "交易对id")
     private Integer id;
 
     @ApiModelProperty(value = "交易对,如BTC/USDT")

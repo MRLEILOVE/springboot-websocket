@@ -1,32 +1,38 @@
 package com.bittrade.entrust.service.impl;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
-import javax.annotation.PostConstruct;
-
+import com.alibaba.dubbo.config.annotation.Reference;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.bittrade.__default.service.impl.DefaultTKlineServiceImpl;
+import com.bittrade.common.constant.IQueueConstants;
+import com.bittrade.common.enums.KLineGranularityEnumer;
+import com.bittrade.common.enums.StatusEnumer;
+import com.bittrade.currency.api.service.ITCurrencyTradeService;
+import com.bittrade.entrust.api.service.ITKlineService;
+import com.bittrade.entrust.dao.ITKlineDAO;
+import com.bittrade.pojo.dto.QueryKLineDto;
+import com.bittrade.pojo.dto.TKlineDTO;
+import com.bittrade.pojo.model.TCurrencyTrade;
+import com.bittrade.pojo.model.TEntrustRecord;
+import com.bittrade.pojo.model.TKline;
+import com.bittrade.pojo.vo.QueryKLineVO;
+import com.bittrade.pojo.vo.TKlineVO;
+import com.bittrade.pojo.vo.TransactionPairVO;
+import com.core.common.constant.ICompareResultConstant;
+import com.core.tool.DateTimeUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
-import com.bittrade.__default.service.impl.DefaultTKlineServiceImpl;
-import com.bittrade.common.constant.IQueueConstants;
-import com.bittrade.common.enums.KLineGranularityEnumer;
-import com.bittrade.entrust.api.service.ITKlineService;
-import com.bittrade.entrust.dao.ITKlineDAO;
-import com.bittrade.pojo.dto.QueryKLineDto;
-import com.bittrade.pojo.dto.TKlineDTO;
-import com.bittrade.pojo.model.TEntrustRecord;
-import com.bittrade.pojo.model.TKline;
-import com.bittrade.pojo.vo.QueryKLineVO;
-import com.bittrade.pojo.vo.TKlineVO;
-import com.core.common.constant.ICompareResultConstant;
-import com.core.tool.DateTimeUtil;
+import javax.annotation.PostConstruct;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 
@@ -46,6 +52,8 @@ public class TKlineServiceImpl extends DefaultTKlineServiceImpl<ITKlineDAO, TKli
 	private MakeAMatchServiceImpl makeAMatchService;
 	@Autowired
 	private RabbitTemplate rabbitTemplate;
+	@Reference
+	private ITCurrencyTradeService currencyTradeService;
 
 	private static final ConcurrentHashMap<Integer, ConcurrentHashMap<Integer, TKline>> MAP__KLINE_LAST;
 	static {
@@ -178,4 +186,17 @@ public class TKlineServiceImpl extends DefaultTKlineServiceImpl<ITKlineDAO, TKli
 		return klineDAO.queryKLine(queryKLineDto);
 	}
 
+	/**
+	 * 根据交易对查询最新k线
+	 * @param currencyTradeId 交易对id
+	 * @return
+	 */
+	@Override
+	public QueryKLineVO queryKLineBySymbol(String currencyTradeId) {
+		TCurrencyTrade currencyTrade = currencyTradeService.getByPK(currencyTradeId);
+		LocalDateTime time = getDateTimeBegin(LocalDateTime.now(), KLineGranularityEnumer.ONE_MINUTE.getCode());
+
+		QueryKLineVO vo = klineDAO.queryKLineByCondition(currencyTrade.getSymbol(),KLineGranularityEnumer.ONE_MINUTE.getCode(),time);
+		return vo;
+	}
 }

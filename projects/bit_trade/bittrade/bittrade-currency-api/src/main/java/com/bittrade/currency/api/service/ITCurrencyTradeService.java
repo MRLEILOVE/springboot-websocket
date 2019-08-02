@@ -18,4 +18,11 @@ public interface ITCurrencyTradeService extends IDefaultTCurrencyTradeService<TC
      * 根据法币id查找交易对
      */
     List<TransactionPairVO> findTradeByCurrencyId2(String currencyId2,String userId);
+
+    /**
+     * 刚点进币币页面，获取交易对信息
+     * @param id 交易对id
+     * @return 交易对对象信息
+     */
+    TCurrencyTrade queryCurrencyTradeAtFirst(Integer id);
 }

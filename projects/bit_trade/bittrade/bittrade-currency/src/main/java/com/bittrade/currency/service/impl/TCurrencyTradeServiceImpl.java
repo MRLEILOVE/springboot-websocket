@@ -13,6 +13,7 @@ import com.bittrade.pojo.dto.TCurrencyTradeDTO;
 import com.bittrade.pojo.model.TCurrencyTrade;
 import com.bittrade.pojo.vo.TCurrencyTradeVO;
 import com.bittrade.pojo.vo.TransactionPairVO;
+import org.springframework.util.StringUtils;
 import redis.clients.jedis.JedisCluster;
 
 /**
@@ -47,5 +48,20 @@ public class TCurrencyTradeServiceImpl extends
 			});
 		}
 		return vos;
+	}
+
+	/**
+	 * 刚点进币币页面，获取交易对信息
+	 * @param id 交易对id
+	 * @return 交易对对象信息
+	 */
+	@Override
+	public TCurrencyTrade queryCurrencyTradeAtFirst(Integer id) {
+		//如果id为空，就返回优先级最高的交易对信息
+		if(id == null){
+			return tCurrencyTradeDAO.getOneOrderBySort();
+		}else {
+			return tCurrencyTradeDAO.getByPK(id);
+		}
 	}
 }

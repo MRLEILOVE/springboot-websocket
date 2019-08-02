@@ -24,6 +24,7 @@
 
 	<!-- 通用查询结果列 -->
 	<sql id="Base_Column_List">
+		`id` AS id,
 		`symbol` AS symbol, 
 		`currency_id1` AS currencyId1, 
 		`currency_id2` AS currencyId2, 
@@ -48,5 +49,14 @@
 		LEFT JOIN t_currency_optional o ON o.currency_trade_id = t.id AND o.status = 1 AND o.user_id = #{userId}
 		WHERE t.`status` = 1
 		AND t.currency_id2 = #{currencyId2}
+		ORDER BY t.sort
+	</select>
+
+	<select id="getOneOrderBySort" resultType="com.bittrade.pojo.model.TCurrencyTrade">
+		SELECT <include refid="Base_Column_List"/>
+		FROM t_currency_trade t
+		WHERE t.`status` = 1
+		ORDER BY t.sort
+		LIMIT 1
 	</select>
 </mapper>
