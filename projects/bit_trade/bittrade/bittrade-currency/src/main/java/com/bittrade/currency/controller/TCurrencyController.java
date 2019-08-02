@@ -50,7 +50,7 @@ public class TCurrencyController extends BaseController<TCurrency, TCurrencyDTO,
 	@ApiOperation(value = "获取汇率", notes = "获取汇率")
 	@GetMapping(value = "/getRate/{legalCurrencyId}")
 	@ResponseBody
-	public ReturnDTO<QueryKLineVO> getRate(@Param ("法币id")@PathVariable("legalCurrencyId")String legalCurrencyId) {
+	public ReturnDTO<String> getRate(@Param ("法币id")@PathVariable("legalCurrencyId")String legalCurrencyId) {
 		TCurrency tCurrency = tCurrencyService.getByPK(legalCurrencyId);
 		if(tCurrency == null){
 			ReturnDTO.error("不存在该法币币种");

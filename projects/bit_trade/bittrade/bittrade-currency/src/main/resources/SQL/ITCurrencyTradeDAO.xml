@@ -52,11 +52,26 @@
 		ORDER BY t.sort
 	</select>
 
-	<select id="getOneOrderBySort" resultType="com.bittrade.pojo.model.TCurrencyTrade">
-		SELECT <include refid="Base_Column_List"/>
+	<!-- 获取一条优先级最高的交易对信息	-->
+	<select id="getOneOrderBySort" resultType="com.bittrade.pojo.vo.CurrencyTradeVO">
+		SELECT t.id,t.symbol,t.currency_id1 AS currencyId1,c1.`name` AS currencyName,t.currency_id2 AS currencyId2,c2.`name` AS legalCurrencyName,
+			   t.price_decimal_digits AS priceDecimalDigits,t.count_decimal_digits AS countDecimalDigits,t.min_price AS minPrice,t.min_count AS minCount,
+			   t.min_amount AS minAmount,t.max_price AS maxPrice,t.max_count AS maxCount,t.max_amount AS maxAmount
 		FROM t_currency_trade t
+		INNER JOIN t_currency c1 ON t.currency_id1 = c1.id
+		INNER JOIN t_currency c2 ON t.currency_id2 = c2.id
 		WHERE t.`status` = 1
 		ORDER BY t.sort
 		LIMIT 1
+	</select>
+
+	<select id="getById" resultType="com.bittrade.pojo.vo.CurrencyTradeVO" parameterType="java.lang.Integer">
+		SELECT t.id,t.symbol,t.currency_id1 AS currencyId1,c1.`name` AS currencyName,t.currency_id2 AS currencyId2,c2.`name` AS legalCurrencyName,
+			   t.price_decimal_digits AS priceDecimalDigits,t.count_decimal_digits AS countDecimalDigits,t.min_price AS minPrice,t.min_count AS minCount,
+			   t.min_amount AS minAmount,t.max_price AS maxPrice,t.max_count AS maxCount,t.max_amount AS maxAmount
+		FROM t_currency_trade t
+		INNER JOIN t_currency c1 ON t.currency_id1 = c1.id
+		INNER JOIN t_currency c2 ON t.currency_id2 = c2.id
+		WHERE t.id = #{id}
 	</select>
 </mapper>

@@ -5,6 +5,7 @@ import java.util.List;
 import com.bittrade.__default.service.IDefaultTCurrencyTradeService;
 import com.bittrade.pojo.dto.TCurrencyTradeDTO;
 import com.bittrade.pojo.model.TCurrencyTrade;
+import com.bittrade.pojo.vo.CurrencyTradeVO;
 import com.bittrade.pojo.vo.TCurrencyTradeVO;
 import com.bittrade.pojo.vo.TransactionPairVO;
 
@@ -24,5 +25,5 @@ public interface ITCurrencyTradeService extends IDefaultTCurrencyTradeService<TC
      * @param id 交易对id
      * @return 交易对对象信息
      */
-    TCurrencyTrade queryCurrencyTradeAtFirst(Integer id);
+    CurrencyTradeVO queryCurrencyTradeAtFirst(Integer id);
 }

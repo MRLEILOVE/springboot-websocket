@@ -3,6 +3,7 @@ package com.bittrade.currency.service.impl;
 import java.util.List;
 
 import com.bittrade.common.utils.RedisKeyUtil;
+import com.bittrade.pojo.vo.CurrencyTradeVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -56,12 +57,12 @@ public class TCurrencyTradeServiceImpl extends
 	 * @return 交易对对象信息
 	 */
 	@Override
-	public TCurrencyTrade queryCurrencyTradeAtFirst(Integer id) {
+	public CurrencyTradeVO queryCurrencyTradeAtFirst(Integer id) {
 		//如果id为空，就返回优先级最高的交易对信息
 		if(id == null){
 			return tCurrencyTradeDAO.getOneOrderBySort();
 		}else {
-			return tCurrencyTradeDAO.getByPK(id);
+			return tCurrencyTradeDAO.getById(id);
 		}
 	}
 }

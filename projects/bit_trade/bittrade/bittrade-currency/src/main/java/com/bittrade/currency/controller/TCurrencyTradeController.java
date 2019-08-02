@@ -2,6 +2,7 @@ package com.bittrade.currency.controller;
 
 import java.util.List;
 
+import com.bittrade.pojo.vo.CurrencyTradeVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.lang.Nullable;
@@ -45,7 +46,7 @@ public class TCurrencyTradeController extends BaseController<TCurrencyTrade, TCu
 	@ApiOperation(value = "刚点进币币页面，获取交易对信息", notes = "刚点进币币页面，获取交易对信息")
 	@PostMapping(value = "/queryCurrencyTradeAtFirst")
 	@ResponseBody
-	public ReturnDTO<TCurrencyTrade> queryCurrencyTradeAtFirst(@RequestBody TCurrencyTradeDTO dto) {
+	public ReturnDTO<CurrencyTradeVO> queryCurrencyTradeAtFirst(@RequestBody TCurrencyTradeDTO dto) {
 		return ReturnDTO.ok( tCurrencyTradeService.queryCurrencyTradeAtFirst(dto.getId()) );
 	}
 
