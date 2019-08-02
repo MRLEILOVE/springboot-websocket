@@ -26,6 +26,7 @@ import redis.clients.jedis.JedisCluster;
 import javax.annotation.PostConstruct;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -106,7 +107,7 @@ public class TKlineServiceImpl extends DefaultTKlineServiceImpl<ITKlineDAO, TKli
 		return kLine;
 	}
 	
-	private LocalDateTime getDateTimeBegin(LocalDateTime dt, int granularity) {
+	public static LocalDateTime getDateTimeBegin(LocalDateTime dt, int granularity) {
 		LocalDateTime ldt = null;
 		
 		// 先这样判断吧， 要不然呢？
@@ -185,16 +186,27 @@ public class TKlineServiceImpl extends DefaultTKlineServiceImpl<ITKlineDAO, TKli
 	/**
 	 * 根据交易对查询最新k线
 	 * @param currencyTradeId 交易对id
-	 * @return
 	 */
 	@Override
 	public QueryKLineVO queryKLineBySymbol(Integer currencyTradeId) {
 		String symbol = makeAMatchService.getSymbol(currencyTradeId);
-		LocalDateTime time = getDateTimeBegin(LocalDateTime.now(), KLineGranularityEnumer.ONE_MINUTE.getCode());
+//		LocalDateTime time = getDateTimeBegin(LocalDateTime.now(), KLineGranularityEnumer.ONE_MINUTE.getCode());
+		LocalDateTime time = LocalDateTime.of(2019,8,02,14,55,00);
 		QueryKLineVO vo = klineDAO.queryKLineByCondition(symbol,KLineGranularityEnumer.ONE_MINUTE.getCode(),time);
 		//获取行情价
-//		String price = jedisCluster.get(IConstant.REDIS_PREFIX__LINE_PRICE + symbol);
+		BigDecimal price = new BigDecimal(jedisCluster.get(IConstant.REDIS_PREFIX__LINE_PRICE + symbol));
+		vo.setPrice(price);
 
+		//计算涨跌幅  24小时涨幅=（最新价-24小时开盘价） / 最新价
+		//获取24小时前的收盘价
+//		LocalDateTime yesterdayTime = getDateTimeBegin(LocalDateTime.now().plusDays(-1), KLineGranularityEnumer.ONE_MINUTE.getCode());
+		LocalDateTime yesterdayTime = LocalDateTime.of(2019,8,01,14,55,00);
+		QueryKLineVO yesterdayVo = klineDAO.queryKLineByCondition(symbol,KLineGranularityEnumer.ONE_MINUTE.getCode(),yesterdayTime);
+		if(yesterdayVo != null){
+			//保留两位小数
+			BigDecimal chg = (price.subtract(yesterdayVo.getClose())).divide(price, 2, BigDecimal.ROUND_HALF_UP);
+			vo.setChg(chg);
+		}
 		return vo;
 	}
 }

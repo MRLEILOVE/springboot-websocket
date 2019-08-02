@@ -1,5 +1,6 @@
 package com.bittrade.currency.service.impl;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import com.bittrade.common.utils.RedisKeyUtil;
@@ -43,9 +44,9 @@ public class TCurrencyTradeServiceImpl extends
 			vos.stream().forEach(vo ->{
 				//#TODO 价格跟涨幅待完善
 //                String price = jedisCluster.get(RedisKeyUtil.getOkexSymbolLast(vo.getSymbol().replace('/', '_')));
-                vo.setPrice("100.00");
+                vo.setPrice(new BigDecimal(100));
                 //涨跌幅
-				vo.setChg("0.5");
+				vo.setChg(new BigDecimal(0.05));
 			});
 		}
 		return vos;

@@ -5,6 +5,8 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.math.BigDecimal;
+
 @Data
 @EqualsAndHashCode(callSuper = false)
 @ApiModel(description = "交易对列表")
@@ -22,10 +24,10 @@ public class TransactionPairVO {
     private Integer currencyId2;
 
     @ApiModelProperty(value = "价格")
-    private String price;
+    private BigDecimal price;
 
     @ApiModelProperty(value = "涨跌幅")
-    private String chg;
+    private BigDecimal chg;
 
     @ApiModelProperty(value = "自选id(根据有无id没判断是否加入自选)")
     private Integer optionalId;
