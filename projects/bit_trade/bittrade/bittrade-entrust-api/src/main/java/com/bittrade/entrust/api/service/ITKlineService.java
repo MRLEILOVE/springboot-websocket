@@ -37,5 +37,5 @@ public interface ITKlineService extends IDefaultTKlineService<TKline, TKlineDTO,
 	 * @param currencyTradeId 交易对id
 	 * @return
 	 */
-	QueryKLineVO queryKLineBySymbol(String currencyTradeId);
+	QueryKLineVO queryKLineBySymbol(Integer currencyTradeId);
 }

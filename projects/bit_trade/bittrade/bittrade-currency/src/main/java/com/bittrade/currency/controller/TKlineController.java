@@ -46,7 +46,7 @@ public class TKlineController extends BaseController<TKline, TKlineDTO, TKlineVO
 	@ApiOperation(value = "根据交易对查询最新k线", notes = "根据交易对id查询最新k线")
 	@GetMapping(value = "/queryKLineBySymbol/{currencyTradeId}")
 	@ResponseBody
-	public ReturnDTO<QueryKLineVO> queryKLineBySymbol(@Param ("交易对id")@PathVariable("currencyTradeId") String currencyTradeId) {
+	public ReturnDTO<QueryKLineVO> queryKLineBySymbol(@Param ("交易对id")@PathVariable("currencyTradeId") Integer currencyTradeId) {
 		return ReturnDTO.ok( tKlineService.queryKLineBySymbol(currencyTradeId) );
 	}
 
