@@ -2,6 +2,8 @@ package com.bittrade.currency.controller;
 
 import java.math.BigDecimal;
 
+import com.bittrade.common.utils.RedisKeyUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -29,6 +31,7 @@ import com.core.common.constant.ICompareResultConstant;
 import com.core.framework.base.controller.BaseController;
 
 import io.swagger.annotations.ApiOperation;
+import redis.clients.jedis.JedisCluster;
 
 /**
  * 
@@ -41,6 +44,8 @@ import io.swagger.annotations.ApiOperation;
 public class TEntrustController extends BaseController<TEntrust, TEntrustDTO, TEntrustVO, ITEntrustService> {
 	@Reference
 	private ITEntrustService entrustService;
+	@Autowired
+	private JedisCluster jedisCluster;
 
 	@ApiOperation(value = "查询用户当前委托")
 	@GetMapping(value = "/queryPresentEntrustByUserId")
@@ -117,6 +122,12 @@ public class TEntrustController extends BaseController<TEntrust, TEntrustDTO, TE
 			}
 		}
 
+		//防重复提交检验（3秒）
+		String key = RedisKeyUtil.BUYING_AND_SELLING + dealDTO.getUserId();
+		if(jedisCluster.get( key ) != null){
+			return ReturnDTO.error( "下单过于频繁，请稍后再试");
+		}
+		jedisCluster.setex(key,3,"用户id ：" + dealDTO.getUserId());
 		return entrustService.deal( dealDTO );
 	}
 
