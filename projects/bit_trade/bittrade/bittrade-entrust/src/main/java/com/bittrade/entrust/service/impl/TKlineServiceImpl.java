@@ -1,11 +1,23 @@
 package com.bittrade.entrust.service.impl;
 
-import com.alibaba.dubbo.config.annotation.Reference;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
+import javax.annotation.PostConstruct;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.bittrade.__default.service.impl.DefaultTKlineServiceImpl;
 import com.bittrade.common.constant.IConstant;
 import com.bittrade.common.constant.IQueueConstants;
 import com.bittrade.common.enums.KLineGranularityEnumer;
-import com.bittrade.entrust.api.service.IMakeAMatchService;
 import com.bittrade.entrust.api.service.ITKlineService;
 import com.bittrade.entrust.dao.ITKlineDAO;
 import com.bittrade.pojo.dto.QueryKLineDto;
@@ -16,20 +28,8 @@ import com.bittrade.pojo.vo.QueryKLineVO;
 import com.bittrade.pojo.vo.TKlineVO;
 import com.core.common.constant.ICompareResultConstant;
 import com.core.tool.DateTimeUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import redis.clients.jedis.JedisCluster;
 
-import javax.annotation.PostConstruct;
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import redis.clients.jedis.JedisCluster;
 
 /**
  * 
@@ -140,38 +140,43 @@ public class TKlineServiceImpl extends DefaultTKlineServiceImpl<ITKlineDAO, TKli
 	
 	@Override
 	public void modifyKLine(TEntrustRecord entrustRecord, BigDecimal dealPrice) {
+		System.out.println( System.currentTimeMillis() + ", dealPrice=" + dealPrice );
 		KLineGranularityEnumer objArr_enum[] = KLineGranularityEnumer.values();
 		for (int i = 0; i < objArr_enum.length; i++) {
 			int i_code = objArr_enum[i].getCode();
 			
-			TKline kLine = getKLine( MAP__KLINE_LAST.get( i_code ), entrustRecord.getCurrencyTradeId() );
-			LocalDateTime dt_updateTime = getDateTimeBegin( entrustRecord.getCreateTime(), i_code );
-			if (kLine.getTime() == null || kLine.getTime().compareTo(dt_updateTime) == ICompareResultConstant.LESS_THAN) {
-				kLine.setSymbol( makeAMatchService.getSymbol( entrustRecord.getCurrencyTradeId() ) );
-				kLine.setTime( dt_updateTime );
-				kLine.setOpen( dealPrice );
-				kLine.setHigh( dealPrice );
-				kLine.setLow( dealPrice );
-				kLine.setClose( dealPrice );
-				kLine.setVolume( entrustRecord.getCount() );
-				kLine.setGranularity(i_code);
-				kLine.setCreateTime(LocalDateTime.now());
-				klineDAO.add( kLine );
-				LOG.info( "kLine.getId()=" + kLine.getId() );
-			} else /*if (kLine.getTime().compareTo(dt_updateTime) == 0) */{
-				if (dealPrice.compareTo(kLine.getHigh()) == ICompareResultConstant.GREATER_THAN) {
+			try {
+				TKline kLine = getKLine( MAP__KLINE_LAST.get( i_code ), entrustRecord.getCurrencyTradeId() );
+				LocalDateTime dt_updateTime = getDateTimeBegin( entrustRecord.getCreateTime(), i_code );
+				if (kLine.getTime() == null || kLine.getTime().compareTo(dt_updateTime) == ICompareResultConstant.LESS_THAN) {
+					kLine.setSymbol( makeAMatchService.getSymbol( entrustRecord.getCurrencyTradeId() ) );
+					kLine.setTime( dt_updateTime );
+					kLine.setOpen( dealPrice );
 					kLine.setHigh( dealPrice );
-				}
-				if (dealPrice.compareTo(kLine.getLow()) == ICompareResultConstant.LESS_THAN) {
 					kLine.setLow( dealPrice );
+					kLine.setClose( dealPrice );
+					kLine.setVolume( entrustRecord.getCount() );
+					kLine.setGranularity(i_code);
+					kLine.setCreateTime(LocalDateTime.now());
+					klineDAO.add( kLine );
+					LOG.info( "kLine.getId()=" + kLine.getId() );
+				} else /*if (kLine.getTime().compareTo(dt_updateTime) == 0) */{
+					if (dealPrice.compareTo(kLine.getHigh()) == ICompareResultConstant.GREATER_THAN) {
+						kLine.setHigh( dealPrice );
+					}
+					if (dealPrice.compareTo(kLine.getLow()) == ICompareResultConstant.LESS_THAN) {
+						kLine.setLow( dealPrice );
+					}
+					kLine.setClose( dealPrice );
+					kLine.setVolume( kLine.getVolume().add( entrustRecord.getCount() ) );
+					kLine.setUpdateTime(LocalDateTime.now());
+					klineDAO.modifyByPK( kLine );
 				}
-				kLine.setClose( dealPrice );
-				kLine.setVolume( kLine.getVolume().add( entrustRecord.getCount() ) );
-				kLine.setUpdateTime(LocalDateTime.now());
-				klineDAO.modifyByPK( kLine );
+				
+				rabbitTemplate.convertAndSend(IQueueConstants.EXCHANGE_TOPIC, IQueueConstants.ROUTE_KEY__KLINE + i_code, kLineToString(kLine));
+			} catch (Exception e) {
+				LOG.error( e.toString() );
 			}
-			
-			rabbitTemplate.convertAndSend(IQueueConstants.EXCHANGE_TOPIC, IQueueConstants.ROUTE_KEY__KLINE + i_code, kLineToString(kLine));
 		}
 	}
 

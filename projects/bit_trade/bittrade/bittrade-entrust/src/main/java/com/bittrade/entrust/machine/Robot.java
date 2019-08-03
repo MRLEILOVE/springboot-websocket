@@ -50,7 +50,7 @@ public /* static */final class Robot {
 	@Autowired
 	private MakeAMatchServiceImpl	makeAMatchService;
 
-	private static final int MAX_CURRENCY_TRADE_ID = 2;
+	private static final int MAX_CURRENCY_TRADE_ID = 1; // 2
 	private static final BigDecimal BD__PRICE_RANGE_PERCENT = new BigDecimal("0.05"); // 5%
 	private static final BigDecimal BD__ADD = new BigDecimal(+1);
 	private static final BigDecimal BD__SUB = new BigDecimal(-1);
@@ -209,7 +209,7 @@ public /* static */final class Robot {
 		return true;
 	}
 
-	private static final int CNT = 50; // 500 50 5
+	private static final int CNT = 1; // 500 50 5 2
 
 	private static /* final */ExecutorService ES;
 	

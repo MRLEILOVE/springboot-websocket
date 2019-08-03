@@ -13,7 +13,15 @@ public class RobotTester extends BaseTester {
 
 	@Test
 	public void test() {
-		robot.test();
+//		robot.test();
+		
+		synchronized (RobotTester.class) {
+			try {
+				RobotTester.class.wait();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 }
