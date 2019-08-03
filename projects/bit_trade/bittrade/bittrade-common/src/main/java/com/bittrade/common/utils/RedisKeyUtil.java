@@ -45,4 +45,7 @@ public class RedisKeyUtil {
 	public static String getOkexPingKey() {
 		return OKEX + OKEX_PING_KEY;
 	}
+
+	//下单防重复提交key
+	public static final String BUYING_AND_SELLING 					= "BUYING_AND_SELLING_";
 }

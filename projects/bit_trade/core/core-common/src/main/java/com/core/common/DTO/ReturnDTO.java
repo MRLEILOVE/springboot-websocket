@@ -63,7 +63,7 @@ public class ReturnDTO<T> implements Serializable {
 		
 		return ret;
 	}
-	
+
 	/**
 	 * ok
 	 * @param <T>
@@ -72,10 +72,10 @@ public class ReturnDTO<T> implements Serializable {
 	 */
 	public static final <T> ReturnDTO<T> ok(T data) {
 		ReturnDTO<T> ret = new ReturnDTO<T>();
-		
+
 		ret.setCode(IConstant.SUCCESS);
 		ret.setData(data);
-		
+
 		return ret;
 	}
 

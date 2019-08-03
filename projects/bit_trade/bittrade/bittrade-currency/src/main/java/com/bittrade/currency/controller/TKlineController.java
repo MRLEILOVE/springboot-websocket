@@ -2,12 +2,12 @@ package com.bittrade.currency.controller;
 
 import java.util.List;
 
+import com.bittrade.common.utils.RedisKeyUtil;
+import org.apache.ibatis.annotations.Param;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.bittrade.entrust.api.service.ITKlineService;
@@ -20,6 +20,7 @@ import com.core.common.DTO.ReturnDTO;
 import com.core.framework.base.controller.BaseController;
 
 import io.swagger.annotations.ApiOperation;
+import redis.clients.jedis.JedisCluster;
 
 /**
  * 
@@ -34,13 +35,19 @@ public class TKlineController extends BaseController<TKline, TKlineDTO, TKlineVO
 	@Reference
 	private ITKlineService tKlineService;
 
-	/**
-	 * k线查询
-	 */
+
 	@ApiOperation(value = "k线查询", notes = "k线查询")
-	@RequestMapping(value = "/queryKLine", method = RequestMethod.POST)
+	@PostMapping(value = "/queryKLine")
 	@ResponseBody
 	public ReturnDTO<List<QueryKLineVO>> queryKLine(@RequestBody QueryKLineDto queryKLineDto) {
 		return ReturnDTO.ok( tKlineService.queryKLine( queryKLineDto ) );
 	}
+
+	@ApiOperation(value = "根据交易对查询最新k线", notes = "根据交易对id查询最新k线")
+	@GetMapping(value = "/queryKLineBySymbol/{currencyTradeId}")
+	@ResponseBody
+	public ReturnDTO<QueryKLineVO> queryKLineBySymbol(@Param ("交易对id")@PathVariable("currencyTradeId") Integer currencyTradeId) {
+		return ReturnDTO.ok( tKlineService.queryKLineBySymbol(currencyTradeId) );
+	}
+
 }

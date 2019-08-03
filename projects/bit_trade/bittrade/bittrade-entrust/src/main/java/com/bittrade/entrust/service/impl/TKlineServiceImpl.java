@@ -1,22 +1,11 @@
 package com.bittrade.entrust.service.impl;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
-import javax.annotation.PostConstruct;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
+import com.alibaba.dubbo.config.annotation.Reference;
 import com.bittrade.__default.service.impl.DefaultTKlineServiceImpl;
+import com.bittrade.common.constant.IConstant;
 import com.bittrade.common.constant.IQueueConstants;
 import com.bittrade.common.enums.KLineGranularityEnumer;
+import com.bittrade.entrust.api.service.IMakeAMatchService;
 import com.bittrade.entrust.api.service.ITKlineService;
 import com.bittrade.entrust.dao.ITKlineDAO;
 import com.bittrade.pojo.dto.QueryKLineDto;
@@ -27,6 +16,20 @@ import com.bittrade.pojo.vo.QueryKLineVO;
 import com.bittrade.pojo.vo.TKlineVO;
 import com.core.common.constant.ICompareResultConstant;
 import com.core.tool.DateTimeUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import redis.clients.jedis.JedisCluster;
+
+import javax.annotation.PostConstruct;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 
@@ -46,6 +49,8 @@ public class TKlineServiceImpl extends DefaultTKlineServiceImpl<ITKlineDAO, TKli
 	private MakeAMatchServiceImpl makeAMatchService;
 	@Autowired
 	private RabbitTemplate rabbitTemplate;
+	@Autowired
+	private JedisCluster jedisCluster;
 
 	private static final ConcurrentHashMap<Integer, ConcurrentHashMap<Integer, TKline>> MAP__KLINE_LAST;
 	static {
@@ -102,7 +107,7 @@ public class TKlineServiceImpl extends DefaultTKlineServiceImpl<ITKlineDAO, TKli
 		return kLine;
 	}
 	
-	private LocalDateTime getDateTimeBegin(LocalDateTime dt, int granularity) {
+	public static LocalDateTime getDateTimeBegin(LocalDateTime dt, int granularity) {
 		LocalDateTime ldt = null;
 		
 		// 先这样判断吧， 要不然呢？
@@ -178,4 +183,30 @@ public class TKlineServiceImpl extends DefaultTKlineServiceImpl<ITKlineDAO, TKli
 		return klineDAO.queryKLine(queryKLineDto);
 	}
 
+	/**
+	 * 根据交易对查询最新k线
+	 * @param currencyTradeId 交易对id
+	 */
+	@Override
+	public QueryKLineVO queryKLineBySymbol(Integer currencyTradeId) {
+		String symbol = makeAMatchService.getSymbol(currencyTradeId);
+//		LocalDateTime time = getDateTimeBegin(LocalDateTime.now(), KLineGranularityEnumer.ONE_MINUTE.getCode());
+		LocalDateTime time = LocalDateTime.of(2019,8,02,14,55,00);
+		QueryKLineVO vo = klineDAO.queryKLineByCondition(symbol,KLineGranularityEnumer.ONE_MINUTE.getCode(),time);
+		//获取行情价
+		BigDecimal price = new BigDecimal(jedisCluster.get(IConstant.REDIS_PREFIX__LINE_PRICE + symbol));
+		vo.setPrice(price);
+
+		//计算涨跌幅  24小时涨幅=（最新价-24小时开盘价） / 最新价
+		//获取24小时前的收盘价
+//		LocalDateTime yesterdayTime = getDateTimeBegin(LocalDateTime.now().plusDays(-1), KLineGranularityEnumer.ONE_MINUTE.getCode());
+		LocalDateTime yesterdayTime = LocalDateTime.of(2019,8,01,14,55,00);
+		QueryKLineVO yesterdayVo = klineDAO.queryKLineByCondition(symbol,KLineGranularityEnumer.ONE_MINUTE.getCode(),yesterdayTime);
+		if(yesterdayVo != null){
+			//保留两位小数
+			BigDecimal chg = (price.subtract(yesterdayVo.getClose())).divide(price, 2, BigDecimal.ROUND_HALF_UP);
+			vo.setChg(chg);
+		}
+		return vo;
+	}
 }

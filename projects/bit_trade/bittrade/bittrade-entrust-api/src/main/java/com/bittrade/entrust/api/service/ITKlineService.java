@@ -32,4 +32,10 @@ public interface ITKlineService extends IDefaultTKlineService<TKline, TKlineDTO,
 	 */
 	void modifyKLine(TEntrustRecord entrustRecord, BigDecimal dealPrice);
 
+	/**
+	 * 根据交易对查询最新k线
+	 * @param currencyTradeId 交易对id
+	 * @return
+	 */
+	QueryKLineVO queryKLineBySymbol(Integer currencyTradeId);
 }

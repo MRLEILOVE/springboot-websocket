@@ -41,4 +41,12 @@
 		AND granularity = #{granularity}
 	</select>
 
+	<select id="queryKLineByCondition" resultType="com.bittrade.pojo.vo.QueryKLineVO">
+		SELECT l.symbol,l.high,l.low,l.`open`,l.`close`,l.granularity,l.time,l.volume
+		FROM t_kline l
+		WHERE  l.symbol = #{symbol}
+		AND l.time = #{time}
+		AND granularity = #{granularity}
+	</select>
+
 </mapper>

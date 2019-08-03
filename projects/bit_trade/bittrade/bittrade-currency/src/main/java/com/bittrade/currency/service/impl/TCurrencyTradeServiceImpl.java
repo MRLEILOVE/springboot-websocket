@@ -1,8 +1,10 @@
 package com.bittrade.currency.service.impl;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import com.bittrade.common.utils.RedisKeyUtil;
+import com.bittrade.pojo.vo.CurrencyTradeVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +15,7 @@ import com.bittrade.pojo.dto.TCurrencyTradeDTO;
 import com.bittrade.pojo.model.TCurrencyTrade;
 import com.bittrade.pojo.vo.TCurrencyTradeVO;
 import com.bittrade.pojo.vo.TransactionPairVO;
+import org.springframework.util.StringUtils;
 import redis.clients.jedis.JedisCluster;
 
 /**
@@ -41,11 +44,26 @@ public class TCurrencyTradeServiceImpl extends
 			vos.stream().forEach(vo ->{
 				//#TODO 价格跟涨幅待完善
 //                String price = jedisCluster.get(RedisKeyUtil.getOkexSymbolLast(vo.getSymbol().replace('/', '_')));
-                vo.setPrice("100.00");
+                vo.setPrice(new BigDecimal(100));
                 //涨跌幅
-				vo.setChg("0.5");
+				vo.setChg(new BigDecimal(0.05));
 			});
 		}
 		return vos;
+	}
+
+	/**
+	 * 刚点进币币页面，获取交易对信息
+	 * @param id 交易对id
+	 * @return 交易对对象信息
+	 */
+	@Override
+	public CurrencyTradeVO queryCurrencyTradeAtFirst(Integer id) {
+		//如果id为空，就返回优先级最高的交易对信息
+		if(id == null){
+			return tCurrencyTradeDAO.getOneOrderBySort();
+		}else {
+			return tCurrencyTradeDAO.getById(id);
+		}
 	}
 }

@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 @Data
@@ -19,27 +20,27 @@ public class QueryKLineVO implements Serializable {
     /**
      * 最高价格
      */
-    private Double high;
+    private BigDecimal high;
 
     /**
      * 最低价格
      */
-    private Double low;
+    private BigDecimal low;
 
     /**
      * 开盘价格
      */
-    private Double open;
+    private BigDecimal open;
 
     /**
      * 收盘价格
      */
-    private Double close;
+    private BigDecimal close;
 
     /**
      * 时间粒度[1min,5min,15min,30min,60min,4hour,1day,1mon,1week,1year]
      */
-    private Double granularity;
+    private BigDecimal granularity;
 
     /**
      * 开始时间
@@ -49,6 +50,16 @@ public class QueryKLineVO implements Serializable {
     /**
      * 交易量
      */
-    private Double volume;
+    private BigDecimal volume;
+
+    /**
+     * 当前价
+     */
+    private BigDecimal price;
+
+    /**
+     * 涨跌幅
+     */
+    private BigDecimal chg;
 
 }

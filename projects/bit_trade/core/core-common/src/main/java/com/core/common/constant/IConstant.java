@@ -11,7 +11,7 @@ public interface IConstant {
 	/**
 	 * 成功
 	 */
-	public static final int SUCCESS = 0;
+	public static final int SUCCESS = 200;
 
 	/**
 	 * 失败
