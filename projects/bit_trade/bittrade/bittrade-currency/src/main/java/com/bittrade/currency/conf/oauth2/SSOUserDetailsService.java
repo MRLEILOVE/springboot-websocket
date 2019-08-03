@@ -1,4 +1,4 @@
-//package com.bittrade.currency.conf;
+//package com.bittrade.currency.conf.oauth2;
 //
 //import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.security.core.authority.AuthorityUtils;
@@ -17,7 +17,7 @@
 //
 //	@Override
 //	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-//		return new User(username, passwordEncoder.encode("123456"),
+//		return new User(username, passwordEncoder.encode("o"),
 //				AuthorityUtils.commaSeparatedStringToAuthorityList("admin,ROLE_USER"));
 //	}
 //

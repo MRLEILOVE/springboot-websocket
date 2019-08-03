@@ -17,6 +17,6 @@ dubbo:
     #address: 监控IP:7070
   consumer:
     check: false
-    timeout: 10000
+    timeout: 5000
 #  reference:
 #    check: false

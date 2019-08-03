@@ -5,8 +5,8 @@ data:
   #mapper-locations: classpath*:/__default_SQL/**/I*DAO.xml,classpath*:/SQL/**/I*DAO.xml
   application:
     name: currency
-  register-with-eureka: false
-  fetch-registry: false
+  register-with-eureka: true
+  fetch-registry: true
 
 dubbo.protocol.port: 20881
 
@@ -20,12 +20,17 @@ spring:
     active: common, dubbo_provider, dubbo_consumer
 
 security:
+  basic:
+    enabled: false
   oauth2:
     client:
-      clientId: client1
-      clientSecret: secret1
-      access-token-uri: http://127.0.0.1:8082/auth_server/oauth/token    #请求令牌的地址
-      user-authorization-uri: http://127.0.0.1:8082/auth_server/oauth/authorize    #请求认证的地址
+      clientId: clientId_bittrade-currency
+      clientSecret: clientSecret_bittrade-currency
+      access-token-uri: http://localhost:8087/oauth/token    #请求令牌的地址
+      user-authorization-uri: http://localhost:8087/oauth/authorize    #请求认证的地址
     resource:
+      user-info-uri: http://localhost:8087/user
+      prefer-token-info: false
       jwt:
-        key-uri: http://127.0.0.1:8082/auth_server/oauth/token_key   #解析jwt令牌所需要密钥的地址
+        #key-uri: http://jdcloud-provider-auth:8087/oauth/token_key   #解析jwt令牌所需要密钥的地址
+        key-uri: http://localhost:8087/oauth/token_key   #解析jwt令牌所需要密钥的地址

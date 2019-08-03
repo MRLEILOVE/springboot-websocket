@@ -28,7 +28,7 @@ dubbo:
     #protocol: registry
     #address: 监控IP:7070
   provider:
-    timeout: 10000
+    timeout: 5000
   scan:
     # like the @EnableDubbo ?
     # Base packages to scan Dubbo Components (e.g., @Service, @Reference)
