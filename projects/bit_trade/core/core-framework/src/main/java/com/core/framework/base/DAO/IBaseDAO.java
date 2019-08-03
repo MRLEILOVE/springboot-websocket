@@ -115,7 +115,7 @@ public abstract interface IBaseDAO<Model, DTO, VO> extends com.baomidou.mybatisp
 	/**
 	 * 查询多个根据实体和分页
 	 * @param model
-	 * @param page
+	 * @param page 要改成 Current or Index ？
 	 * @param size
 	 * @return
 	 */

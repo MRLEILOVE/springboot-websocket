@@ -148,9 +148,10 @@ public class DateTimeUtil {
 	 * @since JDK 1.8
 	 */
 	public static final LocalDateTime getDayBegin(LocalDateTime dt, int days) {
-		int i_rangeBegin = getRangeBegin(dt.getDayOfMonth(), days);
+//		int i_rangeBegin = getRangeBegin(dt.getDayOfMonth(), days);
+		int i_rangeBegin = MathematicsUtil.getLastPageBegin(days, dt.getDayOfMonth());
 		
-		LocalDateTime dt_ret = LocalDateTime.of( dt.getYear(), dt.getMonth(), i_rangeBegin + 1, 0, 0, 0, 0 );
+		LocalDateTime dt_ret = LocalDateTime.of( dt.getYear(), dt.getMonth(), i_rangeBegin, 0, 0, 0, 0 );
 		
 		return dt_ret;
 	}

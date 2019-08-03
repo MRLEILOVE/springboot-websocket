@@ -16,6 +16,7 @@ import com.core.framework.base.interfaces.ICreateTime;
 import com.core.framework.base.interfaces.IUpdateTime;
 import com.core.framework.base.model.BaseModel;
 import com.core.framework.base.service.IBaseService;
+import com.core.tool.MathematicsUtil;
 
 /**
  * 
@@ -137,8 +138,8 @@ public abstract class BaseServiceImpl<Model extends BaseModel<Model>, DTO extend
 			if (size > i_totalSize) {
 				size = i_totalSize;
 			}
-			i_totalPage = (i_totalSize - 1) / size + 1;
-			list_data = baseDAO.getsByPage(model, (page - 1) * size, size);
+			i_totalPage = MathematicsUtil.getTotalPage(size, i_totalSize);
+			list_data = baseDAO.getsByPage(model, MathematicsUtil.getPageBeginIndex(page, size), size);
 		}
 		
 		pageDTO = new PageDTO<Model>(page, size, i_totalPage, i_totalSize, list_data);
