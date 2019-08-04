@@ -16,7 +16,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 		"com.core.framework.props", 
 		"com.core.framework.config", 
 		// web .
-		"com.core.web.tool.exception" 
+		"com.core.web.common.config", 
+		"com.core.web.common.exception" 
 		})
 @EnableTransactionManagement
 public abstract class BaseApplication {

@@ -1,6 +1,6 @@
 package com.bittrade.common.enums;
 
-import com.core.common.enums.IBaseEnumer;
+import com.core.common.enums.base.IBaseEnumer;
 
 /**
  * K线图 - 时间粒度，以秒为单位

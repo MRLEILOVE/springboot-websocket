@@ -1,4 +1,4 @@
-package com.core.common.enums;
+package com.core.common.enums.base;
 
 /**
  * 

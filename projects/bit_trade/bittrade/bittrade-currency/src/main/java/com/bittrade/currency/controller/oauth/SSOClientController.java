@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.core.common.annotation.ALoginUser;
+import com.core.web.common.entity.LoginUser;
+
 @RestController
 // @EnableOAuth2Sso
 public class SSOClientController {
@@ -21,6 +24,11 @@ public class SSOClientController {
 	@GetMapping("/user")
 	public Authentication user(Authentication user) {
 		return user;
+	}
+
+	@GetMapping("/getLoginUser")
+	public Object getUser(@ALoginUser LoginUser obj) {
+		return obj;
 	}
 
 	@Autowired

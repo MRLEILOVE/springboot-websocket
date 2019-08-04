@@ -3,7 +3,10 @@ package com.core.common.DTO;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 import com.core.common.constant.IConstant;
+import com.core.common.enums.base.IBaseEnumer;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -80,6 +83,21 @@ public class ReturnDTO<T> implements Serializable {
 	}
 
 	/**
+	 * ret
+	 * @param <T>
+	 * @param baseEnumer
+	 * @return
+	 */
+	public static final <T> ReturnDTO<T> ret(IBaseEnumer<Integer> baseEnumer) {
+		ReturnDTO<T> ret = new ReturnDTO<T>();
+		
+		ret.setCode(baseEnumer.getCode());
+		ret.setMsg(baseEnumer.getName());
+		
+		return ret;
+	}
+
+	/**
 	 * error
 	 * @param <T>
 	 * @param msg
@@ -107,6 +125,27 @@ public class ReturnDTO<T> implements Serializable {
 		ret.setMsg(ex.toString());
 		
 		return ret;
+	}
+
+	/**
+	 * error
+	 * @param <T>
+	 * @param code
+	 * @param ex
+	 * @return
+	 */
+	public static final <T> ReturnDTO<T> error(int code, Exception ex) {
+		ReturnDTO<T> ret = new ReturnDTO<T>();
+		
+		ret.setCode(code);
+		ret.setMsg(ex.toString());
+		
+		return ret;
+	}
+	
+	@Override
+	public String toString() {
+		return ToStringBuilder.reflectionToString(this);
 	}
 
 }

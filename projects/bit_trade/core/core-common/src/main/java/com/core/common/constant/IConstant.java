@@ -29,6 +29,11 @@ public interface IConstant {
 	public static final int PAGE_SIZE = 10;
 	
 	/**
+	 * UTF-8
+	 */
+	public static final String UTF_8 = "UTF-8";
+	
+	/**
 	 * 日期时间的格式
 	 */
 	public static final String DATETIME_PATTERN = "yyyy-MM-dd HH:mm:ss";

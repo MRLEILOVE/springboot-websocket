@@ -1,6 +1,6 @@
 package com.bittrade.common.enums;
 
-import com.core.common.enums.IBaseEnumer;
+import com.core.common.enums.base.IBaseEnumer;
 
 /**
  * 委托方向:0买入,1卖出

@@ -1,6 +1,6 @@
 package com.bittrade.common.enums;
 
-import com.core.common.enums.IBaseEnumer;
+import com.core.common.enums.base.IBaseEnumer;
 
 /**
  * 是否主动:1-主买主卖，0-被买被卖

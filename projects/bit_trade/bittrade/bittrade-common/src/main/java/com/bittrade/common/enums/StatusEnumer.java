@@ -1,6 +1,6 @@
 package com.bittrade.common.enums;
 
-import com.core.common.enums.IBaseEnumer;
+import com.core.common.enums.base.IBaseEnumer;
 
 /**
  * 状态：0禁用，1启用

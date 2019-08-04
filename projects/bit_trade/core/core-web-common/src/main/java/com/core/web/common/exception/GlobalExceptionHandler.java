@@ -1,4 +1,4 @@
-package com.core.web.tool.exception;
+package com.core.web.common.exception;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -9,8 +9,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 import com.core.common.DTO.ReturnDTO;
+import com.core.web.common.enums.HttpStatusEnumer;
 
 /**
  * <p>
@@ -29,6 +31,15 @@ import com.core.common.DTO.ReturnDTO;
 public class GlobalExceptionHandler {
 
 	private static final Logger LOG = LoggerFactory.getLogger( GlobalExceptionHandler.class );
+	
+	/**
+	 * 404
+	 */
+	@ExceptionHandler(value = NoHandlerFoundException.class)
+	@ResponseStatus(HttpStatus.NOT_FOUND)
+	public ReturnDTO<?> notFoundException(HttpServletResponse response) {
+		return ReturnDTO.ret(HttpStatusEnumer.NOT_FOUND);
+	}
 
 	@ExceptionHandler(value = { Exception.class })
 	@ResponseStatus(value = HttpStatus.OK)

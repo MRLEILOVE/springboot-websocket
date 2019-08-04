@@ -9,7 +9,21 @@
 
 package com.core.web.tool;
 
+import java.io.IOException;
+import java.io.OutputStream;
+
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.http.MediaType;
+
+import com.core.common.DTO.ReturnDTO;
+import com.core.common.constant.IConstant;
+import com.core.tool.JSONUtil;
+import com.core.tool.LoggerFactoryUtil;
+import com.core.tool.LoggerUtil;
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 
 /**
  * <p>
@@ -25,6 +39,8 @@ import javax.servlet.http.HttpServletRequest;
  * @see
  */
 public class WebUtil {
+	
+	private static final LoggerUtil LOG = LoggerFactoryUtil.getLogger(WebUtil.class);
 
 	/**
 	 * <p>
@@ -44,6 +60,35 @@ public class WebUtil {
 	public static final boolean isAJAX(HttpServletRequest httpRequest) {
 		String xRequestedWith = httpRequest.getHeader( "X-Requested-With" );
 		return xRequestedWith != null && "XMLHttpRequest".equals( xRequestedWith );
+	}
+	
+	/**
+	 * 
+	 * @param returnDTO
+	 * @param response
+	 */
+	public static final void writeError(ReturnDTO<Object> returnDTO, HttpServletResponse response) {
+		response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
+		response.setCharacterEncoding(IConstant.UTF_8);
+		response.setStatus(returnDTO.getCode());
+		
+		try {
+			OutputStream os = response.getOutputStream();
+			
+//			com.fasterxml.jackson.databind.ObjectMapper objectMapper = new com.fasterxml.jackson.databind.ObjectMapper();
+//			objectMapper.writeValue(os, returnDTO);
+			os.write(JSONUtil.toString(returnDTO).getBytes(IConstant.UTF_8));
+			
+			os.flush();
+			os.close();
+			os = null;
+		} catch (JsonGenerationException e) {
+			LOG.error(e);
+		} catch (JsonMappingException e) {
+			LOG.error(e);
+		} catch (IOException e) {
+			LOG.error(e);
+		}
 	}
 	
 }

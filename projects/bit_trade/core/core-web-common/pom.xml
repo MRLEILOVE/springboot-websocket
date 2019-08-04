@@ -10,7 +10,7 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	
-	<artifactId>core-web-tool</artifactId>
+	<artifactId>core-web-common</artifactId>
 
 	<dependencies>
 		<dependency>
@@ -19,7 +19,7 @@
 		</dependency>
 		<dependency>
 			<groupId>com.bittrade</groupId>
-			<artifactId>core-framework</artifactId>
+			<artifactId>core-web-tool</artifactId>
 		</dependency>
 		
 		<dependency>
@@ -33,6 +33,7 @@
 			<artifactId>javax.servlet-api</artifactId>
 		</dependency>
 		
+		<!-- 也可以就导Spring的web组件等。 -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-web</artifactId>
@@ -41,6 +42,36 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
 		</dependency>
+		
+		<!-- <dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security.oauth</groupId>
+			<artifactId>spring-security-oauth2</artifactId>
+		</dependency> -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-security</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-oauth2</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-jwt</artifactId>
+		</dependency>
+		<!-- <dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-autoconfigure</artifactId>
+			<version>1.5.13.RELEASE</version>
+		</dependency> -->
 	</dependencies>
 
 </project>

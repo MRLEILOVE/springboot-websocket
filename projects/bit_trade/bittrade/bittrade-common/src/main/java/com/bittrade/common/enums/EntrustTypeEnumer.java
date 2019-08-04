@@ -1,6 +1,6 @@
 package com.bittrade.common.enums;
 
-import com.core.common.enums.IBaseEnumer;
+import com.core.common.enums.base.IBaseEnumer;
 
 /**
  * 委托类型:0市价交易,1限价交易
