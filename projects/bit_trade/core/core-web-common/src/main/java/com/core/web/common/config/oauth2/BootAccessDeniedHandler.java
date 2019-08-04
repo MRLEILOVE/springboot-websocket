@@ -1,4 +1,4 @@
-package com.core.web.common.config;
+package com.core.web.common.config.oauth2;
 
 import java.io.IOException;
 

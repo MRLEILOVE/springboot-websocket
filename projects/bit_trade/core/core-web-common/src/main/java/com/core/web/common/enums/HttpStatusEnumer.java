@@ -15,8 +15,9 @@ import lombok.Getter;
 @Getter
 public enum HttpStatusEnumer implements IBaseEnumer<Integer> {
 	
-	UNAUTHORIZED(HttpStatus.UNAUTHORIZED.value(), "没有认证"), 
-	FORBIDDEN(HttpStatus.FORBIDDEN.value(), "访问被禁止"), 
+	NO_LOGIN(HttpStatus.UNAUTHORIZED.value(), "未登录"), 
+	UNAUTHORIZED(HttpStatus.UNAUTHORIZED.value(), "未认证"), // javax.servlet.http.HttpServletResponse.SC_UNAUTHORIZED
+	FORBIDDEN(HttpStatus.FORBIDDEN.value(), "权限不足/访问被禁止"), 
 	NOT_FOUND(HttpStatus.NOT_FOUND.value(), "找不到服务"), 
 	
 	;

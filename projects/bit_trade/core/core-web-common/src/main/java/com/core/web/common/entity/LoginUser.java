@@ -2,6 +2,11 @@ package com.core.web.common.entity;
 
 import lombok.Data;
 
+/**
+ * 登录用户。
+ * @author Administrator
+ *
+ */
 @Data
 public class LoginUser {
 

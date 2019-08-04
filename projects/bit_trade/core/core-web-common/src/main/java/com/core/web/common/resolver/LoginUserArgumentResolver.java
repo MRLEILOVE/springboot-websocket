@@ -26,6 +26,7 @@ public class LoginUserArgumentResolver implements HandlerMethodArgumentResolver 
 //
 //		return isHasObjectAnn && isHasLoginUserParameter;
 		
+		// 条件判断可以用其中任意组合。
 		return parameter.hasParameterAnnotation(ALoginUser.class) && LoginUser.class.isAssignableFrom(parameter.getParameterType());
 	}
 

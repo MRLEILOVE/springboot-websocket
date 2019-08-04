@@ -1,4 +1,4 @@
-package com.bittrade.currency.conf.oauth2;
+package com.core.web.common.config.oauth2;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 

@@ -68,7 +68,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 	@Override
 	public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
 //		WebMvcConfigurer.super.addArgumentResolvers(resolvers);
-		resolvers.add(new LoginUserArgumentResolver());
+		resolvers.add(new LoginUserArgumentResolver()); // 也可以将实例配置在Spring的Bean管理中。
 	}
 
 }

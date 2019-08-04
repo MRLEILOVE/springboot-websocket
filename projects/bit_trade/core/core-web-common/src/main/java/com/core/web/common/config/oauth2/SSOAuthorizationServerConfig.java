@@ -1,3 +1,4 @@
+package com.core.web.common.config.oauth2;
 //package com.bittrade.currency.conf.oauth2;
 //
 //import java.util.ArrayList;
