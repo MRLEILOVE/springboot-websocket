@@ -5,8 +5,8 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 
 import com.core.framework.BaseApplication;
 
-@EnableEurekaClient
 //@EnableDiscoveryClient
+@EnableEurekaClient
 @SpringBootApplication
 public class SvcApplication extends BaseApplication {
 

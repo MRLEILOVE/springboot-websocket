@@ -1,9 +1,14 @@
 package com.bittrade.currency.controller;
 
 import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,10 +17,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.client.RestTemplate;
 
 import com.bittrade.common.utils.RedisKeyUtil;
 import com.bittrade.currency.api.service.ITCurrencyService;
-import com.bittrade.currency.feign.IBizAuthService;
+import com.bittrade.currency.feign.IBizService;
 import com.bittrade.pojo.dto.TCurrencyDTO;
 import com.bittrade.pojo.model.TCurrency;
 import com.bittrade.pojo.vo.TCurrencyVO;
@@ -39,7 +45,7 @@ public class TCurrencyController extends BaseController<TCurrency, TCurrencyDTO,
 	@Autowired
 	private JedisCluster jedisCluster;
 	@Autowired
-	private IBizAuthService bizAuthService;
+	private IBizService bizAuthService;
 
 	@ApiOperation(value = "查找所有法币")
 	@RequestMapping(value = "/findAllLegalCurrency", method = RequestMethod.GET)
@@ -71,10 +77,22 @@ public class TCurrencyController extends BaseController<TCurrency, TCurrencyDTO,
 	@ApiOperation(value = "Feign调用")
 	@RequestMapping(value = "/feignCall", method = RequestMethod.GET)
 	@ResponseBody
-	public ReturnDTO<Object> feignCall(Integer type) {
-		System.out.println( "type=" + type );
-		ReturnDTO<Object> returnDTO = ReturnDTO.error( "" + bizAuthService.list(type) );
+	public ReturnDTO<Object> feignCall(Map<String, Object> map, HttpServletRequest req) {
+		try {
+			HttpHeaders header = new HttpHeaders();
+			header.add( HttpHeaders.AUTHORIZATION, req.getHeader( HttpHeaders.AUTHORIZATION ) );
+			HttpEntity<Map<String, Object>> httpEntity = new HttpEntity<Map<String, Object>>(map, header);
+			Object obj_ret = restTemplate.postForEntity( "http://localhost:9000/biz/contractMicro/list", httpEntity, Object.class );
+			System.out.println( "obj_ret=" + obj_ret );
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		System.out.println( "map=" + map );
+		ReturnDTO<Object> returnDTO = ReturnDTO.error( "" + bizAuthService.list(map) );
 		System.out.println( "returnDTO=" + returnDTO );
+		
 		return returnDTO;
 	}
+	org.springframework.web.client.RestTemplate restTemplate = new RestTemplate();
 }
