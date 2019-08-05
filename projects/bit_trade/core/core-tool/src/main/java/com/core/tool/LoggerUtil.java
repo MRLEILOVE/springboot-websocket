@@ -47,6 +47,15 @@ public class LoggerUtil {
 	
 	/**
 	 * 
+	 * @param format
+	 * @param arguments
+	 */
+	public void info(String format, Object... arguments) {
+		logger.info(format, arguments);
+	}
+	
+	/**
+	 * 
 	 * @param msg
 	 */
 	public void warn(String msg) {

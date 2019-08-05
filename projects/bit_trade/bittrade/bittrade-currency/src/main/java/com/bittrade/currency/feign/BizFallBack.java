@@ -1,7 +1,5 @@
 package com.bittrade.currency.feign;
 
-import java.util.Map;
-
 import javax.validation.Valid;
 
 import org.springframework.stereotype.Component;
@@ -16,8 +14,14 @@ public class BizFallBack implements IBizService {
 	}
 
 	@Override
-	public Object list(@Valid Map<String, Object> map_val) {
+	public Object list(@Valid Object map_val) {
 		return "error -- com.bittrade.currency.feign.BizFallBack.list(Map<String, Object>) map_val=" + map_val;
+	}
+
+	@Override
+	public String list1() {
+		System.out.println("error list1");
+		return null;
 	}
 
 }

@@ -8,8 +8,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-@FeignClient(value = "jdcloud-provider-biz", fallback = BizFallBack.class)
-public interface IBizService {
+import com.core.web.common.config.feign.FeignConfiguration;
+
+@FeignClient(value = "jdcloud-gateway", configuration = FeignConfiguration.class, fallback = BizFallBack.class)
+public interface IZuulService {
 
 	// 服务中方法的映射路径
 	@RequestMapping("/auth/orderEntrust/list/{type}")
@@ -18,7 +20,7 @@ public interface IBizService {
 	@RequestMapping("/contractMicro/list")
 	Object list(@RequestBody @Valid Object map_val);
 	
-	@RequestMapping(value="/contractMicro/list1", method = RequestMethod.POST)
+	@RequestMapping(value="/biz/contractMicro/list1", method = RequestMethod.POST)
 	String list1();
 
 }
