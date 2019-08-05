@@ -20,6 +20,7 @@ import com.bittrade.common.utils.RedisKeyUtil;
 import com.bittrade.entrust.api.service.ITEntrustRecordService;
 import com.bittrade.entrust.api.service.ITEntrustService;
 import com.bittrade.entrust.service.impl.MakeAMatchServiceImpl;
+import com.bittrade.pojo.model.TCurrencyTrade;
 import com.bittrade.pojo.model.TEntrust;
 import com.core.common.constant.ICompareResultConstant;
 
@@ -100,17 +101,18 @@ public /* static */final class Robot {
 	 * @author Administrator
 	 * @param currencyTradeID
 	 * @param rate
+	 * @param priceDecimalDigits
 	 * @return
 	 * @since JDK 1.8
 	 */
-	private BigDecimal getPrice(int currencyTradeID, BigDecimal rate) {
+	private BigDecimal getPrice(int currencyTradeID, BigDecimal rate, int priceDecimalDigits) {
 		BigDecimal bd_price;
 		
 		BigDecimal bd_min, bd_max;
 		double d_min, d_max;
 		
 		BigDecimal bd_selfPrice = makeAMatchService.getLinePrice( currencyTradeID );
-		String str_otherLinePrice = jedisCluster.get( String.format( RedisKeyUtil.OKEX_SYMBOL_LAST_KEY, makeAMatchService.getSymbol( currencyTradeID ) ) );
+		String str_otherLinePrice = jedisCluster.get( String.format( RedisKeyUtil.OKEX_SYMBOL_LAST_KEY, makeAMatchService.getCurrencyTrade( currencyTradeID ).getSymbol() ) );
 		if (str_otherLinePrice != null && str_otherLinePrice.length() > 0) {
 			BigDecimal bd_otherPrice = new BigDecimal(str_otherLinePrice);
 			if (bd_selfPrice.compareTo(bd_otherPrice) == ICompareResultConstant.LESS_THAN) {
@@ -129,26 +131,56 @@ public /* static */final class Robot {
 		bd_price = getPrice(d_min, d_max);
 		// 根据买卖方向平衡买卖单价（买价加5%， 卖价减5%）。
 		bd_price = bd_price.add( bd_price.multiply( BD__PRICE_RANGE_PERCENT ).multiply( rate ) );
+		// 也可以通过原数运算来取精度。
+		bd_price = bd_price.setScale( priceDecimalDigits, BigDecimal.ROUND_HALF_DOWN );
 		
 		return bd_price;
 	}
 
-	private static BigDecimal getCount() {
+	/**
+	 * 
+	 * getCount:(这里用一句话描述这个方法的作用). <br/>  
+	 * TODO(这里描述这个方法适用条件 – 可选).<br/>  
+	 * TODO(这里描述这个方法的执行流程 – 可选).<br/>  
+	 * TODO(这里描述这个方法的使用方法 – 可选).<br/>  
+	 * TODO(这里描述这个方法的注意事项 – 可选).<br/>  
+	 *  
+	 * @author Administrator  
+	 * @param rate
+	 * @param countDecimalDigits
+	 * @return  
+	 * @since JDK 1.8
+	 */
+	private static BigDecimal getCount(BigDecimal rate, int countDecimalDigits) {
 		Random r = new Random( R.nextLong() );
-		return new BigDecimal( r.nextDouble()
-				* 100 )/*
-						 * .setScale(IConstant.COUNT_DECIMAL_LENGTH,
-						 * BigDecimal.ROUND_HALF_DOWN)
-						 */;
+		
+		// 也可以通过原数运算来取精度。
+		return 
+				new BigDecimal( r.nextDouble() * 100 )
+				.multiply( rate )
+				.setScale(countDecimalDigits, BigDecimal.ROUND_HALF_DOWN)
+				;
 	}
 
-	private static BigDecimal getAmount() {
+	/**
+	 * 
+	 * getAmount:(这里用一句话描述这个方法的作用). <br/>  
+	 * TODO(这里描述这个方法适用条件 – 可选).<br/>  
+	 * TODO(这里描述这个方法的执行流程 – 可选).<br/>  
+	 * TODO(这里描述这个方法的使用方法 – 可选).<br/>  
+	 * TODO(这里描述这个方法的注意事项 – 可选).<br/>  
+	 *  
+	 * @author Administrator  
+	 * @param priceDecimalDigits
+	 * @return  
+	 * @since JDK 1.8
+	 */
+	private static BigDecimal getAmount(int priceDecimalDigits) {
 		Random r = new Random( R.nextLong() );
-		return new BigDecimal( r.nextDouble()
-				* 10000 )/*
-						 * .setScale(IConstant.COUNT_DECIMAL_LENGTH,
-						 * BigDecimal.ROUND_HALF_DOWN)
-						 */;
+		return 
+				new BigDecimal( r.nextDouble() * 10000 )
+				.setScale(priceDecimalDigits, BigDecimal.ROUND_HALF_DOWN)
+				;
 	}
 
 	private static long getSleepMillis() {
@@ -181,9 +213,9 @@ public /* static */final class Robot {
 			entrust.setEntrustDirection( getEntrustDirection() );
 			entrust.setEntrustType( getEntrustType() );
 			if (entrust.getEntrustType() == EntrustTypeEnumer.LIMIT.getCode()) {
-				entrust.setPrice( robot.getPrice( entrust.getCurrencyTradeId(), null ) );
+				entrust.setPrice( robot.getPrice( entrust.getCurrencyTradeId(), null, 2 ) );
 			}
-			entrust.setCount( getCount() );
+			entrust.setCount( getCount( null, 2 ) );
 			System.out.println( "11 com.bittrade.entrust.service.impl.MakeAMatchServiceImpl.makeAMatch(TEntrust)" );
 			makeAMatch.makeAMatch( entrust );
 			System.out.println( "22 com.bittrade.entrust.service.impl.MakeAMatchServiceImpl.makeAMatch(TEntrust)" );
@@ -229,32 +261,35 @@ public /* static */final class Robot {
 			// /* Future<String> future = */es.submit(MyCallable);
 			/* Future<String> future = */ES.submit( () -> {
 				while (true) {
+					int i_currencyTradeID = getCurrencyTradeID();
+					TCurrencyTrade currencyTrade = makeAMatchService.getCurrencyTrade( i_currencyTradeID );
+					
 					TEntrust entrust = new TEntrust();
 					entrust.setUserId( getUserID() );
-					entrust.setCurrencyTradeId( getCurrencyTradeID() );
+					entrust.setCurrencyTradeId( i_currencyTradeID );
 					entrust.setEntrustDirection( getEntrustDirection() );
 					entrust.setEntrustType( getEntrustType() );
 					{
 						if (entrust.getEntrustType() == EntrustTypeEnumer.LIMIT.getCode()) {
 							if (entrust.getEntrustDirection() == EntrustDirectionEnumer.BUY.getCode()) {
 								
-								entrust.setPrice( getPrice( entrust.getCurrencyTradeId(), BD__ADD ) );
-								entrust.setCount( getCount().multiply( BD__BUY_RATE ) );
+								entrust.setPrice( getPrice( entrust.getCurrencyTradeId(), BD__ADD, currencyTrade.getPriceDecimalDigits() ) );
+								entrust.setCount( getCount( BD__BUY_RATE, currencyTrade.getCountDecimalDigits() ) );
 								
 							} else /*if (entrust.getEntrustDirection() == EntrustDirectionEnumer.SELL.getCode()) */{
 								
-								entrust.setPrice( getPrice( entrust.getCurrencyTradeId(), BD__SUB ) );
-								entrust.setCount( getCount().multiply( BD__SELL_RATE ) );
+								entrust.setPrice( getPrice( entrust.getCurrencyTradeId(), BD__SUB, currencyTrade.getPriceDecimalDigits() ) );
+								entrust.setCount( getCount( BD__SELL_RATE, currencyTrade.getCountDecimalDigits() ) );
 								
 							}
 						} else /*if (entrust.getEntrustType() == EntrustTypeEnumer.MARKET.getCode()) */{
 							if (entrust.getEntrustDirection() == EntrustDirectionEnumer.BUY.getCode()) {
 								
-								entrust.setAmount( getAmount() );
+								entrust.setAmount( getAmount( currencyTrade.getPriceDecimalDigits() ) );
 								
 							} else /*if (entrust.getEntrustDirection() == EntrustDirectionEnumer.SELL.getCode()) */{
 								
-								entrust.setCount( getCount() );
+								entrust.setCount( getCount( BD__SELL_RATE, currencyTrade.getCountDecimalDigits() ) );
 								
 							}
 						}

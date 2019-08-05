@@ -85,7 +85,7 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 	/**
 	 * 交易对
 	 */
-	private static final ConcurrentHashMap<Integer, String> MAP__SYMBOL = new ConcurrentHashMap<>();
+	private static final ConcurrentHashMap<Integer, TCurrencyTrade> MAP__CURRENCY_TRADE = new ConcurrentHashMap<>();
 	
 	/**
 	 * 行情价
@@ -180,27 +180,27 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 	 * @return  
 	 * @since JDK 1.8
 	 */
-	public String getSymbol(int currencyTradeID) {
-		String str_symbol = null;
+	public TCurrencyTrade getCurrencyTrade(int currencyTradeID) {
+		TCurrencyTrade obj_currencyTrade = null;
 		
-		if (MAP__SYMBOL.containsKey( currencyTradeID )) {
-			str_symbol = MAP__SYMBOL.get( currencyTradeID );
+		if (MAP__CURRENCY_TRADE.containsKey( currencyTradeID )) {
+			obj_currencyTrade = MAP__CURRENCY_TRADE.get( currencyTradeID );
 		} else {
 //			LOG.info("------------ currencyTradeService.getByPK() once , currencyTradeID=" + currencyTradeID);
 			TCurrencyTrade currencyTrade = currencyTradeService.getByPK( currencyTradeID );
 			if (currencyTrade != null) {
-				str_symbol = currencyTrade.getSymbol();
-				MAP__SYMBOL.put( currencyTradeID, str_symbol );
+				obj_currencyTrade = currencyTrade;
+				MAP__CURRENCY_TRADE.put( currencyTradeID, currencyTrade );
 			}
 		}
 		
-		return str_symbol;
+		return obj_currencyTrade;
 	}
 	
 	private String getLinePriceRedisKey(int currencyTradeID) {
-		String str_symbol = getSymbol( currencyTradeID );
-		if (str_symbol != null && str_symbol.length() > 0) {
-			return IConstant.REDIS_PREFIX__LINE_PRICE + str_symbol;
+		TCurrencyTrade obj_currencyTrade = getCurrencyTrade( currencyTradeID );
+		if (obj_currencyTrade != null) {
+			return IConstant.REDIS_PREFIX__LINE_PRICE + obj_currencyTrade.getSymbol(); // 要步步为营？
 		}
 		return null;
 	}
@@ -248,7 +248,8 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 	
 	/**
 	 * <p>
-	 *   首次需要从数据库加载是否有未撮合的委托信息。
+	 *   首次需要从数据库加载是否有未撮合的委托信息。<br />
+	 *   剩下未撮合的委托也可以直接入列表。
 	 * </p>
 	 * initialEntrust:(这里用一句话描述这个方法的作用). <br/>  
 	 * TODO(这里描述这个方法适用条件 – 可选).<br/>  

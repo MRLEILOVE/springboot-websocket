@@ -11,6 +11,8 @@ import com.bittrade.pojo.model.TCurrencyTrade;
 import com.bittrade.pojo.model.TWallet;
 import com.bittrade.svc.base.BaseTester;
 
+import redis.clients.jedis.JedisCluster;
+
 public class ATester extends BaseTester {
 
 	@Autowired
@@ -19,6 +21,8 @@ public class ATester extends BaseTester {
 //	ITParamConfigService paramConfigService;
 	@Autowired
 	private ITWalletService walletService;
+	@Autowired
+	private JedisCluster jedisCluster;
 	
 	@Test
 	public void getCT() {
@@ -46,6 +50,11 @@ public class ATester extends BaseTester {
 
 		// 更新钱包
 		System.out.println("==" + walletService.modifyBy/* WithSelective */( updateWallet, updateSellMarketIdWallet ));
+	}
+	
+	@Test
+	public void redis() {
+		jedisCluster.set("test-key", "test-value");
 	}
 
 }

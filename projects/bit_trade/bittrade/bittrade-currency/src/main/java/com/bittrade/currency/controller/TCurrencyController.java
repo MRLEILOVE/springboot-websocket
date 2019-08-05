@@ -2,15 +2,20 @@ package com.bittrade.currency.controller;
 
 import java.util.List;
 
-import com.bittrade.common.utils.RedisKeyUtil;
-import com.bittrade.pojo.vo.QueryKLineVO;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.bittrade.common.utils.RedisKeyUtil;
 import com.bittrade.currency.api.service.ITCurrencyService;
+import com.bittrade.currency.feign.IBizAuthService;
 import com.bittrade.pojo.dto.TCurrencyDTO;
 import com.bittrade.pojo.model.TCurrency;
 import com.bittrade.pojo.vo.TCurrencyVO;
@@ -33,6 +38,8 @@ public class TCurrencyController extends BaseController<TCurrency, TCurrencyDTO,
 	private ITCurrencyService tCurrencyService;
 	@Autowired
 	private JedisCluster jedisCluster;
+	@Autowired
+	private IBizAuthService bizAuthService;
 
 	@ApiOperation(value = "查找所有法币")
 	@RequestMapping(value = "/findAllLegalCurrency", method = RequestMethod.GET)
@@ -59,5 +66,15 @@ public class TCurrencyController extends BaseController<TCurrency, TCurrencyDTO,
 			return ReturnDTO.ok(jedisCluster.get(RedisKeyUtil.USD_TO_CNY_RATE_KEY));
 		}
 		return ReturnDTO.error("获取法币汇率失败");
+	}
+
+	@ApiOperation(value = "Feign调用")
+	@RequestMapping(value = "/feignCall", method = RequestMethod.GET)
+	@ResponseBody
+	public ReturnDTO<Object> feignCall(Integer type) {
+		System.out.println( "type=" + type );
+		ReturnDTO<Object> returnDTO = ReturnDTO.error( "" + bizAuthService.list(type) );
+		System.out.println( "returnDTO=" + returnDTO );
+		return returnDTO;
 	}
 }

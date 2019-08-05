@@ -72,6 +72,15 @@
 			<artifactId>spring-boot-autoconfigure</artifactId>
 			<version>1.5.13.RELEASE</version>
 		</dependency> -->
+		
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger2</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger-ui</artifactId>
+		</dependency>
 	</dependencies>
 
 </project>

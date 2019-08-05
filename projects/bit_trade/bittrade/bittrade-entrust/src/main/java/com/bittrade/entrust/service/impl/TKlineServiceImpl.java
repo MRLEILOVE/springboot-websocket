@@ -8,8 +8,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.annotation.PostConstruct;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +26,8 @@ import com.bittrade.pojo.vo.QueryKLineVO;
 import com.bittrade.pojo.vo.TKlineVO;
 import com.core.common.constant.ICompareResultConstant;
 import com.core.tool.DateTimeUtil;
+import com.core.tool.LoggerFactoryUtil;
+import com.core.tool.LoggerUtil;
 
 import redis.clients.jedis.JedisCluster;
 
@@ -41,7 +41,7 @@ import redis.clients.jedis.JedisCluster;
 public class TKlineServiceImpl extends DefaultTKlineServiceImpl<ITKlineDAO, TKline, TKlineDTO, TKlineVO>
 		implements ITKlineService {
 	
-	private static final Logger LOG = LoggerFactory.getLogger(TKlineServiceImpl.class);
+	private static final LoggerUtil LOG = LoggerFactoryUtil.getLogger(TKlineServiceImpl.class);
 
 	@Autowired
 	private ITKlineDAO klineDAO;
@@ -149,7 +149,7 @@ public class TKlineServiceImpl extends DefaultTKlineServiceImpl<ITKlineDAO, TKli
 				TKline kLine = getKLine( MAP__KLINE_LAST.get( i_code ), entrustRecord.getCurrencyTradeId() );
 				LocalDateTime dt_updateTime = getDateTimeBegin( entrustRecord.getCreateTime(), i_code );
 				if (kLine.getTime() == null || kLine.getTime().compareTo(dt_updateTime) == ICompareResultConstant.LESS_THAN) {
-					kLine.setSymbol( makeAMatchService.getSymbol( entrustRecord.getCurrencyTradeId() ) );
+					kLine.setSymbol( makeAMatchService.getCurrencyTrade( entrustRecord.getCurrencyTradeId() ).getSymbol() );
 					kLine.setTime( dt_updateTime );
 					kLine.setOpen( dealPrice );
 					kLine.setHigh( dealPrice );
@@ -175,7 +175,7 @@ public class TKlineServiceImpl extends DefaultTKlineServiceImpl<ITKlineDAO, TKli
 				
 				rabbitTemplate.convertAndSend(IQueueConstants.EXCHANGE_TOPIC, IQueueConstants.ROUTE_KEY__KLINE + i_code, kLineToString(kLine));
 			} catch (Exception e) {
-				LOG.error( e.toString() );
+				LOG.error( e );
 			}
 		}
 	}
@@ -194,7 +194,7 @@ public class TKlineServiceImpl extends DefaultTKlineServiceImpl<ITKlineDAO, TKli
 	 */
 	@Override
 	public QueryKLineVO queryKLineBySymbol(Integer currencyTradeId) {
-		String symbol = makeAMatchService.getSymbol(currencyTradeId);
+		String symbol = makeAMatchService.getCurrencyTrade(currencyTradeId).getSymbol();
 //		LocalDateTime time = getDateTimeBegin(LocalDateTime.now(), KLineGranularityEnumer.ONE_MINUTE.getCode());
 		LocalDateTime time = LocalDateTime.of(2019,8,02,14,55,00);
 		QueryKLineVO vo = klineDAO.queryKLineByCondition(symbol,KLineGranularityEnumer.ONE_MINUTE.getCode(),time);
