@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.bittrade.pojo.dto.TransferDto;
+import com.core.common.DTO.ReturnDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,7 @@ import com.bittrade.pojo.vo.TWalletVO;
 import com.bittrade.pojo.vo.UserWalletVO;
 import com.core.tool.SnowFlake;
 
+import org.springframework.transaction.annotation.Transactional;
 import redis.clients.jedis.JedisCluster;
 
 /**
@@ -231,5 +234,6 @@ public class TWalletServiceImpl extends DefaultTWalletServiceImpl<ITWalletDAO, T
 		}
 		return result;
 	}
+
 
 }
