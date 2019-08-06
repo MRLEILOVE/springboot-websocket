@@ -49,6 +49,9 @@ public class SSOResourceServerConfig extends ResourceServerConfigurerAdapter {
 			.authorizeRequests().antMatchers("/**").authenticated().and()
 //			.httpBasic()
 			;
+		
+//		http.requestMatchers().antMatchers(org.springframework.http.HttpMethod.OPTIONS, "/oauth/**");
+		
 //		http
 //		.headers().frameOptions().disable()
 //		.and()

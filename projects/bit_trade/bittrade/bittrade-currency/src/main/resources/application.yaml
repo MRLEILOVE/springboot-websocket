@@ -28,7 +28,8 @@ security:
     client:
       clientId: clientId_bittrade-currency
       clientSecret: clientSecret_bittrade-currency
-      access-token-uri: http://localhost:8087/oauth/token    #请求令牌的地址
+      #access-token-uri: http://localhost:8087/oauth/token    #请求令牌的地址
+      access-token-uri: http://localhost:9000/auz/oauth/token    #请求令牌的地址
       user-authorization-uri: http://localhost:8087/oauth/authorize    #请求认证的地址
       #clientAuthenticationScheme: header,form
       #scope: 限制获取的token的权限

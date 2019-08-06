@@ -88,7 +88,7 @@
 ////		String origin = request.getHeader( "Origin" );
 //		response.setHeader( "Access-Control-Allow-Origin", "*" ); // origin "*" "http://192.168.1.12" "*,http://192.168.1.12"
 //		response.setHeader( "Access-Control-Allow-Methods", "POST, DELETE, PUT, GET, OPTIONS" ); // POST, DELETE, PUT, GET, OPTIONS
-//		response.setHeader( "Access-Control-Allow-Headers", "DNT,X-Mx-ReqToken,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization" );
+//		response.setHeader( "Access-Control-Allow-Headers", "DNT,X-Mx-ReqToken,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization" ); // *
 //		response.setHeader( "Access-Control-Allow-Credentials", "true" );
 //		response.setHeader( "Access-Control-Max-Age", "3600" );
 ////		response.setHeader( "Access-Control-Expose-Headers", "X-forwared-port, X-forwarded-host" );
