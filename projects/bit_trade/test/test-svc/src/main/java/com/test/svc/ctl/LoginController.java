@@ -87,5 +87,5 @@ package com.test.svc.ctl;
 //        ImageIO.write(image, "jpg", out);
 //        return r;
 //    }
-//}---------------------作者：别等时光染了梦想 来源：CSDN 原文：https:// blog.csdn.net/wangxueqing52/article/details/82628407
-//版权声明：本文为博主原创文章，转载请附上博文链接！
+//}
+//

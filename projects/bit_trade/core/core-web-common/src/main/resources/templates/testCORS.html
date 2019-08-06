@@ -2,19 +2,24 @@
 <script type="text/javascript" src="jquery-3.4.1.js"></script>
 <script>
 	function a() {
-		var url = "http://192.168.1.12:9000/currency/tCurrencyTrade/queryCurrencyTradeAtFirst";
-		//url = "http://192.168.1.12:8080/ab?x=1";
+		var str_method = "get";
+		var str_URL = "http://127.0.0.1:9000/currency/tCurrency/getRate/1";
+		//str_URL = "http://127.0.0.1:9000/biz/userAccount/queryAccount/1";
+		//str_URL = "http://192.168.1.12:8080/ab?x=1";
+		//str_URL = "http://127.0.0.1:8900/" + str_method + "?str=" + str_method + "-";
+		//str_URL = "http://127.0.0.1:8901/tCurrency/getRate/1";
 		$.ajax({
-			"url": url,
-			"type": "post", // post put
+			"url": str_URL,
+			"type": str_method, // post delete put get
 			"beforeSend": function(XHR) {
-				XHR.setRequestHeader("Authorization", "bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoyNDIxNTg3MSwidXNlcl9uYW1lIjoiMTc1ODU1ODM4MDgiLCJzY29wZSI6WyJcIipcIiJdLCJleHAiOjE1NjUwODQ0NDQsImF1dGhvcml0aWVzIjpbImFkbWluIl0sImp0aSI6ImVhZjFjMGNkLTQ3NzAtNDJjMS04ZjFjLTY3MjQ2NTg1NGU4OSIsImNsaWVudF9pZCI6ImNsaWVudElkX2JpdHRyYWRlLWN1cnJlbmN5IiwidGltZXN0YW1wIjoxNTY1MDc3MjQ0NTM5fQ.rRGjGQv3a9eoY3LgrH9ZvI0wWQNVQI5sylWNgHLgvDU");
+				XHR.setRequestHeader("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoyNDI1MDM2OCwidXNlcl9uYW1lIjoiMTUwOTQ1ODM3NTQiLCJzY29wZSI6WyJcIipcIiJdLCJleHAiOjE1NjUxMDY3MTMsImF1dGhvcml0aWVzIjpbImFkbWluIl0sImp0aSI6ImU3YzgxNTI4LWMzMzAtNDcyNy04ZDAyLTIyOGEyMDI1NzUzYyIsImNsaWVudF9pZCI6ImNsaWVudElkX2JpdHRyYWRlLWN1cnJlbmN5IiwidGltZXN0YW1wIjoxNTY1MDk5NTEzODMxfQ.mJem9RE2iC8jkcW7bvbM7RTAmgo28vEftL5Xq9pYOEM");
 				//XHR.setRequestHeader("origin", "192.168.1.12");
 			}, 
-			"dataType": "json", 
-			"contentType": "application/json;charset=utf-8", 
-			"data": '{"id": 10}', 
+			//"contentType": "application/json;charset=utf-8", 
+			//"dataType": "json", 
+			//"data": '{"id": 10}', 
 			"success": function(data) {
+				console.log('success--')
 				console.log(data);
 			}, 
 			"complete": function(data) {

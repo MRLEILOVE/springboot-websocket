@@ -41,8 +41,10 @@ public class SSOResourceServerConfig extends ResourceServerConfigurerAdapter {
 	public void configure(HttpSecurity http) throws Exception {
 		http
 			.csrf().disable()
+			.cors().disable()
 //			.exceptionHandling().authenticationEntryPoint((request, response, authException) -> response.sendError(javax.servlet.http.HttpServletResponse.SC_UNAUTHORIZED)).and()
 //			.requestMatchers().antMatchers( "/**" ).and()
+//			.requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
 			.authorizeRequests().antMatchers("/swagger-ui.html", "/webjars/**", "/**/swagger-resources/**", "/v2/**").permitAll().and() // Of course, you can place all the values in an external configuration.
 			.authorizeRequests().antMatchers("/**").authenticated().and()
 //			.httpBasic()
