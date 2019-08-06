@@ -3,12 +3,12 @@
 <properties>
 	<comment>name</comment>
 	<!-- <entry key="jdbc.URL">jdbc:mysql://localhost:3306/test?useUnicode=true&amp;characterEncoding=utf-8&amp;autoReconnect=true</entry> -->
-	<entry key="jdbc.URL">jdbc:mysql://47.107.74.74:3306/bit_trade?useUnicode=true&amp;characterEncoding=utf-8&amp;autoReconnect=true</entry>
+	<entry key="jdbc.URL">jdbc:mysql://154.222.138.249:3306/bit_trade_dev?useUnicode=true&amp;characterEncoding=utf-8&amp;autoReconnect=true</entry>
 	<entry key="jdbc.username">root</entry>
 	<!-- <entry key="jdbc.password">z012345</entry> -->
-	<entry key="jdbc.password">woaini123</entry>
+	<entry key="jdbc.password">xlkj@lm20190627</entry>
 	<!-- <entry key="DB_name">test</entry> -->
-	<entry key="DB_name">bit_trade</entry>
+	<entry key="DB_name">bit_trade_dev</entry>
 	
 	<!-- <entry key="base_path">D:\work\git\temp\console_Prj\src\main\java\com\out\</entry> -->
 	<entry key="base_out_path">out\</entry>

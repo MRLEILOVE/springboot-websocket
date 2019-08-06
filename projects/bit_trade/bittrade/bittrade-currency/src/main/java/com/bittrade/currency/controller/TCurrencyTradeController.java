@@ -47,7 +47,7 @@ public class TCurrencyTradeController extends BaseController<TCurrencyTrade, TCu
 	@PostMapping(value = "/queryCurrencyTradeAtFirst")
 	@ResponseBody
 	public ReturnDTO<CurrencyTradeVO> queryCurrencyTradeAtFirst(@RequestBody TCurrencyTradeDTO dto) {
-		return ReturnDTO.ok( tCurrencyTradeService.queryCurrencyTradeAtFirst(dto.getId()) );
+		return ReturnDTO.ok(tCurrencyTradeService.queryCurrencyTradeAtFirst( dto.getId()) );
 	}
 
 

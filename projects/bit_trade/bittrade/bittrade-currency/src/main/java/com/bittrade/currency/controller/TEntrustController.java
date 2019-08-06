@@ -3,6 +3,8 @@ package com.bittrade.currency.controller;
 import java.math.BigDecimal;
 
 import com.bittrade.common.utils.RedisKeyUtil;
+import com.core.common.annotation.ALoginUser;
+import com.core.web.common.entity.LoginUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -79,14 +81,12 @@ public class TEntrustController extends BaseController<TEntrust, TEntrustDTO, TE
 	@ApiOperation(value = "买/卖交易对")
 	@PostMapping(value = "/deal")
 	@ResponseBody
-	public ReturnDTO<String> deal(@RequestBody DealDTO dealDTO) {
-		// 1.校验参数
-		// if (dealDTO == null) {
-		// return ReturnDTO.error( "参数为空" );
-		// }
-		if (StringUtils.isEmpty( dealDTO.getUserId() )) {
-			return ReturnDTO.error( "用户id为空" );
+	public ReturnDTO<String> deal(@ALoginUser LoginUser user, @RequestBody DealDTO dealDTO) {
+		if(user == null || user.getUser_id() == null) {
+			return ReturnDTO.error("用户未登录");
 		}
+		dealDTO.setUserId(user.getUser_id());
+
 		if (StringUtils.isEmpty( dealDTO.getCurrencyTradeId() )) {
 			return ReturnDTO.error( "交易对id为空" );
 		}
