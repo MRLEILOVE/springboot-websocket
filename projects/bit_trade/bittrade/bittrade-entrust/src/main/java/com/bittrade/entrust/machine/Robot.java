@@ -241,7 +241,7 @@ public /* static */final class Robot {
 		return true;
 	}
 
-	private static final int CNT = 1; // 500 50 5 2
+	private static final int CNT = 30; // 500 50 5 2
 
 	private static /* final */ExecutorService ES;
 	

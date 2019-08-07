@@ -12,14 +12,12 @@ import org.springframework.stereotype.Component;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.bittrade.__default.service.impl.DefaultTEntrustServiceImpl;
-import com.bittrade.common.constant.IConstant;
 import com.bittrade.common.enums.EntrustDirectionEnumer;
 import com.bittrade.common.enums.EntrustStatusEnumer;
 import com.bittrade.common.enums.EntrustTypeEnumer;
 import com.bittrade.common.enums.StatusEnumer;
 import com.bittrade.currency.api.service.ITCurrencyTradeService;
 import com.bittrade.currency.api.service.ITWalletService;
-import com.bittrade.entrust.api.service.IMakeAMatchService;
 import com.bittrade.entrust.api.service.ITEntrustService;
 import com.bittrade.entrust.dao.ITEntrustDAO;
 import com.bittrade.pojo.dto.DealDTO;
@@ -49,13 +47,15 @@ public class TEntrustServiceImpl extends DefaultTEntrustServiceImpl<ITEntrustDAO
 	@Reference
 	private ITWalletService					walletService;
 	@Autowired
-	private IMakeAMatchService				makeAMatchService;
+	private MakeAMatchServiceImpl			makeAMatchService;
 
 	private static final SnowFlake			SNOW_FLAKE__ENTRUST	= new SnowFlake( 1, 1 );
 	private static final ExecutorService	ES					= Executors.newFixedThreadPool( 50 );
 
 	@Override
 	public int add(TEntrust entrust) {
+		TCurrencyTrade currencyTrade = makeAMatchService.getCurrencyTrade( entrust.getCurrencyTradeId() );
+		
 		entrust.setId( SNOW_FLAKE__ENTRUST.nextId() );
 		{
 			if (
@@ -63,12 +63,12 @@ public class TEntrustServiceImpl extends DefaultTEntrustServiceImpl<ITEntrustDAO
 					||
 					entrust.getEntrustDirection() == EntrustDirectionEnumer.SELL.getCode()
 					) {
-				entrust.setCount( entrust.getCount().setScale( IConstant.COUNT_DECIMAL_LENGTH, BigDecimal.ROUND_HALF_DOWN ) ); // 设置精度
+//				entrust.setCount( entrust.getCount().setScale( currencyTrade.getCountDecimalDigits(), BigDecimal.ROUND_HALF_DOWN ) ); // 设置精度 IConstant.COUNT_DECIMAL_LENGTH
 				entrust.setLeftCount( entrust.getCount() );
 			}
 			if (entrust.getEntrustType() == EntrustTypeEnumer.LIMIT.getCode()) {
-				entrust.setPrice( entrust.getPrice().setScale(IConstant.PRICE_DECIMAL_LENGTH, BigDecimal.ROUND_HALF_DOWN) ); // 设置精度
-				entrust.setAmount( entrust.getPrice().multiply( entrust.getCount() ).setScale( IConstant.AMOUNT_DECIMAL_LENGTH, BigDecimal.ROUND_HALF_DOWN ) );
+//				entrust.setPrice( entrust.getPrice().setScale( currencyTrade.getPriceDecimalDigits(), BigDecimal.ROUND_HALF_DOWN ) ); // 设置精度 IConstant.PRICE_DECIMAL_LENGTH
+				entrust.setAmount( entrust.getPrice().multiply( entrust.getCount() ).setScale( currencyTrade.getPriceDecimalDigits(), BigDecimal.ROUND_HALF_DOWN ) ); // IConstant.AMOUNT_DECIMAL_LENGTH
 			}
 		}
 		entrust.setSuccessAmount( BigDecimal.ZERO );
