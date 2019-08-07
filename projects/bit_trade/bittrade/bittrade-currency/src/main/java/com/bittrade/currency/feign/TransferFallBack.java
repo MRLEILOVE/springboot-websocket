@@ -10,14 +10,12 @@ public class TransferFallBack implements ITransferFeignService {
 
 
     @Override
-    public String print(String ss) {
-        System.out.println("进入熔断处理");
+    public String print(String a) {
         return new String();
     }
 
     @Override
-    public ReturnDTO<String> c2cAccountEntry(TransferDto transferDto) {
-        System.out.println("1111111111111111111111");
-        return ReturnDTO.ok("ok");
+    public String c2cAccountEntry(TransferDto transferDto) {
+        return new String();
     }
 }
