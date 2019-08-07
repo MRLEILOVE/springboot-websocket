@@ -2,7 +2,6 @@ package com.core.tool;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.yaml.snakeyaml.Yaml;
@@ -42,7 +41,10 @@ public class YamlUtil {
 	}
 	
 	/**
-	 * 
+	 * <pre>
+	 * Can be mapped to an object .
+	 * Or that, only you can't think of it, he can't do it without him .
+	 * </pre>
 	 * @param map_yaml
 	 * @param name
 	 * @return

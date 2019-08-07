@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
 
+import com.core.framework.BaseApplication;
 import com.core.web.common.props.OAuth2Properties;
 
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -61,7 +62,7 @@ public class SwaggerConfig {
 	public Docket api() {
 		return new Docket(DocumentationType.SWAGGER_2)
 				.apiInfo(apiInfo())
-				.select().apis(RequestHandlerSelectors.basePackage("com.bittrade.currency.controller")) // .any()  不可以用通配符？
+				.select().apis(RequestHandlerSelectors.basePackage("com.bittrade." + BaseApplication.NAME + ".controller")) // .any()  不可以用通配符？
 				// .apis(RequestHandlerSelectors.withClassAnnotation(Api.class)) // 只显示添加@Api注解的类
 				.paths(PathSelectors.any()).build()
 				// 开启权限认证。

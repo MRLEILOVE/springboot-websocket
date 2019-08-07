@@ -37,5 +37,10 @@ public interface IConstant {
 	 * 日期时间的格式
 	 */
 	public static final String DATETIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
+	
+	/**
+	 * application.yaml
+	 */
+	public static final String DEFAULT_SPRING_CONFIG_FILE_NAME = "application.yaml";
 
 }

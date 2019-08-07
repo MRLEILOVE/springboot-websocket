@@ -8,6 +8,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import com.core.common.constant.IConstant;
 import com.core.tool.YamlUtil;
 
 //@EnableAutoConfiguration(exclude = { DataSourceAutoConfiguration.class })
@@ -27,12 +28,19 @@ import com.core.tool.YamlUtil;
 @EnableTransactionManagement
 public abstract class BaseApplication {
 
-	private static final String name;
+	private static final String NAME_KEY = "data.application.name";
+	/**
+	 * <pre>
+	 * project name .
+	 * Key values can be entered from multiple paths .
+	 * Can be transported anywhere .
+	 * </pre>
+	 */
+	public static final String NAME;
 	
 	static {
-		Map<String, Object> map_yaml = YamlUtil.loadYaml("application.yaml");
-		name = YamlUtil.getYamlValue(map_yaml, "data.application.name");
-		System.out.println(name);
+		Map<String, Object> map_yaml = YamlUtil.loadYaml(IConstant.DEFAULT_SPRING_CONFIG_FILE_NAME);
+		NAME = YamlUtil.getYamlValue(map_yaml, NAME_KEY);
 	};
 	
 	/**
@@ -60,7 +68,7 @@ public abstract class BaseApplication {
 	 * @return
 	 */
 	protected static final ConfigurableApplicationContext run(Class<?> cls, String[] args) {
-		return run(cls, args, name);
+		return run(cls, args, NAME);
 	}
 
 }
