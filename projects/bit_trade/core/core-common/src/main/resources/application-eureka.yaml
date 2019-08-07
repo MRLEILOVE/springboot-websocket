@@ -25,15 +25,6 @@ eureka:
 
 # ---------------------------------------------- OA2 Begin ----------------------------------------------
 
-data:
-  addr:
-    auth: http://localhost:8087/
-    gateway: http://localhost:9000/auz/
-    
-    auz: ${data.addr.auth}
-    #auz: ${data.addr.gateway}
-
-
 security:
   basic:
     enabled: false

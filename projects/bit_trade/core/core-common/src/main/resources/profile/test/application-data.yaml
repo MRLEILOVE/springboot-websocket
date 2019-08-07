@@ -7,6 +7,14 @@ data:
     ip: 154.222.138.249
     db: bit_trade_test
     password: xlkj@lm20190627
+  # 地址。
+  addr:
+    auth: http://154.222.138.211:8087/ # 192.168.1.11
+    gateway: http://154.222.138.211:9000/auz/ # 192.168.1.11
+    
+    #auz: ${data.addr.auth}
+    auz: ${data.addr.gateway}
+
 
 dubbo:
   registry:
