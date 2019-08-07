@@ -1,28 +1,28 @@
 package com.bittrade.currency.service.impl;
 
-import com.alibaba.fastjson.JSONObject;
-import com.bittrade.common.enums.SourceChannelEnumer;
-import com.bittrade.common.enums.StatusEnumer;
-import com.bittrade.common.enums.TransferStatusEnumer;
-import com.bittrade.common.enums.TypeChannelEnumer;
+import com.bittrade.__default.service.impl.DefaultTWalletTransferServiceImpl;
+import com.bittrade.common.enums.*;
+import com.bittrade.currency.api.service.ITWalletRecordService;
+import com.bittrade.currency.api.service.ITWalletService;
+import com.bittrade.currency.api.service.ITWalletTransferService;
 import com.bittrade.currency.dao.ITCurrencyDAO;
 import com.bittrade.currency.dao.ITWalletDAO;
+import com.bittrade.currency.dao.ITWalletRecordDAO;
+import com.bittrade.currency.dao.ITWalletTransferDAO;
 import com.bittrade.currency.feign.ITransferFeignService;
+import com.bittrade.pojo.dto.TWalletTransferDTO;
 import com.bittrade.pojo.dto.TransferDto;
 import com.bittrade.pojo.model.TCurrency;
 import com.bittrade.pojo.model.TWallet;
+import com.bittrade.pojo.model.TWalletRecord;
+import com.bittrade.pojo.model.TWalletTransfer;
+import com.bittrade.pojo.vo.TWalletTransferVO;
 import com.core.common.DTO.ReturnDTO;
 import com.core.tool.SnowFlake;
-import netscape.javascript.JSObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.bittrade.__default.service.impl.DefaultTWalletTransferServiceImpl;
-import com.bittrade.currency.api.service.ITWalletTransferService;
-import com.bittrade.currency.dao.ITWalletTransferDAO;
-import com.bittrade.pojo.dto.TWalletTransferDTO;
-import com.bittrade.pojo.vo.TWalletTransferVO;
-import com.bittrade.pojo.model.TWalletTransfer;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
@@ -36,13 +36,18 @@ import java.time.LocalDateTime;
 @Service
 @com.alibaba.dubbo.config.annotation.Service
 public class TWalletTransferServiceImpl extends DefaultTWalletTransferServiceImpl<ITWalletTransferDAO, TWalletTransfer, TWalletTransferDTO, TWalletTransferVO> implements ITWalletTransferService {
+    private static final Logger LOG					= LoggerFactory.getLogger( TWalletTransferServiceImpl.class );
     private static final SnowFlake SNOW_FLAKE__ENTRUST	= new SnowFlake( 2, 2);
     @Autowired
     private ITransferFeignService transferFeignService;
     @Autowired
     private ITWalletDAO walletDAO;
     @Autowired
+    private ITWalletRecordDAO walletRecordDAO;
+    @Autowired
     private ITCurrencyDAO currencyDAO;
+    @Autowired
+    private ITWalletRecordService walletRecordService;
     @Autowired
     private ITWalletTransferService walletTransferService;
 
@@ -78,27 +83,97 @@ public class TWalletTransferServiceImpl extends DefaultTWalletTransferServiceImp
             return ReturnDTO.error("划转失败,资金账户余额不足");
         }
 
+        //搞个变量存储原来有多少钱
+        BigDecimal beforeAmount = wallet.getTotal();
 
-
-        //写入钱包划转记录表
+        //写入划转日志表
         TWalletTransfer walletTransfer = writeTransferRecord(transferDto.getUserId(),currency.getId(),transferDto.getNum(), TransferStatusEnumer.PENDING.getCode(), TypeChannelEnumer.B_TO_C.getCode());
 
         //冻结
-        Integer r = walletDAO.transferFrozen(wallet);
+        Integer r = walletDAO.modifyTransferFrozen(wallet.getId(),transferDto.getNum(),wallet.getVersion());
         if(r <= 0){
             throw new Exception("币币账户划转c2c账户失败");
         }
 
         //远程调用（增加c2c钱包金额、写入c2c账户流水）
-        String result = transferFeignService.c2cAccountEntry(transferDto);
-//        JSONObject jsonObject = JSONObject.parseObject("a");
-//        String result = transferFeignService.print("a");
-        System.out.println(result);
-        return null;
+        String result = null;
+        try {
+            result = transferFeignService.c2cAccountEntry(transferDto.getUserId(),transferDto.getCurrency(),transferDto.getNum());
+        }catch (Exception e){
+            //回滚金额数量，释放冻结
+            rollBack(wallet.getId(),transferDto.getNum().negate());
+            //修改划转日志状态：失败
+            walletTransfer.setStatus(TransferStatusEnumer.FAIL.getCode());
+            walletTransfer.setDesc("划转失败，失败原因：未明");//#TODO  待完善
+            walletTransferService.updateById(walletTransfer);
+            return ReturnDTO.error("划转失败");
+        }
+
+        if("succ".equals(result)){
+            //先获取最新版本号
+            wallet = walletDAO.getByPK(wallet.getId());
+            //释放划转解冻
+            Integer integer = walletDAO.decreaseTransferFreeze(wallet.getId(), transferDto.getNum(), wallet.getVersion());
+
+            //写入币币账户流水(划出)
+            walletRecordOut(transferDto,currency,beforeAmount, WalletRecordTypeEnumer.BIBI_TO_PERSONAL.getCode());
+
+            //修改划转日志状态：成功
+            walletTransfer.setStatus(TransferStatusEnumer.SUCCESS.getCode());
+            walletTransfer.setDesc("划转成功");
+            walletTransferService.updateById(walletTransfer);
+            return ReturnDTO.ok("划转成功");
+        }else{
+            //回滚金额数量，释放冻结
+            rollBack(wallet.getId(),transferDto.getNum().negate());
+            //修改划转日志状态：失败
+            walletTransfer.setStatus(TransferStatusEnumer.FAIL.getCode());
+            walletTransfer.setDesc(result);
+            walletTransferService.updateById(walletTransfer);
+            return ReturnDTO.error("划转失败");
+        }
     }
 
     /**
-     * 写入钱包划转记录表
+     * 回滚划转冻结
+     * @param id id
+     * @param num 数量
+     */
+    private void rollBack(Long id, BigDecimal num) {
+        int result = 0;
+        int count = 0;
+        while(result == 0){
+            LOG.info("币币账户划转法币账户，回滚尝试次数：" + count + "次！！！");
+            //先获取最新版本号，防止并发
+            TWallet wallet = walletDAO.getByPK(id);
+            result = walletDAO.modifyTransferFrozen(wallet.getId(),num,wallet.getVersion());
+            count ++;
+        }
+    }
+
+    /**
+     * //写入币币账户流水(划出)
+     * @param transferDto 划转对象
+     * @param currency 币种对象
+     * @param beforeAmount 转账前金额
+     * @param type 划转类型
+     */
+    private void walletRecordOut(TransferDto transferDto, TCurrency currency, BigDecimal beforeAmount, Byte type) {
+        TWalletRecord walletRecord = TWalletRecord.builder()
+                .id(SNOW_FLAKE__ENTRUST.nextId())
+                .userId(transferDto.getUserId())
+                .currencyId(currency.getId())
+                .beforeAmount(beforeAmount)
+                .afterAmount(beforeAmount.subtract(transferDto.getNum()))
+                .changeAmount(transferDto.getNum())
+                .type(type)
+                .createTime(LocalDateTime.now())
+                .build();
+        walletRecordService.save(walletRecord);
+    }
+
+    /**
+     * 写入钱包划转日志表
      *
      * @param userId 用户id
      * @param currencyId  币种id
@@ -109,6 +184,7 @@ public class TWalletTransferServiceImpl extends DefaultTWalletTransferServiceImp
      */
     private TWalletTransfer writeTransferRecord(Long userId, Integer currencyId, BigDecimal num, Byte transferStatus, Byte typeChannel) {
         TWalletTransfer walletTransfer = TWalletTransfer.builder()
+                .id(SNOW_FLAKE__ENTRUST.nextId())
                 .userId(userId)
                 .currency(currencyId)
                 .count(num)

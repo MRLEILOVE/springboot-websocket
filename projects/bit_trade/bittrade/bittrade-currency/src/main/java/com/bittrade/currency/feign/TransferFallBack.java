@@ -1,21 +1,14 @@
 package com.bittrade.currency.feign;
 
-import com.bittrade.pojo.dto.TransferDto;
-import com.core.common.DTO.ReturnDTO;
 import org.springframework.stereotype.Component;
+
+import java.math.BigDecimal;
 
 
 @Component
 public class TransferFallBack implements ITransferFeignService {
-
-
     @Override
-    public String print(String a) {
-        return new String();
-    }
-
-    @Override
-    public String c2cAccountEntry(TransferDto transferDto) {
+    public String c2cAccountEntry(Long userId, String currency, BigDecimal num) {
         return new String();
     }
 }

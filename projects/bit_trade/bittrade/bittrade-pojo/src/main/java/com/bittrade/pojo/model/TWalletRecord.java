@@ -83,7 +83,7 @@ public class TWalletRecord extends BaseModel<TWalletRecord> {
 	/**
 	 * 主键id
 	 */
-	@com.baomidou.mybatisplus.annotation.TableId(value = "id", type = com.baomidou.mybatisplus.annotation.IdType.AUTO)
+//	@com.baomidou.mybatisplus.annotation.TableId(value = "id")
 	private Long id;
 	
 	/**

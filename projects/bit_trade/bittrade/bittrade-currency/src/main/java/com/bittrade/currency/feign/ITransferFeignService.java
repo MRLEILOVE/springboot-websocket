@@ -1,16 +1,16 @@
 package com.bittrade.currency.feign;
 
-import com.bittrade.pojo.dto.TransferDto;
 import com.core.web.common.config.feign.FeignConfiguration;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.math.BigDecimal;
+
 
 @FeignClient(name = "jdcloud-provider-walletbiz",path = "/transfer",configuration = FeignConfiguration.class,fallback = TransferFallBack.class)
 public interface ITransferFeignService {
-    @RequestMapping(value = "/print",method = RequestMethod.POST)
-    String print(String a);
 
-    @RequestMapping(value = "/c2cAccountEntry",method= RequestMethod.POST)
-    String c2cAccountEntry( TransferDto transferDto);
+    @GetMapping(value = "/c2cAccountEntry")
+    String c2cAccountEntry(@RequestParam("userId")Long userId, @RequestParam("currency")String currency,@RequestParam("num") BigDecimal num);
 }

@@ -93,7 +93,7 @@ public class TWalletTransfer extends BaseModel<TWalletTransfer> {
 	/**
 	 * id
 	 */
-	@com.baomidou.mybatisplus.annotation.TableId(value = "id", type = com.baomidou.mybatisplus.annotation.IdType.AUTO)
+	@com.baomidou.mybatisplus.annotation.TableId(value = "id")
 	private Long id;
 
 	/**
