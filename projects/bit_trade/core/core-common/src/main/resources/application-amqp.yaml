@@ -2,7 +2,8 @@ spring:
   rabbitmq:
     #服务器ip
 #    host: localhost
-    host: 154.222.138.249
+    host: 154.222.138.211
+    #host: 154.222.138.249
     #端口号
     port: 5672
     #用户名

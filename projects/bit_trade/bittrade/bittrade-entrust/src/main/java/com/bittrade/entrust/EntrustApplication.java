@@ -10,7 +10,7 @@ import com.core.framework.BaseApplication;
 public class EntrustApplication extends BaseApplication {
 
 	public static void main(String[] args) {
-		run(EntrustApplication.class, args, "entrust");
+		run(EntrustApplication.class, args);
 	}
 
 //	@Autowired
