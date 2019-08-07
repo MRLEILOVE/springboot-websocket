@@ -3,6 +3,8 @@ package com.bittrade.currency.dao;
 import java.math.BigDecimal;
 import java.util.List;
 
+import com.bittrade.pojo.dto.TransferDto;
+import com.bittrade.pojo.model.TWallet;
 import org.apache.ibatis.annotations.Param;
 
 import com.bittrade.__default.DAO.IDefaultTWalletDAO;
@@ -44,5 +46,9 @@ public interface ITWalletDAO extends IDefaultTWalletDAO {
      * @since JDK 1.8
      */
     int modifyTradeFrozen(BigDecimal tradeFrozen, Integer version, Long id);
-    
+
+    /**
+     * 划转冻结
+     */
+    Integer transferFrozen(TWallet wallet);
 }

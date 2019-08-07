@@ -50,5 +50,14 @@
 			version = version + 1
 		WHERE id = #{id} AND version = #{version}
 	</update>
-	
+
+	<update id="transferFrozen" parameterType="com.bittrade.pojo.model.TWallet">
+		UPDATE t_wallet
+		SET
+			total = total - #{transferFrozen},
+			transfer_frozen = transfer_frozen + #{transferFrozen},
+			version = version + 1
+		WHERE id = #{id} AND version = #{version}
+	</update>
+
 </mapper>

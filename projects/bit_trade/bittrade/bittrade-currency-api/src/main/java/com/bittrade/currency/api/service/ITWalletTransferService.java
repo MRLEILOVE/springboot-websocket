@@ -2,8 +2,10 @@ package com.bittrade.currency.api.service;
 
 import com.bittrade.__default.service.IDefaultTWalletTransferService;
 import com.bittrade.pojo.dto.TWalletTransferDTO;
+import com.bittrade.pojo.dto.TransferDto;
 import com.bittrade.pojo.model.TWalletTransfer;
 import com.bittrade.pojo.vo.TWalletTransferVO;
+import com.core.common.DTO.ReturnDTO;
 
 /**
  * 
@@ -11,5 +13,10 @@ import com.bittrade.pojo.vo.TWalletTransferVO;
  *
  */
 public interface ITWalletTransferService extends IDefaultTWalletTransferService<TWalletTransfer, TWalletTransferDTO, TWalletTransferVO> {
-	
+
+    /**
+     * 资金划转
+     */
+    ReturnDTO transferOfFundsB2C(TransferDto transferDto) throws Exception;
+
 }
