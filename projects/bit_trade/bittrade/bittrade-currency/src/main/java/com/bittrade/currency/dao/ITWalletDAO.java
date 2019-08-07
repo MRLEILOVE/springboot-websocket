@@ -48,7 +48,21 @@ public interface ITWalletDAO extends IDefaultTWalletDAO {
     int modifyTradeFrozen(BigDecimal tradeFrozen, Integer version, Long id);
 
     /**
-     * 划转冻结
+     * 修改划转冻结
+     * @param id id
+     * @param transferFrozen 划转冻结
+     * @param version 版本号
+     * @return
      */
-    Integer transferFrozen(TWallet wallet);
+    Integer modifyTransferFrozen(@Param("id") Long id, @Param("transferFrozen") BigDecimal transferFrozen,@Param("version") Integer version);
+
+    /**
+     * 释放划转解冻
+     * @param id id
+     * @param transferFrozen 划转冻结金额
+     * @param version 版本号
+     * @return
+     */
+    Integer decreaseTransferFreeze(@Param("id")Long id, @Param("transferFrozen")BigDecimal transferFrozen, @Param("version")Integer version);
+
 }
