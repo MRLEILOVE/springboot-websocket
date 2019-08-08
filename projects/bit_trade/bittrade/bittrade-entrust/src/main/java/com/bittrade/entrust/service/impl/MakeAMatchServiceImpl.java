@@ -416,16 +416,17 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 	 * @param entrust
 	 * @param recordAmount
 	 * @param recordCount  
+	 * @param currencyTrade 
 	 * @since JDK 1.8
 	 */
-	private void setRecordStatus(TEntrust entrust, BigDecimal recordAmount, BigDecimal recordCount) {
-		entrust.setSuccessAmount(entrust.getSuccessAmount().add(recordAmount).setScale(IConstant.AMOUNT_DECIMAL_LENGTH, BigDecimal.ROUND_HALF_DOWN));
+	private void setRecordStatus(TEntrust entrust, BigDecimal recordAmount, BigDecimal recordCount, TCurrencyTrade currencyTrade) {
+		entrust.setSuccessAmount(entrust.getSuccessAmount().add(recordAmount).setScale(currencyTrade.getPriceDecimalDigits(), BigDecimal.ROUND_HALF_DOWN)); // IConstant.AMOUNT_DECIMAL_LENGTH
 		if (
 				entrust.getEntrustType() == EntrustTypeEnumer.LIMIT.getCode()
 				|| 
 				entrust.getEntrustDirection() == EntrustDirectionEnumer.SELL.getCode()
 				) {
-			entrust.setLeftCount(entrust.getLeftCount().subtract(recordCount).setScale(IConstant.COUNT_DECIMAL_LENGTH, BigDecimal.ROUND_HALF_DOWN));
+			entrust.setLeftCount(entrust.getLeftCount().subtract(recordCount).setScale(currencyTrade.getCountDecimalDigits(), BigDecimal.ROUND_HALF_DOWN)); // IConstant.COUNT_DECIMAL_LENGTH
 //			entrust.setStatus(
 //					BigDecimalUtil.isZero(entrust.getLeftCount()) ? 
 //							EntrustStatusEnumer.FINISH.getCode() : 
@@ -463,6 +464,7 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 			bd_leftAmount_before, bd_leftAmount_after
 			;
 		BigDecimal bd_count, bd_amount;
+		TCurrencyTrade currencyTrade = getCurrencyTrade(entrust_before.getCurrencyTradeId());
 		
 		/**
 		 * 还剩余未撮合的数量和金额。
@@ -472,24 +474,24 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 				&&
 				entrust_before.getEntrustDirection() == EntrustDirectionEnumer.BUY.getCode()
 				) {
-			bd_leftAmount_before = entrust_before.getAmount().subtract(entrust_before.getSuccessAmount());
-			bd_leftAmount_after = entrust_after.getLeftCount().multiply(dealPrice);
+			bd_leftAmount_before = entrust_before.getAmount().subtract(entrust_before.getSuccessAmount()).setScale(currencyTrade.getPriceDecimalDigits(), BigDecimal.ROUND_HALF_DOWN);
+			bd_leftAmount_after = entrust_after.getLeftCount().multiply(dealPrice).setScale(currencyTrade.getPriceDecimalDigits(), BigDecimal.ROUND_HALF_DOWN);
 			
-			bd_leftCount_before = bd_leftAmount_before.divide( dealPrice, IConstant.COUNT_DECIMAL_LENGTH, BigDecimal.ROUND_HALF_DOWN );
+			bd_leftCount_before = bd_leftAmount_before.divide( dealPrice, currencyTrade.getCountDecimalDigits(), BigDecimal.ROUND_HALF_DOWN ); // IConstant.COUNT_DECIMAL_LENGTH
 			bd_leftCount_after = entrust_after.getLeftCount();
 		} else if (
 				entrust_after.getEntrustType() == EntrustTypeEnumer.MARKET.getCode()
 				&&
 				entrust_after.getEntrustDirection() == EntrustDirectionEnumer.BUY.getCode()
 				) {
-			bd_leftAmount_before = entrust_before.getLeftCount().multiply(dealPrice);
-			bd_leftAmount_after = entrust_after.getAmount().subtract(entrust_after.getSuccessAmount());
+			bd_leftAmount_before = entrust_before.getLeftCount().multiply(dealPrice).setScale(currencyTrade.getPriceDecimalDigits(), BigDecimal.ROUND_HALF_DOWN);
+			bd_leftAmount_after = entrust_after.getAmount().subtract(entrust_after.getSuccessAmount()).setScale(currencyTrade.getPriceDecimalDigits(), BigDecimal.ROUND_HALF_DOWN);
 			
 			bd_leftCount_before = entrust_before.getLeftCount();
-			bd_leftCount_after = bd_leftAmount_after.divide( dealPrice, IConstant.COUNT_DECIMAL_LENGTH, BigDecimal.ROUND_HALF_DOWN );
+			bd_leftCount_after = bd_leftAmount_after.divide( dealPrice, currencyTrade.getCountDecimalDigits(), BigDecimal.ROUND_HALF_DOWN ); // IConstant.COUNT_DECIMAL_LENGTH
 		} else {
-			bd_leftAmount_before = entrust_before.getLeftCount().multiply(dealPrice);
-			bd_leftAmount_after = entrust_after.getLeftCount().multiply(dealPrice);
+			bd_leftAmount_before = entrust_before.getLeftCount().multiply(dealPrice).setScale(currencyTrade.getPriceDecimalDigits(), BigDecimal.ROUND_HALF_DOWN);
+			bd_leftAmount_after = entrust_after.getLeftCount().multiply(dealPrice).setScale(currencyTrade.getPriceDecimalDigits(), BigDecimal.ROUND_HALF_DOWN);
 			
 			bd_leftCount_before = entrust_before.getLeftCount();
 			bd_leftCount_after = entrust_after.getLeftCount();
@@ -527,7 +529,7 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 		
 		// 修改委托
 		{
-			setRecordStatus(entrust_before, bd_amount, bd_count);
+			setRecordStatus(entrust_before, bd_amount, bd_count, currencyTrade);
 			entrust_before.setUpdateTime( createTime );
 			entrustService.updateOnMatch(
 					entrust_before.getSuccessAmount(), 
@@ -540,7 +542,7 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 			entrust_before.setVersion( entrust_before.getVersion() + 1 );
 		}
 		{
-			setRecordStatus(entrust_after, bd_amount, bd_count);
+			setRecordStatus(entrust_after, bd_amount, bd_count, currencyTrade);
 			entrust_after.setUpdateTime( createTime );
 			entrustService.updateOnMatch(
 					entrust_after.getSuccessAmount(), 
@@ -842,6 +844,10 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 //		System.out.println(bd1.multiply(bd2, new MathContext(9, RoundingMode.HALF_DOWN)).multiply(BigDecimal.valueOf(2)));
 //		System.out.println(bd1.multiply(bd2).setScale(8, BigDecimal.ROUND_HALF_DOWN).multiply(BigDecimal.valueOf(2)));
 		
+		BigDecimal bd1 = new BigDecimal("1.12");
+		BigDecimal bd2 = new BigDecimal("2.98");
+		System.out.println(bd1.multiply(bd2));
+		System.out.println(bd1.multiply(bd2).setScale(2, BigDecimal.ROUND_HALF_DOWN));
 	}
 
 //	@RabbitListener(queues = { IQueueConstants.QUEUE__ENTRUST_RECORD })

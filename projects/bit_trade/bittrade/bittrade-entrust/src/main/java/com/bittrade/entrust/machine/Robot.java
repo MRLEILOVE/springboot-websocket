@@ -59,6 +59,9 @@ public /* static */final class Robot {
 	private static final BigDecimal BD__SELL_RATE = new BigDecimal(1);
 	private static final Random		R	= new Random( System.currentTimeMillis() );
 
+	// equalizer
+	
+	
 	private static long getUserID() {
 		Random r = new Random( R.nextLong() );
 		return r.nextInt( 1000 ) + 1;
