@@ -458,42 +458,71 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 	 * @since JDK 1.8
 	 */
 	public TEntrustRecord addEntrustRecord(TEntrust entrust_before, TEntrust entrust_after, BigDecimal dealPrice) {
-		BigDecimal bd_leftCount_before, bd_leftCount_after;
+		BigDecimal 
+			bd_leftCount_before, bd_leftCount_after, 
+			bd_leftAmount_before, bd_leftAmount_after
+			;
 		BigDecimal bd_count, bd_amount;
 		
+		/**
+		 * 还剩余未撮合的数量和金额。
+		 */
 		if (
 				entrust_before.getEntrustType() == EntrustTypeEnumer.MARKET.getCode()
 				&&
 				entrust_before.getEntrustDirection() == EntrustDirectionEnumer.BUY.getCode()
 				) {
-			bd_leftCount_before = entrust_before.getAmount().subtract(entrust_before.getSuccessAmount()).divide( dealPrice, IConstant.COUNT_DECIMAL_LENGTH, BigDecimal.ROUND_HALF_DOWN );
+			bd_leftAmount_before = entrust_before.getAmount().subtract(entrust_before.getSuccessAmount());
+			bd_leftAmount_after = entrust_after.getLeftCount().multiply(dealPrice);
+			
+			bd_leftCount_before = bd_leftAmount_before.divide( dealPrice, IConstant.COUNT_DECIMAL_LENGTH, BigDecimal.ROUND_HALF_DOWN );
 			bd_leftCount_after = entrust_after.getLeftCount();
 		} else if (
 				entrust_after.getEntrustType() == EntrustTypeEnumer.MARKET.getCode()
 				&&
 				entrust_after.getEntrustDirection() == EntrustDirectionEnumer.BUY.getCode()
 				) {
+			bd_leftAmount_before = entrust_before.getLeftCount().multiply(dealPrice);
+			bd_leftAmount_after = entrust_after.getAmount().subtract(entrust_after.getSuccessAmount());
+			
 			bd_leftCount_before = entrust_before.getLeftCount();
-			bd_leftCount_after = entrust_after.getAmount().subtract(entrust_after.getSuccessAmount()).divide( dealPrice, IConstant.COUNT_DECIMAL_LENGTH, BigDecimal.ROUND_HALF_DOWN );
+			bd_leftCount_after = bd_leftAmount_after.divide( dealPrice, IConstant.COUNT_DECIMAL_LENGTH, BigDecimal.ROUND_HALF_DOWN );
 		} else {
+			bd_leftAmount_before = entrust_before.getLeftCount().multiply(dealPrice);
+			bd_leftAmount_after = entrust_after.getLeftCount().multiply(dealPrice);
+			
 			bd_leftCount_before = entrust_before.getLeftCount();
 			bd_leftCount_after = entrust_after.getLeftCount();
 		}
+		
+		/**
+		 * 查看主单或被单哪个被撮合完了。
+		 */
 		int i_compareTo = bd_leftCount_before.compareTo(bd_leftCount_after);
-		if (i_compareTo == ICompareResultConstant.LESS_THAN) {
+		if (i_compareTo == ICompareResultConstant.LESS_THAN) { // 主单被撮合完
 			bd_count = bd_leftCount_before;
+			bd_amount = bd_leftAmount_before;
+			
 			entrust_before.setStatus(EntrustStatusEnumer.FINISH.getCode());
 			entrust_after.setStatus(EntrustStatusEnumer.PART_FINISH.getCode());
-		} else if (i_compareTo == ICompareResultConstant.EQUAL) {
+		} else if (i_compareTo == ICompareResultConstant.EQUAL) { // 主被单都被撮合完
 			bd_count = bd_leftCount_before;
+			bd_amount = bd_leftAmount_before;
+			
 			entrust_before.setStatus(EntrustStatusEnumer.FINISH.getCode());
 			entrust_after.setStatus(EntrustStatusEnumer.FINISH.getCode());
-		} else /*if (i_compareTo == ICompareResultConstant.GREATER_THAN) */{
+		} else /*if (i_compareTo == ICompareResultConstant.GREATER_THAN) */{ // 被单被撮合完
 			bd_count = bd_leftCount_after;
+			bd_amount = bd_leftAmount_after;
+			
 			entrust_before.setStatus(EntrustStatusEnumer.PART_FINISH.getCode());
 			entrust_after.setStatus(EntrustStatusEnumer.FINISH.getCode());
 		}
-		bd_amount = dealPrice.multiply(bd_count).setScale(IConstant.AMOUNT_DECIMAL_LENGTH, BigDecimal.ROUND_HALF_DOWN);
+//		bd_amount = dealPrice.multiply(bd_count).setScale(IConstant.AMOUNT_DECIMAL_LENGTH, BigDecimal.ROUND_HALF_DOWN);
+		
+		/**
+		 * 准备保存到数据库了。
+		 */
 		LocalDateTime createTime = LocalDateTime.now();
 		
 		// 修改委托
@@ -603,7 +632,7 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 	 */
 	private void matchWith(TEntrust entrust_after, List<TEntrust> list) {
 		if (
-				( // 还有未成交数
+				( // 还有未成交数 （这里的判断在第一次进来的时候都可以不用判断， 因为是新的一个委托单， 但是后面再进来时就有可能已经被撮合掉了， 所以就需要判断。  当然也可以把判断拿出去， 看你怎么写嘛！~~）
 					entrust_after.getStatus() == EntrustStatusEnumer.UNFINISH.getCode()
 					||
 					entrust_after.getStatus() == EntrustStatusEnumer.PART_FINISH.getCode()
@@ -618,7 +647,7 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 				BigDecimal bd_dealPrice = getDealPrice(entrust_before, entrust_after, bd_linePrice);
 				if (bd_dealPrice == null) { // 首个都不满足条件的话， 那后面的就更不满足条件了。 因为这里已经是按照价格排好序了的。
 					break;
-				} else {
+				} else { // 满足条件， 进行撮合。
 					TEntrustRecord entrustRecord = addEntrustRecord(entrust_before, entrust_after, bd_dealPrice);
 					bd_linePrice = onEntrustRecord(bd_dealPrice, bd_linePrice, entrust_after, entrustRecord);
 					
@@ -659,6 +688,10 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 			) {
 		ReentrantLock lock = getLock( entrust.getCurrencyTradeId() );
 		lock.lock();
+		
+		// 串行化执行？ 为了委托单在数据库和撮合时的顺序一致？
+		entrustService.add(entrust);
+		
 		try {
 			int i_idx;
 			if (entrust.getEntrustType() == EntrustTypeEnumer.MARKET.getCode()) { // 市价
@@ -733,53 +766,53 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 		TEntrust entrust1 = new TEntrust();
 		entrust1.setUserId(101L);
 		entrust1.setCurrencyTradeId(1);
-		entrust1.setEntrustDirection(EntrustDirectionEnumer.BUY.getCode());
 		entrust1.setEntrustType(EntrustTypeEnumer.MARKET.getCode());
-		entrust1.setAmount(new BigDecimal(505));
-		entrustService.add(entrust1);
+		entrust1.setEntrustDirection(EntrustDirectionEnumer.BUY.getCode());
+		entrust1.setAmount(new BigDecimal("1768.14"));
+//		entrustService.add(entrust1);
 		makeAMatch(entrust1);
 		
 		TEntrust entrust2 = new TEntrust();
 		entrust2.setUserId(102L);
 		entrust2.setCurrencyTradeId(1);
-		entrust2.setEntrustDirection(EntrustDirectionEnumer.BUY.getCode());
-		entrust2.setEntrustType(EntrustTypeEnumer.LIMIT.getCode());
-		entrust2.setPrice(new BigDecimal(157));
-		entrust2.setCount(new BigDecimal(28));
-		entrustService.add(entrust2);
+		entrust2.setEntrustType(EntrustTypeEnumer.MARKET.getCode());
+		entrust2.setEntrustDirection(EntrustDirectionEnumer.SELL.getCode());
+		entrust2.setCount(new BigDecimal("80.390243"));
+//		entrustService.add(entrust2);
 		makeAMatch(entrust2);
 		
 		TEntrust entrust3 = new TEntrust();
 		entrust3.setUserId(103L);
 		entrust3.setCurrencyTradeId(1);
+		entrust3.setEntrustType(EntrustTypeEnumer.MARKET.getCode());
 		entrust3.setEntrustDirection(EntrustDirectionEnumer.SELL.getCode());
-		entrust3.setEntrustType(EntrustTypeEnumer.LIMIT.getCode());
-		entrust3.setPrice(new BigDecimal(100.5));
-		entrust3.setCount(new BigDecimal(37));
-		entrustService.add(entrust3);
+		entrust3.setCount(new BigDecimal("23.303251"));
+//		entrustService.add(entrust3);
 		makeAMatch(entrust3);
 		
 		TEntrust entrust4 = new TEntrust();
 		entrust4.setUserId(104L);
 		entrust4.setCurrencyTradeId(1);
-		entrust4.setEntrustDirection(EntrustDirectionEnumer.SELL.getCode());
-		entrust4.setEntrustType(EntrustTypeEnumer.MARKET.getCode());
-		entrust4.setCount(new BigDecimal(80));
-		entrustService.add(entrust4);
+		entrust4.setEntrustType(EntrustTypeEnumer.LIMIT.getCode());
+		entrust4.setEntrustDirection(EntrustDirectionEnumer.BUY.getCode());
+		entrust4.setPrice(new BigDecimal("220.49"));
+		entrust4.setCount(new BigDecimal("7.056351"));
+//		entrustService.add(entrust4);
 		makeAMatch(entrust4);
 		
 		TEntrust entrust5 = new TEntrust();
 		entrust5.setUserId(105L);
 		entrust5.setCurrencyTradeId(1);
+		entrust5.setEntrustType(EntrustTypeEnumer.LIMIT.getCode());
 		entrust5.setEntrustDirection(EntrustDirectionEnumer.BUY.getCode());
-		entrust5.setEntrustType(EntrustTypeEnumer.MARKET.getCode());
-		entrust5.setAmount(new BigDecimal(830));
-		entrustService.add(entrust5);
+		entrust5.setPrice(new BigDecimal("241.33"));
+		entrust5.setCount(new BigDecimal("89.707095"));
+//		entrustService.add(entrust5);
 		makeAMatch(entrust5);
 		
 		
 		// print .
-		print();
+//		print();
 		
 		synchronized (MakeAMatchServiceImpl.class) {
 			try {

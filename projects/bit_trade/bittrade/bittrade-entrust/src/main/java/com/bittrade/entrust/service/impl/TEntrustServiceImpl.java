@@ -200,7 +200,7 @@ public class TEntrustServiceImpl extends DefaultTEntrustServiceImpl<ITEntrustDAO
 		entrust.setPrice( bd_price );
 		entrust.setCount( bd_count );
 		entrust.setAmount( bd_amount );
-		add( entrust );
+//		add( entrust );
 
 		ES.submit( new Callable<String>() {
 			@Override

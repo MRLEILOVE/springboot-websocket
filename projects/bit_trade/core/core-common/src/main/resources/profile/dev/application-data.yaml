@@ -3,10 +3,13 @@
 
 ---
 data:
+  self-IP: ${spring.cloud.client.ip-address}
+  
   datasource:
     ip: 154.222.138.249
     db: bit_trade_dev
     password: xlkj@lm20190627
+  
   # 地址。
   addr:
     auth: http://localhost:8087/
@@ -14,6 +17,10 @@ data:
     
     auz: ${data.addr.auth}
     #auz: ${data.addr.gateway}
+  
+  # 注册中心。
+  eureka:
+    serviceUrl: admin:admin@localhost:8761
 
 
 dubbo:

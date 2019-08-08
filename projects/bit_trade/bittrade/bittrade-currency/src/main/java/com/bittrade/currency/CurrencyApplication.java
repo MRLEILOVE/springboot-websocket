@@ -15,7 +15,7 @@ import com.core.framework.BaseApplication;
 public class CurrencyApplication extends BaseApplication {
 
 	public static void main(String[] args) {
-		run(CurrencyApplication.class, args, "currency");
+		run(CurrencyApplication.class, args);
 	}
 
 }

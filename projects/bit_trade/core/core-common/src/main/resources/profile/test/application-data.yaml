@@ -3,10 +3,13 @@
 
 ---
 data:
+  self-IP: 192.168.1.180
+  
   datasource:
     ip: 154.222.138.249
     db: bit_trade_test
     password: xlkj@lm20190627
+  
   # 地址。
   addr:
     auth: http://154.222.138.211:8087/ # 192.168.1.11
@@ -14,6 +17,10 @@ data:
     
     #auz: ${data.addr.auth}
     auz: ${data.addr.gateway}
+  
+  # 注册中心。
+  eureka:
+    serviceUrl: admin:admin@192.168.1.11:8761 # 154.222.138.211
 
 
 dubbo:

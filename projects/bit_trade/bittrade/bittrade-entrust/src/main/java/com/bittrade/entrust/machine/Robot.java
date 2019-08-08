@@ -241,11 +241,11 @@ public /* static */final class Robot {
 		return true;
 	}
 
-	private static final int CNT = 30; // 500 50 5 2
+	private static final int CNT = 10; // 500 50 5 2
 
 	private static /* final */ExecutorService ES;
 	
-	@PostConstruct
+//	@PostConstruct
 	public void test() {
 		if (!checkLinePrice()) {
 			return;
@@ -294,7 +294,7 @@ public /* static */final class Robot {
 							}
 						}
 					}
-					entrustService.add(entrust);
+//					entrustService.add(entrust);
 
 					makeAMatchService.makeAMatch( entrust );
 
