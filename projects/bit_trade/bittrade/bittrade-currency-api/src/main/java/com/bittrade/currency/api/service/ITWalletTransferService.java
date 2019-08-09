@@ -19,4 +19,10 @@ public interface ITWalletTransferService extends IDefaultTWalletTransferService<
      */
     ReturnDTO transferOfFundsB2C(TransferDto transferDto) throws Exception;
 
+    /**
+     * 币币账户充值
+     * @param transferDto
+     * @return 成功：succ
+     */
+    String biBiAccountEntry(TransferDto transferDto);
 }
