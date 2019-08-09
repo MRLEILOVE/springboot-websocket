@@ -9,10 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import com.bittrade.currency.api.service.ITWalletTransferService;
 import com.bittrade.pojo.dto.TWalletTransferDTO;
@@ -55,5 +52,13 @@ public class TWalletTransferController extends BaseController<TWalletTransfer, T
             e.printStackTrace();
             return ReturnDTO.error("服务器繁忙，请稍后重试");
         }
+    }
+
+    @PostMapping("/biBiAccountEntry")
+    @ApiOperation(value="币币账户充值", notes="币币账户充值")
+    @ResponseBody
+    public String biBiAccountEntry(@RequestBody TransferDto transferDto) throws Exception {
+        System.out.println("用户id：" + transferDto.getUserId() + "币种： " +  transferDto.getCurrency() + "数量: " + transferDto.getNum());
+        return walletTransferService.biBiAccountEntry(transferDto);
     }
 }

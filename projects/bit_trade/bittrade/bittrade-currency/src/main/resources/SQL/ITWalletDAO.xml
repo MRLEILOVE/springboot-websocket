@@ -37,8 +37,8 @@
 	<select id="queryUserWallet" parameterType="java.lang.Integer" resultType="com.bittrade.pojo.vo.UserWalletVO">
 		SELECT w1.total AS currencyCount,w2.total AS legalCurrencyCount
 		FROM t_currency_trade t
-		INNER JOIN t_wallet w1 ON w1.currency_id = t.currency_id1 AND w1.user_id = #{userId}
-		INNER JOIN t_wallet w2 ON w2.currency_id = t.currency_id2 AND w2.user_id = #{userId}
+		LEFT JOIN t_wallet w1 ON w1.currency_id = t.currency_id1 AND w1.user_id = #{userId}
+		LEFT JOIN t_wallet w2 ON w2.currency_id = t.currency_id2 AND w2.user_id = #{userId}
 		WHERE t.id = #{currencyTradeId}
 	</select>
 	
@@ -68,5 +68,12 @@
 		WHERE id = #{id} AND version = #{version}
 	</update>
 
+	<update id="biBiAccountEntry">
+		UPDATE t_wallet
+		SET
+			total = total + #{num},
+			version = version + 1
+		WHERE id = #{id} AND version = #{version}
+	</update>
 
 </mapper>

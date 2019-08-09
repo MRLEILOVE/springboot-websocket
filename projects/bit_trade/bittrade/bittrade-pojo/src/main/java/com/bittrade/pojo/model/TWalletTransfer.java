@@ -76,7 +76,7 @@ public class TWalletTransfer extends BaseModel<TWalletTransfer> {
 		/**
 		 * 描述
 		 */
-		public static final String DESC = "desc";
+		public static final String DES = "des";
 
 		/**
 		 * 创建时间
@@ -134,7 +134,7 @@ public class TWalletTransfer extends BaseModel<TWalletTransfer> {
 	/**
 	 * 描述
 	 */
-	private String desc;
+	private String des;
 
 	/**
 	 * 创建时间

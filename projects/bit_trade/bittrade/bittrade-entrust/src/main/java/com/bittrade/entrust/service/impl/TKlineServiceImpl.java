@@ -196,7 +196,8 @@ public class TKlineServiceImpl extends DefaultTKlineServiceImpl<ITKlineDAO, TKli
 	public QueryKLineVO queryKLineBySymbol(Integer currencyTradeId) {
 		String symbol = makeAMatchService.getCurrencyTrade(currencyTradeId).getSymbol();
 //		LocalDateTime time = getDateTimeBegin(LocalDateTime.now(), KLineGranularityEnumer.ONE_MINUTE.getCode());
-		LocalDateTime time = LocalDateTime.of(2019,8,05,17,57,00);
+//		2019-08-08 10:38:00
+		LocalDateTime time = LocalDateTime.of(2019,8, 8,10,38,0);
 		QueryKLineVO vo = klineDAO.queryKLineByCondition(symbol,KLineGranularityEnumer.ONE_MINUTE.getCode(),time);
 		//获取行情价
 		BigDecimal price = new BigDecimal(jedisCluster.get(IConstant.REDIS_PREFIX__LINE_PRICE + symbol));
@@ -205,7 +206,8 @@ public class TKlineServiceImpl extends DefaultTKlineServiceImpl<ITKlineDAO, TKli
 		//计算涨跌幅  24小时涨幅=（最新价-24小时开盘价） / 最新价
 		//获取24小时前的收盘价
 //		LocalDateTime yesterdayTime = getDateTimeBegin(LocalDateTime.now().plusDays(-1), KLineGranularityEnumer.ONE_MINUTE.getCode());
-		LocalDateTime yesterdayTime = LocalDateTime.of(2019,8,05,17,55,00);
+//		2019-08-08 10:55:00
+		LocalDateTime yesterdayTime = LocalDateTime.of(2019,8,8,10,55,00);
 		QueryKLineVO yesterdayVo = klineDAO.queryKLineByCondition(symbol,KLineGranularityEnumer.ONE_MINUTE.getCode(),yesterdayTime);
 		if(yesterdayVo != null){
 			//保留两位小数

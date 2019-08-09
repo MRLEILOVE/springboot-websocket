@@ -87,7 +87,7 @@ public class TWalletTransferServiceImpl extends DefaultTWalletTransferServiceImp
         BigDecimal beforeAmount = wallet.getTotal();
 
         //写入划转日志表
-        TWalletTransfer walletTransfer = writeTransferRecord(transferDto.getUserId(),currency.getId(),transferDto.getNum(), TransferStatusEnumer.PENDING.getCode(), TypeChannelEnumer.B_TO_C.getCode());
+        TWalletTransfer walletTransfer = writeTransferRecord(transferDto.getUserId(),currency.getId(),transferDto.getNum(), TransferStatusEnumer.PENDING.getCode(), TypeChannelEnumer.B_TO_C.getCode(),"");
 
         //冻结
         Integer r = walletDAO.modifyTransferFrozen(wallet.getId(),transferDto.getNum(),wallet.getVersion());
@@ -96,15 +96,20 @@ public class TWalletTransferServiceImpl extends DefaultTWalletTransferServiceImp
         }
 
         //远程调用（增加c2c钱包金额、写入c2c账户流水）
-        String result = null;
+        String result = "";
         try {
             result = transferFeignService.c2cAccountEntry(transferDto.getUserId(),transferDto.getCurrency(),transferDto.getNum());
         }catch (Exception e){
+            LOG.error("用户id：" + transferDto.getUserId() + "币币账户划转法币账户失败，划转金额：" + transferDto.getNum() + "，币种：" + transferDto.getCurrency());
             //回滚金额数量，释放冻结
-            rollBack(wallet.getId(),transferDto.getNum().negate());
+            rollBack(transferDto.getUserId(),wallet.getId(),transferDto.getNum().negate());
             //修改划转日志状态：失败
             walletTransfer.setStatus(TransferStatusEnumer.FAIL.getCode());
-            walletTransfer.setDesc("划转失败，失败原因：未明");//#TODO  待完善
+            walletTransfer.setUpdateTime(LocalDateTime.now());
+            if(result.length() >= 500){
+                result = result.substring(0,200);
+            }
+            walletTransfer.setDes(result);
             walletTransferService.updateById(walletTransfer);
             return ReturnDTO.error("划转失败");
         }
@@ -120,31 +125,80 @@ public class TWalletTransferServiceImpl extends DefaultTWalletTransferServiceImp
 
             //修改划转日志状态：成功
             walletTransfer.setStatus(TransferStatusEnumer.SUCCESS.getCode());
-            walletTransfer.setDesc("划转成功");
+            walletTransfer.setDes("划转成功");
+            walletTransfer.setUpdateTime(LocalDateTime.now());
             walletTransferService.updateById(walletTransfer);
             return ReturnDTO.ok("划转成功");
         }else{
             //回滚金额数量，释放冻结
-            rollBack(wallet.getId(),transferDto.getNum().negate());
+            rollBack(transferDto.getUserId(),wallet.getId(),transferDto.getNum().negate());
             //修改划转日志状态：失败
             walletTransfer.setStatus(TransferStatusEnumer.FAIL.getCode());
-            walletTransfer.setDesc(result);
+            walletTransfer.setUpdateTime(LocalDateTime.now());
+            walletTransfer.setDes(result);
             walletTransferService.updateById(walletTransfer);
             return ReturnDTO.error("划转失败");
         }
     }
 
     /**
+     * 币币账户充值
+     * @param transferDto
+     * @return 成功：succ
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public String biBiAccountEntry(TransferDto transferDto) {
+        //验证小数位长度
+        String[] split = transferDto.getNum().toPlainString().split("\\.");
+        if(split != null && split.length == 2){
+            int length = split[ 1 ].length();
+            if (length > 8) {
+                return "数量小数位过长" ;
+            }
+        }
+
+        //获取币种
+        TCurrency c = new TCurrency();
+        c.setName(transferDto.getCurrency());
+        TCurrency currency = currencyDAO.getBy(c);
+        if(currency == null){
+            return "划转失败，不存在该币种";
+        }
+        if(!currency.getStatus().equals(StatusEnumer.ENABLE.getCode())){
+            return "划转失败，该币种状态不可用";
+        }
+
+        //获取币币账户
+        TWallet wallet = getWallet(transferDto.getUserId(),currency.getId());
+        //搞个变量存储原来有多少钱
+        BigDecimal beforeAmount = wallet.getTotal();
+
+        //币币账户 +
+        Integer r = walletDAO.biBiAccountEntry(wallet.getId(),transferDto.getNum(),wallet.getVersion());
+
+        //写入币币账户流水(划入)
+        walletRecordIn(transferDto,currency,beforeAmount, WalletRecordTypeEnumer.PERSONAL_TO_BIBI.getCode());
+
+        //记录日志
+        writeTransferRecord(transferDto.getUserId(),currency.getId(),transferDto.getNum(), TransferStatusEnumer.SUCCESS.getCode(), TypeChannelEnumer.C_TO_B.getCode(),"划转成功");
+        return "succ";
+    }
+
+
+
+    /**
      * 回滚划转冻结
+     * @param userId 用户id
      * @param id id
      * @param num 数量
      */
-    private void rollBack(Long id, BigDecimal num) {
+    private void rollBack(Long userId, Long id, BigDecimal num) {
         int result = 0;
-        int count = 0;
+        int count = 1;
         while(result == 0){
-            LOG.info("币币账户划转法币账户，回滚尝试次数：" + count + "次！！！");
-            //先获取最新版本号，防止并发
+            LOG.info("用户id："+ userId +",币币账户划转法币账户，回滚尝试次数：" + count + "次！！！");
+            //先获取最新版本号
             TWallet wallet = walletDAO.getByPK(id);
             result = walletDAO.modifyTransferFrozen(wallet.getId(),num,wallet.getVersion());
             count ++;
@@ -152,7 +206,7 @@ public class TWalletTransferServiceImpl extends DefaultTWalletTransferServiceImp
     }
 
     /**
-     * //写入币币账户流水(划出)
+     * 写入币币账户流水(划出)
      * @param transferDto 划转对象
      * @param currency 币种对象
      * @param beforeAmount 转账前金额
@@ -173,6 +227,27 @@ public class TWalletTransferServiceImpl extends DefaultTWalletTransferServiceImp
     }
 
     /**
+     * 写入币币账户流水(划入)
+     * @param transferDto 划转对象
+     * @param currency 币种对象
+     * @param beforeAmount 转账前金额
+     * @param type 划转类型
+     */
+    private void walletRecordIn(TransferDto transferDto, TCurrency currency, BigDecimal beforeAmount, Byte type) {
+        TWalletRecord walletRecord = TWalletRecord.builder()
+                .id(SNOW_FLAKE__ENTRUST.nextId())
+                .userId(transferDto.getUserId())
+                .currencyId(currency.getId())
+                .beforeAmount(beforeAmount)
+                .afterAmount(beforeAmount.add(transferDto.getNum()))
+                .changeAmount(transferDto.getNum())
+                .type(type)
+                .createTime(LocalDateTime.now())
+                .build();
+        walletRecordService.save(walletRecord);
+    }
+
+    /**
      * 写入钱包划转日志表
      *
      * @param userId 用户id
@@ -180,9 +255,10 @@ public class TWalletTransferServiceImpl extends DefaultTWalletTransferServiceImp
      * @param num 数量
      * @param transferStatus 状态
      * @param typeChannel 操作渠道
+     * @Param des 描述
      * @return
      */
-    private TWalletTransfer writeTransferRecord(Long userId, Integer currencyId, BigDecimal num, Byte transferStatus, Byte typeChannel) {
+    private TWalletTransfer writeTransferRecord(Long userId, Integer currencyId, BigDecimal num, Byte transferStatus, Byte typeChannel,String des) {
         TWalletTransfer walletTransfer = TWalletTransfer.builder()
                 .id(SNOW_FLAKE__ENTRUST.nextId())
                 .userId(userId)
@@ -192,10 +268,12 @@ public class TWalletTransferServiceImpl extends DefaultTWalletTransferServiceImp
                 .status(transferStatus)
                 .typeChannel(typeChannel)
                 .sourceChannel(SourceChannelEnumer.APP.getCode())
+                .des(des)
                 .createTime(LocalDateTime.now())
                 .updateTime(LocalDateTime.now())
                 .build();
         walletTransferService.save(walletTransfer);
+
         return walletTransfer;
     }
 

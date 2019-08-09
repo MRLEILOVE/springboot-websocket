@@ -65,4 +65,12 @@ public interface ITWalletDAO extends IDefaultTWalletDAO {
      */
     Integer decreaseTransferFreeze(@Param("id")Long id, @Param("transferFrozen")BigDecimal transferFrozen, @Param("version")Integer version);
 
+    /**
+     * 币币账户充值
+     * @param id
+     * @param num
+     * @param version
+     * @return
+     */
+    Integer biBiAccountEntry(@Param("id")Long id,@Param("num") BigDecimal num,@Param("version") Integer version);
 }
