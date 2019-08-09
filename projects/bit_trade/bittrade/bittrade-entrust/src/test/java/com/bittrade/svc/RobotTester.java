@@ -13,7 +13,7 @@ public class RobotTester extends BaseTester {
 
 	@Test
 	public void test() {
-//		robot.test();
+		robot.startUp();
 		
 		synchronized (RobotTester.class) {
 			try {

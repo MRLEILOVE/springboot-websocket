@@ -110,7 +110,7 @@ public class TKlineServiceImpl extends DefaultTKlineServiceImpl<ITKlineDAO, TKli
 	public static LocalDateTime getDateTimeBegin(LocalDateTime dt, int granularity) {
 		LocalDateTime ldt = null;
 		
-		// 先这样判断吧， 要不然呢？
+		// 先这样判断吧， 要不然呢？ 也可以按照 大于等于 来判断。 这样值得意思更清楚点，但是由于 小时间单位 的值会更多， 所以就把判断提到最前， 这样不用每次都判断那么多， 呵呵。
 		if (granularity <= KLineGranularityEnumer.THIRTY_MINUTE.getCode()) {
 			ldt = DateTimeUtil.getMinuteBegin( dt, granularity /= 60 );
 		} else if (granularity <= KLineGranularityEnumer.TWELVE_HOUR.getCode()) {

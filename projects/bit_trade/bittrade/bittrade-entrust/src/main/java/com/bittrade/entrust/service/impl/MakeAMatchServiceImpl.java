@@ -140,7 +140,7 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 	}
 	
 	/**
-	 * 获得内存中买和卖的数量差，好让均衡器程序均衡机器人下单。
+	 * 获得内存中买和卖的数量再计算差，好让均衡器程序均衡机器人下单。
 	 * getSubCount:(这里用一句话描述这个方法的作用). <br/>  
 	 * TODO(这里描述这个方法适用条件 – 可选).<br/>  
 	 * TODO(这里描述这个方法的执行流程 – 可选).<br/>  
@@ -152,17 +152,20 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 	 * @return  
 	 * @since JDK 1.8
 	 */
-	public int getSubCount(int currencyTradeID) {
-		int i_subCount = 0;
+	public int[] getSubCount(int currencyTradeID) {
+		int iArr_subCount[];
 		
 		ArrayList<TEntrust> list__buyMarket = getList( MAP__BUY_MARKET, currencyTradeID );
 		ArrayList<TEntrust> list__buyLimit = getList( MAP__BUY_LIMIT, currencyTradeID );
 		ArrayList<TEntrust> list__sellMarket = getList( MAP__SELL_MARKET, currencyTradeID );
 		ArrayList<TEntrust> list__sellLimit = getList( MAP__SELL_LIMIT, currencyTradeID );
 		
-		i_subCount = list__buyMarket.size() + list__buyLimit.size() - (list__sellMarket.size() + list__sellLimit.size());
+		iArr_subCount = new int[] {
+				list__buyMarket.size() + list__buyLimit.size(), 
+				list__sellMarket.size() + list__sellLimit.size()
+		};
 		
-		return i_subCount;
+		return iArr_subCount;
 	}
 	
 	/**
