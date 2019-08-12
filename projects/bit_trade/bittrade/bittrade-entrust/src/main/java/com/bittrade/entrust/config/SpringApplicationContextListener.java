@@ -14,7 +14,7 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.ApplicationContextEvent;
 
-import com.bittrade.entrust.api.service.ITEntrustService;
+import com.bittrade.entrust.machine.Robot;
 import com.bittrade.entrust.service.impl.MakeAMatchServiceImpl;
 
 /**  
@@ -29,23 +29,22 @@ import com.bittrade.entrust.service.impl.MakeAMatchServiceImpl;
 @Configuration
 public class SpringApplicationContextListener implements ApplicationListener<ApplicationContextEvent> {
 
+	@Autowired
+	private MakeAMatchServiceImpl makeAMatchService;
+	@Autowired
+	private Robot robot;
+	
+	private void init() {
+		makeAMatchService.initialUnfinishEntrust();
+		robot.startUp();
+	}
+
 	@Override
 	public void onApplicationEvent(ApplicationContextEvent event) {
 //		System.out.println( event.getApplicationContext().getParent() );
 //		System.out.println( event.getApplicationContext().getDisplayName() );
 		
 		init();
-	}
-
-	@Autowired
-	MakeAMatchServiceImpl makeAMatchService;
-	@Autowired
-	ITEntrustService entrustService;
-	
-	private void init() {
-		System.out.println( "makeAMatchService=" + makeAMatchService );
-		System.out.println( "entrustService=" + entrustService );
-		makeAMatchService.initialEntrust();
 	}
 	
 }

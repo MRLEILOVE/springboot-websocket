@@ -6,11 +6,9 @@ data:
   self-IP: ${spring.cloud.client.ip-address}
   
   datasource:
-    #ip: 154.222.138.249
-    ip: localhost
+    ip: 154.222.138.249
     db: bit_trade_dev
-    #password: xlkj@lm20190627
-    password: z012345
+    password: xlkj@lm20190627
   
   # 地址。
   addr:
