@@ -24,7 +24,7 @@ public class TWalletTransferVO extends BaseVO<TWalletTransferVO> {
 	private Byte status;
 	private Byte typeChannel;
 	private Byte sourceChannel;
-	private String desc;
+	private String des;
 	private java.time.LocalDateTime createTime;
 	private java.time.LocalDateTime updateTime;
 

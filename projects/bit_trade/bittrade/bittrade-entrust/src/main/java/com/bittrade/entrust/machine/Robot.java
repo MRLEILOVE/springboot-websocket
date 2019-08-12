@@ -458,41 +458,17 @@ public /* static */final class Robot implements InitializingBean, DisposableBean
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		startUp();
+		System.out.println( "com.bittrade.entrust.machine.Robot.afterPropertiesSet()" );
+//		startUp();
 	}
 
 	@Override
 	public void destroy() throws Exception {
-		shutDown();
+		System.out.println( "com.bittrade.entrust.machine.Robot.destroy()" );
+//		shutDown();
 	}
 
-	private static void t_1(String str) {
-		System.out.println( "str=" + str );
-		str = "12";
-		System.out.println( "str=" + str );
-	}
-	private static void t_2(String strArr[]) {
-		System.out.println( "strArr[0]=" + strArr[0] );
-		strArr[0] = "22";
-		System.out.println( "strArr[0]=" + strArr[0] );
-	}
-	
-	private static void testStrRef() {
-		String str_1 = "11";
-		System.out.println( "str_1=" + str_1 );
-		t_1(str_1);
-		System.out.println( "str_1=" + str_1 );
-		
-		System.out.println(  );
-		
-		String strArr_2[] = { "21" };
-		System.out.println( "strArr_2[0]=" + strArr_2[0] );
-		t_2(strArr_2);
-		System.out.println( "strArr_2[0]=" + strArr_2[0] );
-	}
-	
 	public static void _main(String[] args) {
-		testStrRef();
 	}
 
 }

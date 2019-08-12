@@ -64,7 +64,7 @@ public class TWalletRecord extends BaseModel<TWalletRecord> {
 		public static final String CHANGE_AMOUNT = "change_amount";
 		
 		/**
-		 * 成交类型,1-充值 2-提现 3-币币交易 4-划转：币币钱包-->法币钱包 5-划转：法币钱包-->币币钱包
+		 * 成交类型,1-划转：币币钱包-->法币钱包 2-划转：法币钱包-->币币钱包 3-币币交易
 		 */
 		public static final String TYPE = "type";
 		
@@ -83,7 +83,6 @@ public class TWalletRecord extends BaseModel<TWalletRecord> {
 	/**
 	 * 主键id
 	 */
-	@com.baomidou.mybatisplus.annotation.TableId(value = "id", type = com.baomidou.mybatisplus.annotation.IdType.AUTO)
 	private Long id;
 	
 	/**
@@ -112,7 +111,7 @@ public class TWalletRecord extends BaseModel<TWalletRecord> {
 	private java.math.BigDecimal changeAmount;
 	
 	/**
-	 * 成交类型,1-充值 2-提现 3-币币交易 4-划转：币币钱包-->法币钱包 5-划转：法币钱包-->币币钱包
+	 * 成交类型,1-划转：币币钱包-->法币钱包 2-划转：法币钱包-->币币钱包 3-币币交易
 	 */
 	private Byte type;
 	

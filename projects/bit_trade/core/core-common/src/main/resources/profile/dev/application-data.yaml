@@ -6,9 +6,11 @@ data:
   self-IP: ${spring.cloud.client.ip-address}
   
   datasource:
-    ip: 154.222.138.249
+    #ip: 154.222.138.249
+    ip: localhost
     db: bit_trade_dev
-    password: xlkj@lm20190627
+    #password: xlkj@lm20190627
+    password: z012345
   
   # 地址。
   addr:
@@ -21,6 +23,11 @@ data:
   # 注册中心。
   eureka:
     serviceUrl: admin:admin@localhost:8761
+
+
+mybatis-plus:
+  configuration:
+    logImpl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 
 dubbo:
