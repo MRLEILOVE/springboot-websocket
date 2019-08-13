@@ -16,6 +16,7 @@ import org.springframework.context.event.ApplicationContextEvent;
 
 import com.bittrade.entrust.machine.Robot;
 import com.bittrade.entrust.service.impl.MakeAMatchServiceImpl;
+import com.bittrade.entrust.service.impl.TKlineServiceImpl;
 
 /**  
  * ClassName:SpringApplicationContextListener <br/>  
@@ -32,10 +33,14 @@ public class SpringApplicationContextListener implements ApplicationListener<App
 	@Autowired
 	private MakeAMatchServiceImpl makeAMatchService;
 	@Autowired
+	private TKlineServiceImpl klineService;
+	@Autowired
 	private Robot robot;
 	
 	private void init() {
 		makeAMatchService.initialUnfinishEntrust();
+		klineService.initialUnfinishKLine();
+		
 		robot.startUp();
 	}
 

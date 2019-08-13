@@ -31,6 +31,16 @@ public class MQConfiguration implements BeanDefinitionRegistryPostProcessor, App
 	 *
 	 * @return
 	 */
+	@Bean(name = IQueueConstants.QUEUE__ENTRUST)
+	public Queue messageQueue__ENTRUST() {
+		return QueueBuilder.durable(IQueueConstants.QUEUE__ENTRUST).build();
+	}
+	
+	/**
+	 * 消息队列声明
+	 *
+	 * @return
+	 */
 	@Bean(name = IQueueConstants.QUEUE__ENTRUST_RECORD)
 	public Queue messageQueue__ENTRUST_RECORD() {
 		return QueueBuilder.durable(IQueueConstants.QUEUE__ENTRUST_RECORD).build();
@@ -64,6 +74,20 @@ public class MQConfiguration implements BeanDefinitionRegistryPostProcessor, App
 	@Bean
 	public TopicExchange messageTopicExchange() {
 		return (TopicExchange) ExchangeBuilder.topicExchange(IQueueConstants.EXCHANGE_TOPIC).durable(true).build();
+	}
+
+	/**
+	 * 消息绑定
+	 * @param queue
+	 * @return
+	 */
+	@Bean
+	public Binding messageBinding__ENTRUST(@Qualifier(value = IQueueConstants.QUEUE__ENTRUST) Queue queue) {
+		return BindingBuilder.
+				bind(messageQueue__ENTRUST()/*queue*/).
+//				to(messageDirectExchange()).
+				to(messageTopicExchange()).
+				with(IQueueConstants.ROUTE_KEY__ENTRUST);
 	}
 
 	/**

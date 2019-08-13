@@ -2,14 +2,17 @@ package com.bittrade.svc;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.bittrade.common.enums.KLineGranularityEnumer;
 import com.bittrade.entrust.api.service.ITKlineService;
 import com.bittrade.pojo.model.TEntrustRecord;
 import com.bittrade.pojo.model.TKline;
 import com.bittrade.svc.base.BaseTester;
+import com.core.tool.DateTimeUtil;
 
 public class KLineTester extends BaseTester {
 
@@ -48,6 +51,20 @@ public class KLineTester extends BaseTester {
 		};
 		BigDecimal dp = new BigDecimal("123.4");
 		klineService.modifyKLine( er, dp );
+	}
+	
+	@Test
+	public void gets() {
+		TKline tKlineQuery = new TKline();
+		tKlineQuery.field( "id", "high", "low", "close", "volume" );
+		LocalDateTime dt_now = LocalDateTime.now();
+		int i_code = KLineGranularityEnumer.ONE_MINUTE.getCode();
+		LocalDateTime dt_granularity = DateTimeUtil.getMinuteBegin( dt_now, i_code / 60 );
+		tKlineQuery.setSymbol( "ETH-USDT" );
+		tKlineQuery.setGranularity(i_code);
+		tKlineQuery.setTime( dt_granularity );
+		List<TKline> list_ = klineService.getsBy( tKlineQuery );
+		System.out.println( list_ );
 	}
 
 }

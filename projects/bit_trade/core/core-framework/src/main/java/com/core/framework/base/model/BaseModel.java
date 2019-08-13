@@ -5,8 +5,8 @@ import java.util.Map;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * 
@@ -15,8 +15,8 @@ import lombok.EqualsAndHashCode;
  * @param <Model>
  */
 // @com.fasterxml.jackson.annotation.JsonFilter(value = "")
-@Data
-@EqualsAndHashCode(callSuper = false)
+//@lombok.Data
+//@lombok.EqualsAndHashCode(callSuper = false)
 public abstract class BaseModel<Model extends com.baomidou.mybatisplus.extension.activerecord.Model<Model>>
 		extends com.baomidou.mybatisplus.extension.activerecord.Model<Model> {
 
@@ -25,10 +25,17 @@ public abstract class BaseModel<Model extends com.baomidou.mybatisplus.extension
 	 */
 	private static final long						serialVersionUID	= 1L;
 
+	@Getter
+	@Setter
 	@TableField(exist = false)
 	// @com.alibaba.fastjson.annotation.JSONField(serialize = false, deserialize = false)
 	// @com.fasterxml.jackson.annotation.JsonIgnore
 	/* transient */protected Integer				current, size;
+	
+	@TableField(exist = false)
+	// @com.alibaba.fastjson.annotation.JSONField(serialize = false, deserialize = false)
+	// @com.fasterxml.jackson.annotation.JsonIgnore
+	/* transient */private String[]					strArr_field;				// 其他的也可以类似的加，yes，类似蕾丝的。
 
 	@TableField(exist = false)
 	// @com.alibaba.fastjson.annotation.JSONField(serialize = false, deserialize = false)
@@ -39,6 +46,16 @@ public abstract class BaseModel<Model extends com.baomidou.mybatisplus.extension
 	// @com.alibaba.fastjson.annotation.JSONField(serialize = false, deserialize = false)
 	// @com.fasterxml.jackson.annotation.JsonIgnore
 	/* transient */private Map<String, Object[]>	map_orderBy;				// 其他的也可以类似的加，yes，类似蕾丝的。
+
+	public BaseModel<Model> field(String/*[]*/... fields) {
+		strArr_field = fields;
+
+		return this;
+	}
+
+	public BaseModel<Model> field(List<String> fields) {
+		return field( fields.toArray( new String[ fields.size() ] ) );
+	}
 
 	public BaseModel<Model> in(String name, Object[] values) {
 		if (map_in == null) {

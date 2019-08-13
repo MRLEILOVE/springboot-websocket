@@ -21,6 +21,10 @@ data:
   # 注册中心。
   eureka:
     serviceUrl: admin:admin@192.168.1.11:8761 # 154.222.138.211
+  
+  rabbitmq:
+    #虚拟空间地址
+    virtual-host: /test
 
 
 #mybatis-plus:

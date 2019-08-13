@@ -110,6 +110,11 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService, InitializingBe
 	private RabbitTemplate rabbitTemplate;
 	
 	/**
+	 * 买卖N档的个数。
+	 */
+	private static final int ENTRUST_COUNT = 10;
+	
+	/**
 	 * 异步调用K线生成。
 	 */
 	private static final ExecutorService ES_KLINE = Executors.newFixedThreadPool(50);
@@ -272,7 +277,7 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService, InitializingBe
 			for (int i = 0; i < list_ent.size(); i++) {
 				makeAMatch( list_ent.get( i ) );
 			}
-			LOG.info( "加载了" + list_ent.size() + "个未完成的委托到内存。" );
+			LOG.info( "加载了" + list_ent.size() + "个未完成或部分完成的委托到内存。" );
 		}
 	}
 	
@@ -610,6 +615,87 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService, InitializingBe
 	}
 	
 	/**
+	 * 发送买卖N档统计数据。
+	 * sendEntrustCol:(这里用一句话描述这个方法的作用). <br/>  
+	 * TODO(这里描述这个方法适用条件 – 可选).<br/>  
+	 * TODO(这里描述这个方法的执行流程 – 可选).<br/>  
+	 * TODO(这里描述这个方法的使用方法 – 可选).<br/>  
+	 * TODO(这里描述这个方法的注意事项 – 可选).<br/>  
+	 *  
+	 * @author Administrator    
+	 * @param currencyTradeId  
+	 * @since JDK 1.8
+	 */
+	private void sendEntrustCol(int currencyTradeId) {
+		StringBuilder strBud_entrust = new StringBuilder();
+		
+		ArrayList<TEntrust> list_sell = getList( MAP__SELL_LIMIT, currencyTradeId );
+		if (list_sell != null && list_sell.size() > 0) {
+			for (int i = (list_sell.size() < ENTRUST_COUNT ? list_sell.size() : ENTRUST_COUNT) - 1; i > -1; i--) {
+				TEntrust entrust = list_sell.get( i );
+				
+				strBud_entrust.append( "" );
+			}
+		}
+		ArrayList<TEntrust> list_buy = getList( MAP__BUY_LIMIT, currencyTradeId );
+		if (list_buy != null && list_buy.size() > 0) {
+			for (int i = (list_buy.size() < ENTRUST_COUNT ? list_buy.size() : ENTRUST_COUNT) - 1; i > -1; i--) {
+				TEntrust entrust = list_buy.get( i );
+				
+				strBud_entrust.append( "" );
+			}
+		}
+		
+		// 异步通知。
+		rabbitTemplate.convertAndSend(IQueueConstants.EXCHANGE_TOPIC, IQueueConstants.ROUTE_KEY__ENTRUST, strBud_entrust.toString());
+	}
+	
+	/**
+	 * <pre>
+	 *   各在内存入口和出口处拦截一层， 好做买卖N档或深度图的数据统计？ 也可以在DB出入口处拦截处理。
+	 * </pre>
+	 * addToCol:(这里用一句话描述这个方法的作用). <br/>  
+	 * TODO(这里描述这个方法适用条件 – 可选).<br/>  
+	 * TODO(这里描述这个方法的执行流程 – 可选).<br/>  
+	 * TODO(这里描述这个方法的使用方法 – 可选).<br/>  
+	 * TODO(这里描述这个方法的注意事项 – 可选).<br/>  
+	 *  
+	 * @author Administrator    
+	 * @param list_entrust
+	 * @param index  
+	 * @param entrust  
+	 * @since JDK 1.8
+	 */
+	private void addToCol(List<TEntrust> list_entrust, int index, TEntrust entrust) {
+		list_entrust.add(index, entrust);
+		sendEntrustCol(entrust.getCurrencyTradeId());
+	}
+	private void addToCol(List<TEntrust> list_entrust, TEntrust entrust) {
+		list_entrust.add(entrust);
+		sendEntrustCol(entrust.getCurrencyTradeId());
+	}
+	
+	/**
+	 * <pre>
+	 *   各在内存入口和出口处拦截一层， 好做买卖N档或深度图的数据统计？ 也可以在DB出入口处拦截处理。
+	 * </pre>
+	 * removeFromCol:(这里用一句话描述这个方法的作用). <br/>  
+	 * TODO(这里描述这个方法适用条件 – 可选).<br/>  
+	 * TODO(这里描述这个方法的执行流程 – 可选).<br/>  
+	 * TODO(这里描述这个方法的使用方法 – 可选).<br/>  
+	 * TODO(这里描述这个方法的注意事项 – 可选).<br/>  
+	 *  
+	 * @author Administrator  
+	 * @param list_entrust
+	 * @param index  
+	 * @since JDK 1.8
+	 */
+	private void removeFromCol(List<TEntrust> list_entrust, int index) {
+		TEntrust entrust = list_entrust.remove( index );
+		sendEntrustCol(entrust.getCurrencyTradeId());
+	}
+	
+	/**
 	 * 撮合
 	 * <p>
 	 *   当然程序也可以写成专门针对某种类型的操作， 比如：市市、市限、限限、限市。 <br />
@@ -640,7 +726,8 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService, InitializingBe
 					bd_linePrice = onEntrustRecord(bd_dealPrice, bd_linePrice, entrust_after, entrustRecord);
 					
 					if (entrust_before.getStatus() == EntrustStatusEnumer.FINISH.getCode()) {
-						list.remove(i);
+//						list.remove(i);
+						removeFromCol(list, i);
 					}
 					if (entrust_after.getStatus() == EntrustStatusEnumer.FINISH.getCode()) {
 						break;
@@ -651,7 +738,7 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService, InitializingBe
 	}
 	
 	private void addTo(int idx, TEntrust entrust, List<TEntrust> list_after, List<TEntrust> list_beforeMarket, List<TEntrust> list_beforeLimit) {
-		if (idx == list_after.size()) { // isFirst
+		if (idx == list_after.size()) { // isFirst 排在首位就要看是否满足条件， 可以进行撮合。
 			matchWith(entrust, list_beforeMarket); // 和对手盘（市价）进行撮合。
 			matchWith(entrust, list_beforeLimit); // 和对手盘（限价）进行撮合。
 			if (
@@ -659,10 +746,12 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService, InitializingBe
 					||
 					entrust.getStatus() == EntrustStatusEnumer.PART_FINISH.getCode()
 					) { // 有剩余的则加入列表。
-				list_after.add(entrust);
+//				list_after.add(entrust);
+				addToCol(list_after, entrust);
 			}
-		} else {
-			list_after.add(idx, entrust);
+		} else { // 非首位，则按位置进行插入到集合中。
+//			list_after.add(idx, entrust);
+			addToCol(list_after, idx, entrust);
 		}
 	}
 	

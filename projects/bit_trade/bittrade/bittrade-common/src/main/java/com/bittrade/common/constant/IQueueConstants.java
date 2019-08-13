@@ -20,6 +20,8 @@ public interface IQueueConstants {
 //	// 消息路由键-**
 //	String ROUTE_KEY__ = "route.key.**";
 
+	// 消息队列-买卖N档
+	String QUEUE__ENTRUST = "queue..entrust";
 	// 消息队列-成交
 	String QUEUE__ENTRUST_RECORD = "queue..entrustRecord";
 	// 消息队列-K线
@@ -30,6 +32,8 @@ public interface IQueueConstants {
 	// 消息交换器-主题
 	String EXCHANGE_TOPIC = "exchange.topic";
 
+	// 消息路由键-买卖N档
+	String ROUTE_KEY__ENTRUST = "route.key..entrust";
 	// 消息路由键-成交
 	String ROUTE_KEY__ENTRUST_RECORD = "route.key..entrustRecord";
 	// 消息路由键-K线

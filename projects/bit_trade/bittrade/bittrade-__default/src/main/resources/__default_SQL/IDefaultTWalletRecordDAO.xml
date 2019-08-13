@@ -19,8 +19,18 @@
 		<result javaType="java.time.LocalDateTime" property="createTime" jdbcType="TIMESTAMP" column="create_time" />
 	</resultMap>
 
-	<!-- 通用查询结果列 -->
+	<!--
+		通用查询结果列
+		其他类似的类似，也可以公用（共用）引用。
+	-->
 	<sql id="Base_Column_List">
+		<choose>
+			<when test="strArr_field != null">
+		<foreach collection="strArr_field" index="index" item="item" open="" separator="," close="">
+			`${item}`
+		</foreach>
+			</when>
+			<otherwise>
 		`id` AS id, 
 		`user_id` AS userId, 
 		`currency_id` AS currencyId, 
@@ -30,6 +40,8 @@
 		`type` AS type, 
 		`entrust_record_id` AS entrustRecordId, 
 		`create_time` AS createTime
+			</otherwise>
+		</choose>
 	</sql>
 	
 	<!-- 其他的也可以类似的加， yes， 类似蕾丝的。 -->
@@ -405,15 +417,7 @@
 	
 	<select id="getsBy" resultType="com.bittrade.pojo.model.TWalletRecord">
 		SELECT 
-			`id`, 
-			`user_id`, 
-			`currency_id`, 
-			`before_amount`, 
-			`after_amount`, 
-			`change_amount`, 
-			`type`, 
-			`entrust_record_id`, 
-			`create_time`
+			<include refid="Base_Column_List"></include>
 		FROM t_wallet_record
 		<where>
 			<if test="userId != null">
@@ -446,15 +450,7 @@
 	
 	<select id="gets" resultType="com.bittrade.pojo.model.TWalletRecord">
 		SELECT 
-			`id`, 
-			`user_id`, 
-			`currency_id`, 
-			`before_amount`, 
-			`after_amount`, 
-			`change_amount`, 
-			`type`, 
-			`entrust_record_id`, 
-			`create_time`
+			<include refid="Base_Column_List"></include>
 		FROM t_wallet_record
 	</select>
 	
