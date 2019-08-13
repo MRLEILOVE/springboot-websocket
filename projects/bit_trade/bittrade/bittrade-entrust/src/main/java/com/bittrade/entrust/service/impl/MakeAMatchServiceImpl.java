@@ -11,12 +11,13 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.locks.ReentrantLock;
 
-import javax.annotation.PostConstruct;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.stereotype.Component;
 
 import com.alibaba.dubbo.config.annotation.Reference;
@@ -53,7 +54,7 @@ import redis.clients.jedis.JedisCluster;
  * @since JDK 1.8
  */
 @Component
-public class MakeAMatchServiceImpl implements IMakeAMatchService {
+public class MakeAMatchServiceImpl implements IMakeAMatchService, InitializingBean/* , BeanFactoryPostProcessor */ {
 	
 	private static final Logger LOG = LoggerFactory.getLogger(MakeAMatchServiceImpl.class);
 	
@@ -263,35 +264,17 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 	 * @author Administrator    
 	 * @since JDK 1.8
 	 */
-	private void initialEntrust() {
+	public void initialUnfinishEntrust() {
 		TEntrust entrustQuery = new TEntrust();
-		entrustQuery.in( TEntrust.FieldNames.STATUS, new Object[] { EntrustStatusEnumer.UNFINISH, EntrustStatusEnumer.PART_FINISH } );
+		entrustQuery.in( TEntrust.FieldNames.STATUS, new Object[] { EntrustStatusEnumer.UNFINISH.getCode(), EntrustStatusEnumer.PART_FINISH.getCode() } );
 		List<TEntrust> list_ent = entrustService.getsBy( entrustQuery ); // 需要按照时间或者ID升序排序。
 		if (list_ent != null && list_ent.size() > 0) {
 			for (int i = 0; i < list_ent.size(); i++) {
 				makeAMatch( list_ent.get( i ) );
 			}
+			LOG.info( "加载了" + list_ent.size() + "个未完成的委托到内存。" );
 		}
 	}
-	
-	/**
-	 * <p>
-	 *   
-	 * </p>
-	 * initialData:(这里用一句话描述这个方法的作用). <br/>  
-	 * TODO(这里描述这个方法适用条件 – 可选).<br/>  
-	 * TODO(这里描述这个方法的执行流程 – 可选).<br/>  
-	 * TODO(这里描述这个方法的使用方法 – 可选).<br/>  
-	 * TODO(这里描述这个方法的注意事项 – 可选).<br/>  
-	 *  
-	 * @author Administrator    
-	 * @since JDK 1.8
-	 */
-	@PostConstruct
-	private void initialData() {
-//		initialEntrust();
-	}
-	
 	
 	/**
 	 * <pre>
@@ -826,6 +809,17 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	@Override
+	public void afterPropertiesSet() throws Exception {
+//		initialUnfinishEntrust();
+	}
+
+//	@Override
+	public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
+		System.out.println( "com.bittrade.entrust.service.impl.MakeAMatchServiceImpl.postProcessBeanFactory(ConfigurableListableBeanFactory)" );
+		System.out.println( entrustService );
 	}
 	
 	public static void _main(String[] args) {

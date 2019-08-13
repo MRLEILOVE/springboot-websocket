@@ -23,6 +23,11 @@ data:
     serviceUrl: admin:admin@192.168.1.11:8761 # 154.222.138.211
 
 
+#mybatis-plus:
+#  configuration:
+#    logImpl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+
 dubbo:
   registry:
     address: zookeeper://192.168.1.180:2181?backup=192.168.1.180:2182,192.168.1.180:2183

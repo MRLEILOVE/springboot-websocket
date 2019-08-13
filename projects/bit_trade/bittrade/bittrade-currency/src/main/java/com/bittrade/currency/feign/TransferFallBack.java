@@ -9,6 +9,6 @@ import java.math.BigDecimal;
 public class TransferFallBack implements ITransferFeignService {
     @Override
     public String c2cAccountEntry(Long userId, String currency, BigDecimal num) {
-        return new String();
+        return "timeOut";
     }
 }

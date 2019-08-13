@@ -10,9 +10,9 @@
 		<result javaType="java.math.BigDecimal" property="count" jdbcType="DECIMAL" column="count" />
 		<result javaType="String" property="businessNumber" jdbcType="VARCHAR" column="business_number" />
 		<result javaType="Byte" property="status" jdbcType="INTEGER" column="status" />
-		<result javaType="Byte" property="typeChannel" jdbcType="INTEGER" column="typeChannel" />
-		<result javaType="Byte" property="sourceChannel" jdbcType="INTEGER" column="sourceChannel" />
-		<result javaType="String" property="desc" jdbcType="VARCHAR" column="desc" />
+		<result javaType="Byte" property="typeChannel" jdbcType="INTEGER" column="type_channel" />
+		<result javaType="Byte" property="sourceChannel" jdbcType="INTEGER" column="source_channel" />
+		<result javaType="String" property="des" jdbcType="VARCHAR" column="des" />
 		<result javaType="java.time.LocalDateTime" property="createTime" jdbcType="TIMESTAMP" column="create_time" />
 		<result javaType="java.time.LocalDateTime" property="updateTime" jdbcType="TIMESTAMP" column="update_time" />
 	</resultMap>
@@ -25,9 +25,9 @@
 		`count` AS count, 
 		`business_number` AS businessNumber, 
 		`status` AS status, 
-		`typeChannel` AS typeChannel, 
-		`sourceChannel` AS sourceChannel, 
-		`desc` AS desc, 
+		`type_channel` AS typeChannel, 
+		`source_channel` AS sourceChannel, 
+		`des` AS des, 
 		`create_time` AS createTime, 
 		`update_time` AS updateTime
 	</sql>

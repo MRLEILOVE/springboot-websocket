@@ -19,6 +19,7 @@ import com.bittrade.pojo.model.TWalletTransfer;
 import com.bittrade.pojo.vo.TWalletTransferVO;
 import com.core.common.DTO.ReturnDTO;
 import com.core.tool.SnowFlake;
+import feign.RetryableException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -99,6 +100,13 @@ public class TWalletTransferServiceImpl extends DefaultTWalletTransferServiceImp
         String result = "";
         try {
             result = transferFeignService.c2cAccountEntry(transferDto.getUserId(),transferDto.getCurrency(),transferDto.getNum());
+        }catch (RetryableException e){
+            System.out.println("超时了");
+            walletTransfer.setStatus(TransferStatusEnumer.UNKNOW.getCode());
+            walletTransfer.setUpdateTime(LocalDateTime.now());
+            walletTransfer.setDes(result);
+            walletTransferService.updateById(walletTransfer);
+            return ReturnDTO.error("划转超时");
         }catch (Exception e){
             LOG.error("用户id：" + transferDto.getUserId() + "币币账户划转法币账户失败，划转金额：" + transferDto.getNum() + "，币种：" + transferDto.getCurrency());
             //回滚金额数量，释放冻结
@@ -129,6 +137,13 @@ public class TWalletTransferServiceImpl extends DefaultTWalletTransferServiceImp
             walletTransfer.setUpdateTime(LocalDateTime.now());
             walletTransferService.updateById(walletTransfer);
             return ReturnDTO.ok("划转成功");
+        }else if("timeOut".equals(result)){
+            System.out.println("超时了");
+            walletTransfer.setStatus(TransferStatusEnumer.UNKNOW.getCode());
+            walletTransfer.setUpdateTime(LocalDateTime.now());
+            walletTransfer.setDes(result);
+            walletTransferService.updateById(walletTransfer);
+            return ReturnDTO.error("划转超时");
         }else{
             //回滚金额数量，释放冻结
             rollBack(transferDto.getUserId(),wallet.getId(),transferDto.getNum().negate());

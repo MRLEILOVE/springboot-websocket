@@ -23,6 +23,11 @@ data:
     serviceUrl: admin:admin@localhost:8761
 
 
+mybatis-plus:
+  configuration:
+    logImpl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+
 dubbo:
   registry:
     address: N/A

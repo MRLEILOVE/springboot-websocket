@@ -7,8 +7,6 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +21,8 @@ import com.bittrade.entrust.service.impl.MakeAMatchServiceImpl;
 import com.bittrade.pojo.model.TCurrencyTrade;
 import com.bittrade.pojo.model.TEntrust;
 import com.core.common.constant.ICompareResultConstant;
+import com.core.tool.LoggerFactoryUtil;
+import com.core.tool.LoggerUtil;
 
 import redis.clients.jedis.JedisCluster;
 
@@ -42,7 +42,7 @@ import redis.clients.jedis.JedisCluster;
 @Component
 public /* static */final class Robot implements InitializingBean, DisposableBean {
 	
-	private static final Logger LOG = LoggerFactory.getLogger( Robot.class );
+	private static final LoggerUtil LOG = LoggerFactoryUtil.getLogger( Robot.class );
 
 	@Autowired
 	private JedisCluster			jedisCluster;
@@ -280,16 +280,14 @@ public /* static */final class Robot implements InitializingBean, DisposableBean
 
 	}
 	
-	private boolean checkLinePrice() {
+	private void checkLinePrice() {
 		for (int i = 1; i <= MAX_CURRENCY_TRADE_ID; i++) {
 			BigDecimal bd_selfPrice = makeAMatchService.getLinePrice( i );
 			if (bd_selfPrice == null) {
-//				throw new RuntimeException( "currencyTradeID:" + i + ", LinePrice Is NullOrEmpty !" );
 				LOG.warn( "currencyTradeID:" + i + ", LinePrice Is NullOrEmpty !" );
-				return false;
+				throw new RuntimeException( "currencyTradeID:" + i + ", LinePrice Is NullOrEmpty !" );
 			}
 		}
-		return true;
 	}
 
 	private static final int CNT = 10; // 500 50 5 2
@@ -300,9 +298,7 @@ public /* static */final class Robot implements InitializingBean, DisposableBean
 	private static /*final */ExecutorService es_equalizer;
 	
 	private void startRobot() {
-		if (!checkLinePrice()) {
-			return;
-		}
+		checkLinePrice();
 		
 		
 		es_robot = Executors.newFixedThreadPool( CNT ); // 懒加载模式。 为了节约点内存（存储、空间）和CPU（性能、时间）的开销？
@@ -444,21 +440,35 @@ public /* static */final class Robot implements InitializingBean, DisposableBean
 	
 //	@javax.annotation.PostConstruct
 	public void startUp() {
-		startRobot();
-		startEqualizer();
+		try {
+			startRobot();
+			startEqualizer();
+		} catch (Exception e) {
+			LOG.error(e);
+		}
 	}
 	
 //	@javax.annotation.PreDestroy
-	public void shutDown() {
+	private void shutDown() {
 		isRun = false;
 		
-		es_equalizer.shutdown();
-		es_robot.shutdown();
+		try {
+			if (es_equalizer != null) {
+				es_equalizer.shutdown();
+				es_equalizer = null;
+			}
+			if (es_robot != null) {
+				es_robot.shutdown();
+				es_robot = null;
+			}
+		} catch (Exception e) {
+			LOG.error(e);
+		}
 	}
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		startUp();
+//		startUp();
 	}
 
 	@Override
@@ -466,33 +476,7 @@ public /* static */final class Robot implements InitializingBean, DisposableBean
 		shutDown();
 	}
 
-	private static void t_1(String str) {
-		System.out.println( "str=" + str );
-		str = "12";
-		System.out.println( "str=" + str );
-	}
-	private static void t_2(String strArr[]) {
-		System.out.println( "strArr[0]=" + strArr[0] );
-		strArr[0] = "22";
-		System.out.println( "strArr[0]=" + strArr[0] );
-	}
-	
-	private static void testStrRef() {
-		String str_1 = "11";
-		System.out.println( "str_1=" + str_1 );
-		t_1(str_1);
-		System.out.println( "str_1=" + str_1 );
-		
-		System.out.println(  );
-		
-		String strArr_2[] = { "21" };
-		System.out.println( "strArr_2[0]=" + strArr_2[0] );
-		t_2(strArr_2);
-		System.out.println( "strArr_2[0]=" + strArr_2[0] );
-	}
-	
 	public static void _main(String[] args) {
-		testStrRef();
 	}
 
 }

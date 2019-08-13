@@ -66,17 +66,17 @@ public class TWalletTransfer extends BaseModel<TWalletTransfer> {
 		/**
 		 * 操作渠道：1.C2C钱包划转到币币钱包，2.币币钱包划转到C2C钱包
 		 */
-		public static final String TYPECHANNEL = "typeChannel";
+		public static final String TYPE_CHANNEL = "type_channel";
 		
 		/**
 		 * 来源渠道：1.app，2.后台，3.PC
 		 */
-		public static final String SOURCECHANNEL = "sourceChannel";
+		public static final String SOURCE_CHANNEL = "source_channel";
 		
 		/**
 		 * 描述
 		 */
-		public static final String DESC = "desc";
+		public static final String DES = "des";
 		
 		/**
 		 * 创建时间
@@ -93,7 +93,6 @@ public class TWalletTransfer extends BaseModel<TWalletTransfer> {
 	/**
 	 * id
 	 */
-	@com.baomidou.mybatisplus.annotation.TableId(value = "id", type = com.baomidou.mybatisplus.annotation.IdType.AUTO)
 	private Long id;
 	
 	/**
@@ -134,7 +133,7 @@ public class TWalletTransfer extends BaseModel<TWalletTransfer> {
 	/**
 	 * 描述
 	 */
-	private String desc;
+	private String des;
 	
 	/**
 	 * 创建时间

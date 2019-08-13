@@ -47,15 +47,39 @@
 	</sql>
 	
 	<!-- 其他的也可以类似的加， yes， 类似蕾丝的。 -->
-	<sql id="sql_WHERE">
-		<if test="tCurrencyTrade.map_in != null">
+	<sql id="sql_WHERE_forProperty">
+		<choose>
+			<when test="map_in != null">
+			
+		<foreach collection="map_in.entrySet()" index="map_index" item="map_item">
+		AND `${map_index}` IN 
+		<foreach collection="map_item" index="arr_index" item="arr_item" open="(" separator="," close=")">
+			#{arr_item}
+		</foreach>
+		</foreach>
+			
+			</when>
+			<!--
+			<when test="_parameter != null and _parameter.TCurrencyTrade != null and TCurrencyTrade.map_in != null">
+			</when>
+			<otherwise>
+			</otherwise>
+			-->
+		</choose>
+	</sql>
+	<sql id="sql_WHERE_forObject">
+		<choose>
+			<when test="tCurrencyTrade.map_in != null">
+			
 		<foreach collection="tCurrencyTrade.map_in.entrySet()" index="map_index" item="map_item">
 		AND `${map_index}` IN 
 		<foreach collection="map_item" index="arr_index" item="arr_item" open="(" separator="," close=")">
 			#{arr_item}
 		</foreach>
 		</foreach>
-		</if>
+			
+			</when>
+		</choose>
 	</sql>
 	
 	
@@ -655,6 +679,7 @@
 			<if test="updateTime != null">
 			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
 			</if>
+			<include refid="sql_WHERE_forProperty"></include>
 		</where>
 	</select>
 	
@@ -729,7 +754,7 @@
 			<if test="tCurrencyTrade.updateTime != null">
 			AND `update_time` = #{tCurrencyTrade.updateTime,jdbcType=TIMESTAMP}
 			</if>
-			<include refid="sql_WHERE"></include>
+			<include refid="sql_WHERE_forObject"></include>
 		</if>
 		</where>
 	</select>
@@ -800,7 +825,7 @@
 			<if test="tCurrencyTrade.updateTime != null">
 			AND `update_time` = #{tCurrencyTrade.updateTime,jdbcType=TIMESTAMP}
 			</if>
-			<include refid="sql_WHERE"></include>
+			<include refid="sql_WHERE_forObject"></include>
 		</if>
 		</where>
 		LIMIT #{page}, #{size}
