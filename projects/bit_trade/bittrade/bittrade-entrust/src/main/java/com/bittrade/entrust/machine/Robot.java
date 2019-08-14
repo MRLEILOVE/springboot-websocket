@@ -160,8 +160,8 @@ public /* static */final class Robot implements InitializingBean, DisposableBean
 
 		bd_price = getRandom( d_min, d_max );
 
-		// 均衡器。 根据买卖方向平衡买卖单价（买价加5%， 卖价减5%）。 先暂停
-//		bd_price = bd_price.add( bd_price.multiply( BD__PRICE_RANGE_PERCENT ).multiply( rate ) );
+		// 均衡器。 根据买卖方向平衡买卖单价（买价加5%， 卖价减5%）。
+		bd_price = bd_price.add( bd_price.multiply( BD__PRICE_RANGE_PERCENT ).multiply( rate ) );
 
 		// 也可以通过原数运算来取精度。
 		bd_price = bd_price.setScale( currencyTrade.getPriceDecimalDigits(), BigDecimal.ROUND_HALF_DOWN );
