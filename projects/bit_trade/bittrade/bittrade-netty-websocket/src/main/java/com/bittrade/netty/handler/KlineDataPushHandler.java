@@ -1,7 +1,5 @@
 package com.bittrade.netty.handler;
 
-import java.util.Map;
-import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.amqp.core.Message;
@@ -16,19 +14,19 @@ import io.netty.channel.group.ChannelGroup;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 
 @Component
-public class WebSocketMessagePushHandler {
+public class KlineDataPushHandler {
 
-	// @Scheduled(cron = "0/10 * * * * ?")
-	public void sendMsg() {
-		ConcurrentHashMap<String, ChannelGroup> concurrentHashMap = Global.concurrentHashMap;
-		for (Map.Entry<String, ChannelGroup> map : concurrentHashMap.entrySet()) {
-			String key = map.getKey();
-			System.out.println( "**********************************************" + key );
-			ChannelGroup channelGroup = map.getValue();
-			TextWebSocketFrame contws = new TextWebSocketFrame( "服务端返回：" + (int) new Random().nextInt( 100 ) );
-			channelGroup.writeAndFlush( contws );
-		}
-	}
+//	@Scheduled(cron = "0/10 * * * * ?")
+//	public void sendMsg() {
+//		ConcurrentHashMap<String, ChannelGroup> concurrentHashMap = Global.concurrentHashMap;
+//		for (Map.Entry<String, ChannelGroup> map : concurrentHashMap.entrySet()) {
+//			String key = map.getKey();
+//			System.out.println( "**********************************************" + key );
+//			ChannelGroup channelGroup = map.getValue();
+//			TextWebSocketFrame contws = new TextWebSocketFrame( "服务端返回：" + map.getKey() );
+//			channelGroup.writeAndFlush( contws );
+//		}
+//	}
 
 	@RabbitListener(queues = IQueueConstants.QUEUE__KLINE + 60)
 	public void processMessage60(Channel channel, Message message) {

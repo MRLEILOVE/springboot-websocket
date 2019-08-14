@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import com.alibaba.fastjson.JSON;
 import com.bittrade.netty.dto.TickerDto;
 import com.bittrade.netty.dto.WebSocketParamDto;
+import com.bittrade.netty.enums.WebSocketEnum.DepthEnum;
 import com.bittrade.netty.enums.WebSocketEnum.KlineEnum;
 
 import io.netty.buffer.ByteBuf;
@@ -212,13 +213,14 @@ public class WebSocketServerHandler extends SimpleChannelInboundHandler<TickerDt
 			WebSocketParamDto webSocketParamDto = JSON.parseObject( message, WebSocketParamDto.class );
 			String args = webSocketParamDto.getArgs();
 			String symbol = args.split( "_" )[ 0 ]; // 交易对
-			String granularity = args.split( "_" )[ 1 ]; // 时间粒度
+			String type = args.split( "_" )[ 1 ]; // 时间粒度
 
 			// 简单基础校验
-			if (!Global.granularitys.contains( granularity ) || symbol.split( "-" ).length != 2) {
+			if (symbol.split( "-" ).length != 2 || !Global.granularitys.contains( type ) && !DepthEnum.SYMBOL_DEPTH.getKey().equals( type )) {
 				failure( ctx, message );
 				return;
 			}
+
 			String channelId = String.valueOf( ctx.channel().id() );
 			List<String> ctxs = Global.channelGroups.get( channelId );
 			ChannelGroup channelGroup = Global.concurrentHashMap.get( args );
@@ -247,7 +249,9 @@ public class WebSocketServerHandler extends SimpleChannelInboundHandler<TickerDt
 			} else {
 				failure( ctx, message );
 			}
-		} catch (Exception e) {
+		} catch (
+
+		Exception e) {
 			LOG.error( "订阅格式异常" );
 			failure( ctx, e.getMessage() );
 		}
