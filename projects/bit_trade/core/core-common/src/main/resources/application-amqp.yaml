@@ -11,7 +11,7 @@ spring:
     #密码
     password: o
     #虚拟空间地址
-    virtual-host: /tmp
+    virtual-host: ${data.rabbitmq.virtual-host}
     publisher-confirms: true
     publisher-returns: true
     listener:

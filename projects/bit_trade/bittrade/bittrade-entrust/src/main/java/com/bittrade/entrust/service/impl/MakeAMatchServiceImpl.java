@@ -615,7 +615,12 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService, InitializingBe
 	}
 	
 	/**
-	 * 发送买卖N档统计数据。
+	 * <pre>
+	 *   发送买卖N档统计数据。
+	 * </pre>
+	 * <pre>
+	 *   格式： "[]"
+	 * </pre>
 	 * sendEntrustCol:(这里用一句话描述这个方法的作用). <br/>  
 	 * TODO(这里描述这个方法适用条件 – 可选).<br/>  
 	 * TODO(这里描述这个方法的执行流程 – 可选).<br/>  
@@ -631,19 +636,32 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService, InitializingBe
 		
 		ArrayList<TEntrust> list_sell = getList( MAP__SELL_LIMIT, currencyTradeId );
 		if (list_sell != null && list_sell.size() > 0) {
+			strBud_entrust.append( '[' );
 			for (int i = (list_sell.size() < ENTRUST_COUNT ? list_sell.size() : ENTRUST_COUNT) - 1; i > -1; i--) {
 				TEntrust entrust = list_sell.get( i );
 				
-				strBud_entrust.append( "" );
+				strBud_entrust
+					.append( entrust.getPrice() ).append( ',' )
+					.append( entrust.getCount() ).append( ';' )
+					;
 			}
+			strBud_entrust.deleteCharAt( strBud_entrust.length() - 1 ).append( ']' );
 		}
 		ArrayList<TEntrust> list_buy = getList( MAP__BUY_LIMIT, currencyTradeId );
 		if (list_buy != null && list_buy.size() > 0) {
+			if (strBud_entrust != null && strBud_entrust.length() > 0) {
+				strBud_entrust.append( '|' );
+			}
+			strBud_entrust.append( '[' );
 			for (int i = (list_buy.size() < ENTRUST_COUNT ? list_buy.size() : ENTRUST_COUNT) - 1; i > -1; i--) {
 				TEntrust entrust = list_buy.get( i );
 				
-				strBud_entrust.append( "" );
+				strBud_entrust
+					.append( entrust.getPrice() ).append( ',' )
+					.append( entrust.getCount() ).append( ';' )
+					;
 			}
+			strBud_entrust.deleteCharAt( strBud_entrust.length() - 1 ).append( ']' );
 		}
 		
 		// 异步通知。
