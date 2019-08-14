@@ -1,15 +1,14 @@
 package com.bittrade.currency.api.service;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import com.bittrade.__default.service.IDefaultTWalletService;
 import com.bittrade.pojo.dto.TWalletDTO;
 import com.bittrade.pojo.dto.TransferDto;
 import com.bittrade.pojo.model.TEntrustRecord;
 import com.bittrade.pojo.model.TWallet;
-import com.bittrade.pojo.vo.CoinAccountVO;
-import com.bittrade.pojo.vo.TWalletVO;
-import com.bittrade.pojo.vo.UserWalletVO;
+import com.bittrade.pojo.vo.*;
 import com.core.common.DTO.ReturnDTO;
 
 /**
@@ -80,4 +79,32 @@ public interface ITWalletService extends IDefaultTWalletService<TWallet, TWallet
 	 * @since JDK 1.8
 	 */
 	TWallet qryUserWallet(long userId, int currencyId) throws Exception;
+
+	/**
+	 * 总净资产
+	 * @param userId 用户id
+ 	 * @return
+	 */
+	ReturnDTO<ConversionVo> totalNetAssets(Long userId);
+
+	/**
+	 * 用户的币币账户总资金折合
+	 * @param userId 用户id
+	 * @return 资金折合对象
+	 */
+    ConversionVo totalConversion(Long userId);
+
+	/**
+	 * 查询当前用户的币币账户币种余额列表
+	 * @param userId 用户id
+	 * @return 钱包列表
+	 */
+	List<AccountVO> detail(Long userId);
+
+	/**
+	 * 资产总览
+	 * @param userId 用户id
+	 * @return
+	 */
+//	ReturnDTO<List<ConversionVo>> overview(Long userId);
 }

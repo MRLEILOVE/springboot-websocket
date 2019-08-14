@@ -1,5 +1,6 @@
 package com.bittrade.currency.feign;
 
+import com.bittrade.currency.feign.fallBack.TransferFallBack;
 import com.core.web.common.config.feign.FeignConfiguration;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;

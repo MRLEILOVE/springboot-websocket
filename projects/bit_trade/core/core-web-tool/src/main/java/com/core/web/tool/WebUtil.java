@@ -15,13 +15,13 @@ import java.io.OutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 
 import com.core.common.DTO.ReturnDTO;
 import com.core.common.constant.IConstant;
 import com.core.tool.JSONUtil;
-import com.core.tool.LoggerFactoryUtil;
-import com.core.tool.LoggerUtil;
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
@@ -40,7 +40,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
  */
 public class WebUtil {
 	
-	private static final LoggerUtil LOG = LoggerFactoryUtil.getLogger(WebUtil.class);
+	private static final Logger LOG = LoggerFactory.getLogger(WebUtil.class);
 
 	/**
 	 * <p>
@@ -83,11 +83,11 @@ public class WebUtil {
 			os.close();
 			os = null;
 		} catch (JsonGenerationException e) {
-			LOG.error(e);
+			LOG.error(e.toString());
 		} catch (JsonMappingException e) {
-			LOG.error(e);
+			LOG.error(e.toString());
 		} catch (IOException e) {
-			LOG.error(e);
+			LOG.error(e.toString());
 		}
 	}
 	

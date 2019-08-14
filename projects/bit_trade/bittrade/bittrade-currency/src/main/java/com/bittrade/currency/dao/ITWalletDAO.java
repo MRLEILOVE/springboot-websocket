@@ -5,6 +5,8 @@ import java.util.List;
 
 import com.bittrade.pojo.dto.TransferDto;
 import com.bittrade.pojo.model.TWallet;
+import com.bittrade.pojo.vo.AccountVO;
+import com.bittrade.pojo.vo.AssetsVO;
 import org.apache.ibatis.annotations.Param;
 
 import com.bittrade.__default.DAO.IDefaultTWalletDAO;
@@ -73,4 +75,18 @@ public interface ITWalletDAO extends IDefaultTWalletDAO {
      * @return
      */
     Integer biBiAccountEntry(@Param("id")Long id,@Param("num") BigDecimal num,@Param("version") Integer version);
+
+    /**
+     * 获取用户币币账户资产
+     * @param userId 用户id
+     * @return 资产vo
+     */
+    List<AssetsVO> getAssets(@Param("userId") Long userId);
+
+    /**
+     * 查询用户钱包列表
+     * @param userId 用户id
+     * @return 账户vo
+     */
+    List<AccountVO> qryByUser(@Param("userId") Long userId);
 }
