@@ -280,9 +280,9 @@ public class TWalletServiceImpl extends DefaultTWalletServiceImpl<ITWalletDAO, T
 		for(AssetsVO x : AssetsVOs){
 			//获取最新价
 			String s = jedisCluster.get(IConstant.REDIS_PREFIX__LINE_PRICE + x.getCurrencyName());
-			/*if(s == null){
+			if(s == null){
 				s = "2";
-			}*/
+			}
 			BigDecimal price = new BigDecimal(s);
 			//USDT累计
 			BigDecimal all = x.getTotal().add(x.getTradeFrozen().add(x.getTransferFrozen()));
@@ -325,7 +325,7 @@ public class TWalletServiceImpl extends DefaultTWalletServiceImpl<ITWalletDAO, T
 		return userAccountVOs;
 	}
 
-	/**
+    /**
 	 * 为用户创建缺失的钱包
 	 * @param currencies 币种列表
 	 * @param userAccountVOs 用户已有的钱包列表
@@ -378,4 +378,37 @@ public class TWalletServiceImpl extends DefaultTWalletServiceImpl<ITWalletDAO, T
 		walletDAO.add(wallet);
 		return wallet;
 	}
+
+	/**
+	 * 资产总览
+	 * @param userId 用户id
+	 * @return
+	 */
+	/*@Override
+	public ReturnDTO<List<ConversionVo>> overview(Long userId) {
+		List<ConversionVo> list = new ArrayList<>();
+
+		*//** 获取币币账户总资产折合 *//*
+		ConversionVo bibi = totalConversion(userId);
+		bibi.setAccount("币币账户");
+		list.add(bibi);
+
+		*//** 远程调用法币账户总资产折合 *//*
+		ConversionVo personal = assetsService.personalTotalConversion(userId);
+		personal.setAccount("法币账户");
+		list.add(personal);
+
+		*//** 远程调用资金账户总资产折合 *//*
+		ConversionVo fund = assetsService.personalTotalConversion(userId);
+		fund.setAccount("资金账户");
+		list.add(fund);
+
+		*//** 交易账户 = 法币账户 + 币币账户 *//*
+		ConversionVo deal = ConversionVo.builder().account("交易账户").build();
+		deal.setUSDT(personal.getUSDT().add(bibi.getUSDT()));
+		deal.setCNY(personal.getCNY().add(bibi.getCNY()));
+		list.add(deal);
+
+		return ReturnDTO.ok(list);
+	}*/
 }

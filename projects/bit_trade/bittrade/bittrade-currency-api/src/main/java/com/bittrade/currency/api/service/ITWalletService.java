@@ -100,4 +100,11 @@ public interface ITWalletService extends IDefaultTWalletService<TWallet, TWallet
 	 * @return 钱包列表
 	 */
 	List<AccountVO> detail(Long userId);
+
+	/**
+	 * 资产总览
+	 * @param userId 用户id
+	 * @return
+	 */
+//	ReturnDTO<List<ConversionVo>> overview(Long userId);
 }
