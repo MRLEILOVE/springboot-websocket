@@ -29,7 +29,7 @@ data:
 
 mybatis-plus:
   configuration:
-    logImpl: org.apache.ibatis.logging.stdout.StdOutImpl
+    #logImpl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 
 dubbo:

@@ -4,12 +4,11 @@ import java.util.Enumeration;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-
-import com.core.tool.LoggerFactoryUtil;
-import com.core.tool.LoggerUtil;
 
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
@@ -18,7 +17,7 @@ import feign.RequestTemplate;
 public class FeignConfiguration implements RequestInterceptor {
 
 	@SuppressWarnings("unused")
-	private final LoggerUtil LOG = LoggerFactoryUtil.getLogger(getClass());
+	private final Logger LOG = LoggerFactory.getLogger(getClass());
 
 	@Override
 	public void apply(RequestTemplate template) {

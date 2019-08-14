@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,8 +29,6 @@ import com.bittrade.pojo.vo.QueryKLineVO;
 import com.bittrade.pojo.vo.TKlineVO;
 import com.core.common.constant.ICompareResultConstant;
 import com.core.tool.DateTimeUtil;
-import com.core.tool.LoggerFactoryUtil;
-import com.core.tool.LoggerUtil;
 
 import redis.clients.jedis.JedisCluster;
 
@@ -41,7 +41,7 @@ import redis.clients.jedis.JedisCluster;
 @com.alibaba.dubbo.config.annotation.Service
 public class TKlineServiceImpl extends DefaultTKlineServiceImpl<ITKlineDAO, TKline, TKlineDTO, TKlineVO> implements ITKlineService {
 
-	private static final LoggerUtil														LOG	= LoggerFactoryUtil.getLogger( TKlineServiceImpl.class );
+	private static final Logger															LOG	= LoggerFactory.getLogger( TKlineServiceImpl.class );
 
 	@Autowired
 	private ITKlineDAO																	klineDAO;
@@ -110,11 +110,11 @@ public class TKlineServiceImpl extends DefaultTKlineServiceImpl<ITKlineDAO, TKli
 				KLineGranularityEnumer obj_enum = objArr_enum[ i ];
 				int i_code = obj_enum.getCode();
 				LocalDateTime dt_granularity = getDateTimeBegin( dt_now, i_code );
-				
+
 				tKlineQuery.setGranularity( i_code );
 				tKlineQuery.setTime( dt_granularity );
 				ConcurrentHashMap<Integer, TKline> map_kline = MAP__KLINE_LAST.get( i_code );
-				
+
 				for (int j = 0; j < list_ct.size(); j++) {
 					TCurrencyTrade currencyTrade = list_ct.get( j );
 
@@ -206,7 +206,7 @@ public class TKlineServiceImpl extends DefaultTKlineServiceImpl<ITKlineDAO, TKli
 
 				rabbitTemplate.convertAndSend( IQueueConstants.EXCHANGE_TOPIC, IQueueConstants.ROUTE_KEY__KLINE + i_code, kLineToString( kLine ) );
 			} catch (Exception e) {
-				LOG.error( e );
+				LOG.error( e.toString() );
 			}
 		}
 	}
