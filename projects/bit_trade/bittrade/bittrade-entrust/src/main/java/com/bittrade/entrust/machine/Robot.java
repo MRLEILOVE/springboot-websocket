@@ -281,7 +281,7 @@ public /* static */final class Robot implements InitializingBean, DisposableBean
 		}
 	}
 
-	private static final int					CNT		= 2;	// 500 50 10 5 2
+	private static final int					CNT		= 10;	// 500 50 10 5 2
 
 	private static boolean						isRun	= true;
 
