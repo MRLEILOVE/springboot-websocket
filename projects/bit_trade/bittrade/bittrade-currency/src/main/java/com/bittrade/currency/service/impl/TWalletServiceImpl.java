@@ -1,34 +1,31 @@
 package com.bittrade.currency.service.impl;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.List;
-
-import com.bittrade.pojo.dto.TransferDto;
+import com.alibaba.fastjson.JSONObject;
+import com.bittrade.__default.service.impl.DefaultTWalletServiceImpl;
+import com.bittrade.common.constant.IConstant;
+import com.bittrade.common.utils.RedisKeyUtil;
+import com.bittrade.currency.api.service.ITWalletService;
+import com.bittrade.currency.dao.ITCurrencyDAO;
+import com.bittrade.currency.dao.ITCurrencyTradeDAO;
+import com.bittrade.currency.dao.ITWalletDAO;
+import com.bittrade.currency.dao.ITWalletRecordDAO;
+import com.bittrade.currency.feign.AssetsService;
+import com.bittrade.pojo.dto.TWalletDTO;
+import com.bittrade.pojo.model.*;
+import com.bittrade.pojo.vo.*;
 import com.core.common.DTO.ReturnDTO;
+import com.core.tool.SnowFlake;
+import feign.RetryableException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.bittrade.__default.service.impl.DefaultTWalletServiceImpl;
-import com.bittrade.currency.api.service.ITWalletService;
-import com.bittrade.currency.dao.ITCurrencyTradeDAO;
-import com.bittrade.currency.dao.ITWalletDAO;
-import com.bittrade.currency.dao.ITWalletRecordDAO;
-import com.bittrade.pojo.dto.TWalletDTO;
-import com.bittrade.pojo.model.TCurrencyTrade;
-import com.bittrade.pojo.model.TEntrustRecord;
-import com.bittrade.pojo.model.TWallet;
-import com.bittrade.pojo.model.TWalletRecord;
-import com.bittrade.pojo.vo.CoinAccountVO;
-import com.bittrade.pojo.vo.QueryWalletVO;
-import com.bittrade.pojo.vo.TWalletVO;
-import com.bittrade.pojo.vo.UserWalletVO;
-import com.core.tool.SnowFlake;
-
-import org.springframework.transaction.annotation.Transactional;
 import redis.clients.jedis.JedisCluster;
+
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.time.LocalDateTime;
+import java.util.*;
 
 /**
  * <p>
@@ -43,20 +40,20 @@ import redis.clients.jedis.JedisCluster;
 public class TWalletServiceImpl extends DefaultTWalletServiceImpl<ITWalletDAO, TWallet, TWalletDTO, TWalletVO> implements ITWalletService {
 
 	private static final Logger		LOG			= LoggerFactory.getLogger( TWalletServiceImpl.class );
-
+	private static final SnowFlake	SNOW_FLAKE	= new SnowFlake( 1, 1 );
 	@Autowired
 	private ITWalletDAO				walletDAO;
-
 	@Autowired
 	private JedisCluster			jedisCluster;
-
 	@Autowired
 	private ITCurrencyTradeDAO		currencyTradeDAO;
-
 	@Autowired
 	private ITWalletRecordDAO		walletRecordDAO;
+	@Autowired
+	private AssetsService 			assetsService;
+	@Autowired
+	private ITCurrencyDAO 			currencyDAO;
 
-	private static final SnowFlake	SNOW_FLAKE	= new SnowFlake( 1, 1 );
 
 	/**
 	 * 查询用户的币币账户
@@ -235,5 +232,150 @@ public class TWalletServiceImpl extends DefaultTWalletServiceImpl<ITWalletDAO, T
 		return result;
 	}
 
+	/**
+	 * 总净资产
+	 * @param userId 用户id
+	 * @return
+	 */
+    @Override
+    public ReturnDTO<ConversionVo> totalNetAssets(Long userId) {
+		BigDecimal totalUSDT = BigDecimal.ZERO;
+		//获取人民币-usdt汇率
+		String value = jedisCluster.get(RedisKeyUtil.USD_TO_CNY_RATE_KEY);
+		BigDecimal USD_TO_CNY_RATE_RATE = new BigDecimal(JSONObject.parseObject(value).get("rate").toString());
 
+		/**获取币币账户总资产*/
+		ConversionVo bibiVO = totalConversion(userId);
+		totalUSDT = bibiVO.getUSDT();
+
+		//远程调用
+		try {
+			String assets = assetsService.getAssets(userId);
+			totalUSDT = totalUSDT.add(new BigDecimal(assets));
+		} catch (RetryableException e){
+			e.printStackTrace();
+			return ReturnDTO.error("网络繁忙，请稍后再试");
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ReturnDTO.error("服务繁忙，请稍后再试");
+		}
+		BigDecimal totalCNY = totalUSDT.multiply(USD_TO_CNY_RATE_RATE);
+		return ReturnDTO.ok(ConversionVo.builder().CNY(totalCNY).USDT(totalUSDT).build());
+    }
+
+	/**
+	 * 用户的币币账户总资金折合
+	 * @param userId 用户id
+	 * @return 资金折合对象
+	 */
+	@Override
+	public ConversionVo totalConversion(Long userId) {
+		ConversionVo vo = ConversionVo.builder().CNY(BigDecimal.ZERO).USDT(BigDecimal.ZERO).build();
+		BigDecimal totalUSDT = BigDecimal.ZERO;
+		//获取人民币-usdt汇率
+		String value = jedisCluster.get(RedisKeyUtil.USD_TO_CNY_RATE_KEY);
+		BigDecimal USD_TO_CNY_RATE_RATE = new BigDecimal(JSONObject.parseObject(value).get("rate").toString());
+		//获取用户币币账户下所有的钱包
+		List<AssetsVO> AssetsVOs = walletDAO.getAssets(userId);
+		for(AssetsVO x : AssetsVOs){
+			//获取最新价
+			String s = jedisCluster.get(IConstant.REDIS_PREFIX__LINE_PRICE + x.getCurrencyName());
+			/*if(s == null){
+				s = "2";
+			}*/
+			BigDecimal price = new BigDecimal(s);
+			//USDT累计
+			BigDecimal all = x.getTotal().add(x.getTradeFrozen().add(x.getTransferFrozen()));
+			totalUSDT = totalUSDT.add(price.multiply(all));
+		}
+		BigDecimal totalCNY = totalUSDT.multiply(USD_TO_CNY_RATE_RATE);
+		return ConversionVo.builder().CNY(totalCNY).USDT(totalUSDT).build();
+	}
+
+	/**
+	 * 查询当前用户的币币账户币种余额列表
+	 * @param userId 用户id
+	 * @return
+	 */
+	@Override
+	public List<AccountVO> detail(Long userId) {
+		//查询币种列表
+		List<TCurrency> currencies = currencyDAO.gets();
+		//查询用户钱包列表
+		List<AccountVO> userAccountVOs = walletDAO.qryByUser(userId);
+		if(userAccountVOs == null || userAccountVOs.size() <=0){
+			//为用户创建全部钱包
+			createAllWallet(currencies,userId);
+			//封装好数据后返回给前端
+			List<AccountVO> accountVOs = new ArrayList<>();
+			currencies.stream().forEach(x -> {
+				AccountVO vo = AccountVO.builder().balance(BigDecimal.ZERO).usedMargin(BigDecimal.ZERO).currency(x.getName()).build();
+				accountVOs.add(vo);
+			});
+			return accountVOs;
+		}else if(currencies.size() > userAccountVOs.size()){
+			//为用户创建缺失的钱包
+			List<TCurrency> lockCurrency = createLockWallet(currencies,userAccountVOs,userId);
+			lockCurrency.stream().forEach(x ->{
+				//将缺失的钱包添加到用户钱包列表，然后返回数据给前端
+				userAccountVOs.add(AccountVO.builder().currency(x.getName()).balance(BigDecimal.ZERO).usedMargin(BigDecimal.ZERO).build());
+			});
+			return userAccountVOs;
+		}
+		return userAccountVOs;
+	}
+
+	/**
+	 * 为用户创建缺失的钱包
+	 * @param currencies 币种列表
+	 * @param userAccountVOs 用户已有的钱包列表
+	 * @param userId 用户id
+	 * @return 缺失钱包的币种列表
+	 */
+	private List<TCurrency> createLockWallet(List<TCurrency> currencies, List<AccountVO> userAccountVOs, Long userId) {
+		List<TCurrency> lockList = new ArrayList<>();//需要返回的缺失钱包的币种列表
+		Map<String,String> existAccountMap = new HashMap<>();//已经存在的钱包Map
+
+		//将已经存在的钱包封装进existAccountMap
+		userAccountVOs.stream().forEach(x ->{
+			existAccountMap.put(x.getCurrency(),x.getCurrency());
+		});
+
+		//遍历币种列表，寻找以及创建缺失的钱包列表
+		currencies.stream().forEach(x -> {
+			if(existAccountMap.get(x.getName()) == null){
+				//将对象加入lockList
+				lockList.add(x);
+				//创建钱包
+				createWallet(x.getId(),userId);
+			}
+		});
+		return lockList;
+	}
+
+	/**
+	 * 为用户创建全部钱包
+	 * @param currencies 币种列表
+	 * @param userId 用户id
+	 */
+	private void createAllWallet(List<TCurrency> currencies, Long userId) {
+		currencies.stream().forEach(x -> {
+			createWallet(x.getId(),userId);
+		});
+	}
+
+	private TWallet createWallet(Integer currencyId, Long userId) {
+		TWallet wallet = TWallet.builder()
+				.userId(userId)
+				.currencyId(currencyId)
+				.total(BigDecimal.ZERO)
+				.tradeFrozen(BigDecimal.ZERO)
+				.transferFrozen(BigDecimal.ZERO)
+				.version(0)
+				.createTime(LocalDateTime.now())
+				.updateTime(LocalDateTime.now())
+				.build();
+		walletDAO.add(wallet);
+		return wallet;
+	}
 }
