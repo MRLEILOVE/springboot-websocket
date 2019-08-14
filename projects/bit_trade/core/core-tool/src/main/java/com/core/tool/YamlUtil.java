@@ -6,14 +6,12 @@ import java.util.Map;
 
 import org.yaml.snakeyaml.Yaml;
 
-import lombok.extern.slf4j.Slf4j;
-
 /**
  * 
  * @author Administrator
  *
  */
-@Slf4j
+//@lombok.extern.slf4j.Slf4j
 public class YamlUtil {
 	
 	/**
@@ -33,7 +31,8 @@ public class YamlUtil {
 			is.close();
 			is = null;
 		} catch (IOException e) {
-			log.error(e.toString());
+			e.printStackTrace();
+//			log.error(e.toString());
 		} finally {
 		}
 		

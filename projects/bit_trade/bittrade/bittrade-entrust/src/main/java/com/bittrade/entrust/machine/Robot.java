@@ -160,8 +160,8 @@ public /* static */final class Robot implements InitializingBean, DisposableBean
 
 		bd_price = getRandom( d_min, d_max );
 
-		// 均衡器。 根据买卖方向平衡买卖单价（买价加5%， 卖价减5%）。
-		bd_price = bd_price.add( bd_price.multiply( BD__PRICE_RANGE_PERCENT ).multiply( rate ) );
+		// 均衡器。 根据买卖方向平衡买卖单价（买价加5%， 卖价减5%）。 先暂停
+//		bd_price = bd_price.add( bd_price.multiply( BD__PRICE_RANGE_PERCENT ).multiply( rate ) );
 
 		// 也可以通过原数运算来取精度。
 		bd_price = bd_price.setScale( currencyTrade.getPriceDecimalDigits(), BigDecimal.ROUND_HALF_DOWN );
@@ -313,7 +313,7 @@ public /* static */final class Robot implements InitializingBean, DisposableBean
 						if (entrust.getEntrustType() == EntrustTypeEnumer.LIMIT.getCode()) {
 							if (entrust.getEntrustDirection() == EntrustDirectionEnumer.BUY.getCode()) {
 
-								entrust.setPrice( getPrice( bdArr_MinAndMax[ 0 ], bdArr_MinAndMax[ 1 ], BD__PRICE_SUB_RATE, currencyTrade ) );
+								entrust.setPrice( getPrice( bdArr_MinAndMax[ 0 ], bdArr_MinAndMax[ 1 ], BD__PRICE_ADD_RATE, currencyTrade ) );
 								entrust.setCount( getCount( bdArr_MinAndMax[ 0 ], bdArr_MinAndMax[ 1 ], bd__count_buy_rate, currencyTrade ) );
 
 							} else /*
@@ -321,7 +321,7 @@ public /* static */final class Robot implements InitializingBean, DisposableBean
 									 * EntrustDirectionEnumer.SELL.getCode())
 									 */ {
 
-								entrust.setPrice( getPrice( bdArr_MinAndMax[ 0 ], bdArr_MinAndMax[ 1 ], BD__PRICE_ADD_RATE, currencyTrade ) );
+								entrust.setPrice( getPrice( bdArr_MinAndMax[ 0 ], bdArr_MinAndMax[ 1 ], BD__PRICE_SUB_RATE, currencyTrade ) );
 								entrust.setCount( getCount( bdArr_MinAndMax[ 0 ], bdArr_MinAndMax[ 1 ], bd__count_sell_rate, currencyTrade ) );
 
 							}
