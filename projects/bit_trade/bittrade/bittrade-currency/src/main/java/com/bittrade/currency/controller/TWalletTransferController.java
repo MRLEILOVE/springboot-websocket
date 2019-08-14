@@ -57,7 +57,7 @@ public class TWalletTransferController extends BaseController<TWalletTransfer, T
     @PostMapping("/biBiAccountEntry")
     @ApiOperation(value="币币账户充值", notes="币币账户充值")
     @ResponseBody
-    public String biBiAccountEntry(@RequestBody TransferDto transferDto) throws Exception {
+    public String biBiAccountEntry(@RequestBody TransferDto transferDto){
         System.out.println("用户id：" + transferDto.getUserId() + "币种： " +  transferDto.getCurrency() + "数量: " + transferDto.getNum());
         return walletTransferService.biBiAccountEntry(transferDto);
     }
