@@ -59,6 +59,13 @@ public class TCurrencyController extends BaseController<TCurrency, TCurrencyDTO,
 		return ReturnDTO.ok( tCurrencyService.findAllLegalCurrency() );
 	}
 
+	@ApiOperation(value = "查找所有可用币种")
+	@RequestMapping(value = "/findUsableCurrency", method = RequestMethod.POST)
+	@ResponseBody
+	public List<String> findUsableCurrency() {
+		return tCurrencyService.findUsableCurrency();
+	}
+
 	@RequestMapping(value = "/ta", method = RequestMethod.GET)
 	public ReturnDTO<List<TCurrency>> ta(@RequestBody TCurrencyDTO CurrencyDTO) {
 		System.out.println( "CurrencyDTO.getName()=" + CurrencyDTO.getName() );

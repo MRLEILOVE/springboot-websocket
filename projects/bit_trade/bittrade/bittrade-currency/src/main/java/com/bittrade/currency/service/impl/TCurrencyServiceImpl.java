@@ -37,4 +37,12 @@ public class TCurrencyServiceImpl extends
 				.select(TCurrency.FieldNames.ID,TCurrency.FieldNames.NAME);
 		return tCurrencyDAO.selectList(wrapper);
 	}
+
+	/**
+	 * 查找所有可用币种
+	 */
+    @Override
+    public List<String> findUsableCurrency() {
+        return tCurrencyDAO.findUsableCurrency();
+    }
 }

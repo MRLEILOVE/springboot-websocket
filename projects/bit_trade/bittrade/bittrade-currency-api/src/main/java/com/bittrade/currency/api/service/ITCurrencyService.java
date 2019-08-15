@@ -17,4 +17,9 @@ public interface ITCurrencyService extends IDefaultTCurrencyService<TCurrency, T
      * 查找所有法币
      */
     List<TCurrency> findAllLegalCurrency();
+
+    /**
+     * 查找所有可用币种
+     */
+    List<String> findUsableCurrency();
 }
