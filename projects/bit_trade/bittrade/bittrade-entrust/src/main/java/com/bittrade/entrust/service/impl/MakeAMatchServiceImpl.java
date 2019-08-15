@@ -695,7 +695,7 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService,
 		appendEntrust(list_buy, strBud_entrust);
 		strBud_entrust.append( '}' );
 
-		System.out.println( "list_sell.size()=" + list_sell.size() + ", list_buy.size()=" + list_buy.size() + "    " + strBud_entrust.toString() );
+//		System.out.println( "list_sell.size()=" + list_sell.size() + ", list_buy.size()=" + list_buy.size() + "    " + strBud_entrust.toString() );
 
 		// 异步通知。
 		rabbitTemplate.convertAndSend( IQueueConstants.EXCHANGE_TOPIC, IQueueConstants.ROUTE_KEY__ENTRUST, strBud_entrust.toString() );

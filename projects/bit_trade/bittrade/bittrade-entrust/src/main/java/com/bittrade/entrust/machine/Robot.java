@@ -6,6 +6,8 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -395,9 +397,18 @@ public /* static */final class Robot implements InitializingBean, DisposableBean
 	 * @since JDK 1.8
 	 */
 	private void startEqualizer() {
-		es_equalizer = Executors.newSingleThreadExecutor();
+		es_equalizer = Executors.newSingleThreadExecutor(new ThreadFactory() {
+			private final AtomicInteger TAG = new AtomicInteger();
+			@Override
+			public Thread newThread(Runnable r) {
+				Thread t = new Thread(r);
+				t.setName( "均衡器:" + TAG.getAndIncrement() ); // resumption调度器线程：
+				return t;
+			}
+		});
 
 		es_equalizer.submit( () -> {
+//			Thread.currentThread().setName( "123" );
 			while (isRun) {
 				for (int i = 1; i <= MAX_CURRENCY_TRADE_ID; i++) {
 					int iArr_subCount[] = makeAMatchService.getSubCount( i );
