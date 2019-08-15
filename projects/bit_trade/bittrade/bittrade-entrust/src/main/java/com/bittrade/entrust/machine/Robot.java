@@ -426,14 +426,14 @@ public /* static */final class Robot implements InitializingBean, DisposableBean
 						bd__amount_buy_rate = BD__LESS;
 						bd__count_sell_rate = BD__MORE;
 
-						LOG.info( "使用了均衡器 \"买单大于卖单\", BuySize:" + iArr_subCount[ 0 ] + ", SellSize:" + iArr_subCount[ 1 ] );
+						LOG.info( "使用了均衡器 \"买单大于卖单" + (iArr_subCount[ 0 ] - iArr_subCount[ 1 ]) + "个\", BuySize:" + iArr_subCount[ 0 ] + ", SellSize:" + iArr_subCount[ 1 ] );
 					} else if (iArr_subCount[ 1 ] - iArr_subCount[ 0 ] > EQUALIZER_DIFFERENCE) { // 卖单大于买单一定数量。
 																									// 需要增大买单的数量、减小卖单的数量
 						bd__count_buy_rate = BD__MORE;
 						bd__amount_buy_rate = BD__MORE;
 						bd__count_sell_rate = BD__LESS;
 
-						LOG.info( "使用了均衡器 \"卖单大于买单\", BuySize:" + iArr_subCount[ 0 ] + ", SellSize:" + iArr_subCount[ 1 ] );
+						LOG.info( "使用了均衡器 \"卖单大于买单" + (iArr_subCount[ 1 ] - iArr_subCount[ 0 ]) + "个\", BuySize:" + iArr_subCount[ 0 ] + ", SellSize:" + iArr_subCount[ 1 ] );
 					} else {
 						bd__count_buy_rate = BD__ONE;
 						bd__amount_buy_rate = BD__ONE;

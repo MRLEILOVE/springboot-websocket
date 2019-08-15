@@ -7,7 +7,7 @@
  *  
 */  
   
-package com.td.test;  
+package com.td.test.interfaces;  
 /**  
  * ClassName:A <br/>  
  * Description: TODO 添加描述. <br/>  

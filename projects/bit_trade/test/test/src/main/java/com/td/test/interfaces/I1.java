@@ -7,7 +7,7 @@
  *  
 */  
   
-package com.td.test;  
+package com.td.test.interfaces;  
 /**  
  * ClassName:I <br/>  
  * Description: TODO 添加描述. <br/>  
@@ -17,16 +17,14 @@ package com.td.test;
  * @since    JDK 1.8  
  * @see        
  */
-public interface I2 {
+public interface I1 {
 
-	int X = 3;
-	
-	default String i2(String str) {
-		return "i2() str=" + str;
+	default String i1(String str) {
+		return "i1() str=" + str;
 	}
 
 	default String common(String str) {
-		return "I2.common() str=" + str;
+		return "I1.common() str=" + str;
 	}
 	
 }
