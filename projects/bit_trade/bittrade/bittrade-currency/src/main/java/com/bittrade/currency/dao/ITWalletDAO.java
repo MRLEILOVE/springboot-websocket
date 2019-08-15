@@ -69,12 +69,21 @@ public interface ITWalletDAO extends IDefaultTWalletDAO {
 
     /**
      * 币币账户充值
-     * @param id
-     * @param num
-     * @param version
+     * @param id id
+     * @param num 划转数量
+     * @param version 版本号
      * @return
      */
     Integer biBiAccountEntry(@Param("id")Long id,@Param("num") BigDecimal num,@Param("version") Integer version);
+
+    /**
+     *
+     * @param id id
+     * @param num 划转数量
+     * @param version 版本号
+     * @return
+     */
+    Integer biBiAccountOut(@Param("id")Long id, @Param("num")BigDecimal num, @Param("version")Integer version);
 
     /**
      * 获取用户币币账户资产

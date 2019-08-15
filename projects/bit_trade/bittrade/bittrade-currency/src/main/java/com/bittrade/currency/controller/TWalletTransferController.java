@@ -61,4 +61,12 @@ public class TWalletTransferController extends BaseController<TWalletTransfer, T
         System.out.println("用户id：" + transferDto.getUserId() + "币种： " +  transferDto.getCurrency() + "数量: " + transferDto.getNum());
         return walletTransferService.biBiAccountEntry(transferDto);
     }
+
+    /*@PostMapping("/biBiAccountOut")
+    @ApiOperation(value="币币账户出账", notes="币币账户出账")
+    @ResponseBody
+    public String biBiAccountOut(@RequestBody TransferDto transferDto){
+        System.out.println("用户id：" + transferDto.getUserId() + "币种： " +  transferDto.getCurrency() + "数量: " + transferDto.getNum());
+        return walletTransferService.biBiAccountOut(transferDto);
+    }*/
 }

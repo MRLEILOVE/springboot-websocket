@@ -13,7 +13,6 @@ import com.core.common.DTO.ReturnDTO;
  *
  */
 public interface ITWalletTransferService extends IDefaultTWalletTransferService<TWalletTransfer, TWalletTransferDTO, TWalletTransferVO> {
-
     /**
      * 资金划转
      */
@@ -25,4 +24,11 @@ public interface ITWalletTransferService extends IDefaultTWalletTransferService<
      * @return 成功：succ
      */
     String biBiAccountEntry(TransferDto transferDto);
+
+    /**
+     * 币币账户出账
+     * @param transferDto
+     * @return 成功：succ
+     */
+    String biBiAccountOut(TransferDto transferDto);
 }
