@@ -65,8 +65,8 @@ public /* static */final class Robot implements InitializingBean, DisposableBean
 	/*
 	 * 买卖单区分价格高低。 使其更容易被撮合。
 	 */
-	private static final BigDecimal	BD__PRICE_ADD_RATE		= new BigDecimal( +1 );
-	private static final BigDecimal	BD__PRICE_SUB_RATE		= new BigDecimal( -1 );
+	private static final BigDecimal	BD__PRICE_ADD_RATE		= new BigDecimal( "+0.35" );
+	private static final BigDecimal	BD__PRICE_SUB_RATE		= new BigDecimal( "-0.35" );
 	/*
 	 * 均衡器使用。 也可以更智能的根据有多少的偏差来决定使用均衡器的均衡程度。
 	 */
@@ -94,6 +94,7 @@ public /* static */final class Robot implements InitializingBean, DisposableBean
 
 		BigDecimal bd_selfPrice = makeAMatchService.getLinePrice( currencyTrade.getId() );
 		String str_otherLinePrice = jedisCluster.get( String.format( RedisKeyUtil.OKEX_SYMBOL_LAST_KEY, currencyTrade.getSymbol() ) );
+		System.out.println( "\r\nbd_selfPrice=" + bd_selfPrice + ", str_otherLinePrice=" + str_otherLinePrice );
 		if (str_otherLinePrice != null && str_otherLinePrice.length() > 0) {
 			BigDecimal bd_otherPrice = new BigDecimal( str_otherLinePrice );
 			if (bd_selfPrice.compareTo( bd_otherPrice ) == ICompareResultConstant.LESS_THAN) {
@@ -327,6 +328,12 @@ public /* static */final class Robot implements InitializingBean, DisposableBean
 								entrust.setCount( getCount( bdArr_MinAndMax[ 0 ], bdArr_MinAndMax[ 1 ], bd__count_sell_rate, currencyTrade ) );
 
 							}
+							
+							System.out.println( 
+									"min=" + bdArr_MinAndMax[0] + ", " + 
+									"max=" + bdArr_MinAndMax[1] + ", " + 
+									"entrust.getEntrustDirection()=" + entrust.getEntrustDirection() + ", price=" + entrust.getPrice()
+									);
 						} else /*
 								 * if (entrust.getEntrustType() ==
 								 * EntrustTypeEnumer.MARKET.getCode())

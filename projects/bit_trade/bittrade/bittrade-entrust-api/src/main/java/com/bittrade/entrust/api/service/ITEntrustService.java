@@ -3,6 +3,7 @@ package com.bittrade.entrust.api.service;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.bittrade.__default.service.IDefaultTEntrustService;
 import com.bittrade.pojo.dto.DealDTO;
 import com.bittrade.pojo.dto.TEntrustDTO;
@@ -42,5 +43,7 @@ public interface ITEntrustService extends IDefaultTEntrustService<TEntrust, TEnt
 	 * @param version
 	 */
 	int updateOnMatch(BigDecimal successAmount, BigDecimal leftCount, int status, LocalDateTime updateTime, long ID, int version);
+
+	Page<TEntrust> getsByWhat();
 	
 }

@@ -70,5 +70,10 @@
 			update_time = #{updateTime}
 		WHERE id = #{ID} AND version = #{version}
 	</update>
+	
+	<select id="getsByWhat">
+	 SELECT id, user_id, currency_trade_id
+	 FROM t_entrust
+	</select>
 
 </mapper>

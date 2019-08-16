@@ -38,8 +38,8 @@ public class SpringApplicationContextListener implements ApplicationListener<App
 	private Robot robot;
 	
 	private void init() {
-		makeAMatchService.initialUnfinishEntrust();
 		klineService.initialUnfinishKLine();
+		makeAMatchService.initialUnfinishEntrust();
 		
 		robot.startUp();
 	}

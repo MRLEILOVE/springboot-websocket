@@ -2,6 +2,7 @@ package com.bittrade.entrust.service.impl;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.alibaba.dubbo.config.annotation.Service;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.bittrade.__default.service.impl.DefaultTEntrustServiceImpl;
 import com.bittrade.common.enums.EntrustDirectionEnumer;
 import com.bittrade.common.enums.EntrustStatusEnumer;
@@ -247,6 +249,15 @@ public class TEntrustServiceImpl extends DefaultTEntrustServiceImpl<ITEntrustDAO
 	@Override
 	public int updateOnMatch(BigDecimal successAmount, BigDecimal leftCount, int status, LocalDateTime updateTime, long ID, int version) {
 		return entrustDAO.updateOnMatch( successAmount, leftCount, status, updateTime, ID, version );
+	}
+
+	@Override
+	public Page<TEntrust> getsByWhat() {
+		Page<TEntrust> page = new Page<TEntrust>( 0, 3 );
+		List<TEntrust> list_data = entrustDAO.getsByWhat(page);
+		page.setRecords( list_data );
+//		page.setPages( pages )
+		return page;
 	}
 
 }

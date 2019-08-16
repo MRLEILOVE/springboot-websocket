@@ -42,5 +42,10 @@ public class EntrustTester extends BaseTester {
 	@Test
 	public void add() {
 	}
+	
+	@Test
+	public void getsByWhat() {
+		this.es.getsByWhat();
+	}
 
 }

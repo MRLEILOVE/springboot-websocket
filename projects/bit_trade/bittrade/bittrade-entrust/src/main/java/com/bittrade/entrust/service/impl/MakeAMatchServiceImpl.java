@@ -275,7 +275,9 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService,
 			for (int i = 0; i < list_ent.size(); i++) {
 				makeAMatch( list_ent.get( i ) );
 			}
-			LOG.info( "加载了" + list_ent.size() + "个未完成或部分完成的委托到内存。" );
+			LOG.info( "加载了 " + list_ent.size() + " 个未完成或部分完成的委托到内存。" );
+		} else {
+			LOG.info( "加载了 0 个未完成或部分完成的委托到内存。" );
 		}
 	}
 

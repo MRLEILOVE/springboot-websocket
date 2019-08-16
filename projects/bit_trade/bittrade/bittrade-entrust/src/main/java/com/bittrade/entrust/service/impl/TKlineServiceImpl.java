@@ -171,7 +171,7 @@ public class TKlineServiceImpl extends DefaultTKlineServiceImpl<ITKlineDAO, TKli
 
 	@Override
 	public void modifyKLine(TEntrustRecord entrustRecord, BigDecimal dealPrice) {
-		System.out.println( System.currentTimeMillis() + ", dealPrice=" + dealPrice );
+//		System.out.println( System.currentTimeMillis() + ", dealPrice=" + dealPrice );
 		KLineGranularityEnumer objArr_enum[] = KLineGranularityEnumer.values();
 		for (int i = 0; i < objArr_enum.length; i++) {
 			int i_code = objArr_enum[ i ].getCode();
