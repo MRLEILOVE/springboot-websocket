@@ -10,8 +10,11 @@
 package com.td.test.threadpool;
 
 import java.time.LocalDateTime;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**  
@@ -62,10 +65,8 @@ public class Test {
 		
 		Runtime.getRuntime().exit( 0 );
 	}
-	
-	public static void main(String[] args) {
-		t();
-		
+
+	private static void testThread() {
 		ExecutorService es = Executors.newFixedThreadPool( 2 );
 		int iArr_cnt[] = { 10, 5 };
 		for (int i = 0; i < 4; i++) {
@@ -86,6 +87,81 @@ public class Test {
 				}
 			} );
 		}
+	}
+	
+	@SuppressWarnings("unused")
+	private static void testArrayBlockingQueue() {
+		try {
+			BlockingQueue<String> queue = new ArrayBlockingQueue<String>(2);
+			
+			new Thread(()->{
+				try {
+					if (false) { // false true
+						System.out.println( "--" );
+						String str_take = queue.take();
+						System.out.println( "str_take=" + str_take );
+					}
+					
+					Thread.sleep( 3000 );
+					
+					String str_take_2 = queue.take();
+					System.out.println( "str_take_2=" + str_take_2 );
+				} catch (InterruptedException e) {}
+			}).start();
+			
+			Thread.sleep( 1500 );
+			
+			queue.add( "a1" );
+			System.out.println( "1 queue.size()=" + queue.size() );
+			queue.put( "a2" );
+			System.out.println( "2 queue.size()=" + queue.size() );
+			queue.offer( "a3" ); // add put offer
+			System.out.println( "3 queue.size()=" + queue.size() );
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@SuppressWarnings("unused")
+	private static void testLinkedBlockingQueue() {
+		LinkedBlockingQueue<String> queue = new LinkedBlockingQueue<String>(2);
+		
+		new Thread(()->{
+			try {
+				if (true) { // false true
+					System.out.println( "--" );
+					String str_take = queue.take();
+					System.out.println( "str_take=" + str_take + ", size=" + queue.size() );
+				}
+				
+				Thread.sleep( 1000 );
+				
+				String str_take_2 = queue.take(); // any problem ?  why the count is 0 ?
+				System.out.println( "str_take_2=" + str_take_2 + ", size=" + queue.size() );
+			} catch (InterruptedException e) {}
+		}).start();
+		
+		try {
+//			Thread.sleep( 1500 );
+			
+			System.out.println( queue.add( "a1" ) );
+			System.out.println( "1 queue.size()=" + queue.size() );
+			queue.put( "a2" );
+			System.out.println( "2 queue.size()=" + queue.size() );
+			queue.put( "a3" );
+			System.out.println( "3 queue.size()=" + queue.size() );
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		
+		queue.clear();
+	}
+	
+	public static void main(String[] args) {
+//		t();
+//		testThread();
+//		testArrayBlockingQueue();
+		testLinkedBlockingQueue();
 	}
 
 }
