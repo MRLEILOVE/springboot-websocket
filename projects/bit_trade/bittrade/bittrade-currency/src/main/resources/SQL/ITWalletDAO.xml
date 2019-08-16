@@ -76,6 +76,14 @@
 		WHERE id = #{id} AND version = #{version}
 	</update>
 
+	<update id="biBiAccountOut">
+		UPDATE t_wallet
+		SET
+			total = total - #{num},
+			version = version + 1
+		WHERE id = #{id} AND version = #{version}
+	</update>
+
 	<select id="getAssets" resultType="com.bittrade.pojo.vo.AssetsVO">
 		SELECT w.currency_id as  currencyId,c.`name` AS currencyName,
 		w.total,w.trade_frozen AS tradeFrozen,w.transfer_frozen AS transferFrozen

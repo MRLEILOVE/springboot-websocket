@@ -23,4 +23,9 @@
 		`create_time` AS createTime
 	</sql>
 
+	<select id="findUsableCurrency" resultType="java.lang.String">
+		SELECT t.`name`
+		FROM t_currency t
+		WHERE t.`status` = 1
+	</select>
 </mapper>
