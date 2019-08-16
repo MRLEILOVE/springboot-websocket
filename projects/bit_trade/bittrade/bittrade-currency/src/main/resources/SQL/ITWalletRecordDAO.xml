@@ -29,4 +29,30 @@
 		`create_time` AS createTime
 	</sql>
 
+	<select id="queryBiBiAccountRecord" resultType="com.bittrade.pojo.vo.RecordVO">
+		SELECT c.`name` AS currency,r.change_amount AS changeAmount,r.create_time AS time,IFNULL(e.fees,0) AS fee,
+		CASE
+		WHEN r.type = 1 THEN '转出至法币账户'
+		WHEN r.type = 2 THEN '法币钱包转入'
+		WHEN r.type = 3 THEN '买入'
+		WHEN r.type = 4 THEN '卖出'
+		WHEN r.type = 5 THEN '转出至资金账户'
+		WHEN r.type = 6 THEN '资金账户转入'
+		ELSE  ''
+		END AS type
+		FROM t_wallet_record r
+		LEFT JOIN t_entrust_record e ON e.id = r.entrust_record_id
+		INNER JOIN t_currency c ON c.id = r.currency_id
+		WHERE r.user_id =  #{userId}
+		AND r.create_time <![CDATA[>=]]>  #{beginTime}
+		AND r.create_time <![CDATA[<=]]> #{endTime}
+		<if test="list != null and list.size() >0">
+			AND r.type in
+			<foreach  item="item" collection="list" separator="," open="(" close=")">
+				#{item}
+			</foreach>
+		</if>
+		ORDER BY r.id DESC
+	</select>
+
 </mapper>
