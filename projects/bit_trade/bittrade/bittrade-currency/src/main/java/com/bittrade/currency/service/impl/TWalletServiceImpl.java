@@ -325,7 +325,7 @@ public class TWalletServiceImpl extends DefaultTWalletServiceImpl<ITWalletDAO, T
 		return userAccountVOs;
 	}
 
-    /**
+	/**
 	 * 为用户创建缺失的钱包
 	 * @param currencies 币种列表
 	 * @param userAccountVOs 用户已有的钱包列表
