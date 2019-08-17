@@ -12,6 +12,15 @@ import java.math.BigDecimal;
 @FeignClient(name = "jdcloud-provider-walletbiz",path = "/transfer",configuration = FeignConfiguration.class,fallback = TransferFallBack.class)
 public interface ITransferFeignService {
 
-    @GetMapping(value = "/c2cAccountEntry")
-    String c2cAccountEntry(@RequestParam("userId")Long userId, @RequestParam("currency")String currency,@RequestParam("num") BigDecimal num);
+    @GetMapping(value = "/accountEntry")
+    String accountEntry(@RequestParam("userId")Long userId, @RequestParam("currency")String currency,@RequestParam("num") BigDecimal num,@RequestParam("type") Integer type);
+
+    /**
+     * 获取划转类型
+     * @param accountInId 入账钱包id
+     * @param accountOutId 出账钱包id
+     * @return
+     */
+    @GetMapping(value = "/getTypeFeign")
+    Integer getTypeFeign(@RequestParam("accountInId")Integer accountInId, @RequestParam("accountOutId")Integer accountOutId);
 }

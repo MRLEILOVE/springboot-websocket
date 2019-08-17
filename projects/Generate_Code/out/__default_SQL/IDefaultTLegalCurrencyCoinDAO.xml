@@ -1,0 +1,529 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+	This code is generated automatically. Please do not edit it.
+	现在字段也可以要彻底动态？
+-->
+<mapper namespace="com.bittrade.__default.DAO.IDefaultTLegalCurrencyCoinDAO">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.bittrade.pojo.model.TLegalCurrencyCoin">
+		<id javaType="Long" property="id" jdbcType="BIGINT" column="id" />
+		<result javaType="Long" property="userId" jdbcType="BIGINT" column="user_id" />
+		<result javaType="String" property="name" jdbcType="VARCHAR" column="name" />
+		<result javaType="String" property="title" jdbcType="VARCHAR" column="title" />
+		<result javaType="String" property="img" jdbcType="VARCHAR" column="img" />
+		<result javaType="Byte" property="status" jdbcType="INTEGER" column="status" />
+		<result javaType="java.math.BigDecimal" property="minQuota" jdbcType="DECIMAL" column="min_quota" />
+		<result javaType="java.time.LocalDateTime" property="createTime" jdbcType="TIMESTAMP" column="create_time" />
+		<result javaType="java.time.LocalDateTime" property="updateTime" jdbcType="TIMESTAMP" column="update_time" />
+	</resultMap>
+
+	<!--
+		通用查询结果列
+		其他类似的类似，也可以公用（共用）引用。
+	-->
+	<sql id="Base_Column_List">
+		<choose>
+			<when test="strArr_field != null">
+		<foreach collection="strArr_field" index="index" item="item" open="" separator="," close="">
+			`${item}`
+		</foreach>
+			</when>
+			<otherwise>
+		`id` AS id, 
+		`user_id` AS userId, 
+		`name` AS name, 
+		`title` AS title, 
+		`img` AS img, 
+		`status` AS status, 
+		`min_quota` AS minQuota, 
+		`create_time` AS createTime, 
+		`update_time` AS updateTime
+			</otherwise>
+		</choose>
+	</sql>
+	
+	<!-- 其他的也可以类似的加， yes， 类似蕾丝的。 -->
+	<sql id="sql_WHERE_forProperty">
+		<choose>
+			<when test="map_in != null">
+			
+		<foreach collection="map_in.entrySet()" index="map_index" item="map_item">
+		AND `${map_index}` IN 
+		<foreach collection="map_item" index="arr_index" item="arr_item" open="(" separator="," close=")">
+			#{arr_item}
+		</foreach>
+		</foreach>
+			
+			</when>
+			<!--
+			<when test="_parameter != null and _parameter.TLegalCurrencyCoin != null and TLegalCurrencyCoin.map_in != null">
+			</when>
+			<otherwise>
+			</otherwise>
+			-->
+		</choose>
+	</sql>
+	<sql id="sql_WHERE_forObject">
+		<choose>
+			<when test="tLegalCurrencyCoin.map_in != null">
+			
+		<foreach collection="tLegalCurrencyCoin.map_in.entrySet()" index="map_index" item="map_item">
+		AND `${map_index}` IN 
+		<foreach collection="map_item" index="arr_index" item="arr_item" open="(" separator="," close=")">
+			#{arr_item}
+		</foreach>
+		</foreach>
+			
+			</when>
+		</choose>
+	</sql>
+	
+	
+	<insert id="add" parameterType="com.bittrade.pojo.model.TLegalCurrencyCoin" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO t_legal_currency_coin(`user_id`, `name`, `title`, `img`, `status`, `min_quota`, `create_time`, `update_time`)
+		VALUES(#{userId,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, #{img,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{minQuota,jdbcType=DECIMAL}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+	</insert>
+	
+	<insert id="addWithSelective" parameterType="com.bittrade.pojo.model.TLegalCurrencyCoin" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO t_legal_currency_coin(
+			<if test="userId != null">
+			`user_id`, 
+			</if>
+			<if test="name != null">
+			`name`, 
+			</if>
+			<if test="title != null">
+			`title`, 
+			</if>
+			<if test="img != null">
+			`img`, 
+			</if>
+			<if test="status != null">
+			`status`, 
+			</if>
+			<if test="minQuota != null">
+			`min_quota`, 
+			</if>
+			<if test="createTime != null">
+			`create_time`, 
+			</if>
+			<if test="updateTime != null">
+			`update_time`
+			</if>
+		)
+		VALUES(
+			<if test="userId != null">
+			#{userId,jdbcType=BIGINT}, 
+			</if>
+			<if test="name != null">
+			#{name,jdbcType=VARCHAR}, 
+			</if>
+			<if test="title != null">
+			#{title,jdbcType=VARCHAR}, 
+			</if>
+			<if test="img != null">
+			#{img,jdbcType=VARCHAR}, 
+			</if>
+			<if test="status != null">
+			#{status,jdbcType=INTEGER}, 
+			</if>
+			<if test="minQuota != null">
+			#{minQuota,jdbcType=DECIMAL}, 
+			</if>
+			<if test="createTime != null">
+			#{createTime,jdbcType=TIMESTAMP}, 
+			</if>
+			<if test="updateTime != null">
+			#{updateTime,jdbcType=TIMESTAMP}
+			</if>
+		)
+	</insert>
+	
+	<delete id="removeByPK">
+		DELETE FROM t_legal_currency_coin
+		<where>
+			AND `id` = #{id,jdbcType=BIGINT}
+		</where>
+	</delete>
+	
+	<delete id="removeBy" parameterType="com.bittrade.pojo.model.TLegalCurrencyCoin">
+		DELETE FROM t_legal_currency_coin
+		<where>
+			<if test="userId != null">
+			AND `user_id` = #{userId,jdbcType=BIGINT}
+			</if>
+			<if test="name != null">
+			AND `name` = #{name,jdbcType=VARCHAR}
+			</if>
+			<if test="title != null">
+			AND `title` = #{title,jdbcType=VARCHAR}
+			</if>
+			<if test="img != null">
+			AND `img` = #{img,jdbcType=VARCHAR}
+			</if>
+			<if test="status != null">
+			AND `status` = #{status,jdbcType=INTEGER}
+			</if>
+			<if test="minQuota != null">
+			AND `min_quota` = #{minQuota,jdbcType=DECIMAL}
+			</if>
+			<if test="createTime != null">
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="updateTime != null">
+			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+		</where>
+	</delete>
+	
+	<update id="modifyByPK" parameterType="com.bittrade.pojo.model.TLegalCurrencyCoin">
+		UPDATE t_legal_currency_coin
+		<set>
+			`user_id` = #{userId,jdbcType=BIGINT}, 
+			`name` = #{name,jdbcType=VARCHAR}, 
+			`title` = #{title,jdbcType=VARCHAR}, 
+			`img` = #{img,jdbcType=VARCHAR}, 
+			`status` = #{status,jdbcType=INTEGER}, 
+			`min_quota` = #{minQuota,jdbcType=DECIMAL}, 
+			`create_time` = #{createTime,jdbcType=TIMESTAMP}, 
+			`update_time` = #{updateTime,jdbcType=TIMESTAMP}, 
+		</set>
+		<where>
+			AND `id` = #{id,jdbcType=BIGINT}
+		</where>
+	</update>
+	
+	<update id="modifyWithSelectiveByPK" parameterType="com.bittrade.pojo.model.TLegalCurrencyCoin">
+		UPDATE t_legal_currency_coin
+		<set>
+			<if test="userId != null">
+			`user_id` = #{userId,jdbcType=BIGINT}, 
+			</if>
+			<if test="name != null">
+			`name` = #{name,jdbcType=VARCHAR}, 
+			</if>
+			<if test="title != null">
+			`title` = #{title,jdbcType=VARCHAR}, 
+			</if>
+			<if test="img != null">
+			`img` = #{img,jdbcType=VARCHAR}, 
+			</if>
+			<if test="status != null">
+			`status` = #{status,jdbcType=INTEGER}, 
+			</if>
+			<if test="minQuota != null">
+			`min_quota` = #{minQuota,jdbcType=DECIMAL}, 
+			</if>
+			<if test="createTime != null">
+			`create_time` = #{createTime,jdbcType=TIMESTAMP}, 
+			</if>
+			<if test="updateTime != null">
+			`update_time` = #{updateTime,jdbcType=TIMESTAMP}, 
+			</if>
+		</set>
+		<where>
+			AND `id` = #{id,jdbcType=BIGINT}
+		</where>
+	</update>
+	
+	<update id="modifyBy">
+		UPDATE t_legal_currency_coin
+		<set>
+			`user_id` = #{tLegalCurrencyCoin.userId,jdbcType=BIGINT}, 
+			`name` = #{tLegalCurrencyCoin.name,jdbcType=VARCHAR}, 
+			`title` = #{tLegalCurrencyCoin.title,jdbcType=VARCHAR}, 
+			`img` = #{tLegalCurrencyCoin.img,jdbcType=VARCHAR}, 
+			`status` = #{tLegalCurrencyCoin.status,jdbcType=INTEGER}, 
+			`min_quota` = #{tLegalCurrencyCoin.minQuota,jdbcType=DECIMAL}, 
+			`create_time` = #{tLegalCurrencyCoin.createTime,jdbcType=TIMESTAMP}, 
+			`update_time` = #{tLegalCurrencyCoin.updateTime,jdbcType=TIMESTAMP}, 
+		</set>
+		<where>
+		<if test="condiTLegalCurrencyCoin != null">
+			<if test="condiTLegalCurrencyCoin.id != null">
+			AND `id` = #{condiTLegalCurrencyCoin.id,jdbcType=BIGINT}
+			</if>
+			<if test="condiTLegalCurrencyCoin.userId != null">
+			AND `user_id` = #{condiTLegalCurrencyCoin.userId,jdbcType=BIGINT}
+			</if>
+			<if test="condiTLegalCurrencyCoin.name != null">
+			AND `name` = #{condiTLegalCurrencyCoin.name,jdbcType=VARCHAR}
+			</if>
+			<if test="condiTLegalCurrencyCoin.title != null">
+			AND `title` = #{condiTLegalCurrencyCoin.title,jdbcType=VARCHAR}
+			</if>
+			<if test="condiTLegalCurrencyCoin.img != null">
+			AND `img` = #{condiTLegalCurrencyCoin.img,jdbcType=VARCHAR}
+			</if>
+			<if test="condiTLegalCurrencyCoin.status != null">
+			AND `status` = #{condiTLegalCurrencyCoin.status,jdbcType=INTEGER}
+			</if>
+			<if test="condiTLegalCurrencyCoin.minQuota != null">
+			AND `min_quota` = #{condiTLegalCurrencyCoin.minQuota,jdbcType=DECIMAL}
+			</if>
+			<if test="condiTLegalCurrencyCoin.createTime != null">
+			AND `create_time` = #{condiTLegalCurrencyCoin.createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="condiTLegalCurrencyCoin.updateTime != null">
+			AND `update_time` = #{condiTLegalCurrencyCoin.updateTime,jdbcType=TIMESTAMP}
+			</if>
+		</if>
+		</where>
+	</update>
+	
+	<update id="modifyWithSelectiveBy">
+		UPDATE t_legal_currency_coin
+		<set>
+		<if test="tLegalCurrencyCoin != null">
+			<if test="tLegalCurrencyCoin.userId != null">
+			`user_id` = #{tLegalCurrencyCoin.userId,jdbcType=BIGINT}, 
+			</if>
+			<if test="tLegalCurrencyCoin.name != null">
+			`name` = #{tLegalCurrencyCoin.name,jdbcType=VARCHAR}, 
+			</if>
+			<if test="tLegalCurrencyCoin.title != null">
+			`title` = #{tLegalCurrencyCoin.title,jdbcType=VARCHAR}, 
+			</if>
+			<if test="tLegalCurrencyCoin.img != null">
+			`img` = #{tLegalCurrencyCoin.img,jdbcType=VARCHAR}, 
+			</if>
+			<if test="tLegalCurrencyCoin.status != null">
+			`status` = #{tLegalCurrencyCoin.status,jdbcType=INTEGER}, 
+			</if>
+			<if test="tLegalCurrencyCoin.minQuota != null">
+			`min_quota` = #{tLegalCurrencyCoin.minQuota,jdbcType=DECIMAL}, 
+			</if>
+			<if test="tLegalCurrencyCoin.createTime != null">
+			`create_time` = #{tLegalCurrencyCoin.createTime,jdbcType=TIMESTAMP}, 
+			</if>
+			<if test="tLegalCurrencyCoin.updateTime != null">
+			`update_time` = #{tLegalCurrencyCoin.updateTime,jdbcType=TIMESTAMP}, 
+			</if>
+		</if>
+		</set>
+		<where>
+		<if test="condiTLegalCurrencyCoin != null">
+			<if test="condiTLegalCurrencyCoin.id != null">
+			AND `id` = #{condiTLegalCurrencyCoin.id,jdbcType=BIGINT}
+			</if>
+			<if test="condiTLegalCurrencyCoin.userId != null">
+			AND `user_id` = #{condiTLegalCurrencyCoin.userId,jdbcType=BIGINT}
+			</if>
+			<if test="condiTLegalCurrencyCoin.name != null">
+			AND `name` = #{condiTLegalCurrencyCoin.name,jdbcType=VARCHAR}
+			</if>
+			<if test="condiTLegalCurrencyCoin.title != null">
+			AND `title` = #{condiTLegalCurrencyCoin.title,jdbcType=VARCHAR}
+			</if>
+			<if test="condiTLegalCurrencyCoin.img != null">
+			AND `img` = #{condiTLegalCurrencyCoin.img,jdbcType=VARCHAR}
+			</if>
+			<if test="condiTLegalCurrencyCoin.status != null">
+			AND `status` = #{condiTLegalCurrencyCoin.status,jdbcType=INTEGER}
+			</if>
+			<if test="condiTLegalCurrencyCoin.minQuota != null">
+			AND `min_quota` = #{condiTLegalCurrencyCoin.minQuota,jdbcType=DECIMAL}
+			</if>
+			<if test="condiTLegalCurrencyCoin.createTime != null">
+			AND `create_time` = #{condiTLegalCurrencyCoin.createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="condiTLegalCurrencyCoin.updateTime != null">
+			AND `update_time` = #{condiTLegalCurrencyCoin.updateTime,jdbcType=TIMESTAMP}
+			</if>
+		</if>
+		</where>
+	</update>
+	
+	<select id="getByPK" resultType="com.bittrade.pojo.model.TLegalCurrencyCoin">
+		SELECT 
+			`id`, 
+			`user_id`, 
+			`name`, 
+			`title`, 
+			`img`, 
+			`status`, 
+			`min_quota`, 
+			`create_time`, 
+			`update_time`
+		FROM t_legal_currency_coin
+		<where>
+			AND `id` = #{id,jdbcType=BIGINT}
+		</where>
+	</select>
+	
+	<select id="getBy" resultType="com.bittrade.pojo.model.TLegalCurrencyCoin">
+		SELECT 
+			`id`, 
+			`user_id`, 
+			`name`, 
+			`title`, 
+			`img`, 
+			`status`, 
+			`min_quota`, 
+			`create_time`, 
+			`update_time`
+		FROM t_legal_currency_coin
+		<where>
+			<if test="userId != null">
+			AND `user_id` = #{userId,jdbcType=BIGINT}
+			</if>
+			<if test="name != null">
+			AND `name` = #{name,jdbcType=VARCHAR}
+			</if>
+			<if test="title != null">
+			AND `title` = #{title,jdbcType=VARCHAR}
+			</if>
+			<if test="img != null">
+			AND `img` = #{img,jdbcType=VARCHAR}
+			</if>
+			<if test="status != null">
+			AND `status` = #{status,jdbcType=INTEGER}
+			</if>
+			<if test="minQuota != null">
+			AND `min_quota` = #{minQuota,jdbcType=DECIMAL}
+			</if>
+			<if test="createTime != null">
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="updateTime != null">
+			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+		</where>
+		LIMIT 1
+	</select>
+	
+	<select id="get" resultType="com.bittrade.pojo.model.TLegalCurrencyCoin">
+		SELECT 
+			`id`, 
+			`user_id`, 
+			`name`, 
+			`title`, 
+			`img`, 
+			`status`, 
+			`min_quota`, 
+			`create_time`, 
+			`update_time`
+		FROM t_legal_currency_coin
+		LIMIT 1
+	</select>
+	
+	<select id="getsBy" resultType="com.bittrade.pojo.model.TLegalCurrencyCoin">
+		SELECT 
+			<include refid="Base_Column_List"></include>
+		FROM t_legal_currency_coin
+		<where>
+			<if test="userId != null">
+			AND `user_id` = #{userId,jdbcType=BIGINT}
+			</if>
+			<if test="name != null">
+			AND `name` = #{name,jdbcType=VARCHAR}
+			</if>
+			<if test="title != null">
+			AND `title` = #{title,jdbcType=VARCHAR}
+			</if>
+			<if test="img != null">
+			AND `img` = #{img,jdbcType=VARCHAR}
+			</if>
+			<if test="status != null">
+			AND `status` = #{status,jdbcType=INTEGER}
+			</if>
+			<if test="minQuota != null">
+			AND `min_quota` = #{minQuota,jdbcType=DECIMAL}
+			</if>
+			<if test="createTime != null">
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="updateTime != null">
+			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+			<include refid="sql_WHERE_forProperty"></include>
+		</where>
+	</select>
+	
+	<select id="gets" resultType="com.bittrade.pojo.model.TLegalCurrencyCoin">
+		SELECT 
+			<include refid="Base_Column_List"></include>
+		FROM t_legal_currency_coin
+	</select>
+	
+	<select id="getCntBy" resultType="int">
+		SELECT COUNT(1)
+		FROM t_legal_currency_coin
+		<where>
+		<if test="tLegalCurrencyCoin != null">
+			<if test="tLegalCurrencyCoin.userId != null">
+			AND `user_id` = #{tLegalCurrencyCoin.userId,jdbcType=BIGINT}
+			</if>
+			<if test="tLegalCurrencyCoin.name != null">
+			AND `name` = #{tLegalCurrencyCoin.name,jdbcType=VARCHAR}
+			</if>
+			<if test="tLegalCurrencyCoin.title != null">
+			AND `title` = #{tLegalCurrencyCoin.title,jdbcType=VARCHAR}
+			</if>
+			<if test="tLegalCurrencyCoin.img != null">
+			AND `img` = #{tLegalCurrencyCoin.img,jdbcType=VARCHAR}
+			</if>
+			<if test="tLegalCurrencyCoin.status != null">
+			AND `status` = #{tLegalCurrencyCoin.status,jdbcType=INTEGER}
+			</if>
+			<if test="tLegalCurrencyCoin.minQuota != null">
+			AND `min_quota` = #{tLegalCurrencyCoin.minQuota,jdbcType=DECIMAL}
+			</if>
+			<if test="tLegalCurrencyCoin.createTime != null">
+			AND `create_time` = #{tLegalCurrencyCoin.createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="tLegalCurrencyCoin.updateTime != null">
+			AND `update_time` = #{tLegalCurrencyCoin.updateTime,jdbcType=TIMESTAMP}
+			</if>
+			<include refid="sql_WHERE_forObject"></include>
+		</if>
+		</where>
+	</select>
+	
+	<select id="getsByPage" resultType="com.bittrade.pojo.model.TLegalCurrencyCoin">
+		SELECT 
+			`id`, 
+			`user_id`, 
+			`name`, 
+			`title`, 
+			`img`, 
+			`status`, 
+			`min_quota`, 
+			`create_time`, 
+			`update_time`
+		FROM t_legal_currency_coin
+		<where>
+		<if test="tLegalCurrencyCoin != null">
+			<if test="tLegalCurrencyCoin.userId != null">
+			AND `user_id` = #{tLegalCurrencyCoin.userId,jdbcType=BIGINT}
+			</if>
+			<if test="tLegalCurrencyCoin.name != null">
+			AND `name` = #{tLegalCurrencyCoin.name,jdbcType=VARCHAR}
+			</if>
+			<if test="tLegalCurrencyCoin.title != null">
+			AND `title` = #{tLegalCurrencyCoin.title,jdbcType=VARCHAR}
+			</if>
+			<if test="tLegalCurrencyCoin.img != null">
+			AND `img` = #{tLegalCurrencyCoin.img,jdbcType=VARCHAR}
+			</if>
+			<if test="tLegalCurrencyCoin.status != null">
+			AND `status` = #{tLegalCurrencyCoin.status,jdbcType=INTEGER}
+			</if>
+			<if test="tLegalCurrencyCoin.minQuota != null">
+			AND `min_quota` = #{tLegalCurrencyCoin.minQuota,jdbcType=DECIMAL}
+			</if>
+			<if test="tLegalCurrencyCoin.createTime != null">
+			AND `create_time` = #{tLegalCurrencyCoin.createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="tLegalCurrencyCoin.updateTime != null">
+			AND `update_time` = #{tLegalCurrencyCoin.updateTime,jdbcType=TIMESTAMP}
+			</if>
+			<include refid="sql_WHERE_forObject"></include>
+		</if>
+		</where>
+		LIMIT #{page}, #{size}
+	</select>
+
+</mapper>

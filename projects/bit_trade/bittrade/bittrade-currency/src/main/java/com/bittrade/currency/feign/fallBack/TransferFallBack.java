@@ -9,7 +9,18 @@ import java.math.BigDecimal;
 @Component
 public class TransferFallBack implements ITransferFeignService {
     @Override
-    public String c2cAccountEntry(Long userId, String currency, BigDecimal num) {
+    public String accountEntry(Long userId, String currency, BigDecimal num,Integer type) {
         return "timeOut";
+    }
+
+    /**
+     * 获取划转类型
+     * @param accountInId 入账钱包id
+     * @param accountOutId 出账钱包id
+     * @return
+     */
+    @Override
+    public Integer getTypeFeign(Integer accountInId, Integer accountOutId) {
+        return null;
     }
 }
