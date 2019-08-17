@@ -17,7 +17,6 @@ public class TLegalCurrencyCoinDTO extends BaseDTO<TLegalCurrencyCoinDTO> {
 	private static final long serialVersionUID = 1L;
 
 	private Long id;
-	private Long userId;
 	private String name;
 	private String title;
 	private String img;

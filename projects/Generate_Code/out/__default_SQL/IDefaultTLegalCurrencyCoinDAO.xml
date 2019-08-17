@@ -9,7 +9,6 @@
 	<!-- 通用查询映射结果 -->
 	<resultMap id="BaseResultMap" type="com.bittrade.pojo.model.TLegalCurrencyCoin">
 		<id javaType="Long" property="id" jdbcType="BIGINT" column="id" />
-		<result javaType="Long" property="userId" jdbcType="BIGINT" column="user_id" />
 		<result javaType="String" property="name" jdbcType="VARCHAR" column="name" />
 		<result javaType="String" property="title" jdbcType="VARCHAR" column="title" />
 		<result javaType="String" property="img" jdbcType="VARCHAR" column="img" />
@@ -32,7 +31,6 @@
 			</when>
 			<otherwise>
 		`id` AS id, 
-		`user_id` AS userId, 
 		`name` AS name, 
 		`title` AS title, 
 		`img` AS img, 
@@ -82,15 +80,12 @@
 	
 	
 	<insert id="add" parameterType="com.bittrade.pojo.model.TLegalCurrencyCoin" useGeneratedKeys="true" keyProperty="id">
-		INSERT INTO t_legal_currency_coin(`user_id`, `name`, `title`, `img`, `status`, `min_quota`, `create_time`, `update_time`)
-		VALUES(#{userId,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, #{img,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{minQuota,jdbcType=DECIMAL}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+		INSERT INTO t_legal_currency_coin(`name`, `title`, `img`, `status`, `min_quota`, `create_time`, `update_time`)
+		VALUES(#{name,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, #{img,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{minQuota,jdbcType=DECIMAL}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
 	</insert>
 	
 	<insert id="addWithSelective" parameterType="com.bittrade.pojo.model.TLegalCurrencyCoin" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO t_legal_currency_coin(
-			<if test="userId != null">
-			`user_id`, 
-			</if>
 			<if test="name != null">
 			`name`, 
 			</if>
@@ -114,9 +109,6 @@
 			</if>
 		)
 		VALUES(
-			<if test="userId != null">
-			#{userId,jdbcType=BIGINT}, 
-			</if>
 			<if test="name != null">
 			#{name,jdbcType=VARCHAR}, 
 			</if>
@@ -151,9 +143,6 @@
 	<delete id="removeBy" parameterType="com.bittrade.pojo.model.TLegalCurrencyCoin">
 		DELETE FROM t_legal_currency_coin
 		<where>
-			<if test="userId != null">
-			AND `user_id` = #{userId,jdbcType=BIGINT}
-			</if>
 			<if test="name != null">
 			AND `name` = #{name,jdbcType=VARCHAR}
 			</if>
@@ -181,7 +170,6 @@
 	<update id="modifyByPK" parameterType="com.bittrade.pojo.model.TLegalCurrencyCoin">
 		UPDATE t_legal_currency_coin
 		<set>
-			`user_id` = #{userId,jdbcType=BIGINT}, 
 			`name` = #{name,jdbcType=VARCHAR}, 
 			`title` = #{title,jdbcType=VARCHAR}, 
 			`img` = #{img,jdbcType=VARCHAR}, 
@@ -198,9 +186,6 @@
 	<update id="modifyWithSelectiveByPK" parameterType="com.bittrade.pojo.model.TLegalCurrencyCoin">
 		UPDATE t_legal_currency_coin
 		<set>
-			<if test="userId != null">
-			`user_id` = #{userId,jdbcType=BIGINT}, 
-			</if>
 			<if test="name != null">
 			`name` = #{name,jdbcType=VARCHAR}, 
 			</if>
@@ -231,7 +216,6 @@
 	<update id="modifyBy">
 		UPDATE t_legal_currency_coin
 		<set>
-			`user_id` = #{tLegalCurrencyCoin.userId,jdbcType=BIGINT}, 
 			`name` = #{tLegalCurrencyCoin.name,jdbcType=VARCHAR}, 
 			`title` = #{tLegalCurrencyCoin.title,jdbcType=VARCHAR}, 
 			`img` = #{tLegalCurrencyCoin.img,jdbcType=VARCHAR}, 
@@ -244,9 +228,6 @@
 		<if test="condiTLegalCurrencyCoin != null">
 			<if test="condiTLegalCurrencyCoin.id != null">
 			AND `id` = #{condiTLegalCurrencyCoin.id,jdbcType=BIGINT}
-			</if>
-			<if test="condiTLegalCurrencyCoin.userId != null">
-			AND `user_id` = #{condiTLegalCurrencyCoin.userId,jdbcType=BIGINT}
 			</if>
 			<if test="condiTLegalCurrencyCoin.name != null">
 			AND `name` = #{condiTLegalCurrencyCoin.name,jdbcType=VARCHAR}
@@ -277,9 +258,6 @@
 		UPDATE t_legal_currency_coin
 		<set>
 		<if test="tLegalCurrencyCoin != null">
-			<if test="tLegalCurrencyCoin.userId != null">
-			`user_id` = #{tLegalCurrencyCoin.userId,jdbcType=BIGINT}, 
-			</if>
 			<if test="tLegalCurrencyCoin.name != null">
 			`name` = #{tLegalCurrencyCoin.name,jdbcType=VARCHAR}, 
 			</if>
@@ -307,9 +285,6 @@
 		<if test="condiTLegalCurrencyCoin != null">
 			<if test="condiTLegalCurrencyCoin.id != null">
 			AND `id` = #{condiTLegalCurrencyCoin.id,jdbcType=BIGINT}
-			</if>
-			<if test="condiTLegalCurrencyCoin.userId != null">
-			AND `user_id` = #{condiTLegalCurrencyCoin.userId,jdbcType=BIGINT}
 			</if>
 			<if test="condiTLegalCurrencyCoin.name != null">
 			AND `name` = #{condiTLegalCurrencyCoin.name,jdbcType=VARCHAR}
@@ -339,7 +314,6 @@
 	<select id="getByPK" resultType="com.bittrade.pojo.model.TLegalCurrencyCoin">
 		SELECT 
 			`id`, 
-			`user_id`, 
 			`name`, 
 			`title`, 
 			`img`, 
@@ -356,7 +330,6 @@
 	<select id="getBy" resultType="com.bittrade.pojo.model.TLegalCurrencyCoin">
 		SELECT 
 			`id`, 
-			`user_id`, 
 			`name`, 
 			`title`, 
 			`img`, 
@@ -366,9 +339,6 @@
 			`update_time`
 		FROM t_legal_currency_coin
 		<where>
-			<if test="userId != null">
-			AND `user_id` = #{userId,jdbcType=BIGINT}
-			</if>
 			<if test="name != null">
 			AND `name` = #{name,jdbcType=VARCHAR}
 			</if>
@@ -397,7 +367,6 @@
 	<select id="get" resultType="com.bittrade.pojo.model.TLegalCurrencyCoin">
 		SELECT 
 			`id`, 
-			`user_id`, 
 			`name`, 
 			`title`, 
 			`img`, 
@@ -414,9 +383,6 @@
 			<include refid="Base_Column_List"></include>
 		FROM t_legal_currency_coin
 		<where>
-			<if test="userId != null">
-			AND `user_id` = #{userId,jdbcType=BIGINT}
-			</if>
 			<if test="name != null">
 			AND `name` = #{name,jdbcType=VARCHAR}
 			</if>
@@ -453,9 +419,6 @@
 		FROM t_legal_currency_coin
 		<where>
 		<if test="tLegalCurrencyCoin != null">
-			<if test="tLegalCurrencyCoin.userId != null">
-			AND `user_id` = #{tLegalCurrencyCoin.userId,jdbcType=BIGINT}
-			</if>
 			<if test="tLegalCurrencyCoin.name != null">
 			AND `name` = #{tLegalCurrencyCoin.name,jdbcType=VARCHAR}
 			</if>
@@ -485,7 +448,6 @@
 	<select id="getsByPage" resultType="com.bittrade.pojo.model.TLegalCurrencyCoin">
 		SELECT 
 			`id`, 
-			`user_id`, 
 			`name`, 
 			`title`, 
 			`img`, 
@@ -496,9 +458,6 @@
 		FROM t_legal_currency_coin
 		<where>
 		<if test="tLegalCurrencyCoin != null">
-			<if test="tLegalCurrencyCoin.userId != null">
-			AND `user_id` = #{tLegalCurrencyCoin.userId,jdbcType=BIGINT}
-			</if>
 			<if test="tLegalCurrencyCoin.name != null">
 			AND `name` = #{tLegalCurrencyCoin.name,jdbcType=VARCHAR}
 			</if>

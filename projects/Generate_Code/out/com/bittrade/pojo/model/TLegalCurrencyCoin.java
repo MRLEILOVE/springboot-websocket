@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 
 /**
  * 
- * 
+ * 法币币种表
  * @author Administrator
  *
  */
@@ -37,11 +37,6 @@ public class TLegalCurrencyCoin extends BaseModel<TLegalCurrencyCoin> {
 		 * 主键
 		 */
 		public static final String ID = "id";
-		
-		/**
-		 * 用户id
-		 */
-		public static final String USER_ID = "user_id";
 		
 		/**
 		 * 名称（英文）
@@ -85,11 +80,6 @@ public class TLegalCurrencyCoin extends BaseModel<TLegalCurrencyCoin> {
 	 */
 	@com.baomidou.mybatisplus.annotation.TableId(value = "id", type = com.baomidou.mybatisplus.annotation.IdType.AUTO)
 	private Long id;
-	
-	/**
-	 * 用户id
-	 */
-	private Long userId;
 	
 	/**
 	 * 名称（英文）

@@ -5,7 +5,6 @@
 	<!-- 通用查询映射结果 -->
 	<resultMap id="BaseResultMap" type="com.bittrade.pojo.model.TLegalCurrencyCoin">
 		<id javaType="int" property="id" jdbcType="INTEGER" column="id" />
-		<result javaType="Long" property="userId" jdbcType="BIGINT" column="user_id" />
 		<result javaType="String" property="name" jdbcType="VARCHAR" column="name" />
 		<result javaType="String" property="title" jdbcType="VARCHAR" column="title" />
 		<result javaType="String" property="img" jdbcType="VARCHAR" column="img" />
@@ -18,7 +17,6 @@
 	<!-- 通用查询结果列 -->
 	<sql id="Base_Column_List">
 		`id` AS id, 
-		`user_id` AS userId, 
 		`name` AS name, 
 		`title` AS title, 
 		`img` AS img, 
