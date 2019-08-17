@@ -71,7 +71,7 @@
 		WHERE id = #{ID} AND version = #{version}
 	</update>
 	
-	<select id="getsByWhat">
+	<select id="getsByPage" resultMap="com.bittrade.__default.DAO.IDefaultTEntrustDAO.BaseResultMap">
 	 SELECT id, user_id, currency_trade_id
 	 FROM t_entrust
 	</select>

@@ -114,7 +114,7 @@ public class MakeAMatchServiceImpl implements IMakeAMatchService,
 	/**
 	 * 买卖N档的个数。
 	 */
-	private static final int												ENTRUST_COUNT				= 2; // 10
+	private static final int												ENTRUST_COUNT				= 25; // 10
 
 	/**
 	 * 异步调用K线生成。
