@@ -38,7 +38,8 @@ public class TWalletRecordServiceImpl extends DefaultTWalletRecordServiceImpl<IT
      * @return 币币账户资产记录列表
      */
     @Override
-    public List<RecordVO> queryBiBiAccountRecord(Long userId, AccountTypeDto dto) {
+    public Page<RecordVO> queryBiBiAccountRecord(Long userId, AccountTypeDto dto) {
+        Page<RecordVO> page = new Page<>(dto.getCurrent(),dto.getSize());
         //1-转入 2-转出 3-买入 4-卖出
         List<Integer> types = new ArrayList<>();
         if(dto.getType() != null){
@@ -65,6 +66,7 @@ public class TWalletRecordServiceImpl extends DefaultTWalletRecordServiceImpl<IT
                     break;
             }
         }
-        return walletRecordDAO.queryBiBiAccountRecord(userId,dto.getCurrencyId(),types,dto.getBeginTime(),dto.getEndTime());
+        List<RecordVO> list = walletRecordDAO.queryBiBiAccountRecord(page, userId, dto.getCurrencyId(), types, dto.getBeginTime(), dto.getEndTime());
+        return page.setRecords(list);
     }
 }

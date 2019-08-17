@@ -1,5 +1,6 @@
 package com.bittrade.currency.dao;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.bittrade.__default.DAO.IDefaultTWalletRecordDAO;
 import com.bittrade.pojo.vo.RecordVO;
 import org.apache.ibatis.annotations.Param;
@@ -13,7 +14,8 @@ import java.util.List;
  *
  */
 public interface ITWalletRecordDAO extends IDefaultTWalletRecordDAO {
-    List<RecordVO> queryBiBiAccountRecord(@Param("userId") Long userId,
+    List<RecordVO> queryBiBiAccountRecord(Page<RecordVO> page,
+                                          @Param("userId") Long userId,
                                           @Param("currencyId") Integer currencyId,
                                           @Param("list") List type,
                                           @Param("beginTime") Date beginTime,
