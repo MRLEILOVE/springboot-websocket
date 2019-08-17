@@ -27,8 +27,8 @@ data:
     virtual-host: /dev
 
 
-mybatis-plus:
-  configuration:
+#mybatis-plus:
+#  configuration:
     #logImpl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 

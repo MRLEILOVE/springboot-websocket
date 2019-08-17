@@ -53,15 +53,14 @@ public /* static */final class Robot implements InitializingBean, DisposableBean
 	@Autowired
 	private MakeAMatchServiceImpl	makeAMatchService;
 
-	/**
-	 * 机器人下的单
-	 */
+	/** 机器人下的单 */
 	private static final long		MACHINE_USER_ID			= -1;
 	private static final int		MAX_CURRENCY_TRADE_ID	= 1;										// 2
-	/**
-	 * 价格浮动范围
-	 */
-	private static final BigDecimal	BD__PRICE_RANGE_PERCENT	= new BigDecimal( "0.05" );					// 5%
+	
+	private static final int NUMBER = 1000; // 10000
+	
+	/** 价格浮动范围 */
+	private static final BigDecimal	BD__PRICE_RANGE_PERCENT	= new BigDecimal( "0.0005" );					// 5/10000
 	/*
 	 * 买卖单区分价格高低。 使其更容易被撮合。
 	 */
@@ -78,9 +77,9 @@ public /* static */final class Robot implements InitializingBean, DisposableBean
 	private static BigDecimal		bd__count_sell_rate		= BD__ONE;
 	private static BigDecimal		bd__amount_buy_rate		= BD__ONE;
 	// 1000 的 下10倍或者10分之一 （乘除方向不同而已）。
-	private static final BigDecimal	BD__CNT_MIN_RATE		= new BigDecimal( 100 );
+	private static final BigDecimal	BD__CNT_MIN_RATE		= new BigDecimal( 10 ); // 100
 	// 1000 的 上10倍或者10分之一 （乘除方向不同而已）。
-	private static final BigDecimal	BD__CNT_MAX_RATE		= new BigDecimal( 10000 );
+	private static final BigDecimal	BD__CNT_MAX_RATE		= new BigDecimal( NUMBER ); // 10000
 	private static final Random		R						= new Random( System.currentTimeMillis() );
 
 	/**
@@ -221,7 +220,7 @@ public /* static */final class Robot implements InitializingBean, DisposableBean
 	 */
 	private static BigDecimal getAmount(BigDecimal rate, TCurrencyTrade currencyTrade) {
 		Random r = new Random( R.nextLong() );
-		return new BigDecimal( r.nextDouble() * 10000 ) // 应该这个地方会更多可能性影响均衡器的使用上。
+		return new BigDecimal( r.nextDouble() * NUMBER ) // 应该这个地方会更多可能性影响均衡器的使用上。
 				// 均衡器。
 				.multiply( rate )
 				// 也可以通过原数运算来取精度。
@@ -332,7 +331,9 @@ public /* static */final class Robot implements InitializingBean, DisposableBean
 							System.out.println( 
 									"min=" + bdArr_MinAndMax[0] + ", " + 
 									"max=" + bdArr_MinAndMax[1] + ", " + 
-									"entrust.getEntrustDirection()=" + entrust.getEntrustDirection() + ", price=" + entrust.getPrice()
+									"entrust.getEntrustDirection()=" + entrust.getEntrustDirection() + 
+									", price=" + entrust.getPrice() + 
+									", count=" + entrust.getCount()
 									);
 						} else /*
 								 * if (entrust.getEntrustType() ==

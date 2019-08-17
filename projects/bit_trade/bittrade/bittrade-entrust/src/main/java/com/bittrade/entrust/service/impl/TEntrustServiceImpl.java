@@ -12,7 +12,6 @@ import org.springframework.stereotype.Component;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.alibaba.dubbo.config.annotation.Service;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.bittrade.__default.service.impl.DefaultTEntrustServiceImpl;
 import com.bittrade.common.enums.EntrustDirectionEnumer;
 import com.bittrade.common.enums.EntrustStatusEnumer;
@@ -29,6 +28,7 @@ import com.bittrade.pojo.model.TEntrust;
 import com.bittrade.pojo.model.TWallet;
 import com.bittrade.pojo.vo.TEntrustInfoVO;
 import com.bittrade.pojo.vo.TEntrustVO;
+import com.core.common.DTO.PageDTO;
 import com.core.common.DTO.ReturnDTO;
 import com.core.tool.SnowFlake;
 
@@ -252,12 +252,21 @@ public class TEntrustServiceImpl extends DefaultTEntrustServiceImpl<ITEntrustDAO
 	}
 
 	@Override
-	public Page<TEntrust> getsByWhat() {
-		Page<TEntrust> page = new Page<TEntrust>( 0, 3 );
-		List<TEntrust> list_data = entrustDAO.getsByWhat(page);
-		page.setRecords( list_data );
-//		page.setPages( pages )
-		return page;
+	public PageDTO<TEntrust> getsByWhat() {
+		boolean flag = true;
+
+//		TEntrust entrust = new TEntrust();
+//		entrust.setEntrustType( 0 );
+//		List<TEntrust> list_data_2 = entrustDAO.getsBy(entrust);
+//		System.out.println( "list_data_2=" + list_data_2 );
+//		
+//		PageDTO<TEntrust> page = new PageDTO<TEntrust>( 0, 3 );
+//		List<TEntrust> list_data = entrustDAO.getsByPage(entrust, page);
+//		page.setData( list_data );
+//		System.out.println( "page.getPage()=" + page.getPage() );
+//		return page;
+		
+		return null;
 	}
 
 }
