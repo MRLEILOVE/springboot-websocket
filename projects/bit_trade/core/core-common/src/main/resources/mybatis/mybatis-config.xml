@@ -14,8 +14,9 @@
 		<!-- <plugin interceptor="com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor">
 			<property name="dialectType" value="mysql"/>
 		</plugin> -->
-		<plugin interceptor="com.bittrade.entrust.config.mybatis.MyPaginationInterceptor">
+		<plugin interceptor="com.core.framework.config.mybatis.PaginationInterceptor">
 			<property name="dialectType" value="mysql"/>
+			<property name="methodSuffix" value="ByPage"/>
 		</plugin>
 	</plugins>
 </configuration>

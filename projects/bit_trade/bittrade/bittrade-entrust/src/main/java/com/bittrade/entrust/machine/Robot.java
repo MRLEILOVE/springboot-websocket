@@ -64,8 +64,8 @@ public /* static */final class Robot implements InitializingBean, DisposableBean
 	/*
 	 * 买卖单区分价格高低。 使其更容易被撮合。
 	 */
-	private static final BigDecimal	BD__PRICE_ADD_RATE		= new BigDecimal( "+0.35" );
-	private static final BigDecimal	BD__PRICE_SUB_RATE		= new BigDecimal( "-0.35" );
+	private static final BigDecimal	BD__PRICE_ADD_RATE		= new BigDecimal( "+0.5" ); // 0.35
+	private static final BigDecimal	BD__PRICE_SUB_RATE		= new BigDecimal( "-0.5" ); // 0.35
 	/*
 	 * 均衡器使用。 也可以更智能的根据有多少的偏差来决定使用均衡器的均衡程度。
 	 */

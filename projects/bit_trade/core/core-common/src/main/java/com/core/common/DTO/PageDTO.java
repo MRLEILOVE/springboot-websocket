@@ -22,5 +22,11 @@ public class PageDTO<T> implements Serializable {
 	private int totalPage;
 	private int totalSize;
 	private List<T> data;
+	
+	public PageDTO(int page, int size) {
+		super();
+		this.page = page;
+		this.size = size;
+	}
 
 }

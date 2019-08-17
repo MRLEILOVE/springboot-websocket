@@ -45,6 +45,6 @@ public interface ITEntrustDAO extends IDefaultTEntrustDAO {
 			@Param("version") long version
 			);
 	
-	List<TEntrust> getsByPage(TEntrust entrust, PageDTO<TEntrust> page);
+	List<TEntrust> getsByPage(@Param(value = "entrust") TEntrust entrust, PageDTO<TEntrust> pageDTO);
 
 }

@@ -72,8 +72,12 @@
 	</update>
 	
 	<select id="getsByPage" resultMap="com.bittrade.__default.DAO.IDefaultTEntrustDAO.BaseResultMap">
-	 SELECT id, user_id, currency_trade_id
-	 FROM t_entrust
+	  SELECT id, user_id, currency_trade_id
+	  FROM t_entrust
+	  <where>
+	    AND entrust_type = #{entrust.entrustType}
+	  </where>
+	  ORDER BY ID ASC
 	</select>
 
 </mapper>
