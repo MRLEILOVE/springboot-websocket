@@ -473,4 +473,27 @@ public class TWalletTransferServiceImpl extends DefaultTWalletTransferServiceImp
             return tWallet;
         }
     }
+
+    /**
+     * 查询用户钱包可用余额
+     * @param userId 用户id
+     * @param currencyName 币种名称
+     * @return 钱包余额
+     */
+    @Override
+    public String availableBalance(Long userId, String currencyName) {
+        //获取币种
+        TCurrency aryCurrency = TCurrency.builder().name(currencyName).build();
+        TCurrency currency = currencyDAO.getBy(aryCurrency);
+        if(currency == null){
+            return "0";
+        }
+        //获取用户钱包
+        TWallet qryWallet = TWallet.builder().userId(userId).currencyId(currency.getId()).build();
+        TWallet wallets = walletDAO.getBy(qryWallet);
+        if(wallets == null){
+            return "0";
+        }
+        return wallets.getTotal().toString();
+    }
 }

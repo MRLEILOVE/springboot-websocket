@@ -31,4 +31,12 @@ public interface ITWalletTransferService extends IDefaultTWalletTransferService<
      * @return 成功：succ
      */
     String biBiAccountOut(TransferDto transferDto);
+
+    /**
+     * 查询用户钱包可用余额
+     * @param userId 用户id
+     * @param currencyName 币种名称
+     * @return 钱包余额
+     */
+    String availableBalance(Long userId, String currencyName);
 }

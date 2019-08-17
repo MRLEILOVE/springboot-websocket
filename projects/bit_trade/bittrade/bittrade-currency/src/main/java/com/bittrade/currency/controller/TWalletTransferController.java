@@ -69,4 +69,10 @@ public class TWalletTransferController extends BaseController<TWalletTransfer, T
         System.out.println("用户id：" + transferDto.getUserId() + "币种： " +  transferDto.getCurrency() + "数量: " + transferDto.getNum());
         return walletTransferService.biBiAccountOut(transferDto);
     }*/
+
+    @ApiOperation(value="查询用户钱包可用余额", notes="传用户id，币种名称")
+    @GetMapping(value = "/availableBalanceFeign")
+    public String availableBalanceFeign(@RequestParam("userId")Long userId, @RequestParam("currency")String currency){
+        return walletTransferService.availableBalance(userId, currency);
+    }
 }
