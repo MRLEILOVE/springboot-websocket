@@ -1,0 +1,22 @@
+#svc_name: currency
+
+data:
+  #model-package: com.*.pojo.model.*
+  #mapper-locations: classpath*:/__default_SQL/**/I*DAO.xml,classpath*:/SQL/**/I*DAO.xml
+  application:
+    name: c2c
+  register-with-eureka: true
+  fetch-registry: true
+
+dubbo.protocol.port: 20884
+
+server:
+  port: 8902
+
+spring:
+#  application:
+#    name: c2c
+  profiles:
+    active: common, dubbo_provider, dubbo_consumer
+  mvc:
+    throw-exception-if-no-handler-found: true
