@@ -64,7 +64,7 @@ public class TWalletTransfer extends BaseModel<TWalletTransfer> {
 		public static final String STATUS = "status";
 		
 		/**
-		 * 操作渠道：1.C2C钱包划转到币币钱包，2.币币钱包划转到C2C钱包
+		 * 操作渠道：1.C2C钱包划转到币币钱包，2.币币钱包划转到C2C钱包 3.资金钱包划转币币钱包 4.币币钱包划转资金钱包
 		 */
 		public static final String TYPE_CHANNEL = "type_channel";
 		
@@ -121,7 +121,7 @@ public class TWalletTransfer extends BaseModel<TWalletTransfer> {
 	private Byte status;
 	
 	/**
-	 * 操作渠道：1.C2C钱包划转到币币钱包，2.币币钱包划转到C2C钱包
+	 * 操作渠道：1.C2C钱包划转到币币钱包，2.币币钱包划转到C2C钱包 3.资金钱包划转币币钱包 4.币币钱包划转资金钱包
 	 */
 	private Byte typeChannel;
 	

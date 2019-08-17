@@ -64,7 +64,7 @@ public class TWalletRecord extends BaseModel<TWalletRecord> {
 		public static final String CHANGE_AMOUNT = "change_amount";
 		
 		/**
-		 * 成交类型,1-划转：币币钱包-->法币钱包 2-划转：法币钱包-->币币钱包 3-币币交易
+		 * 成交类型,1-划转：币币钱包-->法币钱包 2-划转：法币钱包-->币币钱包 3-买入 4-卖出 5-划转：币币钱包-->资金钱包 6-划转：资金钱包-->币币钱包
 		 */
 		public static final String TYPE = "type";
 		
@@ -111,7 +111,7 @@ public class TWalletRecord extends BaseModel<TWalletRecord> {
 	private java.math.BigDecimal changeAmount;
 	
 	/**
-	 * 成交类型,1-划转：币币钱包-->法币钱包 2-划转：法币钱包-->币币钱包 3-币币交易
+	 * 成交类型,1-划转：币币钱包-->法币钱包 2-划转：法币钱包-->币币钱包 3-买入 4-卖出 5-划转：币币钱包-->资金钱包 6-划转：资金钱包-->币币钱包
 	 */
 	private Byte type;
 	

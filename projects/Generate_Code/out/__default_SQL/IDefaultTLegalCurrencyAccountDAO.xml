@@ -1,0 +1,494 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+	This code is generated automatically. Please do not edit it.
+	现在字段也可以要彻底动态？
+-->
+<mapper namespace="com.bittrade.__default.DAO.IDefaultTLegalCurrencyAccountDAO">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.bittrade.pojo.model.TLegalCurrencyAccount">
+		<id javaType="Long" property="id" jdbcType="BIGINT" column="id" />
+		<result javaType="Long" property="userId" jdbcType="BIGINT" column="user_id" />
+		<result javaType="Integer" property="coinId" jdbcType="INTEGER" column="coin_id" />
+		<result javaType="java.math.BigDecimal" property="balanceAmount" jdbcType="DECIMAL" column="balance_amount" />
+		<result javaType="java.math.BigDecimal" property="freezeAmount" jdbcType="DECIMAL" column="freeze_amount" />
+		<result javaType="Integer" property="version" jdbcType="INTEGER" column="version" />
+		<result javaType="java.time.LocalDateTime" property="createTime" jdbcType="TIMESTAMP" column="create_time" />
+		<result javaType="java.time.LocalDateTime" property="updateTime" jdbcType="TIMESTAMP" column="update_time" />
+	</resultMap>
+
+	<!--
+		通用查询结果列
+		其他类似的类似，也可以公用（共用）引用。
+	-->
+	<sql id="Base_Column_List">
+		<choose>
+			<when test="strArr_field != null">
+		<foreach collection="strArr_field" index="index" item="item" open="" separator="," close="">
+			`${item}`
+		</foreach>
+			</when>
+			<otherwise>
+		`id` AS id, 
+		`user_id` AS userId, 
+		`coin_id` AS coinId, 
+		`balance_amount` AS balanceAmount, 
+		`freeze_amount` AS freezeAmount, 
+		`version` AS version, 
+		`create_time` AS createTime, 
+		`update_time` AS updateTime
+			</otherwise>
+		</choose>
+	</sql>
+	
+	<!-- 其他的也可以类似的加， yes， 类似蕾丝的。 -->
+	<sql id="sql_WHERE_forProperty">
+		<choose>
+			<when test="map_in != null">
+			
+		<foreach collection="map_in.entrySet()" index="map_index" item="map_item">
+		AND `${map_index}` IN 
+		<foreach collection="map_item" index="arr_index" item="arr_item" open="(" separator="," close=")">
+			#{arr_item}
+		</foreach>
+		</foreach>
+			
+			</when>
+			<!--
+			<when test="_parameter != null and _parameter.TLegalCurrencyAccount != null and TLegalCurrencyAccount.map_in != null">
+			</when>
+			<otherwise>
+			</otherwise>
+			-->
+		</choose>
+	</sql>
+	<sql id="sql_WHERE_forObject">
+		<choose>
+			<when test="tLegalCurrencyAccount.map_in != null">
+			
+		<foreach collection="tLegalCurrencyAccount.map_in.entrySet()" index="map_index" item="map_item">
+		AND `${map_index}` IN 
+		<foreach collection="map_item" index="arr_index" item="arr_item" open="(" separator="," close=")">
+			#{arr_item}
+		</foreach>
+		</foreach>
+			
+			</when>
+		</choose>
+	</sql>
+	
+	
+	<insert id="add" parameterType="com.bittrade.pojo.model.TLegalCurrencyAccount">
+		INSERT INTO t_legal_currency_account(`id`, `user_id`, `coin_id`, `balance_amount`, `freeze_amount`, `version`, `create_time`, `update_time`)
+		VALUES(#{id,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{coinId,jdbcType=INTEGER}, #{balanceAmount,jdbcType=DECIMAL}, #{freezeAmount,jdbcType=DECIMAL}, #{version,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+	</insert>
+	
+	<insert id="addWithSelective" parameterType="com.bittrade.pojo.model.TLegalCurrencyAccount">
+		INSERT INTO t_legal_currency_account(
+			<if test="id != null">
+			`id`, 
+			</if>
+			<if test="userId != null">
+			`user_id`, 
+			</if>
+			<if test="coinId != null">
+			`coin_id`, 
+			</if>
+			<if test="balanceAmount != null">
+			`balance_amount`, 
+			</if>
+			<if test="freezeAmount != null">
+			`freeze_amount`, 
+			</if>
+			<if test="version != null">
+			`version`, 
+			</if>
+			<if test="createTime != null">
+			`create_time`, 
+			</if>
+			<if test="updateTime != null">
+			`update_time`
+			</if>
+		)
+		VALUES(
+			<if test="id != null">
+			#{id,jdbcType=BIGINT}, 
+			</if>
+			<if test="userId != null">
+			#{userId,jdbcType=BIGINT}, 
+			</if>
+			<if test="coinId != null">
+			#{coinId,jdbcType=INTEGER}, 
+			</if>
+			<if test="balanceAmount != null">
+			#{balanceAmount,jdbcType=DECIMAL}, 
+			</if>
+			<if test="freezeAmount != null">
+			#{freezeAmount,jdbcType=DECIMAL}, 
+			</if>
+			<if test="version != null">
+			#{version,jdbcType=INTEGER}, 
+			</if>
+			<if test="createTime != null">
+			#{createTime,jdbcType=TIMESTAMP}, 
+			</if>
+			<if test="updateTime != null">
+			#{updateTime,jdbcType=TIMESTAMP}
+			</if>
+		)
+	</insert>
+	
+	<delete id="removeByPK">
+		DELETE FROM t_legal_currency_account
+		<where>
+			AND `id` = #{id,jdbcType=BIGINT}
+		</where>
+	</delete>
+	
+	<delete id="removeBy" parameterType="com.bittrade.pojo.model.TLegalCurrencyAccount">
+		DELETE FROM t_legal_currency_account
+		<where>
+			<if test="userId != null">
+			AND `user_id` = #{userId,jdbcType=BIGINT}
+			</if>
+			<if test="coinId != null">
+			AND `coin_id` = #{coinId,jdbcType=INTEGER}
+			</if>
+			<if test="balanceAmount != null">
+			AND `balance_amount` = #{balanceAmount,jdbcType=DECIMAL}
+			</if>
+			<if test="freezeAmount != null">
+			AND `freeze_amount` = #{freezeAmount,jdbcType=DECIMAL}
+			</if>
+			<if test="version != null">
+			AND `version` = #{version,jdbcType=INTEGER}
+			</if>
+			<if test="createTime != null">
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="updateTime != null">
+			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+		</where>
+	</delete>
+	
+	<update id="modifyByPK" parameterType="com.bittrade.pojo.model.TLegalCurrencyAccount">
+		UPDATE t_legal_currency_account
+		<set>
+			`user_id` = #{userId,jdbcType=BIGINT}, 
+			`coin_id` = #{coinId,jdbcType=INTEGER}, 
+			`balance_amount` = #{balanceAmount,jdbcType=DECIMAL}, 
+			`freeze_amount` = #{freezeAmount,jdbcType=DECIMAL}, 
+			`version` = #{version,jdbcType=INTEGER}, 
+			`create_time` = #{createTime,jdbcType=TIMESTAMP}, 
+			`update_time` = #{updateTime,jdbcType=TIMESTAMP}, 
+		</set>
+		<where>
+			AND `id` = #{id,jdbcType=BIGINT}
+		</where>
+	</update>
+	
+	<update id="modifyWithSelectiveByPK" parameterType="com.bittrade.pojo.model.TLegalCurrencyAccount">
+		UPDATE t_legal_currency_account
+		<set>
+			<if test="userId != null">
+			`user_id` = #{userId,jdbcType=BIGINT}, 
+			</if>
+			<if test="coinId != null">
+			`coin_id` = #{coinId,jdbcType=INTEGER}, 
+			</if>
+			<if test="balanceAmount != null">
+			`balance_amount` = #{balanceAmount,jdbcType=DECIMAL}, 
+			</if>
+			<if test="freezeAmount != null">
+			`freeze_amount` = #{freezeAmount,jdbcType=DECIMAL}, 
+			</if>
+			<if test="version != null">
+			`version` = #{version,jdbcType=INTEGER}, 
+			</if>
+			<if test="createTime != null">
+			`create_time` = #{createTime,jdbcType=TIMESTAMP}, 
+			</if>
+			<if test="updateTime != null">
+			`update_time` = #{updateTime,jdbcType=TIMESTAMP}, 
+			</if>
+		</set>
+		<where>
+			AND `id` = #{id,jdbcType=BIGINT}
+		</where>
+	</update>
+	
+	<update id="modifyBy">
+		UPDATE t_legal_currency_account
+		<set>
+			`user_id` = #{tLegalCurrencyAccount.userId,jdbcType=BIGINT}, 
+			`coin_id` = #{tLegalCurrencyAccount.coinId,jdbcType=INTEGER}, 
+			`balance_amount` = #{tLegalCurrencyAccount.balanceAmount,jdbcType=DECIMAL}, 
+			`freeze_amount` = #{tLegalCurrencyAccount.freezeAmount,jdbcType=DECIMAL}, 
+			`version` = #{tLegalCurrencyAccount.version,jdbcType=INTEGER}, 
+			`create_time` = #{tLegalCurrencyAccount.createTime,jdbcType=TIMESTAMP}, 
+			`update_time` = #{tLegalCurrencyAccount.updateTime,jdbcType=TIMESTAMP}, 
+		</set>
+		<where>
+		<if test="condiTLegalCurrencyAccount != null">
+			<if test="condiTLegalCurrencyAccount.id != null">
+			AND `id` = #{condiTLegalCurrencyAccount.id,jdbcType=BIGINT}
+			</if>
+			<if test="condiTLegalCurrencyAccount.userId != null">
+			AND `user_id` = #{condiTLegalCurrencyAccount.userId,jdbcType=BIGINT}
+			</if>
+			<if test="condiTLegalCurrencyAccount.coinId != null">
+			AND `coin_id` = #{condiTLegalCurrencyAccount.coinId,jdbcType=INTEGER}
+			</if>
+			<if test="condiTLegalCurrencyAccount.balanceAmount != null">
+			AND `balance_amount` = #{condiTLegalCurrencyAccount.balanceAmount,jdbcType=DECIMAL}
+			</if>
+			<if test="condiTLegalCurrencyAccount.freezeAmount != null">
+			AND `freeze_amount` = #{condiTLegalCurrencyAccount.freezeAmount,jdbcType=DECIMAL}
+			</if>
+			<if test="condiTLegalCurrencyAccount.version != null">
+			AND `version` = #{condiTLegalCurrencyAccount.version,jdbcType=INTEGER}
+			</if>
+			<if test="condiTLegalCurrencyAccount.createTime != null">
+			AND `create_time` = #{condiTLegalCurrencyAccount.createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="condiTLegalCurrencyAccount.updateTime != null">
+			AND `update_time` = #{condiTLegalCurrencyAccount.updateTime,jdbcType=TIMESTAMP}
+			</if>
+		</if>
+		</where>
+	</update>
+	
+	<update id="modifyWithSelectiveBy">
+		UPDATE t_legal_currency_account
+		<set>
+		<if test="tLegalCurrencyAccount != null">
+			<if test="tLegalCurrencyAccount.userId != null">
+			`user_id` = #{tLegalCurrencyAccount.userId,jdbcType=BIGINT}, 
+			</if>
+			<if test="tLegalCurrencyAccount.coinId != null">
+			`coin_id` = #{tLegalCurrencyAccount.coinId,jdbcType=INTEGER}, 
+			</if>
+			<if test="tLegalCurrencyAccount.balanceAmount != null">
+			`balance_amount` = #{tLegalCurrencyAccount.balanceAmount,jdbcType=DECIMAL}, 
+			</if>
+			<if test="tLegalCurrencyAccount.freezeAmount != null">
+			`freeze_amount` = #{tLegalCurrencyAccount.freezeAmount,jdbcType=DECIMAL}, 
+			</if>
+			<if test="tLegalCurrencyAccount.version != null">
+			`version` = #{tLegalCurrencyAccount.version,jdbcType=INTEGER}, 
+			</if>
+			<if test="tLegalCurrencyAccount.createTime != null">
+			`create_time` = #{tLegalCurrencyAccount.createTime,jdbcType=TIMESTAMP}, 
+			</if>
+			<if test="tLegalCurrencyAccount.updateTime != null">
+			`update_time` = #{tLegalCurrencyAccount.updateTime,jdbcType=TIMESTAMP}, 
+			</if>
+		</if>
+		</set>
+		<where>
+		<if test="condiTLegalCurrencyAccount != null">
+			<if test="condiTLegalCurrencyAccount.id != null">
+			AND `id` = #{condiTLegalCurrencyAccount.id,jdbcType=BIGINT}
+			</if>
+			<if test="condiTLegalCurrencyAccount.userId != null">
+			AND `user_id` = #{condiTLegalCurrencyAccount.userId,jdbcType=BIGINT}
+			</if>
+			<if test="condiTLegalCurrencyAccount.coinId != null">
+			AND `coin_id` = #{condiTLegalCurrencyAccount.coinId,jdbcType=INTEGER}
+			</if>
+			<if test="condiTLegalCurrencyAccount.balanceAmount != null">
+			AND `balance_amount` = #{condiTLegalCurrencyAccount.balanceAmount,jdbcType=DECIMAL}
+			</if>
+			<if test="condiTLegalCurrencyAccount.freezeAmount != null">
+			AND `freeze_amount` = #{condiTLegalCurrencyAccount.freezeAmount,jdbcType=DECIMAL}
+			</if>
+			<if test="condiTLegalCurrencyAccount.version != null">
+			AND `version` = #{condiTLegalCurrencyAccount.version,jdbcType=INTEGER}
+			</if>
+			<if test="condiTLegalCurrencyAccount.createTime != null">
+			AND `create_time` = #{condiTLegalCurrencyAccount.createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="condiTLegalCurrencyAccount.updateTime != null">
+			AND `update_time` = #{condiTLegalCurrencyAccount.updateTime,jdbcType=TIMESTAMP}
+			</if>
+		</if>
+		</where>
+	</update>
+	
+	<select id="getByPK" resultType="com.bittrade.pojo.model.TLegalCurrencyAccount">
+		SELECT 
+			`id`, 
+			`user_id`, 
+			`coin_id`, 
+			`balance_amount`, 
+			`freeze_amount`, 
+			`version`, 
+			`create_time`, 
+			`update_time`
+		FROM t_legal_currency_account
+		<where>
+			AND `id` = #{id,jdbcType=BIGINT}
+		</where>
+	</select>
+	
+	<select id="getBy" resultType="com.bittrade.pojo.model.TLegalCurrencyAccount">
+		SELECT 
+			`id`, 
+			`user_id`, 
+			`coin_id`, 
+			`balance_amount`, 
+			`freeze_amount`, 
+			`version`, 
+			`create_time`, 
+			`update_time`
+		FROM t_legal_currency_account
+		<where>
+			<if test="userId != null">
+			AND `user_id` = #{userId,jdbcType=BIGINT}
+			</if>
+			<if test="coinId != null">
+			AND `coin_id` = #{coinId,jdbcType=INTEGER}
+			</if>
+			<if test="balanceAmount != null">
+			AND `balance_amount` = #{balanceAmount,jdbcType=DECIMAL}
+			</if>
+			<if test="freezeAmount != null">
+			AND `freeze_amount` = #{freezeAmount,jdbcType=DECIMAL}
+			</if>
+			<if test="version != null">
+			AND `version` = #{version,jdbcType=INTEGER}
+			</if>
+			<if test="createTime != null">
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="updateTime != null">
+			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+		</where>
+		LIMIT 1
+	</select>
+	
+	<select id="get" resultType="com.bittrade.pojo.model.TLegalCurrencyAccount">
+		SELECT 
+			`id`, 
+			`user_id`, 
+			`coin_id`, 
+			`balance_amount`, 
+			`freeze_amount`, 
+			`version`, 
+			`create_time`, 
+			`update_time`
+		FROM t_legal_currency_account
+		LIMIT 1
+	</select>
+	
+	<select id="getsBy" resultType="com.bittrade.pojo.model.TLegalCurrencyAccount">
+		SELECT 
+			<include refid="Base_Column_List"></include>
+		FROM t_legal_currency_account
+		<where>
+			<if test="userId != null">
+			AND `user_id` = #{userId,jdbcType=BIGINT}
+			</if>
+			<if test="coinId != null">
+			AND `coin_id` = #{coinId,jdbcType=INTEGER}
+			</if>
+			<if test="balanceAmount != null">
+			AND `balance_amount` = #{balanceAmount,jdbcType=DECIMAL}
+			</if>
+			<if test="freezeAmount != null">
+			AND `freeze_amount` = #{freezeAmount,jdbcType=DECIMAL}
+			</if>
+			<if test="version != null">
+			AND `version` = #{version,jdbcType=INTEGER}
+			</if>
+			<if test="createTime != null">
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="updateTime != null">
+			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+			<include refid="sql_WHERE_forProperty"></include>
+		</where>
+	</select>
+	
+	<select id="gets" resultType="com.bittrade.pojo.model.TLegalCurrencyAccount">
+		SELECT 
+			<include refid="Base_Column_List"></include>
+		FROM t_legal_currency_account
+	</select>
+	
+	<select id="getCntBy" resultType="int">
+		SELECT COUNT(1)
+		FROM t_legal_currency_account
+		<where>
+		<if test="tLegalCurrencyAccount != null">
+			<if test="tLegalCurrencyAccount.userId != null">
+			AND `user_id` = #{tLegalCurrencyAccount.userId,jdbcType=BIGINT}
+			</if>
+			<if test="tLegalCurrencyAccount.coinId != null">
+			AND `coin_id` = #{tLegalCurrencyAccount.coinId,jdbcType=INTEGER}
+			</if>
+			<if test="tLegalCurrencyAccount.balanceAmount != null">
+			AND `balance_amount` = #{tLegalCurrencyAccount.balanceAmount,jdbcType=DECIMAL}
+			</if>
+			<if test="tLegalCurrencyAccount.freezeAmount != null">
+			AND `freeze_amount` = #{tLegalCurrencyAccount.freezeAmount,jdbcType=DECIMAL}
+			</if>
+			<if test="tLegalCurrencyAccount.version != null">
+			AND `version` = #{tLegalCurrencyAccount.version,jdbcType=INTEGER}
+			</if>
+			<if test="tLegalCurrencyAccount.createTime != null">
+			AND `create_time` = #{tLegalCurrencyAccount.createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="tLegalCurrencyAccount.updateTime != null">
+			AND `update_time` = #{tLegalCurrencyAccount.updateTime,jdbcType=TIMESTAMP}
+			</if>
+			<include refid="sql_WHERE_forObject"></include>
+		</if>
+		</where>
+	</select>
+	
+	<select id="getsByPage" resultType="com.bittrade.pojo.model.TLegalCurrencyAccount">
+		SELECT 
+			`id`, 
+			`user_id`, 
+			`coin_id`, 
+			`balance_amount`, 
+			`freeze_amount`, 
+			`version`, 
+			`create_time`, 
+			`update_time`
+		FROM t_legal_currency_account
+		<where>
+		<if test="tLegalCurrencyAccount != null">
+			<if test="tLegalCurrencyAccount.userId != null">
+			AND `user_id` = #{tLegalCurrencyAccount.userId,jdbcType=BIGINT}
+			</if>
+			<if test="tLegalCurrencyAccount.coinId != null">
+			AND `coin_id` = #{tLegalCurrencyAccount.coinId,jdbcType=INTEGER}
+			</if>
+			<if test="tLegalCurrencyAccount.balanceAmount != null">
+			AND `balance_amount` = #{tLegalCurrencyAccount.balanceAmount,jdbcType=DECIMAL}
+			</if>
+			<if test="tLegalCurrencyAccount.freezeAmount != null">
+			AND `freeze_amount` = #{tLegalCurrencyAccount.freezeAmount,jdbcType=DECIMAL}
+			</if>
+			<if test="tLegalCurrencyAccount.version != null">
+			AND `version` = #{tLegalCurrencyAccount.version,jdbcType=INTEGER}
+			</if>
+			<if test="tLegalCurrencyAccount.createTime != null">
+			AND `create_time` = #{tLegalCurrencyAccount.createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="tLegalCurrencyAccount.updateTime != null">
+			AND `update_time` = #{tLegalCurrencyAccount.updateTime,jdbcType=TIMESTAMP}
+			</if>
+			<include refid="sql_WHERE_forObject"></include>
+		</if>
+		</where>
+		LIMIT #{page}, #{size}
+	</select>
+
+</mapper>
