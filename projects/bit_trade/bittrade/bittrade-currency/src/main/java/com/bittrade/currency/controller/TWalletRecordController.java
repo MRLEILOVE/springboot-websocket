@@ -1,5 +1,6 @@
 package com.bittrade.currency.controller;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.bittrade.currency.api.service.ITWalletRecordService;
 import com.bittrade.pojo.dto.AccountTypeDto;
 import com.bittrade.pojo.dto.TWalletRecordDTO;
@@ -37,7 +38,7 @@ public class TWalletRecordController extends BaseController<TWalletRecord, TWall
     @ApiOperation(value="币币账户资产记录", notes="币币账户资产记录")
     @PostMapping(value = "/queryBiBiAccountRecord")
     @ResponseBody
-    public ReturnDTO<List<RecordVO>> queryBiBiAccountRecord(@ALoginUser LoginUser user, @RequestBody AccountTypeDto dto){
+    public ReturnDTO<Page<RecordVO>> queryBiBiAccountRecord(@ALoginUser LoginUser user, @RequestBody AccountTypeDto dto){
         if(user == null){
             return ReturnDTO.ok(null);
         }

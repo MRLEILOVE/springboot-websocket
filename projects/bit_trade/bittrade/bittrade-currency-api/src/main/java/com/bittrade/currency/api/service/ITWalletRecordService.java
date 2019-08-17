@@ -1,5 +1,6 @@
 package com.bittrade.currency.api.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.bittrade.__default.service.IDefaultTWalletRecordService;
 import com.bittrade.pojo.dto.AccountTypeDto;
 import com.bittrade.pojo.dto.TWalletRecordDTO;
@@ -22,5 +23,5 @@ public interface ITWalletRecordService extends IDefaultTWalletRecordService<TWal
      * @param dto 请求对象
      * @return 币币账户资产记录列表
      */
-    List<RecordVO> queryBiBiAccountRecord(Long userId, AccountTypeDto dto);
+    Page<RecordVO> queryBiBiAccountRecord(Long userId, AccountTypeDto dto);
 }
