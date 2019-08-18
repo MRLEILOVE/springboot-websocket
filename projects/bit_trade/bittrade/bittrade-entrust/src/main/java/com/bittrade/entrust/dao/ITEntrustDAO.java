@@ -7,6 +7,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.bittrade.__default.DAO.IDefaultTEntrustDAO;
+import com.bittrade.pojo.dto.TEntrustDTO;
 import com.bittrade.pojo.model.TEntrust;
 import com.bittrade.pojo.vo.TEntrustInfoVO;
 import com.core.common.DTO.PageDTO;
@@ -45,6 +46,8 @@ public interface ITEntrustDAO extends IDefaultTEntrustDAO {
 			@Param("version") long version
 			);
 	
-	List<TEntrust> getsByPage(@Param(value = "entrust") TEntrust entrust, PageDTO<TEntrust> pageDTO);
+	List<TEntrust> testByPage(@Param(value = "entrust") TEntrust entrust, PageDTO<TEntrust> pageDTO);
+	
+	List<TEntrust> testByDTO(TEntrustDTO entrustDTO);
 
 }

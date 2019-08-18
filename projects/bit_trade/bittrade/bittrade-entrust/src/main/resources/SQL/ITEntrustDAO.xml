@@ -71,13 +71,21 @@
 		WHERE id = #{ID} AND version = #{version}
 	</update>
 	
-	<select id="getsByPage" resultMap="com.bittrade.__default.DAO.IDefaultTEntrustDAO.BaseResultMap">
+	<select id="testByPage" resultMap="com.bittrade.__default.DAO.IDefaultTEntrustDAO.BaseResultMap">
 	  SELECT id, user_id, currency_trade_id
 	  FROM t_entrust
 	  <where>
 	    AND entrust_type = #{entrust.entrustType}
 	  </where>
 	  ORDER BY ID ASC
+	</select>
+	
+	<select id="testByDTO" resultMap="com.bittrade.__default.DAO.IDefaultTEntrustDAO.BaseResultMap">
+	  SELECT id, user_id, currency_trade_id
+	  FROM t_entrust
+	  <where>
+		  <include refid="com.bittrade.__default.DAO.IDefaultTEntrustDAO.sql_WHERE_forProperty"></include>
+	  </where>
 	</select>
 
 </mapper>
