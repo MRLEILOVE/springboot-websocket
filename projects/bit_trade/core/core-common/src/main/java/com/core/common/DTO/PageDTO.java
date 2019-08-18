@@ -5,10 +5,9 @@ import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
+//@lombok.NoArgsConstructor
 @AllArgsConstructor
 public class PageDTO<T> implements Serializable {
 
@@ -22,6 +21,10 @@ public class PageDTO<T> implements Serializable {
 	private int totalPage;
 	private int totalSize;
 	private List<T> data;
+
+	public PageDTO() {
+		super();
+	}
 	
 	public PageDTO(int page, int size) {
 		super();
