@@ -44,8 +44,13 @@ public class EntrustTester extends BaseTester {
 	}
 	
 	@Test
-	public void getsByWhat() {
-		this.es.getsByWhat();
+	public void getsByPage() {
+		this.es.testByPage();
+	}
+	
+	@Test
+	public void testByDTO() {
+		this.es.testByDTO();
 	}
 
 }

@@ -18,10 +18,10 @@
 			<artifactId>commons-lang3</artifactId>
 		</dependency>
 		
-		<dependency>
+		<!-- <dependency>
 			<groupId>com.baomidou</groupId>
 			<artifactId>mybatis-plus</artifactId>
-		</dependency>
+		</dependency> -->
 	</dependencies>
 
 </project>

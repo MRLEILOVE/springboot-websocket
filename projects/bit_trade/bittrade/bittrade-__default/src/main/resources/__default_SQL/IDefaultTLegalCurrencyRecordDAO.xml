@@ -1,0 +1,535 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+	This code is generated automatically. Please do not edit it.
+	现在字段也可以要彻底动态？
+-->
+<mapper namespace="com.bittrade.__default.DAO.IDefaultTLegalCurrencyRecordDAO">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.bittrade.pojo.model.TLegalCurrencyRecord">
+		<id javaType="Long" property="id" jdbcType="BIGINT" column="id" />
+		<result javaType="Long" property="userId" jdbcType="BIGINT" column="user_id" />
+		<result javaType="Integer" property="coinId" jdbcType="INTEGER" column="coin_id" />
+		<result javaType="java.math.BigDecimal" property="beforeAmount" jdbcType="DECIMAL" column="before_amount" />
+		<result javaType="java.math.BigDecimal" property="changeAmount" jdbcType="DECIMAL" column="change_amount" />
+		<result javaType="java.math.BigDecimal" property="afterAmount" jdbcType="DECIMAL" column="after_amount" />
+		<result javaType="Integer" property="type" jdbcType="INTEGER" column="type" />
+		<result javaType="Byte" property="bizOrderId" jdbcType="INTEGER" column="biz_order_id" />
+		<result javaType="java.time.LocalDateTime" property="createTime" jdbcType="TIMESTAMP" column="create_time" />
+	</resultMap>
+
+	<!--
+		通用查询结果列
+		其他类似的类似，也可以公用（共用）引用。
+	-->
+	<sql id="Base_Column_List">
+		<choose>
+			<when test="strArr_field != null">
+		<foreach collection="strArr_field" index="index" item="item" open="" separator="," close="">
+			`${item}`
+		</foreach>
+			</when>
+			<otherwise>
+		`id` AS id, 
+		`user_id` AS userId, 
+		`coin_id` AS coinId, 
+		`before_amount` AS beforeAmount, 
+		`change_amount` AS changeAmount, 
+		`after_amount` AS afterAmount, 
+		`type` AS type, 
+		`biz_order_id` AS bizOrderId, 
+		`create_time` AS createTime
+			</otherwise>
+		</choose>
+	</sql>
+	
+	<!-- 其他的也可以类似的加， yes， 类似蕾丝的。 -->
+	<sql id="sql_WHERE_forProperty">
+		<choose>
+			<when test="map_in != null">
+			
+		<foreach collection="map_in.entrySet()" index="map_index" item="map_item">
+		AND `${map_index}` IN 
+		<foreach collection="map_item" index="arr_index" item="arr_item" open="(" separator="," close=")">
+			#{arr_item}
+		</foreach>
+		</foreach>
+			
+			</when>
+			<!--
+			<when test="_parameter != null and _parameter.TLegalCurrencyRecord != null and TLegalCurrencyRecord.map_in != null">
+			</when>
+			<otherwise>
+			</otherwise>
+			-->
+		</choose>
+	</sql>
+	<sql id="sql_WHERE_forObject">
+		<choose>
+			<when test="tLegalCurrencyRecord.map_in != null">
+			
+		<foreach collection="tLegalCurrencyRecord.map_in.entrySet()" index="map_index" item="map_item">
+		AND `${map_index}` IN 
+		<foreach collection="map_item" index="arr_index" item="arr_item" open="(" separator="," close=")">
+			#{arr_item}
+		</foreach>
+		</foreach>
+			
+			</when>
+		</choose>
+	</sql>
+	
+	
+	<insert id="add" parameterType="com.bittrade.pojo.model.TLegalCurrencyRecord">
+		INSERT INTO t_legal_currency_record(`id`, `user_id`, `coin_id`, `before_amount`, `change_amount`, `after_amount`, `type`, `biz_order_id`, `create_time`)
+		VALUES(#{id,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{coinId,jdbcType=INTEGER}, #{beforeAmount,jdbcType=DECIMAL}, #{changeAmount,jdbcType=DECIMAL}, #{afterAmount,jdbcType=DECIMAL}, #{type,jdbcType=INTEGER}, #{bizOrderId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP})
+	</insert>
+	
+	<insert id="addWithSelective" parameterType="com.bittrade.pojo.model.TLegalCurrencyRecord">
+		INSERT INTO t_legal_currency_record(
+			<if test="id != null">
+			`id`, 
+			</if>
+			<if test="userId != null">
+			`user_id`, 
+			</if>
+			<if test="coinId != null">
+			`coin_id`, 
+			</if>
+			<if test="beforeAmount != null">
+			`before_amount`, 
+			</if>
+			<if test="changeAmount != null">
+			`change_amount`, 
+			</if>
+			<if test="afterAmount != null">
+			`after_amount`, 
+			</if>
+			<if test="type != null">
+			`type`, 
+			</if>
+			<if test="bizOrderId != null">
+			`biz_order_id`, 
+			</if>
+			<if test="createTime != null">
+			`create_time`
+			</if>
+		)
+		VALUES(
+			<if test="id != null">
+			#{id,jdbcType=BIGINT}, 
+			</if>
+			<if test="userId != null">
+			#{userId,jdbcType=BIGINT}, 
+			</if>
+			<if test="coinId != null">
+			#{coinId,jdbcType=INTEGER}, 
+			</if>
+			<if test="beforeAmount != null">
+			#{beforeAmount,jdbcType=DECIMAL}, 
+			</if>
+			<if test="changeAmount != null">
+			#{changeAmount,jdbcType=DECIMAL}, 
+			</if>
+			<if test="afterAmount != null">
+			#{afterAmount,jdbcType=DECIMAL}, 
+			</if>
+			<if test="type != null">
+			#{type,jdbcType=INTEGER}, 
+			</if>
+			<if test="bizOrderId != null">
+			#{bizOrderId,jdbcType=INTEGER}, 
+			</if>
+			<if test="createTime != null">
+			#{createTime,jdbcType=TIMESTAMP}
+			</if>
+		)
+	</insert>
+	
+	<delete id="removeByPK">
+		DELETE FROM t_legal_currency_record
+		<where>
+			AND `id` = #{id,jdbcType=BIGINT}
+		</where>
+	</delete>
+	
+	<delete id="removeBy" parameterType="com.bittrade.pojo.model.TLegalCurrencyRecord">
+		DELETE FROM t_legal_currency_record
+		<where>
+			<if test="userId != null">
+			AND `user_id` = #{userId,jdbcType=BIGINT}
+			</if>
+			<if test="coinId != null">
+			AND `coin_id` = #{coinId,jdbcType=INTEGER}
+			</if>
+			<if test="beforeAmount != null">
+			AND `before_amount` = #{beforeAmount,jdbcType=DECIMAL}
+			</if>
+			<if test="changeAmount != null">
+			AND `change_amount` = #{changeAmount,jdbcType=DECIMAL}
+			</if>
+			<if test="afterAmount != null">
+			AND `after_amount` = #{afterAmount,jdbcType=DECIMAL}
+			</if>
+			<if test="type != null">
+			AND `type` = #{type,jdbcType=INTEGER}
+			</if>
+			<if test="bizOrderId != null">
+			AND `biz_order_id` = #{bizOrderId,jdbcType=INTEGER}
+			</if>
+			<if test="createTime != null">
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+		</where>
+	</delete>
+	
+	<update id="modifyByPK" parameterType="com.bittrade.pojo.model.TLegalCurrencyRecord">
+		UPDATE t_legal_currency_record
+		<set>
+			`user_id` = #{userId,jdbcType=BIGINT}, 
+			`coin_id` = #{coinId,jdbcType=INTEGER}, 
+			`before_amount` = #{beforeAmount,jdbcType=DECIMAL}, 
+			`change_amount` = #{changeAmount,jdbcType=DECIMAL}, 
+			`after_amount` = #{afterAmount,jdbcType=DECIMAL}, 
+			`type` = #{type,jdbcType=INTEGER}, 
+			`biz_order_id` = #{bizOrderId,jdbcType=INTEGER}, 
+			`create_time` = #{createTime,jdbcType=TIMESTAMP}, 
+		</set>
+		<where>
+			AND `id` = #{id,jdbcType=BIGINT}
+		</where>
+	</update>
+	
+	<update id="modifyWithSelectiveByPK" parameterType="com.bittrade.pojo.model.TLegalCurrencyRecord">
+		UPDATE t_legal_currency_record
+		<set>
+			<if test="userId != null">
+			`user_id` = #{userId,jdbcType=BIGINT}, 
+			</if>
+			<if test="coinId != null">
+			`coin_id` = #{coinId,jdbcType=INTEGER}, 
+			</if>
+			<if test="beforeAmount != null">
+			`before_amount` = #{beforeAmount,jdbcType=DECIMAL}, 
+			</if>
+			<if test="changeAmount != null">
+			`change_amount` = #{changeAmount,jdbcType=DECIMAL}, 
+			</if>
+			<if test="afterAmount != null">
+			`after_amount` = #{afterAmount,jdbcType=DECIMAL}, 
+			</if>
+			<if test="type != null">
+			`type` = #{type,jdbcType=INTEGER}, 
+			</if>
+			<if test="bizOrderId != null">
+			`biz_order_id` = #{bizOrderId,jdbcType=INTEGER}, 
+			</if>
+			<if test="createTime != null">
+			`create_time` = #{createTime,jdbcType=TIMESTAMP}, 
+			</if>
+		</set>
+		<where>
+			AND `id` = #{id,jdbcType=BIGINT}
+		</where>
+	</update>
+	
+	<update id="modifyBy">
+		UPDATE t_legal_currency_record
+		<set>
+			`user_id` = #{tLegalCurrencyRecord.userId,jdbcType=BIGINT}, 
+			`coin_id` = #{tLegalCurrencyRecord.coinId,jdbcType=INTEGER}, 
+			`before_amount` = #{tLegalCurrencyRecord.beforeAmount,jdbcType=DECIMAL}, 
+			`change_amount` = #{tLegalCurrencyRecord.changeAmount,jdbcType=DECIMAL}, 
+			`after_amount` = #{tLegalCurrencyRecord.afterAmount,jdbcType=DECIMAL}, 
+			`type` = #{tLegalCurrencyRecord.type,jdbcType=INTEGER}, 
+			`biz_order_id` = #{tLegalCurrencyRecord.bizOrderId,jdbcType=INTEGER}, 
+			`create_time` = #{tLegalCurrencyRecord.createTime,jdbcType=TIMESTAMP}, 
+		</set>
+		<where>
+		<if test="condiTLegalCurrencyRecord != null">
+			<if test="condiTLegalCurrencyRecord.id != null">
+			AND `id` = #{condiTLegalCurrencyRecord.id,jdbcType=BIGINT}
+			</if>
+			<if test="condiTLegalCurrencyRecord.userId != null">
+			AND `user_id` = #{condiTLegalCurrencyRecord.userId,jdbcType=BIGINT}
+			</if>
+			<if test="condiTLegalCurrencyRecord.coinId != null">
+			AND `coin_id` = #{condiTLegalCurrencyRecord.coinId,jdbcType=INTEGER}
+			</if>
+			<if test="condiTLegalCurrencyRecord.beforeAmount != null">
+			AND `before_amount` = #{condiTLegalCurrencyRecord.beforeAmount,jdbcType=DECIMAL}
+			</if>
+			<if test="condiTLegalCurrencyRecord.changeAmount != null">
+			AND `change_amount` = #{condiTLegalCurrencyRecord.changeAmount,jdbcType=DECIMAL}
+			</if>
+			<if test="condiTLegalCurrencyRecord.afterAmount != null">
+			AND `after_amount` = #{condiTLegalCurrencyRecord.afterAmount,jdbcType=DECIMAL}
+			</if>
+			<if test="condiTLegalCurrencyRecord.type != null">
+			AND `type` = #{condiTLegalCurrencyRecord.type,jdbcType=INTEGER}
+			</if>
+			<if test="condiTLegalCurrencyRecord.bizOrderId != null">
+			AND `biz_order_id` = #{condiTLegalCurrencyRecord.bizOrderId,jdbcType=INTEGER}
+			</if>
+			<if test="condiTLegalCurrencyRecord.createTime != null">
+			AND `create_time` = #{condiTLegalCurrencyRecord.createTime,jdbcType=TIMESTAMP}
+			</if>
+		</if>
+		</where>
+	</update>
+	
+	<update id="modifyWithSelectiveBy">
+		UPDATE t_legal_currency_record
+		<set>
+		<if test="tLegalCurrencyRecord != null">
+			<if test="tLegalCurrencyRecord.userId != null">
+			`user_id` = #{tLegalCurrencyRecord.userId,jdbcType=BIGINT}, 
+			</if>
+			<if test="tLegalCurrencyRecord.coinId != null">
+			`coin_id` = #{tLegalCurrencyRecord.coinId,jdbcType=INTEGER}, 
+			</if>
+			<if test="tLegalCurrencyRecord.beforeAmount != null">
+			`before_amount` = #{tLegalCurrencyRecord.beforeAmount,jdbcType=DECIMAL}, 
+			</if>
+			<if test="tLegalCurrencyRecord.changeAmount != null">
+			`change_amount` = #{tLegalCurrencyRecord.changeAmount,jdbcType=DECIMAL}, 
+			</if>
+			<if test="tLegalCurrencyRecord.afterAmount != null">
+			`after_amount` = #{tLegalCurrencyRecord.afterAmount,jdbcType=DECIMAL}, 
+			</if>
+			<if test="tLegalCurrencyRecord.type != null">
+			`type` = #{tLegalCurrencyRecord.type,jdbcType=INTEGER}, 
+			</if>
+			<if test="tLegalCurrencyRecord.bizOrderId != null">
+			`biz_order_id` = #{tLegalCurrencyRecord.bizOrderId,jdbcType=INTEGER}, 
+			</if>
+			<if test="tLegalCurrencyRecord.createTime != null">
+			`create_time` = #{tLegalCurrencyRecord.createTime,jdbcType=TIMESTAMP}, 
+			</if>
+		</if>
+		</set>
+		<where>
+		<if test="condiTLegalCurrencyRecord != null">
+			<if test="condiTLegalCurrencyRecord.id != null">
+			AND `id` = #{condiTLegalCurrencyRecord.id,jdbcType=BIGINT}
+			</if>
+			<if test="condiTLegalCurrencyRecord.userId != null">
+			AND `user_id` = #{condiTLegalCurrencyRecord.userId,jdbcType=BIGINT}
+			</if>
+			<if test="condiTLegalCurrencyRecord.coinId != null">
+			AND `coin_id` = #{condiTLegalCurrencyRecord.coinId,jdbcType=INTEGER}
+			</if>
+			<if test="condiTLegalCurrencyRecord.beforeAmount != null">
+			AND `before_amount` = #{condiTLegalCurrencyRecord.beforeAmount,jdbcType=DECIMAL}
+			</if>
+			<if test="condiTLegalCurrencyRecord.changeAmount != null">
+			AND `change_amount` = #{condiTLegalCurrencyRecord.changeAmount,jdbcType=DECIMAL}
+			</if>
+			<if test="condiTLegalCurrencyRecord.afterAmount != null">
+			AND `after_amount` = #{condiTLegalCurrencyRecord.afterAmount,jdbcType=DECIMAL}
+			</if>
+			<if test="condiTLegalCurrencyRecord.type != null">
+			AND `type` = #{condiTLegalCurrencyRecord.type,jdbcType=INTEGER}
+			</if>
+			<if test="condiTLegalCurrencyRecord.bizOrderId != null">
+			AND `biz_order_id` = #{condiTLegalCurrencyRecord.bizOrderId,jdbcType=INTEGER}
+			</if>
+			<if test="condiTLegalCurrencyRecord.createTime != null">
+			AND `create_time` = #{condiTLegalCurrencyRecord.createTime,jdbcType=TIMESTAMP}
+			</if>
+		</if>
+		</where>
+	</update>
+	
+	<select id="getByPK" resultType="com.bittrade.pojo.model.TLegalCurrencyRecord">
+		SELECT 
+			`id`, 
+			`user_id`, 
+			`coin_id`, 
+			`before_amount`, 
+			`change_amount`, 
+			`after_amount`, 
+			`type`, 
+			`biz_order_id`, 
+			`create_time`
+		FROM t_legal_currency_record
+		<where>
+			AND `id` = #{id,jdbcType=BIGINT}
+		</where>
+	</select>
+	
+	<select id="getBy" resultType="com.bittrade.pojo.model.TLegalCurrencyRecord">
+		SELECT 
+			`id`, 
+			`user_id`, 
+			`coin_id`, 
+			`before_amount`, 
+			`change_amount`, 
+			`after_amount`, 
+			`type`, 
+			`biz_order_id`, 
+			`create_time`
+		FROM t_legal_currency_record
+		<where>
+			<if test="userId != null">
+			AND `user_id` = #{userId,jdbcType=BIGINT}
+			</if>
+			<if test="coinId != null">
+			AND `coin_id` = #{coinId,jdbcType=INTEGER}
+			</if>
+			<if test="beforeAmount != null">
+			AND `before_amount` = #{beforeAmount,jdbcType=DECIMAL}
+			</if>
+			<if test="changeAmount != null">
+			AND `change_amount` = #{changeAmount,jdbcType=DECIMAL}
+			</if>
+			<if test="afterAmount != null">
+			AND `after_amount` = #{afterAmount,jdbcType=DECIMAL}
+			</if>
+			<if test="type != null">
+			AND `type` = #{type,jdbcType=INTEGER}
+			</if>
+			<if test="bizOrderId != null">
+			AND `biz_order_id` = #{bizOrderId,jdbcType=INTEGER}
+			</if>
+			<if test="createTime != null">
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+		</where>
+		LIMIT 1
+	</select>
+	
+	<select id="get" resultType="com.bittrade.pojo.model.TLegalCurrencyRecord">
+		SELECT 
+			`id`, 
+			`user_id`, 
+			`coin_id`, 
+			`before_amount`, 
+			`change_amount`, 
+			`after_amount`, 
+			`type`, 
+			`biz_order_id`, 
+			`create_time`
+		FROM t_legal_currency_record
+		LIMIT 1
+	</select>
+	
+	<select id="getsBy" resultType="com.bittrade.pojo.model.TLegalCurrencyRecord">
+		SELECT 
+			<include refid="Base_Column_List"></include>
+		FROM t_legal_currency_record
+		<where>
+			<if test="userId != null">
+			AND `user_id` = #{userId,jdbcType=BIGINT}
+			</if>
+			<if test="coinId != null">
+			AND `coin_id` = #{coinId,jdbcType=INTEGER}
+			</if>
+			<if test="beforeAmount != null">
+			AND `before_amount` = #{beforeAmount,jdbcType=DECIMAL}
+			</if>
+			<if test="changeAmount != null">
+			AND `change_amount` = #{changeAmount,jdbcType=DECIMAL}
+			</if>
+			<if test="afterAmount != null">
+			AND `after_amount` = #{afterAmount,jdbcType=DECIMAL}
+			</if>
+			<if test="type != null">
+			AND `type` = #{type,jdbcType=INTEGER}
+			</if>
+			<if test="bizOrderId != null">
+			AND `biz_order_id` = #{bizOrderId,jdbcType=INTEGER}
+			</if>
+			<if test="createTime != null">
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<include refid="sql_WHERE_forProperty"></include>
+		</where>
+	</select>
+	
+	<select id="gets" resultType="com.bittrade.pojo.model.TLegalCurrencyRecord">
+		SELECT 
+			<include refid="Base_Column_List"></include>
+		FROM t_legal_currency_record
+	</select>
+	
+	<select id="getCntBy" resultType="int">
+		SELECT COUNT(1)
+		FROM t_legal_currency_record
+		<where>
+		<if test="tLegalCurrencyRecord != null">
+			<if test="tLegalCurrencyRecord.userId != null">
+			AND `user_id` = #{tLegalCurrencyRecord.userId,jdbcType=BIGINT}
+			</if>
+			<if test="tLegalCurrencyRecord.coinId != null">
+			AND `coin_id` = #{tLegalCurrencyRecord.coinId,jdbcType=INTEGER}
+			</if>
+			<if test="tLegalCurrencyRecord.beforeAmount != null">
+			AND `before_amount` = #{tLegalCurrencyRecord.beforeAmount,jdbcType=DECIMAL}
+			</if>
+			<if test="tLegalCurrencyRecord.changeAmount != null">
+			AND `change_amount` = #{tLegalCurrencyRecord.changeAmount,jdbcType=DECIMAL}
+			</if>
+			<if test="tLegalCurrencyRecord.afterAmount != null">
+			AND `after_amount` = #{tLegalCurrencyRecord.afterAmount,jdbcType=DECIMAL}
+			</if>
+			<if test="tLegalCurrencyRecord.type != null">
+			AND `type` = #{tLegalCurrencyRecord.type,jdbcType=INTEGER}
+			</if>
+			<if test="tLegalCurrencyRecord.bizOrderId != null">
+			AND `biz_order_id` = #{tLegalCurrencyRecord.bizOrderId,jdbcType=INTEGER}
+			</if>
+			<if test="tLegalCurrencyRecord.createTime != null">
+			AND `create_time` = #{tLegalCurrencyRecord.createTime,jdbcType=TIMESTAMP}
+			</if>
+			<include refid="sql_WHERE_forObject"></include>
+		</if>
+		</where>
+	</select>
+	
+	<select id="getsByPage" resultType="com.bittrade.pojo.model.TLegalCurrencyRecord">
+		SELECT 
+			`id`, 
+			`user_id`, 
+			`coin_id`, 
+			`before_amount`, 
+			`change_amount`, 
+			`after_amount`, 
+			`type`, 
+			`biz_order_id`, 
+			`create_time`
+		FROM t_legal_currency_record
+		<where>
+		<if test="tLegalCurrencyRecord != null">
+			<if test="tLegalCurrencyRecord.userId != null">
+			AND `user_id` = #{tLegalCurrencyRecord.userId,jdbcType=BIGINT}
+			</if>
+			<if test="tLegalCurrencyRecord.coinId != null">
+			AND `coin_id` = #{tLegalCurrencyRecord.coinId,jdbcType=INTEGER}
+			</if>
+			<if test="tLegalCurrencyRecord.beforeAmount != null">
+			AND `before_amount` = #{tLegalCurrencyRecord.beforeAmount,jdbcType=DECIMAL}
+			</if>
+			<if test="tLegalCurrencyRecord.changeAmount != null">
+			AND `change_amount` = #{tLegalCurrencyRecord.changeAmount,jdbcType=DECIMAL}
+			</if>
+			<if test="tLegalCurrencyRecord.afterAmount != null">
+			AND `after_amount` = #{tLegalCurrencyRecord.afterAmount,jdbcType=DECIMAL}
+			</if>
+			<if test="tLegalCurrencyRecord.type != null">
+			AND `type` = #{tLegalCurrencyRecord.type,jdbcType=INTEGER}
+			</if>
+			<if test="tLegalCurrencyRecord.bizOrderId != null">
+			AND `biz_order_id` = #{tLegalCurrencyRecord.bizOrderId,jdbcType=INTEGER}
+			</if>
+			<if test="tLegalCurrencyRecord.createTime != null">
+			AND `create_time` = #{tLegalCurrencyRecord.createTime,jdbcType=TIMESTAMP}
+			</if>
+			<include refid="sql_WHERE_forObject"></include>
+		</if>
+		</where>
+		LIMIT #{page}, #{size}
+	</select>
+
+</mapper>

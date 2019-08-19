@@ -215,7 +215,7 @@
 			<resource>
 				<directory>src/main/resources</directory>
 				<excludes>
-					<exclude>profile/*/*</exclude>
+					<exclude>profile/**/*</exclude>
 				</excludes>
 			</resource>
 			<resource>

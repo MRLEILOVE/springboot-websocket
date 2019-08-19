@@ -139,6 +139,9 @@ public abstract class BaseServiceImpl<Model extends BaseModel<Model>, DTO extend
 				size = i_totalSize;
 			}
 			i_totalPage = MathematicsUtil.getTotalPage(size, i_totalSize);
+			if (page > i_totalPage) {
+				page = i_totalPage;
+			}
 			list_data = baseDAO.getsByPage(model, MathematicsUtil.getPageBeginIndex(page, size), size);
 		}
 		

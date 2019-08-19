@@ -49,7 +49,7 @@ public class SpringApplicationContextListener implements ApplicationListener<App
 //		System.out.println( event.getApplicationContext().getParent() );
 //		System.out.println( event.getApplicationContext().getDisplayName() );
 		
-//		init();
+		init();
 	}
 	
 }

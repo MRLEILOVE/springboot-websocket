@@ -252,21 +252,26 @@ public class TEntrustServiceImpl extends DefaultTEntrustServiceImpl<ITEntrustDAO
 	}
 
 	@Override
-	public PageDTO<TEntrust> getsByWhat() {
-		boolean flag = true;
+	public void testByPage() {
+//		boolean flag = true;
 
-//		TEntrust entrust = new TEntrust();
-//		entrust.setEntrustType( 0 );
+		TEntrust entrust = new TEntrust();
+		entrust.setEntrustType( 0 );
 //		List<TEntrust> list_data_2 = entrustDAO.getsBy(entrust);
 //		System.out.println( "list_data_2=" + list_data_2 );
-//		
-//		PageDTO<TEntrust> page = new PageDTO<TEntrust>( 0, 3 );
-//		List<TEntrust> list_data = entrustDAO.getsByPage(entrust, page);
-//		page.setData( list_data );
-//		System.out.println( "page.getPage()=" + page.getPage() );
-//		return page;
 		
-		return null;
+		PageDTO<TEntrust> pageDTO = new PageDTO<TEntrust>( 0, 3 );
+		List<TEntrust> list_data = entrustDAO.testByPage(entrust, pageDTO);
+		pageDTO.setData( list_data );
+		System.out.println( "page.getPage()=" + pageDTO.getPage() );
+	}
+
+	@Override
+	public void testByDTO() {
+		TEntrustDTO entrustDTO = new TEntrustDTO();
+		entrustDTO.in("entrust_type", new Integer[] { 2, 1, });
+		List<TEntrust> list_data = this.entrustDAO.testByDTO(entrustDTO);
+		System.out.println("list_data=" + list_data);
 	}
 
 }
