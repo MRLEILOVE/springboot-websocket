@@ -16,6 +16,9 @@ public class AssetsVO {
     @ApiModelProperty("可用总数量")
     private BigDecimal total;
 
+    @ApiModelProperty("总冻结数量")
+    private BigDecimal totalFrozen;
+
     @ApiModelProperty("交易冻结数量")
     private BigDecimal tradeFrozen;
 

@@ -26,4 +26,7 @@
 		`update_time` AS updateTime
 	</sql>
 
+	<select id="getAssets" resultType="com.bittrade.pojo.vo.AssetsVO">
+		
+	</select>
 </mapper>
