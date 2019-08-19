@@ -39,7 +39,7 @@ public class JedisClusterConfig {
 			nodes.add(new HostAndPort(ipPortPair[0].trim(), Integer.valueOf(ipPortPair[1].trim())));
 		}
 		GenericObjectPoolConfig config = new GenericObjectPoolConfig();
-		config.setMaxTotal(redisProperties.getMaxTotal()); // 50 0
+		config.setMaxTotal(redisProperties.getMaxTotal()); // 0 bound exception .
 		config.setMaxIdle(redisProperties.getJedis().getPool().getMaxIdle()); // 20
 		config.setMinIdle(redisProperties.getJedis().getPool().getMinIdle());// 设置最小空闲数 2
 		config.setMaxWaitMillis(redisProperties.getJedis().getPool().getMaxWait().toMillis()); // -1
@@ -60,7 +60,7 @@ public class JedisClusterConfig {
 		config.setMinEvictableIdleTimeMillis(60000);
 		// 需要密码连接的创建对象方式
 		// 参数依次是：集群地址，链接超时时间，返回值的超时时间，链接尝试次数，密码和配置文件
-		return new JedisCluster(nodes, (int) redisProperties.getTimeout().toMillis(), 10000, 3, redisProperties.getPassword(), config); // 0
+		return new JedisCluster(nodes, redisProperties.getConnectionTimeout(), (int) redisProperties.getTimeout().toMillis(), 3, redisProperties.getPassword(), config);
 	}
 
 }

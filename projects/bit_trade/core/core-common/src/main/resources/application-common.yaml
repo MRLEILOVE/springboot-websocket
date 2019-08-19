@@ -31,13 +31,12 @@ spring:
       maximum-pool-size: 15
   # redis .
   redis:
+    # ---------- standalone ----------
     #host: 127.0.0.1
     #port: 6379
     #password: z012345
-    password: Qdsemmde_sde@#!Bitrade
     #database: 0
-    timeout: 3s  # 数据库连接超时时间，2.0 中该参数的类型为Duration，这里在配置的时候需要指明单位
-    maxTotal: 50 #最大连接数
+    # ---------- cluster ----------
     cluster:
       nodes:
         - 154.222.138.5:7000
@@ -46,6 +45,11 @@ spring:
         - 154.222.138.5:7003
         - 154.222.138.5:7004
         - 154.222.138.5:7005
+    password: Qdsemmde_sde@#!Bitrade
+    # ---------- other . ----------
+    connectionTimeout: 3000  # redis连接的超时时间
+    timeout: 3s  # redis操作的超时时间，2.0 中该参数的类型为Duration，这里在配置的时候需要指明单位
+    maxTotal: 50 # 最大连接数
     # 连接池配置，2.0中直接使用jedis或者lettuce配置连接池
     jedis:
       pool:
@@ -57,16 +61,7 @@ spring:
         max-wait: -1
         # 最大活跃连接数，负数为不限制
         max-active: -1
-        commandTimeout: 3000  #redis操作的超时时间
-        maxTotal: 50 #最大连接数
-        nodes:
-          - 154.222.138.5:7000
-          - 154.222.138.5:7001
-          - 154.222.138.5:7002
-          - 154.222.138.5:7003
-          - 154.222.138.5:7004
-          - 154.222.138.5:7005
-        password: Qdsemmde_sde@#!Bitrade
+  # transaction .
   transaction: 
     attributes: 
       add*=PROPAGATION_REQUIRED,-Exception

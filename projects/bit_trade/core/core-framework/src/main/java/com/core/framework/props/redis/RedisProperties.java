@@ -19,7 +19,7 @@ public class RedisProperties {
 //	private int minIdle;
 //	private long maxWait;
 //	private String password;
-//	private int timeout;
+	private int connectionTimeout;
 
 
 	/**

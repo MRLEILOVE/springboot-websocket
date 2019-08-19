@@ -63,7 +63,11 @@
 			<groupId>redis.clients</groupId>
 			<artifactId>jedis</artifactId>
 		</dependency>
-		<!-- 下面的两个 data-redis 依赖包会使用Spring的 redis 功能，在原生redis上会包装一层。 -->
+		<!--
+			下面的两个 data-redis 依赖包会使用Spring的 redis 功能，在原生redis上会包装一层。
+			@see org.springframework.data.redis.connection.jedis.JedisConnectionFactory .
+			@see and other ...
+		-->
 		<!-- <dependency>
 			<groupId>org.springframework.data</groupId>
 			<artifactId>spring-data-redis</artifactId>
