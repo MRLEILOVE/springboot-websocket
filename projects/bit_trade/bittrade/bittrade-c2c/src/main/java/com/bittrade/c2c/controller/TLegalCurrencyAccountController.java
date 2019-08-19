@@ -43,7 +43,7 @@ public class TLegalCurrencyAccountController extends BaseController<TLegalCurren
         return ReturnDTO.ok(conversionVo);
     }
 
-    @PostMapping("/list")
+    @PostMapping("/detail")
     @ApiOperation(value = "查询当前用户的法币账户钱包列表", notes = "查询当前用户的法币账户钱包列表")
     public ReturnDTO<List<AssetsVO>> detail(@ALoginUser LoginUser user){
         Long userId = user == null ? null : user.getUser_id();
