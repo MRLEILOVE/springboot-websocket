@@ -2,10 +2,14 @@ package com.core.web.common.exception;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.ValidationException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.BindException;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -13,6 +17,10 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 
 import com.core.common.DTO.ReturnDTO;
 import com.core.web.common.enums.HttpStatusEnumer;
+
+import java.util.Iterator;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * <p>
@@ -31,7 +39,37 @@ import com.core.web.common.enums.HttpStatusEnumer;
 public class GlobalExceptionHandler {
 
 	private static final Logger LOG = LoggerFactory.getLogger( GlobalExceptionHandler.class );
-	
+
+
+	/**
+	 * 处理业务异常
+	 */
+	@ExceptionHandler(value = BusinessException.class)
+	@ResponseStatus(HttpStatus.OK)
+	public ReturnDTO<?> notFoundException(BusinessException e) {
+		return ReturnDTO.error(e.getMessage());
+	}
+
+
+	/**
+	 * 参数绑定失败
+	 */
+	@ResponseStatus(HttpStatus.OK)
+	@ExceptionHandler(BindException.class)
+	public ReturnDTO<?> handleBindException(BindException e) {
+		String msg = handleBindingResult(e.getBindingResult());
+		return ReturnDTO.error(msg);
+	}
+
+	/**
+	 * 参数验证失败
+	 */
+	@ResponseStatus(HttpStatus.OK)
+	@ExceptionHandler(ValidationException.class)
+	public ReturnDTO<?> handleValidationException(ValidationException e) {
+		return ReturnDTO.error(e.getMessage());
+	}
+
 	/**
 	 * 404
 	 */
@@ -57,6 +95,28 @@ public class GlobalExceptionHandler {
 //			// return mav;
 //		}
 		return ReturnDTO.error( e );
+	}
+
+	/**
+	 * 处理参数绑定异常，并拼接出错的参数异常信息。
+	 * <p>
+	 * 创建人：leigq <br>
+	 * <p>
+	 * 修改人： <br>
+	 * 修改时间： <br>
+	 * 修改备注： <br>
+	 * </p>
+	 */
+	private String handleBindingResult(BindingResult result) {
+		if (result.hasErrors()) {
+			Iterator<FieldError> iterator = result.getFieldErrors().iterator();
+			if (iterator.hasNext()) {
+				FieldError fieldError = iterator.next();
+				String field = fieldError.getField();
+				return field + ":" + fieldError.getDefaultMessage();
+			}
+		}
+		return null;
 	}
 
 }
