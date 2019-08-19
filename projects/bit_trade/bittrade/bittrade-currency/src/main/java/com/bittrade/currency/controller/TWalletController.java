@@ -71,6 +71,9 @@ public class TWalletController extends BaseController<TWallet, TWalletDTO, TWall
     @ApiOperation(value = "查询当前用户的币币账户币种余额列表", notes = "查询当前用户的币币账户币种余额列表")
     public ReturnDTO<List<AccountVO>> detail(@ALoginUser LoginUser user){
         Long userId = user == null ? null : user.getUser_id();
+        if(userId == null){
+            return ReturnDTO.ok(null);
+        }
         return ReturnDTO.ok(walletService.detail(userId));
     }
 }

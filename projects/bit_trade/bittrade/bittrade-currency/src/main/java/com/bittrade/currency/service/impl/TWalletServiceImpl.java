@@ -307,12 +307,10 @@ public class TWalletServiceImpl extends DefaultTWalletServiceImpl<ITWalletDAO, T
 			//为用户创建全部钱包
 			createAllWallet(currencies,userId);
 			//封装好数据后返回给前端
-			List<AccountVO> accountVOs = new ArrayList<>();
 			currencies.stream().forEach(x -> {
 				AccountVO vo = AccountVO.builder().balance(BigDecimal.ZERO).usedMargin(BigDecimal.ZERO).currency(x.getName()).build();
-				accountVOs.add(vo);
+				userAccountVOs.add(vo);
 			});
-			return accountVOs;
 		}else if(currencies.size() > userAccountVOs.size()){
 			//为用户创建缺失的钱包
 			List<TCurrency> lockCurrency = createLockWallet(currencies,userAccountVOs,userId);
@@ -320,7 +318,6 @@ public class TWalletServiceImpl extends DefaultTWalletServiceImpl<ITWalletDAO, T
 				//将缺失的钱包添加到用户钱包列表，然后返回数据给前端
 				userAccountVOs.add(AccountVO.builder().currency(x.getName()).balance(BigDecimal.ZERO).usedMargin(BigDecimal.ZERO).build());
 			});
-			return userAccountVOs;
 		}
 		return userAccountVOs;
 	}

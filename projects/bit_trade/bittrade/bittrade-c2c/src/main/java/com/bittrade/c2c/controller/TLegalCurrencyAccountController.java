@@ -3,6 +3,7 @@ package com.bittrade.c2c.controller;
 import com.bittrade.c2c.service.ITLegalCurrencyAccountService;
 import com.bittrade.pojo.dto.TLegalCurrencyAccountDTO;
 import com.bittrade.pojo.model.TLegalCurrencyAccount;
+import com.bittrade.pojo.vo.AssetsVO;
 import com.bittrade.pojo.vo.ConversionVo;
 import com.bittrade.pojo.vo.TLegalCurrencyAccountVO;
 import com.core.common.DTO.ReturnDTO;
@@ -43,9 +44,12 @@ public class TLegalCurrencyAccountController extends BaseController<TLegalCurren
     }
 
     @PostMapping("/list")
-    @ApiOperation(value = "查询当前用户的法币账户币种余额列表", notes = "查询当前用户的法币账户币种余额列表")
-    public ReturnDTO<List<TLegalCurrencyAccount>> list(@ALoginUser LoginUser user){
+    @ApiOperation(value = "查询当前用户的法币账户钱包列表", notes = "查询当前用户的法币账户钱包列表")
+    public ReturnDTO<List<AssetsVO>> detail(@ALoginUser LoginUser user){
         Long userId = user == null ? null : user.getUser_id();
-        return ReturnDTO.ok(null);
+        if(userId == null){
+            return ReturnDTO.ok(null);
+        }
+        return ReturnDTO.ok(legalCurrencyAccountService.detail(userId));
     }
 }
