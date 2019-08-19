@@ -34,8 +34,18 @@ spring:
     #host: 127.0.0.1
     #port: 6379
     #password: z012345
+    password: Qdsemmde_sde@#!Bitrade
     #database: 0
-    #timeout: 60s  # 数据库连接超时时间，2.0 中该参数的类型为Duration，这里在配置的时候需要指明单位
+    timeout: 3s  # 数据库连接超时时间，2.0 中该参数的类型为Duration，这里在配置的时候需要指明单位
+    maxTotal: 50 #最大连接数
+    cluster:
+      nodes:
+        - 154.222.138.5:7000
+        - 154.222.138.5:7001
+        - 154.222.138.5:7002
+        - 154.222.138.5:7003
+        - 154.222.138.5:7004
+        - 154.222.138.5:7005
     # 连接池配置，2.0中直接使用jedis或者lettuce配置连接池
     jedis:
       pool:
