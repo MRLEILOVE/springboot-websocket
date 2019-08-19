@@ -16,7 +16,7 @@ public interface ITWalletTransferService extends IDefaultTWalletTransferService<
     /**
      * 资金划转
      */
-    ReturnDTO transferOfFundsB2C(TransferDto transferDto) throws Exception;
+    ReturnDTO transferOfFunds(TransferDto transferDto) throws Exception;
 
     /**
      * 币币账户充值

@@ -31,10 +31,10 @@ public class TWalletTransferController extends BaseController<TWalletTransfer, T
     @Autowired
     private ITWalletTransferService walletTransferService;
 
-    @PostMapping("/transferOfFundsB2C")
-    @ApiOperation(value="资金划转", notes="币币账户划转c2c账户")
+    @PostMapping("/transferOfFunds")
+    @ApiOperation(value="资金划转", notes="资金划转")
     @ResponseBody
-    public ReturnDTO transferOfFundsB2C(@ALoginUser LoginUser user, @RequestBody TransferDto transferDto){
+    public ReturnDTO transferOfFunds(@ALoginUser LoginUser user, @RequestBody TransferDto transferDto){
         if(user == null || user.getUser_id() == null){
             return ReturnDTO.error("用户未登录");
         }else{
@@ -47,7 +47,7 @@ public class TWalletTransferController extends BaseController<TWalletTransfer, T
             return ReturnDTO.error("划转数量必须正整数");
         }
         try{
-            return walletTransferService.transferOfFundsB2C(transferDto);
+            return walletTransferService.transferOfFunds(transferDto);
         }catch (Exception e){
             e.printStackTrace();
             return ReturnDTO.error("服务器繁忙，请稍后重试");

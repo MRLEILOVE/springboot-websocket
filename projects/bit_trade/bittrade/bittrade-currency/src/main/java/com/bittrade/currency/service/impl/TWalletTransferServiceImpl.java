@@ -53,11 +53,11 @@ public class TWalletTransferServiceImpl extends DefaultTWalletTransferServiceImp
     private ITWalletTransferService walletTransferService;
 
     /**
-     * 资金划转（币币账户划转c2c账户）
+     * 资金划转
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public ReturnDTO transferOfFundsB2C(TransferDto transferDto) throws Exception {
+    public ReturnDTO transferOfFunds(TransferDto transferDto) throws Exception {
         //验证小数位长度
         String[] split = transferDto.getNum().toPlainString().split("\\.");
         if(split != null && split.length == 2){

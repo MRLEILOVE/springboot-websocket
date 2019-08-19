@@ -58,9 +58,6 @@ public class TLegalCurrencyAccountServiceImpl extends DefaultTLegalCurrencyAccou
         for(AssetsVO x : AssetsVOs){
             //获取最新价
             String s = jedisCluster.get(IConstant.REDIS_PREFIX__LINE_PRICE + x.getCurrencyName());
-           /* if(s == null){
-                s = "2";
-            }*/
             BigDecimal price = new BigDecimal(s);
             //USDT累计
             BigDecimal all = x.getTotal().add(x.getTradeFrozen().add(x.getTransferFrozen()));
@@ -158,5 +155,27 @@ public class TLegalCurrencyAccountServiceImpl extends DefaultTLegalCurrencyAccou
                 .build();
         legalCurrencyAccountDAO.add(account);
         return account;
+    }
+
+    /**
+     * 查询用户钱包可用余额
+     * @param userId 用户id
+     * @param coinName 币种名称
+     * @return
+     */
+    @Override
+    public String availableBalance(Long userId, String coinName) {
+        return legalCurrencyAccountDAO.availableBalance(userId,coinName);
+    }
+
+    /**
+     * 获取用户法币账户总的usdt数量
+     * @param userId 用户id
+     * @return
+     */
+    @Override
+    public BigDecimal getAssets(Long userId) {
+        ConversionVo vo = totalConversion(userId);
+        return vo.getUSDT();
     }
 }
