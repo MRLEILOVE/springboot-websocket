@@ -19,4 +19,12 @@ public interface ITLegalCurrencyAccountDAO extends IDefaultTLegalCurrencyAccount
      * @return
      */
     List<AssetsVO> getAssets(@Param("userId") Long userId);
+
+    /**
+     * 查询用户钱包可用余额
+     * @param userId 用户id
+     * @param coinName 币种名称
+     * @return
+     */
+    String availableBalance(@Param("userId") Long userId, @Param("coinName") String coinName);
 }

@@ -30,4 +30,11 @@ public interface ITLegalCurrencyAccountService extends IDefaultTLegalCurrencyAcc
      */
     List<AssetsVO> detail(Long userId);
 
+    /**
+     * 查询用户钱包可用余额
+     * @param userId 用户id
+     * @param coinName 币种名称
+     * @return
+     */
+    String availableBalance(Long userId, String coinName);
 }

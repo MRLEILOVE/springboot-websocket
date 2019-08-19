@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.bittrade.currency.dao.ITLegalCurrencyAccountDAO">
+<mapper namespace="com.bittrade.c2c.dao.ITLegalCurrencyAccountDAO">
 
 	<!-- 通用查询映射结果 -->
 	<resultMap id="BaseResultMap" type="com.bittrade.pojo.model.TLegalCurrencyAccount">
@@ -28,5 +28,13 @@
 
 	<select id="getAssets" resultType="com.bittrade.pojo.vo.AssetsVO">
 		
+	</select>
+
+	<select id="availableBalance" resultType="java.lang.String">
+		SELECT IFNULL(a.balance_amount,0) AS  balanceAmount
+		FROM t_legal_currency_account a
+		INNER JOIN t_legal_currency_coin c ON c.id = a.coin_id
+		WHERE a.user_id = #{userId}
+		AND c.`name` = #{coinName}
 	</select>
 </mapper>

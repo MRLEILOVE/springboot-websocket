@@ -159,4 +159,15 @@ public class TLegalCurrencyAccountServiceImpl extends DefaultTLegalCurrencyAccou
         legalCurrencyAccountDAO.add(account);
         return account;
     }
+
+    /**
+     * 查询用户钱包可用余额
+     * @param userId 用户id
+     * @param coinName 币种名称
+     * @return
+     */
+    @Override
+    public String availableBalance(Long userId, String coinName) {
+        return legalCurrencyAccountDAO.availableBalance(userId,coinName);
+    }
 }
