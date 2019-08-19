@@ -10,6 +10,7 @@ import com.bittrade.currency.dao.ITCurrencyTradeDAO;
 import com.bittrade.currency.dao.ITWalletDAO;
 import com.bittrade.currency.dao.ITWalletRecordDAO;
 import com.bittrade.currency.feign.AssetsService;
+import com.bittrade.currency.feign.IC2CTransferService;
 import com.bittrade.pojo.dto.TWalletDTO;
 import com.bittrade.pojo.model.*;
 import com.bittrade.pojo.vo.*;
@@ -53,6 +54,8 @@ public class TWalletServiceImpl extends DefaultTWalletServiceImpl<ITWalletDAO, T
 	private AssetsService 			assetsService;
 	@Autowired
 	private ITCurrencyDAO 			currencyDAO;
+	@Autowired
+	private IC2CTransferService		c2cTransferService;
 
 
 	/**
@@ -250,8 +253,13 @@ public class TWalletServiceImpl extends DefaultTWalletServiceImpl<ITWalletDAO, T
 
 		//远程调用
 		try {
-			String assets = assetsService.getAssets(userId);
-			totalUSDT = totalUSDT.add(new BigDecimal(assets));
+			//资金账户
+			String funds = assetsService.getAssets(userId);
+			totalUSDT = totalUSDT.add(new BigDecimal(funds));
+
+			//法币账户
+			BigDecimal usdt = c2cTransferService.getAssetsFeign(userId);
+			totalUSDT.add(usdt);
 		} catch (RetryableException e){
 			e.printStackTrace();
 			return ReturnDTO.error("网络繁忙，请稍后再试");
@@ -375,37 +383,4 @@ public class TWalletServiceImpl extends DefaultTWalletServiceImpl<ITWalletDAO, T
 		walletDAO.add(wallet);
 		return wallet;
 	}
-
-	/**
-	 * 资产总览
-	 * @param userId 用户id
-	 * @return
-	 */
-	/*@Override
-	public ReturnDTO<List<ConversionVo>> overview(Long userId) {
-		List<ConversionVo> list = new ArrayList<>();
-
-		*//** 获取币币账户总资产折合 *//*
-		ConversionVo bibi = totalConversion(userId);
-		bibi.setAccount("币币账户");
-		list.add(bibi);
-
-		*//** 远程调用法币账户总资产折合 *//*
-		ConversionVo personal = assetsService.personalTotalConversion(userId);
-		personal.setAccount("法币账户");
-		list.add(personal);
-
-		*//** 远程调用资金账户总资产折合 *//*
-		ConversionVo fund = assetsService.personalTotalConversion(userId);
-		fund.setAccount("资金账户");
-		list.add(fund);
-
-		*//** 交易账户 = 法币账户 + 币币账户 *//*
-		ConversionVo deal = ConversionVo.builder().account("交易账户").build();
-		deal.setUSDT(personal.getUSDT().add(bibi.getUSDT()));
-		deal.setCNY(personal.getCNY().add(bibi.getCNY()));
-		list.add(deal);
-
-		return ReturnDTO.ok(list);
-	}*/
 }

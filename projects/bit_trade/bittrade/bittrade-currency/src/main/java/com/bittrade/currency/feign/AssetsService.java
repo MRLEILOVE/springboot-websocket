@@ -8,23 +8,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.math.BigDecimal;
+
 @FeignClient(name = "jdcloud-provider-walletbiz",configuration = FeignConfiguration.class,fallback = TransferFallBack.class)
 public interface AssetsService {
 
     @GetMapping(value = "/assets/getAssets")
     String getAssets(@RequestParam("userId")Long userId);
 
-    /**
-     * 远程调用资金账户总资产折合
-     * @param userId 用户
-     * @return
-     */
-    @PostMapping(value = "/wallet/conversionTotal")
-    ConversionVo personalTotalConversion(Long userId);
 
-    /**
-     * 远程调用法币账户总资产折合
-     * @param userId 用户id
-     */
-//    ConversionVo personalTotalConversion(Long userId);
 }
