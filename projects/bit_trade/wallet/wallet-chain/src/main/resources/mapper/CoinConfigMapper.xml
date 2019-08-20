@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wallet.chain.dao.CoinConfigDao">
+
+    <!-- 通用查询映射结果 -->
+    
+    <resultMap id="BaseResultMap" type="com.wallet.chain.entity.CoinConfig">
+        <id column="id" property="id"/>
+        <result column="coin_type" property="coinType"/>
+        <result column="token" property="token"/>
+        <result column="contract" property="contract"/>
+        <result column="scan_block" property="scanBlock"/>
+        <result column="base_multiple" property="baseMultiple"/>
+        <result column="min_confirm" property="minConfirm"/>
+        <result column="boss_address" property="bossAddress"/>
+        <result column="min_collection_amount" property="minCollectionAmount"/>
+        <result column="valid" property="valid"/>
+        <result column="remark" property="remark"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, coin_type, token, contract, scan_block, base_multiple, min_confirm, boss_address, min_collection_amount, valid, remark, create_time, update_time
+    </sql>
+
+</mapper>
