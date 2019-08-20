@@ -7,6 +7,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -246,5 +249,53 @@ public class TLegalCurrencyAccountServiceImpl extends DefaultTLegalCurrencyAccou
     @Override
     public Integer c2cOut(Long id, BigDecimal num, Integer version) {
         return legalCurrencyAccountDAO.c2cOut(id,num,version);
+    }
+
+    /**
+     * 冻结对应币种账户；余额减，冻结加
+     * <br/>
+     * create by: leigq
+     * <br/>
+     * create time: 2019/8/20 22:51
+     * @param userId : userId
+     * @param coinId : coinId
+     * @param amount : 数量
+     * @return
+     */
+    @Override
+    public Boolean freezeAmount(Long userId, Long coinId, BigDecimal amount) {
+        TLegalCurrencyAccount currencyAccount = baseMapper.selectOne(new LambdaQueryWrapper<TLegalCurrencyAccount>()
+                .eq(TLegalCurrencyAccount::getUserId, userId)
+                .eq(TLegalCurrencyAccount::getCoinId, coinId));
+        TLegalCurrencyAccount account = TLegalCurrencyAccount.builder()
+                .id(currencyAccount.getId())
+                .balanceAmount(currencyAccount.getBalanceAmount().subtract(amount))
+                .freezeAmount(currencyAccount.getFreezeAmount().add(amount))
+                .build();
+        return baseMapper.updateById(account) > 0;
+    }
+
+    /**
+     * 解结对应币种账户；余额加，冻结减
+     * <br/>
+     * create by: leigq
+     * <br/>
+     * create time: 2019/8/20 22:51
+     * @param userId : userId
+     * @param coinId : coinId
+     * @param amount : 数量
+     * @return
+     */
+    @Override
+    public Boolean unFreezeAmount(Long userId, Long coinId, BigDecimal amount) {
+        TLegalCurrencyAccount currencyAccount = baseMapper.selectOne(new LambdaQueryWrapper<TLegalCurrencyAccount>()
+                .eq(TLegalCurrencyAccount::getUserId, userId)
+                .eq(TLegalCurrencyAccount::getCoinId, coinId));
+        TLegalCurrencyAccount account = TLegalCurrencyAccount.builder()
+                .id(currencyAccount.getId())
+                .balanceAmount(currencyAccount.getBalanceAmount().add(amount))
+                .freezeAmount(currencyAccount.getFreezeAmount().subtract(amount))
+                .build();
+        return baseMapper.updateById(account) > 0;
     }
 }

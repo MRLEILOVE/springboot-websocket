@@ -91,4 +91,32 @@ public interface ITLegalCurrencyAccountService extends IDefaultTLegalCurrencyAcc
      * @return
      */
     Integer c2cIn(Long id, BigDecimal num, Integer version);
+
+
+    /**
+     * 冻结对应币种账户；余额减，冻结加
+     * <br/>
+     * create by: leigq
+     * <br/>
+     * create time: 2019/8/20 22:51
+     * @param userId : userId
+     * @param coinId : coinId
+     * @param amount : 数量
+     * @return
+     */
+	Boolean freezeAmount(Long userId, Long coinId, BigDecimal amount);
+
+
+    /**
+     * 解结对应币种账户；余额加，冻结减
+     * <br/>
+     * create by: leigq
+     * <br/>
+     * create time: 2019/8/20 22:51
+     * @param userId : userId
+     * @param coinId : coinId
+     * @param amount : 数量
+     * @return
+     */
+    Boolean unFreezeAmount(Long userId, Long coinId, BigDecimal amount);
 }

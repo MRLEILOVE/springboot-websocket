@@ -1,8 +1,12 @@
 package com.bittrade.c2c.controller;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.bittrade.pojo.vo.QueryBuyAdvertVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -47,6 +51,23 @@ public class TAdvertInfoController extends BaseController<TAdvertInfo, TAdvertIn
 		}
 		boolean result = itAdvertInfoService.publishAdvert(user, advertInfoVO);
 		return result ? ReturnDTO.ok("發布成功") : ReturnDTO.error("發布失敗");
+	}
+
+	/**
+	 * 获取购买广告列表
+	 * <br/>
+	 * create by: leigq
+	 * <br/>
+	 * create time: 2019/8/20 19:52
+	 * @param page : {@link Page}
+	 * @param queryBuyAdvertVO : {@link QueryBuyAdvertVO}
+	 * @param loginUser : {@link LoginUser}
+	 * @return  result
+	 */
+	@GetMapping("/buy_adverts")
+	public ReturnDTO<Object> listBuyAdverts(Page<TAdvertInfo> page, QueryBuyAdvertVO queryBuyAdvertVO, @ALoginUser LoginUser loginUser) {
+		IPage<TAdvertInfo> buyAdverts = itAdvertInfoService.listBuyAdverts(page, queryBuyAdvertVO, loginUser);
+		return ReturnDTO.ok(buyAdverts);
 	}
 
 }
