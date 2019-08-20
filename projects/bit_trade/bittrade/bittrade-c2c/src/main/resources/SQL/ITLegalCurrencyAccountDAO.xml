@@ -52,4 +52,20 @@
 		WHERE a.user_id = #{userId}
 		AND c.`name` = #{coinName}
 	</select>
+
+	<update id="c2cIn">
+		UPDATE t_legal_currency_account
+		SET balance_amount = balance_amount + #{num},
+			update_time = now(),
+        	version = version + 1
+		WHERE id = #{id} AND version = #{version}
+	</update>
+
+	<update id="c2cOut">
+		UPDATE t_legal_currency_account
+		SET balance_amount = balance_amount - #{num},
+			update_time = now(),
+            version = version + 1
+		WHERE id = #{id} AND version = #{version}
+	</update>
 </mapper>

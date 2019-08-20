@@ -68,16 +68,7 @@ public interface ITWalletDAO extends IDefaultTWalletDAO {
     Integer decreaseTransferFreeze(@Param("id")Long id, @Param("transferFrozen")BigDecimal transferFrozen, @Param("version")Integer version);
 
     /**
-     * 币币账户充值
-     * @param id id
-     * @param num 划转数量
-     * @param version 版本号
-     * @return
-     */
-    Integer biBiAccountEntry(@Param("id")Long id,@Param("num") BigDecimal num,@Param("version") Integer version);
-
-    /**
-     *
+     * 币币账户入账
      * @param id id
      * @param num 划转数量
      * @param version 版本号
@@ -86,16 +77,19 @@ public interface ITWalletDAO extends IDefaultTWalletDAO {
     Integer biBiAccountOut(@Param("id")Long id, @Param("num")BigDecimal num, @Param("version")Integer version);
 
     /**
+     * 币币账户出账
+     * @param id id
+     * @param num 划转数量
+     * @param version 版本号
+     * @return
+     */
+    Integer biBiAccountIn(@Param("id")Long id, @Param("num")BigDecimal num, @Param("version")Integer version);
+
+    /**
      * 获取用户币币账户资产
      * @param userId 用户id
      * @return 资产vo
      */
     List<AssetsVO> getAssets(@Param("userId") Long userId);
 
-    /**
-     * 查询用户钱包列表
-     * @param userId 用户id
-     * @return 账户vo
-     */
-    List<AccountVO> qryByUser(@Param("userId") Long userId);
 }

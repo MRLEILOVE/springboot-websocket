@@ -5,6 +5,7 @@ import com.bittrade.pojo.model.TLegalCurrencyAccount;
 import com.bittrade.pojo.vo.AssetsVO;
 import org.apache.ibatis.annotations.Param;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -41,4 +42,22 @@ public interface ITLegalCurrencyAccountDAO extends IDefaultTLegalCurrencyAccount
      * @return 法币账户
      */
     TLegalCurrencyAccount getByUserIdAndCoinName(@Param("userId") Long userId, @Param("coinName") String coinName);
+
+    /**
+     * c2c钱包入账
+     * @param id 钱包id
+     * @param num 划转数量
+     * @param version 版本号
+     * @return
+     */
+    Integer c2cIn(@Param("id") Long id, @Param("num") BigDecimal num, @Param("version") Integer version);
+
+    /**
+     * c2c钱包出账
+     * @param id 钱包id
+     * @param num 数量
+     * @param version 版本号
+     * @return
+     */
+    Integer c2cOut(@Param("id") Long id, @Param("num") BigDecimal num, @Param("version") Integer version);
 }

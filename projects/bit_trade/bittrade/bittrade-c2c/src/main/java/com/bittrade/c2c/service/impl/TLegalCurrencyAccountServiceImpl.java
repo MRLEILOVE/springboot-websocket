@@ -196,4 +196,56 @@ public class TLegalCurrencyAccountServiceImpl extends DefaultTLegalCurrencyAccou
         ConversionVo vo = totalConversion(userId);
         return vo.getUSDT();
     }
+
+    /**
+     * 根据币种名称获取c2c钱包
+     * @param coinName 币种名称
+     * @return
+     */
+    @Override
+    public TLegalCurrencyCoin getCoinByName(String coinName) {
+        TLegalCurrencyCoin qryCoin = TLegalCurrencyCoin.builder().name(coinName).status(StatusEnumer.ENABLE.getCode()).build();
+        return legalCurrencyCoinDAO.getBy(qryCoin);
+    }
+
+    /**
+     * 获取c2c账号
+     * @param userId 用户id
+     * @param coinId 法币币种id
+     * @return
+     */
+    @Override
+    public TLegalCurrencyAccount getC2CAccount(Long userId, Long coinId) {
+        TLegalCurrencyAccount qryAccount = TLegalCurrencyAccount.builder().userId(userId).coinId(coinId.intValue()).build();
+        TLegalCurrencyAccount c2cAccount = legalCurrencyAccountDAO.getBy(qryAccount);
+        if(c2cAccount == null){
+            //为用户开通钱包
+            return createWallet(coinId,userId);
+        }
+        return c2cAccount;
+    }
+
+    /**
+     * c2c钱包入账
+     * @param id 钱包id
+     * @param num 划转数量
+     * @param version 版本号
+     * @return
+     */
+    @Override
+    public Integer c2cIn(Long id, BigDecimal num, Integer version) {
+        return legalCurrencyAccountDAO.c2cIn(id,num,version);
+    }
+
+    /**
+     * c2c钱包出账
+     * @param id 钱包id
+     * @param num 数量
+     * @param version 版本号
+     * @return
+     */
+    @Override
+    public Integer c2cOut(Long id, BigDecimal num, Integer version) {
+        return legalCurrencyAccountDAO.c2cOut(id,num,version);
+    }
 }
