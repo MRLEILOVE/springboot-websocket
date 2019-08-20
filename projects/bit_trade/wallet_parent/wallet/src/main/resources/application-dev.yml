@@ -1,0 +1,55 @@
+spring:
+  datasource:
+    druid:
+      driver-class-name: com.mysql.jdbc.Driver
+      url: jdbc:mysql://154.222.138.249/jd_db?useSSL=false&useUnicode=true&characterEncoding=UTF-8&serverTimezone=CTT
+      username: jddevuser
+      password: jddev@xlkj20190711?!
+      initial-size: 5
+      minIdle: 5
+      maxActive: 20
+      maxWait: 60000
+      use-unfair-lock: true
+      pool-prepared-statements: false
+      max-pool-prepared-statement-per-connection-size: -1
+      validationQuery: SELECT 1
+      test-on-borrow: false
+      test-on-return: false
+      test-while-idle: true
+      keep-alive: true
+      timeBetweenEvictionRunsMillis: 60000
+      minEvictableIdleTimeMillis: 300000
+  application:
+    name: wallet-service
+
+
+mybatis-plus:
+  mapper-locations: classpath:/mapper/**/*.xml
+  type-aliases-package: com.micro
+  global-config:
+    db-config:
+      id-type: auto
+
+btc:
+  config-wallet:
+    encrypt-key: 1234567812345678  #最少16位   8的倍数
+  user-wallet:
+    encrypt-key: 1234567812345678  #最少16位   8的倍数
+  network:
+    main: false   #测试网络
+  point:
+    url:  http://58.82.251.195:8888
+    user: a61d8ccbf458819d
+    password: df81ae8d7de19032
+  fee_rate:
+    url: https://bitcoinfees.earn.com/api/v1/fees/recommended
+server:
+  port: 19999
+
+eureka:
+  client:
+    service-url:
+      defaultZone:  http://admin:admin@localhost:8761/eureka/
+  instance:
+    instance-id:  ${spring.application.name}:${spring.cloud.client.ip-address}:${server.port}
+

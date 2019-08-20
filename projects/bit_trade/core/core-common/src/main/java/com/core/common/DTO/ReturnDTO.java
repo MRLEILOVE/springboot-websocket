@@ -55,6 +55,20 @@ public class ReturnDTO<T> implements Serializable {
 	/**
 	 * ok
 	 * @param <T>
+	 * @return
+	 */
+	public static final <T> ReturnDTO<T> ok() {
+		ReturnDTO<T> ret = new ReturnDTO<T>();
+		
+		ret.setCode(IConstant.SUCCESS);
+		ret.setMsg(IConstant.SUCCESS_TXT);
+		
+		return ret;
+	}
+
+	/**
+	 * ok
+	 * @param <T>
 	 * @param msg
 	 * @return
 	 */

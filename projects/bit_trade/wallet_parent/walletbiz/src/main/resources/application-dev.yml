@@ -1,0 +1,120 @@
+server:
+  port: 8081
+  compression:
+    enabled: true
+    min-response-size: 1024
+    mime-types: image/png,image/jpeg,image/jpg,text/html,application/javascript,text/css,application/octet-stream,application/json
+
+eureka:
+  client:
+    service-url:
+      defaultZone:  http://admin:admin@localhost:8761/eureka/
+  instance:
+    instance-id:  jdcloud-provider-walletbiz@localhost:8086
+
+jdcloud:
+  token:
+    interceptor:
+      enable:  true
+  grayRelease:
+    interceptor:
+      enable:  true
+  quotation:
+    warning:
+      phone:  85263516042
+  oauth2:
+    client:
+      id : ${security.oauth2.resource.id}
+      accessTokenUrl :  ${security.oauth2.client.access-token-uri}
+      clientId :  ${security.oauth2.client.clientId}
+      clientSecret :  ${security.oauth2.client.clientSecret}
+      clientAuthenticationScheme: header
+
+  aliyun:
+    uploadPath:  test/
+  zookeeper:
+    nodes:   192.168.1.140:2181,192.168.1.140:2182,192.168.1.140:2183
+
+###security
+security:
+  basic:
+    enabled: false
+  oauth2:
+    client:
+      clientId: jdcloud-client-walletbiz
+      clientSecret: jdcloudClientSecret
+      access-token-uri :  http://localhost:8087/oauth/token
+      user-authorization-uri :  http://localhost:8087/oauth/authorize
+    resource:
+      user-info-uri:  http://localhost:8087/user
+      prefer-token-info:  false
+      jwt.key-uri:  http://localhost:8087/oauth/token_key
+
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      username: jddevuser
+      password: jddev@xlkj20190711?!
+      url: jdbc:mysql://154.222.138.249:3306/jd_db?useSSL=false&useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
+      driver-class-name: com.mysql.jdbc.Driver
+      initial-size: 5
+      max-active: 20
+      min-idle: 5
+      max-wait: 60000
+      pool-prepared-statements: true
+      max-pool-prepared-statement-per-connection-size:  20
+      validation-query: SELECT 1
+      test-while-idle:  true
+      test-on-borrow: false
+      test-on-return: false
+      stat-view-servlet:
+        login-username: admin
+        login-password: Admin10086
+  redis:
+    pool:
+      max-idle: 30
+      min-idle: 10
+      max-active: 150
+      max-wait:  1000
+    timeout: 10000
+    database: 0
+    host: 154.222.138.5
+    port: 7502
+    #password: dev@xlkj20190711
+    password: Qdsemmde_sde@#!Bitrade
+  application:
+    name: walletbiz:@pom.artifactId@
+  http:
+    encoding:
+      force: true
+      charset: utf-8
+      enabled: true
+
+mybatis:
+  mapper-locations:
+    classpath: mapper/*.xml
+    type-aliases-package: com.jdcloud.provider.pojo
+
+
+
+feign:
+  hystrix:
+    enabled: true
+
+
+
+swagger:
+  exclude-path: /error ,/auditevents,/env,/fundAccount, /refresh , /health, /heapdump,/hystrix.stream/** ,/jolokia/** , /loggers ,/auditevents.json ,/env/reset , /env.json , /env/ , /health.json, /heapdump.json,/metrics ,/shutdown ,/shutdown.json , /service-registry/instance-status , /metrics.json ,/loggers.json ,/refresh.json, /env/{name},/loggers/{name},/metrics/{name},/archaius,/archaius.json,/autoconfig,/autoconfig.json,/beans,/beans.json,/configprops,/configprops.json,/dump,/dump.json,/features,/features.json,/info,/info.json,/mappings,/mappings.json,/trace,/trace.json
+
+
+
+btc:
+  point:
+    url: http://58.82.251.195:8888
+    user: a61d8ccbf458819d
+    password: df81ae8d7de19032
+  network:
+    main: true   #测试网络
+
+

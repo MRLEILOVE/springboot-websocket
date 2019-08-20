@@ -24,6 +24,7 @@
 		<module>core</module>
 		<module>test</module>
 		<module>bittrade</module>
+		<module>wallet_parent</module>
 	</modules>
 
 	<properties>
