@@ -33,35 +33,6 @@ public class FundAccountController {
     @Autowired
     private ITwalletFundAccountRecordService walletFundAccountRecordService;
 
-    /*@ApiOperation(value="查询用户的资金账户", notes="查询用户的资金账户")
-    @GetMapping(value = "/queryAccountByUserId/{userId}")
-    @ResponseBody
-    public Wrapper<AccountVO> queryAccountByUserId(@PathVariable("userId")Integer userId){
-        return ReturnDTO.ok(walletFundAccountService.queryAccountByUserId(userId));
-    }*/
-
-    @PostMapping("/recordList")
-    @ApiOperation(value="资金账户列表", notes="资金账户列表")
-    @ResponseBody
-    public ReturnDTO<IPage<TWalletFundAccountRecord>> recordList(@RequestBody RecordDto recordDto){
-    	QueryWrapper<TWalletFundAccountRecord> wrapper = new QueryWrapper<>();
-        wrapper.eq("user_id",recordDto.getUserId()).eq("currency",recordDto.getCurrency());
-        Page<TWalletFundAccountRecord> page = new Page<>(recordDto.getCurrent(), recordDto.getSize());
-        IPage<TWalletFundAccountRecord> page1 = walletFundAccountRecordService.page(page, wrapper);
-        return ReturnDTO.ok(page1);
-    }
-
-    @PostMapping("/queryCurrencyInfo")
-    @ApiOperation(value="当前币种信息", notes="当前币种信息")
-    @ResponseBody
-    public ReturnDTO<IPage<TWalletFundAccountRecord>> queryCurrencyInfo(@RequestBody RecordDto recordDto){
-        QueryWrapper<TWalletFundAccountRecord> wrapper = new QueryWrapper<>();
-        wrapper.eq("user_id",recordDto.getUserId()).eq("currency",recordDto.getCurrency());
-        Page<TWalletFundAccountRecord> page = new Page<>(recordDto.getCurrent(), recordDto.getSize());
-        IPage<TWalletFundAccountRecord> page1 = walletFundAccountRecordService.page(page, wrapper);
-        return ReturnDTO.ok(page1);
-    }
-
     @PostMapping("/queryFundAccountRecord")
     @ApiOperation(value="查詢资金账户记录")
     @ResponseBody

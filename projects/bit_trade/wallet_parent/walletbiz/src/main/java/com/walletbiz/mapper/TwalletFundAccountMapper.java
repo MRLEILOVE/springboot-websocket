@@ -1,7 +1,9 @@
 package com.walletbiz.mapper;
 
 import java.math.BigDecimal;
+import java.util.List;
 
+import com.walletbiz.vo.AssetsVO;
 import org.apache.ibatis.annotations.Param;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
@@ -13,6 +15,13 @@ public interface TwalletFundAccountMapper extends BaseMapper<TWalletFundAccount>
      * 资金账户改变金额
      */
     Integer changeMoney(TWalletFundAccount walletFundAccount);
+
+    /**
+     * 获取用户资金账户资产
+     * @param userId 用户id
+     * @return
+     */
+    List<AssetsVO> getAssetsVO(@Param("userId") Long userId);
 
     /**
      * 冻结划转金额
