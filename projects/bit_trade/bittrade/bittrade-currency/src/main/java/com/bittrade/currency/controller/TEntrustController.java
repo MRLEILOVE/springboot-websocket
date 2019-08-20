@@ -2,9 +2,6 @@ package com.bittrade.currency.controller;
 
 import java.math.BigDecimal;
 
-import com.bittrade.common.utils.RedisKeyUtil;
-import com.core.common.annotation.ALoginUser;
-import com.core.web.common.entity.LoginUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -21,6 +18,7 @@ import com.alibaba.dubbo.config.annotation.Reference;
 import com.bittrade.common.enums.EntrustDirectionEnumer;
 import com.bittrade.common.enums.EntrustStatusEnumer;
 import com.bittrade.common.enums.EntrustTypeEnumer;
+import com.bittrade.common.utils.RedisKeyUtil;
 import com.bittrade.entrust.api.service.ITEntrustService;
 import com.bittrade.pojo.dto.DealDTO;
 import com.bittrade.pojo.dto.TEntrustDTO;
@@ -29,8 +27,10 @@ import com.bittrade.pojo.vo.TEntrustInfoVO;
 import com.bittrade.pojo.vo.TEntrustVO;
 import com.core.common.DTO.PageDTO;
 import com.core.common.DTO.ReturnDTO;
+import com.core.common.annotation.ALoginUser;
 import com.core.common.constant.ICompareResultConstant;
 import com.core.framework.base.controller.BaseController;
+import com.core.web.constant.entity.LoginUser;
 
 import io.swagger.annotations.ApiOperation;
 import redis.clients.jedis.JedisCluster;

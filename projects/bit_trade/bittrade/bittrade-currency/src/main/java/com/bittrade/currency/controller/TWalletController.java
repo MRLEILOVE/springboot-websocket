@@ -1,14 +1,8 @@
 package com.bittrade.currency.controller;
 
-import com.bittrade.currency.api.service.ITWalletService;
-import com.bittrade.pojo.dto.TWalletDTO;
-import com.bittrade.pojo.model.TWallet;
-import com.bittrade.pojo.vo.*;
-import com.core.common.DTO.ReturnDTO;
-import com.core.common.annotation.ALoginUser;
-import com.core.framework.base.controller.BaseController;
-import com.core.web.common.entity.LoginUser;
-import io.swagger.annotations.ApiOperation;
+import java.math.BigDecimal;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -17,8 +11,20 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.math.BigDecimal;
-import java.util.List;
+import com.bittrade.currency.api.service.ITWalletService;
+import com.bittrade.pojo.dto.TWalletDTO;
+import com.bittrade.pojo.model.TWallet;
+import com.bittrade.pojo.vo.AssetsVO;
+import com.bittrade.pojo.vo.CoinAccountVO;
+import com.bittrade.pojo.vo.ConversionVo;
+import com.bittrade.pojo.vo.TWalletVO;
+import com.bittrade.pojo.vo.UserWalletVO;
+import com.core.common.DTO.ReturnDTO;
+import com.core.common.annotation.ALoginUser;
+import com.core.framework.base.controller.BaseController;
+import com.core.web.constant.entity.LoginUser;
+
+import io.swagger.annotations.ApiOperation;
 
 /**
  * 

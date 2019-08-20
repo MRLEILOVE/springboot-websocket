@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.core.common.annotation.ALoginUser;
-import com.core.web.common.entity.LoginUser;
+import com.core.web.constant.entity.LoginUser;
 
 @RestController
 // @EnableOAuth2Sso

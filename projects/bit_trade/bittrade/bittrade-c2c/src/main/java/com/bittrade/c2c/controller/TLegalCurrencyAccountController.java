@@ -1,5 +1,16 @@
 package com.bittrade.c2c.controller;
 
+import java.math.BigDecimal;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
 import com.bittrade.c2c.service.ITLegalCurrencyAccountService;
 import com.bittrade.pojo.dto.TLegalCurrencyAccountDTO;
 import com.bittrade.pojo.model.TLegalCurrencyAccount;
@@ -9,16 +20,10 @@ import com.bittrade.pojo.vo.TLegalCurrencyAccountVO;
 import com.core.common.DTO.ReturnDTO;
 import com.core.common.annotation.ALoginUser;
 import com.core.framework.base.controller.BaseController;
-import com.core.web.common.entity.LoginUser;
+import com.core.web.constant.entity.LoginUser;
+
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-
-import java.math.BigDecimal;
-import java.util.List;
 
 /**
  * 
