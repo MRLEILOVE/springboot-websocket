@@ -1,7 +1,5 @@
 package com.bittrade.c2c.service.impl;
 
-import com.bittrade.__default.service.IDefaultTLegalCurrencyAccountService;
-import com.bittrade.__default.service.IDefaultTLegalCurrencyCoinService;
 import com.bittrade.__default.service.impl.DefaultTAdvertInfoServiceImpl;
 import com.bittrade.c2c.dao.ITAdvertInfoDAO;
 import com.bittrade.c2c.service.ITAdvertInfoService;
@@ -54,13 +52,20 @@ public class TAdvertInfoServiceImpl extends DefaultTAdvertInfoServiceImpl<ITAdve
 			advertInfoVO.setHidePrice(null);
 		}
 
+		// 获取对应虚拟币
+		TLegalCurrencyCoin coin = itLegalCurrencyCoinService.getById(advertInfoVO.getCoinId());
+
+		// 发布广告最小数量
+		if (advertInfoVO.getAmount().compareTo(coin.getMinQuota()) < 0) {
+			throw new BusinessException(String.format("發布廣告數量最少需 %f 個", coin.getMinQuota()));
+		}
+
 		if (advertInfoVO.isBuyType()) {
-			// 发布购买，购买无付款时间限制，无数量限制
+			// 发布购买，购买无付款时间限制
 			advertInfoVO.setPaymentTime(null);
 		} else {
 			// 发布出售
 			// 验证账户可用数量
-			TLegalCurrencyCoin coin = itLegalCurrencyCoinService.getById(advertInfoVO.getCoinId());
 			TLegalCurrencyAccount currencyAccount = itLegalCurrencyAccountService.getByUserIdAndCoinName(user.getUser_id(), coin.getName());
 			if (advertInfoVO.getAmount().compareTo(currencyAccount.getBalanceAmount()) > 0) {
 				throw new BusinessException("賬戶可用餘額不足");

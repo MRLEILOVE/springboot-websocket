@@ -64,21 +64,21 @@ public class AdvertInfoVO implements Serializable {
 	 * 交易数量
 	 */
 	@NotNull(message = "交易數量必填")
-	@DecimalMin(value = "0", message = "交易數量需大於0")
+	@DecimalMin(value = "0", inclusive = false, message = "交易數量需大於0")
 	private BigDecimal amount;
 
 	/**
 	 * 单笔最小限额
 	 */
 	@NotNull(message = "單筆最小限額必填")
-	@DecimalMin(value = "0", message = "單筆最小限額需大於0")
+	@DecimalMin(value = "0", inclusive = false, message = "單筆最小限額需大於0")
 	private BigDecimal minLimit;
 
 	/**
 	 * 单笔最大限额
 	 */
 	@NotNull(message = "單筆最大限額必填")
-	@DecimalMin(value = "0", message = "單筆最大限額需大於0")
+	@DecimalMin(value = "0", inclusive = false, message = "單筆最大限額需大於0")
 	private BigDecimal maxLimit;
 
 	/**
