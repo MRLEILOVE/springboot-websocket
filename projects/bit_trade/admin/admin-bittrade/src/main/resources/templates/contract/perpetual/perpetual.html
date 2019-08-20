@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org"
+	xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<style>
+	.surplus{
+		color: #00B83F;
+	}
+
+	.depreciate{
+		color: #c72522;
+	}
+</style>
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	
+	<div class="container-div">
+		<div class="row">
+			<div class="col-sm-12 search-collapse">
+				<form id="operlog-form">
+					<input type="text" hidden="hidden" value="1" name="params[status]">
+					<div class="select-list">
+						<ul>
+							<li class="select-time">
+								<label> 建仓日期：</label>
+								<input type="text" class="time-input" id="startTime" placeholder="开始时间" name="params[beginTime]"/>
+								<span>-</span>
+								<input type="text" class="time-input" id="endTime" placeholder="结束时间" name="params[endTime]"/>
+							</li>
+							<li>
+								<label>订单类型： </label><select name="tokenOrder" th:with="type=${@dict.getType('contract_token_order')}">
+								<option value="">所有</option>
+								<option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+							</select>
+							</li>
+							<li>
+								<label>下单平台： </label><select name="clientType" th:with="type=${@dict.getType('contract_client_type')}">
+								<option value="">所有</option>
+								<option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+							</select>
+							</li>
+							<li>
+								<label>方向： </label><select name="direction" th:with="type=${@dict.getType('sys_contract_direction')}">
+								<option value="">所有</option>
+								<option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+							</select>
+							</li>
+							<li>
+								<label>内部账号： </label><select name="internalAccount" th:with="type=${@dict.getType('user_internal_account')}">
+								<option value="">所有</option>
+								<option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+							</select>
+							</li>
+							<li>
+								<label>条件查询： </label><input type="text" name="params[condition]"/>
+							</li>
+							<li>
+								<a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+								<a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+							</li>
+						</ul>
+					</div>
+				</form>
+			</div>
+			
+			<div class="btn-group-sm" id="toolbar" role="group">
+	            <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="contract:perpetual:export">
+		            <i class="fa fa-download"></i> 导出
+		        </a>
+	        </div>
+	        
+			<div class="col-sm-12 select-table table-striped">
+				<table id="bootstrap-table" data-mobile-responsive="true"></table>
+			</div>
+		</div>
+	</div>
+	
+	<div th:include="include :: footer"></div>
+	<script th:inline="javascript">
+        var internalAccounts = [[${@dict.getType('user_internal_account')}]];
+        var datas = [[${@dict.getType('sys_contract_direction')}]];
+		var prefix = ctx + "contract/perpetual";
+
+		$(function() {
+            var options = {
+                url: prefix + "/list",
+                exportUrl: prefix + "/export",
+                sortName: "",
+                sortOrder: "",
+                modalName: "永续合约持仓单",
+                search: false,
+                showExport: false,
+                columns: [
+                    {
+                        field: 'clientOrderId',
+                        title: '订单号'
+                    },
+                    {
+                        field: 'realName',
+                        title: '姓名'
+                    },
+                    {
+                        field: 'loginName',
+                        title: '用户名'
+                    },
+                    {
+                        field: 'internalAccount',
+                        title: '内部账号',
+                        formatter: function(value, row, index) {
+                            return $.table.selectDictLabel(internalAccounts, value);
+                        }
+                    },
+                    {
+                        field: 'openTime',
+                        title: '建仓时间'
+                    },
+                    {
+                        field: 'openPrice',
+                        title: '建仓价(USDT)'
+                    },
+                    {
+                        field: 'symbol',
+                        title: '交易对'
+                    },
+                    {
+                        field: 'profitLoss',
+                        title: '实时盈亏(USDT)',
+                        formatter: function(value, row, index) {
+                            var actions = [];
+                            var loss = value == null?"--":value;
+                            var ratio = row.profitLossRatio == null?"--":row.profitLossRatio;
+                            if (value < 0) {
+                                actions.push('<span class="depreciate">' + loss + '</span><br/><span class="depreciate">' + ratio + '</span>');
+                            } else {
+                                actions.push('<span class="surplus">' + loss + '</span><br/><span class="surplus">' + ratio + '</span>');
+                            }
+                            return actions.join('');
+                        }
+                    },
+                    {
+                        field: 'direction',
+                        title: '方向',
+                        align: 'center',
+                        formatter: function(value, row, index) {
+                            return $.table.selectDictLabel(datas, value);
+                        }
+                    },
+                    {
+                        field: 'lots',
+                        title: '手数',
+                    },
+                    {
+                        field: 'usedMargin',
+                        title: '保证金(USDT)',
+                        formatter: function(value, row, index) {
+                            return row.tokenOrder == 2 ? value+"(体验金)":value;
+                        }
+                    },
+                    {
+                        field: 'serviceFee',
+                        title: '手续费(USDT)',
+                        formatter: function(value, row, index) {
+                            return row.tokenOrder == 2 ? value+"(体验金)":value;
+                        }
+                    },
+                    {
+                        field: 'multiple',
+                        title: '杠杆',
+                    },
+                    {
+                        field: 'userAccountRisk',
+                        title: '操作',
+                        align: 'center',
+                        formatter: function(value, row, index) {
+                            var actions = [];
+                            if (value < 0.7) {
+                                actions.push('<a class="btn btn-primary btn-xs " href="#" onclick="sell(\'' + row.orderId + '\')" shiro:hasPermission="contract:perpetual:sell">' +
+									'<i class="fa fa-check-square-o"></i>强制平仓</a>');
+                            }
+                            return actions.join('');
+                        }
+                    }]
+            };
+            $.table.init(options);
+		});
+        /*平仓*/
+        function sell(orderId) {
+            var msg = "是否对该用户订单进行强制平仓操作？\n\n请确认！";
+            if (confirm(msg)==true){
+                $.post(prefix+"/sell",
+                    {orderId:orderId},
+                    function(data){
+                        if (data.code == 200) {
+                            $(".glyphicon-refresh").click();
+                        } else {
+                            alert(data.message);
+                        }
+                    });
+            }
+
+        }
+	</script>
+</body>
+</html>

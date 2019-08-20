@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+
+<div class="container-div">
+    <div class="row">
+        <div class="col-sm-12 search-collapse">
+            <form id="operlog-form">
+                <div class="select-list">
+                    <ul>
+                    </ul>
+                </div>
+            </form>
+        </div>
+        <div class="btn-group-sm" id="toolbar" role="group">
+            <a class="btn btn-success" onclick="$.operate.add()"
+               shiro:hasPermission="config:gradedWithdrawalLimit:add">
+                <i class="fa fa-plus"></i> 新增
+            </a>
+            <a class="btn btn-danger btn-del disabled" onclick="$.operate.removeAll()" shiro:hasPermission="config:gradedWithdrawalLimit:remove">
+                <i class="fa fa-remove"></i> 删除
+            </a>
+        </div>
+        <div class="col-sm-12 select-table table-striped" style="overflow: overlay;height: 94%;">
+            <table id="bootstrap-table" data-mobile-responsive="true"></table>
+        </div>
+    </div>
+</div>
+
+<div th:include="include :: footer"></div>
+<script th:inline="javascript">
+    layui.use('laydate', function () {
+        var laydate = layui.laydate;
+        var startTime = laydate.render({
+            elem: '#createTime',
+            type: 'date',
+            btns: ['now', 'confirm']
+        });
+        var endTime = laydate.render({
+            elem: '#endTime',
+            type: 'date',
+            btns: ['now', 'confirm']
+        });
+    });
+    var updateConfig = [[${@permission.hasPermi('config:gradedWithdrawalLimit:edit')}]];//修改
+    var removeFlag = [[${@permission.hasPermi('config:gradedWithdrawalLimit:remove')}]];
+    var prefix = ctx + "config/gradedWithdrawalLimit";
+    $(function () {
+        var options = {
+            url: prefix + "/list",
+            createUrl: prefix + "/add",
+            updateUrl: prefix + "/edit/{id}",
+            removeUrl: prefix + "/remove",
+            sortName: "gwl.create_time",
+            sortOrder: "desc",
+            modalName: "等级提币限额配置",
+            search: false,
+            striped: true,
+            showExport: false,
+            uniqueId: "id",
+            columns: [
+                {
+                    checkbox: true
+                },
+                {
+                    field: 'currencyId',
+                    title: '币种ID'
+                },
+                {
+                    field: 'currencyName',
+                    title: '币种名称'
+                },
+                {
+                    field: 'graded',
+                    title: '等级'
+                },
+                {
+                    field: 'gradedName',
+                    title: '等级名称'
+                },
+                {
+                    field: 'withdrawToBtc',
+                    title: '提币总限额折合BTC'
+                },
+                {
+                    field: 'createTime',
+                    title: '创建时间'
+                },
+                {
+                    field: 'updateTime',
+                    title: '修改时间'
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-xs'+updateConfig+'" href="#" onclick="$.operate.edit(\'' + row.id + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="#" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a> ');
+                        return actions.join('');
+                    }
+                }]
+        };
+        $.table.init(options);
+    });
+    window.operateEvents = {
+        'click .view': function (e, value, row, index) {
+            layer.open({
+                type: 1,
+                title: false,
+                closeBtn: 1,
+                area: ['auto', 'auto'],
+                skin: 'layui-layer-nobg', //没有背景色
+                shadeClose: true,
+                content: '<img src="' + row.icon + '"/>'
+            });
+        },
+    };
+</script>
+</body>
+</html>

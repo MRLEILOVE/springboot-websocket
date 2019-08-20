@@ -1,0 +1,60 @@
+
+
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <form class="form-horizontal m" id="form-dict-edit" th:object="${dto}">
+        <input name="id" type="hidden" th:field="*{id}"/>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">抢狗成功概率基数：</label>
+            <div class="col-sm-9">
+                <select class="probabilityBase" name="probabilityBase" id="probabilityBase" style="border: 1px solid #ddd;
+                        border-radius: 4px;background:transparent;outline:none; height:30px;width:180px;">
+                    <option th:each="i:${#numbers.sequence(0,100)}" th:selected="${i eq dto.probabilityBase}" th:text="${i}" th:value="${i}"></option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">抢狗成功最小值：</label>
+            <div class="col-sm-9">
+                <input class="form-control" type="text" name="probabilityMin" id="probabilityMin"
+                       th:field="*{probabilityMin}" maxlength="2">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">抢狗成功最大值：</label>
+            <div class="col-sm-9">
+                <input class="form-control" type="text" name="probabilityMax" id="probabilityMax"
+                       th:field="*{probabilityMax}" maxlength="2">
+            </div>
+        </div>
+    </form>
+</div>
+<div th:include="include::footer"></div>
+<script th:src="@{/ajax/libs/select/select2.js}"></script>
+<script type="text/javascript">
+
+    var prefix = ctx + "beta/comboGroup";
+    $("#form-dict-edit").validate({
+        rules: {
+            dictSort: {
+                digits: true
+            },
+        },
+        focusCleanup: true
+    });
+
+    function submitHandler() {
+        if ($.validate.form()) {
+            $.operate.save(prefix + "/updateComboGroup", $('#form-dict-edit').serialize());
+        }
+    }
+
+</script>
+</body>
+</html>
+

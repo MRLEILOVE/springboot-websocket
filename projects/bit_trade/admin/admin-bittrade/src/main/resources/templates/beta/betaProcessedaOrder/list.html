@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="zh_CN" xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+
+<div class="container-div">
+    <div class="row">
+        <div class="col-sm-12 search-collapse">
+            <form id="type-form">
+                <div class="select-list">
+                    <ul>
+                        <li class="select-time">
+                            <label>创建时间： </label>
+                            <input type="text" class="time-input" id="startTime" placeholder="开始时间"
+                                   name="params[beginTime]"/>
+                            <span>-</span>
+                            <input type="text" class="time-input" id="endTime" placeholder="结束时间"
+                                   name="params[endTime]"/>
+                        </li>
+
+                        <li>
+                            用户搜索：<input type="text" name="name" placeholder="名称&&手机号码"/>
+                        </li>
+                        <li>
+                            订单编号：<input type="text" name="orderNumber" placeholder="订单编号"/>
+                        </li>
+                        <li>
+                            处理状态：<select name="processedaOrderStauts"
+                                         th:with="type=${@dict.getType('beta_processeda_order_stauts')}">
+                            <option value="">所有</option>
+                            <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                                    th:value="${dict.dictValue}"></option>
+                        </select>
+                        </li>
+                        <li>
+                            <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i
+                                    class="fa fa-search"></i>&nbsp;搜索</a>
+                            <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i
+                                    class="fa fa-refresh"></i>&nbsp;重置</a>
+                        </li>
+                    </ul>
+                </div>
+            </form>
+        </div>
+
+        <div class="btn-group-sm" id="toolbar" role="group">
+            <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="system:dict:export">
+                <i class="fa fa-download"></i> 导出
+            </a>
+        </div>
+        <div class="col-sm-12 select-table table-striped" style="overflow: overlay;height: 89%;">
+            <table id="bootstrap-table" data-mobile-responsive="true"></table>
+        </div>
+    </div>
+</div>
+<div th:include="include :: footer"></div>
+<script th:inline="javascript">
+
+    var betaProcessedaOrderStauts = [[${@dict.getType('beta_processeda_order_stauts')}]];//处理订单状态
+    var editFlag = [[${@permission.hasPermi('betaProcessedaOrder:edit')}]];
+    var removeFlag = [[${@permission.hasPermi('betaProcessedaOrderdelete:delete')}]];
+    //放狗撤回权限
+    var updateputTheDogs = [[${@permission.hasPermi('processedaOrder:updateputTheDog')}]];
+    //拒绝放狗撤回权限
+    var updateRefuseDogoRecalls= [[${@permission.hasPermi('processedaOrder:updateRecall')}]];
+    var prefix = ctx + "beta/betaProcessedaOrder";
+    $(function () {
+        var options = {
+            url: prefix + "/list",
+            removeUrl: prefix + "/remove",
+            exportUrl: prefix + "/export",
+            updateUrl: prefix + "/edit/{id}",
+            sortName: "pr.create_time",
+            sortOrder: "desc",
+            modalName: "类型",
+            search: false,
+            showExport: false,
+            columns: [
+                {
+                    field: 'name',
+                    title: '领养人',
+                    formatter: function (value, row, index) {
+                        var actions = [];
+                        var nameandphone = value + "/" + row.phone;
+                        actions.push('<span class="depreciate">' + nameandphone + '</span>');
+                        return actions.join('');
+                    }
+                },
+                {
+                    field: 'dogName',
+                    title: '套餐'
+                },
+                {
+                    field: 'processedaOrderStauts',
+                    title: '状态',
+                    formatter: function (value, row, index) {
+                        return $.table.selectDictLabel(betaProcessedaOrderStauts, value);
+                    }
+                },
+                {
+                    field: 'newNumbering',
+                    title: '新订单(拒)',
+                },
+                {
+                    field: 'originalNumbering',
+                    title: '源订单',
+                },
+                {
+                    field: 'days',
+                    title: '周期',
+                    formatter: function (value, row, index) {
+                        var actions = [];
+                        var ratio = value + "天";
+                        actions.push('<span class="depreciate">' + ratio + '</span>');
+                        return actions.join('');
+                    }
+                },
+                {
+                    field: 'startTime',
+                    title: '时段',
+                    formatter: function (value, row, index) {
+                        var startTime = '-';
+                        if (null !== value) {
+                            startTime = value + '';
+                            startTime = startTime.slice(0, 2) + ':' + startTime.slice(2);
+                        }
+                        var endTime = '-';
+                        if (null !== row.endTime) {
+                            endTime = row.endTime + '';
+                            endTime = endTime.slice(0, 2) + ':' + endTime.slice(2);
+                        }
+                        var actions = [];
+                        // 拼接开始时间、结束时间
+                        var startTimeAndendTime = startTime + "-" + endTime;
+                        actions.push('<span class="depreciate">' + startTimeAndendTime + '</span>');
+                        return actions.join('');
+                    }
+                },
+                {
+                    field: 'createTime',
+                    title: '创建时间'
+                },
+                {
+                    field: 'updateTime',
+                    title: '修改时间'
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        var actions = [];
+                        if (row.processedaOrderStauts == 1) {
+                            actions.push('<a class="btn btn-danger btn-xs ' + updateputTheDogs + '" href="#" onclick="updateputTheDog(\'' + row.id + '\')"><i class="fa fa-refresh"></i>撤回</a> ');
+                        }
+                        if (row.processedaOrderStauts == 2) {
+                            actions.push('<a class="btn btn-danger btn-xs ' + updateRefuseDogoRecalls + '" href="#" onclick="updateRefuseDogoRecall(\'' + row.id + '\')"><i class="fa fa-refresh"></i>撤回</a> ');
+                        }
+                        if (row.processedaOrderStauts == 3) {
+                            actions.push('<a class="btn btn-success btn-xs ' +updateRefuseDogoRecalls+ '" href="#" onclick="edits(\'' + row.hideOrderId + '\')"><i class="fa fa-edit"></i>重新审核</a>');
+                        }
+                        if (row.processedaOrderStauts == 4) {
+                            actions.push('<a class="btn btn-success btn-xs' + updateputTheDogs + '" href="#" onclick="edits(\'' + row.orderId + '\')"><i class="fa fa-edit"></i>重新审核</a>');
+                        }
+                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="#" onclick="$.operate.edit(\'' + row.id + '\')"><i class="fa fa-bars"></i>详情</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="#" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        return actions.join('');
+                    }
+                }]
+        };
+        $.table.init(options);
+    });
+
+    /*字典列表-详细*/
+    function detail(dictId) {
+        var url = prefix + '/detail/' + dictId;
+        createMenuItem(url, "字典数据");
+    }
+
+    function updateRefuseDogoRecall(id) {
+        $.modal.confirm("确定恢复这个拒绝放狗订单？", function () {
+            $.ajax({
+                url: prefix + "/updateRefuseDogoRecall/" + id,
+                data: {},
+                cache: true,
+                dataType: "json",
+                type: 'POST',
+                success: function (date) {
+                    layer.close();
+                    if (date.code == web_status.SUCCESS) {
+                        $.modal.closeAll();
+                        $.modal.alertSuccess(date.message);
+                        $.table.refresh();
+                    } else {
+                        $.modal.alertError(date.message);
+                    }
+                }
+            });
+        });
+    }
+
+    function updateputTheDog(id) {
+        $.modal.confirm("确定恢复这个放狗订单？", function () {
+            $.ajax({
+                url: prefix + "/updateputTheDog/" + id,
+                data: {},
+                cache: true,
+                dataType: "json",
+                type: 'POST',
+                success: function (date) {
+                    layer.close();
+                    if (date.code == web_status.SUCCESS) {
+                        $.modal.closeAll();
+                        $.modal.alertSuccess(date.message);
+                        $.table.refresh();
+                    } else {
+                        $.modal.alertError(date.message);
+                    }
+                }
+            });
+        });
+    }
+
+    //订单详情
+    function edits(id) {
+        var url ='betaOrder/orderListDetails/' + id;
+        $.modal.openFull("订单详情", url, 888, 450)
+    }
+
+
+</script>
+</body>
+</html>

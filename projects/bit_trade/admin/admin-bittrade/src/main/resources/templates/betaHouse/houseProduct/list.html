@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+
+<div class="container-div">
+    <div class="row">
+        <div class="col-sm-12 search-collapse">
+            <form id="operlog-form">
+                <div class="select-list">
+                    <ul>
+
+                        <div style="overflow: auto;">
+                            <input type="hidden" id="beSuitable" name="beSuitable" value="1"/>
+                            <li class="select-time">
+                                <label>创建时间： </label>
+                                <input type="text" class="time-input" id="startTime" placeholder="开始时间"
+                                       name="params[beginTime]"/>
+                                <span>-</span>
+                                <input type="text" class="time-input" id="endTime" placeholder="结束时间"
+                                       name="params[endTime]"/>
+                            </li>
+                            <li>
+                                <label>出售状态： </label>
+                                <select name="status" th:with="type=${@dict.getType('beta_HouseProduct_status')}">
+                                    <option value="">所有</option>
+                                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                                            th:value="${dict.dictValue}"></option>
+                                </select>
+                            </li>
+                            <li>
+                                <label>搜索：</label><input type="text" placeholder="商品名称" name="name"/>
+                            </li>
+
+                            <li>
+                                <label>商品类别： </label>
+                                <select name="type" th:with="type=${@dict.getType('house_product_status')}"
+                                        style="width: auto;">
+                                    <option value="">所有</option>
+                                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                                            th:value="${dict.dictValue}"></option>
+                                </select>
+                            </li>
+
+                            <li>
+                                <label>展示位置： </label>
+                                <select name="showPosition" th:with="type=${@dict.getType('house_product_showPosition')}"
+                                        style="width: auto;">
+                                    <option value="">所有</option>
+                                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                                            th:value="${dict.dictValue}"></option>
+                                </select>
+                            </li>
+
+                            <li>
+                                <label>消耗类别：</label>
+                                <select name="expendType" th:with="type=${@dict.getType('house_product_expendType')}"
+                                        style="width: auto;">
+                                    <option value="">所有</option>
+                                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                                            th:value="${dict.dictValue}"></option>
+                                </select>
+                            </li>
+                            <li>
+                                <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i
+                                        class="fa fa-search"></i>&nbsp;搜索</a>
+                                <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i
+                                        class="fa fa-refresh"></i>&nbsp;重置</a>
+                            </li>
+                        </div>
+                    </ul>
+                </div>
+            </form>
+        </div>
+
+        <div class="btn-group-sm" id="toolbar" role="group">
+            <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="houseProduct:saveHouseProduct">
+                <i class="fa fa-plus"></i> 新增
+            </a>
+        </div>
+
+        <div class="col-sm-12 select-table table-striped" style="overflow: overlay;height: 94%;">
+            <table id="bootstrap-table" data-mobile-responsive="true"></table>
+        </div>
+    </div>
+</div>
+
+<div th:include="include :: footer"></div>
+<script th:inline="javascript">
+    layui.use('laydate', function () {
+        var laydate = layui.laydate;
+        var startTime = laydate.render({
+            elem: '#createTime',
+            type: 'date',
+            btns: ['now', 'confirm']
+        });
+        var endTime = laydate.render({
+            elem: '#endTime',
+            type: 'date',
+            btns: ['now', 'confirm']
+        });
+    });
+    var betaHouseProductTypes = [[${@dict.getType('house_product_status')}]];//商品订单类型
+    var betaHouseProductStatuss = [[${@dict.getType('beta_HouseProduct_status')}]];//商品订单状态
+    var betaHouseProductBeSuitables = [[${@dict.getType('beta_HouseProduct_beSuitable')}]];//商品订单适用类型
+    var houseproductshowPositions = [[${@dict.getType('house_product_showPosition')}]];//展示位置
+    var houseproductexpendTypes = [[${@dict.getType('house_product_expendType')}]];//消耗类型
+    var give_currency_status = [[${@dict.getType('give_currency_status')}]];//是否送币
+
+    var updateConfig = [[${@dict.getType('orderListDetails:edit')}]];//逻辑删除的操作权限(修改的权限)
+    var deleteConfig = [[${@dict.getType('houseProduct:delete')}]];//物理删除的操作权限
+
+    var prefix = ctx + "betaHouse/houseProduct";
+    $(function () {
+        var options = {
+            url: prefix + "/list",
+            createUrl: prefix + "/add",
+            updateUrl: prefix + "/edit/{id}",
+            sortName: "createTime",
+            sortOrder: "desc",
+            modalName: "商品",
+            queryParams: queryParams,
+            search: false,
+            striped: true,
+            showExport: false,
+            columns: [
+                {
+                    checkbox: true
+                },
+                {
+                    field: 'name',
+                    title: '名称'
+                },
+                {
+                    field: 'price',
+                    title: '价格(β)'
+                },
+                {
+                    field: 'image',
+                    title: '展示图',
+                    formatter: function (value, row, index) {
+                        var url = row.image;
+                        if (url != null) {
+                            url = '<a class = "view" href="javascript:void(0)"><img style="height:50px;" src="' + url + '" /></a>';
+                        }
+                        return url;
+                    },
+                    events: 'operateEvents'
+                },
+                {
+                    field: 'sceneryImg',
+                    title: '实景图',
+                    formatter: function (value, row, index) {
+                        var url = row.sceneryImg;
+                        if (url != null) {
+                            url = '<a class = "view" href="javascript:void(0)"><img style="height:50px;" src="' + url + '" /></a>';
+                        }
+                        return url;
+                    },
+                    events: 'operateEvent'
+                },
+
+                {
+                    field: 'type',
+                    title: '类别',
+                    formatter: function (value, row, index) {
+                        return $.table.selectDictLabel(betaHouseProductTypes, value);
+                    }
+                },
+                {
+                    field: 'beSuitable',
+                    title: '适用',
+                    formatter: function (value, row, index) {
+                        return $.table.selectDictLabel(betaHouseProductBeSuitables, value);
+                    }
+                },
+                {
+                    field: 'status',
+                    title: '状态',
+                    formatter: function (value, row, index) {
+                        return $.table.selectDictLabel(betaHouseProductStatuss, value);
+                    }
+                },
+                {
+                    field: 'power',
+                    title: '力量'
+                },
+                {
+                    field: 'agility',
+                    title: '敏捷'
+                },
+                {
+                    field: 'stamina',
+                    title: '体力'
+                },
+                {
+                    field: 'intelligence',
+                    title: '智力'
+                },
+                {
+                    field: 'charm',
+                    title: '魅力'
+                },
+                {
+                    field: 'totalCount',
+                    title: '总数量',
+                    formatter: function (value, row, index) {
+                        var actions = [];
+                        var nameVar = value == -1 ? "不限" : row.totalCount;
+                        actions.push('<span class="depreciate">' + nameVar + '</span>');
+                        return actions.join('');
+                    }
+                },
+                {
+                    field: 'stockCount',
+                    title: '库存',
+                    formatter: function (value, row, index) {
+                        var actions = [];
+                        var nameVar = value == -1 ? "不限" : row.stockCount;
+                        actions.push('<span class="depreciate">' + nameVar + '</span>');
+                        return actions.join('');
+                    }
+                },
+                {
+                    field: 'buyLimit',
+                    title: '限制购买数量',
+                    formatter: function (value, row, index) {
+                        var actions = [];
+                        var nameVar = value == -1 ? "不限" : row.buyLimit;
+                        actions.push('<span class="depreciate">' + nameVar + '</span>');
+                        return actions.join('');
+                    }
+                },
+                {
+                    field: 'showPosition',
+                    title: '展示位置',
+                    formatter: function (value, row, index) {
+                        return $.table.selectDictLabel(houseproductshowPositions, value);
+                    }
+                },
+                {
+                    field: 'expendType',
+                    title: '消耗类型',
+                    formatter: function (value, row, index) {
+                        return $.table.selectDictLabel(houseproductexpendTypes, value);
+                    }
+                },
+                {
+                    field: 'speedUpTime',
+                    title: '加速',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        var speedUpTimeVar = row.speedUpTime+'时';
+                        actions.push('<span class="depreciate">' + speedUpTimeVar +'</span>');
+                        return actions.join('');
+                    }
+                },
+                {
+                    field: 'giveCurrencyStatus',
+                    title: '是否送币',
+                    formatter: function (value, row, index) {
+                        return $.table.selectDictLabel(give_currency_status, value);
+                    }
+                },
+                {
+                    field: 'createTime',
+                    title: '创建时间'
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        var actions = [];
+                        if (row.status != -1)
+                        {
+                            actions.push('<a class="btn btn-success btn-xs' + updateConfig + '" href="#" onclick="$.operate.edit(\'' + row.id + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                            actions.push('<a class="btn btn-danger btn-xs' + updateConfig + '" href="#" onclick="updateProduct(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除(可恢复)</a> ');
+                        }
+                         if (row.status == -1)
+                         {
+                            actions.push('<a class="btn btn-danger btn-xs ' + deleteConfig + '" href="#" onclick="deletes(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除（不可恢复）</a> ');
+                            actions.push('<a class="btn btn-danger btn-xs ' + updateConfig + '" href="#" onclick="updateProducts(\'' + row.id + '\')"><i class="fa fa-refresh"></i>恢复</a> ');
+                         }
+                        return actions.join('');
+                    }
+                }]
+        };
+        $.table.init(options);
+    });
+
+    window.operateEvents = {
+        'click .view': function (e, value, row, index) {
+            layer.open({
+                type: 1,
+                title: false,
+                closeBtn: 0,
+                area: ['auto', 'auto'],
+                skin: 'layui-layer-nobg', //没有背景色
+                shadeClose: true,
+                content: '<img src="' + row.image + '" height="400px"/>'
+            });
+        },
+    };
+
+    window.operateEvent = {
+        'click .view': function (e, value, row, index) {
+            layer.open({
+                type: 1,
+                title: false,
+                closeBtn: 0,
+                area: ['auto', 'auto'],
+                skin: 'layui-layer-nobg', //没有背景色
+                shadeClose: true,
+                content: '<img src="' + row.sceneryImg + '" height="400px"/>'
+            });
+        },
+    };
+
+    function queryParams(params) {
+        return {
+            beSuitable: $("#beSuitable").val(),
+            pageSize: params.limit,
+            pageNum: params.offset / params.limit + 1,
+            searchValue: params.search,
+            orderByColumn: params.sort,
+            isAsc: params.order
+        };
+    }
+
+    //删除商品（逻辑删除_可恢复）
+    function updateProduct(id) {
+        $.modal.confirm("确定删除这个商品？", function() {
+            $.ajax({
+                url: prefix + "/updateHouseProduct",
+                data: {
+                    "id": id,
+                    "status": -1
+                },
+                cache: true,
+                dataType: "json",
+                type: 'POST',
+                success: function (date) {
+                    layer.close();
+                    if (date.code == web_status.SUCCESS) {
+                        $.modal.closeAll();
+                        $.modal.alertSuccess(date.message);
+                        $.table.refresh();
+                    } else {
+                        $.modal.alertError(date.message);
+                    }
+                }
+            });
+        });
+    }
+
+    //删除商品（恢复）
+    function updateProducts(id) {
+        $.modal.confirm("确定恢复这个商品？", function() {
+            $.ajax({
+                url: prefix + "/updateHouseProduct",
+                data: {
+                    "id": id,
+                    "status": 1
+                },
+                cache: true,
+                dataType: "json",
+                type: 'POST',
+                success: function (date) {
+                    layer.close();
+                    if (date.code == web_status.SUCCESS) {
+                        $.modal.closeAll();
+                        $.modal.alertSuccess(date.message);
+                        $.table.refresh();
+                    } else {
+                        $.modal.alertError(date.message);
+                    }
+                }
+            });
+        });
+    }
+
+    //删除商品（物理删除_不可恢复）
+    function deletes(id) {
+        $.modal.confirm("确定删除该条信息吗？确定删除将不可还原！", function () {
+            $.ajax({
+                cache: true,
+                url: prefix + "/remove",
+                data: {
+                    "ids": id,
+                },
+                dataType: "json",
+                type: 'POST',
+                async: false,
+                success: function (date) {
+                    layer.close();
+                    if (date.code == web_status.SUCCESS) {
+                        $.modal.closeAll();
+                        $.modal.alertSuccess(date.message);
+                        $.table.refresh();
+                    } else {
+                        $.modal.alertError(date.message);
+                    }
+                }
+            });
+        });
+    }
+
+</script>
+</body>
+</html>

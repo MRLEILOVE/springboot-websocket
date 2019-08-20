@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org"
+	  xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header">
+	<style>
+		.ibox-title {
+			border: none;
+			background: transparent;
+		}
+		.ibox > div {
+			overflow: hidden;
+		}
+		.ibox > div > div {
+			float: left;
+			width: 300px;
+			height: 160px;
+			background: white;
+			border-radius: 12px;
+			margin: 20px 10px 0 0;
+			padding: 10px 20px;
+			box-sizing: border-box;
+			text-align: center;
+		}
+		ul {
+			text-align: left;
+		}
+		.btn {
+			margin-top: 50px;
+		}
+
+		.withdraw-amount li{
+			width:223px;
+			padding:15px 0 0 15px;
+			float:left;
+			margin-left:40px;
+		}
+		.withdraw-amount .withdraw-title{
+			font-size:14px;
+			margin-bottom:25px;
+		}
+		.withdraw-amount div{
+			font-size:18px;
+			color:#ff942f;
+		}
+		.withdraw-amount label{
+			margin-bottom:7px;
+		}
+	</style>
+</head>
+<body class="gray-bg">
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+		<div class="" shiro:hasPermission="audit:recharge:view">
+			<div>
+				<ul class="withdraw-amount">
+					<li>
+						<label>推荐收益需校正的人数： [[*{checkSum}]]</label><br/>
+					</li>
+				</ul>
+				<a class="btn btn-primary btn-success" onclick="checkPushEarnings()"
+				   shiro:hasPermission="audit:recharge:view">
+					<i class="fa fa-edit"></i> 校正
+				</a>
+			</div>
+		</div>
+</div>
+
+<div th:include="include::footer"></div>
+<script th:src="@{/ajax/libs/select/select2.js}"></script>
+<script th:src="@{/viewer/js/viewer-jquery.min.js}"></script>
+<script>
+
+    function checkPushEarnings() {
+        $.ajax({
+            cache : true,
+            type : "POST",
+            url : "/personal/personalCard/checkPushEarnings",
+            data : {},
+            async : false,
+            error : function(request) {
+                $.modal.alertError("系统错误");
+            },
+            success : function(data) {
+				$.operate.saveSuccess(data);
+            }
+        });
+    }
+</script>
+</body>
+</body>
+</html>

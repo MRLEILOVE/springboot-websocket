@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org"
+	xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+
+	<div class="container-div">
+		<div class="row">
+			<div class="col-sm-12 search-collapse">
+				<form id="operlog-form">
+					<div class="select-list">
+						<ul>
+							<div style="overflow: auto;">
+								<li class="select-time">
+									<label>日期搜索： </label>
+									<input type="text" class="time-input" id="startTime" placeholder="开始时间" name="params[beginTime]"/>
+									<span>-</span>
+									<input type="text" class="time-input" id="endTime" placeholder="结束时间" name="params[endTime]"/>
+								<li>
+									<label>搜索： </label><input type="text" placeholder="领养人&&转让人" name="keyword"/>
+								</li>
+								<li>
+									<a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+									<a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+								</li>
+							</div>
+
+						</ul>
+					</div>
+				</form>
+			</div>
+
+			<div class="btn-group-sm" id="toolbar" role="group">
+			</div>
+
+			<div class="col-sm-12 select-table table-striped">
+				<table id="bootstrap-table" data-mobile-responsive="true"></table>
+			</div>
+		</div>
+	</div>
+
+	<div th:include="include :: footer"></div>
+	<script th:inline="javascript">
+		var recordSmsLogType = [[${@dict.getType('record_sms_log_type')}]];
+		var prefix = ctx + "recordSmsLog";
+		$(function() {
+		    var options = {
+		        url: prefix + "/list",
+                sortName: "rsl.create_time",
+                sortOrder: "desc",
+		        modalName: "短信分析",
+		        search: false,
+		        showExport: false,
+		        columns: [
+					{
+						field: 'createTime',
+						title: '创建时间'
+					},
+					{
+						field: 'buyName',
+						title: '领养人'
+					},
+                    {
+                        field: 'buyPhone',
+                        title: '领养人电话'
+                    },
+					{
+						field: 'sellName',
+						title: '转让人'
+					},
+                    {
+                        field: 'sellPhone',
+                        title: '转让号码'
+                    },
+                    {
+                        field: 'orderId',
+                        title: '订单Id'
+                    },
+					{
+						field: 'type',
+						title: '短信类型',
+						formatter: function(value, row, index) {
+							return $.table.selectDictLabel(recordSmsLogType, value);
+						}
+					},
+                    {
+                        title: '操作',
+                        align: 'center',
+                        formatter: function(value, row, index) {
+                            var actions = [];
+                            if(row.orderId!=null){
+                                actions.push('<a class="btn btn-info btn-xs" href="#" onclick="edits(\'' + row.orderId + '\')"><i class="fa fa-key"></i>订单详情</a>');
+                            }
+                            return actions.join('');
+                        }
+                    }
+					]
+		    };
+		    $.table.init(options);
+		});
+
+
+        //订单详情
+        function edits(id) {
+            var url = '/beta/betaOrder/orderListDetails/' + id;
+            $.modal.openFull("订单详情",url,888,450)
+        }
+	</script>
+</body>
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<link th:href="@{/css/main/bootstrap-select.css}" rel="stylesheet"/>
+<style>
+	.sjdl-number{
+		/*display: none;*/
+	}
+</style>
+<body class="white-bg">
+	<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+		<form class="form-horizontal m" id="form-agnt-editInviter">
+			<input name="agntId" id="agntId" type="hidden"/>
+			<input name="agntId" id="userId" type="hidden" th:value="*{userId}"/>
+			<div class="form-group sjdl-number" id="sjdlNumber">
+				<label class="col-sm-3 control-label ">邀请人：</label>
+				<div class="col-sm-8">
+					<select id="select" class="selectpicker show-tick form-control" title=" " data-live-search="true">
+
+					</select>
+				</div>
+			</div>
+		</form>
+	</div>
+	<div th:include="include::footer"></div>
+	<!--<script th:src="@{/ajax/libs/select/select2.js}"></script>-->
+	<script th:src="@{/ajax/libs/select/bootstrap-select.js}"></script>
+	<script>
+
+        $(function () {
+        });
+
+        function seach(keyword,$optionList,url,agntLevel){
+            $.ajax({
+                cache : true,
+                type : "POST",
+                url : ctx + url,
+                data : {
+                    "keyword": keyword,
+                    "agntLevel":agntLevel
+                },
+                async : false,
+                error : function(data) {
+                    $.modal.alertError("系统错误");
+                },
+                success : function(data) {
+                    if (data.code == 200) {
+                        var optionList = "";
+                        for(let i = 0;i < data.result.length;i++){
+                            optionList += `<option data-id= '${data.result[i].userId}'>${data.result[i].loginName} &nbsp;&nbsp;&nbsp; ${data.result[i].realName}</option>`
+                        }
+                        $optionList.append(optionList);
+                        $(".selectpicker" ).selectpicker('refresh');
+                    } else {
+                        $.modal.alertError(data.message);
+                    }
+                }
+            });
+        };
+
+        /* 平台上级代理搜索-获取id  */
+        $(document).on("input",".sjdl-number input[aria-label='Search']",function(){
+            $("#select").html("");
+            if($(".sjdl-number input[aria-label='Search']").val().length >=2){
+                let keyword = $(".sjdl-number input[aria-label='Search']").val();
+                let $optionList = $("#select");
+                let url = "common/agnt/query";
+                seach(keyword,$optionList,url,'')
+            }
+        });
+
+        $("#select").on("change", function () {
+            var agntId = $("#select option:selected").attr("data-id");
+            $("#agntId").val(agntId);
+        });
+
+        $("#form-agnt-editInviter").validate({
+        	submitHandler:function(form){
+        		edit();
+        	}
+        });
+        
+        function submitHandler() {
+	        if ($.validate.form()) {
+	        	edit();
+	        }
+	    }
+
+        function edit() {
+        	var agntId = $("#agntId").val();
+        	var userId = $("#userId").val();
+            if (agntId == null || agntId == undefined || agntId == "") {
+                $.modal.alertError("请选择邀请人");
+                return;
+            }
+        	$.ajax({
+        		cache : true,
+        		type : "POST",
+                url : ctx + "agnt/customer/editInviter",
+        		data : {
+        			"userId": userId,
+        			"agntId": agntId
+        		},
+        		async : false,
+        		error : function(request) {
+        			$.modal.alertError("系统错误");
+        		},
+        		success : function(data) {
+                    if (data.code != 200) {
+                        $.modal.alertError(data.message);
+                        return;
+					}
+                    parent.parent.location.reload();
+        			$.operate.saveSuccess(data);
+        		}
+        	});
+        }
+    </script>
+</body>
+</html>

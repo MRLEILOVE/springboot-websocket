@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--360浏览器优先以webkit内核解析-->
+    <title>Bitrade介绍</title>
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="../static/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link href="../static/css/font-awesome.min.css" th:href="@{/css/font-awesome.min.css}" rel="stylesheet"/>
+    <link href="../static/css/main/animate.min.css" th:href="@{/css/main/animate.min.css}" rel="stylesheet"/>
+    <link href="../static/css/main/style.min862f.css" th:href="@{/css/main/style.min862f.css}" rel="stylesheet"/>
+    <style>
+        .dashboard-header {
+            width: 100%;
+            height: 100%
+        }
+
+        .head {
+            height: 30px;
+            line-height: 30px;
+            position: absolute;top: 10px;z-index: 10
+        }
+
+        #meetECharts {
+            width: 100%;
+            height: 100%;
+            float: left;
+        }
+    </style>
+</head>
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+<div class="row  dashboard-header">
+    <!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
+    <div class="head">
+        <div style="overflow: auto;">
+            <label>日期： </label>
+            <input type="text" id="startTime" autocomplete="off" placeholder="开始时间" th:value="${nowDate}"
+                   readonly onchange="changeTime()" name="startTime" lay-key="1">
+            <span>-</span>
+            <input type="text" id="endTime" placeholder="结束时间"
+                   readonly onchange="changeTime()" name="endTime" lay-key="2"/>
+        </div>
+        <br/>
+        <label>套餐： </label>
+        <select name="comboId" id="comboId" th:with="type=${list}" onchange="getData()" style="    height: 30px;
+            border-width: 1px;
+            border-style: solid;
+            border-color: rgb(199, 194, 194);
+            border-image: initial;
+            border-radius: 4px;
+            background: #ca5a5a00;
+            outline: none;">
+            <option value="0">所有</option>
+            <option th:each="dict : ${type}" th:text="${dict.dogName+'&nbsp;&nbsp;&nbsp;周期'+dict.days+
+								'&nbsp;&nbsp;天'+'&nbsp;&nbsp;&nbsp; 价格'+dict.minPrice+'~'+dict.maxPrice+'&nbsp;&nbsp;&nbsp;&nbsp;收益率：'+dict.earningsRatio+'%'}"
+                    th:value="${dict.id}"></option>
+        </select>
+    </div>
+    <div id="meetECharts"></div>
+</div>
+<div class="wrapper wrapper-content"></div>
+<script th:src="@{/js/jquery.min.js}"></script>
+<script th:src="@{/ruoyi/js/common.js?v=3.0.0}"></script>
+<script th:inline="javascript"> var ctx = [[@{/}]]; </script>
+<script th:src="@{/ruoyi/js/ry-ui.js?v=3.0.0}"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+<script th:src="@{/js/echarts.min.js}"></script>
+
+<div th:include="include :: footer"></div>
+
+<script th:inline="javascript">
+    layui.use('laydate', function () {
+        var laydate = layui.laydate;
+        laydate.render({
+            elem: '#startTime',
+            type: 'date',
+            theme: 'molv',
+            max: -1,
+            btns: ['now', 'confirm'],
+            done: function (value) {
+                getData();
+            }
+        });
+        laydate.render({
+            elem: '#endTime',
+            type: 'date',
+            theme: 'molv',
+            max: -1,
+            btns: ['now', 'confirm'],
+            done: function (value) {
+                getData();
+            }
+        });
+    });
+    var myChart = echarts.init(document.getElementById('meetECharts'));
+    // 显示加载层
+    // myChart.showLoading();
+    option = {
+        legend: {},
+        tooltip: {
+            trigger: 'axis',
+            showContent: true
+        },
+        dataset: {
+            source: [
+                [],
+                [],
+                []
+            ]
+        },
+        xAxis: {type: 'category'},
+        yAxis: {gridIndex: 0},
+        grid: {top: '55%'},
+        series: [
+            {type: 'line', smooth: true, seriesLayoutBy: 'row'},
+            {type: 'line', smooth: true, seriesLayoutBy: 'row'},
+            {
+                type: 'pie',
+                id: 'pie',
+                radius: '30%',
+                center: ['50%', '25%'],
+                label: {
+                    formatter: '{b}: {@2012} ({d}%)'
+                },
+                encode: {
+                    itemName: '日期',
+                    value: "",
+                    tooltip: ""
+                }
+            }
+        ]
+    };
+
+    myChart.on('updateAxisPointer', function (event) {
+        var xAxisInfo = event.axesInfo[0];
+        if (xAxisInfo) {
+            var dimension = xAxisInfo.value + 1;
+            myChart.setOption({
+                series: {
+                    id: 'pie',
+                    label: {
+                        formatter: '{b}: {@[' + dimension + ']} ({d}%)'
+                    },
+                    encode: {
+                        value: dimension,
+                        tooltip: dimension
+                    }
+                }
+            });
+        }
+    });
+
+    // 使用刚指定的配置项和数据显示图表。
+    myChart.setOption(option);
+    getData();
+
+    function getData() {
+        var startTime = $("#startTime").val();
+        var endTime = $("#endTime").val();
+        var comboId = $("#comboId").val();
+        $.ajax({
+            cache: true,
+            type: "POST",
+            url: ctx + "statistic/reserve/data",
+            data: {
+                "startTime": startTime,
+                "endTime": endTime,
+                "comboId":comboId
+            },
+            error: function (data) {
+                $.modal.alertError(data.message);
+            },
+            success: function (data) {
+                if(data.code  == 2){
+                    layer.msg(data.message);
+                    return;
+                }
+                var title = ["日期"];
+                for (i = 0; i < data.result.title.length; i++) {
+                    title.push(data.result.title[i]);
+                }
+                var data1 = ["点击人数"];
+                for (i = 0; i < data.result.data1.length; i++) {
+                    data1.push(data.result.data1[i]);
+                }
+                var data2 = ["预约人数"];
+                for (i = 0; i < data.result.data2.length; i++) {
+                    data2.push(data.result.data2[i]);
+                }
+                myChart.hideLoading();
+                // 填入数据
+                myChart.setOption({
+                    dataset: {
+                        source: [
+                            title,
+                            data1,
+                            data2
+                        ]
+                    },
+                    series: [
+                        {type: 'line', smooth: true, seriesLayoutBy: 'row'},
+                        {type: 'line', smooth: true, seriesLayoutBy: 'row'},
+                        {
+                            type: 'pie',
+                            id: 'pie',
+                            radius: '30%',
+                            center: ['50%', '25%'],
+                            label: {
+                                formatter: '{b}: {@'+data.result.nowDate+'} ({d}%)'
+                            },
+                            encode: {
+                                itemName: '日期',
+                                value: data.result.nowDate,
+                                tooltip: data.result.nowDate
+                                }
+                            }
+                        ]
+                });
+            }
+        });
+    }
+</script>
+</body>
+</html>

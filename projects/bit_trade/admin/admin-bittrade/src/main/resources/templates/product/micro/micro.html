@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org"
+	xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	
+	<div class="container-div">
+			<div class="col-sm-12 select-table table-striped">
+				<table id="bootstrap-table" data-mobile-responsive="true"></table>
+			</div>
+		</div>
+	</div>
+	
+	<div th:include="include :: footer"></div>
+	<script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('system:user:edit')}]];
+		var prefix = ctx + "product/micro";
+
+		$(function() {
+		    var options = {
+		        url: prefix + "/list",
+                updateUrl: prefix + "/edit/{id}",
+		        sortName: "",
+		        sortOrder: "",
+		        modalName: "微合约管理",
+		        search: false,
+		        showExport: false,
+		        columns: [
+		        {
+		            field: 'symbol',
+		            title: '交易对'
+		        },
+		        {
+		            field: 'valueUnit',
+		            title: '保证金'
+		        },
+				{
+					field: 'serviceFee',
+					title: '手续费率',
+                    formatter: function(value, row, index) {
+                        var profit = value*100;
+                        return profit+"%";
+                    }
+				},
+				{
+					field: 'spreadUp',
+					title: '向上点差'
+				},
+				{
+					field: 'spreadDown',
+					title: '向下点差'
+				},
+				{
+					field: 'profitPercent',
+					title: '盈亏率',
+                    formatter: function(value, row, index) {
+                        var profit = value*100;
+                        return profit+"%";
+                    }
+				},
+				{
+					field: 'timeUnit',
+					title: '交割时间'
+				},
+				{
+                    field: 'id',
+					title: '操作',
+					align: 'center',
+					formatter: function(value, row, index) {
+						var actions = [];
+						actions.push('<a target="_self" class="btn btn-success btn-xs ' + editFlag + '" href="#" onclick="$.operate.edit(\'' + value + '\')"><i class="fa fa-edit"></i>编辑</a>');
+						return actions.join('');
+					}
+				}]
+		    };
+		    $.table.init(options);
+		});
+	</script>
+</body>
+</html>

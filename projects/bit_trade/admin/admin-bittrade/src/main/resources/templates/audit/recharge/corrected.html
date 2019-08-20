@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="white-bg">
+	<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+		<form class="form-horizontal m" id="form-recharge-edit" th:object="${rechargeOrder}">
+			<input name="orderNo"  type="hidden"  th:field="*{orderNo}" />
+			<div class="form-group">
+				<label class="col-sm-8 control-label">请输入USDT数量：<input type="text" required="true" id="exchangeAmount" name="exchangeAmount" th:field="*{exchangeAmount}"/></label>
+			</div>
+		</form>
+	</div>
+	<div th:include="include::footer"></div>
+	<script th:src="@{/ajax/libs/select/select2.js}"></script>
+	<script>
+        $("#form-recharge-edit").validate({
+        	submitHandler:function(form){
+        		edit();
+        	}
+        });
+        
+        function submitHandler() {
+	        if ($.validate.form()) {
+	        	edit();
+	        }
+	    }
+
+        function edit() {
+        	var orderNo = $("input[name='orderNo']").val();
+            var exchangeAmount = $("input[name='exchangeAmount']").val();
+            $.modal.confirm("是否确认充值USDT数量为" + exchangeAmount + "USDT", function () {
+                $.ajax({
+                    cache : true,
+                    type : "POST",
+                    url : ctx + "audit/recharge/correctedAmount",
+                    data : {
+                        "orderNo": orderNo,
+                        "exchangeAmount": exchangeAmount
+                    },
+                    async : false,
+                    error : function(request) {
+                        $.modal.alertError("系统错误");
+                    },
+                    success : function(data) {
+                        $.operate.saveSuccess(data);
+                    }
+                });
+            });
+        }
+    </script>
+</body>
+</html>

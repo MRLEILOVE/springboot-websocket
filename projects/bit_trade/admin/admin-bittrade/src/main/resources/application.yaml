@@ -1,0 +1,20 @@
+#svc_name: currency
+
+data:
+  #model-package: com.*.pojo.model.*
+  #mapper-locations: classpath*:/__default_SQL/**/I*DAO.xml,classpath*:/SQL/**/I*DAO.xml
+  application:
+    name: admin
+  register-with-eureka: false
+  fetch-registry: false
+
+#dubbo.protocol.port: 20883
+
+server:
+  port: 2091
+
+spring:
+#  application:
+#    name: currency
+  profiles:
+    active: common, dubbo_provider, dubbo_consumer, amqp

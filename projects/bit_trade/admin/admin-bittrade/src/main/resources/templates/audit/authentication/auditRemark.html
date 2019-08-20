@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="white-bg">
+	<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+		<form class="form-horizontal m" id="form-authentication-auditRefuse">
+			<input name="userId" id="userId" type="hidden" th:value="*{userId}"/>
+			<div class="form-group">
+				<label class="col-sm-3 control-label ">请输入拒绝原因：</label>
+				<div class="col-sm-8">
+					<textarea id="remark" required="required" name="remark" class="form-control"></textarea>
+				</div>
+			</div>
+		</form>
+	</div>
+	<div th:include="include::footer"></div>
+	<script th:src="@{/ajax/libs/select/select2.js}"></script>
+	<script>
+
+        $(function () {
+         var status = $("#status").val();
+            if (status == 0) {
+                $("#remark").attr("required", true);
+            }
+        });
+
+        $("#form-authentication-auditRefuse").validate({
+        	submitHandler:function(form){
+        		edit();
+        	}
+        });
+        
+        function submitHandler() {
+	        if ($.validate.form()) {
+	        	edit();
+	        }
+	    }
+
+        function edit() {
+        	var userId = $("#userId").val();
+            var remark = $("textarea[name='remark']").val();
+        	$.ajax({
+        		cache : true,
+        		type : "POST",
+                url : ctx + "audit/authentication/audit",
+        		data : {
+        			"userId": userId,
+        			"fhasRealValidate": 0,
+        			"remark": remark
+        		},
+        		async : false,
+        		error : function(request) {
+        			$.modal.alertError("系统错误");
+        		},
+        		success : function(data) {
+                    if (data.code != 200) {
+                        $.modal.alertError(data.message);
+                        return;
+                    }
+                    parent.parent.location.reload();
+        			$.operate.saveSuccess(data);
+        		}
+        	});
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+
+<div class="container-div">
+    <div class="row">
+        <div class="col-sm-12 search-collapse">
+            <form id="operlog-form">
+                <div class="select-list">
+                    <ul>
+                        <input type="hidden" id="userId" name="userId" th:value="${vo.userId}"/>
+                        <input type="hidden" id="id" name="id"  th:value="${vo.id}"/>
+                    </ul>
+                </div>
+            </form>
+        </div>
+
+        <div class="btn-group-sm" role="group">
+            <a class="btn btn-success" onclick="feminaList()" >
+                <i class="fa fa-reply-all"></i> 母狗
+            </a>
+            <a class="btn btn-success" onclick="maleList()" >
+                <i class="fa fa-reply-all"></i> 公狗
+            </a>
+            <a class="btn btn-success" onclick="puppyList()" >
+                <i class="fa fa-reply-all"></i> 小狗
+            </a>
+            <a class="btn btn-success" onclick="historyListInfo()" >
+                <i class="fa fa-reply-all"></i> 动态
+            </a>
+            <a class="btn btn-success" onclick="accountListInfo()" >
+                <i class="fa fa-reply-all"></i> 挖矿
+            </a>
+            <a class="btn btn-success" onclick="backpackUseInfo()" >
+                <i class="fa fa-reply-all"></i> 装备
+            </a>
+        </div>
+
+        <div class="col-sm-12 select-table table-striped" style="overflow: overlay;height: 94%;">
+            <table id="bootstrap-table" data-mobile-responsive="true"></table>
+        </div>
+    </div>
+</div>
+
+<div th:include="include :: footer"></div>
+<script th:inline="javascript">
+    layui.use('laydate', function () {
+        var laydate = layui.laydate;
+        var startTime = laydate.render({
+            elem: '#createTime',
+            type: 'date',
+            btns: ['now', 'confirm']
+        });
+        var endTime = laydate.render({
+            elem: '#endTime',
+            type: 'date',
+            btns: ['now', 'confirm']
+        });
+    });
+    var beta_pup_genders  = [[${@dict.getType('beta_pup_gender')}]];//小狗性别
+    var beta_pup_states = [[${@dict.getType('beta_pup_state')}]];//小狗状态
+
+    var editFlag = [[${@dict.getType('comboGroup:edit')}]];
+    var prefix = ctx + "betaHouse/housePuppy";
+    $(function () {
+        var options = {
+            url: prefix + "/list",
+            createUrl: prefix + "/add",
+            updateUrl: prefix + "/edit/{id}",
+            sortName: "pu.create_time",
+            sortOrder: "desc",
+            modalName: "套餐",
+            queryParams: queryParams,
+            search: false,
+            showExport: false,
+            columns: [
+                {
+                    field: 'name',
+                    title: '小狗名称'
+                },
+                {
+                    field: 'puppyNo',
+                    title: '编号'
+                },
+                {
+                    field: 'dogImg',
+                    title: '图片',
+                    formatter: function (value, row, index) {
+                        var url = row.dogImg;
+                        if (url != null) {
+                            url = '<a class = "view" href="javascript:void(0)"><img style="height:50px;" src="' + url + '" /></a>';
+                        }
+                        return url;
+                    },
+                    events: 'operateEvents'
+                },
+                {
+                    field: 'userName',
+                    title: '领养人（电话）',
+                    formatter: function (value, row, index) {
+                        var actions = [];
+                        var nameVar = row.userName == null ? "暂无领养人" : row.userName;
+                        var phoneVar = row.phone == null ? "" : row.phone;
+                        var nameVarAndphoneVar = nameVar + "/" + phoneVar;
+                        actions.push('<span class="depreciate">' + nameVarAndphoneVar + '</span>');
+                        return actions.join('');
+                    }
+                },
+                {
+                    field: 'price',
+                    title: '价格(β)',
+                    sortable: true,
+                },
+                {
+                    field: 'dogName',
+                    title: '套餐',
+                    formatter: function (value, row, index) {
+                        var actions = [];
+                        var dogNameAndMoney = value + " " + row.minPrice + "~" + row.maxPrice;
+                        actions.push('<span class="depreciate">' + dogNameAndMoney + '</span>');
+                        return actions.join('');
+                    }
+                },
+                {
+                    field: 'createTime',
+                    title: '出生日期'
+                },
+                {
+                    field: 'gender',
+                    title: '性别',
+                    formatter: function (value, row, index) {
+                        return $.table.selectDictLabel(beta_pup_genders, value);
+                    }
+                },
+                {
+                    field: 'status',
+                    title: '状态',
+                    formatter: function (value, row, index) {
+                        return $.table.selectDictLabel(beta_pup_states, value);
+                    }
+                },
+               ]
+        };
+        $.table.init(options);
+    });
+
+    window.operateEvents = {
+        'click .view': function (e, value, row, index) {
+            layer.open({
+                type: 1,
+                title: false,
+                closeBtn: 0,
+                area: ['auto', 'auto'],
+                skin: 'layui-layer-nobg', //没有背景色
+                shadeClose: true,
+                content: '<img src="' + row.dogImg + '"/>'
+            });
+        },
+    };
+
+    function queryParams(params) {
+        return {
+            userId:       $("#userId").val(),
+            pageSize:       params.limit,
+            pageNum:        params.offset / params.limit + 1,
+            searchValue:    params.search,
+            orderByColumn:  params.sort,
+            isAsc:          params.order
+        };
+    }
+
+    /*狗窝-母狗列表*/
+    function feminaList(id) {
+        var id = document.getElementById("id").value
+        var url ='betaHouse/house/feminaList/' + id;
+        createMenuItem(url, "母狗列表");
+    }
+
+    /*狗窝-母狗列表*/
+    function feminaList(id) {
+        var id = document.getElementById("id").value
+        var url ='betaHouse/house/feminaList/' + id;
+        createMenuItem(url, "母狗列表");
+    }
+    /*狗窝_公狗列表*/
+    function maleList() {
+        var id = document.getElementById("id").value
+
+        var url = 'betaHouse/house/maleList/'+id;
+        createMenuItem(url, "公狗列表");
+    }
+
+    /*狗窝_小狗列表*/
+    function puppyList() {
+        var id = document.getElementById("id").value
+        var url = 'betaHouse/house/puppyList/'+id;
+        createMenuItem(url, "小狗列表");
+    }
+
+    /*狗窝_动态列表*/
+    function historyListInfo() {
+        var id = document.getElementById("id").value
+        var url = 'betaHouse/house/historyListInfo/'+id;
+        createMenuItem(url, "动态列表");
+    }
+
+    /*狗窝_动态列表*/
+    function accountListInfo() {
+        var id = document.getElementById("id").value
+        var url = 'betaHouse/house/accountListInfo/'+id;
+        createMenuItem(url, "挖矿列表");
+    }
+
+    /*狗窝_装备列表*/
+    function backpackUseInfo() {
+        var id = document.getElementById("id").value
+        var url = 'betaHouse/house/backpackUseInfo/'+id;
+        createMenuItem(url, "装备列表");
+    }
+
+</script>
+</body>
+</html>

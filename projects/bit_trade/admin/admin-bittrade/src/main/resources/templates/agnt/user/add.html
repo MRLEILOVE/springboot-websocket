@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<link th:href="@{/ajax/libs/jquery-ztree/3.5/css/metro/zTreeStyle.css}" rel="stylesheet"/>
+<link th:href="@{/css/main/bootstrap-select.css}" rel="stylesheet"/>
+<style>
+	.tab{
+		text-align:center;
+	}
+	.tab li{
+		display:inline-block;
+		width:140px;
+		height:30px;
+		line-height:30px;
+		border:1px solid #F1F1F1;
+		cursor:pointer;
+	}
+	.select-tab{
+		background:#F1F1F1;
+	}
+	.tab-content .select-content{
+		display:none;
+	}
+	.superior-agent{
+		display:none;
+	}
+	.pt-number .btn-default{
+		background-color: white !important;
+		color:#676a6c !important;
+	}
+</style>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+	<ul class="tab">
+		<li class="select-tab" id="ptAmount">平台账号</li
+		><li id="dlAmount">独立账号</li>
+	</ul>
+	<div class="tab-content">
+		<!-- 平台账号 -->
+		<form class="form-horizontal m" id="form-role-add">
+			<div class="form-group">
+				<label class="col-sm-3 control-label ">账号：</label>
+				<input type="hidden" name="ptUser" id="ptUser"/>
+				<div class="col-sm-8 pt-number">
+					<select id="ptSelect" class="selectpicker show-tick form-control" title=" " data-live-search="true">
+
+					</select>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<label class="col-sm-3 control-label">代理级别：</label>
+				<div class="col-sm-8">
+					<select class="form-control" name="ptAgntLevel" id="ptAgntLevel">
+						<!-- <option>所有</option> -->
+						<option value="1">一级代理</option>
+						<option value="2">二级代理</option>
+						<option value="3">三级代理</option>
+					</select>
+				</div>
+			</div>
+
+			<div class="form-group superior-agent" id="ptSuperiorAgent">
+				<label class="col-sm-3 control-label">上级代理：</label>
+				<input type="hidden" name="ptSuperiorAgentUser" id="ptSuperiorAgentUser"/>
+				<div class="col-sm-8 pt-sjdl-number">
+					<select id="ptSjdlSelect" class="selectpicker show-tick form-control" title=" " data-live-search="true">
+
+					</select>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">密码：</label>
+				<div class="col-sm-8">
+					<input class="form-control" type="text" name="ptPassword" id="ptPassword">
+				</div>
+			</div>
+		</form>
+		<!-- 独立账户 -->
+		<form class="form-horizontal m select-content" id="form-role-add">
+			<div class="form-group">
+				<label class="col-sm-3 control-label ">账号：</label>
+				<input type="hidden" name="dlUser" id="dlUser"/>
+				<div class="col-sm-8">
+					<input class="form-control" type="text" name="dlAccount" id="dlAccount">
+				</div>
+				<!--<div class="col-sm-8 dl-number">
+                    <select id="dlSelect" class="selectpicker show-tick form-control" title=" " data-live-search="true">
+
+                    </select>
+                 </div>-->
+
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">姓名：</label>
+				<div class="col-sm-8">
+					<input class="form-control" type="text" name="userName" id="userName">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">代理级别：</label>
+				<div class="col-sm-8">
+					<select class="form-control" name="dlAgntLevel" id="dlAgntLevel">
+						<!-- <option>所有</option> -->
+						<option value="1">一级代理</option>
+						<option value="2">二级代理</option>
+						<option value="3">三级代理</option>
+					</select>
+				</div>
+			</div>
+			<div class="form-group superior-agent" id="dlSuperiorAgent">
+				<label class="col-sm-3 control-label ">上级代理：</label>
+				<input type="hidden" name="dlSuperiorAgentUser" id="dlSuperiorAgentUser"/>
+				<div class="col-sm-8 dl-sjdl-number">
+					<select id="dlSjdlSelect" class="selectpicker show-tick form-control" title=" " data-live-search="true">
+
+					</select>
+					<!-- <input class="form-control" type="text" name="" id=""/> -->
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">密码：</label>
+				<div class="col-sm-8">
+					<input class="form-control" type="text" name="password" id="password">
+				</div>
+			</div>
+		</form>
+	</div>
+
+</div>
+<div th:include="include::footer"></div>
+<script th:src="@{/ajax/libs/jquery-ztree/3.5/js/jquery.ztree.all-3.5.js}"></script>
+<script th:src="@{/ajax/libs/select/bootstrap-select.js}"></script>
+<script type="text/javascript">
+    layui.use(['form'], function(){
+        var form = layui.form
+    })
+    $(document).on("click",".tab>li",function(){
+        $(this).addClass("select-tab").siblings().removeClass("select-tab");
+        $(".tab-content form").hide().eq($(this).index()).show();
+    });
+    $(document).on("change","#ptAgntLevel",function(){
+        if($("#ptAgntLevel option:selected").val()=="0"||$("#ptAgntLevel option:selected").val()=="1"){
+            $("#ptSuperiorAgent").hide()
+        }else{
+            $("#ptSuperiorAgent").show()
+        }
+    });
+    $(document).on("change","#dlAgntLevel",function(){
+        if($("#dlAgntLevel option:selected").val()=="0"||$("#dlAgntLevel option:selected").val()=="1"){
+            $("#dlSuperiorAgent").hide()
+        }else{
+            $("#dlSuperiorAgent").show()
+        }
+    })
+    function seach(keyword,$optionList,url,agntLevel){
+        $.ajax({
+            cache : true,
+            type : "POST",
+            url : ctx + url,
+            data : {
+                "keyword": keyword,
+                "agntLevel":agntLevel
+            },
+            async : false,
+            error : function(data) {
+                $.modal.alertError("系统错误");
+            },
+            success : function(data) {
+                if (data.code == 200) {
+                    var optionList = "";
+                    for(let i = 0;i < data.result.length;i++){
+                        optionList += `<option data-id= '${data.result[i].userId}'>${data.result[i].loginName} &nbsp;&nbsp;&nbsp; ${data.result[i].realName}</option>`
+                    }
+                    $optionList.append(optionList);
+                    $(".selectpicker" ).selectpicker('refresh');
+                } else {
+                    $.modal.alertError(data.message);
+                }
+            }
+        });
+    };
+    /* 平台账户搜索-获取id  */
+    $(document).on("input",".pt-number input[aria-label='Search']",function(){
+        $("#ptSelect").html("");
+        if($(".pt-number input[aria-label='Search']").val().length >=2){
+            let keyword = $(".pt-number input[aria-label='Search']").val();
+            let $optionList = $("#ptSelect");
+            let url = "common/user/query";
+            seach(keyword,$optionList,url)
+        }
+    });
+    $("#ptSelect").on("change", function () {
+        var ptUser = $("#ptSelect option:selected").attr("data-id");
+        $("#ptUser").val(ptUser);
+    });
+    /* 平台上级代理搜索-获取id  */
+    $(document).on("input",".pt-sjdl-number input[aria-label='Search']",function(){
+        $("#ptSjdlSelect").html("");
+        if($(".pt-sjdl-number input[aria-label='Search']").val().length >=2){
+            let keyword = $(".pt-sjdl-number input[aria-label='Search']").val();
+            let agntLevel = Number($("#ptAgntLevel option:selected").val()) - 1;
+            let $optionList = $("#ptSjdlSelect");
+            let url = "common/agnt/query";
+            seach(keyword,$optionList,url,agntLevel)
+        }
+    });
+    $("#ptSjdlSelect").on("change", function () {
+        var ptSuperiorAgentUser = $("#ptSjdlSelect option:selected").attr("data-id");
+        $("#ptSuperiorAgentUser").val(ptSuperiorAgentUser);
+    });
+
+    /* 独立账户搜索-获取id */
+    $(document).on("input",".dl-number input[aria-label='Search']",function(){
+        $("#dlSelect").html("");
+        if($(".dl-number input[aria-label='Search']").val().length >=2){
+            let keyword = $(".dl-number input[aria-label='Search']").val();
+            let $optionList = $("#dlSelect");
+            let url = "common/user/query";
+            seach(keyword,$optionList,url)
+        }
+    });
+    $("#dlSelect").on("change", function () {
+        var dlUser = $("#dlSelect option:selected").attr("data-id");
+        $("#dlUser").val(dlUser);
+    });
+    /* 独立上级代理搜索-获取id  */
+    $(document).on("input",".dl-sjdl-number input[aria-label='Search']",function(){
+        $("#dlSjdlSelect").html("");
+        $(".no-results").html("");
+        if($(".dl-sjdl-number input[aria-label='Search']").val().length >=2){
+            let keyword = $(".dl-sjdl-number input[aria-label='Search']").val();
+            let agntLevel = Number($("#dlAgntLevel option:selected").val()) - 1;
+            let $optionList = $("#dlSjdlSelect");
+            let url = "common/agnt/query";
+            seach(keyword,$optionList,url,agntLevel)
+        }
+    });
+    $("#dlSjdlSelect").on("change", function () {
+        var dlSuperiorAgentUser = $("#dlSjdlSelect option:selected").attr("data-id");
+        $("#dlSuperiorAgentUser").val(dlSuperiorAgentUser);
+    });
+    $(document).on("ready",".no-results",function(){
+        $(".no-results").html("")
+    })
+    $(".form-horizontal").validate({
+        rules:{
+            loginName:{
+                required:true
+            },
+            agntName:{
+                required:true
+            },
+            agntLevel:{
+                required:true
+            },
+            password:{
+                required:true
+            },
+            parentId:{
+                required:true
+            },
+            userType:{
+                required:true
+            },
+        }
+    });
+
+    function submitHandler() {
+        if ($.validate.form()) {
+            add();
+        }
+    }
+
+    function add() {
+        if($("#ptAmount").hasClass("select-tab")){
+            var user = $("#ptUser").val(); 													/* 账号 */
+            var agntLevel = $("#ptAgntLevel option:selected").val();    					/* 代理级别 */
+            var parentId = agntLevel == 1 ? 0 : $("#ptSuperiorAgentUser").val(); 			/* 上级代理 */
+            var userType = '2'; 															/* 平台账号类型 */
+            var userName = "";																/* 姓名 */
+            var password = $("#ptPassword").val();																/* 密码 */
+        }else if($("#dlAmount").hasClass("select-tab")){
+            var loginName = $("#dlAccount").val(); 													/* 账号 */
+            var agntLevel = $("#dlAgntLevel option:selected").val();    					/* 代理级别 */
+            var parentId = agntLevel == 1 ? 0 : $("#dlSuperiorAgentUser").val(); 								/* 上级代理 */
+            var userType = '1'; 															/* 平台账号类型 */
+            var userName = $("#userName").val();											/* 姓名 */
+            var password  =$("#password").val();											/* 密码 */
+        }
+        $.ajax({
+            cache : true,
+            type : "POST",
+            url : ctx + "agnt/user/add",
+            data : {
+                userId:user,
+                loginName:loginName,
+                agntLevel:agntLevel,
+                parentId:parentId,
+                userType:userType,
+                agntName:userName,
+                password:password
+            },
+            async : false,
+            error : function(request) {
+                $.modal.alertError("系统错误");
+            },
+            success : function(data) {
+                $.operate.saveSuccess(data);
+            }
+        });
+    }
+</script>
+</body>
+</html>

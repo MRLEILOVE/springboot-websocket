@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+
+<div class="container-div">
+    <div class="row">
+        <div class="col-sm-12 search-collapse">
+            <form id="operlog-form">
+                <div class="select-list">
+                    <ul>
+                        <li class="select-time">
+                            <label>开始日期： </label>
+                            <input type="text" class="time-input" id="startTime" placeholder="开始时间" name="params[beginTime]"/>
+                            <span>-</span>
+                            <input type="text" class="time-input" id="endTime" placeholder="结束时间" name="params[endTime]"/>
+                        </li>
+                        <li>
+                            <label>状态： </label><select name="timeStatus" th:with="type=${@dict.getType('article_status')}">
+                            <option value="">全部</option>
+                            <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+                        </select>
+                        </li>
+                        <li>
+                            <label>名称： </label><input type="text" name="keyWords"/>
+                        </li>
+                        <li>
+                            <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                            <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                        </li>
+                    </ul>
+                </div>
+            </form>
+        </div>
+
+        <div class="btn-group-sm" id="toolbar" role="group">
+            <a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="content:banner:add">
+                <i class="fa fa-plus"></i> 新增
+            </a>
+            <a class="btn btn-danger btn-del disabled" onclick="$.operate.removeAll()" shiro:hasPermission="content:banner:remove">
+                <i class="fa fa-remove"></i> 删除
+            </a>
+        </div>
+
+        <div class="col-sm-12 select-table table-striped" style="overflow: overlay;height: 89%;">
+            <table id="bootstrap-table" data-mobile-responsive="true"></table>
+        </div>
+    </div>
+</div>
+
+<div th:include="include :: footer"></div>
+<script th:inline="javascript">
+    var editFlag = [[${@permission.hasPermi('content:banner:saveOrUpdate')}]];
+    var removeFlag = [[${@permission.hasPermi('content:banner:remove')}]];
+    var types = [[${@dict.getType('article_status')}]];
+    var prefix = ctx + "content/banner";
+
+    $(function() {
+        var options = {
+            url: prefix + "/list",
+            createUrl: prefix + "/add",
+            updateUrl: prefix + "/edit/{id}",
+            removeUrl: prefix + "/remove",
+            exportUrl: prefix + "/export",
+            sortName: "",
+            sortOrder: "",
+            modalName: "Banner",
+            search: false,
+            showExport: false,
+            columns: [{
+                checkbox: true
+                },
+                {
+                    field: 'id',
+                    title: 'ID'
+                },
+                {
+                    field: 'title',
+                    title: '名称'
+                },
+                {
+                    field: 'sort',
+                    title: '排序'
+                },
+                {
+                    field: 'pictureUrl',
+                    title: '图片',
+                    formatter:function(value,row,index) {
+                        var url = row.pictureUrl;
+                        if (url != null) {
+                            url = '<a class = "view" href="javascript:void(0)"><img style="height:100px;" src="' + url + '" /></a>';
+                        }
+                        return url;
+                    },
+                    events: 'operateEvents'
+                },
+                {
+                    field: 'jumpUrl',
+                    title: 'wap跳转链接'
+                },
+                {
+                    field: 'appJumpUrl',
+                    title: 'app跳转链接'
+                },
+                {
+                    field: 'createTime',
+                    title: '创建日期'
+                },
+                {
+                    field: 'startTime',
+                    title: '开始日期'
+                },
+                {
+                    field: 'closeTime',
+                    title: '结束日期'
+                },
+                {
+                    //field: 'status',
+                    title: '状态',
+                    formatter: function(value, row, index) {
+                        return $.table.selectDictLabel(types, row.timeStatus);
+                    }
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="#" onclick="$.operate.edit(\'' + row.id + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="#" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a> ');
+                        if (row.status == 0) {
+                            actions.push('<a class="btn btn-primary btn-xs ' + editFlag + '" href="#" onclick="updateStatus(\'' + row.id + '\', 1)"><i class="fa fa-envelope-open-o"></i>显示</a> ');
+                        }else {
+                            actions.push('<a class="btn btn-info btn-xs ' + editFlag + '" href="#" onclick="updateStatus(\'' + row.id + '\', 0)"><i class="fa fa-envelope-o"></i>隐藏</a> ');
+                        }
+                        return actions.join('');
+                    }
+                }]
+        };
+        $.table.init(options);
+    });
+
+    function updateStatus(id, status){
+        console.log(status);
+        $.ajax({
+            cache : true,
+            type : "POST",
+            url : ctx + "content/banner/saveOrUpdate",
+            data : {
+                "id": id,
+                "type": "1",
+                "status": status
+            },
+            async : false,
+            error : function(request) {
+                $.modal.alertError("系统错误");
+            },
+            success : function(data) {
+                layer.msg("修改成功,正在刷新数据请稍后……", {
+                        icon: $.modal.icon("success"),
+                        time: 500,
+                        shade: [0.1, '#8F8F8F']
+                    },
+                    function() {
+                        location.reload();
+                    });
+                //$.operate.saveSuccess(data);
+            }
+        });
+    }
+
+    window.operateEvents = {
+        'click .view': function (e, value, row, index) {
+            layer.open({
+                type: 1,
+                title: false,
+                closeBtn: 0,
+                area: ['auto', 'auto'],
+                skin: 'layui-layer-nobg', //没有背景色
+                shadeClose: true,
+                content: '<img src="' + row.pictureUrl + '"/>'
+            });
+        },
+    };
+</script>
+</body>
+</html>

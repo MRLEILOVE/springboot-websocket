@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org"
+	xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+
+	<div class="container-div">
+		<div class="row">
+			<div class="col-sm-12 search-collapse">
+				<form id="operlog-form">
+					<div class="select-list">
+						<ul>
+							<li class="select-time">
+								<label>申请日期： </label>
+								<input type="text" class="time-input" id="startTime" placeholder="开始时间" name="params[beginTime]"/>
+								<span>-</span>
+								<input type="text" class="time-input" id="endTime" placeholder="结束时间" name="params[endTime]"/>
+							</li>
+							<li>
+								<label>类型： </label><select name="type" th:with="type=${@dict.getType('audit_recharge_type')}">
+								<option value="">所有</option>
+								<option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+							</select>
+							<li>
+								<label>状态： </label><select name="status" th:with="type=${@dict.getType('audit_recharge_status')}">
+								<option value="">所有</option>
+								<option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+							</select>
+							</li>
+							<li>
+								<label>内部账号： </label><select name="internalAccount" th:with="type=${@dict.getType('user_internal_account')}">
+								<option value="">所有</option>
+								<option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+							</select>
+							</li>
+							<li>
+								<label>搜索： </label><input type="text" placeholder="可搜索用户名、手机号、订单号" name="keyWord"/>
+							</li>
+							<li>
+								<a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+								<a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+							</li>
+                            <li>
+                                <a class="btn btn-primary btn-success btn-sm" onclick="goRechargeConfig()" shiro:hasPermission="audit:recharge:rechargeConfig">
+                                    <i class="fa fa-edit"></i> 自动审核设置
+                                </a>
+                            </li>
+						</ul>
+					</div>
+				</form>
+			</div>
+			<div class="btn-group-sm" id="toolbar" role="group">
+				<a class="btn btn-primary btn-del disabled" onclick="auditPass()" shiro:hasPermission="audit:recharge:auditPass">
+					<i class="fa fa-edit"></i> 通过
+				</a>
+				<a class="btn btn-danger btn-edit disabled" onclick="auditRefuse()" shiro:hasPermission="audit:recharge:auditRefuse">
+					<i class="fa fa-remove"></i> 拒绝
+				</a>
+			</div>
+			<div class="col-sm-12 select-table table-striped">
+				<table id="bootstrap-table" data-mobile-responsive="true"></table>
+			</div>
+		</div>
+	</div>
+
+	<div th:include="include :: footer"></div>
+	<script th:inline="javascript">
+		layui.use('laydate', function(){
+		  var laydate = layui.laydate;
+		  var startTime = laydate.render({
+	 			elem: '#startTime',
+	 			type:'date',
+	 			btns: ['now', 'confirm']
+		  });
+		  var endTime = laydate.render({
+	 			elem: '#endTime',
+	 			type:'date',
+	 			btns: ['now', 'confirm']
+		  });
+		});
+		var types = [[${@dict.getType('audit_recharge_type')}]];
+		var internalAccounts = [[${@dict.getType('user_internal_account')}]];
+		var statuses = [[${@dict.getType('audit_recharge_status')}]];
+        var editFlag = [[${@permission.hasPermi('audit:recharge:edit')}]];
+		var prefix = ctx + "audit/recharge";
+
+		$(function() {
+		    var options = {
+		        url: prefix + "/list",
+		        sortName: "",
+		        sortOrder: "",
+		        modalName: "充值订单列表",
+		        search: false,
+		        showExport: false,
+		        columns: [{
+                    checkbox: true,
+					onclick:function () {
+                        console.log("111");
+                    }
+		        },
+		        {
+		            field: 'orderNo',
+		            title: '订单号'
+		        },
+				{
+					field: 'realName',
+					title: '姓名'
+				},
+				{
+		            field: 'loginName',
+		            title: '手机号'
+		        },
+				{
+		            field: 'internalAccount',
+		            title: '内部账号',
+                    formatter: function(value, row, index) {
+                        return $.table.selectDictLabel(internalAccounts, value);
+                    }
+		        },
+				{
+					field: 'orderType',
+					title: '类型',
+                    formatter: function(value, row, index) {
+                        return $.table.selectDictLabel(types, value);
+                    }
+				},
+				{
+					field: 'orderAmount',
+					title: '充值金额(CNY)'
+				},
+				{
+					field: 'exchangeAmount',
+					title: '充值金额(USDT)'
+				},
+				{
+					field: 'exchangeRate',
+					title: '充值汇率'
+				},
+		        {
+                    field: 'createTime',
+                    title: '发起时间'
+		        },
+		        {
+		            field: 'auditTime',
+		            title: '操作时间'
+		        },
+		        {
+		            field: 'transferTime',
+		            title: '转账时间'
+		        },
+		        {
+		            field: 'orderStatus',
+		            title: '状态',
+                    formatter: function(value, row, index) {
+                        return $.table.selectDictLabel(statuses, value);
+                    }
+		        },
+		        {
+		            field: 'remark',
+		            title: '操作说明'
+		        },
+		        {
+		            field: 'auditor',
+		            title: '操作人'
+		        },
+				{
+                    title: '操作',
+                    align: 'center',
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        if (row.orderStatus == "1" && row.orderType == "1"){
+                            actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="#" onclick="corrected(\'' + row.orderNo + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        }
+                        return actions.join('');
+                    }
+				}]
+		    };
+		    $.table.init(options);
+
+            $("#bootstrap-table").on("check.bs.table", function (e, row) {
+                if (row.orderStatus != 1) {
+                    $.modal.msgError("请选择待审核的订单！");
+                    var datas = $("#bootstrap-table").bootstrapTable('getData');
+                    for (var i = 0; i < datas.length; i++) {
+                        if (row.orderNo == datas[i].orderNo) {
+                            $("#bootstrap-table").bootstrapTable('uncheck', i);
+                            break;
+                        }
+                    }
+                }
+            });
+
+            $("#bootstrap-table").on("check-all.bs.table", function (e, rows) {
+                for (var i = 0; i < rows.length; i++) {
+                    if (rows[i].orderStatus != 1) {
+                        $("#bootstrap-table").bootstrapTable('uncheck', i);
+					}
+				}
+            });
+		});
+		
+        function auditPass() {
+            var url = prefix + "/auditPass";
+            var orderNos = $.table.selectColumns("orderNo");
+
+            if (orderNos.length == 0) {
+                $.modal.alertWarning("请选择要审核的订单！");
+                return;
+            }
+            $.modal.confirm("是否通过其中" + orderNos.length + "笔订单的充值审核?", function() {
+                var url = prefix + "/auditPass";
+                var data = { "orderNos": orderNos };
+                $.operate.post(url, data);
+            });
+        }
+
+        function auditRefuse() {
+            var row = $.table.selectColumns("orderNo");
+            var orderStatus = $.table.selectColumns("orderStatus");
+            if (orderStatus[0] != 1) {
+                $.modal.alertWarning("请选择待审核的订单！");
+                return;
+            }
+            var url = prefix + "/auditEdit/" + row[0];
+            $.modal.open("审核拒绝", url, '800', '300');
+
+        }
+
+        function corrected(orderNo) {
+            var url = prefix + "/corrected/" + orderNo;
+            $.modal.open("金额修正", url, '800', '300');
+        }
+
+        function goRechargeConfig() {
+            var url = prefix + "/goRechargeConfig";
+            $.modal.open("自动充值审核设置", url, '800', '300');
+        }
+	</script>
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org"
+	xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	<div class="container-div">
+		<div class="row">
+			<div class="col-sm-12 search-collapse">
+				<form id="operlog-form">
+					<div class="select-list">
+						<ul>
+							<li class="select-time">
+								<label>创建时间搜索： </label>
+								<input type="text" class="time-input" id="startTime" placeholder="开始时间"
+									   name="params[beginTime]"/>
+								<span>-</span>
+								<input type="text" class="time-input" id="endTime" placeholder="结束时间"
+									   name="params[endTime]"/>
+							</li>
+							<li>
+								搜索：<input type="text" name="keyword" placeholder="可搜索用户姓名、手机号"/>
+							</li>
+							<li>
+								<a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+								<a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+							</li>
+						</ul>
+					</div>
+				</form>
+			</div>
+
+			<div class="col-sm-12 select-table table-striped">
+				<table id="bootstrap-table" data-mobile-responsive="true"></table>
+			</div>
+		</div>
+	</div>
+	
+	<div th:include="include :: footer"></div>
+	<script th:inline="javascript">
+		var prefix = ctx + "beta/betaAccount";
+		$(function() {
+		    var options = {
+		        url: prefix + "/betaAccountRecordList/"+[[${id}]],
+                updateUrl: prefix + "/edit/{id}",
+		        sortName: "ac.create_time",
+		        sortOrder: "desc",
+		        modalName: "详情列表",
+		        search: false,
+		        showExport: false,
+		        columns: [
+				{
+					field: 'name',
+					title: '用户姓名'
+				},
+				{
+					field: 'createTime',
+					title: '创建时间'
+				},
+				{
+					field: 'phone',
+					title: '手机号码'
+				},
+				{
+					field: 'beforeAmount',
+					title: '交易前金额'
+				},
+				{
+					field: 'amount',
+					title: '交易金额'
+				},
+				{
+					field: 'afterAmount',
+					title: '交易后金额'
+				},
+				{
+					field: 'remark',
+					title: '备注'
+				},
+				{
+					title: '操作',
+					align: 'center',
+					formatter: function(value, row, index) {
+						var actions = [];
+						return actions.join('');
+					}
+				}]
+		    };
+		    $.table.init(options);
+		});
+	</script>
+</form>
+</body>
+</html>

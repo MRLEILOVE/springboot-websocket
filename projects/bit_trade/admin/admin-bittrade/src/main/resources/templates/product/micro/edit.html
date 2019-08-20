@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<meta charset="utf-8">
+<style>
+	input[name='textVal'],input[name='timeVal']{
+		width:50px;
+	}
+	.unit li,.time li{
+		margin-bottom:10px;
+	}
+</style>
+<head th:include="include :: header"></head>
+<body class="white-bg">
+	<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+		<form class="form-horizontal m" id="form-micro-edit" th:object="${micro}">
+			<input name="id"  type="hidden"  th:field="*{id}" />
+			<div class="col-md-12">
+				<div class="form-group">
+					<label class="col-sm-3 control-label">交易对：</label>
+					<div class="col-sm-8">
+						<input type="text" name="" disabled="disabled" class="form-control" th:field="*{symbol}">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">保证金档位：</label>
+					<div class="col-sm-8">
+						<input type="hidden" id="valueUnit" name="valueUnit" class="form-control" th:field="*{valueUnit}">
+						<ul id="unit" class="unit">
+						
+						</ul>
+						<div><input id="addBtn" type="button" value="+" /></div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">手续费率：</label>
+					<div class="col-sm-8">
+						<input type="number" name="serviceFee" class="input-val form-control"  th:value="${#numbers.formatDecimal(micro.serviceFee*100,0,2)}">
+					</div>
+					<label class="control-label">%</label>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">反向滑点：</label>
+					<div class="col-sm-8">
+						<input type="number" name="realSlippage" class="input-val form-control" placeholder="0" th:value="${micro.realSlippage}">
+					</div>
+				</div>
+				<!--<div class="form-group">
+					<label class="col-sm-3 control-label">滑点交易量范围：</label>
+					<div class="col-sm-9">
+						<input type="text" name="slippageRange" class="form-control" placeholder="0" th:value="${#numbers.formatDecimal(micro.slippageRange,0,2)}">
+					</div>
+				</div>-->
+				<div class="form-group">
+					<label class="col-sm-3 control-label">体验金滑点：</label>
+					<div class="col-sm-8">
+						<input type="number" name="slippage" class="input-val form-control" th:field="*{slippage}">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">买涨点差：</label>
+					<div class="col-sm-8">
+						<input type="number" name="spreadUp" class="input-val form-control" th:field="*{spreadUp}">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">买跌点差：</label>
+					<div class="col-sm-8">
+						<input type="number" name="spreadDown" class="input-val form-control" th:field="*{spreadDown}">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">体验金买涨点差：</label>
+					<div class="col-sm-8">
+						<input type="number" name="tokenSpreadUp" class="input-val form-control"  th:field="*{tokenSpreadUp}">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">体验金买跌点差：</label>
+					<div class="col-sm-8">
+						<input type="number" name="tokenSpreadDown" class="input-val form-control" th:field="*{tokenSpreadDown}">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">交割时间：</label>
+					<div class="col-sm-8">
+						<input type="hidden" name="timeUnit" class="form-control" th:field="*{timeUnit}">
+						<ul id="time" class="time">
+						
+						</ul>
+						<div><input id="addTimeBtn" type="button" value="+" /></div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label">盈亏率：</label>
+					<div class="col-sm-8">
+						<input type="text" name="profitPercent" class="input-val form-control" th:value="${#numbers.formatDecimal(micro.profitPercent*100,0,2)}">
+					</div>
+					<label class="control-label">%</label>
+				</div>
+			</div>
+		</form>
+	</div>
+	<div th:include="include::footer"></div>
+	<script th:src="@{/ajax/libs/select/select2.js}"></script>
+	<script>
+        $("#form-micro-edit").validate({
+        	submitHandler:function(form){
+        		edit();
+        	}
+        });
+        
+        function submitHandler() {
+	        if ($.validate.form()) {
+	        	edit();
+	        }
+	    }
+        function edit() {
+        	var nitArray =[];
+        	$("input[name='textVal']").each(function(){
+        		nitArray.push($(this).val());
+        	});
+        	/* 判断输入值是否符合要求 */
+        	for(let i = 0;i < $("input[name='textVal']").length;i++){
+        		if(nitArray[i] == ""||Number(nitArray[i]) < 0||nitArray[i].indexOf('.')!==-1){
+        			$.modal.alertError("输入格式错误,请输入正整数");
+        			return false;
+        		}
+        	}
+        	/* console.log(nitArray); */
+        	var timeArray =[];
+        	$("input[name='timeVal']").each(function(){
+        		timeArray.push($(this).val());
+        	});
+        	/* 判断输入值是否符合要求 */
+        	for(let i = 0;i < $("input[name='timeVal']").length;i++){
+        		if(timeArray[i] == ""||Number(timeArray[i]) < 0||timeArray[i].indexOf('.')!==-1){
+        			$.modal.alertError("输入格式错误,请输入正整数");
+        			return false;
+        		}
+        	}
+        	/* 输入框非空校验 */
+        	for(let i = 0;i < $(".input-val").length;i++){
+        		if($(".input-val").eq(i).val()==''){
+        			$.modal.alertError("输入不能为空");
+        			return false;
+        		}
+        	}
+        	/* console.log(nitArray); */
+        	var valueUnit = nitArray.join(",");
+            var id = $("input[name='id']").val();
+        	var serviceFee = $("input[name='serviceFee']").val();
+            var realSlippage = $("input[name='realSlippage']").val();
+            var slippageRange = $("input[name='slippageRange']").val();
+            var slippage = $("input[name='slippage']").val();
+        	var spreadUp = $("input[name='spreadUp']").val();
+        	var spreadDown = $("input[name='spreadDown']").val();
+            var tokenSpreadUp = $("input[name='tokenSpreadUp']").val();
+            var tokenSpreadDown = $("input[name='tokenSpreadDown']").val();
+        	/* var timeUnit = $("input[name='timeUnit']").val(); */
+        	var timeUnit = timeArray.join(",");
+            var profitPercent = $("input[name='profitPercent']").val();
+        	$.ajax({
+        		cache : true,
+        		type : "POST",
+        		url : ctx + "product/micro/edit",
+        		data : {
+        			id: id,
+        			valueUnit: valueUnit,
+        			serviceFee: serviceFee,
+                    realSlippage: realSlippage,
+                    slippageRange: slippageRange,
+                    slippage: slippage,
+        			spreadUp: spreadUp,
+        			spreadDown: spreadDown,
+                    tokenSpreadUp: tokenSpreadUp,
+                    tokenSpreadDown: tokenSpreadDown,
+        			timeUnit: timeUnit,
+        			profitPercent: profitPercent
+        		},
+        		async : false,
+        		error : function(request) {
+        			$.modal.alertError("系统错误");
+        		},
+        		success : function(data) {
+        			$.operate.saveSuccess(data);
+        		}
+        	});
+        }
+		$(function(){
+			var a = $("#valueUnit").val();
+			var bzjVal = a.split(",");
+			/* console.log(bzjVal); */
+			var bzjList = '';
+			
+			var b = $("#timeUnit").val();
+			var timeVal = b.split(",");
+			/* console.log(timeVal); */
+			var timeList="";
+			/* 保证金创建空的栏目 */
+			var addBzjList = `<li>
+								<input type="number" name="textVal" value="" />
+								<span>USDT</span>
+								<input type="button" name="reduce" value="-" />
+						   </li>`
+			for(let i = 0;i < bzjVal.length;i++){
+				bzjList += `<li>
+								<input type="number" name="textVal" value="${bzjVal[i]}" />
+								<span>USDT</span>
+								<input type="button" name="reduce" value="-" />
+						   </li>` 
+			}
+			$("#unit").append(bzjList);
+			$(document).on("click","#addBtn",function(){
+				$("#unit").append(addBzjList);
+			});
+			$(document).on("click","input[name='reduce']",function(e){
+				console.log(e.target.parentNode)
+				$(this).parent().remove();
+			});
+			/* 时间创建空的栏目 */
+			var addTimeList = `<li>
+								<input type="number" name="timeVal" value="" />
+								<span>分</span>
+								<input type="button" name="time" value="-" />
+						   	  </li>`
+			for(let i = 0;i < timeVal.length;i++){
+				timeList += `<li>
+								<input type="number" name="timeVal" value="${timeVal[i]}" />
+								<span>分</span>
+								<input type="button" name="time" value="-" />
+						    </li>` 
+			}
+			$("#time").append(timeList);
+			$(document).on("click","#addTimeBtn",function(){
+				$("#time").append(addTimeList);
+			});
+			$(document).on("click","input[name='time']",function(e){
+				console.log(e.target.parentNode)
+				$(this).parent().remove();
+			})
+		})
+    </script>
+</body>
+</html>

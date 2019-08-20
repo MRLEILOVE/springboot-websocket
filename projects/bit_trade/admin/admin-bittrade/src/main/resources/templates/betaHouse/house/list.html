@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+
+<div class="container-div">
+    <div class="row">
+        <div class="col-sm-12 search-collapse">
+            <form id="operlog-form">
+                <div class="select-list">
+                    <ul>
+                        <div style="overflow: auto;">
+                            <li class="select-time">
+                                <label>创建时间搜索： </label>
+                                <input type="text" class="time-input" id="startTime" placeholder="开始时间"
+                                       name="params[beginTime]"/>
+                                <span>-</span>
+                                <input type="text" class="time-input" id="endTime" placeholder="结束时间"
+                                       name="params[endTime]"/>
+                            </li>
+                            <li>
+                                <label>搜索：</label><input type="text" placeholder="狗窝名称" name="name"/>
+                            </li>
+                            <li>
+                                <label>搜索：</label><input type="text" placeholder="用户名称&&手机号" name="userName"/>
+                            </li>
+
+                            <li>
+                                <label>母狗状态：</label>
+                                <select name="feminaStatus" th:with="type=${@dict.getType('beta_betaFemina_status')}">
+                                    <option value="">所有</option>
+                                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                                            th:value="${dict.dictValue}"></option>
+                                </select>
+                            </li>
+                            <li>
+                                <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i
+                                        class="fa fa-search"></i>&nbsp;搜索</a>
+                                <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i
+                                        class="fa fa-refresh"></i>&nbsp;重置</a>
+                            </li>
+                        </div>
+                    </ul>
+                </div>
+            </form>
+        </div>
+
+        <div class="col-sm-12 select-table table-striped" style="overflow: overlay;height: 94%;">
+            <table id="bootstrap-table" data-mobile-responsive="true"></table>
+        </div>
+    </div>
+</div>
+
+<div th:include="include :: footer"></div>
+<script th:inline="javascript">
+    layui.use('laydate', function () {
+        var laydate = layui.laydate;
+        var startTime = laydate.render({
+            elem: '#createTime',
+            type: 'date',
+            btns: ['now', 'confirm']
+        });
+        var endTime = laydate.render({
+            elem: '#endTime',
+            type: 'date',
+            btns: ['now', 'confirm']
+        });
+    });
+
+    var beta_infertilitys = [[${@dict.getType('beta_betaFemina_status')}]];//
+    var prefix = ctx + "betaHouse/house";
+    $(function () {
+        var options = {
+            url: prefix + "/list",
+            createUrl: prefix + "/add",
+            updateUrl: prefix + "/edit/{id}",
+            sortName: "ho.create_time",
+            sortOrder: "desc",
+            modalName: "套餐",
+            search: false,
+            striped:true,
+            showExport: false,
+            columns: [
+                {
+                    field: 'name',
+                    title: '狗窝名称'
+                },
+                {
+                    field: 'id',
+                    title: '狗窝ID'
+                },
+                {
+                    field: 'feminaId',
+                    title: '母狗ID'
+                },
+                {
+                    field: 'userName',
+                    title: '领养人（电话）',
+                    formatter: function (value, row, index) {
+                        var actions = [];
+                        var nameVar = row.userName == null ? "暂无领养人" : row.userName;
+                        var phoneVar = row.phone == null ? "" : row.phone;
+                        var nameVarAndphoneVar = nameVar + "/" + phoneVar;
+                        actions.push('<span class="depreciate">' + nameVarAndphoneVar + '</span>');
+                        return actions.join('');
+                    }
+                },
+                {
+                    field: 'maleCount',
+                    title: '公狗数',
+                    sortable: true,
+                },
+                {
+                    field: 'puppyCount',
+                    title: '小狗数',
+                    sortable: true,
+                },
+                {
+                    field: 'feminaStatus',
+                    title: '母狗状态',
+                    formatter: function(value, row, index) {
+                        return $.table.selectDictLabel(beta_infertilitys, value);
+                    }
+                },
+                {
+                    field: 'power',
+                    title: '力量',
+                    sortable: true,
+                },
+                {
+                    field: 'agility',
+                    title: '敏捷',
+                    sortable: true,
+                },
+                {
+                    field: 'stamina',
+                    title: '体力',
+                    sortable: true,
+                },
+                {
+                    field: 'intelligence',
+                    title: '智力',
+                    sortable: true,
+                },
+                {
+                    field: 'charm',
+                    title: '魅力',
+                    sortable: true,
+                },
+                {
+                    field: 'createTime',
+                    title: '创建时间'
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-success btn-xs" href="#" onclick="feminaList(\'' + row.id + '\')"><i class="fa fa-edit"></i>详情</a> ');
+                        actions.push('<a class="btn btn-success btn-xs" href="#" onclick="backpackInfo(\'' + row.userId + '\')"><i class="fa fa-edit"></i>背包</a> ');
+                        return actions.join('');
+                    }
+                }]
+        };
+        $.table.init(options);
+    });
+
+    window.operateEvents = {
+        'click .view': function (e, value, row, index) {
+            layer.open({
+                type: 1,
+                title: false,
+                closeBtn: 0,
+                area: ['auto', 'auto'],
+                skin: 'layui-layer-nobg', //没有背景色
+                shadeClose: true,
+                content: '<img src="' + row.dogImg + '"/>'
+            });
+        },
+    };
+
+    /*狗窝-母狗列表*/
+    function feminaList(id) {
+        var url = prefix + '/feminaList/' + id;
+        createMenuItem(url, "母狗列表");
+    }
+
+    /*狗窝-背包列表*/
+    function backpackInfo(userId) {
+        var url = prefix + '/backpackInfo/'+userId;
+        createMenuItem(url, "背包列表");
+    }
+
+</script>
+</body>
+</html>

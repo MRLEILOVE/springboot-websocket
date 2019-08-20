@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org"
+	  xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<style>
+	.bank-img{
+		width:300px;
+		height:150px;
+	}
+</style>
+<body class="white-bg">
+	<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+		<form class="form-horizontal m" id="form-withdraw-edit" th:object="${detail}">
+			<input name="orderNo" type="hidden"  th:field="*{orderNo}" />
+			<input name="withdrawStatus" type="hidden"  th:field="*{withdrawStatus}" />
+
+			<div class="btn-group-sm" id="toolbar" role="group">
+				<a class="btn btn-primary btn-success" onclick="audit(1)" shiro:hasPermission="audit:withdraw:audit">
+					<i class="fa fa-edit"></i> 通过
+				</a>
+				<a class="btn btn-danger btn-success" onclick="audit(0)" shiro:hasPermission="audit:withdraw:audit">
+					<i class="fa fa-remove"></i> 拒绝
+				</a>
+			</div>
+
+			<div class="col-sm-12 search-collapse">
+				<div class="select-list">
+					<ul>
+						<li>
+							<label>总充值（USDT）： </label>
+							<input type="text" readonly="true" id="totalDeposits" name="totalDeposits" th:field="*{totalDeposits}"/>
+						</li>
+						<li>
+							<label>用户充值（USDT）： </label>
+							<input type="text" readonly="true" id="totalUserRechargeUSDT" name="totalUserRechargeUSDT" th:field="*{totalUserRechargeUSDT}"/>
+						</li>
+						<li>
+							<label>人工充值（USDT）： </label>
+							<input type="text" readonly="true" id="totalManualRecharge" name="totalManualRecharge" th:field="*{totalManualRecharge}"/>
+						</li>
+						<li>
+							<label>奖励金转入（USDT）： </label>
+							<input type="text" readonly="true" id="bountyAmount" name="bountyAmount" th:field="*{bountyAmount}"/>
+						</li>
+						<li>
+							<label>总提现（USDT）： </label>
+							<input type="text" readonly="true" id="totalWithdrawals" name="totalWithdrawals" th:field="*{totalWithdrawals}"/>
+						</li>
+						<li>
+							<label>用户提现（USDT）： </label>
+							<input type="text" readonly="true" id="totalUserWithdrawUSDT" name="totalUserWithdrawUSDT" th:field="*{totalUserWithdrawUSDT}"/>
+						</li>
+						<li>
+							<label>人工提现（USDT）： </label>
+							<input type="text" readonly="true" id="totalManualWithdraw" name="totalManualWithdraw" th:field="*{totalManualWithdraw}"/>
+						</li>
+						<li>
+							<label>风险率： </label>
+							<input type="text" readonly="true" id="riskRate" name="riskRate" th:field="*{riskRate}"/>
+						</li>
+						<li>
+							<label>认证状态： </label>
+							<input type="text" readonly="true" id="authenticationStatus" name="authenticationStatus" th:field="*{authenticationStatus}"/>
+						</li>
+						<li>
+							<label>净值（USDT）： </label>
+							<input type="text" readonly="true" id="netValue" name="netValue"  th:field="*{netValue}"/>
+						</li>
+						<li>
+							<label>可用（USDT）： </label>
+							<input type="text" readonly="true" id="balance" name="balance"  th:field="*{balance}"/>
+						</li>
+						<li>
+							<label>占用（USDT）： </label>
+							<input type="text" readonly="true" id="usedMargin" name="usedMargin"  th:field="*{usedMargin}"/>
+						</li>
+					</ul>
+				</div>
+			</div>
+
+			<div class="col-sm-12 search-collapse">
+				<div class="form-group">
+					<label class="col-sm-3 control-label ">账号类型：</label>
+					<div class="col-sm-8">
+						<input class="form-control" readonly="true" type="text" name="accountType" id="accountType" th:field="*{accountType}"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label ">订单号：</label>
+					<div class="col-sm-8">
+						<input class="form-control" readonly="true" type="text" name="orderNo" id="orderNo" th:field="*{orderNo}"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label ">用户账户：</label>
+					<div class="col-sm-8">
+						<input class="form-control" readonly="true" type="text" name="loginName" id="loginName" th:field="*{loginName}"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label ">提现金额（USDT）：</label>
+					<div class="col-sm-8">
+						<input class="form-control" readonly="true" type="text" name="amount" id="amount" th:field="*{amount}"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label ">汇率：</label>
+					<div class="col-sm-8">
+						<input class="form-control" readonly="true" type="text" name="exchangeRate" id="exchangeRate" th:field="*{exchangeRate}"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label ">转帐金额（CNY）：</label>
+					<div class="col-sm-8">
+						<input class="form-control" readonly="true" type="text" name="exchangeAmount" id="exchangeAmount" th:field="*{exchangeAmount}"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label ">上级代理：</label>
+					<div class="col-sm-8">
+						<input class="form-control" readonly="true" type="text" name="recommendName" id="recommendName" th:field="*{recommendName}"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label ">真实姓名：</label>
+					<div class="col-sm-8">
+						<input class="form-control" readonly="true" type="text" name="realName" id="realName" th:field="*{realName}"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label ">身份证号：</label>
+					<div class="col-sm-8">
+						<input class="form-control" readonly="true" type="text" name="identityNo" id="identityNo" th:field="*{identityNo}"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label ">开户行：</label>
+					<div class="col-sm-8">
+						<input class="form-control" readonly="true" type="text" name="bankAddress" id="bankAddress" th:field="*{bankAddress}"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label ">银行卡号：</label>
+					<div class="col-sm-8">
+						<input class="form-control" readonly="true" type="text" name="bankCardNo" id="bankCardNo" th:field="*{bankCardNo}"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label ">银行卡照片：</label>
+					<div class="col-sm-8">
+						<!-- <input class="form-control" readonly="true" type="text" name="bankCardUrl" id="bankCardUrl" th:field="*{bankCardUrl}"/> -->
+						<img class="bank-img" alt="" th:src="*{bankCardUrl}"  />
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label ">支付宝账号：</label>
+					<div class="col-sm-8">
+						<input class="form-control" readonly="true" type="text" name="alipayNo" id="alipayNo" th:field="*{alipayNo}"/>
+					</div>
+				</div>
+				<!--<div class="form-group">
+					<label class="col-sm-3 control-label ">审核意见：</label>
+					<div class="col-sm-8">
+						<textarea id="remark"  name="remark" required="true" class="form-control">[[*{remark}]]</textarea>
+					</div>
+				</div>-->
+			</div>
+		</form>
+	</div>
+	<div th:include="include::footer"></div>
+	<script th:src="@{/ajax/libs/select/select2.js}"></script>
+	<script>
+
+        $(function () {
+            var status = $("#authenticationStatus").val();
+            //0未审核，1通过，2审核中',
+            if (status == 1) {
+                $("#authenticationStatus").val("已认证");
+            } else {
+                $("#authenticationStatus").val("未认证");
+            }
+
+            var withdrawStatus = $("#withdrawStatus").val();
+            if (withdrawStatus != 2) {
+                $(".btn-success").addClass("disabled");
+            }
+        });
+
+        $("#form-withdraw-edit").validate({
+        	submitHandler:function(form){
+        		audit();
+        	}
+        });
+
+        function submitHandler() {
+	        if ($.validate.form()) {
+	        	audit();
+	        }
+	    }
+
+        function audit(status) {
+            var orderNo = $("input[name='orderNo']").val();
+            var url = ctx + "audit/withdraw/auditEdit/" + orderNo + "/" + status;
+            $.modal.open("提现审核", url, '800', '300');
+		}
+
+        function audit11(status) {
+            if ($.validate.form()) {
+                var orderNo = $("input[name='orderNo']").val();
+                var remark = $("textarea[name='remark']").val();
+                $.ajax({
+                    cache : true,
+                    type : "POST",
+                    url : ctx + "audit/withdraw/audit",
+                    data : {
+                        "orderNo": orderNo,
+                        "remark": remark,
+                        "status": status
+                    },
+                    async : false,
+                    error : function(request) {
+                        $.modal.alertError("系统错误");
+                    },
+                    success : function(data) {
+						$.operate.saveSuccess(data);
+                    }
+                });
+            }
+        }
+    </script>
+</body>
+</html>

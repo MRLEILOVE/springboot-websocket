@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:include="http://www.w3.org/1999/xhtml">
+<meta charset="utf-8">
+<style>
+.banner-box{
+	width:350px;
+	height:150px;
+	border:1px solid #e5e6e7;
+/*	background:url(../../img/banner-add.png) no-repeat center;*/
+	background-size:45px 45px;
+    position: relative;
+    box-sizing: content-box;
+}
+.downloadPic{
+	width:100%;
+	height:100%;
+    opacity: 0;
+    position: absolute;
+    top:0;
+    left:0;
+    z-index:2;
+}
+.banner-img{
+	position: absolute;
+	width:100%;
+	height:100%;
+	top:0;
+    left:0;
+    z-index:1;
+}
+.add-img{
+	position: absolute;
+	width:24px;
+	height:24px;
+	line-height:24px;
+	text-align:center;
+	left:0;
+	bottom:0;
+	top:0;
+	right:0;
+	margin:auto;
+	font-size:32px;
+	z-index:0;
+}
+.banner-size{
+	float: right !important;
+	margin-top: -15px;
+}
+</style>
+<head th:include="include :: header"></head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <form class="form-horizontal m" id="form-banner-edit" th:object="${vo}">
+        <input name="id" type="hidden" th:field="*{id}"/>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label ">预约用户：</label>
+            <div class="col-sm-8">
+                <input class="form-control" type="text" id="name" name="name" th:field="*{name}"  disabled="disabled" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label ">手机号码：</label>
+            <div class="col-sm-8">
+                <input class="form-control" type="text" id="phone" name="phone" th:field="*{phone}" disabled="disabled" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label ">订单编号：</label>
+            <div class="col-sm-8">
+                <input class="form-control" type="text" id="reservNumber" name="reservNumber" th:field="*{reservNumber}" disabled="disabled"/>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label ">预约支付金额：</label>
+            <div class="col-sm-8">
+                <input class="form-control" type="text" id="amount" name="amount" th:field="*{amount}" disabled="disabled" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label ">预约状态：</label>
+            <div class="col-sm-8">
+                <select id="reservStauts" name="reservStauts" class="form-control m-b" th:with="type=${@dict.getType('beta_reservStauts')}" disabled="disabled">
+                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:field="*{reservStauts}"></option>
+                </select>
+            </div>
+        </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label ">周期（天）：</label>
+                    <div class="col-sm-8">
+                        <input class="form-control" type="text" id="days" name="days" th:field="*{days}"disabled="disabled"/>
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label ">最低价格：</label>
+                    <div class="col-sm-8">
+                        <input class="form-control" type="text" id="minPrice" name="minPrice" th:field="*{minPrice}"  disabled="disabled"/>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label "> 最高价格（元）：</label>
+                    <div class="col-sm-8">
+                        <input class="form-control" type="text" id="maxPrice" name="maxPrice" th:field="*{maxPrice}"  disabled="disabled"/>
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label ">收益率（小数）：</label>
+                    <div class="col-sm-8">
+                        <input class="form-control" type="text" id="earningsRatio" name="earningsRatio" th:field="*{earningsRatio}"  disabled="disabled"/>
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label ">开始时间：</label>
+                    <div class="col-sm-8">
+                        <input class="form-control" type="text" id="startTime" name="startTime" th:field="*{startTime}"  disabled="disabled"/>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label ">结束时间：</label>
+                    <div class="col-sm-8">
+                        <input class="form-control" type="text" id="endTime" name="endTime" th:field="*{endTime}"  disabled="disabled"/>
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label ">级别：</label>
+                    <div class="col-sm-8">
+                        <input class="form-control" type="text" id="level" name="level" th:field="*{level}"  disabled="disabled"/>
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label ">套餐名称：</label>
+                    <div class="col-sm-8">
+                        <input class="form-control" type="text" id="dogName" name="dogName" th:field="*{dogName}"  disabled="disabled"/>
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label ">所需微分：</label>
+                    <div class="col-sm-8">
+                        <input class="form-control" type="text" id="differential" name="differential" th:field="*{differential}"  disabled="disabled"/>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">图片：</label>
+                    <div class="col-sm-8">
+                        <div class="banner-box">
+                            <img class="banner-img" src="" alt="" id="dogImg" th:src="*{dogImg}" name="dogImg">
+                            <p class="add-img">+</p>
+                        </div>
+                    </div>
+                    <p class="col-sm-3 banner-size">600*300px</p>
+                </div>  <!---->
+
+    </form>
+</div>
+<div th:include="include::footer"></div>
+<script th:src="@{/ajax/libs/select/select2.js}"></script>
+<script>
+	var isFirst = true; /* 首次执行提交 */
+    $("#form-banner-edit").validate({
+        rules: {
+            name: {
+                required: true
+            },
+            sort: {
+                required: true
+            },
+            pictureUrl: {
+                // required: true,
+            }
+        }
+    });
+
+    function submitHandler() {
+        if ($.validate.form()) {
+        	if(isFirst){
+	            edit();
+        	}
+        }
+    }
+
+    function edit() {
+        var reservStauts= document.getElementById("reservStauts").value
+        var id= document.getElementById("id").value
+        var amount= document.getElementById("amount").value
+        $.ajax({
+            cache: true,
+            type: "POST",
+            url: ctx + "beta/betaReservation/saveOrUpdate",
+            data: {
+                "id": id,
+                "reservStauts": reservStauts,
+                "amount": amount
+            },
+            async: false,
+            error: function (request) {
+                $.modal.alertError("系统错误");
+            },
+            success: function (data) {
+                if(data.code ==  web_status.SUCCESS){
+                    isFirst = false;
+                    $.operate.saveSuccess(data);
+                }else{
+                    $.modal.alertError(data.message);
+                }
+            }
+        });
+    }
+
+</script>
+</body>
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org"
+	xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+
+	<div class="container-div">
+		<div class="row">
+			<div class="col-sm-12 search-collapse">
+				<form id="operlog-form">
+					<div class="select-list">
+						<ul>
+							<div style="overflow: auto;">
+								<li class="select-time">
+									<label>日期搜索： </label>
+									<input type="text" class="time-input" autocomplete="off" id="startTime" placeholder="日期" name="params[beginTime]" lay-key="1">
+								</li>
+								<li>
+									<label>搜索： </label><input type="text" placeholder="可搜索用户名、套餐名、手机号开头" name="keyword"/>
+								</li>
+								<li>
+									<label>套餐： </label>
+									<select name="comboGroupId" th:with="type=${list}" style="width: auto;">
+										<option value="">所有</option>
+										<option th:each="dict : ${type}" th:text="${dict.dogName+'&nbsp;&nbsp;&nbsp;周期'+dict.days+
+								'&nbsp;&nbsp;天'+'&nbsp;&nbsp;&nbsp; 价格'+dict.minPrice+'~'+dict.maxPrice+'&nbsp;&nbsp;&nbsp;&nbsp;收益率：'+dict.earningsRatio+'%'}"
+												th:value="${dict.id}"></option>
+									</select>
+								</li>
+								<li>
+									<a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+									<a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+								</li>
+							</div>
+						</ul>
+					</div>
+				</form>
+			</div>
+
+			<div class="btn-group-sm" id="toolbar" role="group">
+			</div>
+
+			<div class="col-sm-12 select-table table-striped">
+				<table id="bootstrap-table" data-mobile-responsive="true"></table>
+			</div>
+		</div>
+	</div>
+
+	<div th:include="include :: footer"></div>
+	<script th:inline="javascript">
+		layui.use('laydate', function(){
+			var laydate = layui.laydate;
+			var startTime = laydate.render({
+				elem: '#startTime',
+				type: 'date',
+				theme: 'molv',
+				max: 0,
+				btns: ['now', 'confirm']
+			});
+		});
+		var prefix = ctx + "beta/betaAdoption";
+		$(function() {
+		    var options = {
+		        url: prefix + "/list",
+				sortName: "bal.create_time",
+		        sortOrder: "desc",
+		        modalName: "行为分析",
+		        search: false,
+		        showExport: false,
+		        columns: [
+					{
+						field: 'userName',
+						title: '用户名称'
+					},
+					{
+						field: 'userPhone',
+						title: '用户手机号'
+					},
+					{
+						field: 'createTime',
+						title: '创建时间'
+					},
+					{
+						field: 'updateTime',
+						title: '修改时间'
+					},
+					{
+						field: 'count',
+						title: '点击次数',
+						sortable: true
+					},
+					{
+						field: 'comboGroupName',
+						title: '套餐名称'
+					},
+					{
+						field: 'days',
+						title: '周期（天）',
+						formatter: function(value, row, index) {
+							var actions = [];
+							var loss = row.earningsRatio == null?"0":numMulti(row.earningsRatio,100);
+							var daysAnddifferential = value+"天/"+loss+"%";
+							actions.push('<span class="depreciate">' + daysAnddifferential + '</span>');
+							return actions.join('');
+						}
+					},
+					{
+						field: 'isGetBeta',
+						title: '是否抢狗成功'
+					}]
+		    };
+		    $.table.init(options);
+		});
+	</script>
+</body>
+</html>

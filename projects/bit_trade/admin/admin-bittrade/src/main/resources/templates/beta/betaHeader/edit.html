@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<style>
+.banner-box{
+	width:350px;
+	height:150px;
+	border:1px solid #e5e6e7;
+/*	background:url(../../img/banner-add.png) no-repeat center;*/
+	background-size:45px 45px;
+    position: relative;
+    box-sizing: content-box;
+}
+.downloadPic{
+	width:100%;
+	height:100%;
+    opacity: 0;
+    position: absolute;
+    top:0;
+    left:0;
+    z-index:2;
+}
+.banner-img{
+	position: absolute;
+	width:100%;
+	top:0;
+    left:0;
+    z-index:1;
+}
+.add-img{
+	position: absolute;
+	width:24px;
+	height:24px;
+	line-height:24px;
+	text-align:center;
+	left:0;
+	bottom:0;
+	top:0;
+	right:0;
+	margin:auto;
+	font-size:32px;
+	z-index:0;
+}
+.banner-size{
+	float: right !important;
+	margin-top: -15px;
+}
+</style>
+<head th:include="include :: header"></head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <form class="form-horizontal m" id="form-banner-edit" th:object="${header}">
+
+        <input name="id" type="hidden" th:field="*{id}"/>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">Banner图片：</label>
+            <div class="col-sm-8">
+                <div class="banner-box">
+                    <input class="downloadPic" type="file" name="file" id="downloadPic" accept="image/*" >
+                    <img class="banner-img" src="" alt="" id="bannerImgUrl" th:src="*{headUrl}" name="bannerImgUrl">
+                    <p class="add-img">+</p>
+                </div>
+            </div>
+            <p class="col-sm-3 banner-size">600*300px</p>
+        </div>
+    </form>
+</div>
+<div th:include="include::footer"></div>
+<script th:src="@{/ajax/libs/select/select2.js}"></script>
+<script>
+	var isFirst = true; /* 首次执行提交 */
+    $("#form-banner-edit").validate({
+        rules: {
+            name: {
+                required: true
+            },
+            sort: {
+                required: true
+            },
+            pictureUrl: {
+                // required: true,
+            }
+        }
+    });
+
+    function submitHandler() {
+        if ($.validate.form()) {
+        	if(isFirst){
+	            edit();
+        	}
+        }
+    }
+
+
+    var pictureSuffix="";
+    var pictureBase64="";
+    /* 图片在前端预览 */
+    $("#downloadPic").change(function(e,type){
+        var files = e.target.files;
+        var file = files[0];
+        var fileSize = file.size;
+        if (!/\/(?:jpeg|jpg|png)/i.test(file.type)){
+            $.modal.alertError("上传图片格式只能为jpeg,jpg,png");
+            return;
+        }
+        var reader = new FileReader();
+        reader.onload = function() {
+            if(fileSize-0 > 1048576){
+                $.modal.alertError("上传图片不能超过1M");
+                return false;
+            }
+            var result = this.result;
+            $("#bannerImgUrl").attr("src",result);
+            /* console.log(result) */
+            pictureSuffix = file.type.split("/")[1];
+            pictureBase64 = result.split(",")[1];
+            /* console.log(pictureSuffix,pictureBase64) */
+        };
+        reader.readAsDataURL(file);
+    });
+
+    function edit() {
+        var bannerImgUrl = $("#bannerImgUrl").attr("src");;
+        if(bannerImgUrl == null || bannerImgUrl == "" || bannerImgUrl == undefined){
+            $.modal.alertError("请上传图片");
+            return;
+        }
+
+        var id = $("input[name='id']").val();
+        var days = $("input[name='days']").val();
+        var minPrice = $("input[name='minPrice']").val();
+        var maxPrice = $("input[name='maxPrice']").val();
+        var earningsRatio = $("input[name='earningsRatio']").val();
+        var startTime = $("#startTime").val();
+        var endTime = $("#endTime").val();
+
+        var level =$("input[name='level']").val();
+        var dogName = $("input[name='dogName']").val();
+        var differential = $("input[name='differential']").val();
+        $.ajax({
+            cache: true,
+            type: "POST",
+            url: ctx + "beta/betaHeader/saveOrUpdate",
+            data: {
+                "id": id,
+                "days": days,
+                "minPrice": minPrice,
+                "maxPrice": maxPrice,
+                "earningsRatio": earningsRatio,
+                "startTime": startTime,
+                "endTime": endTime,
+                "level": level,
+                "dogName": dogName,
+                "differential": differential,
+                "pictureSuffix":pictureSuffix,
+                "pictureBase64":pictureBase64
+            },
+            async: false,
+            error: function (request) {
+                $.modal.alertError("系统错误");
+            },
+            success: function (data) {
+                if(data.code ==  web_status.SUCCESS){
+                    isFirst = false;
+                    $.operate.saveSuccess(data);
+                }else{
+                    $.modal.alertError(data.message);
+                }
+            }
+        });
+    }
+ 	
+</script>
+</body>
+</html>

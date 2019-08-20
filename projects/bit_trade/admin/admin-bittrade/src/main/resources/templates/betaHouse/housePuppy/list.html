@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+
+<div class="container-div">
+    <div class="row">
+        <div class="col-sm-12 search-collapse">
+            <form id="operlog-form">
+                <div class="select-list">
+                    <ul>
+                        <div style="overflow: auto;">
+                            <li class="select-time">
+                                <label>创建时间： </label>
+                                <input type="text" class="time-input" id="startTime" placeholder="开始时间"
+                                       name="params[beginTime]"/>
+                                <span>-</span>
+                                <input type="text" class="time-input" id="endTime" placeholder="结束时间"
+                                       name="params[endTime]"/>
+                            </li>
+
+                            <li>
+                                <label>搜索：</label><input type="text" placeholder="小狗名称&&编号" name="name"/>
+                            </li>
+                            <li>
+                                <label>套餐： </label><select name="comboId" th:with="type=${list}">
+                                <option value="">所有</option>
+                                <option th:each="dict : ${type}" th:text="${dict.dogName+'&nbsp;&nbsp;&nbsp;周期'+dict.days+
+								'&nbsp;&nbsp;天'+'&nbsp;&nbsp;&nbsp; 价格'+dict.minPrice+'~'+dict.maxPrice}"
+                                        th:value="${dict.id}"></option>
+                            </select>
+                            </li>
+                            <li>
+                                <label>搜索：</label><input type="text" placeholder="用户名称&&手机号" name="userName"/>
+                            </li>
+                        </div>
+                        <li>
+                            <label>搜索：</label><input type="text" placeholder="价格" name="price"/>
+                        </li>
+                        <li>
+                            <label>搜索：</label><input type="text" placeholder="公狗Id" name="maleId"/>
+                        </li>
+
+                        <li>
+                            <label>状态</label>
+                            <select name="status" th:with="type=${@dict.getType('beta_pup_state')}"
+                                    style="width: auto;">
+                                <option value="">所有</option>
+                                <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                                        th:value="${dict.dictValue}"></option>
+                            </select>
+                        </li>
+
+                        <li>
+                            <label>小狗性别</label>
+                            <select name="gender" th:with="type=${@dict.getType('beta_pup_gender')}"
+                                    style="width: auto;">
+                                <option value="">所有</option>
+                                <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                                        th:value="${dict.dictValue}"></option>
+                            </select>
+                        </li>
+
+                        <li>
+                            <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i
+                                    class="fa fa-search"></i>&nbsp;搜索</a>
+                            <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i
+                                    class="fa fa-refresh"></i>&nbsp;重置</a>
+                        </li>
+                    </ul>
+                </div>
+            </form>
+        </div>
+
+        <div class="col-sm-12 select-table table-striped" style="overflow: overlay;height: 94%;">
+            <table id="bootstrap-table" data-mobile-responsive="true"></table>
+        </div>
+    </div>
+</div>
+
+<div th:include="include :: footer"></div>
+<script th:inline="javascript">
+    layui.use('laydate', function () {
+        var laydate = layui.laydate;
+        var startTime = laydate.render({
+            elem: '#createTime',
+            type: 'date',
+            btns: ['now', 'confirm']
+        });
+        var endTime = laydate.render({
+            elem: '#endTime',
+            type: 'date',
+            btns: ['now', 'confirm']
+        });
+    });
+    var beta_pup_genders  = [[${@dict.getType('beta_pup_gender')}]];//小狗性别
+    var beta_pup_states = [[${@dict.getType('beta_pup_state')}]];//小狗状态
+
+    var editFlag = [[${@dict.getType('comboGroup:edit')}]];
+    var prefix = ctx + "betaHouse/housePuppy";
+    $(function () {
+        var options = {
+            url: prefix + "/list",
+            createUrl: prefix + "/add",
+            updateUrl: prefix + "/edit/{id}",
+            sortName: "",
+            sortOrder: "",
+            modalName: "",
+            search: false,
+            showExport: false,
+            columns: [
+                {
+                    field: 'maleId',
+                    title: '公狗Id'
+                },
+                {
+                    field: 'name',
+                    title: '小狗名称'
+                },
+                {
+                    field: 'puppyNo',
+                    title: '编号'
+                },
+                {
+                    field: 'dogImg',
+                    title: '图片',
+                    formatter: function (value, row, index) {
+                        var url = row.dogImg;
+                        if (url != null) {
+                            url = '<a class = "view" href="javascript:void(0)"><img style="height:50px;" src="' + url + '" /></a>';
+                        }
+                        return url;
+                    },
+                    events: 'operateEvents'
+                },
+                {
+                    field: 'userName',
+                    title: '领养人',
+                    formatter: function (value, row, index) {
+                        var actions = [];
+                        var nameVar = row.userName == null ? "暂无领养人" : row.userName;
+                        var phoneVar = row.phone == null ? "" : row.phone;
+                        var nameVarAndphoneVar = nameVar + "/" + phoneVar;
+                        actions.push('<span class="depreciate">' + nameVarAndphoneVar + '</span>');
+                        return actions.join('');
+                    }
+                },
+                {
+                    field: 'price',
+                    title: '价格'
+                },
+                {
+                    field: 'dogName',
+                    title: '套餐',
+                    formatter: function (value, row, index) {
+                        var actions = [];
+                        var dogNameAndMoney = value + " " + row.minPrice + "~" + row.maxPrice;
+                        actions.push('<span class="depreciate">' + dogNameAndMoney + '</span>');
+                        return actions.join('');
+                    }
+                },
+                {
+                    field: 'birthday',
+                    title: '出生日期'
+                },
+                {
+                    field: 'gender',
+                    title: '性别',
+                    formatter: function (value, row, index) {
+                        return $.table.selectDictLabel(beta_pup_genders, value);
+                    }
+                },
+                {
+                    field: 'status',
+                    title: '状态',
+                    formatter: function (value, row, index) {
+                        return $.table.selectDictLabel(beta_pup_states, value);
+                    }
+                }
+                // ,
+                // {
+                //     title: '操作',
+                //     align: 'center',
+                //     formatter: function (value, row, index) {
+                //         var actions = [];
+                //         actions.push('<a class="btn btn-success btn-xs" href="#" onclick="$.operate.edit(\'' + row.id + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                //         return actions.join('');
+                //     }
+                // }
+                ]
+        };
+        $.table.init(options);
+    });
+
+    window.operateEvents = {
+        'click .view': function (e, value, row, index) {
+            layer.open({
+                type: 1,
+                title: false,
+                closeBtn: 0,
+                area: ['auto', 'auto'],
+                skin: 'layui-layer-nobg', //没有背景色
+                shadeClose: true,
+                content: '<img src="' + row.dogImg + '"/>'
+            });
+        },
+    };
+
+</script>
+</body>
+</html>

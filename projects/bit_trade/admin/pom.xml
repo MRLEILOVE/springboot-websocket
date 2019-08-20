@@ -15,9 +15,7 @@
 	<packaging>pom</packaging>
 
 	<modules>
-		<module>admin-pojo</module>
-		<module>admin-api</module>
-		<module>admin-web</module>
+		<module>admin-bittrade</module>
 	</modules>
 
 	<dependencyManagement>

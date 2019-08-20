@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org"
+	  xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<style>
+	.information-img{
+	    width: 350px;
+    	height: 150px;
+	}
+	/* .big-img{
+		position:absolute;
+		left:0;
+		bottom:0;
+		right:0;
+		top:0;
+		margin:auto;
+		z-index:5;
+	} */
+	.layui-layer-content{
+		text-align:center;
+	}
+</style>
+<body class="white-bg">
+	<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+		<form class="form-horizontal m" id="form-authentication-edit" th:object="${authentication}">
+			<input name="userId" type="hidden" th:field="*{userId}" />
+			<input name="fhasRealValidate" type="hidden" th:field="*{fhasRealValidate}" />
+			<div class="btn-group-sm" id="toolbar" role="group">
+				<a class="btn btn-primary btn-success" onclick="audit(1)" shiro:hasPermission="audit:authentication:audit">
+					<i class="fa fa-edit"></i> 通过
+				</a>
+				<a class="btn btn-primary btn-success" onclick="auditRefuse(0)" shiro:hasPermission="audit:authentication:audit">
+					<i class="fa fa-edit"></i> 拒绝
+				</a>
+			</div>
+
+			<div class="col-sm-12 search-collapse">
+				<div class="form-group">
+					<label class="col-sm-3 control-label ">用户账户</label>
+					<div class="col-sm-8">
+						<input class="form-control" readonly="true" type="text" name="loginName" id="loginName" th:field="*{loginName}"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label ">邀请人</label>
+					<div class="col-sm-8">
+						<input class="form-control" readonly="true" type="text" name="agntName" id="agntName" th:field="*{agntName}"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label ">真实姓名</label>
+					<div class="col-sm-8">
+						<input class="form-control" readonly="true" type="text" name="realName" id="realName" th:field="*{realName}"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label ">身份证号</label>
+					<div class="col-sm-8">
+						<input class="form-control" readonly="true" type="text" name="identityNo" id="identityNo" th:field="*{identityNo}"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label ">银行卡号</label>
+					<div class="col-sm-8">
+						<input class="form-control" readonly="true" type="text" name="bankCardNo" id="bankCardNo" th:field="*{bankCardNo}"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label ">开户行</label>
+					<div class="col-sm-8">
+						<input class="form-control" readonly="true" type="text" name="bankAddress" id="bankAddress" th:field="*{bankAddress}"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label ">支付宝账号</label>
+					<div class="col-sm-8">
+						<input class="form-control" readonly="true" type="text" name="alipayNo" id="alipayNo" th:field="*{alipayNo}"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label ">正面照片</label>
+					<div class="col-sm-8">
+						<!-- <input class="form-control" readonly="true" type="text" name="identityFrontUrl" id="identityFrontUrl" th:field="*{identityFrontUrl}"/> -->
+						<img class="information-img" alt="" id="" th:src="*{identityFrontUrl}" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label ">反面照片</label>
+					<div class="col-sm-8">
+						<!-- <input class="form-control" readonly="true" type="text" name="identityBackUrl" id="identityBackUrl" th:field="*{identityBackUrl}"/> -->
+						<img class="information-img" alt="" id="" th:src="*{identityBackUrl}" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-3 control-label ">正面银行卡</label>
+					<div class="col-sm-8">
+						<!-- <input class="form-control" readonly="true" type="text" name="bankCardUrl" id="bankCardUrl" th:field="*{bankCardUrl}"/> -->
+						<img class="information-img" alt="" id="" th:src="*{bankCardUrl}" />
+					</div>
+				</div>
+				<img alt="" style="display:none" id="displayImg" src="" />
+			</div>
+		</form>
+	</div>
+	<div th:include="include::footer"></div>
+	<script th:src="@{/ajax/libs/select/select2.js}"></script>
+	<script>
+
+        $(function () {
+        	function amplificationImg(name, url) {
+        		$("#displayImg").attr("src", url); 
+        		var height = $("#displayImg").height();//拿的图片原来宽高，建议自定义宽高
+        		var width = $("#displayImg").width(); 
+        		layer.open({ 
+        			type: 1, 
+        			title: false, 
+        			closeBtn: 0, 
+        			shadeClose: true, 
+        			/* area: [width + 'px', "90%"], */ //宽高 
+        			area: ["90%", "90%"],
+        			content: "<img alt=" + name + " title=" + name + " src=" + url + " />"
+       			});
+       		};
+       		$(".information-img").click(function(){
+       			 var url = $(this).attr("src");
+       			 amplificationImg('', url)
+       		})
+            var status = $("#fhasRealValidate").val();
+            if (status != 2) {
+				$(".btn-success").addClass("disabled");
+            }
+        });
+
+        $("#form-withdraw-edit").validate({
+        	submitHandler:function(form){
+        		audit();
+        	}
+        });
+
+        function submitHandler() {
+	        if ($.validate.form()) {
+	        	audit();
+	        }
+	    }
+
+
+        function auditRefuse(status) {
+            var userId = $("input[name='userId']").val();
+            var url = ctx + "audit/authentication/auditRefuse/" + userId;
+            $.modal.open("身份认证拒绝", url, '800', '300');
+        }
+
+        function audit(status) {
+            var str = "通过";
+            if (status == 0) {
+                str = "拒绝"
+            }
+            $.modal.confirm("是否" + str + "该用户的身份认证", function () {
+				if ($.validate.form()) {
+					var userId = $("input[name='userId']").val();
+					$.ajax({
+						cache : true,
+						type : "POST",
+						url : ctx + "audit/authentication/audit",
+						data : {
+							"userId": userId,
+							"fhasRealValidate": status
+						},
+						async : false,
+						error : function(request) {
+							$.modal.alertError("系统错误");
+						},
+						success : function(data) {
+							$.operate.saveSuccess(data);
+						}
+					});
+				}
+            });
+        }
+    </script>
+</body>
+</html>

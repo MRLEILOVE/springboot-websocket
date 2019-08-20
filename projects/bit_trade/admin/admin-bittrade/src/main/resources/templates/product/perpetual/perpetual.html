@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org"
+	xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	
+	<div class="container-div">
+		<div class="row">
+			<div class="col-sm-12 select-table table-striped">
+				<table id="bootstrap-table" data-mobile-responsive="true"></table>
+			</div>
+		</div>
+	</div>
+	
+	<div th:include="include :: footer"></div>
+	<script th:inline="javascript">
+        var editFlag = [[${@permission.hasPermi('system:user:edit')}]];
+		var prefix = ctx + "product/perpetual";
+
+		$(function() {
+            var options = {
+                url: prefix + "/list",
+                updateUrl: prefix + "/edit/{id}",
+                sortName: "",
+                sortOrder: "",
+                modalName: "永续合约管理",
+                search: false,
+                showExport: false,
+                columns: [
+                    {
+                        field: 'symbol',
+                        title: '交易对'
+                    },
+                    {
+                        field: 'marginRatio',
+                        title: '杠杆'
+                    },
+                    {
+                        field: 'tradingUnitMin',
+                        title: '最小手数'
+                    },
+                    {
+                        field: 'tradingUnitMax',
+                        title: '最大手数'
+                    },
+                    {
+                        field: 'serviceFee',
+                        title: '开仓手续费',
+                        formatter: function(value, row, index) {
+                            var profit = value*100;
+                            return profit+"%";
+                        }
+                    },
+                    {
+                        field: 'closeFee',
+                        title: '平仓手续费',
+                        formatter: function(value, row, index) {
+                            var profit = value*100;
+                            return profit+"%";
+                        }
+                    },
+                    {
+                        field: 'spreadUp',
+                        title: '买涨点差'
+                    },
+                    {
+                        field: 'spreadDown',
+                        title: '买跌点差'
+                    },
+                    {
+                        field: 'slippage',
+                        title: '平仓滑点',
+                    },
+                    {
+                        field: 'id',
+                        title: '操作',
+                        align: 'center',
+                        formatter: function(value, row, index) {
+                            var actions = [];
+                            actions.push('<a class="btn btn-success  btn-xs ' + editFlag + '" href="#" onclick="$.operate.edit(\'' + value + '\')"><i class="fa fa-edit"></i>编辑</a>');
+                            return actions.join('');
+                        }
+                    }]
+            };
+            $.table.init(options);
+		});
+	</script>
+</body>
+</html>

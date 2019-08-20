@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<link th:href="@{/css/main/bootstrap-select.css}" rel="stylesheet"/>
+<style>
+	.sjdl-number{
+		display: none;
+	}
+</style>
+<body class="white-bg">
+	<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+		<form class="form-horizontal m" id="form-agnt-editLevel">
+			<input name="agntId" id="agntId" type="hidden" th:value="*{agntId}"/>
+			<input id="agntLevelHidden" type="hidden" th:value="*{agntLevel}"/>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">代理级别：</label>
+				<div class="col-sm-5">
+					<select class="form-control" name="agntLevel" id="agntLevel">
+						<!-- <option>所有</option> -->
+						<option value="1">一级代理</option>
+						<option value="2">二级代理</option>
+						<option value="3">三级代理</option>
+					</select>
+					<!--<select id="agntLevel" name="agntLevel" class="form-control m-b" th:with="type=${@dict.getType('user_agnt2')}">
+						<option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}" th:field="*{agntLevel}"></option>
+					</select>-->
+					<!--<select id="agntLevel" name="agntLevel" class="form-control m-b" th:with="type=${@dict.getType('user_agnt2')}">
+						<option th:each="dict : ${type}" th:selected="dict.dictValue eq *{agntLevel}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+					</select>-->
+				</div>
+			</div>
+			<div class="form-group sjdl-number" id="sjdlNumber">
+				<label class="col-sm-3 control-label ">上级代理：</label>
+				<input type="hidden" name="parentAgntId" id="parentAgntId" th:value="*{parentAgntId}"/>
+				<input type="hidden" name="parentName" id="parentName" th:value="*{parentName}"/>
+				<input type="hidden" name="parentLoginName" id="parentLoginName" th:value="*{parentLoginName}"/>
+				<div class="col-sm-8">
+					<select id="select" class="selectpicker show-tick form-control" title=" " data-live-search="true">
+
+					</select>
+				</div>
+			</div>
+		</form>
+	</div>
+	<div th:include="include::footer"></div>
+	<!--<script th:src="@{/ajax/libs/select/select2.js}"></script>-->
+	<script th:src="@{/ajax/libs/select/bootstrap-select.js}"></script>
+	<script>
+
+        $(function () {
+            var agntLevelHidden = $("#agntLevelHidden").val();
+            var parentName = $("#parentName").val();
+            var parentLoginName = $("#parentLoginName").val();
+            $("#agntLevel").val(agntLevelHidden);
+            if ($("#agntLevel option:selected").val()=="0"||$("#agntLevel option:selected").val()=="1") {
+                $("#sjdlNumber").hide();
+            }else{
+                $("#sjdlNumber").show();
+                var optionList = '<option selected="selected">' + parentLoginName + '&nbsp;&nbsp;&nbsp;'+  parentName + '</option>';
+                $("#select").append(optionList);
+            }
+        });
+
+        $(document).on("change","#agntLevel",function(){
+            let url = "common/agnt/query";
+            if($("#agntLevel option:selected").val()=="0"||$("#agntLevel option:selected").val()=="1"){
+                $("#sjdlNumber").hide();
+                $("#parentAgntId").val("");
+                $("#select").val("");
+                $(".filter-option-inner-inner").html("");
+                $("#select").html("")
+                seach('',$("#select"),url, 0)
+            }else{
+                $("#sjdlNumber").show();
+                $("#parentAgntId").val("");
+                $("#select").val("");
+                $(".filter-option-inner-inner").html("");
+                $("#select").html("")
+                seach('',$("#select"),url, 0)
+            }
+        });
+
+        function seach(keyword,$optionList,url,agntLevel){
+            $.ajax({
+                cache : true,
+                type : "POST",
+                url : ctx + url,
+                data : {
+                    "keyword": keyword,
+                    "agntLevel":agntLevel
+                },
+                async : false,
+                error : function(data) {
+                    $.modal.alertError("系统错误");
+                },
+                success : function(data) {
+                    if (data.code == 200) {
+                        var optionList = "";
+                        for(let i = 0;i < data.result.length;i++){
+                            optionList += `<option data-id= '${data.result[i].userId}'>${data.result[i].loginName} &nbsp;&nbsp;&nbsp; ${data.result[i].realName}</option>`
+                        }
+                        $optionList.append(optionList);
+                        $(".selectpicker" ).selectpicker('refresh');
+                    } else {
+                        $.modal.alertError(data.message);
+                    }
+                }
+            });
+        };
+
+        /* 平台上级代理搜索-获取id  */
+        $(document).on("input",".sjdl-number input[aria-label='Search']",function(){
+            $("#select").html("");
+            if($(".sjdl-number input[aria-label='Search']").val().length >=2){
+                let keyword = $(".sjdl-number input[aria-label='Search']").val();
+                let agntLevel = Number($("#agntLevel option:selected").val()) - 1;
+                let $optionList = $("#select");
+                let url = "common/agnt/query";
+                seach(keyword,$optionList,url,agntLevel)
+            }
+        });
+
+        $("#select").on("change", function () {
+            var parentAgntId = $("#select option:selected").attr("data-id");
+            $("#parentAgntId").val(parentAgntId);
+        });
+
+        $("#form-authentication-auditRefuse").validate({
+        	submitHandler:function(form){
+        		edit();
+        	}
+        });
+
+        function submitHandler() {
+	        if ($.validate.form()) {
+	        	edit();
+	        }
+	    }
+
+        function edit() {
+        	var agntId = $("#agntId").val();
+        	var agntLevel = $("#agntLevel").val();
+        	var parentAgntId = $("#parentAgntId").val();
+            if (Number(agntLevel) != 1 && (parentAgntId == null || parentAgntId == undefined || parentAgntId == '')) {
+                $.modal.alertError("请选择上级代理人");
+                return;
+            }
+
+            if (Number(agntId) == Number(parentAgntId)) {
+                $.modal.alertError("上级代理不能选择自己");
+                return;
+            }
+
+        	$.ajax({
+        		cache : true,
+        		type : "POST",
+                url : ctx + "agnt/user/editAgntLevel",
+        		data : {
+        			"agntId": agntId,
+        			"agntLevel": agntLevel,
+        			"parentId": parentAgntId
+        		},
+        		async : false,
+        		error : function(request) {
+        			$.modal.alertError("系统错误");
+        		},
+        		success : function(data) {
+                    if (data.code != 200) {
+                        $.modal.alertError(data.message);
+                        return;
+                    }
+                    parent.parent.location.reload();
+        			$.operate.saveSuccess(data);
+        		}
+        	});
+        }
+    </script>
+</body>
+</html>

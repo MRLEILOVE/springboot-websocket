@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<style>
+    .recharge-amount {
+        overflow: hidden;
+    }
+
+    .search-collapse-first {
+        padding: 0 !important;
+        height: 200px;
+        display: flex;
+        align-items: center;
+    }
+
+    .recharge-amount li {
+        width: 345px;
+        height: 127px;
+        border: 1px solid #e5e5e5;
+        padding: 0 0 0 15px;
+        float: left;
+        margin-left: 40px;
+        display: flex;
+        align-items: center;
+    }
+
+    .recharge-amount .recharge-title {
+        font-size: 14px;
+        margin-bottom: 25px;
+    }
+
+    .recharge-amount div {
+        font-size: 18px;
+        color: #ff942f;
+    }
+
+    label span {
+        color: #494949;
+    }
+</style>
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+
+<div class="container-div">
+    <div class="row">
+        <div class="col-sm-12 search-collapse search-collapse-first">
+            <div th:object="${betaFreezeAccountSumVo}">
+                <ul class="recharge-amount">
+                    <li>
+                        <div>
+                            <label><span>冻结总额：</span>[[*{freezeBanlenceSum}]]</label><br/>
+                            <label><span>可出售总额：</span>[[*{sellBanlenceSum}]]</label>
+                            <label><span>今日释放总额：</span>[[*{unfreezeSum}]]</label>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-sm-12 search-collapse">
+            <form id="operlog-form">
+                <div class="select-list">
+                    <ul>
+                        <li class="select-time">
+                            <label>创建日期： </label>
+                            <input type="text" class="time-input" id="startTime" placeholder="开始时间"
+                                   name="params[beginTime]"/>
+                            <span>-</span>
+                            <input type="text" class="time-input" id="endTime" placeholder="结束时间"
+                                   name="params[endTime]"/>
+                        </li>
+                        <li>
+                            搜索：<input type="text" name="name" placeholder="姓名&&手机号"/>
+                        </li>
+                        <li>
+                            <label>冻结额度： </label><input type="number" min="0" name="startFreezeBanlence" style="width: 80px"/> - <input type="number" min="0" name="endFreezeBanlence" style="width: 80px"/>
+                            <label>&nbsp;&nbsp;可售额度： </label><input type="number" min="0" name="startSellBanlence" style="width: 80px"/> - <input type="number" min="0" name="endSellBanlence" style="width: 80px"/>
+                        </li>
+                        <li>
+                            <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i
+                                    class="fa fa-search"></i>&nbsp;搜索</a>
+                            <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i
+                                    class="fa fa-refresh"></i>&nbsp;重置</a>
+                        </li>
+                    </ul>
+                </div>
+            </form>
+        </div>
+
+        <div class="btn-group-sm" id="toolbar" role="group" >
+            <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="betaFreezeAccount:export">
+                <i class="fa fa-download"></i> 导出
+            </a>
+        </div>
+        <div class="col-sm-12 select-table table-striped">
+            <table id="bootstrap-table" data-mobile-responsive="true"></table>
+        </div>
+    </div>
+</div>
+
+<div th:include="include :: footer"></div>
+<script th:inline="javascript">
+
+    var prefix = ctx + "beta/betaFreezeAccount";
+    $(function () {
+        var options = {
+            url: prefix + "/list",
+            exportUrl: prefix + "/export",
+            sortName: "fac.create_time,fac.id",
+            sortOrder: "desc",
+            modalName: "充值",
+            search: false,
+            showExport: false,
+            columns: [
+                {
+                    field: 'name',
+                    title: '姓名',
+                    formatter: function (value, row, index) {
+                        var actions = [];
+                        var nameVar = row.name == null ? "暂无" : row.name;
+                        var phoneVar = row.phone == null ? "" : row.phone;
+                        var nameVarAndphoneVar = nameVar + "/" + phoneVar;
+                        actions.push('<span class="depreciate">' + nameVarAndphoneVar + '</span>');
+                        return actions.join('');
+                    }
+                },
+                {
+                    field: 'freezeBanlence',
+                    title: '冻结额度',
+                    sortable: true
+                },
+                {
+                    field: 'sellBanlence',
+                    title: '可售额度',
+                    sortable: true
+                },
+                {
+                    field: 'createTime',
+                    title: '创建时间'
+                },
+                {
+                    field: 'updateTime',
+                    title: '修改时间',
+                    sortable: true
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        var actions = [];
+                        actions.push('<a class="btn btn-info btn-xs" href="#" onclick="recordList(\'' + row.userId + '\')"><i class="fa fa-key"></i>资产流水</a>');
+                        return actions.join('');
+                    }
+                }]
+        };
+        $.table.init(options);
+    });
+
+
+    /*冻结资产流水*/
+    function recordList(userId) {
+        var url = prefix + '/recordList/' + userId;
+        $.modal.openFull("冻结资产流水", url, 888, 450)
+    }
+</script>
+</body>
+</html>

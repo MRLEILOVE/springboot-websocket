@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+
+<div class="container-div">
+    <div class="row">
+        <div class="col-sm-12 search-collapse">
+            <form id="operlog-form">
+                <div class="select-list">
+                    <ul>
+                        <div style="overflow: auto;">
+                            <li class="select-time">
+                                <label>申请日期： </label>
+                                <input type="text" class="time-input" id="startTime" placeholder="开始时间"
+                                       name="params[beginTime]"/>
+                                <span>-</span>
+                                <input type="text" class="time-input" id="endTime" placeholder="结束时间"
+                                       name="params[endTime]"/>
+                            </li>
+                            <li>
+                                <label>状态： </label>
+                                <select name="authStauts" th:with="type=${@dict.getType('personalCard_auth_stautsNew')}"
+                                        style="width: auto;">
+                                    <option value="">所有</option>
+                                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                                            th:value="${dict.dictValue}"></option>
+                                </select>
+                            </li>
+                            <li>
+                                <label>身份： </label>
+                                <select name="currentIdentity"
+                                        th:with="type=${@dict.getType('personalCard_currentIdentity')}"
+                                        style="width: auto;">
+                                    <option value="">所有</option>
+                                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                                            th:value="${dict.dictValue}"></option>
+                                </select>
+                            </li>
+                            <li>
+                                <label>搜索： </label><input type="text" placeholder="用户名&&手机号&&身份证号码" name="name"/>
+                            </li>
+                            <!--<li>
+                                <label>搜索： </label><input type="text" placeholder="身份证号码" name="cardNumber"/>
+                            </li>-->
+                            <!--<li>
+                            <label>搜索：</label><input type="text" placeholder="支付宝号" name="alipayNumber"/>
+                            </li>
+                            <li>
+                                <label>搜索：</label><input type="text" placeholder="微信号" name="wechatNumber"/>
+                            </li>-->
+                            <li>
+                                <label>搜索：</label><input type="text" placeholder="银行卡号&&支付宝号&&微信号" name="bankNumber"/>
+                            </li>
+                            <li>
+                                <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i
+                                        class="fa fa-search"></i>&nbsp;搜索</a>
+                                <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i
+                                        class="fa fa-refresh"></i>&nbsp;重置</a>
+                            </li>
+                        </div>
+                        <li>
+                            <label>抢狗概率： </label>
+                            <select class="minMPNnum" name="minMPNnum" style="width: auto;">
+                                <option value="">所有</option>
+                                <option th:each="i:${#numbers.sequence(0,100)}" th:text="${i}" th:value="${i}"></option>
+                            </select>
+                            -
+
+                            <select class="maxMPNnum" name="maxMPNnum" style="width: auto;">
+                                <option value="">所有</option>
+                                <option th:each="i:${#numbers.sequence(0,100)}" th:text="${i}" th:value="${i}"></option>
+                            </select>%
+                        </li>
+                        <li>
+                            <label>用户标识： </label>
+                            <select name="oldFlag" th:with="type=${@dict.getType('personalCard_user_oldFlags')}"
+                                    style="width: auto;">
+                                <option value="">所有</option>
+                                <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                                        th:value="${dict.dictValue}"></option>
+                            </select>
+                        </li>
+                        <li>
+                            <label>重点用户标识： </label>
+                            <select name="importantFlag" th:with="type=${@dict.getType('important_flag')}"
+                                    style="width: auto;">
+                                <option value="">所有</option>
+                                <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                                        th:value="${dict.dictValue}"></option>
+                            </select>
+                        </li>
+                    </ul>
+                </div>
+            </form>
+        </div>
+        <div class="btn-group-sm" id="toolbar" role="group" >
+            <a class="btn btn-success" onclick="checks()" shiro:hasPermission="personal:personalCard:checkNumber">
+                <i class="fa fa-edit"></i> 查询需要校正的人数
+            </a>
+            <a class="btn btn-success" onclick="refreshPersonalCard()" shiro:hasPermission="personal:personalCard:refreshRedis">
+                <i class="fa fa-refresh"></i> 刷新实名缓存
+            </a>
+            <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="personal:personalCard:export">
+                <i class="fa fa-download"></i> 导出
+            </a>
+            <a class="btn btn-success" onclick="updateMPNnumList()" shiro:hasPermission="personal:personalCard:updateMPNnumList">
+                <i class="fa fa-refresh"></i> 批量修改概率
+            </a>
+        </div>
+
+        <div class="col-sm-12 select-table table-striped">
+            <table id="bootstrap-table" data-mobile-responsive="true"></table>
+        </div>
+    </div>
+</div>
+
+<div id="updateCurrentIdentity" class="select-list" style="display:none">
+    <ul>
+        <li>
+            <label style="padding-left: 23px;">推广身份： </label>
+            <select class="updateCurrentIdentity" name="updateCurrentIdentity"
+                    th:with="type=${@dict.getType('personalCard_currentIdentity')}">
+                <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                        th:value="${dict.dictValue}"></option>
+            </select>
+        </li>
+    </ul>
+</div>
+<div id="updateMPNnum" class="select-list" style="display:none">
+    <ul>
+        <li>
+            <label style="padding-left: 23px;">当前概率： </label>
+            <select class="updateMPNnum" name="updateMPNnum">
+                <option th:each="i:${#numbers.sequence(0,100)}" th:text="${i}" th:value="${i}"></option>
+            </select>
+        </li>
+    </ul>
+</div>
+
+<div th:include="include :: footer"></div>
+<script th:inline="javascript">
+    var editConfig = [[${@permission.hasPermi('personal:personalCard:detail')}]];
+    var editUpdateOldFlag= [[${@permission.hasPermi('personal:updateOldFlag')}]]; // 设置新老用户
+
+    var currentIdentityConfig = [[${@permission.hasPermi('personal:personalCard:updateCurrentIdentity')}]];
+    var datas = [[${@dict.getType('personalCard_auth_stautsNew')}]];
+
+    var oldFlags = [[${@dict.getType('personalCard_user_oldFlags')}]];// 老用户标识0=新用户1=老用户
+    var currentIdentity = [[${@dict.getType('personalCard_currentIdentity')}]];
+    var importantFlags = [[${@dict.getType('important_flag')}]];// 重点用户标识0=普通用户1=重点用户
+    var prefix = ctx + "personal/personalCard";
+    $(function () {
+        var options = {
+            url: prefix + "/list",
+            exportUrl: prefix + "/export",
+            sortName: "",
+            sortOrder: "",
+            modalName: "实名认证待审核列表",
+            search: false,
+            showExport: false,
+            columns: [
+                // {
+                //     field: 'name',
+                //     title: '用户'
+                // },
+                // {
+                //     field: 'phone',
+                //     title: '电话'
+                // },
+                {
+                    field: 'name',
+                    title: '用户',
+                    formatter: function (value, row, index) {
+                        var actions = [];
+                        var nameVar = row.name == null ? "-" : row.name;
+                        var phoneVar = row.phone == null ? "" : row.phone;
+                        var nameVarAndphoneVar = nameVar + "/" + phoneVar;
+                        actions.push('<span class="depreciate">' + nameVarAndphoneVar + '</span>');
+                        return actions.join('');
+                    }
+                },
+                {
+                    field: 'currentIdentity',
+                    title: '身份',
+                    formatter: function (value, row, index) {
+                        return $.table.selectDictLabel(currentIdentity, value);
+                    }
+                },
+                {
+                    field: 'directPushName',
+                    title: '一级推荐',
+                    formatter: function (value, row, index) {
+                        var actions = [];
+                        var nameAndPhone = "";
+                        var phone = row.directPushPhone;
+                        if (value == null) {
+                            value = "空";
+                        }
+                        if (phone == null) {
+                            phone = "空";
+                        }
+                        if ((value != "空" && phone != "空") || (value != "空" || phone != "空")) {
+                            nameAndPhone = value + "/" + phone;
+                        }
+                        actions.push('<span class="depreciate">' + nameAndPhone + '</span>');
+                        return actions.join('');
+                    }
+                },
+                {
+                    field: 'secondLevelRecommendName',
+                    title: '二级推荐',
+                    formatter: function (value, row, index) {
+                        var actions = [];
+                        var nameAndPhone = "";
+                        var phone = row.secondLevelRecommendPhone;
+                        if (value == null) {
+                            value = "空";
+                        }
+                        if (phone == null) {
+                            phone = "空";
+                        }
+                        if ((value != "空" && phone != "空") || (value != "空" || phone != "空")) {
+                            nameAndPhone = value + "/" + phone;
+                        }
+                        actions.push('<span class="depreciate">' + nameAndPhone + '</span>');
+                        return actions.join('');
+                    }
+                },
+                {
+                    field: 'updateTime',
+                    title: '审核时间'
+                },
+                {
+                    field: 'authStauts',
+                    title: '状态',
+                    formatter: function (value, row, index) {
+                        return $.table.selectDictLabel(datas, value);
+                    }
+                },
+                {
+                    field: 'oldFlag',
+                    title: '用户标识',
+                    formatter: function (value, row, index) {
+                        return $.table.selectDictLabel(oldFlags, value);
+                    }
+                },
+                {
+                    field: 'importantFlag',
+                    title: '重点用户标识',
+                    formatter: function (value, row, index) {
+                        return $.table.selectDictLabel(importantFlags, value);
+                    }
+                },
+                {
+                    field: 'mpnNum',
+                    title: '当前概率',
+                    sortable: true,
+                    formatter: function(value, row, index) {
+                        var actions = [];
+                        actions.push('<span class="depreciate">' + value + "%" + '</span>');
+                        return actions.join('');
+                    }
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        var actions = [];
+                        if (row.authStauts == 1) {
+                            actions.push('<a class="btn btn-primary btn-xs ' + currentIdentityConfig + '" href="#" onclick="updateCurrentIdentity(\'' + row.userId + '\',\'' + row.currentIdentity + '\')"><i class="fa fa-edit"></i>升级身份</a> ');
+                        }
+                        actions.push('<a class="btn btn-primary btn-xs ' + currentIdentityConfig + '" href="#" onclick="updateMPNnum(\'' + row.userId + '\',\'' + row.mpnNum + '\')"><i class="fa fa-edit"></i>修改概率</a> ');
+                        actions.push('<a class="btn btn-success btn-xs ' + editConfig + '" href="#" onclick="detail(\'' + row.userId + '\')"><i class="fa fa-edit"></i>详情</a> ');
+                        actions.push('<a class="btn btn-success btn-xs ' + editConfig + '" href="#" onclick="recordInfo(\'' + row.userId + '\')"><i class="fa fa-edit"></i>历史收款记录</a> ');
+
+                        if(row.oldFlag == 0){
+                            actions.push('<a class="btn btn-danger btn-xs" href="#" onclick="updateOldFlag(\'' + row.id + '\')" shiro:hasPermission="personal:updateOldFlag"><i class="fa fa-key" ></i>设老用户</a>');
+                        }
+                        if(row.oldFlag == 1){
+                            actions.push('<a class="btn btn-success btn-xs" href="#" onclick="updateOldFlag(\'' + row.id + '\')" shiro:hasPermission="personal:updateOldFlag"><i class="fa fa-key"></i>设新用户</a>');
+                        }
+                        return actions.join('');
+                    }
+                }]
+        };
+        $.table.init(options);
+    });
+
+    function refreshTeamCount() {
+        var index = layer.msg('统计中', {
+            icon: 16,
+            shade: 0.1,
+            time: false
+        });
+        $.ajax({
+            url: prefix + "/refreshTeamCount",
+            data: {},
+            cache: false,
+            dataType: "json",
+            type: 'POST',
+            success: function (result) {
+                layer.close(index);
+                if (result.code == web_status.SUCCESS) {
+                    $.modal.closeAll();
+                    $.modal.alertSuccess(result.message);
+                    $.table.refresh();
+                } else {
+                    $.modal.alertError(result.message);
+                }
+            }
+        });
+    }
+
+    function detail(userId) {
+        var url = prefix + '/detail/' + userId;
+        $.modal.openFull("身份认证详情", url);
+    }
+
+    function updateCurrentIdentity(userId, current) {
+        if (current == 6) {
+            $.modal.alertError("当前身份已达最高");
+            return;
+        }
+
+
+        $('#updateCurrentIdentity').css('display', "");
+        var userId = userId;
+        $(".updateCurrentIdentity").children("option").each(function () {
+            $(this).css('display', "");
+        });
+
+        $(".updateCurrentIdentity").children("option").each(function () {
+            if ($(this).val() <= current) {
+                $(this).css('display', "none");
+            }
+        });
+        var init = 0;
+        $('.updateCurrentIdentity').children("option").each(function () {
+            if ($(this).css("display") != "none") {
+                if (init == 0) {
+                    init = 1;
+                    $(this).attr("selected", true);
+                }
+            }
+        })
+        layer.open({
+            type: 1,
+            area: ['400px', '330px'],
+            fix: false,
+            //不固定
+            maxmin: true,
+            shade: 0.3,
+            title: '修改当前身份',
+            content: $('#updateCurrentIdentity'),
+            btn: ['<i class="fa fa-check"></i> 修改', '<i class="fa fa-remove"></i> 取消'],
+            // 弹层外区域关闭
+            shadeClose: true,
+            end: function (index, layero) {
+                $('#updateCurrentIdentity').css('display', "none");
+            },
+            btn1: function (index, layero) {
+                var nowCurrent = $(".updateCurrentIdentity").val();
+                $.ajax({
+                    url: prefix + "/updateCurrentIdentity",
+                    data: {
+                        "userId": userId,
+                        "currentIdentity": nowCurrent
+                    },
+                    cache: false,
+                    dataType: "json",
+                    type: 'POST',
+                    success: function (result) {
+                        if (result.code == web_status.SUCCESS) {
+                            $.modal.closeAll();
+                            $.modal.alertSuccess(result.message);
+                            $('.columns-right button[name="refresh"]').trigger("click");
+                        } else {
+                            $.modal.alertError(result.message);
+                        }
+                    }
+                });
+            }
+        });
+    }
+    function updateMPNnum(userId, current) {
+
+        $('#updateMPNnum').css('display', "");
+        var userId = userId;
+        $(".updateMPNnum").children("option").each(function () {
+            $(this).css('display', "");
+        });
+
+        // $(".updateMPNnum").children("option").each(function () {
+        //     if ($(this).val() <= current) {
+        //         $(this).css('display', "none");
+        //     }
+        // });
+        $('.updateMPNnum').children("option").each(function () {
+            if ($(this).val() == current) {
+                $(this).attr("selected", true);
+            }
+        })
+        layer.open({
+            type: 1,
+            area: ['400px', '330px'],
+            fix: false,
+            //不固定
+            maxmin: true,
+            shade: 0.3,
+            title: '修改当前概率',
+            content: $('#updateMPNnum'),
+            btn: ['<i class="fa fa-check"></i> 修改', '<i class="fa fa-remove"></i> 取消'],
+            // 弹层外区域关闭
+            shadeClose: true,
+            end: function (index, layero) {
+                $('#updateMPNnum').css('display', "none");
+            },
+            btn1: function (index, layero) {
+                var nowMPNnum = $(".updateMPNnum").val();
+                $.ajax({
+                    url: prefix + "/updateMPNnum",
+                    data: {
+                        "userId": userId,
+                        "mpnNum": nowMPNnum
+                    },
+                    cache: false,
+                    dataType: "json",
+                    type: 'POST',
+                    success: function (result) {
+                        if (result.code == web_status.SUCCESS) {
+                            $.modal.closeAll();
+                            $.modal.alertSuccess(result.message);
+                            $('.columns-right button[name="refresh"]').trigger("click");
+                        } else {
+                            $.modal.alertError(result.message);
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+    //校正人数
+    function checks(id) {
+        var url = prefix + '/check/';
+        $.modal.openFull("校正人数", url, 500, 246)
+    }
+
+    function refreshPersonalCard() {
+        var index = layer.msg('刷新中', {
+            icon: 16,
+            shade: 0.1,
+            time: false
+        });
+        $.ajax({
+            url: prefix + "/refreshRedis",
+            data: {},
+            cache: false,
+            dataType: "json",
+            type: 'POST',
+            success: function (result) {
+                layer.close(index);
+                if (result.code == web_status.SUCCESS) {
+                    $.modal.closeAll();
+                    $.modal.alertSuccess(result.result);
+                    $.table.refresh();
+                } else {
+                    $.modal.alertError(result.result);
+                }
+            }
+        });
+    }
+
+
+    /*修改支付信息记录*/
+    function recordInfo(userId) {
+        var url = prefix + '/recordInfo/' + userId;
+        $.modal.open("记录支付信息", url, '888', '666');
+    }
+
+
+    function updateOldFlag(id) {
+        $.modal.confirm("确定修改这个用户标识？", function () {
+            $.ajax({
+                url: prefix + "/updateOldFlag/" + id,
+                cache: true,
+                dataType: "json",
+                type: 'POST',
+                success: function (date) {
+                    layer.close();
+                    if (date.code == web_status.SUCCESS) {
+                        $.modal.closeAll();
+                        $.modal.alertSuccess(date.message);
+                        $.table.refresh();
+                    } else {
+                        $.modal.alertError(date.message);
+                    }
+                }
+            });
+        });
+    }
+    function updateMPNnumList() {
+        $('#updateMPNnum').css('display', "");
+        $(".updateMPNnum").children("option").each(function () {
+            $(this).css('display', "");
+        });
+        layer.open({
+            type: 1,
+            area: ['400px', '330px'],
+            fix: false,
+            //不固定
+            maxmin: true,
+            shade: 0.3,
+            title: '批量修改当前概率',
+            content: $('#updateMPNnum'),
+            btn: ['<i class="fa fa-check"></i> 修改', '<i class="fa fa-remove"></i> 取消'],
+            // 弹层外区域关闭
+            shadeClose: true,
+            end: function (index, layero) {
+                $('#updateMPNnum').css('display', "none");
+            },
+            btn1: function (index, layero) {
+                var nowMPNnum = $(".updateMPNnum").val();
+                var dataFrom = $('#operlog-form').serialize();
+                dataFrom = dataFrom + "&MPNnum=" +nowMPNnum;
+                $.ajax({
+                    url: prefix + "/updateMPNnumList",
+                    data: dataFrom,
+                    cache: false,
+                    dataType: "json",
+                    type: 'POST',
+                    success: function (result) {
+                        if (result.code == web_status.SUCCESS) {
+                            $.modal.closeAll();
+                            $.modal.alertSuccess(result.message);
+                            $('.columns-right button[name="refresh"]').trigger("click");
+                        } else {
+                            $.modal.alertError(result.message);
+                        }
+                    }
+                });
+            }
+        });
+    }
+</script>
+</body>
+</html>

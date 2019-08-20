@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<style>
+    .withdraw-amount {
+        overflow: hidden;
+    }
+
+    .search-collapse-first {
+        padding: 0 !important;
+        height: 200px;
+        display: flex;
+        align-items: center;
+    }
+
+    .withdraw-amount li {
+        width: 223px;
+        height: 157px;
+        border: 1px solid #e5e5e5;
+        padding: 15px 0 0 15px;
+        float: left;
+        margin-left: 40px;
+    }
+
+    .withdraw-amount .withdraw-title {
+        font-size: 14px;
+        margin-bottom: 25px;
+    }
+
+    .withdraw-amount div {
+        font-size: 18px;
+        color: #ff942f;
+    }
+
+    .withdraw-amount label {
+        margin-bottom: 15px;
+    }
+</style>
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+
+<div class="container-div">
+    <div class="row">
+        <!--<div class="col-sm-12 search-collapse search-collapse-first">-->
+            <!--<div th:object="${withdrawStatistics}">-->
+                <!--<ul class="withdraw-amount">-->
+                    <!--<li>-->
+                        <!--<label class="withdraw-title">用户今日提币总额： </label>-->
+                        <!--<div>-->
+                            <!--<label>BTC: [[*{totalUserWithdrawBTC}]]</label><br/>-->
+                            <!--<label>USDT: [[*{totalUserWithdrawUSDT}]]</label>-->
+                            <!--<a class="btn btn-primary btn-success sp" onclick="enrichmentCountInfo()">-->
+                                <!--<i class="fa fa-edit"></i> 提币统计详情-->
+                            <!--</a>-->
+                        <!--</div>-->
+                    <!--</li>-->
+                <!--</ul>-->
+            <!--</div>-->
+        <!--</div>-->
+        <div class="col-sm-12 search-collapse">
+            <form id="operlog-form">
+                <div class="select-list">
+                    <ul>
+                        <li class="select-time">
+                            <input type="hidden" id="type" name="type" th:value="${vo}"/>
+                            <label>申请日期： </label>
+                            <input type="text" class="time-input" id="startTime" placeholder="开始时间"
+                                   name="params[beginTime]"/>
+                            <span>-</span>
+                            <input type="text" class="time-input" id="endTime" placeholder="结束时间"
+                                   name="params[endTime]"/>
+                        </li>
+                        <li>
+                            <label>搜索： </label><input type="text" placeholder="币种" name="token"/>
+                        </li>
+                        <li>
+                            <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i
+                                    class="fa fa-search"></i>&nbsp;搜索</a>
+                            <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i
+                                    class="fa fa-refresh"></i>&nbsp;重置</a>
+                        </li>
+                    </ul>
+                </div>
+            </form>
+        </div>
+        <div class="btn-group-sm" id="toolbar" role="group">
+            <a class="btn btn-primary btn-warning" onclick="$.table.exportExcel()"
+               shiro:hasPermission="finance:withdrawRecord:export">
+                <i class="fa fa-download"></i> 导出
+            </a>
+        </div>
+        <div class="col-sm-12 select-table table-striped">
+            <table id="bootstrap-table" data-mobile-responsive="true"></table>
+        </div>
+    </div>
+</div>
+
+<div th:include="include :: footer"></div>
+<script th:inline="javascript">
+    var prefix = ctx + "finance/enrichmentCount";
+
+    var currencytypeCounts = [[${@dict.getType('t_currency_typeCount')}]];//商品订单类别
+    $(function () {
+        var options = {
+            url: prefix + "/list",
+            exportUrl: prefix + "/export",
+            detailUrl: prefix + "/detail/{id}",
+            sortName: "",
+            sortOrder: "",
+            modalName: "提币统计",
+            search: false,
+            showExport: false,
+            queryParams: queryParams,
+            columns: [
+                {
+                    field: 'token',
+                    title: '币'
+                },
+                {
+                    field: 'currencySum',
+                    title: '金额总数'
+                },
+
+                {
+                    field: 'createTime',
+                    title: '创建时间'
+                },
+                {
+                    field: 'type',
+                    title: '类型',
+                    formatter: function (value, row, index) {
+                        return $.table.selectDictLabel(currencytypeCounts, value);
+                    }
+                },
+            ]
+        };
+        $.table.init(options);
+    });
+
+    function queryParams(params) {
+        return {
+            type: $("#type").val(),
+            pageSize: params.limit,
+            pageNum: params.offset / params.limit + 1,
+            searchValue: params.search,
+            orderByColumn: params.sort,
+            isAsc: params.order
+        };
+    }
+</script>
+</body>
+</html>

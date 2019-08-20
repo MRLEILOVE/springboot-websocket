@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org"
+	xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<style>
+	.select-list ul{
+		overflow:hidden;
+	}
+	.select-table{
+		display:none;
+	}
+	.first-table{
+		display:block;
+	}
+	.select-list .li-hover{
+		color:red;
+	}
+	.select-list li{
+		cursor:pointer;
+	}
+	.control-label{
+		padding:7px 0 0;
+	}
+	.sure-btn{
+		position: absolute;
+		top: 424px;
+		right: -50px;
+	}
+</style>
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	
+	<div class="container-div">
+		<div class="row">
+			<div class="col-sm-12">
+				<form id="micro-form">
+					<div class="select-list">
+						<ul>
+							<li class="li-hover">
+								账户信息 
+							</li>
+							<li>
+								身份信息 
+							</li>
+							<li>
+								内部账户设置
+							</li>
+							<li>
+								密码修改 
+							</li>
+						</ul>
+					</div>
+				</form>
+			</div>
+			
+
+			<div class="col-sm-12 select-table table-striped first-table">
+				<div class="col-md-12">
+					<div class="form-group">
+						<label class="col-sm-3 control-label">账号：</label>
+						<input type="hidden" id="userId" name="userId" th:value="${user.userId}">
+						<div class="col-sm-9">
+							<p class="form-control-static" th:text="${user.loginName}">--</p>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">总资产：</label>
+						<div class="col-sm-9">
+							<p class="form-control-static" th:text="${user.totalAssets}">0.0000</p>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">可用余额：</label>
+						<div class="col-sm-9">
+							<p class="form-control-static" th:text="${user.balance}">0.0000</p>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">占用余额：</label>
+						<div class="col-sm-9">
+							<p class="form-control-static" th:text="${user.occupyAssets}">0.0000</p>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">净值：</label>
+						<div class="col-sm-9">
+							<p class="form-control-static" th:text="${user.netValue}">0.0000</p>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">用户充值：</label>
+						<div class="col-sm-9">
+							<p class="form-control-static" th:text="${user.depositsUser+' USDT /'+user.depositsUserCNY+' CNY'}">0.0000</p>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">人工充值：</label>
+						<div class="col-sm-9">
+							<p class="form-control-static" th:text="${user.deposits+' USDT /'+user.depositsCNY+' CNY'}">0.0000</p>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">奖励金转入：</label>
+						<div class="col-sm-9">
+							<p class="form-control-static" th:text="${user.totalWithdraw+' USDT'}">0.0000</p>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">用户提现：</label>
+						<div class="col-sm-9">
+							<p class="form-control-static" th:text="${user.withdrawalsUser+' USDT /'+user.withdrawalsUserCNY+' CNY'}">0.0000</p>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">人工提现：</label>
+						<div class="col-sm-9">
+							<p class="form-control-static" th:text="${user.withdrawals+' USDT / '+user.withdrawalsCNY+' CNY'}">0.0000</p>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">风险率：</label>
+						<div class="col-sm-9">
+							<p class="form-control-static" th:text="${user.riskRatio}">0.0000</p>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">体验金：</label>
+						<div class="col-sm-9">
+							<p class="form-control-static" th:text="${user.balanceToken}">0.0000</p>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">个人邀请人：</label>
+						<div class="col-sm-9">
+							<p class="form-control-static" th:text="${user.labourName}"></p>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">代理商：</label>
+						<input type="hidden" id="agntId" name="agntId" th:value="${user.agntId}">
+						<input type="hidden" id="agntLevel" name="agntLevel" th:value="${user.agntLevel}">
+						<input type="hidden" id="lowerAgntCount" name="lowerAgntCount" th:value="${user.lowerAgntCount}">
+						<div class="col-sm-9">
+							<p class="form-control-static" th:text="${user.agntLevelStr}">--</p>
+							<!--<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>-->
+							<a class="btn btn-primary btn-success btn-sm" id="editLevel" onclick="editLevel()" shiro:hasPermission="agnt:user:edit">
+								<i class="fa fa-edit"></i>修改代理级别
+							</a>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">代理商邀请人：</label>
+						<div class="col-sm-9">
+							<input type="hidden" id="agntLoginName" name="agntLoginName" th:value="${user.agntLoginName}">
+							<p class="form-control-static" th:text="${user.agntLoginName} + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + ${user.agntName}"></p>
+							<a class="btn btn-primary btn-success btn-sm" id="editInviter" onclick="editInviter()" shiro:hasPermission="agnt:customer:edit">
+								<i class="fa fa-edit"></i>修改邀请人
+							</a>
+							<a class="btn btn-primary btn-success btn-sm" id="delInviter" onclick="delInviter()" shiro:hasPermission="agnt:customer:edit">
+								<i class="fa fa-edit"></i>删除邀请人
+							</a>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">注册时间：</label>
+						<div class="col-sm-9">
+							<p class="form-control-static" th:text="${#dates.format(user.createTime, 'yyyy-MM-dd HH:mm:ss')}">--</p>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">最后登录时间：</label>
+						<div class="col-sm-9">
+							<p class="form-control-static" th:text="${#dates.format(user.loginTime, 'yyyy-MM-dd HH:mm:ss')}">--</p>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-sm-12 select-table table-striped">
+				<div class="col-md-6">
+					<div class="form-group">
+						<label class="col-sm-3 control-label">账号：</label>
+						<div class="col-sm-9">
+							<p class="form-control-static" th:text="${user.loginName}">这里是纯文字信息</p>
+						</div>
+					</div>
+					<div class="form-group ui-sortable-helper">
+						<label class="col-sm-3 control-label">邀请人：</label>
+						<div class="col-sm-9">
+							<p class="form-control-static" th:text="${user.agntName}">这里是纯文字信息</p>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">真实姓名：</label>
+						<div class="col-sm-9">
+							<p class="form-control-static" th:text="${user.realName}">这里是纯文字信息</p>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">身份认证：</label>
+						<div class="col-sm-9">
+							<p class="form-control-static" th:text="${userAuth.identityNo}">这里是纯文字信息</p>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">银行卡号：</label>
+						<div class="col-sm-9">
+							<p class="form-control-static" th:text="${userAuth.bankCardNo}">这里是纯文字信息</p>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">开户行：</label>
+						<div class="col-sm-9">
+							<p class="form-control-static" th:text="${userAuth.bankAddress}">这里是纯文字信息</p>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">支付宝号：</label>
+						<div class="col-sm-9">
+							<p class="form-control-static" th:text="${userAuth.alipayNo}">这里是纯文字信息</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="form-group">
+						<label class="col-sm-3 control-label">正面证照：</label>
+						<div class="col-sm-9">
+							<img src="" width="150px" height="100px" th:src="${userAuth.identityFrontUrl}">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">反面证照：</label>
+						<div class="col-sm-9">
+							<img src="" width="150px" height="100px" th:src="${userAuth.identityBackUrl}">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">正面银行卡：</label>
+						<div class="col-sm-9">
+							<img src="" width="150px" height="100px" th:src="${userAuth.bankCardUrl}">
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-sm-12 select-table table-striped">
+				<div id="tips" class="form-group">
+					<label class="col-sm-3 control-label">设置为内部账号：</label>
+					<div class="col-sm-8">
+						<div class="onoffswitch">
+							<input type="checkbox"th:checked="${user.internalAccount eq 2 ? true : false}" class="onoffswitch-checkbox"
+								   id="caution" name="caution" >
+							<label class="onoffswitch-label" for="caution" >
+								<span class="onoffswitch-inner"></span>
+								<span class="onoffswitch-switch"></span>
+							</label>
+						</div>
+						<div><span>若开启内部账号，则该账号无法进行提现</span></div>
+						<div class="sure-btn">
+							<div class="layui-layer-btn layui-layer-btn">
+								<a class="layui-layer-btn0" th:onclick="${'internalAccount(' + user.id + ')'}">确定</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-sm-12 select-table table-striped">
+				<div class="col-md-12">
+					<div class="form-group">
+						<label class="col-sm-3 control-label">账号：</label>
+						<div class="col-sm-9">
+							<p class="form-control-static" th:text="${user.loginName}">这里是纯文字信息</p>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label">密码：</label>
+						<div class="col-sm-5">
+							<input type="password" disabled="disabled" class="form-control"  value="********">
+						</div>
+						<button class="btn btn-info" type="button" id="changePsw">修改密码</button>
+					</div>
+				</div>
+			</div>
+
+
+		</div>
+	</div>
+	<div th:include="include :: footer"></div>
+	<script src="http://cdn.bootcss.com/blueimp-md5/1.1.0/js/md5.js"></script>
+    <script th:inline="javascript">
+    	/* 修改密码 */ 
+    	var inputHtml = "<input type='text' id='newVal' maxlength='20' />"
+    	$("#changePsw").click(function(){
+    		$.modal.confirm(inputHtml,function(){
+    			let newPsw = $("#newVal").val().replace(/\s+/g, "");
+    			if(newPsw.length < 8){
+    				$.modal.msgError("请输入8-20位包含2种及以上的字符密码");
+    			}else{
+    				let newPass = md5(newPsw+'jdcloud');
+    				console.log(newPass)
+    				$.post("/user/updatePassword",
+    		                {
+    		                    "newPass":newPass
+    						},
+    		                function(data){
+    		                    if (data.code == 200) {
+    		                        $.operate.saveSuccess(data);
+    		                    } else {
+    		                        alert(data.message);
+    		                    }
+	             			}
+  						);
+    			}
+    		});
+    	})
+        function internalAccount(id) {
+            var caution = $("input[name='caution']").is(':checked') == true ? 2 : 1;
+            $.post("/user/internalAccount",
+                {
+                    "id":id,
+                    "caution":caution
+				},
+                function(data){
+                    if (data.code == 200) {
+                        $.operate.saveSuccess(data);
+                    } else {
+                        alert(data.message);
+                    }
+                });
+        }
+
+        function editLevel() {
+            var lowerAgntCount = $("#lowerAgntCount").val();
+            if (Number(lowerAgntCount) != 0) {
+                $.modal.alertError("修改代理级别请先迁移下级代理，否则无法修改代理级别。");
+                return;
+            }
+            var agntId = $("input[name='agntId']").val();
+            var agntLevel = $("input[name='agntLevel']").val();
+            var url = ctx + "agnt/user/editLevel/" + agntId + "/" + agntLevel;
+            $.modal.open("修改代理级别", url, '600', '500');
+        }
+
+        function editInviter() {
+            var userId = $("#userId").val();
+            var url = ctx + "agnt/customer/editInviter/" + userId;
+            $.modal.open("修改邀请人", url, '600', '500');
+        }
+
+        function delInviter() {
+            var userId = $("#userId").val();
+            $.modal.confirm("是否确认删除代理账号", function () {
+				$.ajax({
+					cache : true,
+					type : "POST",
+					url : ctx + "agnt/customer/delInviter",
+					data : {
+						"userId": userId
+					},
+					async : false,
+					error : function(request) {
+						$.modal.alertError("系统错误");
+					},
+					success : function(data) {
+						//parent.location.reload();
+						$.operate.saveSuccess(data);
+					}
+				});
+            });
+        }
+
+
+
+        $(function(){
+        	$(".select-list li").click(function(){
+        		$(this).addClass("li-hover").siblings().removeClass("li-hover");
+        		/* $(".table-striped").hide().eq($(this).index()).show(); */
+        		$(".table-striped").removeClass("first-table").eq($(this).index()).addClass("first-table");
+        	})
+        	if($("img").attr("src")==""){
+        		$("img").css("visibility","hidden")
+        	}
+
+            var agntId = $("#agntId").val();
+            console.log(agntId);
+            var agntLoginName = $("#agntLoginName").val();
+            if (agntId == null || agntId == "" || agntId == undefined) {
+                $("#editLevel").hide();
+            }else {
+                $("#editInviter").hide();
+                $("#delInviter").hide();
+			}
+
+            if (agntLoginName == null || agntLoginName == "--" || agntLoginName == undefined) {
+                $("#delInviter").hide();
+            }
+
+        });
+    </script>
+</body>
+</html>

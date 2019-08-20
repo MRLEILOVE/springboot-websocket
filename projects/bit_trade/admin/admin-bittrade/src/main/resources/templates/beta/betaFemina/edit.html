@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<style>
+.banner-box{
+	width:350px;
+	height:150px;
+	border:1px solid #e5e6e7;
+/*	background:url(../../img/banner-add.png) no-repeat center;*/
+	background-size:45px 45px;
+    position: relative;
+    box-sizing: content-box;
+}
+.downloadPic{
+	width:100%;
+	height:100%;
+    opacity: 0;
+    position: absolute;
+    top:0;
+    left:0;
+    z-index:2;
+}
+.banner-img{
+	position: absolute;
+	width:100%;
+	height:100%;
+	top:0;
+    left:0;
+    z-index:1;
+}
+.add-img{
+	position: absolute;
+	width:24px;
+	height:24px;
+	line-height:24px;
+	text-align:center;
+	left:0;
+	bottom:0;
+	top:0;
+	right:0;
+	margin:auto;
+	font-size:32px;
+	z-index:0;
+}
+.banner-size{
+	float: right !important;
+	margin-top: -15px;
+}
+</style>
+<head th:include="include :: header"></head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <form class="form-horizontal m" id="form-banner-edit" th:object="${vo}">
+
+        <input name="id" type="hidden" th:field="*{id}"/>
+        <div class="form-group">
+            <label class="col-sm-3 control-label ">名称：</label>
+            <div class="col-sm-8">
+                <input class="form-control" type="text" id="name" name="name"  th:field="*{name}" disabled="disabled" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label ">手机号码：</label>
+            <div class="col-sm-8">
+                <input class="form-control" type="text" id="phone" name="phone"  th:field="*{phone}" disabled="disabled"  />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">创建时间：</label>
+            <div class="col-sm-8">
+                <input type="text" class="time-input" id="createTime" name="params[createTime]" th:field="*{createTime}" disabled="disabled" />
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label ">品质：</label>
+            <div class="col-sm-8">
+                <input class="form-control" type="text" id="quality" name="quality"  th:field="*{quality}"required="required" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label ">力量：</label>
+            <div class="col-sm-8">
+                <input class="form-control" type="text" id="power" name="power"  th:field="*{power}" required="required"/>
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label ">敏捷：</label>
+            <div class="col-sm-8">
+                <input class="form-control" type="text" id="agility" name="agility"  th:field="*{agility}"required="required" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label ">智力：</label>
+            <div class="col-sm-8">
+                <input class="form-control" type="text" id="intelligence" name="intelligence"  th:field="*{intelligence}" required="required"/>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label ">魅力：</label>
+            <div class="col-sm-8">
+                <input class="form-control" type="text" id="charm" name="charm"  th:field="*{charm}" required="required"/>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label ">体力：</label>
+            <div class="col-sm-8">
+                <input class="form-control" type="text" id="stamina" name="stamina"  th:field="*{stamina}" required="required"/>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label ">母狗头像：</label>
+            <div class="col-sm-8">
+                <img class="information-img" alt="" id="" th:src="*{headUrl}" height="400" width="300" />
+            </div>
+        </div>
+
+    </form>
+</div>
+<div th:include="include::footer"></div>
+<script th:src="@{/ajax/libs/select/select2.js}"></script>
+<script>
+
+    $(".information-img").click(function(){
+        var url = $(this).attr("src");
+        amplificationImg('', url)
+    })
+
+	var isFirst = true; /* 首次执行提交 */
+    $("#form-banner-edit").validate({
+        rules: {
+            name: {
+                required: true
+            },
+            sort: {
+                required: true
+            },
+            pictureUrl: {
+                // required: true,
+            }
+        }
+    });
+
+    function submitHandler() {
+        if ($.validate.form()) {
+        	if(isFirst){
+	            edit();
+        	}
+        }
+    }
+
+    function edit() {
+        var id = $("input[name='id']").val();
+        var quality = $("input[name='quality']").val();
+        var power = $("input[name='power']").val();
+        var agility = $("input[name='agility']").val();
+        var intelligence = $("input[name='intelligence']").val();
+        var stamina = $("input[name='stamina']").val();
+        var charm = $("#charm").val();
+        $.ajax({
+            cache: true,
+            type: "POST",
+            url: ctx + "beta/betaFemina/saveOrUpdate",
+            data: {
+                "id": id,
+                "quality": quality,
+                "power": power,
+                "agility": agility,
+                "intelligence": intelligence,
+                "charm": charm,
+                "stamina":stamina
+            },
+            async: false,
+            error: function (request) {
+                $.modal.alertError("系统错误");
+            },
+            success: function (data) {
+                if(data.code ==  web_status.SUCCESS){
+                    isFirst = false;
+                    $.operate.saveSuccess(data);
+                }else{
+                    $.modal.alertError(data.message);
+                }
+            }
+        });
+    }
+</script>
+</body>
+</html>

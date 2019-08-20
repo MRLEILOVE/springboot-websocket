@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="white-bg">
+	<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+		<form class="form-horizontal m" id="form-inviteReward-edit" th:object="${inviteRewards}">
+			<div th:each="inviteReward:${inviteRewards}">
+				<div class="form-group">
+					<input type="hidden" th:value="${inviteReward.id}" id="id" name="id"/>
+					<label class="col-sm-0 control-label" th:text="'奖励阶梯：' + ${inviteReward.level}"></label>
+					<!-- <div class="col-sm-1"> -->
+						<label class="control-label"><input class="form-control" type="text" readonly="true" th:value="${inviteReward.minTradeAmount}" name="minTradeAmount" onkeyup="$.common.clearNoNum(this)"/></label>
+						<label class="control-label">-</label>
+						<label class="control-label"><input class="form-control" type="text" readonly="true" th:value="${inviteReward.maxTradeAmount} == null? '': '<' + ${inviteReward.maxTradeAmount}" name="maxTradeAmount" onkeyup="$.common.clearNoNum(this)"/></label>
+						<label class="control-label"><label class="control-label ">交易量（USDT）</label>
+					<!-- </div> -->
+				</div>
+				<div class="form-group">
+					<label class="col-sm-0 control-label ">邀请手续费奖励(%)：</label>
+					<div class="">
+						<label class="control-label">二级：</label>
+						<label class="control-label"><input class="jl-val form-control" type="text" required="required" th:value="${inviteReward.secondRewardPercent}" name="secondRewardPercent" onkeyup="$.common.clearNoNum(this)"/></label><br/>
+						<label class="control-label">三级：</label>
+						<label class="control-label"><input class="jl-val form-control" type="text" required="required" th:value="${inviteReward.thirdRewardPercent}" name="thirdRewardPercent" onkeyup="$.common.clearNoNum(this)"/></label>
+					</div>
+				</div>
+				<hr/>
+			</div>
+            <div class="form-group">
+                <label class="col-sm-5 control-label"></label>
+				<div class="col-sm-3">
+					<a class="btn btn-primary btn-edit col-sm-4" onclick="save()" shiro:hasPermission="product:inviteReward:edit">
+						<i class="fa fa-edit"></i> 保存
+					</a>
+				</div>
+            </div>
+        </form>
+	</div>
+	<div th:include="include::footer"></div>
+	<script th:src="@{/ajax/libs/select/select2.js}"></script>
+	<script>
+        $(function () {
+        });
+
+        function save() {
+            var ids =[];
+            $("input[name='id']").each(function(){
+                ids.push($(this).val());
+            });
+            var idsUnit = ids.join(",");
+			//二级奖励
+            var secondRewardPercents =[];
+            $("input[name='secondRewardPercent']").each(function(){
+                secondRewardPercents.push($(this).val());
+            });
+            if (secondRewardPercents.length != ids.length) {
+                $.modal.alertError("有二级奖励设置为空！");
+                return;
+            }
+            var secondRewardPercentsUnit = secondRewardPercents.join(",");
+            
+         	/* 奖金比例不能超过1 */
+           	for(let i = 0;i<$(".jl-val").length;i++){
+           		if($(".jl-val").eq(i).val()-0 > 1){
+           			$.modal.alertError("奖金比例不能超过1！");
+                    return;
+           		}else if($(".jl-val").eq(i).val()==''){
+           			$.modal.alertError("奖金比例不能为空！");
+                    return;
+           		}
+            }
+
+            //三级奖励
+            var thirdRewardPercents =[];
+            $("input[name='thirdRewardPercent']").each(function(){
+                thirdRewardPercents.push($(this).val());
+            });
+            if (thirdRewardPercents.length != ids.length) {
+                $.modal.alertError("有三级奖励设置为空！");
+                return;
+            }
+            var thirdRewardPercentsUnit = thirdRewardPercents.join(",");
+
+            if ($.validate.form()) {
+                $.ajax({
+                    cache : true,
+                    type : "POST",
+                    url : ctx + "product/inviteReward/edit",
+                    data : {
+                        "idsUnit":idsUnit,
+                        "secondRewardPercentsUnit":secondRewardPercentsUnit,
+                        "thirdRewardPercentsUnit":thirdRewardPercentsUnit
+                    },
+                    async : false,
+                    error : function(data) {
+                        $.modal.alertError("系统错误");
+                    },
+                    success : function(data) {
+                        if (data.code == web_status.SUCCESS) {
+                            $.modal.msgSuccess("保存成功");
+                        } else {
+                            $.modal.alertError(data.message);
+                        }
+                    }
+                });
+            }
+        }
+    </script>
+</body>
+</html>

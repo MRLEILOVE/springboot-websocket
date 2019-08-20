@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org"
+	xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	
+	<div class="container-div">
+		<div class="row">
+			<div class="col-sm-12 search-collapse">
+				<form id="operlog-form">
+					<div class="select-list">
+						<ul>
+							<input  type="hidden" id="userId" name="userId"  th:value="${userId}" />
+						</ul>
+					</div>
+				</form>
+			</div>
+			<div class="col-sm-12 select-table table-striped">
+				<table id="bootstrap-table" data-mobile-responsive="true"></table>
+			</div>
+		</div>
+	</div>
+
+	<div th:include="include :: footer"></div>
+	<script th:inline="javascript">
+        var betaHouseProductBeSuitables = [[${@dict.getType('beta_HouseProduct_beSuitable')}]];//商品订单适用类型
+        var betaHouseProductTypes = [[${@dict.getType('house_product_status')}]];//商品订单类型
+		var prefix = ctx + "betaHouse/house";
+		$(function() {
+		    var options = {
+		        url: prefix + "/getBackpackList",
+                updateUrl: prefix + "/edit/{id}",
+                sortName: "",
+                sortOrder: "",
+		        modalName: "装备详情",
+                queryParams: queryParams,
+		        search: false,
+		        showExport: false,
+		        columns: [
+                    {
+                        field: 'productName',
+                        title: '商品名称'
+                    },
+                    {
+                        field: 'productType',
+                        title: '类型',
+                        formatter: function (value, row, index) {
+                            return $.table.selectDictLabel(betaHouseProductTypes, value);
+                        }
+                    },
+                    {
+                        field: 'beSuitable',
+                        title: '适用',
+                        formatter: function (value, row, index) {
+                            return $.table.selectDictLabel(betaHouseProductBeSuitables, value);
+                        }
+                    },
+                    {
+                        field: 'totalCount',
+                        title: '数量'
+                    },
+                    {
+                        field: 'power',
+                        title: '力量'
+                    },
+                    {
+                        field: 'agility',
+                        title: '敏捷'
+                    },
+                    {
+                        field: 'stamina',
+                        title: '体力'
+                    },
+                    {
+                        field: 'intelligence',
+                        title: '智力'
+                    },
+                    {
+                        field: 'charm',
+                        title: '魅力'
+                    },
+                    {
+                        field: 'createTime',
+                        title: '创建时间'
+                    },
+				]
+		    };
+		    $.table.init(options);
+		});
+
+        function queryParams(params) {
+            return {
+                userId:       $("#userId").val(),
+                pageSize:       params.limit,
+                pageNum:        params.offset / params.limit + 1,
+                searchValue:    params.search,
+                orderByColumn:  params.sort,
+                isAsc:          params.order
+            };
+        }
+
+	</script>
+</body>
+</html>

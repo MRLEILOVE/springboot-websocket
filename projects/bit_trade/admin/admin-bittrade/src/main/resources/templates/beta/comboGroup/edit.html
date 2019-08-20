@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<style>
+    .banner-box {
+        width: 350px;
+        height: 150px;
+        border: 1px solid #e5e6e7;
+        /*	background:url(../../img/banner-add.png) no-repeat center;*/
+        background-size: 45px 45px;
+        position: relative;
+        box-sizing: content-box;
+    }
+
+    .downloadPic {
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 2;
+    }
+
+    .banner-img {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        z-index: 1;
+    }
+
+    .add-img {
+        position: absolute;
+        width: 24px;
+        height: 24px;
+        line-height: 24px;
+        text-align: center;
+        left: 0;
+        bottom: 0;
+        top: 0;
+        right: 0;
+        margin: auto;
+        font-size: 32px;
+        z-index: 0;
+    }
+
+    .banner-size {
+        float: right !important;
+        margin-top: -15px;
+    }
+</style>
+<head th:include="include :: header"></head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <form class="form-horizontal m" id="form-banner-edit" th:object="${dto}">
+
+        <input name="id" type="hidden" th:field="*{id}"/>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">创建时间：</label>
+            <div class="col-sm-9">
+                <input class="form-control" type="text" id="createTime" name="createTime" th:field="*{createTime}"
+                       required="required"/>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">修改时间：</label>
+            <div class="col-sm-9">
+                <input class="form-control" type="text" id="updateTime" name="updateTime" th:field="*{updateTime}"
+                       required="required"/>
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label ">周期(天)：</label>
+            <div class="col-sm-9">
+                <input class="form-control" type="text" id="days" name="days" th:field="*{days}" required="required"/>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">最低价格：</label>
+            <div class="col-sm-9">
+                <input class="form-control" type="text" id="minPrice" name="minPrice" th:field="*{minPrice}"
+                       required="required"/>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">最高价格：</label>
+            <div class="col-sm-9">
+                <input class="form-control" type="text" name="maxPrice" id="maxPrice" th:field="*{maxPrice}"
+                       required="required">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">Banner图片：</label>
+            <div class="col-sm-9">
+                <div class="banner-box">
+                    <input class="downloadPic" type="file" name="file" id="downloadPic" accept="image/*">
+                    <img class="banner-img" src="" alt="" id="bannerImgUrl" th:src="*{dogImg}" name="bannerImgUrl">
+                    <p class="add-img">+</p>
+                </div>
+            </div>
+            <p class="col-sm-3 banner-size">600*300px</p>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">收益率（小数）：</label>
+            <div class="col-sm-9">
+                <input class="form-control" type="text" name="earningsRatio" id="earningsRatio"
+                       th:field="*{earningsRatio}" required="required">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">狗名称：</label>
+            <div class="col-sm-9">
+                <input class="form-control" type="text" name="dogName" id="dogName" th:field="*{dogName}"
+                       required="required">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">狗狗级别：</label>
+            <div class="col-sm-9">
+                <input class="form-control" type="text" name="level" id="level" th:field="*{level}" required="required">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">微分：</label>
+            <div class="col-sm-9">
+                <input class="form-control" type="text" name="differential" id="differential" th:field="*{differential}"
+                       required="required">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">开始时间：</label>
+            <div class="col-sm-9">
+                <input type="text" class="form-control" id="startTime" name="startTime" th:field="*{startTime}"
+                       required="required"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">结束时间：</label>
+            <div class="col-sm-9">
+                <input type="text" class="form-control" id="endTime" name="endTime" th:field="*{endTime}"
+                       required="required"/>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">抢狗成功概率基数：</label>
+            <div class="col-sm-9">
+                <input class="form-control" type="text" name="probabilityBase" id="probabilityBase"
+                       th:field="*{probabilityBase}"  disabled>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">抢狗成功最小值：</label>
+            <div class="col-sm-9">
+                <input class="form-control" type="text" name="probabilityMin" id="probabilityMin"
+                       th:field="*{probabilityMin}"  disabled>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">抢狗成功最大值：</label>
+            <div class="col-sm-9">
+                <input class="form-control" type="text" name="probabilityMax" id="probabilityMax"
+                       th:field="*{probabilityMax}" disabled>
+            </div>
+        </div>
+
+    </form>
+</div>
+<div th:include="include::footer"></div>
+<script th:src="@{/ajax/libs/select/select2.js}"></script>
+<script>
+    var isFirst = true;
+    /* 首次执行提交 */
+    $("#form-banner-edit").validate({
+        rules: {
+            name: {
+                required: true
+            },
+            sort: {
+                required: true
+            },
+            pictureUrl: {
+                // required: true,
+            }
+        }
+    });
+
+    function submitHandler() {
+        if ($.validate.form()) {
+            if (isFirst) {
+                edit();
+            }
+        }
+    }
+
+    var pictureSuffix = "";
+    var pictureBase64 = "";
+    /* 图片在前端预览 */
+    $("#downloadPic").change(function (e, type) {
+        var files = e.target.files;
+        var file = files[0];
+        var fileSize = file.size;
+        if (!/\/(?:jpeg|jpg|png|gif)/i.test(file.type)) {
+            $.modal.alertError("上传图片格式只能为jpeg,jpg,png,gif");
+            return;
+        }
+        var reader = new FileReader();
+        reader.onload = function () {
+            if (fileSize - 0 > 1048576) {
+                $.modal.alertError("上传图片不能超过1M");
+                return false;
+            }
+            var result = this.result;
+            $("#bannerImgUrl").attr("src", result);
+            pictureSuffix = file.type.split("/")[1];
+            pictureBase64 = result.split(",")[1];
+        };
+        reader.readAsDataURL(file);
+    });
+
+    function edit() {
+        var bannerImgUrl = $("#bannerImgUrl").attr("src");
+        if (bannerImgUrl == null || bannerImgUrl == "" || bannerImgUrl == undefined) {
+            $.modal.alertError("请上传图片");
+            return;
+        }
+        var id = $("input[name='id']").val();
+        var days = $("input[name='days']").val();
+        var minPrice = $("input[name='minPrice']").val();
+        var maxPrice = $("input[name='maxPrice']").val();
+        if(parseInt(minPrice)>=parseInt(maxPrice)){
+            $.modal.alertError("最高价格必须大于最低价格");
+            return;
+        }
+        var earningsRatio = $("input[name='earningsRatio']").val();
+        var reg=/^0\.(?!00)\d{1,2}$/;
+        if(!earningsRatio.match(reg)){
+            $.modal.alertError("收益率不能大于1");
+            return;
+        }
+        var startTime = $("#startTime").val();
+        var endTime = $("#endTime").val();
+        var level = $("input[name='level']").val();
+        var dogName = $("input[name='dogName']").val();
+        var differential = $("input[name='differential']").val();
+        var meet = $("input[name='meet']").val();
+        var splitSum = $("input[name='splitSum']").val();
+        $.ajax({
+            cache: true,
+            type: "POST",
+            url: ctx + "beta/comboGroup/saveOrUpdate",
+            data: {
+                "id": id,
+                "days": days,
+                "minPrice": minPrice,
+                "maxPrice": maxPrice,
+                "earningsRatio": earningsRatio,
+                "startTime": startTime,
+                "endTime": endTime,
+                "level": level,
+                "dogName": dogName,
+                "differential": differential,
+                "pictureSuffix": pictureSuffix,
+                "pictureBase64": pictureBase64,
+                "meet": meet,
+                "splitSum": splitSum
+            },
+            async: false,
+            error: function (request) {
+                $.modal.alertError("系统错误");
+            },
+            success: function (data) {
+                if (data.code == web_status.SUCCESS) {
+                    isFirst = false;
+                    $.operate.saveSuccess(data);
+                } else {
+                    $.modal.alertError(data.message);
+                }
+            }
+        });
+    }
+
+</script>
+</body>
+</html>

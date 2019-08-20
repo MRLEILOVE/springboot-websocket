@@ -1,0 +1,468 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="zh" xmlns:th="http://www.thymeleaf.org">-->
+<!--<meta charset="utf-8">-->
+<!--<meta name="renderer" content="webkit">-->
+<!--&lt;!&ndash;<link rel="stylesheet" href="static/build/layui.css" media="all">&ndash;&gt;-->
+<!--<style>-->
+    <!--.banner-box {-->
+        <!--width: 350px;-->
+        <!--height: 150px;-->
+        <!--border: 1px solid #e5e6e7;-->
+        <!--background-size: 45px 45px;-->
+        <!--position: relative;-->
+        <!--box-sizing: content-box;-->
+    <!--}-->
+
+    <!--.downloadPic {-->
+        <!--width: 100%;-->
+        <!--height: 100%;-->
+        <!--opacity: 0;-->
+        <!--position: absolute;-->
+        <!--top: 0;-->
+        <!--left: 0;-->
+        <!--z-index: 2;-->
+    <!--}-->
+
+    <!--.banner-img {-->
+        <!--position: absolute;-->
+        <!--width: 100%;-->
+        <!--height: 100%;-->
+        <!--top: 0;-->
+        <!--left: 0;-->
+        <!--z-index: 1;-->
+    <!--}-->
+
+    <!--.add-img {-->
+        <!--position: absolute;-->
+        <!--width: 24px;-->
+        <!--height: 24px;-->
+        <!--line-height: 24px;-->
+        <!--text-align: center;-->
+        <!--left: 0;-->
+        <!--bottom: 0;-->
+        <!--top: 0;-->
+        <!--right: 0;-->
+        <!--margin: auto;-->
+        <!--font-size: 32px;-->
+        <!--z-index: 0;-->
+    <!--}-->
+
+    <!--.banner-size {-->
+        <!--float: right !important;-->
+        <!--margin-top: -15px;-->
+    <!--}-->
+<!--</style>-->
+
+<!--<head th:include="include :: header"></head>-->
+<!--<body class="white-bg">-->
+<!--<div class="wrapper wrapper-content animated fadeInRight ibox-content">-->
+    <!--<form class="form-horizontal m" id="form-houseProduct-add" method="post" action="/funds/coldAddress/create">-->
+
+        <!--<div class="form-group">-->
+            <!--<label class="col-sm-3 control-label">币种名称：</label>-->
+            <!--<div class="col-sm-9">-->
+                <!--<input class="form-control" type="text" name="coinType" id="coinType" required>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+            <!--<label class="col-sm-3 control-label">提币地址：</label>-->
+            <!--<div class="col-sm-9">-->
+                <!--<input class="form-control" type="text" name="address" id="walletType" required>-->
+            <!--</div>-->
+        <!--</div>-->
+
+        <!--<input type="submit">-->
+
+    <!--</form>-->
+<!--</div>-->
+<!--<div th:include="include::footer"></div>-->
+<!--<script th:src="@{/ajax/libs/select/select2.js}"></script>-->
+<!--<script>-->
+
+
+    <!--var isFirst = true;-->
+    <!--/* 首次执行提交 */-->
+    <!--$("#form-houseProduct-add").validate({-->
+
+    <!--});-->
+
+    <!--var prefix = ctx + "betaHouse/houseProduct";-->
+
+
+    <!--function submitHandler() {-->
+        <!--if ($.validate.form()) {-->
+            <!--if (isFirst) {-->
+                <!--add();-->
+            <!--}-->
+        <!--}-->
+    <!--}-->
+
+    <!--function add() {-->
+        <!--var describe = document.getElementById("coinType").value-->
+        <!--var accelerationTime = document.getElementById("walletType").value-->
+        <!--$.ajax({-->
+            <!--cache: true,-->
+            <!--type: "POST",-->
+            <!--url: prefix + "/saveHouseProduct",-->
+            <!--data: {-->
+                <!--"accelerationTime": accelerationTime,-->
+                <!--"name": name,-->
+                <!--"type": type,-->
+                <!--"beSuitable": 1,-->
+                <!--"describe": describe,-->
+                <!--"remark": remark,-->
+                <!--"price": price,-->
+                <!--"totalCount": totalCount,-->
+                <!--"stockCount": stockCount,-->
+                <!--"buyLimit": buyLimit,-->
+                <!--"power": power,-->
+                <!--"agility": agility,-->
+                <!--"stamina": stamina,-->
+                <!--"intelligence": intelligence,-->
+                <!--"charm": charm,-->
+                <!--"status": status,-->
+                <!--"pictureSuffix": pictureSuffix,-->
+                <!--"pictureBase64": pictureBase64,-->
+                <!--"sceneryPictureSuffix": sceneryPictureSuffix ,-->
+                 <!--"sceneryPictureBase64":sceneryPictureBase64 ,-->
+                <!--"overlayLimit": overlayLimit,-->
+                <!--"validityPeriod": validityPeriod,-->
+                <!--"showPosition": showPosition,-->
+                <!--"expendType": expendType-->
+            <!--},-->
+            <!--async: false,-->
+            <!--error: function (request) {-->
+                <!--$.modal.alertError("系统错误");-->
+            <!--},-->
+            <!--success: function (data) {-->
+                <!--if (data.code == web_status.SUCCESS) {-->
+                    <!--isFirst = false;-->
+                    <!--$.operate.saveSuccess(data);-->
+                <!--} else {-->
+                    <!--$.modal.alertError(data.message);-->
+                <!--}-->
+            <!--}-->
+        <!--});-->
+    <!--};-->
+
+    <!--function showMask() {-->
+        <!--$("#mask").css("height", $(document).height());-->
+        <!--$("#mask").css("width", $(document).width());-->
+        <!--$("#mask").show();-->
+
+        <!--$('#icon').addClass('fa fa-circle-o-notch fa-spin');-->
+        <!--$('#icon').parent().css("padding-top", $(document).height() / 3);-->
+        <!--$('#icon').parent().css("padding-left", $(document).width() / 2);-->
+        <!--$('#icon').parent().addClass('center-block');-->
+        <!--$("#icon").parent().show();-->
+        <!--setTimeout(hideMask, 5000);-->
+    <!--}-->
+
+    <!--//隐藏遮罩层-->
+    <!--function hideMask() {-->
+        <!--$("#mask").hide();-->
+        <!--$("#icon").parent().hide();-->
+    <!--}-->
+
+    <!--$(function () {-->
+        <!--// NOW();-->
+    <!--});-->
+
+<!--</script>-->
+<!--</body>-->
+<!--</html>-->
+
+
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="zh" xmlns:th="http://www.thymeleaf.org">-->
+<!--<meta charset="utf-8">-->
+<!--<meta name="renderer" content="webkit">-->
+<!--&lt;!&ndash;<link rel="stylesheet" href="static/build/layui.css" media="all">&ndash;&gt;-->
+<!--<style>-->
+<!--.banner-box {-->
+<!--width: 350px;-->
+<!--height: 150px;-->
+<!--border: 1px solid #e5e6e7;-->
+<!--background-size: 45px 45px;-->
+<!--position: relative;-->
+<!--box-sizing: content-box;-->
+<!--}-->
+
+<!--.downloadPic {-->
+<!--width: 100%;-->
+<!--height: 100%;-->
+<!--opacity: 0;-->
+<!--position: absolute;-->
+<!--top: 0;-->
+<!--left: 0;-->
+<!--z-index: 2;-->
+<!--}-->
+
+<!--.banner-img {-->
+<!--position: absolute;-->
+<!--width: 100%;-->
+<!--height: 100%;-->
+<!--top: 0;-->
+<!--left: 0;-->
+<!--z-index: 1;-->
+<!--}-->
+
+<!--.add-img {-->
+<!--position: absolute;-->
+<!--width: 24px;-->
+<!--height: 24px;-->
+<!--line-height: 24px;-->
+<!--text-align: center;-->
+<!--left: 0;-->
+<!--bottom: 0;-->
+<!--top: 0;-->
+<!--right: 0;-->
+<!--margin: auto;-->
+<!--font-size: 32px;-->
+<!--z-index: 0;-->
+<!--}-->
+
+<!--.banner-size {-->
+<!--float: right !important;-->
+<!--margin-top: -15px;-->
+<!--}-->
+<!--</style>-->
+
+<!--<head th:include="include :: header"></head>-->
+<!--<body class="white-bg">-->
+<!--<div class="wrapper wrapper-content animated fadeInRight ibox-content">-->
+<!--<form class="form-horizontal m" id="form-houseProduct-add" method="post" action="/funds/hotAddress/create">-->
+
+<!--<div class="form-group">-->
+<!--<label class="col-sm-3 control-label">币种名称：</label>-->
+<!--<div class="col-sm-9">-->
+<!--<input class="form-control" type="text" name="coinType" id="coinType" required>-->
+<!--</div>-->
+<!--</div>-->
+<!--<div class="form-group">-->
+<!--<label class="col-sm-3 control-label">提币地址类型：</label>-->
+<!--<div class="col-sm-9">-->
+<!--<input class="form-control" type="text" name="walletType" id="walletType" required>-->
+<!--</div>-->
+<!--</div>-->
+
+<!--<input type="submit">-->
+
+<!--</form>-->
+<!--</div>-->
+<!--<div th:include="include::footer"></div>-->
+<!--<script th:src="@{/ajax/libs/select/select2.js}"></script>-->
+<!--<script>-->
+
+
+<!--var isFirst = true;-->
+<!--/* 首次执行提交 */-->
+<!--$("#form-houseProduct-add").validate({-->
+
+<!--});-->
+
+<!--var prefix = ctx + "betaHouse/houseProduct";-->
+
+
+<!--function submitHandler() {-->
+<!--if ($.validate.form()) {-->
+<!--if (isFirst) {-->
+<!--add();-->
+<!--}-->
+<!--}-->
+<!--}-->
+
+<!--function add() {-->
+<!--var describe = document.getElementById("coinType").value-->
+<!--var accelerationTime = document.getElementById("walletType").value-->
+<!--$.ajax({-->
+<!--cache: true,-->
+<!--type: "POST",-->
+<!--url: prefix + "/saveHouseProduct",-->
+<!--data: {-->
+<!--"accelerationTime": accelerationTime,-->
+<!--"name": name,-->
+<!--"type": type,-->
+<!--"beSuitable": 1,-->
+<!--"describe": describe,-->
+<!--"remark": remark,-->
+<!--"price": price,-->
+<!--"totalCount": totalCount,-->
+<!--"stockCount": stockCount,-->
+<!--"buyLimit": buyLimit,-->
+<!--"power": power,-->
+<!--"agility": agility,-->
+<!--"stamina": stamina,-->
+<!--"intelligence": intelligence,-->
+<!--"charm": charm,-->
+<!--"status": status,-->
+<!--"pictureSuffix": pictureSuffix,-->
+<!--"pictureBase64": pictureBase64,-->
+<!--"sceneryPictureSuffix": sceneryPictureSuffix ,-->
+<!--"sceneryPictureBase64":sceneryPictureBase64 ,-->
+<!--"overlayLimit": overlayLimit,-->
+<!--"validityPeriod": validityPeriod,-->
+<!--"showPosition": showPosition,-->
+<!--"expendType": expendType-->
+<!--},-->
+<!--async: false,-->
+<!--error: function (request) {-->
+<!--$.modal.alertError("系统错误");-->
+<!--},-->
+<!--success: function (data) {-->
+<!--if (data.code == web_status.SUCCESS) {-->
+<!--isFirst = false;-->
+<!--$.operate.saveSuccess(data);-->
+<!--} else {-->
+<!--$.modal.alertError(data.message);-->
+<!--}-->
+<!--}-->
+<!--});-->
+<!--};-->
+
+<!--function showMask() {-->
+<!--$("#mask").css("height", $(document).height());-->
+<!--$("#mask").css("width", $(document).width());-->
+<!--$("#mask").show();-->
+
+<!--$('#icon').addClass('fa fa-circle-o-notch fa-spin');-->
+<!--$('#icon').parent().css("padding-top", $(document).height() / 3);-->
+<!--$('#icon').parent().css("padding-left", $(document).width() / 2);-->
+<!--$('#icon').parent().addClass('center-block');-->
+<!--$("#icon").parent().show();-->
+<!--setTimeout(hideMask, 5000);-->
+<!--}-->
+
+<!--//隐藏遮罩层-->
+<!--function hideMask() {-->
+<!--$("#mask").hide();-->
+<!--$("#icon").parent().hide();-->
+<!--}-->
+
+<!--$(function () {-->
+<!--// NOW();-->
+<!--});-->
+
+<!--</script>-->
+<!--</body>-->
+<!--</html>-->
+
+
+
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<meta name="renderer" content="webkit">
+<style>
+    .banner-box {
+        width: 350px;
+        height: 150px;
+        border: 1px solid #e5e6e7;
+        background-size: 45px 45px;
+        position: relative;
+        box-sizing: content-box;
+    }
+
+    .downloadPic {
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 2;
+    }
+
+    .banner-img {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        z-index: 1;
+    }
+
+    .add-img {
+        position: absolute;
+        width: 24px;
+        height: 24px;
+        line-height: 24px;
+        text-align: center;
+        left: 0;
+        bottom: 0;
+        top: 0;
+        right: 0;
+        margin: auto;
+        font-size: 32px;
+        z-index: 0;
+    }
+
+    .banner-size {
+        float: right !important;
+        margin-top: -15px;
+    }
+</style>
+
+<head th:include="include :: header"></head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <form class="form-horizontal m" id="form-dict-add">
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">地址：</label>
+            <div class="col-sm-8">
+                <input id="address" name="address" class="form-control"  required/>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">币种名称：</label>
+            <div class="col-sm-8">
+                <input id="coinType" name="coinType" class="form-control"  required/>
+            </div>
+        </div>
+
+        <!--<div class="form-group">-->
+            <!--<label class="col-sm-3 control-label">提币地址类型：</label>-->
+            <!--<div class="col-sm-8">-->
+                <!--<input id="address" name="address" class="form-control"  required/>-->
+            <!--</div>-->
+        <!--</div>-->
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">选择提币地址类型：</label>
+            <div class="col-sm-8">
+                <select class="form-control" id="walletType" name="walletType"
+                        th:with="type=${@dict.getType('walletbiz_type')}">
+                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                            th:value="${dict.dictValue}"></option>
+                </select>
+            </div>
+        </div>
+
+    </form>
+</div>
+<div th:include="include::footer"></div>
+<script th:src="@{/ajax/libs/select/select2.js}"></script>
+<script>
+    var prefix = ctx + "funds/coldAddress";
+    $("#form-dict-add").validate({
+        rules: {
+            dictSort: {
+                digits: true
+            },
+        },
+        focusCleanup: true
+    });
+
+    function submitHandler() {
+        if ($.validate.form()) {
+            $.operate.save(prefix + "/create", $('#form-dict-add').serialize());
+        }
+    }
+</script>
+</body>
+</html>
+
+

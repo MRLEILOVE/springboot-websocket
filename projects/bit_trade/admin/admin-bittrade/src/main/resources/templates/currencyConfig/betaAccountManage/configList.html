@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+
+<div class="container-div">
+    <div class="row">
+        <div class="col-sm-12 search-collapse">
+            <form id="operlog-form">
+                <div class="select-list">
+                    <input type="hidden" id="accountId" name="accountId" value="3"/>
+
+                    <li class="select-time">
+                        <label>创建时间搜索： </label>
+                        <input type="text" class="time-input" id="startTime" placeholder="开始时间"
+                               name="params[beginTime]"/>
+                        <span>-</span>
+                        <input type="text" class="time-input" id="endTime" placeholder="结束时间"
+                               name="params[endTime]"/>
+                    </li>
+                    <li>
+                        <label>搜索：</label><input type="text" placeholder="币种名称" name="name"/>
+                    </li>
+                    <li>
+                        <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+                        <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+                    </li>
+                </div>
+            </form>
+        </div>
+
+        <div class="btn-group-sm" id="toolbar" role="group">
+            <a class="btn btn-success" onclick="$.operate.add(3)" shiro:hasPermission="accountConfig:addInfo">
+                <i class="fa fa-plus"></i> 新增
+            </a>
+        </div>
+
+        <div class="col-sm-12 select-table table-striped" style="overflow: overlay;height: 94%;">
+            <table id="bootstrap-table" data-mobile-responsive="true"></table>
+        </div>
+    </div>
+</div>
+
+<div th:include="include :: footer"></div>
+<script th:inline="javascript">
+    layui.use('laydate', function () {
+        var laydate = layui.laydate;
+        var startTime = laydate.render({
+            elem: '#createTime',
+            type: 'date',
+            btns: ['now', 'confirm']
+        });
+        var endTime = laydate.render({
+            elem: '#endTime',
+            type: 'date',
+            btns: ['now', 'confirm']
+        });
+    });
+    var currencyconfigstatus = [[${@dict.getType('currencyConfig_status')}]];//商品订单类型
+
+    var prefix = ctx + "currencyConfig/accountManage";
+    $(function () {
+        var options = {
+            url: prefix + "/list",
+            createUrl: prefix + "/add/{id}",
+            updateUrl: prefix + "/edit/{id}",
+            sortName: "co.sort",
+            sortOrder: "asc",
+            modalName: "beta币种配置",
+            queryParams: queryParams,
+            search: false,
+            striped: true,
+            showExport: false,
+            columns: [
+                {
+                    field: 'id',
+                    title: 'beta币种配置'
+                },
+                {
+                    field: 'keyword',
+                    title: '币种'
+                },
+                {
+                    field: 'status',
+                    title: '状态',
+                    formatter: function (value, row, index) {
+                        return $.table.selectDictLabel(currencyconfigstatus, value);
+                    }
+                },
+                {
+                    field: 'sort',
+                    title: '排序'
+                },
+                {
+                    field: 'createTime',
+                    title: '创建时间'
+                },
+                {
+                    title: '操作',
+                    align: 'center',
+                    formatter: function (value, row, index) {
+                        var actions = [];
+                         // actions.push('<a class="btn btn-danger btn-xs" href="#" onclick="$.operate.add(\'' + row.id + '\')"><i class="fa fa-plus"></i>配置币种</a> ');
+                        if(row.status==1){
+                            actions.push('<a class="btn btn-danger btn-xs" href="#" onclick="updateProduct(\'' + row.id + '\')"><i class="fa fa-remove"></i>禁用</a> ');
+                        }
+                        if(row.status==2){
+                            actions.push('<a class="btn btn-success btn-xs" href="#" onclick="updateProduct(\'' + row.id + '\')"><i class="fa fa-edit"></i>正常</a> ');
+                        }
+                        return actions.join('');
+                    }
+                }]
+        };
+        $.table.init(options);
+    });
+
+    window.operateEvents = {
+        'click .view': function (e, value, row, index) {
+            layer.open({
+                type: 1,
+                title: false,
+                closeBtn: 0,
+                area: ['auto', 'auto'],
+                skin: 'layui-layer-nobg', //没有背景色
+                shadeClose: true,
+                content: '<img src="' + row.image + '" height="400px"/>'
+            });
+        },
+    };
+
+    window.operateEvent = {
+        'click .view': function (e, value, row, index) {
+            layer.open({
+                type: 1,
+                title: false,
+                closeBtn: 0,
+                area: ['auto', 'auto'],
+                skin: 'layui-layer-nobg', //没有背景色
+                shadeClose: true,
+                content: '<img src="' + row.sceneryImg + '" height="400px"/>'
+            });
+        },
+    };
+
+    function queryParams(params) {
+        return {
+            accountId: $("#accountId").val(),
+            pageSize: params.limit,
+            pageNum: params.offset / params.limit + 1,
+            searchValue: params.search,
+            orderByColumn: params.sort,
+            isAsc: params.order
+        };
+    }
+
+    function updateProduct(id) {
+        $.modal.confirm("确定禁用这个币种？", function() {
+            $.ajax({
+                url: prefix + "/updateAccountConfig/"+id,
+                cache: true,
+                dataType: "json",
+                type: 'POST',
+                success: function (date) {
+                    layer.close();
+                    if (date.code == web_status.SUCCESS) {
+                        $.modal.closeAll();
+                        $.modal.alertSuccess(date.message);
+                        $.table.refresh();
+                    } else {
+                        $.modal.alertError(date.message);
+                    }
+                }
+            });
+        });
+    }
+
+</script>
+</body>
+</html>

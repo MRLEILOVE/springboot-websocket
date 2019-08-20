@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<style>
+.banner-box{
+	width:350px;
+	height:150px;
+	border:1px solid #e5e6e7;
+	background-size:45px 45px;
+    position: relative;
+    box-sizing: content-box;
+}
+.downloadPic{
+	width:100%;
+	height:100%;
+    opacity: 0;
+    position: absolute;
+    top:0;
+    left:0;
+    z-index:2;
+}
+.banner-img{
+	position: absolute;
+	width:100%;
+	height:100%;
+	top:0;
+    left:0;
+    z-index:1;
+}
+.add-img{
+	position: absolute;
+	width:24px;
+	height:24px;
+	line-height:24px;
+	text-align:center;
+	left:0;
+	bottom:0;
+	top:0;
+	right:0;
+	margin:auto;
+	font-size:32px;
+	z-index:0;
+}
+.banner-size{
+	float: right !important;
+	margin-top: -15px;
+}
+</style>
+<head th:include="include :: header"></head>
+<body class="white-bg">
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+    <form class="form-horizontal m" id="form-houseProduct-edit" th:object="${dto}">
+
+        <input name="id" type="hidden" th:field="*{id}"/>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">新地址：</label>
+            <div class="col-sm-9">
+                <textarea class="form-control" type="text" name="bossAddress" id="bossAddress" th:field="*{bossAddress}" ></textarea>
+            </div>
+        </div>
+
+    </form>
+</div>
+<div th:include="include::footer"></div>
+<script th:src="@{/ajax/libs/select/select2.js}"></script>
+<script>
+
+    var prefix = ctx + "funds/coldAddress";
+    $("#form-dict-add").validate({
+        rules: {
+            dictSort: {
+                digits: true
+            },
+        },
+        focusCleanup: true
+    });
+
+    function submitHandler() {
+        if ($.validate.form()) {
+            $.operate.save(prefix + "/updateAddress", $('#form-houseProduct-edit').serialize());
+        }
+    }
+</script>
+</body>
+</html>

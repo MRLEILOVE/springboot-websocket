@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--360浏览器优先以webkit内核解析-->
+    <title>Bitrade介绍</title>
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="../static/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link href="../static/css/font-awesome.min.css" th:href="@{/css/font-awesome.min.css}" rel="stylesheet"/>
+    <link href="../static/css/main/animate.min.css" th:href="@{/css/main/animate.min.css}" rel="stylesheet"/>
+    <link href="../static/css/main/style.min862f.css" th:href="@{/css/main/style.min862f.css}" rel="stylesheet"/>
+    <style>
+        .dashboard-header{width: 100%;height: 100%;position: relative}
+        .head{height: 30px;line-height: 30px;position: absolute;top: 10px;right: 200px;z-index: 10}
+        #registerECharts{width: 100%;height: 100%}
+    </style>
+</head>
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+<div class="row  dashboard-header">
+    <!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
+    <div class="head">
+        <input type="text" id="startTime" autocomplete="off" placeholder="搜索日期" th:value="${nowDate}"
+               readonly onchange="changeTime()" name="beginTime" lay-key="1" >
+    </div>
+    <div id="registerECharts"></div>
+</div>
+<div class="wrapper wrapper-content"></div>
+<script th:src="@{/js/jquery.min.js}"></script>
+<script th:src="@{/ruoyi/js/common.js?v=3.0.0}"></script>
+<script th:inline="javascript"> var ctx = [[@{ /}]]; </script>
+<script th:src="@{/ruoyi/js/ry-ui.js?v=3.0.0}"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+<script th:src="@{/js/echarts.min.js}"></script>
+
+<div th:include="include :: footer"></div>
+
+<script th:inline="javascript">
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+        laydate.render({
+            elem: '#startTime',
+            type: 'date',
+            theme: 'molv',
+            max: 0,
+            btns: ['now', 'confirm'],
+                done: function (value) {
+                    getData(value);
+            }
+        });
+    });
+    var myChart = echarts.init(document.getElementById('registerECharts'));
+    // 显示加载层
+    myChart.showLoading();
+    option = {
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'cross',
+                crossStyle: {
+                    color: '#999'
+                }
+            }
+        },
+        toolbox: {
+            feature: {
+                dataView: {show: false, readOnly: false},
+                magicType: {show: true, type: ['line', 'bar']},
+                restore: {show: true},
+                saveAsImage: {show: true}
+            }
+        },
+        legend: {
+            data:['实名数','注册数']
+        },
+        xAxis: [
+            {
+                type: 'category',
+                data: [],
+                axisPointer: {
+                    type: 'shadow'
+                }
+            }
+        ],
+        yAxis: [{
+            type: 'value',
+            name: '人数',
+            axisLabel: {
+                formatter: '{value}'
+            }
+        },
+        ],
+        series: [
+            {
+                name:'实名数',
+                type:'bar',
+                data:[]
+            },
+            {
+                name:'注册数',
+                type:'bar',
+                data:[]
+            },
+        ]
+    };
+
+    // 使用刚指定的配置项和数据显示图表。
+    myChart.setOption(option);
+    getData('');
+    function getData(time) {
+        $.ajax({
+            cache : true,
+            type : "POST",
+            url : ctx + "beta/betaStatisticsUser/getRegisterEChartsNew",
+            data : {
+                "time": time
+            },
+            error : function(request) {
+                $.modal.alertError("系统错误");
+            },
+            success : function(data) {
+                myChart.hideLoading();
+                // 填入数据
+                myChart.setOption({
+                    xAxis: {
+                        // 根据名字对应到相应的系列
+                        name: '',
+                        data: data.result.date
+                    },
+                    series: [{
+                        // 根据名字对应到相应的系列
+                        name: '注册数',
+                        data: data.result.registerSum
+                    },{
+                        // 根据名字对应到相应的系列
+                        name: '实名数',
+                        data: data.result.authSum
+                    }]
+                });
+            }
+        });
+    }
+</script>
+</body>
+</html>
