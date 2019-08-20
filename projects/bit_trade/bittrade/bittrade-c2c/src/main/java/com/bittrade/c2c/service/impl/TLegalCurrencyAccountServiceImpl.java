@@ -1,6 +1,8 @@
 package com.bittrade.c2c.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.bittrade.__default.service.impl.DefaultTLegalCurrencyAccountServiceImpl;
 import com.bittrade.c2c.dao.ITLegalCurrencyAccountDAO;
 import com.bittrade.c2c.dao.ITLegalCurrencyCoinDAO;
@@ -14,6 +16,7 @@ import com.bittrade.pojo.model.TLegalCurrencyCoin;
 import com.bittrade.pojo.vo.AssetsVO;
 import com.bittrade.pojo.vo.ConversionVo;
 import com.bittrade.pojo.vo.TLegalCurrencyAccountVO;
+import com.core.web.common.entity.LoginUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import redis.clients.jedis.JedisCluster;
@@ -169,5 +172,20 @@ public class TLegalCurrencyAccountServiceImpl extends DefaultTLegalCurrencyAccou
     @Override
     public String availableBalance(Long userId, String coinName) {
         return legalCurrencyAccountDAO.availableBalance(userId,coinName);
+    }
+
+    /**
+     * 根据 userId 、coinName 获取法币账户
+     * <br/>
+     * create by: leigq
+     * <br/>
+     * create time: 2019/8/20 14:19
+     * @param userId : 用户id
+     * @param coinName : 币名
+     * @return  法币账户
+     */
+    @Override
+    public TLegalCurrencyAccount getByUserIdAndCoinName(Long userId, String coinName) {
+        return legalCurrencyAccountDAO.getByUserIdAndCoinName(userId, coinName);
     }
 }

@@ -37,4 +37,16 @@
 		WHERE a.user_id = #{userId}
 		AND c.`name` = #{coinName}
 	</select>
+
+	<!--根据 userId 、coinName 获取法币账户-->
+	<select id="getByUserIdAndCoinName" resultType="com.bittrade.pojo.model.TLegalCurrencyAccount">
+		SELECT
+		a.*
+		FROM
+		t_legal_currency_account a
+		INNER JOIN t_legal_currency_coin c
+		ON c.id = a.coin_id
+		WHERE a.user_id = #{userId}
+		AND c.`name` = #{coinName}
+	</select>
 </mapper>

@@ -18,7 +18,6 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 import com.core.common.DTO.ReturnDTO;
 import com.core.web.common.enums.HttpStatusEnumer;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -83,6 +82,7 @@ public class GlobalExceptionHandler {
 	@ResponseStatus(value = HttpStatus.OK)
 	public Object exceptionHandle(HttpServletRequest request, HttpServletResponse response, Exception e) {
 		// e.printStackTrace();
+		LOG.error("服务器内部异常：", e);
 		LOG.error( e.toString() );
 
 //		if (com.core.tool.WebUtil.isAJAX( request )) { // with AJAX .
@@ -109,11 +109,9 @@ public class GlobalExceptionHandler {
 	 */
 	private String handleBindingResult(BindingResult result) {
 		if (result.hasErrors()) {
-			Iterator<FieldError> iterator = result.getFieldErrors().iterator();
-			if (iterator.hasNext()) {
-				FieldError fieldError = iterator.next();
-				String field = fieldError.getField();
-				return field + ":" + fieldError.getDefaultMessage();
+			Optional<FieldError> fieldError = result.getFieldErrors().stream().findFirst();
+			if (fieldError.isPresent()) {
+				return fieldError.get().getDefaultMessage();
 			}
 		}
 		return null;

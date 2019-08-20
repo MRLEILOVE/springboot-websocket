@@ -37,4 +37,16 @@ public interface ITLegalCurrencyAccountService extends IDefaultTLegalCurrencyAcc
      * @return
      */
     String availableBalance(Long userId, String coinName);
+
+    /**
+     * 根据 userId 、coinName 获取法币账户
+     * <br/>
+     * create by: leigq
+     * <br/>
+     * create time: 2019/8/20 14:19
+     * @param userId : 用户id
+     * @param coinName : 币名
+     * @return  法币账户
+     */
+    TLegalCurrencyAccount getByUserIdAndCoinName(Long userId, String coinName);
 }
