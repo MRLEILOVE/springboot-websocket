@@ -21,6 +21,8 @@ import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationDetails;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.core.common.DTO.ReturnDTO;
 import com.core.common.constant.IConstant;
@@ -46,6 +48,15 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 public class WebUtil {
 	
 	private static final Logger LOG = LoggerFactory.getLogger(WebUtil.class);
+
+	/**
+	 * 获取request
+	 *
+	 * @return
+	 */
+	public static final HttpServletRequest getRequest() {
+		return ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+	}
 
 	/**
 	 * <p>

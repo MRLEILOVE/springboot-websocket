@@ -1,16 +1,8 @@
 package com.bittrade.c2c.service.impl;
 
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.bittrade.c2c.dao.ChatRecordLogDAO;
-import com.bittrade.c2c.service.ChatRecordLogService;
-import com.bittrade.c2c.util.RequestUtils;
-import com.bittrade.c2c.vo.SendOrderVo;
-import com.bittrade.c2c.vo.SendVo;
-import com.bittrade.pojo.model.ChatRecordLog;
-import com.bittrade.c2c.vo.MessageVo;
-import com.core.web.common.entity.LoginUser;
-import com.google.common.base.Preconditions;
-import lombok.extern.slf4j.Slf4j;
+import java.util.Objects;
+import java.util.concurrent.TimeUnit;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.BoundListOperations;
@@ -21,8 +13,18 @@ import org.springframework.messaging.simp.user.SimpUserRegistry;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Objects;
-import java.util.concurrent.TimeUnit;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.bittrade.c2c.dao.ChatRecordLogDAO;
+import com.bittrade.c2c.service.ChatRecordLogService;
+import com.bittrade.c2c.vo.MessageVo;
+import com.bittrade.c2c.vo.SendOrderVo;
+import com.bittrade.c2c.vo.SendVo;
+import com.bittrade.pojo.model.ChatRecordLog;
+import com.core.web.constant.entity.LoginUser;
+import com.core.web.tool.WebUtil;
+import com.google.common.base.Preconditions;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author xzc
@@ -102,7 +104,7 @@ public class ChatRecordLogServiceImpl
      */
     private MessageVo convertMessage(SendVo sendVo) {
         //获取当前用户
-        LoginUser currentUser = RequestUtils.getCurrentUser();
+        LoginUser currentUser = WebUtil.getLoginUser();
         Long senderId = currentUser.getUser_id();
         String senderName = currentUser.getUser_name();
         Long receiverId = sendVo.getReceiverId();
@@ -138,7 +140,7 @@ public class ChatRecordLogServiceImpl
     @Override
     public Long pullUnreadMessage(Long receiverId) {
         //获取当前用户
-        LoginUser currentUser = RequestUtils.getCurrentUser();
+        LoginUser currentUser = WebUtil.getLoginUser();
         Long senderId = currentUser.getUser_id();
         String redisKey = String.format(REDIS_UNREAD_MSG_KEY, senderId, receiverId);
         BoundListOperations<String, Object> unreadMsg = redisTemplate.boundListOps(redisKey);

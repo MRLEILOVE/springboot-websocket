@@ -1,15 +1,16 @@
 package com.bittrade.c2c.websocket.interceptor;
 
-import com.bittrade.c2c.util.RequestUtils;
-import com.core.web.common.entity.LoginUser;
+import java.util.Map;
+import java.util.Objects;
+
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.server.HandshakeInterceptor;
 
-import java.util.Map;
-import java.util.Objects;
+import com.core.web.constant.entity.LoginUser;
+import com.core.web.tool.WebUtil;
 
 /**
  * @author xzc
@@ -31,7 +32,7 @@ public class AuthenticationInterceptor implements HandshakeInterceptor {
      */
     @Override
     public boolean beforeHandshake(ServerHttpRequest serverHttpRequest, ServerHttpResponse serverHttpResponse, WebSocketHandler webSocketHandler, Map<String, Object> map) throws Exception {
-        LoginUser currentUser = RequestUtils.getCurrentUser();
+        LoginUser currentUser = WebUtil.getLoginUser();
         if (Objects.nonNull(currentUser)) {
             return true;
         }

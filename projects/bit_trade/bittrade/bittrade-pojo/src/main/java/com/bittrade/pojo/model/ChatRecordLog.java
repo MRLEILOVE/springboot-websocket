@@ -1,9 +1,16 @@
 package com.bittrade.pojo.model;
 
-import com.baomidou.mybatisplus.annotation.TableName;
-import lombok.*;
-
 import java.time.LocalDateTime;
+
+import com.baomidou.mybatisplus.annotation.TableName;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 /**
  * @author xzc
@@ -15,6 +22,7 @@ import java.time.LocalDateTime;
 @ToString
 @Builder
 @NoArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 @TableName(value = "t_chat_record_log")
 public class ChatRecordLog {
