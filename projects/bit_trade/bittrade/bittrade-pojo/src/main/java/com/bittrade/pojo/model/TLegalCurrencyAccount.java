@@ -1,6 +1,7 @@
 package com.bittrade.pojo.model;
 
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.Version;
 import com.core.framework.base.model.BaseModel;
 
 import lombok.AllArgsConstructor;
@@ -99,10 +100,21 @@ public class TLegalCurrencyAccount extends BaseModel<TLegalCurrencyAccount> {
 	 * 冻结金额
 	 */
 	private java.math.BigDecimal freezeAmount;
+
+	/**
+	 * c2c已成交数量
+	 */
+	private Integer c2cAlreadyDealCount;
+
+	/**
+	 * c2c总成交数量
+	 */
+	private Integer c2cTotalCount;
 	
 	/**
 	 * 版本号，每更新一次数据加1
 	 */
+	@Version
 	private Integer version;
 	
 	/**

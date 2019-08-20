@@ -1,13 +1,12 @@
 package com.bittrade.pojo.model;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import com.core.framework.base.model.BaseModel;
 
 import lombok.*;
 import lombok.experimental.Accessors;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 /**
@@ -253,6 +252,7 @@ public class TAdvertInfo extends BaseModel<TAdvertInfo> {
 	/**
 	 * 版本号
 	 */
+	@Version
 	private Long version;
 
 	/**
@@ -264,6 +264,30 @@ public class TAdvertInfo extends BaseModel<TAdvertInfo> {
 	 * 修改时间
 	 */
 	private LocalDateTime updateTime;
+
+	/**
+	 * 币名称
+	 */
+	@TableField(exist = false)
+	private String coinName;
+
+	/**
+	 * c2c已成交数量
+	 */
+	@TableField(exist = false)
+	private Integer c2cAlreadyDealCount;
+
+	/**
+	 * c2c总成交数量
+	 */
+	@TableField(exist = false)
+	private Integer c2cTotalCount;
+
+	/**
+	 * c2c成交率
+	 */
+	@TableField(exist = false)
+	private BigDecimal c2cTurnoverRate;
 
 	/**
 	 * 广告类型
