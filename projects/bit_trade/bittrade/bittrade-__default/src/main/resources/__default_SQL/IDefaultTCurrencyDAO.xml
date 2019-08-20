@@ -34,7 +34,7 @@
 		`short_name` AS shortName, 
 		`status` AS status, 
 		`type` AS type, 
-		`desc` AS desc, 
+		`desc` AS `desc`,
 		`create_time` AS createTime
 			</otherwise>
 		</choose>

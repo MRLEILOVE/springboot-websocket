@@ -32,7 +32,7 @@ public class TLegalCurrencyAccountController extends BaseController<TLegalCurren
     @Autowired
     private ITLegalCurrencyAccountService legalCurrencyAccountService;
 
-    @PostMapping("/conversionTotal")
+    @GetMapping("/conversionTotal")
     @ApiOperation(value = "c2c账户总资金折合", notes = "总资金折合")
     @ResponseBody
     public ReturnDTO<ConversionVo> totalConversion(@ALoginUser LoginUser user){
@@ -43,8 +43,8 @@ public class TLegalCurrencyAccountController extends BaseController<TLegalCurren
         return ReturnDTO.ok(conversionVo);
     }
 
-    @PostMapping("/detail")
-    @ApiOperation(value = "查询当前用户的法币账户钱包列表", notes = "查询当前用户的法币账户钱包列表")
+    @GetMapping("/detail")
+    @ApiOperation(value = "查询当前用户的c2c账户钱包列表", notes = "查询当前用户的c2c账户钱包列表")
     @ResponseBody
     public ReturnDTO<List<AssetsVO>> detail(@ALoginUser LoginUser user){
         Long userId = user == null ? null : user.getUser_id();
