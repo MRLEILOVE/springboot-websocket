@@ -29,13 +29,13 @@
 		</foreach>
 			</when>
 			<otherwise>
-		`id` AS id, 
-		`name` AS name, 
-		`short_name` AS shortName, 
-		`status` AS status, 
-		`type` AS type, 
-		`desc` AS desc, 
-		`create_time` AS createTime
+		`id` AS `id`, 
+		`name` AS `name`, 
+		`short_name` AS `shortName`, 
+		`status` AS `status`, 
+		`type` AS `type`, 
+		`desc` AS `desc`, 
+		`create_time` AS `createTime`
 			</otherwise>
 		</choose>
 	</sql>

@@ -28,12 +28,12 @@
 		</foreach>
 			</when>
 			<otherwise>
-		`id` AS id, 
-		`user_id` AS userId, 
-		`currency_id` AS currencyId, 
-		`adderess` AS adderess, 
-		`address_remark` AS addressRemark, 
-		`create_time` AS createTime
+		`id` AS `id`, 
+		`user_id` AS `userId`, 
+		`currency_id` AS `currencyId`, 
+		`adderess` AS `adderess`, 
+		`address_remark` AS `addressRemark`, 
+		`create_time` AS `createTime`
 			</otherwise>
 		</choose>
 	</sql>

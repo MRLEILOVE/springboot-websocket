@@ -33,17 +33,17 @@
 		</foreach>
 			</when>
 			<otherwise>
-		`id` AS id, 
-		`user_id` AS userId, 
-		`currency` AS currency, 
-		`count` AS count, 
-		`business_number` AS businessNumber, 
-		`status` AS status, 
-		`type_channel` AS typeChannel, 
-		`source_channel` AS sourceChannel, 
-		`des` AS des, 
-		`create_time` AS createTime, 
-		`update_time` AS updateTime
+		`id` AS `id`, 
+		`user_id` AS `userId`, 
+		`currency` AS `currency`, 
+		`count` AS `count`, 
+		`business_number` AS `businessNumber`, 
+		`status` AS `status`, 
+		`type_channel` AS `typeChannel`, 
+		`source_channel` AS `sourceChannel`, 
+		`des` AS `des`, 
+		`create_time` AS `createTime`, 
+		`update_time` AS `updateTime`
 			</otherwise>
 		</choose>
 	</sql>

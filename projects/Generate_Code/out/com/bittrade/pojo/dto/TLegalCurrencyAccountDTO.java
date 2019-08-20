@@ -21,6 +21,8 @@ public class TLegalCurrencyAccountDTO extends BaseDTO<TLegalCurrencyAccountDTO> 
 	private Integer coinId;
 	private java.math.BigDecimal balanceAmount;
 	private java.math.BigDecimal freezeAmount;
+	private Integer c2cAlreadyDealCount;
+	private Integer c2cTotalCount;
 	private Integer version;
 	private java.time.LocalDateTime createTime;
 	private java.time.LocalDateTime updateTime;

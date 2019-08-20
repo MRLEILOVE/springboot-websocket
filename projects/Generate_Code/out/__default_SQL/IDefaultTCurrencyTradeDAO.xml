@@ -38,22 +38,22 @@
 		</foreach>
 			</when>
 			<otherwise>
-		`id` AS id, 
-		`symbol` AS symbol, 
-		`currency_id1` AS currencyId1, 
-		`currency_id2` AS currencyId2, 
-		`price_decimal_digits` AS priceDecimalDigits, 
-		`count_decimal_digits` AS countDecimalDigits, 
-		`min_price` AS minPrice, 
-		`min_count` AS minCount, 
-		`min_amount` AS minAmount, 
-		`max_price` AS maxPrice, 
-		`max_count` AS maxCount, 
-		`max_amount` AS maxAmount, 
-		`status` AS status, 
-		`sort` AS sort, 
-		`create_time` AS createTime, 
-		`update_time` AS updateTime
+		`id` AS `id`, 
+		`symbol` AS `symbol`, 
+		`currency_id1` AS `currencyId1`, 
+		`currency_id2` AS `currencyId2`, 
+		`price_decimal_digits` AS `priceDecimalDigits`, 
+		`count_decimal_digits` AS `countDecimalDigits`, 
+		`min_price` AS `minPrice`, 
+		`min_count` AS `minCount`, 
+		`min_amount` AS `minAmount`, 
+		`max_price` AS `maxPrice`, 
+		`max_count` AS `maxCount`, 
+		`max_amount` AS `maxAmount`, 
+		`status` AS `status`, 
+		`sort` AS `sort`, 
+		`create_time` AS `createTime`, 
+		`update_time` AS `updateTime`
 			</otherwise>
 		</choose>
 	</sql>

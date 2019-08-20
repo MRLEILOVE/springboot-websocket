@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bittrade.currency.dao.ITChatRecordLogDAO">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.bittrade.pojo.model.TChatRecordLog">
+		<id javaType="int" property="id" jdbcType="INTEGER" column="id" />
+		<result javaType="Long" property="senderId" jdbcType="BIGINT" column="sender_id" />
+		<result javaType="Long" property="receiverId" jdbcType="BIGINT" column="receiver_id" />
+		<result javaType="Byte[]" property="content" jdbcType="CLOB" column="content" />
+		<result javaType="Byte" property="sendType" jdbcType="INTEGER" column="send_type" />
+		<result javaType="Byte" property="readed" jdbcType="INTEGER" column="readed" />
+		<result javaType="java.time.LocalDateTime" property="createTime" jdbcType="TIMESTAMP" column="create_time" />
+		<result javaType="java.time.LocalDateTime" property="updateTime" jdbcType="TIMESTAMP" column="update_time" />
+	</resultMap>
+
+	<!-- 通用查询结果列 -->
+	<sql id="Base_Column_List">
+		`id` AS id, 
+		`sender_id` AS senderId, 
+		`receiver_id` AS receiverId, 
+		`content` AS content, 
+		`send_type` AS sendType, 
+		`readed` AS readed, 
+		`create_time` AS createTime, 
+		`update_time` AS updateTime
+	</sql>
+
+</mapper>

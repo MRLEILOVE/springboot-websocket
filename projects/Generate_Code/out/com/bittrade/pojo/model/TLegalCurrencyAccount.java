@@ -59,6 +59,16 @@ public class TLegalCurrencyAccount extends BaseModel<TLegalCurrencyAccount> {
 		public static final String FREEZE_AMOUNT = "freeze_amount";
 		
 		/**
+		 * c2c已成交数量
+		 */
+		public static final String C2C_ALREADY_DEAL_COUNT = "c2c_already_deal_count";
+		
+		/**
+		 * c2c总成交数量
+		 */
+		public static final String C2C_TOTAL_COUNT = "c2c_total_count";
+		
+		/**
 		 * 版本号，每更新一次数据加1
 		 */
 		public static final String VERSION = "version";
@@ -99,6 +109,16 @@ public class TLegalCurrencyAccount extends BaseModel<TLegalCurrencyAccount> {
 	 * 冻结金额
 	 */
 	private java.math.BigDecimal freezeAmount;
+	
+	/**
+	 * c2c已成交数量
+	 */
+	private Integer c2cAlreadyDealCount;
+	
+	/**
+	 * c2c总成交数量
+	 */
+	private Integer c2cTotalCount;
 	
 	/**
 	 * 版本号，每更新一次数据加1

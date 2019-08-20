@@ -22,6 +22,7 @@
 		<result javaType="Byte" property="openOpponentLimit" jdbcType="INTEGER" column="open_opponent_limit" />
 		<result javaType="Byte" property="certificationLevel" jdbcType="INTEGER" column="certification_level" />
 		<result javaType="java.time.LocalDateTime" property="registeredTime" jdbcType="TIMESTAMP" column="registered_time" />
+		<result javaType="java.time.LocalDateTime" property="paymentTime" jdbcType="TIMESTAMP" column="payment_time" />
 		<result javaType="String" property="message" jdbcType="VARCHAR" column="message" />
 		<result javaType="Long" property="version" jdbcType="BIGINT" column="version" />
 		<result javaType="java.time.LocalDateTime" property="createTime" jdbcType="TIMESTAMP" column="create_time" />
@@ -48,6 +49,7 @@
 		`open_opponent_limit` AS openOpponentLimit, 
 		`certification_level` AS certificationLevel, 
 		`registered_time` AS registeredTime, 
+		`payment_time` AS paymentTime, 
 		`message` AS message, 
 		`version` AS version, 
 		`create_time` AS createTime, 

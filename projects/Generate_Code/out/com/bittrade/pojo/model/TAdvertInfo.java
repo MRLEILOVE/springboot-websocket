@@ -124,6 +124,11 @@ public class TAdvertInfo extends BaseModel<TAdvertInfo> {
 		public static final String REGISTERED_TIME = "registered_time";
 		
 		/**
+		 * 对手限制-付款时间
+		 */
+		public static final String PAYMENT_TIME = "payment_time";
+		
+		/**
 		 * 交易说明（留言）
 		 */
 		public static final String MESSAGE = "message";
@@ -235,6 +240,11 @@ public class TAdvertInfo extends BaseModel<TAdvertInfo> {
 	 * 对手限制-注册时间
 	 */
 	private java.time.LocalDateTime registeredTime;
+	
+	/**
+	 * 对手限制-付款时间
+	 */
+	private java.time.LocalDateTime paymentTime;
 	
 	/**
 	 * 交易说明（留言）

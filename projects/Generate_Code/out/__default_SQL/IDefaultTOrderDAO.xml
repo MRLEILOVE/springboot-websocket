@@ -33,17 +33,17 @@
 		</foreach>
 			</when>
 			<otherwise>
-		`id` AS id, 
-		`userId` AS userId, 
-		`order_id` AS orderId, 
-		`fee` AS fee, 
-		`token` AS token, 
-		`amount` AS amount, 
-		`receiver_address` AS receiverAddress, 
-		`type` AS type, 
-		`operator` AS operator, 
-		`create_time` AS createTime, 
-		`update_time` AS updateTime
+		`id` AS `id`, 
+		`userId` AS `userId`, 
+		`order_id` AS `orderId`, 
+		`fee` AS `fee`, 
+		`token` AS `token`, 
+		`amount` AS `amount`, 
+		`receiver_address` AS `receiverAddress`, 
+		`type` AS `type`, 
+		`operator` AS `operator`, 
+		`create_time` AS `createTime`, 
+		`update_time` AS `updateTime`
 			</otherwise>
 		</choose>
 	</sql>

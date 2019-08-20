@@ -59,7 +59,7 @@ public class TLegalCurrencyCoin extends BaseModel<TLegalCurrencyCoin> {
 		public static final String STATUS = "status";
 		
 		/**
-		 * 发布广告最小限额
+		 * 发布广告最小数量
 		 */
 		public static final String MIN_QUOTA = "min_quota";
 		
@@ -102,7 +102,7 @@ public class TLegalCurrencyCoin extends BaseModel<TLegalCurrencyCoin> {
 	private Byte status;
 	
 	/**
-	 * 发布广告最小限额
+	 * 发布广告最小数量
 	 */
 	private java.math.BigDecimal minQuota;
 	

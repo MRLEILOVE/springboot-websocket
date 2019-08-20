@@ -84,7 +84,7 @@ public class TAdvertOrder extends BaseModel<TAdvertOrder> {
 		public static final String PUBLISHER_ID = "publisher_id";
 		
 		/**
-		 * 取消者ID（仅取消状态需填）
+		 * 取消者ID,系统超时取消填0（仅取消状态需填）
 		 */
 		public static final String CANCELLER_ID = "canceller_id";
 		
@@ -217,7 +217,7 @@ public class TAdvertOrder extends BaseModel<TAdvertOrder> {
 	private Long publisherId;
 	
 	/**
-	 * 取消者ID（仅取消状态需填）
+	 * 取消者ID,系统超时取消填0（仅取消状态需填）
 	 */
 	private Long cancellerId;
 	

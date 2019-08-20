@@ -38,22 +38,22 @@
 		</foreach>
 			</when>
 			<otherwise>
-		`id` AS id, 
-		`user_id` AS userId, 
-		`currency_trade_id` AS currencyTradeId, 
-		`price` AS price, 
-		`amount` AS amount, 
-		`success_amount` AS successAmount, 
-		`count` AS count, 
-		`left_count` AS leftCount, 
-		`fees` AS fees, 
-		`left_fees` AS leftFees, 
-		`status` AS status, 
-		`entrust_type` AS entrustType, 
-		`entrust_direction` AS entrustDirection, 
-		`version` AS version, 
-		`create_time` AS createTime, 
-		`update_time` AS updateTime
+		`id` AS `id`, 
+		`user_id` AS `userId`, 
+		`currency_trade_id` AS `currencyTradeId`, 
+		`price` AS `price`, 
+		`amount` AS `amount`, 
+		`success_amount` AS `successAmount`, 
+		`count` AS `count`, 
+		`left_count` AS `leftCount`, 
+		`fees` AS `fees`, 
+		`left_fees` AS `leftFees`, 
+		`status` AS `status`, 
+		`entrust_type` AS `entrustType`, 
+		`entrust_direction` AS `entrustDirection`, 
+		`version` AS `version`, 
+		`create_time` AS `createTime`, 
+		`update_time` AS `updateTime`
 			</otherwise>
 		</choose>
 	</sql>
