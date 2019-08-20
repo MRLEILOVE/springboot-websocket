@@ -4,7 +4,7 @@ package com.jdcloud.provider.scheduled;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.jdcloud.provider.enumer.CoinType;
-import com.jdcloud.provider.pojo.*;
+import com.walletbiz.pojo.*;
 import com.jdcloud.provider.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

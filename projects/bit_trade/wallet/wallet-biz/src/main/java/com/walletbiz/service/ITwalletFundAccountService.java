@@ -12,25 +12,11 @@ import com.walletbiz.dto.TransferDto;
 import com.walletbiz.pojo.TAccountConfig;
 import com.walletbiz.pojo.TAccountManage;
 import com.walletbiz.pojo.TWalletFundAccount;
+import com.walletbiz.vo.AssetsVO;
 import com.walletbiz.vo.ConversionVo;
 import com.walletbiz.vo.RecordVO;
 
 public interface ITwalletFundAccountService extends IService<TWalletFundAccount> {
-    /**
-     * 查询用户的资金账户
-     */
-//    AccountVO queryAccountByUserId(Integer userId);
-
-    /**
-     * 资金划转
-     */
-    ReturnDTO<String> transferOfFunds(TransferDto transferDto) throws Exception;
-
-    /**
-     * 查詢账户余额
-     */
-    String amountBalance(Long userId, Integer accountType, String currency);
-
     /**
      * 根据账户名称查询可以划转的方向
      */
@@ -42,11 +28,6 @@ public interface ITwalletFundAccountService extends IService<TWalletFundAccount>
      * @param accountId2 账户2id
      */
     List<TAccountConfig> commonCurrency(Integer accountId1, Integer accountId2);
-
-    /**
-     * 查詢划转记录
-     */
-//    Page<RecordVO> queryTransferRecord(Long userId, AccountTypeDto accountTypeDto);
 
     /**
      * 查找币种列表
@@ -61,23 +42,6 @@ public interface ITwalletFundAccountService extends IService<TWalletFundAccount>
     TWalletFundAccount createFundAccount(Long userId, String currency);
 
     /**
-     * 账户入账（资金划转，被远程调用）
-     * @param userId 用户id
-     * @param currency 币种名称
-     * @param num 数量
-     * @param type 划转类型
-     * @return 返回字符串 成功 : succ
-     */
-    String accountEntryFeign(Long userId, String currency, BigDecimal num,Integer type) throws Exception;
-
-    /**
-     * 查询用户的所有的usdt
-     * @param userId 用户id
-     * @return
-     */
-    String getAssets(Long userId);
-
-    /**
      * 查詢资金账户记录
      * @param userId 用户id
      * @param accountTypeDto 条件对象
@@ -90,7 +54,7 @@ public interface ITwalletFundAccountService extends IService<TWalletFundAccount>
      * @param userId 用户id
      * @return
      */
-    List<TWalletFundAccount> detail(Long userId);
+    List<AssetsVO> detail(Long userId);
 
     /**
      * 查询用户的资金账户总资金折合

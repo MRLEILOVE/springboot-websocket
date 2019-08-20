@@ -7,6 +7,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
+import com.walletbiz.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -44,12 +45,6 @@ import com.walletbiz.service.IWWithdrawWalletBillService;
 import com.walletbiz.service.IwalletChainService;
 import com.walletbiz.service.ParameterConfigService;
 import com.walletbiz.service.WUserWalletService;
-import com.walletbiz.vo.CoinRecordVo;
-import com.walletbiz.vo.CoinTypeDto;
-import com.walletbiz.vo.ConversionVo;
-import com.walletbiz.vo.CreateAddressParamDto;
-import com.walletbiz.vo.PageVo;
-import com.walletbiz.vo.WithDrawParamVo;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -237,14 +232,13 @@ public class WalletController {
 
     @GetMapping("detail")
     @ApiOperation(value = "查询当前用户的币种余额", notes = "查询当前用户的币种余额")
-    public ReturnDTO<List<TWalletFundAccount>> detail() throws FlowException {
+    public ReturnDTO<List<AssetsVO>> detail() throws FlowException {
         Long user_id = WebUtil.getLoginUser().getUser_id();
         if (user_id == null) {
             throw new FlowException("用户未登录");
         }
-
-        List<TWalletFundAccount> tWalletFundAccounts = iTwalletFundAccountService.detail(user_id);
-        return ReturnDTO.ok(tWalletFundAccounts);
+        List<AssetsVO> assetsVOs = iTwalletFundAccountService.detail(user_id);
+        return ReturnDTO.ok(assetsVOs);
     }
 
     @GetMapping("conversionTotal")
