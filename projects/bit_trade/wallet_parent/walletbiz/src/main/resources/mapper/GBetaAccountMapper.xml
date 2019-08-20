@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jdcloud.provider.mapper.GBetaAccountMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.jdcloud.provider.pojo.GBetaAccount">
+        <id column="id" property="id" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="user_id" property="userId" />
+        <result column="balance" property="balance" />
+        <result column="used_margin" property="usedMargin" />
+        <result column="dynamic_balance" property="dynamicBalance" />
+        <result column="total_enter" property="totalEnter" />
+        <result column="total_exit" property="totalExit" />
+        <result column="product_type" property="productType" />
+        <result column="version" property="version" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, create_time AS createTime, update_time AS updateTime, user_id AS userId, balance, used_margin AS usedMargin, dynamic_balance AS dynamicBalance, total_enter AS totalEnter, total_exit AS totalExit, product_type AS productType, version
+    </sql>
+
+
+    <update id="updateBetaAccountById">
+        UPDATE g_beta_account
+        <set>
+            <if test="usedMargin != null">used_margin = #{usedMargin},</if>
+            <if test="dynamicBalance != null">dynamic_balance = #{dynamicBalance},</if>
+            <if test="balance != null">balance = #{balance}, </if>
+            <if test="updateTime != null">update_time = #{updateTime}, </if>
+            <if test="totalEnter != null">total_enter = #{totalEnter}, </if>
+            <if test="totalExit != null">total_exit = #{totalExit}, </if>
+            version = version + 1
+        </set>
+        WHERE id = #{id} AND version = #{version}
+    </update>
+
+    <!--  beta账户入账  -->
+    <update id="inMoney">
+        UPDATE g_beta_account
+        <set>
+            <if test="balance != null">balance = #{balance}, </if>
+            <if test="totalEnter != null">total_enter = #{totalEnter}, </if>
+            update_time = now(),
+            version = version + 1
+        </set>
+        WHERE id = #{id} AND version = #{version}
+    </update>
+
+    <!--  beta账户出账  -->
+    <update id="outMoney">
+        UPDATE g_beta_account
+        <set>
+            <if test="balance != null">balance = #{balance}, </if>
+            <if test="totalExit != null">total_exit = #{totalExit}, </if>
+            update_time = now(),
+            version = version + 1
+        </set>
+        WHERE id = #{id} AND version = #{version}
+    </update>
+
+    <select id="selectUserBetaAccount" resultType="com.jdcloud.provider.pojo.GBetaAccount">
+        SELECT b.id,b.user_id AS userId,b.balance,b.used_margin as  usedMargin,b.product_type AS productType
+        FROM g_beta_account b
+        INNER JOIN(
+            SELECT c.account_type FROM t_account_manage_config t
+            INNER JOIN t_account_manage m ON m.id = t.account_id
+            INNER JOIN t_account_config c ON c.id = t.account_config_id
+            WHERE m.`name` = 'beta账户'
+            AND t.status = 1
+        ) a ON a.account_type = b.product_type
+        WHERE b.user_id = #{userId}
+    </select>
+
+</mapper>

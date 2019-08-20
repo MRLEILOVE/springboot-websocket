@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jdcloud.provider.mapper.ParameterConfigMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.jdcloud.provider.pojo.ParameterConfig">
+        <id column="dictionary_id" property="dictionaryId" />
+        <result column="dictionary_key" property="dictionaryKey" />
+        <result column="dictionary_value" property="dictionaryValue" />
+        <result column="dictionary_remark" property="dictionaryRemark" />
+        <result column="creater" property="creater" />
+        <result column="create_time" property="createTime" />
+        <result column="updater" property="updater" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        dictionary_id AS dictionaryId, dictionary_key AS dictionaryKey, dictionary_value AS dictionaryValue, dictionary_remark AS dictionaryRemark, creater, create_time AS createTime, updater, update_time AS updateTime
+    </sql>
+
+    <select id="selectListByKeys" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM t_parameter_config
+        WHERE dictionary_key IN
+        <foreach collection="keys" item="key" open="("
+                 close=")" separator=",">
+            #{key}
+        </foreach>
+    </select>
+
+    <update id="batchUpdate">
+        <foreach close="" collection="list" index="index" item="item" open="" separator=";">
+            UPDATE t_parameter_config
+            set
+              dictionary_value = #{item.dictionaryValue},
+              updater = #{item.updater},
+              update_time = NOW()
+            WHERE dictionary_key = #{item.dictionaryKey}
+        </foreach>
+    </update>
+
+    <select id="selectConfigList" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM t_parameter_config
+        <where>
+            <if test="keyWord != null">
+                AND dictionary_key LIKE CONCAT('%',#{keyWord},'%')
+                OR dictionary_value LIKE CONCAT('%',#{keyWord},'%')
+                OR dictionary_remark LIKE CONCAT('%',#{keyWord},'%')
+            </if>
+        </where>
+        LIMIT #{begin}, #{size}
+    </select>
+
+    <select id="selectConfigCount" resultType="java.lang.Integer">
+        SELECT count(dictionary_id) FROM t_parameter_config
+        <where>
+            <if test="keyWord != null">
+                AND dictionary_key LIKE CONCAT('%',#{keyWord},'%')
+                OR dictionary_value LIKE CONCAT('%',#{keyWord},'%')
+                OR dictionary_remark LIKE CONCAT('%',#{keyWord},'%')
+            </if>
+        </where>
+    </select>
+</mapper>

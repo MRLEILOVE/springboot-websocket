@@ -4,6 +4,7 @@
 spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
+    #driver-class-name: com.mysql.cj.jdbc.Driver
     #url: jdbc:mysql://localhost:3306/test?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull
     # 47.107.74.74 woaini123
     url: jdbc:mysql://${data.datasource.ip}:3306/${data.datasource.db}?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false
