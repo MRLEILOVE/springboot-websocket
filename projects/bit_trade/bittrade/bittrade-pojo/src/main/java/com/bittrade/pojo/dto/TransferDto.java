@@ -24,6 +24,6 @@ public class TransferDto implements Serializable {
     private BigDecimal num;
     @ApiModelProperty("密码")
     private String password;
-    @ApiModelProperty("划转类型")
+    @ApiModelProperty("划转类型（前端不用传，后端直接获取）")
     private Integer type;
 }

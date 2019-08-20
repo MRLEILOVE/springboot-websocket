@@ -1,23 +1,29 @@
 package com.bittrade.currency.controller;
 
-import com.bittrade.pojo.dto.TransferDto;
-import com.core.common.DTO.ReturnDTO;
-import com.core.common.annotation.ALoginUser;
-import com.core.web.common.entity.LoginUser;
-import io.swagger.annotations.ApiOperation;
+import java.math.BigDecimal;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bittrade.currency.api.service.ITWalletTransferService;
 import com.bittrade.pojo.dto.TWalletTransferDTO;
+import com.bittrade.pojo.dto.TransferDto;
 import com.bittrade.pojo.model.TWalletTransfer;
 import com.bittrade.pojo.vo.TWalletTransferVO;
+import com.core.common.DTO.ReturnDTO;
+import com.core.common.annotation.ALoginUser;
 import com.core.framework.base.controller.BaseController;
+import com.core.web.constant.entity.LoginUser;
 
-import java.math.BigDecimal;
+import io.swagger.annotations.ApiOperation;
 
 /**
  * 
@@ -54,20 +60,12 @@ public class TWalletTransferController extends BaseController<TWalletTransfer, T
         }
     }
 
-    @PostMapping("/biBiAccountEntry")
+ /*   @PostMapping("/biBiAccountEntry")
     @ApiOperation(value="币币账户充值", notes="币币账户充值")
     @ResponseBody
     public String biBiAccountEntry(@RequestBody TransferDto transferDto){
         System.out.println("用户id：" + transferDto.getUserId() + "币种： " +  transferDto.getCurrency() + "数量: " + transferDto.getNum() + "划转类型" + transferDto.getType());
         return walletTransferService.biBiAccountEntry(transferDto);
-    }
-
-    /*@PostMapping("/biBiAccountOut")
-    @ApiOperation(value="币币账户出账", notes="币币账户出账")
-    @ResponseBody
-    public String biBiAccountOut(@RequestBody TransferDto transferDto){
-        System.out.println("用户id：" + transferDto.getUserId() + "币种： " +  transferDto.getCurrency() + "数量: " + transferDto.getNum());
-        return walletTransferService.biBiAccountOut(transferDto);
     }*/
 
     @ApiOperation(value="查询用户钱包可用余额", notes="传用户id，币种名称")

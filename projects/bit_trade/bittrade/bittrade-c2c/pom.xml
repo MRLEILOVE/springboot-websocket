@@ -23,11 +23,7 @@
 		</dependency>
 		<dependency>
 			<groupId>com.bittrade</groupId>
-			<artifactId>core-web-common</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.bittrade</groupId>
-			<artifactId>core-web-tool</artifactId>
+			<artifactId>core-web</artifactId>
 		</dependency>
 
 		<dependency>

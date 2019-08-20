@@ -19,20 +19,6 @@ public interface ITWalletTransferService extends IDefaultTWalletTransferService<
     ReturnDTO transferOfFunds(TransferDto transferDto) throws Exception;
 
     /**
-     * 币币账户充值
-     * @param transferDto
-     * @return 成功：succ
-     */
-    String biBiAccountEntry(TransferDto transferDto);
-
-    /**
-     * 币币账户出账
-     * @param transferDto
-     * @return 成功：succ
-     */
-    String biBiAccountOut(TransferDto transferDto);
-
-    /**
      * 查询用户钱包可用余额
      * @param userId 用户id
      * @param currencyName 币种名称

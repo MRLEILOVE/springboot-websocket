@@ -68,34 +68,29 @@
 		WHERE id = #{id} AND version = #{version}
 	</update>
 
-	<update id="biBiAccountEntry">
-		UPDATE t_wallet
-		SET
-			total = total + #{num},
-			version = version + 1
-		WHERE id = #{id} AND version = #{version}
-	</update>
-
 	<update id="biBiAccountOut">
 		UPDATE t_wallet
 		SET
 			total = total - #{num},
+			update_time = now(),
+			version = version + 1
+		WHERE id = #{id} AND version = #{version}
+	</update>
+
+	<update id="biBiAccountIn">
+		UPDATE t_wallet
+		SET
+			total = total + #{num},
+			update_time = now(),
 			version = version + 1
 		WHERE id = #{id} AND version = #{version}
 	</update>
 
 	<select id="getAssets" resultType="com.bittrade.pojo.vo.AssetsVO">
 		SELECT w.currency_id as  currencyId,c.`name` AS currencyName,
-		w.total,w.trade_frozen AS tradeFrozen,w.transfer_frozen AS transferFrozen
+		w.total,w.trade_frozen AS tradeFrozen,w.transfer_frozen AS transferFrozen,(w.transfer_frozen + w.trade_frozen) AS totalFrozen
 		FROM t_wallet w
 		INNER JOIN t_currency c ON c.id = w.currency_id
 		WHERE w.user_id = #{userId}
-	</select>
-
-	<select id="qryByUser" resultType="com.bittrade.pojo.vo.AccountVO">
-		SELECT c.`name` AS currency,w.total AS balance,(w.trade_frozen + w.transfer_frozen) AS usedMargin
-		FROM t_wallet w
-		INNER JOIN t_currency c ON c.id = w.currency_id
-		WHERE w.user_id =  #{userId}
 	</select>
 </mapper>

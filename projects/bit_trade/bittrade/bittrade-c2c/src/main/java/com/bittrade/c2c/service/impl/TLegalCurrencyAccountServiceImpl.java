@@ -1,5 +1,15 @@
 package com.bittrade.c2c.service.impl;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.alibaba.fastjson.JSONObject;
 import com.bittrade.__default.service.impl.DefaultTLegalCurrencyAccountServiceImpl;
 import com.bittrade.c2c.dao.ITLegalCurrencyAccountDAO;
@@ -14,16 +24,8 @@ import com.bittrade.pojo.model.TLegalCurrencyCoin;
 import com.bittrade.pojo.vo.AssetsVO;
 import com.bittrade.pojo.vo.ConversionVo;
 import com.bittrade.pojo.vo.TLegalCurrencyAccountVO;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import redis.clients.jedis.JedisCluster;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import redis.clients.jedis.JedisCluster;
 
 /**
  * 
@@ -58,9 +60,6 @@ public class TLegalCurrencyAccountServiceImpl extends DefaultTLegalCurrencyAccou
         for(AssetsVO x : AssetsVOs){
             //获取最新价
             String s = jedisCluster.get(IConstant.REDIS_PREFIX__LINE_PRICE + x.getCurrencyName());
-           /* if(s == null){
-                s = "2";
-            }*/
             BigDecimal price = new BigDecimal(s);
             //USDT累计
             BigDecimal all = x.getTotal().add(x.getTradeFrozen().add(x.getTransferFrozen()));
@@ -169,5 +168,83 @@ public class TLegalCurrencyAccountServiceImpl extends DefaultTLegalCurrencyAccou
     @Override
     public String availableBalance(Long userId, String coinName) {
         return legalCurrencyAccountDAO.availableBalance(userId,coinName);
+    }
+
+    /**
+     * 根据 userId 、coinName 获取法币账户
+     * <br/>
+     * create by: leigq
+     * <br/>
+     * create time: 2019/8/20 14:19
+     * @param userId : 用户id
+     * @param coinName : 币名
+     * @return  法币账户
+     */
+    @Override
+    public TLegalCurrencyAccount getByUserIdAndCoinName(Long userId, String coinName) {
+        return legalCurrencyAccountDAO.getByUserIdAndCoinName(userId, coinName);
+    }
+
+    /**
+     * 获取用户法币账户总的usdt数量
+     * @param userId 用户id
+     * @return
+     */
+    @Override
+    public BigDecimal getAssets(Long userId) {
+        ConversionVo vo = totalConversion(userId);
+        return vo.getUSDT();
+    }
+
+    /**
+     * 根据币种名称获取c2c钱包
+     * @param coinName 币种名称
+     * @return
+     */
+    @Override
+    public TLegalCurrencyCoin getCoinByName(String coinName) {
+        TLegalCurrencyCoin qryCoin = TLegalCurrencyCoin.builder().name(coinName).status(StatusEnumer.ENABLE.getCode()).build();
+        return legalCurrencyCoinDAO.getBy(qryCoin);
+    }
+
+    /**
+     * 获取c2c账号
+     * @param userId 用户id
+     * @param coinId 法币币种id
+     * @return
+     */
+    @Override
+    public TLegalCurrencyAccount getC2CAccount(Long userId, Long coinId) {
+        TLegalCurrencyAccount qryAccount = TLegalCurrencyAccount.builder().userId(userId).coinId(coinId.intValue()).build();
+        TLegalCurrencyAccount c2cAccount = legalCurrencyAccountDAO.getBy(qryAccount);
+        if(c2cAccount == null){
+            //为用户开通钱包
+            return createWallet(coinId,userId);
+        }
+        return c2cAccount;
+    }
+
+    /**
+     * c2c钱包入账
+     * @param id 钱包id
+     * @param num 划转数量
+     * @param version 版本号
+     * @return
+     */
+    @Override
+    public Integer c2cIn(Long id, BigDecimal num, Integer version) {
+        return legalCurrencyAccountDAO.c2cIn(id,num,version);
+    }
+
+    /**
+     * c2c钱包出账
+     * @param id 钱包id
+     * @param num 数量
+     * @param version 版本号
+     * @return
+     */
+    @Override
+    public Integer c2cOut(Long id, BigDecimal num, Integer version) {
+        return legalCurrencyAccountDAO.c2cOut(id,num,version);
     }
 }

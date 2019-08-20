@@ -27,7 +27,10 @@
 	</sql>
 
 	<select id="getAssets" resultType="com.bittrade.pojo.vo.AssetsVO">
-		
+		SELECT a.balance_amount AS total, a.freeze_amount AS totalFrozen,c.id AS currencyId,c.`name` AS currencyName
+		FROM t_legal_currency_account a
+		INNER JOIN t_legal_currency_coin c ON c.id = a.coin_id
+		WHERE user_id = #{userId}
 	</select>
 
 	<select id="availableBalance" resultType="java.lang.String">
@@ -37,4 +40,32 @@
 		WHERE a.user_id = #{userId}
 		AND c.`name` = #{coinName}
 	</select>
+
+	<!--根据 userId 、coinName 获取法币账户-->
+	<select id="getByUserIdAndCoinName" resultType="com.bittrade.pojo.model.TLegalCurrencyAccount">
+		SELECT
+		a.*
+		FROM
+		t_legal_currency_account a
+		INNER JOIN t_legal_currency_coin c
+		ON c.id = a.coin_id
+		WHERE a.user_id = #{userId}
+		AND c.`name` = #{coinName}
+	</select>
+
+	<update id="c2cIn">
+		UPDATE t_legal_currency_account
+		SET balance_amount = balance_amount + #{num},
+			update_time = now(),
+        	version = version + 1
+		WHERE id = #{id} AND version = #{version}
+	</update>
+
+	<update id="c2cOut">
+		UPDATE t_legal_currency_account
+		SET balance_amount = balance_amount - #{num},
+			update_time = now(),
+            version = version + 1
+		WHERE id = #{id} AND version = #{version}
+	</update>
 </mapper>

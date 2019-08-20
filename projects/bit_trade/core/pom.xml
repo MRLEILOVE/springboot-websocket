@@ -18,8 +18,7 @@
 		<module>core-eureka</module>
 		<module>core-framework</module>
 		<module>core-tool</module>
-		<module>core-web-common</module>
-		<module>core-web-tool</module>
+		<module>core-web</module>
 	</modules>
 	
 	<dependencyManagement>
@@ -41,12 +40,7 @@
 			</dependency>
 			<dependency>
 				<groupId>com.bittrade</groupId>
-				<artifactId>core-web-common</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.bittrade</groupId>
-				<artifactId>core-web-tool</artifactId>
+				<artifactId>core-web</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 		</dependencies>

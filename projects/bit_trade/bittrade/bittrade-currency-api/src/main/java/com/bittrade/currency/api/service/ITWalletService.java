@@ -92,19 +92,13 @@ public interface ITWalletService extends IDefaultTWalletService<TWallet, TWallet
 	 * @param userId 用户id
 	 * @return 资金折合对象
 	 */
-    ConversionVo totalConversion(Long userId);
+    ConversionVo conversionTotal(Long userId);
 
 	/**
 	 * 查询当前用户的币币账户币种余额列表
 	 * @param userId 用户id
 	 * @return 钱包列表
 	 */
-	List<AccountVO> detail(Long userId);
+	List<AssetsVO> detail(Long userId);
 
-    /**
-	 * 资产总览
-	 * @param userId 用户id
-	 * @return
-	 */
-//	ReturnDTO<List<ConversionVo>> overview(Long userId);
 }

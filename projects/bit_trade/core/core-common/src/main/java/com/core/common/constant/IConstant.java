@@ -19,6 +19,16 @@ public interface IConstant {
 	public static final int FAILURE = -1;
 
 	/**
+	 * 成功
+	 */
+	public static final String SUCCESS_TXT = "成功";
+
+	/**
+	 * 失败
+	 */
+	public static final String FAILURE_TXT = "失败";
+
+	/**
 	 * 默认页码
 	 */
 	public static final int PAGE_INDEX = 1;
