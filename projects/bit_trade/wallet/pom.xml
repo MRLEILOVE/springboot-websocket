@@ -11,12 +11,12 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>wallet_parent</artifactId>
+	<artifactId>wallet</artifactId>
 	<packaging>pom</packaging>
 
 	<modules>
-		<module>wallet</module>
-		<module>walletbiz</module>
+		<module>wallet-chain</module>
+		<module>wallet-biz</module>
 	</modules>
 
 	<dependencyManagement>
