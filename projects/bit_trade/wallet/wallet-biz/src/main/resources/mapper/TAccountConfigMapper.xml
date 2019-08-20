@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.walletbiz.mapper.TAccountConfigMapper">
+<mapper namespace="com.wallet.biz.mapper.TAccountConfigMapper">
 
-    <resultMap id="BaseResultMap" type="com.walletbiz.pojo.TAccountConfig">
+    <resultMap id="BaseResultMap" type="com.wallet.biz.pojo.TAccountConfig">
         <id column="id" property="id"/>
         <result column="create_time" property="createTime"/>
         <result column="update_time" property="updateTime"/>
@@ -17,14 +17,14 @@
         <result column="sort" property="sort"/>
     </resultMap>
 
-    <select id="commonCurrency" resultType="com.walletbiz.pojo.TAccountConfig">
+    <select id="commonCurrency" resultType="com.wallet.biz.pojo.TAccountConfig">
         SELECT * FROM (
         SELECT * FROM (SELECT t1.id,t1.name,t1.value FROM t_account_config t1 WHERE EXISTS(SELECT account_config_id AS id FROM t_account_manage_config t WHERE account_id = (SELECT id FROM t_account_manage WHERE id = #{accountId1}) AND t.account_config_id=t1.id AND status = 1)) t1 UNION ALL
         SELECT * FROM (SELECT t2.id,t2.name,t2.value FROM t_account_config t2 WHERE EXISTS(SELECT account_config_id AS id FROM t_account_manage_config t WHERE account_id = (SELECT id FROM t_account_manage WHERE id = #{accountId2}) AND t.account_config_id = t2.id AND status = 1)) t2 ) t3
         GROUP BY t3.id HAVING COUNT(t3.id) > 1
     </select>
 
-    <select id="getCurrenciesByAccountId" resultType="com.walletbiz.pojo.TAccountConfig">
+    <select id="getCurrenciesByAccountId" resultType="com.wallet.biz.pojo.TAccountConfig">
         SELECT t.id,t.keyword,t.`name`,t.`value`
         FROM t_account_manage_config mc
         INNER JOIN t_account_config t ON t.id = mc.account_config_id

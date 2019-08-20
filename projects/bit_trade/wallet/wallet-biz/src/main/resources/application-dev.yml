@@ -94,7 +94,7 @@ spring:
 mybatis:
   mapper-locations:
     classpath: mapper/*.xml
-    type-aliases-package: com.jdcloud.provider.pojo
+    type-aliases-package: com.wallet.biz.pojo
 
 
 

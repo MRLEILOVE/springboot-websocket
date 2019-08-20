@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.jdcloud.provider.mapper.GBetaAccountRecordMapper">
+<mapper namespace="com.wallet.biz.mapper.GBetaAccountRecordMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.jdcloud.provider.pojo.GBetaAccountRecord">
+    <resultMap id="BaseResultMap" type="com.wallet.biz.pojo.GBetaAccountRecord">
         <id column="id" property="id" />
         <result column="create_time" property="createTime" />
         <result column="user_id" property="userId" />
@@ -20,7 +20,7 @@
     </sql>
 
     <!--  查询beta账户划转记录  -->
-    <select id="transferRecord" resultType="com.jdcloud.provider.vo.TransferRecordVO" parameterType="java.lang.Long">
+    <select id="transferRecord" resultType="com.wallet.biz.vo.TransferRecordVO" parameterType="java.lang.Long">
         SELECT
         g.record_type AS type,t.`value` AS currency,g.create_time AS time,
         g.after_amount - g.before_amount as changeAmount
@@ -32,7 +32,7 @@
         ORDER BY g.id DESC
     </select>
 
-    <select id="getRecordById" resultType="com.jdcloud.provider.vo.RecordVO" parameterType="java.lang.String">
+    <select id="getRecordById" resultType="com.wallet.biz.vo.RecordVO" parameterType="java.lang.String">
         SELECT c.`value` AS currency,r.create_time as time,r.after_amount as afterAmount,(r.after_amount - r.before_amount) as changeAmount,0 AS fee,
         CASE
             WHEN r.record_type = 1 THEN '转入beta账户'
@@ -47,7 +47,7 @@
         WHERE r.id = #{id}
     </select>
 
-    <select id="selectRecord" resultType="com.jdcloud.provider.vo.RecordVO">
+    <select id="selectRecord" resultType="com.wallet.biz.vo.RecordVO">
          SELECT c.`value` AS currency,r.create_time as time,r.after_amount as afterAmount,(r.after_amount - r.before_amount) as changeAmount,0 AS fee,
         CASE
             WHEN r.record_type = 1 THEN '转入beta账户'

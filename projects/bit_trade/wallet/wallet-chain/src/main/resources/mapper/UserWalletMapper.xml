@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.wallet.dao.UserWalletDao">
+<mapper namespace="com.wallet.chain.dao.UserWalletDao">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.wallet.entity.UserWallet">
+    <resultMap id="BaseResultMap" type="com.wallet.chain.entity.UserWallet">
         <id column="id" property="id" />
         <result column="platform" property="platform" />
         <result column="user_id" property="userId" />

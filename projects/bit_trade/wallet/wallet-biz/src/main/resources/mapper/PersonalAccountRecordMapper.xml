@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.jdcloud.provider.mapper.PersonalAccountRecordMapper">
+<mapper namespace="com.wallet.biz.mapper.PersonalAccountRecordMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.jdcloud.provider.pojo.CPersonalAccountRecord">
+    <resultMap id="BaseResultMap" type="com.wallet.biz.pojo.CPersonalAccountRecord">
         <id column="id" property="id" />
         <result column="create_time" property="createTime" />
         <result column="user_id" property="userId" />
@@ -23,7 +23,7 @@
     </sql>
 
     <!--  查询法币账号划转记录  -->
-    <select id="transferRecord" parameterType="java.lang.Long" resultType="com.jdcloud.provider.vo.TransferRecordVO">
+    <select id="transferRecord" parameterType="java.lang.Long" resultType="com.wallet.biz.vo.TransferRecordVO">
         SELECT
         c.record_type  AS type,c.remark,t.`value` AS currency,c.create_time AS time,
         c.after_amount - c.before_amount as changeAmount
@@ -35,7 +35,7 @@
         ORDER BY c.id DESC
     </select>
 
-    <select id="getRecordById" parameterType="java.lang.String" resultType="com.jdcloud.provider.vo.RecordVO">
+    <select id="getRecordById" parameterType="java.lang.String" resultType="com.wallet.biz.vo.RecordVO">
         SELECT c.`value` AS currency,r.create_time AS time,r.after_amount as afterAmount,(r.after_amount - r.before_amount) AS changeAmount,0 AS fee,
         CASE
             WHEN r.record_type = 1 THEN '转出法币账户'
@@ -49,7 +49,7 @@
         WHERE r.id = #{id}
     </select>
 
-    <select id="selectRecord" resultType="com.jdcloud.provider.vo.RecordVO">
+    <select id="selectRecord" resultType="com.wallet.biz.vo.RecordVO">
         SELECT c.`value` AS currency,r.create_time AS time,r.after_amount as afterAmount,(r.after_amount - r.before_amount) AS changeAmount,0 AS fee,
         CASE
             WHEN r.record_type = 1 THEN '转出法币账户'

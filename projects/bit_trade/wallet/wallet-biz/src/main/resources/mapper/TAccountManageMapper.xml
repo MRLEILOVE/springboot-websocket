@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.walletbiz.mapper.TAccountManageMapper">
+<mapper namespace="com.wallet.biz.mapper.TAccountManageMapper">
 
-    <resultMap id="BaseResultMap" type="com.walletbiz.pojo.TAccountManage">
+    <resultMap id="BaseResultMap" type="com.wallet.biz.pojo.TAccountManage">
         <id column="id" property="id"/>
         <result column="create_time" property="createTime"/>
         <result column="update_time" property="updateTime"/>
@@ -12,7 +12,7 @@
         <result column="locality" property="locality"/>
     </resultMap>
 
-    <select id="queryAccountDirectionList" parameterType="java.lang.Integer" resultType="com.walletbiz.pojo.TAccountManage">
+    <select id="queryAccountDirectionList" parameterType="java.lang.Integer" resultType="com.wallet.biz.pojo.TAccountManage">
         SELECT t.id,t.`name`,t.`value`
         FROM t_transfer_direction d
         INNER JOIN t_account_manage t ON t.id = d.target_account_id
