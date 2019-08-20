@@ -31,15 +31,15 @@
 		</foreach>
 			</when>
 			<otherwise>
-		`id` AS id, 
-		`user_id` AS userId, 
-		`currency_id` AS currencyId, 
-		`total` AS total, 
-		`trade_frozen` AS tradeFrozen, 
-		`transfer_frozen` AS transferFrozen, 
-		`version` AS version, 
-		`create_time` AS createTime, 
-		`update_time` AS updateTime
+		`id` AS `id`, 
+		`user_id` AS `userId`, 
+		`currency_id` AS `currencyId`, 
+		`total` AS `total`, 
+		`trade_frozen` AS `tradeFrozen`, 
+		`transfer_frozen` AS `transferFrozen`, 
+		`version` AS `version`, 
+		`create_time` AS `createTime`, 
+		`update_time` AS `updateTime`
 			</otherwise>
 		</choose>
 	</sql>

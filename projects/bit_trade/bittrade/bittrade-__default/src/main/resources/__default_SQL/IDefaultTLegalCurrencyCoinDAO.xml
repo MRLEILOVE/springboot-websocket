@@ -30,14 +30,14 @@
 		</foreach>
 			</when>
 			<otherwise>
-		`id` AS id, 
-		`name` AS name, 
-		`title` AS title, 
-		`img` AS img, 
-		`status` AS status, 
-		`min_quota` AS minQuota, 
-		`create_time` AS createTime, 
-		`update_time` AS updateTime
+		`id` AS `id`, 
+		`name` AS `name`, 
+		`title` AS `title`, 
+		`img` AS `img`, 
+		`status` AS `status`, 
+		`min_quota` AS `minQuota`, 
+		`create_time` AS `createTime`, 
+		`update_time` AS `updateTime`
 			</otherwise>
 		</choose>
 	</sql>

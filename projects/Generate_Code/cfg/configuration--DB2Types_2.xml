@@ -13,4 +13,5 @@
 	<item key="TIMESTAMP" javaType="java.time.LocalDateTime" jdbcType="TIMESTAMP" />
 	<!-- use this style ? -->
 	<item key="ENUM" javaType="String" jdbcType="VARCHAR" />
+	<item key="TEXT" javaType="Byte[]" jdbcType="CLOB" />
 </items>

@@ -31,15 +31,15 @@
 		</foreach>
 			</when>
 			<otherwise>
-		`id` AS id, 
-		`param_key` AS paramKey, 
-		`param_value` AS paramValue, 
-		`param_status` AS paramStatus, 
-		`param_remark` AS paramRemark, 
-		`create_time` AS createTime, 
-		`creater` AS creater, 
-		`update_time` AS updateTime, 
-		`updater` AS updater
+		`id` AS `id`, 
+		`param_key` AS `paramKey`, 
+		`param_value` AS `paramValue`, 
+		`param_status` AS `paramStatus`, 
+		`param_remark` AS `paramRemark`, 
+		`create_time` AS `createTime`, 
+		`creater` AS `creater`, 
+		`update_time` AS `updateTime`, 
+		`updater` AS `updater`
 			</otherwise>
 		</choose>
 	</sql>

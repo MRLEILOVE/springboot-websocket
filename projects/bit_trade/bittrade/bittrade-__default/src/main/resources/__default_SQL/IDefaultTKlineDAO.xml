@@ -33,17 +33,17 @@
 		</foreach>
 			</when>
 			<otherwise>
-		`id` AS id, 
-		`symbol` AS symbol, 
-		`low` AS low, 
-		`high` AS high, 
-		`open` AS open, 
-		`close` AS close, 
-		`volume` AS volume, 
-		`granularity` AS granularity, 
-		`time` AS time, 
-		`create_time` AS createTime, 
-		`update_time` AS updateTime
+		`id` AS `id`, 
+		`symbol` AS `symbol`, 
+		`low` AS `low`, 
+		`high` AS `high`, 
+		`open` AS `open`, 
+		`close` AS `close`, 
+		`volume` AS `volume`, 
+		`granularity` AS `granularity`, 
+		`time` AS `time`, 
+		`create_time` AS `createTime`, 
+		`update_time` AS `updateTime`
 			</otherwise>
 		</choose>
 	</sql>

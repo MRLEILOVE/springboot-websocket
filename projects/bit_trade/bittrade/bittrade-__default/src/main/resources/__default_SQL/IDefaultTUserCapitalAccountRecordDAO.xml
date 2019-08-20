@@ -32,16 +32,16 @@
 		</foreach>
 			</when>
 			<otherwise>
-		`id` AS id, 
-		`user_id` AS userId, 
-		`currency_id` AS currencyId, 
-		`count` AS count, 
-		`adderess` AS adderess, 
-		`fees` AS fees, 
-		`type` AS type, 
-		`status` AS status, 
-		`create_time` AS createTime, 
-		`update_time` AS updateTime
+		`id` AS `id`, 
+		`user_id` AS `userId`, 
+		`currency_id` AS `currencyId`, 
+		`count` AS `count`, 
+		`adderess` AS `adderess`, 
+		`fees` AS `fees`, 
+		`type` AS `type`, 
+		`status` AS `status`, 
+		`create_time` AS `createTime`, 
+		`update_time` AS `updateTime`
 			</otherwise>
 		</choose>
 	</sql>

@@ -31,15 +31,15 @@
 		</foreach>
 			</when>
 			<otherwise>
-		`id` AS id, 
-		`user_id` AS userId, 
-		`currency_id` AS currencyId, 
-		`before_amount` AS beforeAmount, 
-		`after_amount` AS afterAmount, 
-		`change_amount` AS changeAmount, 
-		`type` AS type, 
-		`entrust_record_id` AS entrustRecordId, 
-		`create_time` AS createTime
+		`id` AS `id`, 
+		`user_id` AS `userId`, 
+		`currency_id` AS `currencyId`, 
+		`before_amount` AS `beforeAmount`, 
+		`after_amount` AS `afterAmount`, 
+		`change_amount` AS `changeAmount`, 
+		`type` AS `type`, 
+		`entrust_record_id` AS `entrustRecordId`, 
+		`create_time` AS `createTime`
 			</otherwise>
 		</choose>
 	</sql>

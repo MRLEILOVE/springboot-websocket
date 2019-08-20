@@ -36,20 +36,20 @@
 		</foreach>
 			</when>
 			<otherwise>
-		`id` AS id, 
-		`user_id` AS userId, 
-		`rival_user_id` AS rivalUserId, 
-		`entrust_id` AS entrustId, 
-		`rival_entrust_id` AS rivalEntrustId, 
-		`amount` AS amount, 
-		`price` AS price, 
-		`count` AS count, 
-		`rate` AS rate, 
-		`fees` AS fees, 
-		`currency_trade_id` AS currencyTradeId, 
-		`is_active` AS isActive, 
-		`entrust_direction` AS entrustDirection, 
-		`create_time` AS createTime
+		`id` AS `id`, 
+		`user_id` AS `userId`, 
+		`rival_user_id` AS `rivalUserId`, 
+		`entrust_id` AS `entrustId`, 
+		`rival_entrust_id` AS `rivalEntrustId`, 
+		`amount` AS `amount`, 
+		`price` AS `price`, 
+		`count` AS `count`, 
+		`rate` AS `rate`, 
+		`fees` AS `fees`, 
+		`currency_trade_id` AS `currencyTradeId`, 
+		`is_active` AS `isActive`, 
+		`entrust_direction` AS `entrustDirection`, 
+		`create_time` AS `createTime`
 			</otherwise>
 		</choose>
 	</sql>

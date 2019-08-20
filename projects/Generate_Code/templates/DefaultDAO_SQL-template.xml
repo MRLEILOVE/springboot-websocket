@@ -42,10 +42,10 @@ WHERE是使用的 prefixOverrides（前缀）， SET是使用的 suffixOverrides
 			</when>
 			<otherwise>
 		<#list struct.list_itemPK as itemPK>
-		`${itemPK.columnName}` AS ${itemPK.name}, 
+		`${itemPK.columnName}` AS `${itemPK.name}`, 
 		</#list>
 		<#list struct.list_item as item>
-		`${item.columnName}` AS ${item.name}<#if item_has_next>, </#if>
+		`${item.columnName}` AS `${item.name}`<#if item_has_next>, </#if>
 		</#list>
 			</otherwise>
 		</choose>
