@@ -36,21 +36,4 @@ public class FundsController {
         ReturnDTO<ConversionVo> returnDTO = walletService.totalNetAssets(user.getUser_id());
         return returnDTO;
     }
-
-   /* @ApiOperation(value = "资产总览")
-    @GetMapping(value = "/overview")
-    @ResponseBody
-    public ReturnDTO<List<ConversionVo>> overview(@ALoginUser LoginUser user) {
-        if(user == null){
-            //没有登陆
-            List<ConversionVo> list = new ArrayList<>();
-            list.add(ConversionVo.builder().USDT(BigDecimal.ZERO).CNY(BigDecimal.ZERO).account("资金账户").build());
-            list.add(ConversionVo.builder().USDT(BigDecimal.ZERO).CNY(BigDecimal.ZERO).account("交易账户").build());
-            list.add(ConversionVo.builder().USDT(BigDecimal.ZERO).CNY(BigDecimal.ZERO).account("法币账户").build());
-            list.add(ConversionVo.builder().USDT(BigDecimal.ZERO).CNY(BigDecimal.ZERO).account("币币账户").build());
-            return ReturnDTO.ok(list);
-        }
-        ReturnDTO<List<ConversionVo>> returnDTO = walletService.overview(user.getUser_id());
-        return returnDTO;
-    }*/
 }

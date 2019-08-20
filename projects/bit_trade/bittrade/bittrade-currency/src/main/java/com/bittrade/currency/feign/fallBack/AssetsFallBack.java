@@ -10,11 +10,8 @@ import java.math.BigDecimal;
 public class AssetsFallBack implements AssetsService {
     @Override
     public String getAssets(Long userId) {
+//        return ConversionVo.builder().USDT(BigDecimal.ZERO).build();
         return "0";
     }
 
-    @Override
-    public ConversionVo personalTotalConversion(Long userId) {
-        return ConversionVo.builder().USDT(BigDecimal.ZERO).CNY(BigDecimal.ZERO).build();
-    }
 }

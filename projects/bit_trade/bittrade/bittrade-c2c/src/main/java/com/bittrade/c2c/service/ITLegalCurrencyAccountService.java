@@ -7,6 +7,7 @@ import com.bittrade.pojo.vo.ConversionVo;
 import com.bittrade.pojo.vo.TLegalCurrencyAccountVO;
 import com.bittrade.pojo.model.TLegalCurrencyAccount;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -49,4 +50,11 @@ public interface ITLegalCurrencyAccountService extends IDefaultTLegalCurrencyAcc
      * @return  法币账户
      */
     TLegalCurrencyAccount getByUserIdAndCoinName(Long userId, String coinName);
+
+    /**
+     * 获取用户法币账户总的usdt数量
+     * @param userId 用户id
+     * @return
+     */
+    BigDecimal getAssets(Long userId);
 }

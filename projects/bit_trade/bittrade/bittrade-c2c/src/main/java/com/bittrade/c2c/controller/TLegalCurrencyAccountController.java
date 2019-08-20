@@ -10,6 +10,7 @@ import com.core.common.DTO.ReturnDTO;
 import com.core.common.annotation.ALoginUser;
 import com.core.framework.base.controller.BaseController;
 import com.core.web.common.entity.LoginUser;
+import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -59,4 +60,14 @@ public class TLegalCurrencyAccountController extends BaseController<TLegalCurren
     public String availableBalanceFeign(@RequestParam("userId")Long userId, @RequestParam("coinName")String coinName){
         return legalCurrencyAccountService.availableBalance(userId, coinName);
     }
+
+    @ApiModelProperty(value = "获取用户法币账户总的usdt数量",notes = "传用户id")
+    @GetMapping("/getAssetsFeign")
+    @ResponseBody
+    public BigDecimal getAssetsFeign(@RequestParam("userId")Long userId){
+        BigDecimal BigDecimal = legalCurrencyAccountService.getAssets(userId);
+//        ConversionVo conversionVo = legalCurrencyAccountService.totalConversion(userId);
+        return BigDecimal;
+    }
+
 }
