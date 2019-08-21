@@ -18,6 +18,7 @@
 		<module>bittrade-pojo</module>
 		<module>bittrade-__default</module>
 		<module>bittrade-common</module>
+		<module>bittrade-admin</module>
 		<module>bittrade-currency-api</module>
 		<module>bittrade-currency</module>
 		<module>bittrade-entrust-api</module>

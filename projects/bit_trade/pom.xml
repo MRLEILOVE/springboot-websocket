@@ -16,7 +16,7 @@
 	<groupId>com.bittrade</groupId>
 	<artifactId>bit_trade</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>bittrade</name>
+	<name>bit_trade</name>
 	<description>? project for Spring ?</description>
 	<packaging>pom</packaging>
 
@@ -24,7 +24,6 @@
 		<module>core</module>
 		<module>test</module>
 		<module>bittrade</module>
-		<module>admin</module>
 		<module>wallet</module>
 	</modules>
 

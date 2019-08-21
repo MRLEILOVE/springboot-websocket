@@ -6,11 +6,11 @@
 	
 	<parent>
 		<groupId>com.bittrade</groupId>
-		<artifactId>admin</artifactId>
+		<artifactId>bittrade</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	
-	<artifactId>admin-bittrade</artifactId>
+	<artifactId>bittrade-admin</artifactId>
 
 	<dependencies>
 		<!-- <dependency>
