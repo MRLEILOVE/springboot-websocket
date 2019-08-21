@@ -7,7 +7,7 @@ import com.wallet.chain.constant.WalletTypeConstant;
 import com.wallet.chain.entity.CoinConfig;
 import com.wallet.chain.entity.ConfigWallet;
 import com.wallet.chain.entity.UserWallet;
-import com.wallet.chain.entity.UserWalletBill;
+import com.wallet.chain.entity.WalletBill;
 import com.wallet.chain.service.*;
 import com.wallet.chain.utils.ValidatorUtils;
 
@@ -28,7 +28,7 @@ public class CollectionStrategyBTC implements ICollectionStrategy {
     @Autowired
     private ITransactionService transactionService;
     @Autowired
-    private UserWalletBillService userWalletBillService;
+    private WalletBillService walletBillService;
     @Autowired
     private ConfigWalletService configWalletService;
     @Autowired
@@ -38,7 +38,7 @@ public class CollectionStrategyBTC implements ICollectionStrategy {
     public void execute(CoinConfig coinConfig) {
 
         //查询需要归集的数据
-        List<UserWalletBill> needCollectionList = userWalletBillService.list(new QueryWrapper<>(UserWalletBill.builder()
+        List<WalletBill> needCollectionList = walletBillService.list(new QueryWrapper<>(WalletBill.builder()
                 .coinType(coinConfig.getCoinType())
                 .direction(DirectionConstant.IN)
                 .transferFlag(FlagConstant.UN_PROCESS)
@@ -49,7 +49,7 @@ public class CollectionStrategyBTC implements ICollectionStrategy {
         }
         //TODO
         //相同地址合并
-        Map<String, BigDecimal> map = needCollectionList.stream().collect(Collectors.toMap(UserWalletBill::getReceiverAddress, UserWalletBill::getAmount, BigDecimal::add));
+        Map<String, BigDecimal> map = needCollectionList.stream().collect(Collectors.toMap(WalletBill::getReceiverAddress, WalletBill::getAmount, BigDecimal::add));
         System.out.println(map);
         //查询归集地址
         ValidatorUtils.isEmptyThrow(coinConfig.getBossAddress(), "冷地址未配置");
@@ -75,11 +75,11 @@ public class CollectionStrategyBTC implements ICollectionStrategy {
             needCollectionList.forEach(walletBill -> {
                 if (walletBill.getReceiverAddress().equalsIgnoreCase(senderAddress)) {
 
-                    userWalletBillService.update(
-                            UserWalletBill.builder()
+                    walletBillService.update(
+                            WalletBill.builder()
                                     .transferFlag(FlagConstant.PROCESSED)
                                     .build(),
-                            new QueryWrapper<>(UserWalletBill.builder()
+                            new QueryWrapper<>(WalletBill.builder()
                                     .id(walletBill.getId())
                                     .transferFlag(FlagConstant.UN_PROCESS)
                                     .build())

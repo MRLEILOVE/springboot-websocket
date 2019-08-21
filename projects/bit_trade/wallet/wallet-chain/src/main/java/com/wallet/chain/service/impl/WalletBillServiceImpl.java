@@ -2,8 +2,8 @@ package com.wallet.chain.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.wallet.chain.dao.UserWalletBillDao;
-import com.wallet.chain.entity.UserWalletBill;
-import com.wallet.chain.service.UserWalletBillService;
+import com.wallet.chain.entity.WalletBill;
+import com.wallet.chain.service.WalletBillService;
 
 import org.springframework.stereotype.Service;
 
@@ -16,6 +16,6 @@ import org.springframework.stereotype.Service;
  * @since 2019-06-27
  */
 @Service
-public class UserWalletBillServiceImpl extends ServiceImpl<UserWalletBillDao, UserWalletBill> implements UserWalletBillService {
+public class WalletBillServiceImpl extends ServiceImpl<UserWalletBillDao, WalletBill> implements WalletBillService {
 
 }

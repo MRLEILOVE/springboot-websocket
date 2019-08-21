@@ -11,7 +11,7 @@ import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
 
 @EnableTransactionManagement
 @Configuration
-@MapperScan("com.jdcloud.provider.mapper")
+@MapperScan("com.wallet.biz.dao")
 public class MybatisPlusConfig {
 
     @Bean

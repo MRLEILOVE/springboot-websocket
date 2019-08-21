@@ -2,7 +2,7 @@ spring:
   datasource:
     druid:
       driver-class-name: com.mysql.jdbc.Driver
-      url: jdbc:mysql://154.222.138.249/jd_db?useSSL=false&useUnicode=true&characterEncoding=UTF-8&serverTimezone=CTT
+      url: jdbc:mysql://154.222.138.249/bit_trade_dev?useSSL=false&useUnicode=true&characterEncoding=UTF-8&serverTimezone=CTT
       username: jddevuser
       password: jddev@xlkj20190711?!
       initial-size: 5
@@ -32,13 +32,13 @@ mybatis-plus:
 
 btc:
   config-wallet:
-    encrypt-key: 1234567812345678  #最少16位   8的倍数
+    encrypt-key: 1000002072188457  #最少16位   8的倍数
   user-wallet:
-    encrypt-key: 1234567812345678  #最少16位   8的倍数
+    encrypt-key: 1000000170586104 #最少16位   8的倍数
   network:
-    main: false   #测试网络
+    main: true   #测试网络
   point:
-    url:  http://58.82.251.195:8888
+    url: http://58.82.251.195:8888
     user: a61d8ccbf458819d
     password: df81ae8d7de19032
   fee_rate:

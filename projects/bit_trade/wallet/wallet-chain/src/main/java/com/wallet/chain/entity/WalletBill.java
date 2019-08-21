@@ -10,8 +10,6 @@ import java.util.Date;
 import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.*;
 
-import java.io.Serializable;
-
 /**
  * <p>
  * 用户钱包账单
@@ -25,8 +23,8 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-@TableName("w_user_wallet_bill")
-public class UserWalletBill extends Model<UserWalletBill> {
+@TableName("w_wallet_bill")
+public class WalletBill extends Model<WalletBill> {
 
     private static final long serialVersionUID = 1L;
 

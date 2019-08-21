@@ -5,11 +5,11 @@ import com.wallet.chain.constant.FlagConstant;
 import com.wallet.chain.constant.TradeStepConstant;
 import com.wallet.chain.dto.RawtransactionDto;
 import com.wallet.chain.entity.CoinConfig;
-import com.wallet.chain.entity.UserWalletBill;
+import com.wallet.chain.entity.WalletBill;
 import com.wallet.chain.entity.WithdrawWalletBill;
 import com.wallet.chain.service.IConfirmStrategy;
 import com.wallet.chain.service.IJsonRpcService;
-import com.wallet.chain.service.UserWalletBillService;
+import com.wallet.chain.service.WalletBillService;
 import com.wallet.chain.service.WithdrawWalletBillService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +25,7 @@ public class ConfirmStrategyBTC implements IConfirmStrategy {
     @Autowired
     private IJsonRpcService jsonRpcService;
     @Autowired
-    private UserWalletBillService userWalletBillService;
+    private WalletBillService walletBillService;
     @Autowired
     private WithdrawWalletBillService withdrawWalletBillService;
 
@@ -34,32 +34,32 @@ public class ConfirmStrategyBTC implements IConfirmStrategy {
     public void execute(CoinConfig coinConfig) {
 
         //用户钱包数据
-        List<UserWalletBill> userWalletBillList = userWalletBillService.list(new QueryWrapper<>(UserWalletBill.builder()
+        List<WalletBill> walletBillList = walletBillService.list(new QueryWrapper<>(WalletBill.builder()
                 .coinType(coinConfig.getCoinType())
                 .tradeStep(TradeStepConstant.PACKAGED).build()));
-        userWalletBillList.forEach(walletBill -> {
+        walletBillList.forEach(walletBill -> {
             RawtransactionDto rawtransactionDto = jsonRpcService.getRawTransaction(walletBill.getTx());
 
             if (rawtransactionDto.getConfirmations().compareTo(coinConfig.getMinConfirm()) >= 0) {
 
-                userWalletBillService.update(UserWalletBill.builder().tradeStep(TradeStepConstant.CONFIRM).build(),
-                        new QueryWrapper<>(UserWalletBill.builder()
+                walletBillService.update(WalletBill.builder().tradeStep(TradeStepConstant.CONFIRM).build(),
+                        new QueryWrapper<>(WalletBill.builder()
                                 .id(walletBill.getId())
                                 .tradeStep(TradeStepConstant.PACKAGED)
                                 .build()));
-                userWalletBillService.update(UserWalletBill.builder().transferFlag(FlagConstant.UN_PROCESS).build(),
-                        new QueryWrapper<>(UserWalletBill.builder()
+                walletBillService.update(WalletBill.builder().transferFlag(FlagConstant.UN_PROCESS).build(),
+                        new QueryWrapper<>(WalletBill.builder()
                                 .id(walletBill.getId())
                                 .transferFlag(FlagConstant.INIT)
                                 .build()));
-                userWalletBillService.update(UserWalletBill.builder().flag(FlagConstant.UN_PROCESS).build(),
-                        new QueryWrapper<>(UserWalletBill.builder()
+                walletBillService.update(WalletBill.builder().flag(FlagConstant.UN_PROCESS).build(),
+                        new QueryWrapper<>(WalletBill.builder()
                                 .id(walletBill.getId())
                                 .flag(FlagConstant.INIT)
                                 .build()));
             }
         });
-
+/*
         //提现钱包数据
         List<WithdrawWalletBill> withdrawWalletBillList = withdrawWalletBillService.list(new QueryWrapper<>(WithdrawWalletBill.builder()
                 .coinType(coinConfig.getCoinType())
@@ -84,6 +84,6 @@ public class ConfirmStrategyBTC implements IConfirmStrategy {
                                 .flag(FlagConstant.INIT)
                                 .build()));
             }
-        });
+        });*/
     }
 }

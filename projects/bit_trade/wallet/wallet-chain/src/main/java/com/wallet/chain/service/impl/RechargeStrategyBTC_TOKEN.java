@@ -8,7 +8,7 @@ import com.wallet.chain.constant.TypeConstant;
 import com.wallet.chain.dto.OmniTransactionResultDto;
 import com.wallet.chain.entity.CoinConfig;
 import com.wallet.chain.entity.UserWallet;
-import com.wallet.chain.entity.UserWalletBill;
+import com.wallet.chain.entity.WalletBill;
 import com.wallet.chain.service.*;
 import com.wallet.chain.utils.IdUtils;
 
@@ -31,7 +31,7 @@ public class RechargeStrategyBTC_TOKEN implements IRechargeStrategy {
     @Autowired
     private UserWalletService userWalletService;
     @Autowired
-    private UserWalletBillService userWalletBillService;
+    private WalletBillService walletBillService;
 
     @Override
     public void execute(CoinConfig coinConfig) {
@@ -88,8 +88,8 @@ public class RechargeStrategyBTC_TOKEN implements IRechargeStrategy {
 
         UserWallet userWallet = userWalletService.cacheUserWallet(coinConfig.getCoinType(), transactionResultDto.getReferenceaddress());
         try {
-            userWalletBillService.save(
-                    UserWalletBill.builder()
+            walletBillService.save(
+                    WalletBill.builder()
                             .userId(userWallet.getUserId())
                             .orderId(IdUtils.nextId())
                             .direction(DirectionConstant.IN)

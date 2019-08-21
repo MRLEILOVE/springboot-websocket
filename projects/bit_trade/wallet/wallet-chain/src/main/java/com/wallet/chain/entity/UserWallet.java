@@ -59,6 +59,11 @@ public class UserWallet extends Model<UserWallet> {
     private String privateKey;
 
     /**
+     * 二维码
+     */
+    private String codeQr;
+
+    /**
      * 是否需要处理  0:未处理   1已处理
      */
     private Boolean flag;

@@ -1,5 +1,6 @@
 package com.wallet.chain.service.impl;
 
+import com.wallet.chain.entity.WalletBill;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -19,7 +20,7 @@ public class WithdrawStrategyBTC_TOKEN implements IWithdrawStrategy {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void withdraw(WithdrawWalletBill withdrawWalletBill) {
-        withdrawStrategy.withdraw(withdrawWalletBill);
+    public void withdraw(WalletBill walletBill) {
+        withdrawStrategy.withdraw(walletBill);
     }
 }

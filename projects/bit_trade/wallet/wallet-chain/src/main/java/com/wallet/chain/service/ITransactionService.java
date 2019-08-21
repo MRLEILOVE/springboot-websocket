@@ -3,17 +3,14 @@ package com.wallet.chain.service;
 import java.math.BigDecimal;
 
 import com.wallet.chain.dto.TransferDto;
-import com.wallet.chain.entity.CoinConfig;
-import com.wallet.chain.entity.ConfigWallet;
-import com.wallet.chain.entity.UserWallet;
-import com.wallet.chain.entity.WithdrawWalletBill;
+import com.wallet.chain.entity.*;
 
 public interface ITransactionService {
 
     /**
      * 提币
      */
-    TransferDto withdraw(CoinConfig coinConfig, WithdrawWalletBill withdrawWalletBill);
+    TransferDto withdraw(CoinConfig coinConfig, WalletBill WalletBill);
 
     /**
      * 归集

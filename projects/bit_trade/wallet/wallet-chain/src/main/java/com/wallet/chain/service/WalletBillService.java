@@ -1,7 +1,7 @@
 package com.wallet.chain.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.wallet.chain.entity.UserWalletBill;
+import com.wallet.chain.entity.WalletBill;
 
 /**
  * <p>
@@ -11,6 +11,6 @@ import com.wallet.chain.entity.UserWalletBill;
  * @author xxx
  * @since 2019-06-27
  */
-public interface UserWalletBillService extends IService<UserWalletBill> {
+public interface WalletBillService extends IService<WalletBill> {
 
 }

@@ -1,7 +1,7 @@
 package com.wallet.chain.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.wallet.chain.entity.UserWalletBill;
+import com.wallet.chain.entity.WalletBill;
 
 /**
  * <p>
@@ -11,6 +11,6 @@ import com.wallet.chain.entity.UserWalletBill;
  * @author xxx
  * @since 2019-06-27
  */
-public interface UserWalletBillDao extends BaseMapper<UserWalletBill> {
+public interface UserWalletBillDao extends BaseMapper<WalletBill> {
 
 }

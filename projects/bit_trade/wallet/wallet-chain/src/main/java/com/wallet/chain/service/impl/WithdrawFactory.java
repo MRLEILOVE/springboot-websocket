@@ -6,11 +6,9 @@ import com.wallet.chain.constant.FlagConstant;
 import com.wallet.chain.constant.TradeStepConstant;
 import com.wallet.chain.dto.WithDrawParamDto;
 import com.wallet.chain.entity.CoinConfig;
+import com.wallet.chain.entity.WalletBill;
 import com.wallet.chain.entity.WithdrawWalletBill;
-import com.wallet.chain.service.CoinConfigService;
-import com.wallet.chain.service.IWithdrawFactory;
-import com.wallet.chain.service.IWithdrawStrategy;
-import com.wallet.chain.service.WithdrawWalletBillService;
+import com.wallet.chain.service.*;
 import com.wallet.chain.utils.ValidatorUtils;
 
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +28,8 @@ public class WithdrawFactory implements IWithdrawFactory {
     private CoinConfigService coinConfigService;
     @Autowired
     private WithdrawWalletBillService withdrawWalletBillService;
+    @Autowired
+    private WalletBillService walletBillService;
 
     @Override
     public void addOrder(WithDrawParamDto paramDto) {
@@ -40,10 +40,10 @@ public class WithdrawFactory implements IWithdrawFactory {
                 .build()), true);
         ValidatorUtils.isNullThrow(coinConfig, "暂时不支持该币种提币");
 
-        WithdrawWalletBill checke = withdrawWalletBillService.getOne(new QueryWrapper<>(WithdrawWalletBill.builder().orderId(paramDto.getOrderId()).build()), true);
+        WalletBill checke = walletBillService.getOne(new QueryWrapper<>(WalletBill.builder().orderId(paramDto.getOrderId()).build()), true);
         ValidatorUtils.noNullThrow(checke, "该订单已存在，不要重复提交");
 
-        WithdrawWalletBill withdrawWalletBill = WithdrawWalletBill.builder()
+        WalletBill Bill = WalletBill.builder()
                 .userId(paramDto.getUserId())
                 .orderId(paramDto.getOrderId())
                 .direction(DirectionConstant.OUT)
@@ -55,21 +55,21 @@ public class WithdrawFactory implements IWithdrawFactory {
                 .amount(paramDto.getAmount())
                 .tx(paramDto.getOrderId())
                 .build();
-        withdrawWalletBillService.save(withdrawWalletBill);
+        walletBillService.save(Bill);
     }
 
     @Override
     public void execute() {
 
         //查询待提币数据
-        List<WithdrawWalletBill> withdrawWalletBills = withdrawWalletBillService.list(new QueryWrapper<>(WithdrawWalletBill.builder()
+        List<WalletBill> Bills = walletBillService.list(new QueryWrapper<>(WalletBill.builder()
                 .tradeStep(TradeStepConstant.AUDIT_PASS)
                 .build()));
 
-        for (WithdrawWalletBill withdrawWalletBill : withdrawWalletBills) {
+        for (WalletBill Bill : Bills) {
             try {
-                IWithdrawStrategy withdrawStrategy = applicationContext.getBean("withdrawStrategy" + withdrawWalletBill.getCoinType(), IWithdrawStrategy.class);
-                withdrawStrategy.withdraw(withdrawWalletBill);
+                IWithdrawStrategy withdrawStrategy = applicationContext.getBean("withdrawStrategy" + Bill.getCoinType(), IWithdrawStrategy.class);
+                withdrawStrategy.withdraw(Bill);
             } catch (Exception e) {
                 log.error("WithdrawFactory.execute", e);
             }
