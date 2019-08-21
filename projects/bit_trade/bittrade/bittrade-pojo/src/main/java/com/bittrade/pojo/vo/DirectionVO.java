@@ -10,7 +10,13 @@ import lombok.*;
 @EqualsAndHashCode(callSuper = false)
 public class DirectionVO {
     @ApiModelProperty("账户名称")
-    private String name;
+    private String accountName1;
+    @ApiModelProperty("账户名称")
+    private String accountId1;
+    @ApiModelProperty("账户名称")
+    private String accountName2;
+    @ApiModelProperty("账户名称")
+    private String accountId3;
     @ApiModelProperty("状态")
     private Integer status;
 }
