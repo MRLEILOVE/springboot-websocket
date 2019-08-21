@@ -21,8 +21,9 @@ public interface ITWalletTransferService extends IDefaultTWalletTransferService<
     /**
      * 查询用户钱包可用余额
      * @param userId 用户id
-     * @param currencyName 币种名称
-     * @return 钱包余额
+     * @param accountId 账户id
+     * @param currencyId 币种id
+     * @return
      */
-    String availableBalance(Long userId, String currencyName);
+    String availableBalance(Long userId, Long accountId, Long currencyId);
 }

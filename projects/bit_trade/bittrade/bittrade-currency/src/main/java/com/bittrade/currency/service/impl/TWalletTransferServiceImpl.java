@@ -18,7 +18,6 @@ import com.bittrade.pojo.model.*;
 import com.bittrade.pojo.vo.TWalletTransferVO;
 import com.core.common.DTO.ReturnDTO;
 import com.core.tool.SnowFlake;
-import feign.RetryableException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -365,23 +364,21 @@ public class TWalletTransferServiceImpl extends DefaultTWalletTransferServiceImp
     /**
      * 查询用户钱包可用余额
      * @param userId 用户id
-     * @param currencyName 币种名称
-     * @return 钱包余额
+     * @param accountId 账户id
+     * @param currencyId 币种id
+     * @return
      */
     @Override
-    public String availableBalance(Long userId, String currencyName) {
-        //获取币种
-        TCurrency aryCurrency = TCurrency.builder().name(currencyName).build();
-        TCurrency currency = currencyDAO.getBy(aryCurrency);
-        if(currency == null){
-            return "0";
-        }
+    public String availableBalance(Long userId, Long accountId, Long currencyId) {
+       //获取账户
+/*
         //获取用户钱包
         TWallet qryWallet = TWallet.builder().userId(userId).currencyId(currency.getId()).build();
         TWallet wallets = walletDAO.getBy(qryWallet);
         if(wallets == null){
             return "0";
         }
-        return wallets.getTotal().toString();
+        return wallets.getTotal().toString();*/
+        return null;
     }
 }
