@@ -10,7 +10,7 @@ import com.wallet.chain.dto.RawtransactionDto;
 import com.wallet.chain.dto.VoutDto;
 import com.wallet.chain.entity.CoinConfig;
 import com.wallet.chain.entity.UserWallet;
-import com.wallet.chain.entity.UserWalletBill;
+import com.wallet.chain.entity.WalletBill;
 import com.wallet.chain.service.*;
 import com.wallet.chain.utils.IdUtils;
 
@@ -33,7 +33,7 @@ public class RechargeStrategyBTC implements IRechargeStrategy {
     @Autowired
     private UserWalletService userWalletService;
     @Autowired
-    private UserWalletBillService userWalletBillService;
+    private WalletBillService walletBillService;
 
     @Override
     public void execute(CoinConfig coinConfig) {
@@ -102,8 +102,8 @@ public class RechargeStrategyBTC implements IRechargeStrategy {
                     continue;
                 }
                 try {
-                    userWalletBillService.save(
-                            UserWalletBill.builder()
+                    walletBillService.save(
+                            WalletBill.builder()
                                     .userId(userWallet.getUserId())
                                     .orderId(IdUtils.nextId())
                                     .direction(DirectionConstant.IN)

@@ -4,9 +4,11 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.wallet.chain.constant.TradeStepConstant;
 import com.wallet.chain.dto.OmniTransactionResultDto;
 import com.wallet.chain.entity.CoinConfig;
+import com.wallet.chain.entity.WalletBill;
 import com.wallet.chain.entity.WithdrawWalletBill;
 import com.wallet.chain.service.IJsonRpcService;
 import com.wallet.chain.service.IQueryPackageStrategy;
+import com.wallet.chain.service.WalletBillService;
 import com.wallet.chain.service.WithdrawWalletBillService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -24,26 +26,28 @@ public class QueryPackageStrategyBTC_TOKEN implements IQueryPackageStrategy {
     private IJsonRpcService jsonRpcService;
     @Autowired
     private WithdrawWalletBillService withdrawWalletBillService;
+    @Autowired
+    private WalletBillService walletBillService;
 
     @Override
     public void execute(CoinConfig coinConfig) {
 
         //查询需要确认打包区块高度的数据
-        List<WithdrawWalletBill> walletBillList = withdrawWalletBillService.list(new QueryWrapper<>(WithdrawWalletBill.builder()
+        List<WalletBill> walletBillList = walletBillService.list(new QueryWrapper<>(WalletBill.builder()
                 .coinType(coinConfig.getCoinType())
                 .tradeStep(TradeStepConstant.BROADCAST).build()));
 
-        walletBillList.forEach(walletBill -> {
+        walletBillList.forEach(Bill -> {
 
-            OmniTransactionResultDto transactionResultDto = jsonRpcService.getTokenTransaction(walletBill.getTx());
+            OmniTransactionResultDto transactionResultDto = jsonRpcService.getTokenTransaction(Bill.getTx());
             if (BigInteger.ZERO.compareTo(transactionResultDto.getConfirmations()) < 0) {
 
-                withdrawWalletBillService.update(
-                        WithdrawWalletBill.builder()
+                walletBillService.update(
+                        WalletBill.builder()
                                 .block(transactionResultDto.getBlock())
                                 .tradeStep(TradeStepConstant.PACKAGED).build(),
-                        new QueryWrapper<>(WithdrawWalletBill.builder()
-                                .id(walletBill.getId())
+                        new QueryWrapper<>(WalletBill.builder()
+                                .id(Bill.getId())
                                 .tradeStep(TradeStepConstant.BROADCAST).build()));
             }
         });

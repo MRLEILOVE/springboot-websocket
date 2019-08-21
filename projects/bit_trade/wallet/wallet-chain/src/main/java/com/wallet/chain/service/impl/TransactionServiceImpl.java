@@ -7,7 +7,7 @@ import com.wallet.chain.dto.TransferDto;
 import com.wallet.chain.entity.CoinConfig;
 import com.wallet.chain.entity.ConfigWallet;
 import com.wallet.chain.entity.UserWallet;
-import com.wallet.chain.entity.WithdrawWalletBill;
+import com.wallet.chain.entity.WalletBill;
 import com.wallet.chain.enums.CoinTypeEnum;
 import com.wallet.chain.service.ConfigWalletService;
 import com.wallet.chain.service.IJsonRpcService;
@@ -46,7 +46,7 @@ public class TransactionServiceImpl implements ITransactionService {
     private String userWalletEncryptKey;
 
     @Override
-    public TransferDto withdraw(CoinConfig coinConfig, WithdrawWalletBill withdrawWalletBill) {
+    public TransferDto withdraw(CoinConfig coinConfig, WalletBill WalletBill) {
 
         ConfigWallet withdrawWallet = configWalletService.getOne(new QueryWrapper<>(ConfigWallet.builder()
                 .coinType(coinConfig.getCoinType())
@@ -57,8 +57,8 @@ public class TransactionServiceImpl implements ITransactionService {
         //签名
         TransferDto transferDto = btcTokenSign(coinConfig, withdrawWallet.getAddress(),
                 AesUtils.aesDecrypt(withdrawWallet.getKeystore(), encryptKey),
-                withdrawWalletBill.getReceiverAddress(),
-                withdrawWalletBill.getAmount());
+                WalletBill.getReceiverAddress(),
+                WalletBill.getAmount());
 
         //广播交易
         if(transferDto!=null){

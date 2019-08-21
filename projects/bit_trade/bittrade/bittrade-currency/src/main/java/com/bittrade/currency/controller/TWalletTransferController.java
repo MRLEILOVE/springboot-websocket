@@ -60,17 +60,9 @@ public class TWalletTransferController extends BaseController<TWalletTransfer, T
         }
     }
 
- /*   @PostMapping("/biBiAccountEntry")
-    @ApiOperation(value="币币账户充值", notes="币币账户充值")
-    @ResponseBody
-    public String biBiAccountEntry(@RequestBody TransferDto transferDto){
-        System.out.println("用户id：" + transferDto.getUserId() + "币种： " +  transferDto.getCurrency() + "数量: " + transferDto.getNum() + "划转类型" + transferDto.getType());
-        return walletTransferService.biBiAccountEntry(transferDto);
-    }*/
-
-    @ApiOperation(value="查询用户钱包可用余额", notes="传用户id，币种名称")
-    @GetMapping(value = "/availableBalanceFeign")
-    public String availableBalanceFeign(@RequestParam("userId")Long userId, @RequestParam("currency")String currency){
-        return walletTransferService.availableBalance(userId, currency);
+    @ApiOperation(value="查询用户钱包可用余额", notes="传用户id，账户id币种id")
+    @GetMapping(value = "/availableBalance")
+    public String availableBalanceFeign(@RequestParam("userId")Long userId,@RequestParam("accountId")Long accountId, @RequestParam("currencyId")Long currencyId){
+        return walletTransferService.availableBalance(userId, accountId,currencyId);
     }
 }
