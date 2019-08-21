@@ -1,0 +1,611 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+	This code is generated automatically. Please do not edit it.
+	现在字段也可以要彻底动态？
+-->
+<mapper namespace="com.bittrade.__default.DAO.IDefaultWUserWalletDAO">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.bittrade.pojo.model.WUserWallet">
+		<id javaType="Long" property="id" jdbcType="BIGINT" column="id" />
+		<result javaType="String" property="platform" jdbcType="VARCHAR" column="platform" />
+		<result javaType="Long" property="userId" jdbcType="BIGINT" column="user_id" />
+		<result javaType="String" property="coinType" jdbcType="VARCHAR" column="coin_type" />
+		<result javaType="String" property="address" jdbcType="VARCHAR" column="address" />
+		<result javaType="String" property="privateKey" jdbcType="VARCHAR" column="private_key" />
+		<result javaType="String" property="codeQr" jdbcType="VARCHAR" column="code_qr" />
+		<result javaType="Byte" property="flag" jdbcType="INTEGER" column="flag" />
+		<result javaType="String" property="valid" jdbcType="CHAR" column="valid" />
+		<result javaType="java.time.LocalDateTime" property="createTime" jdbcType="TIMESTAMP" column="create_time" />
+		<result javaType="java.time.LocalDateTime" property="updateTime" jdbcType="TIMESTAMP" column="update_time" />
+	</resultMap>
+
+	<!--
+		通用查询结果列
+		其他类似的类似，也可以公用（共用）引用。
+	-->
+	<sql id="Base_Column_List">
+		<choose>
+			<when test="strArr_field != null">
+		<foreach collection="strArr_field" index="index" item="item" open="" separator="," close="">
+			`${item}`
+		</foreach>
+			</when>
+			<otherwise>
+		`id` AS `id`, 
+		`platform` AS `platform`, 
+		`user_id` AS `userId`, 
+		`coin_type` AS `coinType`, 
+		`address` AS `address`, 
+		`private_key` AS `privateKey`, 
+		`code_qr` AS `codeQr`, 
+		`flag` AS `flag`, 
+		`valid` AS `valid`, 
+		`create_time` AS `createTime`, 
+		`update_time` AS `updateTime`
+			</otherwise>
+		</choose>
+	</sql>
+	
+	<!-- 其他的也可以类似的加， yes， 类似蕾丝的。 -->
+	<sql id="sql_WHERE_forProperty">
+		<choose>
+			<when test="map_in != null">
+			
+		<foreach collection="map_in.entrySet()" index="map_index" item="map_item">
+		AND `${map_index}` IN 
+		<foreach collection="map_item" index="arr_index" item="arr_item" open="(" separator="," close=")">
+			#{arr_item}
+		</foreach>
+		</foreach>
+			
+			</when>
+			<!--
+			<when test="_parameter != null and _parameter.WUserWallet != null and WUserWallet.map_in != null">
+			</when>
+			<otherwise>
+			</otherwise>
+			-->
+		</choose>
+	</sql>
+	<sql id="sql_WHERE_forObject">
+		<choose>
+			<when test="wUserWallet.map_in != null">
+			
+		<foreach collection="wUserWallet.map_in.entrySet()" index="map_index" item="map_item">
+		AND `${map_index}` IN 
+		<foreach collection="map_item" index="arr_index" item="arr_item" open="(" separator="," close=")">
+			#{arr_item}
+		</foreach>
+		</foreach>
+			
+			</when>
+		</choose>
+	</sql>
+	
+	
+	<insert id="add" parameterType="com.bittrade.pojo.model.WUserWallet" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO w_user_wallet(`platform`, `user_id`, `coin_type`, `address`, `private_key`, `code_qr`, `flag`, `valid`, `create_time`, `update_time`)
+		VALUES(#{platform,jdbcType=VARCHAR}, #{userId,jdbcType=BIGINT}, #{coinType,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{privateKey,jdbcType=VARCHAR}, #{codeQr,jdbcType=VARCHAR}, #{flag,jdbcType=INTEGER}, #{valid,jdbcType=CHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+	</insert>
+	
+	<insert id="addWithSelective" parameterType="com.bittrade.pojo.model.WUserWallet" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO w_user_wallet(
+			<if test="platform != null">
+			`platform`, 
+			</if>
+			<if test="userId != null">
+			`user_id`, 
+			</if>
+			<if test="coinType != null">
+			`coin_type`, 
+			</if>
+			<if test="address != null">
+			`address`, 
+			</if>
+			<if test="privateKey != null">
+			`private_key`, 
+			</if>
+			<if test="codeQr != null">
+			`code_qr`, 
+			</if>
+			<if test="flag != null">
+			`flag`, 
+			</if>
+			<if test="valid != null">
+			`valid`, 
+			</if>
+			<if test="createTime != null">
+			`create_time`, 
+			</if>
+			<if test="updateTime != null">
+			`update_time`
+			</if>
+		)
+		VALUES(
+			<if test="platform != null">
+			#{platform,jdbcType=VARCHAR}, 
+			</if>
+			<if test="userId != null">
+			#{userId,jdbcType=BIGINT}, 
+			</if>
+			<if test="coinType != null">
+			#{coinType,jdbcType=VARCHAR}, 
+			</if>
+			<if test="address != null">
+			#{address,jdbcType=VARCHAR}, 
+			</if>
+			<if test="privateKey != null">
+			#{privateKey,jdbcType=VARCHAR}, 
+			</if>
+			<if test="codeQr != null">
+			#{codeQr,jdbcType=VARCHAR}, 
+			</if>
+			<if test="flag != null">
+			#{flag,jdbcType=INTEGER}, 
+			</if>
+			<if test="valid != null">
+			#{valid,jdbcType=CHAR}, 
+			</if>
+			<if test="createTime != null">
+			#{createTime,jdbcType=TIMESTAMP}, 
+			</if>
+			<if test="updateTime != null">
+			#{updateTime,jdbcType=TIMESTAMP}
+			</if>
+		)
+	</insert>
+	
+	<delete id="removeByPK">
+		DELETE FROM w_user_wallet
+		<where>
+			AND `id` = #{id,jdbcType=BIGINT}
+		</where>
+	</delete>
+	
+	<delete id="removeBy" parameterType="com.bittrade.pojo.model.WUserWallet">
+		DELETE FROM w_user_wallet
+		<where>
+			<if test="platform != null">
+			AND `platform` = #{platform,jdbcType=VARCHAR}
+			</if>
+			<if test="userId != null">
+			AND `user_id` = #{userId,jdbcType=BIGINT}
+			</if>
+			<if test="coinType != null">
+			AND `coin_type` = #{coinType,jdbcType=VARCHAR}
+			</if>
+			<if test="address != null">
+			AND `address` = #{address,jdbcType=VARCHAR}
+			</if>
+			<if test="privateKey != null">
+			AND `private_key` = #{privateKey,jdbcType=VARCHAR}
+			</if>
+			<if test="codeQr != null">
+			AND `code_qr` = #{codeQr,jdbcType=VARCHAR}
+			</if>
+			<if test="flag != null">
+			AND `flag` = #{flag,jdbcType=INTEGER}
+			</if>
+			<if test="valid != null">
+			AND `valid` = #{valid,jdbcType=CHAR}
+			</if>
+			<if test="createTime != null">
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="updateTime != null">
+			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+		</where>
+	</delete>
+	
+	<update id="modifyByPK" parameterType="com.bittrade.pojo.model.WUserWallet">
+		UPDATE w_user_wallet
+		<set>
+			`platform` = #{platform,jdbcType=VARCHAR}, 
+			`user_id` = #{userId,jdbcType=BIGINT}, 
+			`coin_type` = #{coinType,jdbcType=VARCHAR}, 
+			`address` = #{address,jdbcType=VARCHAR}, 
+			`private_key` = #{privateKey,jdbcType=VARCHAR}, 
+			`code_qr` = #{codeQr,jdbcType=VARCHAR}, 
+			`flag` = #{flag,jdbcType=INTEGER}, 
+			`valid` = #{valid,jdbcType=CHAR}, 
+			`create_time` = #{createTime,jdbcType=TIMESTAMP}, 
+			`update_time` = #{updateTime,jdbcType=TIMESTAMP}, 
+		</set>
+		<where>
+			AND `id` = #{id,jdbcType=BIGINT}
+		</where>
+	</update>
+	
+	<update id="modifyWithSelectiveByPK" parameterType="com.bittrade.pojo.model.WUserWallet">
+		UPDATE w_user_wallet
+		<set>
+			<if test="platform != null">
+			`platform` = #{platform,jdbcType=VARCHAR}, 
+			</if>
+			<if test="userId != null">
+			`user_id` = #{userId,jdbcType=BIGINT}, 
+			</if>
+			<if test="coinType != null">
+			`coin_type` = #{coinType,jdbcType=VARCHAR}, 
+			</if>
+			<if test="address != null">
+			`address` = #{address,jdbcType=VARCHAR}, 
+			</if>
+			<if test="privateKey != null">
+			`private_key` = #{privateKey,jdbcType=VARCHAR}, 
+			</if>
+			<if test="codeQr != null">
+			`code_qr` = #{codeQr,jdbcType=VARCHAR}, 
+			</if>
+			<if test="flag != null">
+			`flag` = #{flag,jdbcType=INTEGER}, 
+			</if>
+			<if test="valid != null">
+			`valid` = #{valid,jdbcType=CHAR}, 
+			</if>
+			<if test="createTime != null">
+			`create_time` = #{createTime,jdbcType=TIMESTAMP}, 
+			</if>
+			<if test="updateTime != null">
+			`update_time` = #{updateTime,jdbcType=TIMESTAMP}, 
+			</if>
+		</set>
+		<where>
+			AND `id` = #{id,jdbcType=BIGINT}
+		</where>
+	</update>
+	
+	<update id="modifyBy">
+		UPDATE w_user_wallet
+		<set>
+			`platform` = #{wUserWallet.platform,jdbcType=VARCHAR}, 
+			`user_id` = #{wUserWallet.userId,jdbcType=BIGINT}, 
+			`coin_type` = #{wUserWallet.coinType,jdbcType=VARCHAR}, 
+			`address` = #{wUserWallet.address,jdbcType=VARCHAR}, 
+			`private_key` = #{wUserWallet.privateKey,jdbcType=VARCHAR}, 
+			`code_qr` = #{wUserWallet.codeQr,jdbcType=VARCHAR}, 
+			`flag` = #{wUserWallet.flag,jdbcType=INTEGER}, 
+			`valid` = #{wUserWallet.valid,jdbcType=CHAR}, 
+			`create_time` = #{wUserWallet.createTime,jdbcType=TIMESTAMP}, 
+			`update_time` = #{wUserWallet.updateTime,jdbcType=TIMESTAMP}, 
+		</set>
+		<where>
+		<if test="condiWUserWallet != null">
+			<if test="condiWUserWallet.id != null">
+			AND `id` = #{condiWUserWallet.id,jdbcType=BIGINT}
+			</if>
+			<if test="condiWUserWallet.platform != null">
+			AND `platform` = #{condiWUserWallet.platform,jdbcType=VARCHAR}
+			</if>
+			<if test="condiWUserWallet.userId != null">
+			AND `user_id` = #{condiWUserWallet.userId,jdbcType=BIGINT}
+			</if>
+			<if test="condiWUserWallet.coinType != null">
+			AND `coin_type` = #{condiWUserWallet.coinType,jdbcType=VARCHAR}
+			</if>
+			<if test="condiWUserWallet.address != null">
+			AND `address` = #{condiWUserWallet.address,jdbcType=VARCHAR}
+			</if>
+			<if test="condiWUserWallet.privateKey != null">
+			AND `private_key` = #{condiWUserWallet.privateKey,jdbcType=VARCHAR}
+			</if>
+			<if test="condiWUserWallet.codeQr != null">
+			AND `code_qr` = #{condiWUserWallet.codeQr,jdbcType=VARCHAR}
+			</if>
+			<if test="condiWUserWallet.flag != null">
+			AND `flag` = #{condiWUserWallet.flag,jdbcType=INTEGER}
+			</if>
+			<if test="condiWUserWallet.valid != null">
+			AND `valid` = #{condiWUserWallet.valid,jdbcType=CHAR}
+			</if>
+			<if test="condiWUserWallet.createTime != null">
+			AND `create_time` = #{condiWUserWallet.createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="condiWUserWallet.updateTime != null">
+			AND `update_time` = #{condiWUserWallet.updateTime,jdbcType=TIMESTAMP}
+			</if>
+		</if>
+		</where>
+	</update>
+	
+	<update id="modifyWithSelectiveBy">
+		UPDATE w_user_wallet
+		<set>
+		<if test="wUserWallet != null">
+			<if test="wUserWallet.platform != null">
+			`platform` = #{wUserWallet.platform,jdbcType=VARCHAR}, 
+			</if>
+			<if test="wUserWallet.userId != null">
+			`user_id` = #{wUserWallet.userId,jdbcType=BIGINT}, 
+			</if>
+			<if test="wUserWallet.coinType != null">
+			`coin_type` = #{wUserWallet.coinType,jdbcType=VARCHAR}, 
+			</if>
+			<if test="wUserWallet.address != null">
+			`address` = #{wUserWallet.address,jdbcType=VARCHAR}, 
+			</if>
+			<if test="wUserWallet.privateKey != null">
+			`private_key` = #{wUserWallet.privateKey,jdbcType=VARCHAR}, 
+			</if>
+			<if test="wUserWallet.codeQr != null">
+			`code_qr` = #{wUserWallet.codeQr,jdbcType=VARCHAR}, 
+			</if>
+			<if test="wUserWallet.flag != null">
+			`flag` = #{wUserWallet.flag,jdbcType=INTEGER}, 
+			</if>
+			<if test="wUserWallet.valid != null">
+			`valid` = #{wUserWallet.valid,jdbcType=CHAR}, 
+			</if>
+			<if test="wUserWallet.createTime != null">
+			`create_time` = #{wUserWallet.createTime,jdbcType=TIMESTAMP}, 
+			</if>
+			<if test="wUserWallet.updateTime != null">
+			`update_time` = #{wUserWallet.updateTime,jdbcType=TIMESTAMP}, 
+			</if>
+		</if>
+		</set>
+		<where>
+		<if test="condiWUserWallet != null">
+			<if test="condiWUserWallet.id != null">
+			AND `id` = #{condiWUserWallet.id,jdbcType=BIGINT}
+			</if>
+			<if test="condiWUserWallet.platform != null">
+			AND `platform` = #{condiWUserWallet.platform,jdbcType=VARCHAR}
+			</if>
+			<if test="condiWUserWallet.userId != null">
+			AND `user_id` = #{condiWUserWallet.userId,jdbcType=BIGINT}
+			</if>
+			<if test="condiWUserWallet.coinType != null">
+			AND `coin_type` = #{condiWUserWallet.coinType,jdbcType=VARCHAR}
+			</if>
+			<if test="condiWUserWallet.address != null">
+			AND `address` = #{condiWUserWallet.address,jdbcType=VARCHAR}
+			</if>
+			<if test="condiWUserWallet.privateKey != null">
+			AND `private_key` = #{condiWUserWallet.privateKey,jdbcType=VARCHAR}
+			</if>
+			<if test="condiWUserWallet.codeQr != null">
+			AND `code_qr` = #{condiWUserWallet.codeQr,jdbcType=VARCHAR}
+			</if>
+			<if test="condiWUserWallet.flag != null">
+			AND `flag` = #{condiWUserWallet.flag,jdbcType=INTEGER}
+			</if>
+			<if test="condiWUserWallet.valid != null">
+			AND `valid` = #{condiWUserWallet.valid,jdbcType=CHAR}
+			</if>
+			<if test="condiWUserWallet.createTime != null">
+			AND `create_time` = #{condiWUserWallet.createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="condiWUserWallet.updateTime != null">
+			AND `update_time` = #{condiWUserWallet.updateTime,jdbcType=TIMESTAMP}
+			</if>
+		</if>
+		</where>
+	</update>
+	
+	<select id="getByPK" resultType="com.bittrade.pojo.model.WUserWallet">
+		SELECT 
+			`id`, 
+			`platform`, 
+			`user_id`, 
+			`coin_type`, 
+			`address`, 
+			`private_key`, 
+			`code_qr`, 
+			`flag`, 
+			`valid`, 
+			`create_time`, 
+			`update_time`
+		FROM w_user_wallet
+		<where>
+			AND `id` = #{id,jdbcType=BIGINT}
+		</where>
+	</select>
+	
+	<select id="getBy" resultType="com.bittrade.pojo.model.WUserWallet">
+		SELECT 
+			`id`, 
+			`platform`, 
+			`user_id`, 
+			`coin_type`, 
+			`address`, 
+			`private_key`, 
+			`code_qr`, 
+			`flag`, 
+			`valid`, 
+			`create_time`, 
+			`update_time`
+		FROM w_user_wallet
+		<where>
+			<if test="platform != null">
+			AND `platform` = #{platform,jdbcType=VARCHAR}
+			</if>
+			<if test="userId != null">
+			AND `user_id` = #{userId,jdbcType=BIGINT}
+			</if>
+			<if test="coinType != null">
+			AND `coin_type` = #{coinType,jdbcType=VARCHAR}
+			</if>
+			<if test="address != null">
+			AND `address` = #{address,jdbcType=VARCHAR}
+			</if>
+			<if test="privateKey != null">
+			AND `private_key` = #{privateKey,jdbcType=VARCHAR}
+			</if>
+			<if test="codeQr != null">
+			AND `code_qr` = #{codeQr,jdbcType=VARCHAR}
+			</if>
+			<if test="flag != null">
+			AND `flag` = #{flag,jdbcType=INTEGER}
+			</if>
+			<if test="valid != null">
+			AND `valid` = #{valid,jdbcType=CHAR}
+			</if>
+			<if test="createTime != null">
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="updateTime != null">
+			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+		</where>
+		LIMIT 1
+	</select>
+	
+	<select id="get" resultType="com.bittrade.pojo.model.WUserWallet">
+		SELECT 
+			`id`, 
+			`platform`, 
+			`user_id`, 
+			`coin_type`, 
+			`address`, 
+			`private_key`, 
+			`code_qr`, 
+			`flag`, 
+			`valid`, 
+			`create_time`, 
+			`update_time`
+		FROM w_user_wallet
+		LIMIT 1
+	</select>
+	
+	<select id="getsBy" resultType="com.bittrade.pojo.model.WUserWallet">
+		SELECT 
+			<include refid="Base_Column_List"></include>
+		FROM w_user_wallet
+		<where>
+			<if test="platform != null">
+			AND `platform` = #{platform,jdbcType=VARCHAR}
+			</if>
+			<if test="userId != null">
+			AND `user_id` = #{userId,jdbcType=BIGINT}
+			</if>
+			<if test="coinType != null">
+			AND `coin_type` = #{coinType,jdbcType=VARCHAR}
+			</if>
+			<if test="address != null">
+			AND `address` = #{address,jdbcType=VARCHAR}
+			</if>
+			<if test="privateKey != null">
+			AND `private_key` = #{privateKey,jdbcType=VARCHAR}
+			</if>
+			<if test="codeQr != null">
+			AND `code_qr` = #{codeQr,jdbcType=VARCHAR}
+			</if>
+			<if test="flag != null">
+			AND `flag` = #{flag,jdbcType=INTEGER}
+			</if>
+			<if test="valid != null">
+			AND `valid` = #{valid,jdbcType=CHAR}
+			</if>
+			<if test="createTime != null">
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="updateTime != null">
+			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+			<include refid="sql_WHERE_forProperty"></include>
+		</where>
+	</select>
+	
+	<select id="gets" resultType="com.bittrade.pojo.model.WUserWallet">
+		SELECT 
+			<include refid="Base_Column_List"></include>
+		FROM w_user_wallet
+	</select>
+	
+	<select id="getCntBy" resultType="int">
+		SELECT COUNT(1)
+		FROM w_user_wallet
+		<where>
+		<if test="wUserWallet != null">
+			<if test="wUserWallet.platform != null">
+			AND `platform` = #{wUserWallet.platform,jdbcType=VARCHAR}
+			</if>
+			<if test="wUserWallet.userId != null">
+			AND `user_id` = #{wUserWallet.userId,jdbcType=BIGINT}
+			</if>
+			<if test="wUserWallet.coinType != null">
+			AND `coin_type` = #{wUserWallet.coinType,jdbcType=VARCHAR}
+			</if>
+			<if test="wUserWallet.address != null">
+			AND `address` = #{wUserWallet.address,jdbcType=VARCHAR}
+			</if>
+			<if test="wUserWallet.privateKey != null">
+			AND `private_key` = #{wUserWallet.privateKey,jdbcType=VARCHAR}
+			</if>
+			<if test="wUserWallet.codeQr != null">
+			AND `code_qr` = #{wUserWallet.codeQr,jdbcType=VARCHAR}
+			</if>
+			<if test="wUserWallet.flag != null">
+			AND `flag` = #{wUserWallet.flag,jdbcType=INTEGER}
+			</if>
+			<if test="wUserWallet.valid != null">
+			AND `valid` = #{wUserWallet.valid,jdbcType=CHAR}
+			</if>
+			<if test="wUserWallet.createTime != null">
+			AND `create_time` = #{wUserWallet.createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="wUserWallet.updateTime != null">
+			AND `update_time` = #{wUserWallet.updateTime,jdbcType=TIMESTAMP}
+			</if>
+			<include refid="sql_WHERE_forObject"></include>
+		</if>
+		</where>
+	</select>
+	
+	<select id="getsByPage" resultType="com.bittrade.pojo.model.WUserWallet">
+		SELECT 
+			`id`, 
+			`platform`, 
+			`user_id`, 
+			`coin_type`, 
+			`address`, 
+			`private_key`, 
+			`code_qr`, 
+			`flag`, 
+			`valid`, 
+			`create_time`, 
+			`update_time`
+		FROM w_user_wallet
+		<where>
+		<if test="wUserWallet != null">
+			<if test="wUserWallet.platform != null">
+			AND `platform` = #{wUserWallet.platform,jdbcType=VARCHAR}
+			</if>
+			<if test="wUserWallet.userId != null">
+			AND `user_id` = #{wUserWallet.userId,jdbcType=BIGINT}
+			</if>
+			<if test="wUserWallet.coinType != null">
+			AND `coin_type` = #{wUserWallet.coinType,jdbcType=VARCHAR}
+			</if>
+			<if test="wUserWallet.address != null">
+			AND `address` = #{wUserWallet.address,jdbcType=VARCHAR}
+			</if>
+			<if test="wUserWallet.privateKey != null">
+			AND `private_key` = #{wUserWallet.privateKey,jdbcType=VARCHAR}
+			</if>
+			<if test="wUserWallet.codeQr != null">
+			AND `code_qr` = #{wUserWallet.codeQr,jdbcType=VARCHAR}
+			</if>
+			<if test="wUserWallet.flag != null">
+			AND `flag` = #{wUserWallet.flag,jdbcType=INTEGER}
+			</if>
+			<if test="wUserWallet.valid != null">
+			AND `valid` = #{wUserWallet.valid,jdbcType=CHAR}
+			</if>
+			<if test="wUserWallet.createTime != null">
+			AND `create_time` = #{wUserWallet.createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="wUserWallet.updateTime != null">
+			AND `update_time` = #{wUserWallet.updateTime,jdbcType=TIMESTAMP}
+			</if>
+			<include refid="sql_WHERE_forObject"></include>
+		</if>
+		</where>
+		LIMIT #{page}, #{size}
+	</select>
+
+</mapper>

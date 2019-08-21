@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bittrade.currency.dao.ITTransferDirectionDAO">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.bittrade.pojo.model.TTransferDirection">
+		<id javaType="int" property="id" jdbcType="INTEGER" column="id" />
+		<result javaType="java.time.LocalDateTime" property="createTime" jdbcType="TIMESTAMP" column="create_time" />
+		<result javaType="java.time.LocalDateTime" property="updateTime" jdbcType="TIMESTAMP" column="update_time" />
+		<result javaType="Integer" property="mainAccountId" jdbcType="INTEGER" column="main_account_id" />
+		<result javaType="Integer" property="targetAccountId" jdbcType="INTEGER" column="target_account_id" />
+		<result javaType="Integer" property="status" jdbcType="INTEGER" column="status" />
+	</resultMap>
+
+	<!-- 通用查询结果列 -->
+	<sql id="Base_Column_List">
+		`id` AS id, 
+		`create_time` AS createTime, 
+		`update_time` AS updateTime, 
+		`main_account_id` AS mainAccountId, 
+		`target_account_id` AS targetAccountId, 
+		`status` AS status
+	</sql>
+
+</mapper>

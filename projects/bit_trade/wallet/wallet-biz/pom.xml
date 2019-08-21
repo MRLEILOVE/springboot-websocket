@@ -17,6 +17,10 @@
 			<groupId>com.bittrade</groupId>
 			<artifactId>core-web</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>com.bittrade</groupId>
+			<artifactId>wallet-biz-api</artifactId>
+		</dependency>
 		
 		<dependency>
 			<groupId>org.springframework.data</groupId>

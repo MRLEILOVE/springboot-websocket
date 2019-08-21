@@ -84,7 +84,7 @@ spring:
     #password: dev@xlkj20190711
     password: Qdsemmde_sde@#!Bitrade
   application:
-    name: walletbiz:@pom.artifactId@
+    name: wallet-biz:@pom.artifactId@
   http:
     encoding:
       force: true
@@ -93,7 +93,7 @@ spring:
 
 mybatis:
   mapper-locations:
-    classpath: mapper/*.xml
+    classpath: SQL/*.xml
     type-aliases-package: com.wallet.biz.pojo
 
 

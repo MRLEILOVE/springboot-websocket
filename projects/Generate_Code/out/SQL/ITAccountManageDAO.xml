@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bittrade.currency.dao.ITAccountManageDAO">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.bittrade.pojo.model.TAccountManage">
+		<id javaType="int" property="id" jdbcType="INTEGER" column="id" />
+		<result javaType="java.time.LocalDateTime" property="createTime" jdbcType="TIMESTAMP" column="create_time" />
+		<result javaType="java.time.LocalDateTime" property="updateTime" jdbcType="TIMESTAMP" column="update_time" />
+		<result javaType="String" property="name" jdbcType="VARCHAR" column="name" />
+		<result javaType="String" property="keyName" jdbcType="VARCHAR" column="key_name" />
+		<result javaType="String" property="value" jdbcType="VARCHAR" column="value" />
+		<result javaType="String" property="locality" jdbcType="VARCHAR" column="locality" />
+	</resultMap>
+
+	<!-- 通用查询结果列 -->
+	<sql id="Base_Column_List">
+		`id` AS id, 
+		`create_time` AS createTime, 
+		`update_time` AS updateTime, 
+		`name` AS name, 
+		`key_name` AS keyName, 
+		`value` AS value, 
+		`locality` AS locality
+	</sql>
+
+</mapper>

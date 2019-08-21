@@ -9,6 +9,8 @@
 		<result javaType="String" property="shortName" jdbcType="VARCHAR" column="short_name" />
 		<result javaType="Byte" property="status" jdbcType="INTEGER" column="status" />
 		<result javaType="Byte" property="type" jdbcType="INTEGER" column="type" />
+		<result javaType="Byte" property="isRecharge" jdbcType="INTEGER" column="is_recharge" />
+		<result javaType="Byte" property="isWithdraw" jdbcType="INTEGER" column="is_withdraw" />
 		<result javaType="String" property="desc" jdbcType="VARCHAR" column="desc" />
 		<result javaType="java.time.LocalDateTime" property="createTime" jdbcType="TIMESTAMP" column="create_time" />
 	</resultMap>
@@ -20,6 +22,8 @@
 		`short_name` AS shortName, 
 		`status` AS status, 
 		`type` AS type, 
+		`is_recharge` AS isRecharge, 
+		`is_withdraw` AS isWithdraw, 
 		`desc` AS desc, 
 		`create_time` AS createTime
 	</sql>

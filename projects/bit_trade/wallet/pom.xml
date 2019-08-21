@@ -15,8 +15,9 @@
 	<packaging>pom</packaging>
 
 	<modules>
-		<module>wallet-chain</module>
+		<module>wallet-biz-api</module>
 		<module>wallet-biz</module>
+		<module>wallet-chain</module>
 	</modules>
 
 	<dependencyManagement>
@@ -31,27 +32,7 @@
 
 			<dependency>
 				<groupId>com.bittrade</groupId>
-				<artifactId>bittrade-pojo</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.bittrade</groupId>
-				<artifactId>bittrade-__default</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.bittrade</groupId>
-				<artifactId>bittrade-common</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.bittrade</groupId>
-				<artifactId>bittrade-currency-api</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.bittrade</groupId>
-				<artifactId>bittrade-entrust-api</artifactId>
+				<artifactId>wallet-biz-api</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 		</dependencies>

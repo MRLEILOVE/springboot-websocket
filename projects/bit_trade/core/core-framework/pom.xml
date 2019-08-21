@@ -68,7 +68,7 @@
 			@see org.springframework.data.redis.connection.jedis.JedisConnectionFactory .
 			@see and other ...
 		-->
-		<!-- <dependency>
+		<dependency>
 			<groupId>org.springframework.data</groupId>
 			<artifactId>spring-data-redis</artifactId>
 		</dependency>
@@ -81,7 +81,7 @@
 					<artifactId>lettuce-core</artifactId>
 				</exclusion>
 			</exclusions>
-		</dependency> -->
+		</dependency>
 		
 		<!-- <dependency>
 			<groupId>com.alibaba</groupId>
