@@ -10,6 +10,7 @@ import com.bittrade.pojo.vo.LegalCurrencyCoinVO;
 import com.bittrade.pojo.vo.TLegalCurrencyCoinVO;
 import com.google.common.collect.Lists;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,7 +19,10 @@ import java.util.List;
  * @author Administrator
  */
 @Service
+@com.alibaba.dubbo.config.annotation.Service
 public class TLegalCurrencyCoinServiceImpl extends DefaultTLegalCurrencyCoinServiceImpl<ITLegalCurrencyCoinDAO, TLegalCurrencyCoin, TLegalCurrencyCoinDTO, TLegalCurrencyCoinVO> implements ITLegalCurrencyCoinService {
+	@Autowired
+	private ITLegalCurrencyCoinDAO currencyCoinDAO;
 
 	/**
 	 * 获取法币虚拟币列表
@@ -48,5 +52,16 @@ public class TLegalCurrencyCoinServiceImpl extends DefaultTLegalCurrencyCoinServ
 			legalCurrencyCoinVOs.add(legalCurrencyCoinVO);
 		});
 		return legalCurrencyCoinVOs;
+	}
+
+	/**
+	 * 通过币种名称获取币种
+	 * @param currencyName 币种名称
+	 * @return 币种对象
+	 */
+	@Override
+	public TLegalCurrencyCoin getByName(String currencyName) {
+		TLegalCurrencyCoin qryCoin = TLegalCurrencyCoin.builder().name(currencyName).build();
+		return currencyCoinDAO.getBy(qryCoin);
 	}
 }

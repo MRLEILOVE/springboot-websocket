@@ -1,5 +1,8 @@
 package com.bittrade.common.enums;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 资金账户币种
  */
@@ -42,5 +45,14 @@ public enum FundCoinEnumer {
             }
         }
         return null;
+    }
+
+    //获取所有value
+    public static List<String> getValues(){
+        List<String> values = new ArrayList<>();
+        for(TransferTypeEnum s : TransferTypeEnum.values()){
+            values.add(s.getName());
+        }
+        return values;
     }
 }

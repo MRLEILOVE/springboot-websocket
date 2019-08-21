@@ -1,5 +1,7 @@
 package com.bittrade.currency.service.impl;
 
+import com.bittrade.common.enums.StatusEnumer;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.bittrade.__default.service.impl.DefaultTTransferDirectionServiceImpl;
@@ -9,6 +11,8 @@ import com.bittrade.pojo.vo.TTransferDirectionVO;
 import com.bittrade.pojo.model.TTransferDirection;
 import com.bittrade.currency.api.service.ITTransferDirectionService;
 
+import java.util.List;
+
 /**
  * 
  * @author Administrator
@@ -16,5 +20,16 @@ import com.bittrade.currency.api.service.ITTransferDirectionService;
  */
 @Service
 public class TTransferDirectionServiceImpl extends DefaultTTransferDirectionServiceImpl<ITTransferDirectionDAO, TTransferDirection, TTransferDirectionDTO, TTransferDirectionVO> implements ITTransferDirectionService {
-	
+    @Autowired
+    private ITTransferDirectionDAO transferDirectionDAO;
+
+    /**
+     * 资金划转方向
+     * @return
+     */
+    @Override
+    public List<TTransferDirection> direction() {
+        TTransferDirection qryDirection = TTransferDirection.builder().status(StatusEnumer.ENABLE.getCode().intValue()).build();
+        return transferDirectionDAO.getsBy(qryDirection);
+    }
 }

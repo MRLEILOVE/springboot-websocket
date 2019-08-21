@@ -28,4 +28,21 @@
 		`update_time` AS updateTime
 	</sql>
 
+	<update id="fundAccountIn">
+		UPDATE w_wallet_account
+		SET
+			total = total + #{num},
+			update_time = now(),
+			version = version + 1
+		WHERE id = #{id} AND version = #{version}
+	</update>
+
+	<update id="fundAccountOut">
+		UPDATE w_wallet_account
+		SET
+			total = total - #{num},
+			update_time = now(),
+			version = version + 1
+		WHERE id = #{id} AND version = #{version}
+	</update>
 </mapper>
