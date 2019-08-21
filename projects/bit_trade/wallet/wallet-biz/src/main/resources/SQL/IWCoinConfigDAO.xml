@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.bittrade.currency.dao.IWCoinConfigDAO">
+<mapper namespace="com.wallet.biz.dao.IWCoinConfigDAO">
 
 	<!-- 通用查询映射结果 -->
-	<resultMap id="BaseResultMap" type="com.bittrade.pojo.model.WCoinConfig">
+	<resultMap id="BaseResultMap" type="com.wallet.biz.pojo.model.WCoinConfig">
 		<id javaType="int" property="id" jdbcType="INTEGER" column="id" />
 		<result javaType="String" property="coinType" jdbcType="VARCHAR" column="coin_type" />
 		<result javaType="String" property="token" jdbcType="VARCHAR" column="token" />

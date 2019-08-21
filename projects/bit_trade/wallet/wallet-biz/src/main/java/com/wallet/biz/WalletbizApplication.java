@@ -13,7 +13,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import com.spring4all.swagger.EnableSwagger2Doc;
 
 @SpringBootApplication
-@MapperScan("com.wallet.biz.mapper")
+@MapperScan("com.wallet.biz.dao")
 @EnableDiscoveryClient
 @EnableEurekaClient
 @EnableFeignClients
