@@ -5,14 +5,12 @@ import com.alibaba.fastjson.JSONObject;
 import com.bittrade.__default.service.impl.DefaultTWalletServiceImpl;
 import com.bittrade.c2c.service.ITLegalCurrencyAccountService;
 import com.bittrade.common.constant.IConstant;
-import com.bittrade.common.enums.StatusEnumer;
 import com.bittrade.common.utils.RedisKeyUtil;
 import com.bittrade.currency.api.service.ITWalletService;
 import com.bittrade.currency.dao.ITCurrencyDAO;
 import com.bittrade.currency.dao.ITCurrencyTradeDAO;
 import com.bittrade.currency.dao.ITWalletDAO;
 import com.bittrade.currency.dao.ITWalletRecordDAO;
-import com.bittrade.currency.feign.AssetsService;
 import com.bittrade.pojo.dto.TWalletDTO;
 import com.bittrade.pojo.model.*;
 import com.bittrade.pojo.vo.*;
@@ -51,8 +49,6 @@ public class TWalletServiceImpl extends DefaultTWalletServiceImpl<ITWalletDAO, T
 	private ITCurrencyTradeDAO		currencyTradeDAO;
 	@Autowired
 	private ITWalletRecordDAO		walletRecordDAO;
-	@Autowired
-	private AssetsService 			assetsService;
 	@Autowired
 	private ITCurrencyDAO 			currencyDAO;
 	@Reference
@@ -255,8 +251,8 @@ public class TWalletServiceImpl extends DefaultTWalletServiceImpl<ITWalletDAO, T
 		//远程调用
 		try {
 			//资金账户
-			String funds = assetsService.getAssets(userId);
-			totalUSDT = totalUSDT.add(new BigDecimal(funds));
+			/*String funds = assetsService.getAssets(userId);
+			totalUSDT = totalUSDT.add(new BigDecimal(funds));*/
 
 			//法币账户
 			ConversionVo vo = legalCurrencyAccountService.totalConversion(userId);

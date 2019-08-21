@@ -25,4 +25,11 @@ public interface ITLegalCurrencyCoinService extends IDefaultTLegalCurrencyCoinSe
 	 * @return
 	 */
 	List<LegalCurrencyCoinVO> listLegalCurrencyCoins();
+
+	/**
+	 * 通过币种名称获取币种
+	 * @param currencyName 币种名称
+	 * @return 币种对象
+	 */
+    TLegalCurrencyCoin getByName(String currencyName);
 }

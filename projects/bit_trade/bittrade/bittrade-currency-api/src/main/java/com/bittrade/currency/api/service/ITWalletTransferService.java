@@ -7,6 +7,9 @@ import com.bittrade.pojo.model.TWalletTransfer;
 import com.bittrade.pojo.vo.TWalletTransferVO;
 import com.core.common.DTO.ReturnDTO;
 
+import java.math.BigDecimal;
+import java.util.List;
+
 /**
  * 
  * @author Administrator
@@ -22,8 +25,16 @@ public interface ITWalletTransferService extends IDefaultTWalletTransferService<
      * 查询用户钱包可用余额
      * @param userId 用户id
      * @param accountId 账户id
-     * @param currencyId 币种id
+     * @param currencyName 币种名称
      * @return
      */
-    String availableBalance(Long userId, Long accountId, Long currencyId);
+    BigDecimal availableBalance(Long userId, Long accountId, String currencyName);
+
+    /**
+     * 两个账户共同币种
+     * @param accountId1 账户1id
+     * @param accountId2 账户2id
+     * @return 币种列表
+     */
+    List<String> togetherCoin(Long accountId1, Long accountId2);
 }

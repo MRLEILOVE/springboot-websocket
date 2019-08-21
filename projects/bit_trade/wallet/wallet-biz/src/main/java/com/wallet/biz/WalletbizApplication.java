@@ -10,6 +10,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
+import com.alibaba.dubbo.config.spring.context.annotation.EnableDubbo;
 import com.spring4all.swagger.EnableSwagger2Doc;
 
 @SpringBootApplication
@@ -21,6 +22,7 @@ import com.spring4all.swagger.EnableSwagger2Doc;
 @EnableSwagger2Doc
 @EnableAsync
 @EnableScheduling
+@EnableDubbo
 public class WalletbizApplication {
 
     public static void main(String[] args) {

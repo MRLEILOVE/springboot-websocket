@@ -1,6 +1,7 @@
 package com.bittrade.currency.controller;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,7 +63,16 @@ public class TWalletTransferController extends BaseController<TWalletTransfer, T
 
     @ApiOperation(value="查询用户钱包可用余额", notes="传用户id，账户id币种id")
     @GetMapping(value = "/availableBalance")
-    public String availableBalanceFeign(@RequestParam("userId")Long userId,@RequestParam("accountId")Long accountId, @RequestParam("currencyId")Long currencyId){
-        return walletTransferService.availableBalance(userId, accountId,currencyId);
+    public ReturnDTO<BigDecimal> availableBalanceFeign(@ALoginUser LoginUser user,@RequestParam("accountId")Long accountId, @RequestParam("currencyName")String currencyName){
+        if(user == null || user.getUser_id() == null){
+            return ReturnDTO.error("用户未登录");
+        }
+        return ReturnDTO.ok(walletTransferService.availableBalance(user.getUser_id(), accountId,currencyName));
+    }
+
+    @ApiOperation(value="两个账户共同币种", notes="两个账户共同币种")
+    @GetMapping(value = "/togetherCoin")
+    public ReturnDTO<List<String>> togetherCoin(@RequestParam("accountId1")Long accountId1, @RequestParam("accountId2")Long accountId2){
+        return ReturnDTO.ok(walletTransferService.togetherCoin( accountId1,accountId2));
     }
 }

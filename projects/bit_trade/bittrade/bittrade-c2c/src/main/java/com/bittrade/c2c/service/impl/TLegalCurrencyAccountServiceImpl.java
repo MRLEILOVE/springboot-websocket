@@ -36,6 +36,7 @@ import redis.clients.jedis.JedisCluster;
  *
  */
 @Service
+@com.alibaba.dubbo.config.annotation.Service
 public class TLegalCurrencyAccountServiceImpl extends DefaultTLegalCurrencyAccountServiceImpl<ITLegalCurrencyAccountDAO, TLegalCurrencyAccount, TLegalCurrencyAccountDTO, TLegalCurrencyAccountVO> implements ITLegalCurrencyAccountService {
 
     @Autowired
