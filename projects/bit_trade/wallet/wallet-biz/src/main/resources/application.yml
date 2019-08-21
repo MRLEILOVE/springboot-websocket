@@ -1,5 +1,5 @@
 
-dubbo.protocol.port: 20882
+dubbo.protocol.port: 20883
 
 spring:
   redis:
@@ -15,7 +15,7 @@ spring:
       coin-config: 300
       user-wallet: 300
   profiles:
-    active: dev, dubbo_provider
+    active: dev, common, dubbo_provider
   task:
     scheduling:
       pool:
