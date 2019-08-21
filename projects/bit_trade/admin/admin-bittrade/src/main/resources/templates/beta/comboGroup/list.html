@@ -48,8 +48,6 @@
     });
     var deleteConfig = [[${@permission.hasPermi('comboGroup:delete')}]];
     var editFlag = [[${@dict.getType('comboGroup:edit')}]];
-
-    var statusFlag = [[${@permission.hasPermi('updateComboGroupStop:update')}]];
     var prefix = ctx + "beta/comboGroup";
     $(function() {
         var options = {
@@ -91,14 +89,6 @@
                         var actions = [];
                         actions.push('<span class="depreciate">' + value + "%" + '</span>');
                         return actions.join('');
-                    }
-                },
-
-                {
-                    title: '套餐状态',
-                    align: 'center',
-                    formatter: function (value, row, index) {
-                        return statusTools(row);
                     }
                 },
                 {
@@ -210,32 +200,6 @@
     function comboGroupEdit(id) {
         var url = 'comboGroup/comboGroupEdit/'+id;
         $.modal.open("抢狗概率", url, '800', '500');
-    }
-
-    function statusTools(row) {
-        if (row.type == 0) {
-            return '<i class=\"fa fa-toggle-off text-info fa-2x\" onclick="start(\'' + row.id + '\')"></i> ';
-        } else {
-            return '<i class=\"fa fa-toggle-on text-info fa-2x\" onclick="stop(\'' + row.id + '\')"></i> ';
-        }
-    }
-
-
-
-    /* -停用 */
-    function stop(id) {
-        $.modal.confirm("确认要停止抢狗？", function() {
-            // $.operate.post(prefix + "/updateComboGroupStop/"+id+"/"+0);
-            $.operate.post(prefix + "/updateComboGroupStop", { "id": id, "type": 0 });
-        })
-    }
-
-    /* -启用 */
-    function start(id) {
-        $.modal.confirm("确认要重新抢狗？", function() {
-            // $.operate.post(prefix + "/updateComboGroupStop/"+id+"/"+1);
-            $.operate.post(prefix + "/updateComboGroupStop", { "id": id,"type":1});
-        })
     }
 
 </script>

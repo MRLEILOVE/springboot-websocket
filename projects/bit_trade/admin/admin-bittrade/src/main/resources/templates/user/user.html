@@ -1,230 +1,208 @@
 <!DOCTYPE html>
-<html lang="zh" xmlns:th="http://www.thymeleaf.org"
-	xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
 <meta charset="utf-8">
 <head th:include="include :: header"></head>
-<body class="gray-bg">
-	
-	<div class="container-div">
-		<div class="row">
-			<div class="col-sm-12 search-collapse">
-				<form id="micro-form">
-					<div class="select-list">
-						<ul>
-							<li class="select-time">
-								<label>注册时间： </label>
-								<input type="text" class="time-input" id="startTime" placeholder="开始时间" name="params[beginTime]"/>
-								<span>-</span>
-								<input type="text" class="time-input" id="endTime" placeholder="结束时间" name="params[endTime]"/>
-							</li>
-							<li>
-								<label>身份认证： </label>
-								<select name="isAuth" th:with="type=${@dict.getType('user_authentication')}" style="width: auto;">
-									<option value="">所有</option>
-									<option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
-								</select>
-							</li>
-							<li>
-								<label>内部账号： </label>
-								<select name="internalAccount" th:with="type=${@dict.getType('user_internal_account')}" style="width: auto;">
-									<option value="">所有</option>
-									<option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
-								</select>
-							</li>
-							<!--<li>
-								<label>是否有推荐： </label>
-								<select name="labourFlag" style="width: auto;" >
-									<option value="">所有</option>
-									<option value="0">否</option>
-									<option value="1">是</option>
-								</select>
-							</li>-->
-							<li>
-								<label>条件查询： </label><input type="text" name="params[condition]"/>
-							</li>
-							<li>
-								<a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
-								<a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
-							</li>
-						</ul>
+<body class="white-bg">
+	<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+		<form class="form-horizontal m" id="form-user-add">
+			<input name="deptId"  type="hidden" id="treeId"/>
+			<div class="form-group">
+				<label class="col-sm-3 control-label ">登录名称：</label>
+				<div class="col-sm-8">
+					<input class="form-control" type="text" id="loginName" name="loginName"/>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">部门名称：</label>
+				<div class="col-sm-8">
+					<input class="form-control" type="text" name="deptName" onclick="selectDeptTree()" readonly="true" id="treeName">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">用户名称：</label>
+				<div class="col-sm-8">
+					<input class="form-control" type="text" name="userName" id="userName">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">密码：</label>
+				<div class="col-sm-8">
+					<input class="form-control" type="password" name="password" id="password" th:value="${@config.getKey('sys.user.initPassword')}">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">职位：</label>
+				<div class="col-sm-8">
+					<input class="form-control" type="text" name="email" id="email">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">手机：</label>
+				<div class="col-sm-8">
+					<input class="form-control" type="text" name="phonenumber" id="phonenumber">
+				</div>
+			</div>
+			<!-- 
+			<div class="form-group">
+				<label class="col-sm-3 control-label">性别：</label>
+				<div class="col-sm-8">
+					<select id="sex" class="form-control m-b" th:with="type=${@dict.getType('sys_user_sex')}">
+	                    <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+	                </select>
+				</div>
+			</div>
+			 -->
+			<div class="form-group">
+				<label class="col-sm-3 control-label">状态：</label>
+				<div class="col-sm-8">
+					<div class="onoffswitch">
+						<input type="checkbox" th:checked="true" class="onoffswitch-checkbox" id="status" name="status">
+						<label class="onoffswitch-label" for="status">
+							<span class="onoffswitch-inner"></span>
+							<span class="onoffswitch-switch"></span>
+						</label>
 					</div>
-				</form>
+				</div>
 			</div>
-			
-			<div class="btn-group-sm" id="toolbar" role="group">
-	            <a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="user:export">
-		            <i class="fa fa-download"></i> 导出
-		        </a>
-				<a class="btn btn-success" onclick="refreshTeamCount()" shiro:hasPermission="user:refreshTeamCount">
-					<i class="fa fa-refresh"></i> 手动刷新团队业绩
-				</a>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">角色：</label>
+				<div class="col-sm-8">
+					<label th:each="role:${roles}" class="check-box">
+						<input name="role" type="radio" th:value="${role.roleId}" th:text="${role.roleName}" th:disabled="${role.status == '1'}">
+					</label>
+				</div>
 			</div>
-
-	        
-			<div class="col-sm-12 select-table table-striped" style="overflow: overlay;height: 90%;">
-				<table id="bootstrap-table" data-mobile-responsive="true"></table>
-			</div>
-		</div>
+		</form>
 	</div>
-	
-	<div th:include="include :: footer"></div>
-	<script th:inline="javascript">
-		var detailFlag = [[${@permission.hasPermi('user:detail')}]];
-        var internalAccounts = [[${@dict.getType('user_internal_account')}]];
-        var datas = [[${@dict.getType('user_authentication')}]];
-		var prefix = ctx + "user";
-
-
-		function refreshTeamCount() {
-			var index = layer.msg('统计中', {
-				icon: 16,
-				shade: 0.1,
-				time: false
-			});
-			$.ajax({
-				url: prefix + "/refreshTeamCount",
-				data: {},
-				cache: false,
-				dataType: "json",
-				type: 'POST',
-				success: function (result) {
-					layer.close(index);
-					if (result.code == web_status.SUCCESS) {
-						$.modal.closeAll();
-						$.modal.alertSuccess(result.result);
-						$.table.refresh();
-					}else {
-						$.modal.alertError(result.result);
-					}
-				}
-			});
-		}
-
-		$(function() {
-		    var options = {
-		        url: prefix + "/list",
-                exportUrl: prefix + "/export",
-                detailUrl: prefix + "/detail/{id}",
-		        sortName: "",
-		        sortOrder: "",
-		        modalName: "用户信息列表",
-		        search: false,
-		        showExport: false,
-		        columns: [
-		        {
-		            field: 'loginName',
-		            title: '用户名'
-		        },
-		        {
-		            field: 'realName',
-		            title: '姓名'
-		        },
-				{
-					field: 'internalAccount',
-					title: '内部账号',
-					formatter: function(value, row, index) {
-						return $.table.selectDictLabel(internalAccounts, value);
-					}
-				},
-				{
-					field: 'fhasRealValidate',
-					title: '身份认证',
-                    align: 'center',
-                    formatter: function(value, row, index) {
-                        return $.table.selectDictLabel(datas, value);
-                    }
-				},
-		        {
-		            field: 'createTime',
-		            title: '注册时间',
-		        },
-		        {
-		            field: 'totalAssets',
-		            title: '总资产(USDT)'
-		        },
-		        {
-		            field: 'balance',
-		            title: '可用余额(USDT)'
-		        },
-				{
-					field: 'occupyAssets',
-					title: '冻结余额(USDT)'
-				},
-				{
-					field: 'netValue',
-					title: '净值(USDT)',
-				},
-				{
-					field: 'depositsUser',
-					title: '用户充值',
-                    formatter: function(value, row, index) {
-                        var actions = [];
-                        var total = value == null?"--":value;
-                        var totalCNY = row.depositsUserCNY == null?"--":row.depositsUserCNY;
-                        actions.push('<span>'+total+' USDT</span><br/><span>'+totalCNY+' CNY</span>');
-
-                        return actions.join('');
-                    }
-				},
-				{
-					field: 'deposits',
-					title: '人工充值',
-                    formatter: function(value, row, index) {
-                        var actions = [];
-                        var total = value == null?"--":value;
-                        var totalCNY = row.depositsCNY == null?"--":row.depositsCNY;
-                        actions.push('<span>'+total+' USDT</span><br/><span>'+totalCNY+' CNY</span>');
-
-                        return actions.join('');
-                    }
-				},
-				{
-					field: 'totalWithdraw',
-					title: '奖励金转入',
-					formatter: function(value, row, index) {
-						return value == null?"--":value+" USDT";;
-					}
-				},
-				{
-					field: 'withdrawalsUser',
-					title: '用户提现',
-                    formatter: function(value, row, index) {
-                        var actions = [];
-                        var withd = value == null?"--":value;
-                        var withdCNY = row.withdrawalsUserCNY == null?"--":row.withdrawalsUserCNY;
-                        actions.push('<span>'+withd+' USDT</span><br/><span>'+withdCNY+' CNY</span>');
-
-                        return actions.join('');
-                    }
-				},
-				{
-					field: 'withdrawals',
-					title: '人工提现',
-                    formatter: function(value, row, index) {
-                        var actions = [];
-                        var withd = value == null?"--":value;
-                        var withdCNY = row.withdrawalsCNY == null?"--":row.withdrawalsCNY;
-                        actions.push('<span>'+withd+' USDT</span><br/><span>'+withdCNY+' CNY</span>');
-
-                        return actions.join('');
-                    }
-				},
-				{
-					field: 'riskRatio',
-					title: '风险率'
-				},
-                    {
-                        title: '操作',
-                        align: 'center',
-                        formatter: function(value, row, index) {
-                            var actions = [];
-                            actions.push('<a class="btn btn-warning btn-xs ' + detailFlag + '" href="#" onclick="$.operate.detail(\'' + row.userId + '\')"><i class="fa fa-search"></i>详细</a>');
-                            return actions.join('');
+	<div th:include="include::footer"></div>
+	<script th:src="@{/ajax/libs/select/select2.js}"></script>
+	<script>
+        $("#form-user-add").validate({
+        	rules:{
+        		loginName:{
+        			required:true,
+        			minlength: 2,
+        			maxlength: 20,
+        			remote: {
+                        url: ctx + "system/user/checkLoginNameUnique",
+                        type: "post",
+                        dataType: "json",
+                        data: {
+                        	name : function() {
+                                return $.common.trim($("#loginName").val());
+                            }
+                        },
+                        dataFilter: function(data, type) {
+                        	return $.validate.unique(data);
                         }
-                    }]
-		    };
-		    $.table.init(options);
-		});
-	</script>
+                    }
+        		},
+        		userName:{
+        			required:true,
+        		},
+        		deptName:{
+        			required:true,
+        		},
+        		password:{
+        			required:true,
+        			minlength: 5,
+        			maxlength: 20
+        		},
+        		phonenumber:{
+        			required:true,
+        			isPhone:true,
+                    remote: {
+                        url: ctx + "system/user/checkPhoneUnique",
+                        type: "post",
+                        dataType: "json",
+                        data: {
+                            name: function () {
+                                return $.common.trim($("#phonenumber").val());
+                            }
+                        },
+                        dataFilter: function (data, type) {
+                        	return $.validate.unique(data);
+                        }
+                    }
+        		},
+        	},
+        	messages: {
+                "loginName": {
+                    remote: "用户已经存在"
+                },
+        		"phonenumber":{
+                	remote: "手机号码已经存在"
+        		}
+            }
+        });
+        
+        function submitHandler() {
+	        if ($.validate.form()) {
+	        	add();
+	        }
+	    }
+
+        function add() {
+        	var userId = $("input[name='userId']").val();
+        	var deptId = $("input[name='deptId']").val();
+        	var loginName = $("input[name='loginName']").val();
+        	var userName = $("input[name='userName']").val();
+        	var password = $("input[name='password']").val();
+        	var email = $("input[name='email']").val();
+        	var phonenumber = $("input[name='phonenumber']").val();
+        <!--var sex = $("#sex option:selected").val(); -->
+            var status = $("input[name='status']").is(':checked') == true ? 1 : 0;
+            var roleIds = $('input:radio[name="role"]:checked').val();
+        	var postIds = $.form.selectSelects("post");
+        	$.ajax({
+        		cache : true,
+        		type : "POST",
+        		url : ctx + "system/user/add",
+        		data : {
+        			"userId": userId,
+        			"deptId": deptId,
+        			"loginName": loginName,
+        			"userName": userName,
+        			"password": password,
+        			"email": email,
+        			"phonenumber": phonenumber,
+        			"status": status,
+        			"roleIds": roleIds,
+        			"postIds": postIds
+        		},
+        		async : false,
+        		error : function(request) {
+        			$.modal.alertError("系统错误");
+        		},
+        		success : function(data) {
+        			$.operate.saveSuccess(data);
+        		}
+        	});
+        }
+
+        /*用户管理-新增-选择部门树*/
+        function selectDeptTree() {
+        	var treeId = $("#treeId").val();
+        	var deptId = $.common.isEmpty(treeId) ? "100" : $("#treeId").val();
+        	var url = ctx + "system/dept/selectDeptTree/" + deptId;
+			var options = {
+				title: '选择部门',
+				width: "380",
+				url: ctx + "system/dept/selectDeptTree/" + deptId,
+				callBack: doSubmit
+			};
+			$.modal.openOptions(options);
+		}
+		
+		function doSubmit(index, layero){
+			var tree = layero.find("iframe")[0].contentWindow.$._tree;
+			if ($.tree.notAllowParents(tree)) {
+				var body = layer.getChildFrame('body', index);
+    			$("#treeId").val(body.find('#treeId').val());
+    			$("#treeName").val(body.find('#treeName').val());
+    			layer.close(index);
+			}
+		}
+    </script>
 </body>
 </html>

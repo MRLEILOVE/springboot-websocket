@@ -17,7 +17,7 @@ spring:
 #  application:
 #    name: currency
   profiles:
-    active: common, dubbo_provider, dubbo_consumer, amqp
+    active: common
   
   ###ThymeLeaf配置
   thymeleaf:
