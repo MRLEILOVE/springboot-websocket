@@ -2,8 +2,11 @@ package com.wallet.biz.api.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.wallet.biz.pojo.model.WWalletAccount;
+import com.wallet.biz.pojo.vo.AssetsVO;
+import com.wallet.biz.pojo.vo.ConversionVo;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * 
@@ -35,4 +38,18 @@ public interface IWWalletAccountService extends IService<WWalletAccount> {
      * @return
      */
     Integer fundAccountOut(WWalletAccount fundAccount, BigDecimal num);
+
+    /**
+     * 总资金折合
+     * @param userId 用户Id
+     * @return
+     */
+    ConversionVo totalConversion(Long userId);
+
+    /**
+     * 用户钱包列表
+     * @param userId 用户id
+     * @return 钱包列表
+     */
+    List<AssetsVO> detail(Long userId);
 }

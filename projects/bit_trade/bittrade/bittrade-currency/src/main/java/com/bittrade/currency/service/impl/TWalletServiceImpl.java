@@ -283,15 +283,16 @@ public class TWalletServiceImpl extends DefaultTWalletServiceImpl<ITWalletDAO, T
 		//获取用户币币账户下所有的钱包
 		List<AssetsVO> AssetsVOs = walletDAO.getAssets(userId);
 		for(AssetsVO x : AssetsVOs){
-			//获取最新价
-			String s = jedisCluster.get(IConstant.REDIS_PREFIX__LINE_PRICE + x.getCurrencyName());
-			if(s == null){
-				s = "2";
-			}
-			BigDecimal price = new BigDecimal(s);
-			//USDT累计
 			BigDecimal all = x.getTotal().add(x.getTradeFrozen().add(x.getTransferFrozen()));
-			totalUSDT = totalUSDT.add(price.multiply(all));
+			if("USDT".equals(x.getCurrencyName())){
+				totalUSDT = totalUSDT.add(all);
+			}else{
+				//获取最新价
+				String s = jedisCluster.get(IConstant.REDIS_PREFIX__LINE_PRICE + x.getCurrencyName() + "-USDT");
+				BigDecimal price = new BigDecimal(s);
+				//USDT累计
+				totalUSDT = totalUSDT.add(price.multiply(all));
+			}
 		}
 		BigDecimal totalCNY = totalUSDT.multiply(USD_TO_CNY_RATE_RATE);
 		return ConversionVo.builder().CNY(totalCNY).USDT(totalUSDT).build();
@@ -322,6 +323,7 @@ public class TWalletServiceImpl extends DefaultTWalletServiceImpl<ITWalletDAO, T
 			lockCurrency.stream().forEach(x ->{
 				//将缺失的钱包添加到用户钱包列表，然后返回数据给前端
 				AssetsVO vo = AssetsVO.builder().total(BigDecimal.ZERO).totalFrozen(BigDecimal.ZERO).currencyId(x.getId().longValue()).currencyName(x.getName()).build();
+				userAccountVOs.add(vo);
 			});
 		}
 		return userAccountVOs;
@@ -366,6 +368,11 @@ public class TWalletServiceImpl extends DefaultTWalletServiceImpl<ITWalletDAO, T
 		});
 	}
 
+	/**
+	 * 为用户创建钱包
+	 * @param currencyId 币种id
+	 * @param userId 用户id
+	 */
 	private TWallet createWallet(Integer currencyId, Long userId) {
 		TWallet wallet = TWallet.builder()
 				.userId(userId)

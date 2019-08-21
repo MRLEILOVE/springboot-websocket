@@ -179,8 +179,20 @@
 			<groupId>com.alibaba.boot</groupId>
 			<artifactId>dubbo-spring-boot-starter</artifactId>
 		</dependency>
+        <dependency>
+            <groupId>com.bittrade</groupId>
+            <artifactId>bittrade-currency-api</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.bittrade</groupId>
+            <artifactId>bittrade-common</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
 
-	</dependencies>
+    </dependencies>
 	<profiles>
 		<profile>
 			<id>dev</id>

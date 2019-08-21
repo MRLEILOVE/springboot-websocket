@@ -2,6 +2,7 @@ package com.bittrade.currency.api.service;
 
 import com.bittrade.__default.service.IDefaultTTransferDirectionService;
 import com.bittrade.pojo.dto.TTransferDirectionDTO;
+import com.bittrade.pojo.vo.DirectionVO;
 import com.bittrade.pojo.vo.TTransferDirectionVO;
 import com.bittrade.pojo.model.TTransferDirection;
 import com.core.common.DTO.ReturnDTO;
@@ -18,5 +19,5 @@ public interface ITTransferDirectionService extends IDefaultTTransferDirectionSe
     /**
      * 资金划转方向
      */
-    List<TTransferDirection> direction();
+    List<DirectionVO> direction();
 }

@@ -45,4 +45,13 @@ public class TCurrencyServiceImpl extends
     public List<String> findUsableCurrency() {
         return tCurrencyDAO.findUsableCurrency();
     }
+
+	/**
+	 * 获取币种列表
+	 * @return
+	 */
+	@Override
+	public List<TCurrency> getCurrencies() {
+		return tCurrencyDAO.gets();
+	}
 }

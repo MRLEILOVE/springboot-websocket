@@ -74,7 +74,7 @@ public class TWalletController extends BaseController<TWallet, TWalletDTO, TWall
     }
 
     @GetMapping("/detail")
-    @ApiOperation(value = "查询当前用户的币币账户币种余额列表", notes = "查询当前用户的币币账户币种余额列表")
+    @ApiOperation(value = "用户钱包列表", notes = "用户钱包列表")
     public ReturnDTO<List<AssetsVO>> detail(@ALoginUser LoginUser user){
         Long userId = user == null ? null : user.getUser_id();
         if(userId == null){

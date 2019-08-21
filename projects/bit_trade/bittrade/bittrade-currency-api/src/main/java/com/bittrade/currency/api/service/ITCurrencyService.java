@@ -22,4 +22,9 @@ public interface ITCurrencyService extends IDefaultTCurrencyService<TCurrency, T
      * 查找所有可用币种
      */
     List<String> findUsableCurrency();
+
+    /**
+     * 获取币种列表
+     */
+    List<TCurrency> getCurrencies();
 }

@@ -3,6 +3,7 @@ package com.bittrade.currency.controller;
 import com.bittrade.currency.api.service.ITTransferDirectionService;
 import com.bittrade.pojo.dto.TTransferDirectionDTO;
 import com.bittrade.pojo.model.TTransferDirection;
+import com.bittrade.pojo.vo.DirectionVO;
 import com.bittrade.pojo.vo.TTransferDirectionVO;
 import com.core.common.DTO.ReturnDTO;
 import com.core.framework.base.controller.BaseController;
@@ -32,7 +33,7 @@ public class TTransferDirectionController extends BaseController<TTransferDirect
     @ApiOperation(value = "资金划转方向")
     @GetMapping(value = "/direction")
     @ResponseBody
-    public ReturnDTO<List<TTransferDirection>> direction() {
+    public ReturnDTO<List<DirectionVO>> direction() {
         return ReturnDTO.ok(transferDirectionService.direction());
     }
 }

@@ -62,12 +62,16 @@ public class TLegalCurrencyAccountServiceImpl extends DefaultTLegalCurrencyAccou
         //获取用户所有的法币钱包
         List<AssetsVO> AssetsVOs = legalCurrencyAccountDAO.getAssets(userId);
         for(AssetsVO x : AssetsVOs){
-            //获取最新价
-            String s = jedisCluster.get(IConstant.REDIS_PREFIX__LINE_PRICE + x.getCurrencyName());
-            BigDecimal price = new BigDecimal(s);
-            //USDT累计
             BigDecimal all = x.getTotal().add(x.getTradeFrozen().add(x.getTransferFrozen()));
-            totalUSDT = totalUSDT.add(price.multiply(all));
+            if("USDT".equals(x.getCurrencyName())){
+                totalUSDT = totalUSDT.add(all);
+            }else{
+                //获取最新价
+                String s = jedisCluster.get(IConstant.REDIS_PREFIX__LINE_PRICE + x.getCurrencyName() + "-USDT");
+                BigDecimal price = new BigDecimal(s);
+                //USDT累计
+                totalUSDT = totalUSDT.add(price.multiply(all));
+            }
         }
         BigDecimal totalCNY = totalUSDT.multiply(USD_TO_CNY_RATE_RATE);
         return ConversionVo.builder().CNY(totalCNY).USDT(totalUSDT).build();
