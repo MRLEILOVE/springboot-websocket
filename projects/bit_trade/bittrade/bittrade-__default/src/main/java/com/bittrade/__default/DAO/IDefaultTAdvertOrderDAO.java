@@ -69,7 +69,7 @@ public abstract interface IDefaultTAdvertOrderDAO extends IBaseDAO<TAdvertOrder,
 	 * @param condiTAdvertOrder
 	 * @return
 	 */
-	public int modifyBy(@Param(value = "tAdvertOrder") TAdvertOrder tAdvertOrder, @Param(value = "condiTAdvertOrder") TAdvertOrder condiTAdvertOrder);
+	public int modifyBy(@Param(value="tAdvertOrder") TAdvertOrder tAdvertOrder, @Param(value="condiTAdvertOrder") TAdvertOrder condiTAdvertOrder);
 	
 	/**
 	 * 
@@ -77,7 +77,7 @@ public abstract interface IDefaultTAdvertOrderDAO extends IBaseDAO<TAdvertOrder,
 	 * @param condiTAdvertOrder
 	 * @return
 	 */
-	public int modifyWithSelectiveBy(@Param(value = "tAdvertOrder") TAdvertOrder tAdvertOrder, @Param(value = "condiTAdvertOrder") TAdvertOrder condiTAdvertOrder);
+	public int modifyWithSelectiveBy(@Param(value="tAdvertOrder") TAdvertOrder tAdvertOrder, @Param(value="condiTAdvertOrder") TAdvertOrder condiTAdvertOrder);
 	
 	/**
 	 * 
@@ -117,7 +117,7 @@ public abstract interface IDefaultTAdvertOrderDAO extends IBaseDAO<TAdvertOrder,
 	 * @param tAdvertOrder
 	 * @return
 	 */
-	public int getCntBy(@Param(value = "tAdvertOrder") TAdvertOrder tAdvertOrder);
+	public int getCntBy(@Param(value="tAdvertOrder") TAdvertOrder tAdvertOrder);
 	
 	/**
 	 * 
@@ -126,6 +126,6 @@ public abstract interface IDefaultTAdvertOrderDAO extends IBaseDAO<TAdvertOrder,
 	 * @param size
 	 * @return
 	 */
-	public List<TAdvertOrder> getsByPage(@Param(value = "tAdvertOrder") TAdvertOrder tAdvertOrder, @Param(value = "page") int page, @Param(value = "size") int size);
+	public List<TAdvertOrder> getsByPage(@Param(value="tAdvertOrder") TAdvertOrder tAdvertOrder, @Param(value="page") int page, @Param(value="size") int size);
 	
 }

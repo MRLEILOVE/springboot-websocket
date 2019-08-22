@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bittrade.admin.dao.wallet.ITWalletTransferDAO">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.bittrade.pojo.model.TWalletTransfer">
+		<id javaType="int" property="id" jdbcType="INTEGER" column="id" />
+		<result javaType="Long" property="userId" jdbcType="BIGINT" column="user_id" />
+		<result javaType="Integer" property="currency" jdbcType="INTEGER" column="currency" />
+		<result javaType="java.math.BigDecimal" property="count" jdbcType="DECIMAL" column="count" />
+		<result javaType="String" property="businessNumber" jdbcType="VARCHAR" column="business_number" />
+		<result javaType="Byte" property="status" jdbcType="INTEGER" column="status" />
+		<result javaType="Byte" property="typeChannel" jdbcType="INTEGER" column="type_channel" />
+		<result javaType="Byte" property="sourceChannel" jdbcType="INTEGER" column="source_channel" />
+		<result javaType="String" property="des" jdbcType="VARCHAR" column="des" />
+		<result javaType="java.time.LocalDateTime" property="createTime" jdbcType="TIMESTAMP" column="create_time" />
+		<result javaType="java.time.LocalDateTime" property="updateTime" jdbcType="TIMESTAMP" column="update_time" />
+	</resultMap>
+
+	<!-- 通用查询结果列 -->
+	<sql id="Base_Column_List">
+		`id` AS id, 
+		`user_id` AS userId, 
+		`currency` AS currency, 
+		`count` AS count, 
+		`business_number` AS businessNumber, 
+		`status` AS status, 
+		`type_channel` AS typeChannel, 
+		`source_channel` AS sourceChannel, 
+		`des` AS des, 
+		`create_time` AS createTime, 
+		`update_time` AS updateTime
+	</sql>
+
+</mapper>

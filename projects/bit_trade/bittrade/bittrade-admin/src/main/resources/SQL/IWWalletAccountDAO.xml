@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bittrade.admin.dao.wallet.IWWalletAccountDAO">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.bittrade.pojo.model.WWalletAccount">
+		<id javaType="int" property="id" jdbcType="INTEGER" column="id" />
+		<result javaType="Long" property="userId" jdbcType="BIGINT" column="user_id" />
+		<result javaType="Integer" property="currencyId" jdbcType="INTEGER" column="currency_id" />
+		<result javaType="java.math.BigDecimal" property="total" jdbcType="DECIMAL" column="total" />
+		<result javaType="java.math.BigDecimal" property="tradeFrozen" jdbcType="DECIMAL" column="trade_frozen" />
+		<result javaType="java.math.BigDecimal" property="transferFrozen" jdbcType="DECIMAL" column="transfer_frozen" />
+		<result javaType="Integer" property="version" jdbcType="INTEGER" column="version" />
+		<result javaType="java.time.LocalDateTime" property="createTime" jdbcType="TIMESTAMP" column="create_time" />
+		<result javaType="java.time.LocalDateTime" property="updateTime" jdbcType="TIMESTAMP" column="update_time" />
+	</resultMap>
+
+	<!-- 通用查询结果列 -->
+	<sql id="Base_Column_List">
+		`id` AS id, 
+		`user_id` AS userId, 
+		`currency_id` AS currencyId, 
+		`total` AS total, 
+		`trade_frozen` AS tradeFrozen, 
+		`transfer_frozen` AS transferFrozen, 
+		`version` AS version, 
+		`create_time` AS createTime, 
+		`update_time` AS updateTime
+	</sql>
+
+</mapper>

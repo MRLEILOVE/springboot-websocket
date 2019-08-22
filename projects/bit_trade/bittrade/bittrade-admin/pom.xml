@@ -17,6 +17,14 @@
 			<groupId>com.bittrade</groupId>
 			<artifactId>core-web</artifactId>
 		</dependency> -->
+		<dependency>
+			<groupId>com.bittrade</groupId>
+			<artifactId>bittrade-pojo-model</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.bittrade</groupId>
+			<artifactId>bittrade-__default</artifactId>
+		</dependency>
 		
 		<dependency>
 			<groupId>mysql</groupId>

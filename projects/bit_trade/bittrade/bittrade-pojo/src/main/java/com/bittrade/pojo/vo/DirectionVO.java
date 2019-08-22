@@ -16,7 +16,7 @@ public class DirectionVO {
     @ApiModelProperty("账户名称")
     private String accountName2;
     @ApiModelProperty("账户名称")
-    private String accountId3;
+    private String accountId2;
     @ApiModelProperty("状态")
     private Integer status;
 }

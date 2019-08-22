@@ -26,6 +26,7 @@ import com.core.tool.YamlUtil;
 		"com.core.web.common.exception" 
 		})
 @EnableTransactionManagement
+//@com.spring4all.swagger.EnableSwagger2Doc
 public abstract class BaseApplication {
 
 	private static final String NAME_KEY = "data.application.name";

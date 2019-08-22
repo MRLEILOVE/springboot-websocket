@@ -15,11 +15,12 @@
 
 	<!-- 通用查询结果列 -->
 	<sql id="Base_Column_List">
+		`id` AS id,
 		`name` AS name, 
 		`short_name` AS shortName, 
 		`status` AS status, 
 		`type` AS type, 
-		`desc` AS desc, 
+		`desc` AS `desc`,
 		`create_time` AS createTime
 	</sql>
 
@@ -27,5 +28,27 @@
 		SELECT t.`name`
 		FROM t_currency t
 		WHERE t.`status` = 1
+	</select>
+
+	<select id="getFundCoinVo" resultType="com.bittrade.pojo.vo.CoinVo">
+		SELECT c.`name` AS `name`,c.short_name as shortName
+		FROM t_currency c
+		<if test="list != null and list.size() >0">
+			WHERE c.name in
+			<foreach  item="item" collection="list" separator="," open="(" close=")">
+				#{item}
+			</foreach>
+		</if>
+	</select>
+
+	<select id="getCurrencies" resultType="com.bittrade.pojo.model.TCurrency">
+		SELECT <include refid="Base_Column_List"/>
+		FROM t_currency c
+		<if test="list != null and list.size() >0">
+			WHERE c.name in
+			<foreach  item="item" collection="list" separator="," open="(" close=")">
+				#{item}
+			</foreach>
+		</if>
 	</select>
 </mapper>

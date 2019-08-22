@@ -69,7 +69,7 @@ public abstract interface IDefaultTLegalCurrencyAccountDAO extends IBaseDAO<TLeg
 	 * @param condiTLegalCurrencyAccount
 	 * @return
 	 */
-	public int modifyBy(@Param(value = "tLegalCurrencyAccount") TLegalCurrencyAccount tLegalCurrencyAccount, @Param(value = "condiTLegalCurrencyAccount") TLegalCurrencyAccount condiTLegalCurrencyAccount);
+	public int modifyBy(@Param(value="tLegalCurrencyAccount") TLegalCurrencyAccount tLegalCurrencyAccount, @Param(value="condiTLegalCurrencyAccount") TLegalCurrencyAccount condiTLegalCurrencyAccount);
 	
 	/**
 	 * 
@@ -77,7 +77,7 @@ public abstract interface IDefaultTLegalCurrencyAccountDAO extends IBaseDAO<TLeg
 	 * @param condiTLegalCurrencyAccount
 	 * @return
 	 */
-	public int modifyWithSelectiveBy(@Param(value = "tLegalCurrencyAccount") TLegalCurrencyAccount tLegalCurrencyAccount, @Param(value = "condiTLegalCurrencyAccount") TLegalCurrencyAccount condiTLegalCurrencyAccount);
+	public int modifyWithSelectiveBy(@Param(value="tLegalCurrencyAccount") TLegalCurrencyAccount tLegalCurrencyAccount, @Param(value="condiTLegalCurrencyAccount") TLegalCurrencyAccount condiTLegalCurrencyAccount);
 	
 	/**
 	 * 
@@ -117,7 +117,7 @@ public abstract interface IDefaultTLegalCurrencyAccountDAO extends IBaseDAO<TLeg
 	 * @param tLegalCurrencyAccount
 	 * @return
 	 */
-	public int getCntBy(@Param(value = "tLegalCurrencyAccount") TLegalCurrencyAccount tLegalCurrencyAccount);
+	public int getCntBy(@Param(value="tLegalCurrencyAccount") TLegalCurrencyAccount tLegalCurrencyAccount);
 	
 	/**
 	 * 
@@ -126,6 +126,6 @@ public abstract interface IDefaultTLegalCurrencyAccountDAO extends IBaseDAO<TLeg
 	 * @param size
 	 * @return
 	 */
-	public List<TLegalCurrencyAccount> getsByPage(@Param(value = "tLegalCurrencyAccount") TLegalCurrencyAccount tLegalCurrencyAccount, @Param(value = "page") int page, @Param(value = "size") int size);
+	public List<TLegalCurrencyAccount> getsByPage(@Param(value="tLegalCurrencyAccount") TLegalCurrencyAccount tLegalCurrencyAccount, @Param(value="page") int page, @Param(value="size") int size);
 	
 }

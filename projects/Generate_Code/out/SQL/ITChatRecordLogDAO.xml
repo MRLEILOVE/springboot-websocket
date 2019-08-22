@@ -8,8 +8,7 @@
 		<result javaType="Long" property="senderId" jdbcType="BIGINT" column="sender_id" />
 		<result javaType="Long" property="receiverId" jdbcType="BIGINT" column="receiver_id" />
 		<result javaType="Byte[]" property="content" jdbcType="CLOB" column="content" />
-		<result javaType="Byte" property="sendType" jdbcType="INTEGER" column="send_type" />
-		<result javaType="Byte" property="readed" jdbcType="INTEGER" column="readed" />
+		<result javaType="Byte" property="messageType" jdbcType="INTEGER" column="message_type" />
 		<result javaType="java.time.LocalDateTime" property="createTime" jdbcType="TIMESTAMP" column="create_time" />
 		<result javaType="java.time.LocalDateTime" property="updateTime" jdbcType="TIMESTAMP" column="update_time" />
 	</resultMap>
@@ -20,8 +19,7 @@
 		`sender_id` AS senderId, 
 		`receiver_id` AS receiverId, 
 		`content` AS content, 
-		`send_type` AS sendType, 
-		`readed` AS readed, 
+		`message_type` AS messageType, 
 		`create_time` AS createTime, 
 		`update_time` AS updateTime
 	</sql>

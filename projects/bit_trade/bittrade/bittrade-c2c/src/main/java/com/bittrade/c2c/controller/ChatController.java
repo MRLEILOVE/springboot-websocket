@@ -7,6 +7,7 @@ import com.core.common.DTO.ReturnDTO;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 
@@ -42,7 +43,7 @@ public class ChatController {
      */
     @PostMapping("/sendMessage")
     @ApiOperation(value = "发送聊天信息", notes = "发送聊天信息")
-    public ReturnDTO sendMessage(SendVo sendVo) {
+    public ReturnDTO sendMessage(@RequestBody SendVo sendVo) {
         chatRecordLogService.sendMessage(sendVo);
         return ReturnDTO.ok("发送成功");
     }
