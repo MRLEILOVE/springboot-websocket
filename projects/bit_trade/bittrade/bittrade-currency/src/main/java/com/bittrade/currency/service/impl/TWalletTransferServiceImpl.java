@@ -559,7 +559,7 @@ public class TWalletTransferServiceImpl extends DefaultTWalletTransferServiceImp
             return BigDecimal.ZERO;
         }
 
-        if("资金账户".equals(account.getName())){
+        if("資金賬戶".equals(account.getName())){
             //获取币种
             TCurrency qry = TCurrency.builder().name(currencyName).build();
             TCurrency currency = currencyDAO.getBy(qry);
@@ -570,10 +570,13 @@ public class TWalletTransferServiceImpl extends DefaultTWalletTransferServiceImp
             }
             return funds.getTotal();
 
-        }else if("币币账户".equals(account.getName())){
+        }else if("幣幣賬戶".equals(account.getName())){
             //获取币种
             TCurrency qry = TCurrency.builder().name(currencyName).build();
             TCurrency currency = currencyDAO.getBy(qry);
+            if(currency == null){
+                return BigDecimal.ZERO;
+            }
             //获取用户钱包
             TWallet qryWallet = TWallet.builder().userId(userId).currencyId(currency.getId()).build();
             TWallet wallets = walletDAO.getBy(qryWallet);
@@ -581,9 +584,12 @@ public class TWalletTransferServiceImpl extends DefaultTWalletTransferServiceImp
                 return BigDecimal.ZERO;
             }
             return wallets.getTotal();
-        }else if("c2c账户".equals(account.getName())){
+        }else if("法幣賬戶".equals(account.getName())){
             //获取币种
             TLegalCurrencyCoin coin = legalCurrencyCoinService.getByName(currencyName);
+            if(coin == null){
+                return BigDecimal.ZERO;
+            }
             //获取用户钱包
             TLegalCurrencyAccount c2cAccount = legalCurrencyAccountService.getC2CAccount(userId, coin.getId());
             if(c2cAccount == null){
@@ -591,7 +597,7 @@ public class TWalletTransferServiceImpl extends DefaultTWalletTransferServiceImp
             }
             return c2cAccount.getBalanceAmount();
         }
-        return null;
+        return BigDecimal.ZERO;
     }
 
     /**
