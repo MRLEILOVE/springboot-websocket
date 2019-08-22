@@ -26,7 +26,7 @@
 		<result javaType="Byte" property="openOpponentLimit" jdbcType="INTEGER" column="open_opponent_limit" />
 		<result javaType="Byte" property="certificationLevel" jdbcType="INTEGER" column="certification_level" />
 		<result javaType="java.time.LocalDateTime" property="registeredTime" jdbcType="TIMESTAMP" column="registered_time" />
-		<result javaType="java.time.LocalDateTime" property="paymentTime" jdbcType="TIMESTAMP" column="payment_time" />
+		<result javaType="Integer" property="paymentTime" jdbcType="INTEGER" column="payment_time" />
 		<result javaType="String" property="message" jdbcType="VARCHAR" column="message" />
 		<result javaType="Long" property="version" jdbcType="BIGINT" column="version" />
 		<result javaType="java.time.LocalDateTime" property="createTime" jdbcType="TIMESTAMP" column="create_time" />
@@ -111,7 +111,7 @@
 	
 	<insert id="add" parameterType="com.bittrade.pojo.model.TAdvertInfo" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO t_advert_info(`user_id`, `coin_id`, `type`, `pricing_mode`, `floating_ratio`, `price`, `hide_price`, `min_limit`, `max_limit`, `already_transaction_amount`, `balance_amount`, `freeze_amount`, `payment_method_id`, `status`, `open_opponent_limit`, `certification_level`, `registered_time`, `payment_time`, `message`, `version`, `create_time`, `update_time`)
-		VALUES(#{userId,jdbcType=BIGINT}, #{coinId,jdbcType=BIGINT}, #{type,jdbcType=INTEGER}, #{pricingMode,jdbcType=INTEGER}, #{floatingRatio,jdbcType=DECIMAL}, #{price,jdbcType=DECIMAL}, #{hidePrice,jdbcType=DECIMAL}, #{minLimit,jdbcType=DECIMAL}, #{maxLimit,jdbcType=DECIMAL}, #{alreadyTransactionAmount,jdbcType=DECIMAL}, #{balanceAmount,jdbcType=DECIMAL}, #{freezeAmount,jdbcType=DECIMAL}, #{paymentMethodId,jdbcType=BIGINT}, #{status,jdbcType=INTEGER}, #{openOpponentLimit,jdbcType=INTEGER}, #{certificationLevel,jdbcType=INTEGER}, #{registeredTime,jdbcType=TIMESTAMP}, #{paymentTime,jdbcType=TIMESTAMP}, #{message,jdbcType=VARCHAR}, #{version,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+		VALUES(#{userId,jdbcType=BIGINT}, #{coinId,jdbcType=BIGINT}, #{type,jdbcType=INTEGER}, #{pricingMode,jdbcType=INTEGER}, #{floatingRatio,jdbcType=DECIMAL}, #{price,jdbcType=DECIMAL}, #{hidePrice,jdbcType=DECIMAL}, #{minLimit,jdbcType=DECIMAL}, #{maxLimit,jdbcType=DECIMAL}, #{alreadyTransactionAmount,jdbcType=DECIMAL}, #{balanceAmount,jdbcType=DECIMAL}, #{freezeAmount,jdbcType=DECIMAL}, #{paymentMethodId,jdbcType=BIGINT}, #{status,jdbcType=INTEGER}, #{openOpponentLimit,jdbcType=INTEGER}, #{certificationLevel,jdbcType=INTEGER}, #{registeredTime,jdbcType=TIMESTAMP}, #{paymentTime,jdbcType=INTEGER}, #{message,jdbcType=VARCHAR}, #{version,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
 	</insert>
 	
 	<insert id="addWithSelective" parameterType="com.bittrade.pojo.model.TAdvertInfo" useGeneratedKeys="true" keyProperty="id">
@@ -236,7 +236,7 @@
 			#{registeredTime,jdbcType=TIMESTAMP}, 
 			</if>
 			<if test="paymentTime != null">
-			#{paymentTime,jdbcType=TIMESTAMP}, 
+			#{paymentTime,jdbcType=INTEGER}, 
 			</if>
 			<if test="message != null">
 			#{message,jdbcType=VARCHAR}, 
@@ -315,7 +315,7 @@
 			AND `registered_time` = #{registeredTime,jdbcType=TIMESTAMP}
 			</if>
 			<if test="paymentTime != null">
-			AND `payment_time` = #{paymentTime,jdbcType=TIMESTAMP}
+			AND `payment_time` = #{paymentTime,jdbcType=INTEGER}
 			</if>
 			<if test="message != null">
 			AND `message` = #{message,jdbcType=VARCHAR}
@@ -352,7 +352,7 @@
 			`open_opponent_limit` = #{openOpponentLimit,jdbcType=INTEGER}, 
 			`certification_level` = #{certificationLevel,jdbcType=INTEGER}, 
 			`registered_time` = #{registeredTime,jdbcType=TIMESTAMP}, 
-			`payment_time` = #{paymentTime,jdbcType=TIMESTAMP}, 
+			`payment_time` = #{paymentTime,jdbcType=INTEGER}, 
 			`message` = #{message,jdbcType=VARCHAR}, 
 			`version` = #{version,jdbcType=BIGINT}, 
 			`create_time` = #{createTime,jdbcType=TIMESTAMP}, 
@@ -418,7 +418,7 @@
 			`registered_time` = #{registeredTime,jdbcType=TIMESTAMP}, 
 			</if>
 			<if test="paymentTime != null">
-			`payment_time` = #{paymentTime,jdbcType=TIMESTAMP}, 
+			`payment_time` = #{paymentTime,jdbcType=INTEGER}, 
 			</if>
 			<if test="message != null">
 			`message` = #{message,jdbcType=VARCHAR}, 
@@ -458,7 +458,7 @@
 			`open_opponent_limit` = #{tAdvertInfo.openOpponentLimit,jdbcType=INTEGER}, 
 			`certification_level` = #{tAdvertInfo.certificationLevel,jdbcType=INTEGER}, 
 			`registered_time` = #{tAdvertInfo.registeredTime,jdbcType=TIMESTAMP}, 
-			`payment_time` = #{tAdvertInfo.paymentTime,jdbcType=TIMESTAMP}, 
+			`payment_time` = #{tAdvertInfo.paymentTime,jdbcType=INTEGER}, 
 			`message` = #{tAdvertInfo.message,jdbcType=VARCHAR}, 
 			`version` = #{tAdvertInfo.version,jdbcType=BIGINT}, 
 			`create_time` = #{tAdvertInfo.createTime,jdbcType=TIMESTAMP}, 
@@ -521,7 +521,7 @@
 			AND `registered_time` = #{condiTAdvertInfo.registeredTime,jdbcType=TIMESTAMP}
 			</if>
 			<if test="condiTAdvertInfo.paymentTime != null">
-			AND `payment_time` = #{condiTAdvertInfo.paymentTime,jdbcType=TIMESTAMP}
+			AND `payment_time` = #{condiTAdvertInfo.paymentTime,jdbcType=INTEGER}
 			</if>
 			<if test="condiTAdvertInfo.message != null">
 			AND `message` = #{condiTAdvertInfo.message,jdbcType=VARCHAR}
@@ -595,7 +595,7 @@
 			`registered_time` = #{tAdvertInfo.registeredTime,jdbcType=TIMESTAMP}, 
 			</if>
 			<if test="tAdvertInfo.paymentTime != null">
-			`payment_time` = #{tAdvertInfo.paymentTime,jdbcType=TIMESTAMP}, 
+			`payment_time` = #{tAdvertInfo.paymentTime,jdbcType=INTEGER}, 
 			</if>
 			<if test="tAdvertInfo.message != null">
 			`message` = #{tAdvertInfo.message,jdbcType=VARCHAR}, 
@@ -668,7 +668,7 @@
 			AND `registered_time` = #{condiTAdvertInfo.registeredTime,jdbcType=TIMESTAMP}
 			</if>
 			<if test="condiTAdvertInfo.paymentTime != null">
-			AND `payment_time` = #{condiTAdvertInfo.paymentTime,jdbcType=TIMESTAMP}
+			AND `payment_time` = #{condiTAdvertInfo.paymentTime,jdbcType=INTEGER}
 			</if>
 			<if test="condiTAdvertInfo.message != null">
 			AND `message` = #{condiTAdvertInfo.message,jdbcType=VARCHAR}
@@ -796,7 +796,7 @@
 			AND `registered_time` = #{registeredTime,jdbcType=TIMESTAMP}
 			</if>
 			<if test="paymentTime != null">
-			AND `payment_time` = #{paymentTime,jdbcType=TIMESTAMP}
+			AND `payment_time` = #{paymentTime,jdbcType=INTEGER}
 			</if>
 			<if test="message != null">
 			AND `message` = #{message,jdbcType=VARCHAR}
@@ -900,7 +900,7 @@
 			AND `registered_time` = #{registeredTime,jdbcType=TIMESTAMP}
 			</if>
 			<if test="paymentTime != null">
-			AND `payment_time` = #{paymentTime,jdbcType=TIMESTAMP}
+			AND `payment_time` = #{paymentTime,jdbcType=INTEGER}
 			</if>
 			<if test="message != null">
 			AND `message` = #{message,jdbcType=VARCHAR}
@@ -981,7 +981,7 @@
 			AND `registered_time` = #{tAdvertInfo.registeredTime,jdbcType=TIMESTAMP}
 			</if>
 			<if test="tAdvertInfo.paymentTime != null">
-			AND `payment_time` = #{tAdvertInfo.paymentTime,jdbcType=TIMESTAMP}
+			AND `payment_time` = #{tAdvertInfo.paymentTime,jdbcType=INTEGER}
 			</if>
 			<if test="tAdvertInfo.message != null">
 			AND `message` = #{tAdvertInfo.message,jdbcType=VARCHAR}
@@ -1080,7 +1080,7 @@
 			AND `registered_time` = #{tAdvertInfo.registeredTime,jdbcType=TIMESTAMP}
 			</if>
 			<if test="tAdvertInfo.paymentTime != null">
-			AND `payment_time` = #{tAdvertInfo.paymentTime,jdbcType=TIMESTAMP}
+			AND `payment_time` = #{tAdvertInfo.paymentTime,jdbcType=INTEGER}
 			</if>
 			<if test="tAdvertInfo.message != null">
 			AND `message` = #{tAdvertInfo.message,jdbcType=VARCHAR}

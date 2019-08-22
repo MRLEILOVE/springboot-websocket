@@ -3,14 +3,15 @@
  */
 package com.bittrade.__default.DAO;
 
-import com.bittrade.pojo.dto.TAdvertInfoDTO;
-import com.bittrade.pojo.model.TAdvertInfo;
-import com.bittrade.pojo.vo.TAdvertInfoVO;
-import com.core.framework.base.DAO.IBaseDAO;
-import org.apache.ibatis.annotations.Param;
-
 import java.io.Serializable;
 import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
+import com.bittrade.pojo.dto.TAdvertInfoDTO;
+import com.bittrade.pojo.vo.TAdvertInfoVO;
+import com.bittrade.pojo.model.TAdvertInfo;
+import com.core.framework.base.DAO.IBaseDAO;
 //import com.core.framework.DTO.PageDTO;
 
 /**
@@ -68,7 +69,7 @@ public abstract interface IDefaultTAdvertInfoDAO extends IBaseDAO<TAdvertInfo, T
 	 * @param condiTAdvertInfo
 	 * @return
 	 */
-	public int modifyBy(@Param(value = "tAdvertInfo") TAdvertInfo tAdvertInfo, @Param(value = "condiTAdvertInfo") TAdvertInfo condiTAdvertInfo);
+	public int modifyBy(@Param(value="tAdvertInfo") TAdvertInfo tAdvertInfo, @Param(value="condiTAdvertInfo") TAdvertInfo condiTAdvertInfo);
 	
 	/**
 	 * 
@@ -76,7 +77,7 @@ public abstract interface IDefaultTAdvertInfoDAO extends IBaseDAO<TAdvertInfo, T
 	 * @param condiTAdvertInfo
 	 * @return
 	 */
-	public int modifyWithSelectiveBy(@Param(value = "tAdvertInfo") TAdvertInfo tAdvertInfo, @Param(value = "condiTAdvertInfo") TAdvertInfo condiTAdvertInfo);
+	public int modifyWithSelectiveBy(@Param(value="tAdvertInfo") TAdvertInfo tAdvertInfo, @Param(value="condiTAdvertInfo") TAdvertInfo condiTAdvertInfo);
 	
 	/**
 	 * 
@@ -116,7 +117,7 @@ public abstract interface IDefaultTAdvertInfoDAO extends IBaseDAO<TAdvertInfo, T
 	 * @param tAdvertInfo
 	 * @return
 	 */
-	public int getCntBy(@Param(value = "tAdvertInfo") TAdvertInfo tAdvertInfo);
+	public int getCntBy(@Param(value="tAdvertInfo") TAdvertInfo tAdvertInfo);
 	
 	/**
 	 * 
@@ -125,6 +126,6 @@ public abstract interface IDefaultTAdvertInfoDAO extends IBaseDAO<TAdvertInfo, T
 	 * @param size
 	 * @return
 	 */
-	public List<TAdvertInfo> getsByPage(@Param(value = "tAdvertInfo") TAdvertInfo tAdvertInfo, @Param(value = "page") int page, @Param(value = "size") int size);
+	public List<TAdvertInfo> getsByPage(@Param(value="tAdvertInfo") TAdvertInfo tAdvertInfo, @Param(value="page") int page, @Param(value="size") int size);
 	
 }

@@ -88,6 +88,7 @@ public class TLegalCurrencyAccount extends BaseModel<TLegalCurrencyAccount> {
 	/**
 	 * 主键id
 	 */
+	@com.baomidou.mybatisplus.annotation.TableId(value = "id", type = com.baomidou.mybatisplus.annotation.IdType.AUTO)
 	private Long id;
 	
 	/**

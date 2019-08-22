@@ -69,7 +69,7 @@ public abstract interface IDefaultTLegalCurrencyRecordDAO extends IBaseDAO<TLega
 	 * @param condiTLegalCurrencyRecord
 	 * @return
 	 */
-	public int modifyBy(@Param(value = "tLegalCurrencyRecord") TLegalCurrencyRecord tLegalCurrencyRecord, @Param(value = "condiTLegalCurrencyRecord") TLegalCurrencyRecord condiTLegalCurrencyRecord);
+	public int modifyBy(@Param(value="tLegalCurrencyRecord") TLegalCurrencyRecord tLegalCurrencyRecord, @Param(value="condiTLegalCurrencyRecord") TLegalCurrencyRecord condiTLegalCurrencyRecord);
 	
 	/**
 	 * 
@@ -77,7 +77,7 @@ public abstract interface IDefaultTLegalCurrencyRecordDAO extends IBaseDAO<TLega
 	 * @param condiTLegalCurrencyRecord
 	 * @return
 	 */
-	public int modifyWithSelectiveBy(@Param(value = "tLegalCurrencyRecord") TLegalCurrencyRecord tLegalCurrencyRecord, @Param(value = "condiTLegalCurrencyRecord") TLegalCurrencyRecord condiTLegalCurrencyRecord);
+	public int modifyWithSelectiveBy(@Param(value="tLegalCurrencyRecord") TLegalCurrencyRecord tLegalCurrencyRecord, @Param(value="condiTLegalCurrencyRecord") TLegalCurrencyRecord condiTLegalCurrencyRecord);
 	
 	/**
 	 * 
@@ -117,7 +117,7 @@ public abstract interface IDefaultTLegalCurrencyRecordDAO extends IBaseDAO<TLega
 	 * @param tLegalCurrencyRecord
 	 * @return
 	 */
-	public int getCntBy(@Param(value = "tLegalCurrencyRecord") TLegalCurrencyRecord tLegalCurrencyRecord);
+	public int getCntBy(@Param(value="tLegalCurrencyRecord") TLegalCurrencyRecord tLegalCurrencyRecord);
 	
 	/**
 	 * 
@@ -126,6 +126,6 @@ public abstract interface IDefaultTLegalCurrencyRecordDAO extends IBaseDAO<TLega
 	 * @param size
 	 * @return
 	 */
-	public List<TLegalCurrencyRecord> getsByPage(@Param(value = "tLegalCurrencyRecord") TLegalCurrencyRecord tLegalCurrencyRecord, @Param(value = "page") int page, @Param(value = "size") int size);
+	public List<TLegalCurrencyRecord> getsByPage(@Param(value="tLegalCurrencyRecord") TLegalCurrencyRecord tLegalCurrencyRecord, @Param(value="page") int page, @Param(value="size") int size);
 	
 }

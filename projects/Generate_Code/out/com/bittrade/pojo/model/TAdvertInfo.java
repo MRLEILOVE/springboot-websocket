@@ -244,7 +244,7 @@ public class TAdvertInfo extends BaseModel<TAdvertInfo> {
 	/**
 	 * 对手限制-付款时间
 	 */
-	private java.time.LocalDateTime paymentTime;
+	private Integer paymentTime;
 	
 	/**
 	 * 交易说明（留言）

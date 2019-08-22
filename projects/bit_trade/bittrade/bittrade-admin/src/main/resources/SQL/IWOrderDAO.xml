@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bittrade.admin.dao.wallet.IWOrderDAO">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.bittrade.pojo.model.WOrder">
+		<id javaType="int" property="id" jdbcType="INTEGER" column="id" />
+		<result javaType="Long" property="userId" jdbcType="BIGINT" column="user_id" />
+		<result javaType="String" property="orderId" jdbcType="VARCHAR" column="order_id" />
+		<result javaType="Integer" property="orderType" jdbcType="INTEGER" column="order_type" />
+		<result javaType="java.math.BigDecimal" property="fee" jdbcType="DECIMAL" column="fee" />
+		<result javaType="String" property="coinType" jdbcType="VARCHAR" column="coin_type" />
+		<result javaType="String" property="token" jdbcType="VARCHAR" column="token" />
+		<result javaType="String" property="contract" jdbcType="VARCHAR" column="contract" />
+		<result javaType="java.math.BigDecimal" property="amount" jdbcType="DECIMAL" column="amount" />
+		<result javaType="String" property="receiverAddress" jdbcType="VARCHAR" column="receiver_address" />
+		<result javaType="Integer" property="type" jdbcType="INTEGER" column="type" />
+		<result javaType="String" property="operator" jdbcType="VARCHAR" column="operator" />
+		<result javaType="java.time.LocalDateTime" property="createTime" jdbcType="TIMESTAMP" column="create_time" />
+		<result javaType="java.time.LocalDateTime" property="updateTime" jdbcType="TIMESTAMP" column="update_time" />
+	</resultMap>
+
+	<!-- 通用查询结果列 -->
+	<sql id="Base_Column_List">
+		`id` AS id, 
+		`user_id` AS userId, 
+		`order_id` AS orderId, 
+		`order_type` AS orderType, 
+		`fee` AS fee, 
+		`coin_type` AS coinType, 
+		`token` AS token, 
+		`contract` AS contract, 
+		`amount` AS amount, 
+		`receiver_address` AS receiverAddress, 
+		`type` AS type, 
+		`operator` AS operator, 
+		`create_time` AS createTime, 
+		`update_time` AS updateTime
+	</sql>
+
+</mapper>
