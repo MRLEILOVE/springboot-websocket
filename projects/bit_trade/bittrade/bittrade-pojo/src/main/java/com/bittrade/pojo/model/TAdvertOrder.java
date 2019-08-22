@@ -3,11 +3,7 @@ package com.bittrade.pojo.model;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.core.framework.base.model.BaseModel;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 /**
  * 
@@ -295,5 +291,82 @@ public class TAdvertOrder extends BaseModel<TAdvertOrder> {
 	 * 修改时间
 	 */
 	private java.time.LocalDateTime updateTime;
-	
+
+	/**
+	 * 广告类型
+	 * <br/>
+	 *
+	 * @author ：leigq
+	 * @date ：2019/8/19 17:58
+	 */
+	@AllArgsConstructor
+	public enum AdvertTypeEnum {
+		SELL(1, "出售"),
+		BUY(2, "购买"),
+		;
+
+		@Getter
+		private Integer code;
+
+		@Getter
+		private String describe;
+
+		/**
+		 * 验证广告类型
+		 * <br/>
+		 * create by: leigq
+		 * <br/>
+		 * create time: 2019/8/19 17:24
+		 */
+		public static boolean isValidAdvertType(Integer advertType) {
+			for (TAdvertOrder.AdvertTypeEnum advertTypeEnum : TAdvertOrder.AdvertTypeEnum.values()) {
+				if (advertTypeEnum.code.equals(advertType)) {
+					return true;
+				}
+			}
+			return false;
+		}
+	}
+
+
+	/**
+	 * 订单状态
+	 * <br/>
+	 *
+	 * @author ：leigq
+	 * @date ：2019/8/19 17:58
+	 */
+	@AllArgsConstructor
+	public enum StatusEnum {
+		ALREADY_AUCTION(1, "已拍下"),
+		ALREADY_PAID(2, "已付款"),
+		ALREADY_RECEIPT(3, "已收款"),
+		ALREADY_COMPLETE(5, "已完成"),
+		ALREADY_CANCEL(6, "已取消"),
+		TIMEOUT_OFF(7, "超时关闭"),
+		;
+
+		@Getter
+		private Integer code;
+
+		@Getter
+		private String describe;
+
+		/**
+		 * 验证订单状态
+		 * <br/>
+		 * create by: leigq
+		 * <br/>
+		 * create time: 2019/8/19 17:24
+		 */
+		public static boolean isValidStatus(Integer status) {
+			for (TAdvertOrder.StatusEnum statusEnum : TAdvertOrder.StatusEnum.values()) {
+				if (statusEnum.code.equals(status)) {
+					return true;
+				}
+			}
+			return false;
+		}
+	}
+
 }

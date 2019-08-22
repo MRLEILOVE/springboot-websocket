@@ -6,10 +6,12 @@ import com.bittrade.__default.service.IDefaultTAdvertInfoService;
 import com.bittrade.pojo.dto.TAdvertInfoDTO;
 import com.bittrade.pojo.model.TAdvertInfo;
 import com.bittrade.pojo.vo.AdvertInfoVO;
-import com.bittrade.pojo.vo.QueryBuyAdvertVO;
+import com.bittrade.pojo.vo.AdvertUserVO;
+import com.bittrade.pojo.vo.QueryAdvertVO;
 import com.bittrade.pojo.vo.TAdvertInfoVO;
-import com.core.common.annotation.ALoginUser;
 import com.core.web.constant.entity.LoginUser;
+
+import java.util.List;
 
 /**
  * @author Administrator
@@ -30,16 +32,64 @@ public interface ITAdvertInfoService extends IDefaultTAdvertInfoService<TAdvertI
 	Boolean publishAdvert(LoginUser user, AdvertInfoVO advertInfoVO);
 
 	/**
-	 * 获取购买广告列表
+	 * 获取广告列表
 	 * <br/>
 	 * create by: leigq
 	 * <br/>
 	 * create time: 2019/8/20 19:52
 	 *
 	 * @param page             : {@link Page}
-	 * @param queryBuyAdvertVO : {@link QueryBuyAdvertVO}
+	 * @param queryAdvertVO : {@link QueryAdvertVO}
 	 * @param loginUser        : {@link LoginUser}
 	 * @return result
 	 */
-	IPage<TAdvertInfo> listBuyAdverts(Page<TAdvertInfo> page, QueryBuyAdvertVO queryBuyAdvertVO, LoginUser loginUser);
+	IPage<TAdvertInfo> listAdverts(Page<TAdvertInfo> page, QueryAdvertVO queryAdvertVO, LoginUser loginUser);
+
+	/**
+	 * 获取登录用户广告列表
+	 * <br/>
+	 * create by: leigq
+	 * <br/>
+	 * create time: 2019/8/20 19:52
+	 * @param page : {@link Page}
+	 * @param coinId
+	 * @param loginUser : {@link LoginUser}
+	 * @return  result
+	 */
+	IPage<AdvertUserVO> listAdvertsUsers(Page<AdvertUserVO> page, Long coinId, LoginUser loginUser);
+
+	/**
+	 * 暂停广告
+	 * <br/>
+	 * create by: leigq
+	 * <br/>
+	 * create time: 2019/8/21 17:07
+	 * @param advertIds : 多个广告 ids
+	 * @param loginUser : {@link LoginUser}
+	 * @return  result
+	 */
+	Boolean suspendAdverts(List<Long> advertIds, LoginUser loginUser);
+
+	/**
+	 * 撤销广告
+	 * <br/>
+	 * create by: leigq
+	 * <br/>
+	 * create time: 2019/8/21 17:14
+	 * @param advertId : 广告 id
+	 * @param loginUser : {@link LoginUser}
+	 * @return  result
+	 */
+	Boolean revokeAdverts(Long advertId, LoginUser loginUser);
+
+	/**
+	 * 获取广告详情
+	 * <br/>
+	 * create by: leigq
+	 * <br/>
+	 * create time: 2019/8/21 17:14
+	 * @param advertId : 广告 id
+	 * @return  result
+	 */
+	TAdvertInfo getAdvertDetails(Long advertId);
 }
