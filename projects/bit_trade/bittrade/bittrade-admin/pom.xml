@@ -19,7 +19,7 @@
 		</dependency> -->
 		<dependency>
 			<groupId>com.bittrade</groupId>
-			<artifactId>bittrade-pojo</artifactId>
+			<artifactId>bittrade-pojo-model</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>com.bittrade</groupId>

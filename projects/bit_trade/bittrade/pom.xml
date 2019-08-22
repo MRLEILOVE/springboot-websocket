@@ -15,6 +15,7 @@
 	<packaging>pom</packaging>
 
 	<modules>
+		<module>bittrade-pojo-model</module>
 		<module>bittrade-pojo</module>
 		<module>bittrade-__default</module>
 		<module>bittrade-common</module>
@@ -38,6 +39,11 @@
 				<scope>import</scope>
 			</dependency>
 
+			<dependency>
+				<groupId>com.bittrade</groupId>
+				<artifactId>bittrade-pojo-model</artifactId>
+				<version>${project.version}</version>
+			</dependency>
 			<dependency>
 				<groupId>com.bittrade</groupId>
 				<artifactId>bittrade-pojo</artifactId>

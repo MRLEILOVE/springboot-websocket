@@ -5,8 +5,8 @@
  * DateTime: Aug 21, 2019 11:56:06 AM <br />
  * Copyright (c) 2019, 仙灵科技 All Rights Reserved.  
  *  
-*/  
-  
+ */  
+
 package com.bittrade.admin.controller;
 
 import java.util.HashMap;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.bittrade.admin.model.dto.IndexDataDto;
+import com.bittrade.admin.dto.IndexDataDto;
 
 /**  
  * ClassName:IndexController <br/>  
@@ -31,17 +31,17 @@ import com.bittrade.admin.model.dto.IndexDataDto;
  */
 @Controller
 public class IndexController {
-	
+
 	@RequestMapping(value = "/login", method = { RequestMethod.GET })
 	public String login() {
 		System.out.println( "com.admin.bittrade.controller.IndexController.login()" );
 		return "login";
 	}
-	
+
 	@RequestMapping(value = "/index", method = { RequestMethod.GET })
 	public String index(HttpServletRequest req) {
 		System.out.println( "com.admin.bittrade.controller.IndexController.index()" );
-		
+
 		req.setAttribute( "user", new HashMap<String, Object>() {
 			private static final long serialVersionUID = 1L;
 			{
@@ -55,20 +55,19 @@ public class IndexController {
 				} );
 			}
 		} );
-		
+
 		return "index";
 	}
-	
+
 	@RequestMapping(value = "/system/main", method = { RequestMethod.GET })
 	@ResponseBody
 	public IndexDataDto main(HttpServletRequest req) {
 		return new IndexDataDto() {
 			private static final long serialVersionUID = 1L;
 			{
-				
+
 			}
 		};
 	}
-	
+
 }
-  

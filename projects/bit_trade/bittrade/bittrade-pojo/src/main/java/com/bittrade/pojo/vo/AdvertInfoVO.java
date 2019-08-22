@@ -1,18 +1,26 @@
 package com.bittrade.pojo.vo;
 
-import com.bittrade.pojo.model.TAdvertInfo;
-import com.core.common.annotation.CheckEnumValue;
-import lombok.Builder;
-import lombok.Data;
-import org.hibernate.validator.constraints.Length;
-import org.springframework.format.annotation.DateTimeFormat;
-
-import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.Length;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.bittrade.pojo.model.TAdvertInfo;
+import com.core.common.annotation.CheckEnumValue;
+
+import lombok.Builder;
+import lombok.Data;
 
 /**
  * 广告VO
