@@ -2,6 +2,7 @@ package com.bittrade.c2c.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.bittrade.pojo.model.TAdvertOrder;
 import com.bittrade.pojo.vo.AdvertUserVO;
 import com.bittrade.pojo.vo.QueryAdvertVO;
 import lombok.extern.slf4j.Slf4j;
@@ -165,8 +166,8 @@ public class TAdvertInfoController extends BaseController<TAdvertInfo, TAdvertIn
 	                                          @NotNull(message = "數量必填") @DecimalMin(value = "0", message = "數量需大於0", inclusive = false) BigDecimal amount,
 	                                          String payPassWord,
 	                                          @ALoginUser LoginUser loginUser) {
-		Boolean placeAdvertOrderResult = itAdvertInfoService.placeAdvertOrder(advertId, amount, payPassWord, loginUser);
-		return placeAdvertOrderResult ? ReturnDTO.ok("下單成功") : ReturnDTO.error("下單失敗");
+		TAdvertOrder advertOrder = itAdvertInfoService.placeAdvertOrder(advertId, amount, payPassWord, loginUser);
+		return Objects.nonNull(advertOrder) ? ReturnDTO.ok(advertOrder) : ReturnDTO.error("下單失敗");
 	}
 
 }

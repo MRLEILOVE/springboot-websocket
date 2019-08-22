@@ -358,12 +358,12 @@ public class TAdvertInfoServiceImpl extends DefaultTAdvertInfoServiceImpl<ITAdve
 	 * create time: 2019/8/22 14:35
 	 * @param advertId : 广告id
 	 * @param amount : 数量
-	 * @param payPassWord: 资金密码
+	 * @param payPassWord : 资金密码
 	 * @param loginUser : {@link LoginUser}
-	 * @return result
+	 * @return {@link TAdvertOrder}
 	 */
 	@Override
-	public Boolean placeAdvertOrder(Long advertId, BigDecimal amount, String payPassWord, LoginUser loginUser) {
+	public TAdvertOrder placeAdvertOrder(Long advertId, BigDecimal amount, String payPassWord, LoginUser loginUser) {
 		TAdvertInfo advert = getProcessingAdvert(advertId);
 		if (loginUser.getUser_id().equals(advert.getUserId())) {
 			throw new BusinessException("不允許操作自己發布的廣告");
@@ -414,14 +414,18 @@ public class TAdvertInfoServiceImpl extends DefaultTAdvertInfoServiceImpl<ITAdve
 				.setStatus(TAdvertOrder.StatusEnum.ALREADY_AUCTION.getCode())
 				.setCancelOrderDeadline(LocalDateTime.now().plusMinutes(TAdvertOrder.CANCEL_ORDER_DURATION))
 				.setArbitStatus(TAdvertOrder.ArbitStatusEnum.NO_ARBITRATION.getCode())
-				.setOverdueTime(LocalDateTime.now().plusMinutes(advert.getPaymentTime()));
+				.setOverdueTime(Objects.nonNull(advert.getPaymentTime()) ? LocalDateTime.now().plusMinutes(advert.getPaymentTime()) : null);
 		boolean saveAdvertOrderResult = itAdvertOrderService.save(order);
 		// 冻结广告余额， 剩余减，冻结加
 		advert.setBalanceAmount(advert.getBalanceAmount().subtract(amount));
 		advert.setFreezeAmount(advert.getFreezeAmount().add(amount));
 		boolean updateResult = updateById(advert);
 		// TODO 发短信通知买家、卖家
-		return saveAdvertOrderResult && updateResult;
+
+		if (saveAdvertOrderResult && updateResult) {
+			return itAdvertOrderService.getAdvertOrderDetails(order.getId());
+		}
+		return null;
 	}
 
 

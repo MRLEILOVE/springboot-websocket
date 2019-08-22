@@ -291,7 +291,7 @@ public class TAdvertInfo extends BaseModel<TAdvertInfo> {
 	private BigDecimal c2cTurnoverRate;
 
 	/**
-	 * 付款失效或放币时效
+	 * 付款时效或放币时效
 	 */
 	@TableField(exist = false)
 	private Long paymentOrPutCoinAging;
