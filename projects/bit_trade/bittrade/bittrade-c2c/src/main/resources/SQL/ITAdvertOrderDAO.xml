@@ -34,32 +34,66 @@
 
 	<!-- 通用查询结果列 -->
 	<sql id="Base_Column_List">
-		`id` AS id, 
-		`advert_id` AS advertId, 
-		`coin_id` AS coinId, 
-		`order_number` AS orderNumber, 
-		`payment_legal_currency` AS paymentLegalCurrency, 
-		`advert_type` AS advertType, 
-		`advert_message` AS advertMessage, 
-		`buyer_id` AS buyerId, 
-		`seller_id` AS sellerId, 
-		`publisher_id` AS publisherId, 
-		`canceller_id` AS cancellerId, 
-		`transaction_amout` AS transactionAmout, 
-		`transaction_num` AS transactionNum, 
-		`transaction_price` AS transactionPrice, 
-		`rate` AS rate, 
-		`charge` AS charge, 
-		`status` AS status, 
-		`cancel_order_deadline` AS cancelOrderDeadline, 
-		`arbit_status` AS arbitStatus, 
-		`arbit_result` AS arbitResult, 
-		`payment_time` AS paymentTime, 
-		`grant_coin_time` AS grantCoinTime, 
-		`overdue_time` AS overdueTime, 
-		`remark` AS remark, 
-		`create_time` AS createTime, 
+		`id` AS id,
+		`advert_id` AS advertId,
+		`coin_id` AS coinId,
+		`order_number` AS orderNumber,
+		`payment_legal_currency` AS paymentLegalCurrency,
+		`advert_type` AS advertType,
+		`advert_message` AS advertMessage,
+		`buyer_id` AS buyerId,
+		`seller_id` AS sellerId,
+		`publisher_id` AS publisherId,
+		`canceller_id` AS cancellerId,
+		`transaction_amout` AS transactionAmout,
+		`transaction_num` AS transactionNum,
+		`transaction_price` AS transactionPrice,
+		`rate` AS rate,
+		`charge` AS charge,
+		`status` AS status,
+		`cancel_order_deadline` AS cancelOrderDeadline,
+		`arbit_status` AS arbitStatus,
+		`arbit_result` AS arbitResult,
+		`payment_time` AS paymentTime,
+		`grant_coin_time` AS grantCoinTime,
+		`overdue_time` AS overdueTime,
+		`remark` AS remark,
+		`create_time` AS createTime,
 		`update_time` AS updateTime
 	</sql>
+
+    <select id="getPaymentOrPutCoinAging" resultType="java.lang.Long">
+		SELECT
+			<if test="type == 1">
+				IFNULL(
+					ROUND(
+						AVG(
+						TIMESTAMPDIFF(SECOND, ao.`create_time`, ao.`grant_coin_time`)
+						),
+					0),
+				0)
+			</if>
+			 <if test="type == 2">
+				 IFNULL(
+				 	ROUND(
+						 AVG(
+						 TIMESTAMPDIFF(SECOND, ao.`create_time`, ao.`payment_time`)
+						 ),
+				 	0),
+				 0)
+			 </if>
+		FROM
+		  `t_advert_order` AS ao
+		  <where>
+			  <if test="type == 1">
+				  AND ao.`seller_id` = #{userId}
+			  </if>
+			  <if test="type == 2">
+				  AND ao.`buyer_id` = #{userId}
+			  </if>
+			  AND ao.`advert_type` = #{type}
+			  AND ao.`status` = #{status};
+		  </where>
+	</select>
 
 </mapper>
