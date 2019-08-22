@@ -11,6 +11,7 @@ import com.bittrade.pojo.model.TAdvertOrder;
 import com.bittrade.pojo.vo.TAdvertOrderVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
  *
  */
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class TAdvertOrderServiceImpl extends DefaultTAdvertOrderServiceImpl<ITAdvertOrderDAO, TAdvertOrder, TAdvertOrderDTO, TAdvertOrderVO> implements ITAdvertOrderService {
 
 	@Autowired
