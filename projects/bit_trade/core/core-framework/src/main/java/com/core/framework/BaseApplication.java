@@ -52,7 +52,9 @@ public abstract class BaseApplication {
 	 */
 	@Deprecated
 	protected static final ConfigurableApplicationContext run(Class<?> cls, String[] args, String name) {
-		System.setProperty("svc_name", name);
+		if (name != null && name.length() > 0) {
+			System.setProperty("svc_name", name);
+		}
 //		System.setProperty("spring.devtools.restart.enabled", "false");
 
 //		SpringApplication.run(cls, args);

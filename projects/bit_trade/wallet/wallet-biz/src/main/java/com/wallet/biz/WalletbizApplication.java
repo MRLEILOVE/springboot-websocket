@@ -1,7 +1,6 @@
 package com.wallet.biz;
 
 import org.mybatis.spring.annotation.MapperScan;
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
@@ -11,6 +10,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 import com.alibaba.dubbo.config.spring.context.annotation.EnableDubbo;
+import com.core.framework.BaseApplication;
 import com.spring4all.swagger.EnableSwagger2Doc;
 
 @SpringBootApplication
@@ -23,10 +23,10 @@ import com.spring4all.swagger.EnableSwagger2Doc;
 @EnableAsync
 @EnableScheduling
 @EnableDubbo
-public class WalletbizApplication {
+public class WalletbizApplication extends BaseApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(WalletbizApplication.class, args);
+        run(WalletbizApplication.class, args);
     }
 
 }

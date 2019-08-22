@@ -1,20 +1,19 @@
 package com.wallet.biz.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.core.common.DTO.ReturnDTO;
-import com.wallet.biz.api.service.IWWalletAccountService;
-import com.wallet.biz.pojo.model.WCoinConfig;
-import com.wallet.biz.pojo.model.WWalletAccount;
-import com.wallet.biz.pojo.vo.WithdrawBillParamVo;
-import com.wallet.biz.service.IwalletCaseService;
-import org.apache.commons.codec.digest.DigestUtils;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.core.common.DTO.ReturnDTO;
+import com.wallet.biz.api.service.IWWalletAccountService;
+import com.wallet.biz.pojo.model.WWalletAccount;
+import com.wallet.biz.pojo.vo.WithdrawBillParamVo;
+import com.wallet.biz.service.IwalletCaseService;
+
+import redis.clients.jedis.JedisCluster;
 
 
 @Service
@@ -246,4 +245,10 @@ public class IwalletCaseServiceImpl implements IwalletCaseService {
         return WrapMapper.error("充值出错");*/
         return null;
     }
+    
+    @Autowired
+    public void setJC(JedisCluster jc) {
+    	System.out.println( "jc=" + jc );
+    }
+    
 }
