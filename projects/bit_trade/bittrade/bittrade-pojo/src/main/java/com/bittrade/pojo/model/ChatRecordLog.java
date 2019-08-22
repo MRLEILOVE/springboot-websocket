@@ -50,12 +50,7 @@ public class ChatRecordLog {
     /**
      * 发送类型
      */
-    private Integer sendType;
-
-    /**
-     * 是否已经看
-     */
-    private Boolean read;
+    private Integer messageType;
 
     /**
      * 创建时间
