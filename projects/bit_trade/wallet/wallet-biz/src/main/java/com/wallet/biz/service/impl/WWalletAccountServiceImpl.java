@@ -215,7 +215,7 @@ public class WWalletAccountServiceImpl extends ServiceImpl<IWWalletAccountDAO, W
      * @param userId
      */
     private void createAllWallet(List<TCurrency> currencies, Long userId) {
-        if(currencies != null || currencies.size() >= 0){
+        if(currencies != null && currencies.size() > 0){
             currencies.forEach(x ->{
                 //是否在枚举中，币币账户跟资金账户公用了一个币种表，但是资金账户现在只有BTC跟USDT
                 if(FundCoinEnumer.getValueByKey(x.getId()) != null){
