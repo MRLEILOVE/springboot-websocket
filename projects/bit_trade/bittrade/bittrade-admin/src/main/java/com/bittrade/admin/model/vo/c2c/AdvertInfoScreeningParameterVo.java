@@ -1,4 +1,4 @@
-package com.bittrade.admin.vo.c2c;
+package com.bittrade.admin.model.vo.c2c;
 
 import lombok.Getter;
 import lombok.Setter;
