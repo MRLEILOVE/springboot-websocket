@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.bittrade.admin.model.vo.c2c.AdvertInfoScreeningParameterVo;
 import com.bittrade.admin.service.c2c.ITAdvertInfoService;
-import com.bittrade.admin.vo.c2c.AdvertInfoScreeningParameterVo;
 import com.bittrade.pojo.dto.TAdvertInfoDTO;
 import com.bittrade.pojo.model.TAdvertInfo;
 import com.bittrade.pojo.vo.TAdvertInfoVO;
