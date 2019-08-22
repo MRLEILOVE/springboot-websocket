@@ -8,6 +8,7 @@ import lombok.experimental.Accessors;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 /**
  * @author Administrator
@@ -242,7 +243,7 @@ public class TAdvertInfo extends BaseModel<TAdvertInfo> {
 	/**
 	 * 对手限制-付款时间
 	 */
-	private LocalDateTime paymentTime;
+	private Integer paymentTime;
 
 	/**
 	 * 交易说明（留言）
@@ -288,6 +289,12 @@ public class TAdvertInfo extends BaseModel<TAdvertInfo> {
 	 */
 	@TableField(exist = false)
 	private BigDecimal c2cTurnoverRate;
+
+	/**
+	 * 付款失效或放币时效
+	 */
+	@TableField(exist = false)
+	private Long paymentOrPutCoinAging;
 
 	/**
 	 * 广告类型
@@ -442,5 +449,27 @@ public class TAdvertInfo extends BaseModel<TAdvertInfo> {
 			}
 			return false;
 		}
+	}
+
+	/**
+	 * 广告类型是否为购买
+	 * <br/>
+	 * create by: leigq
+	 * <br/>
+	 * create time: 2019/8/20 13:01
+	 */
+	public Boolean isBuyType() {
+		return Objects.equals(TAdvertInfo.AdvertTypeEnum.BUY.getCode(), this.type);
+	}
+
+	/**
+	 * 广告类型是否为出售
+	 * <br/>
+	 * create by: leigq
+	 * <br/>
+	 * create time: 2019/8/20 13:01
+	 */
+	public Boolean isSellType() {
+		return Objects.equals(TAdvertInfo.AdvertTypeEnum.SELL.getCode(), this.type);
 	}
 }

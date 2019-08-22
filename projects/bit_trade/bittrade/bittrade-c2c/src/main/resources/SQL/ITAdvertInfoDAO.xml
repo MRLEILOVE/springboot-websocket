@@ -54,4 +54,28 @@
 		`update_time` AS updateTime
 	</sql>
 
+    <select id="listAdvertsUsers" resultType="com.bittrade.pojo.vo.AdvertUserVO">
+		select
+		  ai.`id`,
+		  ai.`type`,
+		  ai.`pricing_mode` as pricingMode,
+		  ai.`floating_ratio` as floatingRatio,
+		  ai.`price`,
+		  ai.`hide_price` as hidePrice,
+		  ai.`min_limit` as minLimit,
+		  ai.`max_limit` as maxLimit,
+		  ai.`already_transaction_amount` as alreadyTransactionAmount,
+		  ai.`balance_amount` as balanceAmount,
+		  ai.`freeze_amount` as freezeAmount,
+		  ai.`payment_method_id` as paymentMethodId,
+		  ai.`status`,
+		  cc.`name` as coinName
+		from
+		  `t_advert_info` as ai
+		  inner join `t_legal_currency_coin` as cc
+			on cc.`id` = ai.`coin_id`
+			and ai.`user_id` = #{user_id}
+			and ai.`coin_id` = #{coinId}
+	</select>
+
 </mapper>
