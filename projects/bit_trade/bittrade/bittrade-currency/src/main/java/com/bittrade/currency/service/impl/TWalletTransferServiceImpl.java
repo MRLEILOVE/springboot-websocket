@@ -606,22 +606,17 @@ public class TWalletTransferServiceImpl extends DefaultTWalletTransferServiceImp
         List<CoinVo> together = new ArrayList<>();
         List<CoinVo> coins1 = getCoins(accountId1);//账户1币种列表
         List<CoinVo> coins2 = getCoins(accountId2);//账户2币种列表
-        /*if(coins1 == null || coins1.size() <= 0 || coins2 == null || coins2.size() <= 0){
+        if(coins1 == null || coins1.size() <= 0 || coins2 == null || coins2.size() <= 0){
             return null;
         }
         coins1.forEach(x ->{
             map.put(x.getName(),x.getName());
         });
         coins2.forEach(x ->{
-            if(map.get(x) != null){
+            if(map.get(x.getName()) != null){
                 together.add(x);
             }
-        });*/
-
-        CoinVo vo = CoinVo.builder().name("USDT").shortName("泰達幣").build();
-        CoinVo vo2 = CoinVo.builder().name("BTC").shortName("比特幣").build();
-        together.add(vo);
-        together.add(vo2);
+        });
         return together;
     }
 
@@ -636,11 +631,11 @@ public class TWalletTransferServiceImpl extends DefaultTWalletTransferServiceImp
         if(account == null){
             return null;
         }
-        if("资金账户".equals(account.getName())){
+        if("資金賬戶".equals(account.getName())){
             //通过枚举获取
             List<String> coins = FundCoinEnumer.getValues();
             return currencyDAO.getFundCoinVo(coins);
-        }else if("币币账户".equals(account.getName())){
+        }else if("幣幣賬戶".equals(account.getName())){
             List<CoinVo> coins = new ArrayList<>();
             TCurrency qry = TCurrency.builder().status(StatusEnumer.ENABLE.getCode()).build();
             List<TCurrency> currencies = currencyDAO.getsBy(qry);
@@ -649,7 +644,7 @@ public class TWalletTransferServiceImpl extends DefaultTWalletTransferServiceImp
                 coins.add(vo);
             }
             return coins;
-        }else if("c2c账户".equals(account.getName())){
+        }else if("法幣賬戶".equals(account.getName())){
             List<CoinVo> coins = new ArrayList<>();
             List<LegalCurrencyCoinVO> coinVOS = legalCurrencyCoinService.listLegalCurrencyCoins();
             for (LegalCurrencyCoinVO c : coinVOS){
