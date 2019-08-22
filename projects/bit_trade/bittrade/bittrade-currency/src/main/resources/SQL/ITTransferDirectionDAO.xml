@@ -26,11 +26,11 @@
 		SELECT
 		m1.`name` AS accountName1,
 		m1.id AS accountId1,
-		m2.`name` AS accountName1,
-		m2.id AS accountId1,
+		m2.`name` AS accountName2,
+		m2.id AS accountId2,
 		d.`status`
 		FROM t_transfer_direction d
 		INNER JOIN t_account_manage m1 ON m1.id = d.main_account_id
-		INNER JOIN t_account_manage m2 ON m2.id = d.main_account_id
+		INNER JOIN t_account_manage m2 ON m2.id = d.target_account_id
 	</select>
 </mapper>

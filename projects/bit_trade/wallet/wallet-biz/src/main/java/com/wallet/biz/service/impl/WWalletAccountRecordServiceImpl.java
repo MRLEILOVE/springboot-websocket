@@ -1,7 +1,11 @@
 package com.wallet.biz.service.impl;
 
 import com.alibaba.dubbo.config.annotation.Service;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.bittrade.common.enums.FundRecordTypeEnumer;
+import com.bittrade.pojo.dto.AccountTypeDto;
+import com.bittrade.pojo.vo.RecordVO;
 import com.core.tool.SnowFlake;
 import com.wallet.biz.api.service.IWWalletAccountRecordService;
 import com.wallet.biz.dao.IWWalletAccountRecordDAO;
@@ -11,6 +15,9 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * 
@@ -68,5 +75,46 @@ public class WWalletAccountRecordServiceImpl extends ServiceImpl<IWWalletAccount
                 .createTime(LocalDateTime.now())
                 .build();
         wWalletAccountRecordDAO.insert(record);
+    }
+
+    /**
+     * 查詢资金账户记录
+     * @param userId 用户id
+     * @param accountTypeDto 条件对象
+     * @return
+     */
+    @Override
+    public Page<RecordVO> queryFundAccountRecord(Long userId, AccountTypeDto accountTypeDto) {
+        //1.提币  2.充币  3.转入 4.转出
+        List<Integer> types = new ArrayList<>();
+        if(accountTypeDto.getType() != null){
+            switch (accountTypeDto.getType()){
+                case 1 :
+                    types = Arrays.asList(FundRecordTypeEnumer.withdraw.getCode());
+                    break;
+                case 2 :
+                    types = Arrays.asList(FundRecordTypeEnumer.recharge.getCode());
+                    break;
+                case 3 :
+                    types = Arrays.asList(FundRecordTypeEnumer.BIBI_TO_FUNDS.getCode(),FundRecordTypeEnumer.C2C_TO_FUNDS.getCode());
+                    break;
+                case 4 :
+                    types = Arrays.asList(FundRecordTypeEnumer.FUNDS_TO_BIBI.getCode(),FundRecordTypeEnumer.FUNDS_TO_C2C.getCode());
+                    break;
+                default:
+                    types = Arrays.asList(FundRecordTypeEnumer.recharge.getCode(),
+                                          FundRecordTypeEnumer.withdraw.getCode(),
+                                          FundRecordTypeEnumer.BIBI_TO_FUNDS.getCode(),
+                                          FundRecordTypeEnumer.FUNDS_TO_BIBI.getCode(),
+                                          FundRecordTypeEnumer.FUNDS_TO_C2C.getCode(),
+                                          FundRecordTypeEnumer.C2C_TO_FUNDS.getCode());
+                    break;
+            }
+        }
+
+        Page<RecordVO> page = new Page<>(accountTypeDto.getCurrent(),accountTypeDto.getSize());
+        List<RecordVO> list = wWalletAccountRecordDAO.queryFundAccountRecord(page,userId,types,accountTypeDto.getCurrencyId());
+        page.setRecords(list);
+        return page;
     }
 }

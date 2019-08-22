@@ -20,6 +20,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.wallet.biz.api.service.IWWalletAccountService;
 import com.wallet.biz.dao.IWWalletAccountDAO;
 import com.wallet.biz.pojo.model.WWalletAccount;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -39,8 +40,11 @@ public class WWalletAccountServiceImpl extends ServiceImpl<IWWalletAccountDAO, W
     private static final SnowFlake SNOW_FLAKE__ENTRUST	= new SnowFlake( 2, 2);
     @Autowired
     private IWWalletAccountDAO walletAccountDAO;
+/*    @Autowired
+    private JedisCluster jedisCluster;*/
+
     @Autowired
-    private RedisTemplate<String,Object> redisTemplate;
+    private RedisTemplate<String,String> redisTemplate;
     @Reference
     private ITCurrencyService currencyService;
 
@@ -118,18 +122,44 @@ public class WWalletAccountServiceImpl extends ServiceImpl<IWWalletAccountDAO, W
         ConversionVo vo = ConversionVo.builder().CNY(BigDecimal.ZERO).USDT(BigDecimal.ZERO).build();
         BigDecimal totalUSDT = BigDecimal.ZERO;
         //获取人民币-usdt汇率
-        String value = redisTemplate.opsForValue().get(RedisKeyUtil.USD_TO_CNY_RATE_KEY).toString();
-        BigDecimal USD_TO_CNY_RATE_RATE = new BigDecimal(JSONObject.parseObject(value).get("rate").toString());
+        String value = redisTemplate.opsForValue().get(RedisKeyUtil.USD_TO_CNY_RATE_KEY);
+        JSONObject jsonObject = JSONObject.parseObject(value);
+        Object rate = jsonObject.get("rate");
+        BigDecimal USD_TO_CNY_RATE_RATE = new BigDecimal(rate.toString());
 
         //获取用户所有的法币钱包
         List<AssetsVO> AssetsVOs = walletAccountDAO.getAssets(userId);
+        //查询币种列表
+        List<TCurrency> currencies = currencyService.getCurrencies(FundCoinEnumer.getValues());
+        if(AssetsVOs == null || AssetsVOs.size() <= 0){
+            //为用户创建全部钱包
+            createAllWallet(currencies,userId);
+            //封装好数据后返回给前端
+            currencies.stream().forEach(x -> {
+                AssetsVO assetsVO = AssetsVO.builder().total(BigDecimal.ZERO).totalFrozen(BigDecimal.ZERO).currencyId(x.getId().longValue()).tradeFrozen(BigDecimal.ZERO).transferFrozen(BigDecimal.ZERO).currencyName(x.getName()).build();
+                AssetsVOs.add(assetsVO);
+            });
+        }else if(currencies.size() > AssetsVOs.size()){
+            //为用户创建缺失的钱包
+            List<TCurrency> lockCurrency = createLockWallet(currencies,AssetsVOs,userId);
+            lockCurrency.stream().forEach(x ->{
+                //将缺失的钱包添加到用户钱包列表，然后返回数据给前端
+                AssetsVO assetsVO = AssetsVO.builder().total(BigDecimal.ZERO).totalFrozen(BigDecimal.ZERO).currencyId(x.getId().longValue()).tradeFrozen(BigDecimal.ZERO).transferFrozen(BigDecimal.ZERO).currencyName(x.getName()).build();
+                AssetsVOs.add(assetsVO);
+            });
+        }
+
         for(AssetsVO x : AssetsVOs){
-            BigDecimal all = x.getTotal().add(x.getTradeFrozen().add(x.getTransferFrozen()));
+            BigDecimal all = x.getTotal().add(x.getTotalFrozen());
             if("USDT".equals(x.getCurrencyName())){
                 totalUSDT = totalUSDT.add(all);
             }else{
                 //获取最新价
-                String s = redisTemplate.opsForValue().get(IConstant.REDIS_PREFIX__LINE_PRICE + x.getCurrencyName() + "-USDT").toString();
+                String s = redisTemplate.opsForValue().get(IConstant.REDIS_PREFIX__LINE_PRICE + x.getCurrencyName() + "-USDT");
+//                String s = jedisCluster.get(IConstant.REDIS_PREFIX__LINE_PRICE + x.getCurrencyName() + "-USDT");
+                if(s == null){
+                    s = "1";
+                }
                 BigDecimal price = new BigDecimal(s);
                 //USDT累计
                 totalUSDT = totalUSDT.add(price.multiply(all));
@@ -146,28 +176,8 @@ public class WWalletAccountServiceImpl extends ServiceImpl<IWWalletAccountDAO, W
      */
     @Override
     public List<AssetsVO> detail(Long userId) {
-        //查询币种列表
-        List<TCurrency> currencies = currencyService.getCurrencies();
-
         //查询用户钱包列表
         List<AssetsVO> userAccountVOs =  walletAccountDAO.getAssets(userId);
-        if(userAccountVOs == null || userAccountVOs.size() <= 0){
-            //为用户创建全部钱包
-            createAllWallet(currencies,userId);
-            //封装好数据后返回给前端
-            currencies.stream().forEach(x -> {
-                AssetsVO vo = AssetsVO.builder().total(BigDecimal.ZERO).totalFrozen(BigDecimal.ZERO).currencyId(x.getId().longValue()).currencyName(x.getName()).build();
-                userAccountVOs.add(vo);
-            });
-        }else if(currencies.size() > userAccountVOs.size()){
-            //为用户创建缺失的钱包
-            List<TCurrency> lockCurrency = createLockWallet(currencies,userAccountVOs,userId);
-            lockCurrency.stream().forEach(x ->{
-                //将缺失的钱包添加到用户钱包列表，然后返回数据给前端
-                AssetsVO vo = AssetsVO.builder().total(BigDecimal.ZERO).totalFrozen(BigDecimal.ZERO).currencyId(x.getId().longValue()).currencyName(x.getName()).build();
-                userAccountVOs.add(vo);
-            });
-        }
         return userAccountVOs;
     }
 
