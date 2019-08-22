@@ -69,7 +69,7 @@ public abstract interface IDefaultTLegalCurrencyCoinDAO extends IBaseDAO<TLegalC
 	 * @param condiTLegalCurrencyCoin
 	 * @return
 	 */
-	public int modifyBy(@Param(value = "tLegalCurrencyCoin") TLegalCurrencyCoin tLegalCurrencyCoin, @Param(value = "condiTLegalCurrencyCoin") TLegalCurrencyCoin condiTLegalCurrencyCoin);
+	public int modifyBy(@Param(value="tLegalCurrencyCoin") TLegalCurrencyCoin tLegalCurrencyCoin, @Param(value="condiTLegalCurrencyCoin") TLegalCurrencyCoin condiTLegalCurrencyCoin);
 	
 	/**
 	 * 
@@ -77,7 +77,7 @@ public abstract interface IDefaultTLegalCurrencyCoinDAO extends IBaseDAO<TLegalC
 	 * @param condiTLegalCurrencyCoin
 	 * @return
 	 */
-	public int modifyWithSelectiveBy(@Param(value = "tLegalCurrencyCoin") TLegalCurrencyCoin tLegalCurrencyCoin, @Param(value = "condiTLegalCurrencyCoin") TLegalCurrencyCoin condiTLegalCurrencyCoin);
+	public int modifyWithSelectiveBy(@Param(value="tLegalCurrencyCoin") TLegalCurrencyCoin tLegalCurrencyCoin, @Param(value="condiTLegalCurrencyCoin") TLegalCurrencyCoin condiTLegalCurrencyCoin);
 	
 	/**
 	 * 
@@ -117,7 +117,7 @@ public abstract interface IDefaultTLegalCurrencyCoinDAO extends IBaseDAO<TLegalC
 	 * @param tLegalCurrencyCoin
 	 * @return
 	 */
-	public int getCntBy(@Param(value = "tLegalCurrencyCoin") TLegalCurrencyCoin tLegalCurrencyCoin);
+	public int getCntBy(@Param(value="tLegalCurrencyCoin") TLegalCurrencyCoin tLegalCurrencyCoin);
 	
 	/**
 	 * 
@@ -126,6 +126,6 @@ public abstract interface IDefaultTLegalCurrencyCoinDAO extends IBaseDAO<TLegalC
 	 * @param size
 	 * @return
 	 */
-	public List<TLegalCurrencyCoin> getsByPage(@Param(value = "tLegalCurrencyCoin") TLegalCurrencyCoin tLegalCurrencyCoin, @Param(value = "page") int page, @Param(value = "size") int size);
+	public List<TLegalCurrencyCoin> getsByPage(@Param(value="tLegalCurrencyCoin") TLegalCurrencyCoin tLegalCurrencyCoin, @Param(value="page") int page, @Param(value="size") int size);
 	
 }

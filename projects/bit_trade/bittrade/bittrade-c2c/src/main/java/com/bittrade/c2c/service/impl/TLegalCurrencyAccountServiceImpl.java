@@ -58,14 +58,39 @@ public class TLegalCurrencyAccountServiceImpl extends DefaultTLegalCurrencyAccou
         BigDecimal USD_TO_CNY_RATE_RATE = new BigDecimal(JSONObject.parseObject(value).get("rate").toString());
 
         //获取用户所有的法币钱包
-        List<AssetsVO> AssetsVOs = legalCurrencyAccountDAO.getAssets(userId);
-        for(AssetsVO x : AssetsVOs){
-            BigDecimal all = x.getTotal().add(x.getTradeFrozen().add(x.getTransferFrozen()));
+        List<AssetsVO> assetsVOs = legalCurrencyAccountDAO.getAssets(userId);
+        //获取法币币种列表
+        TLegalCurrencyCoin qryCoin = TLegalCurrencyCoin.builder().status(StatusEnumer.ENABLE.getCode()).build();
+        List<TLegalCurrencyCoin> coins = legalCurrencyCoinDAO.getsBy(qryCoin);
+        if(assetsVOs == null || assetsVOs.size() <= 0){
+            //为用户创建全部法币钱包
+            createAllWallet(coins,userId);
+            //封装好数据后返回给前端
+            coins.stream().forEach(coin -> {
+                AssetsVO o = AssetsVO.builder().total(BigDecimal.ZERO).totalFrozen(BigDecimal.ZERO).currencyId(coin.getId()).tradeFrozen(BigDecimal.ZERO).transferFrozen(BigDecimal.ZERO).currencyName(coin.getName()).build();
+                assetsVOs.add(o);
+            });
+        }else if(coins.size() > assetsVOs.size()){
+            //为用户补全缺失的钱包
+            List<TLegalCurrencyCoin> lockVos = createLockWallet(coins,assetsVOs,userId);
+            lockVos.forEach(x -> {
+                //将缺失的钱包添加到用户钱包列表，然后返回数据给前端
+                assetsVOs.add(AssetsVO.builder().total(BigDecimal.ZERO).totalFrozen(BigDecimal.ZERO).currencyId(x.getId()).tradeFrozen(BigDecimal.ZERO).transferFrozen(BigDecimal.ZERO).currencyName(x.getName()).build());
+            });
+        }
+
+        for(AssetsVO x : assetsVOs){
+            BigDecimal all = x.getTotal().add(x.getTotalFrozen());
             if("USDT".equals(x.getCurrencyName())){
                 totalUSDT = totalUSDT.add(all);
             }else{
                 //获取最新价
                 String s = jedisCluster.get(IConstant.REDIS_PREFIX__LINE_PRICE + x.getCurrencyName() + "-USDT");
+
+                if(s == null){
+                    s = "1.0";
+                }
+
                 BigDecimal price = new BigDecimal(s);
                 //USDT累计
                 totalUSDT = totalUSDT.add(price.multiply(all));
@@ -82,28 +107,8 @@ public class TLegalCurrencyAccountServiceImpl extends DefaultTLegalCurrencyAccou
      */
     @Override
     public List<AssetsVO> detail(Long userId) {
-        //获取法币币种列表
-        TLegalCurrencyCoin qryCoin = TLegalCurrencyCoin.builder().status(StatusEnumer.ENABLE.getCode()).build();
-        List<TLegalCurrencyCoin> coins = legalCurrencyCoinDAO.getsBy(qryCoin);
-
         //获取用户所有的法币钱包
         List<AssetsVO> assetsVOs = legalCurrencyAccountDAO.getAssets(userId);
-        if(assetsVOs == null || assetsVOs.size() <= 0){
-            //为用户创建全部法币钱包
-            createAllWallet(coins,userId);
-            //封装好数据后返回给前端
-            coins.stream().forEach(coin -> {
-                AssetsVO vo = AssetsVO.builder().total(BigDecimal.ZERO).totalFrozen(BigDecimal.ZERO).currencyId(coin.getId()).currencyName(coin.getName()).build();
-                assetsVOs.add(vo);
-            });
-        }else if(coins.size() > assetsVOs.size()){
-            //为用户补全缺失的钱包
-            List<TLegalCurrencyCoin> lockVos = createLockWallet(coins,assetsVOs,userId);
-            lockVos.forEach(x -> {
-                //将缺失的钱包添加到用户钱包列表，然后返回数据给前端
-                assetsVOs.add(AssetsVO.builder().total(BigDecimal.ZERO).totalFrozen(BigDecimal.ZERO).currencyId(x.getId()).currencyName(x.getName()).build());
-            });
-        }
         return assetsVOs;
     }
 
@@ -158,6 +163,8 @@ public class TLegalCurrencyAccountServiceImpl extends DefaultTLegalCurrencyAccou
                 .balanceAmount(BigDecimal.ZERO)
                 .freezeAmount(BigDecimal.ZERO)
                 .version(0)
+                .c2cAlreadyDealCount(0)
+                .c2cTotalCount(0)
                 .createTime(LocalDateTime.now())
                 .updateTime(LocalDateTime.now())
                 .build();

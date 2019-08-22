@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bittrade.admin.dao.currency.ITCurrencyTradeDAO">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.bittrade.pojo.model.TCurrencyTrade">
+		<id javaType="int" property="id" jdbcType="INTEGER" column="id" />
+		<result javaType="String" property="symbol" jdbcType="VARCHAR" column="symbol" />
+		<result javaType="Integer" property="currencyId1" jdbcType="INTEGER" column="currency_id1" />
+		<result javaType="Integer" property="currencyId2" jdbcType="INTEGER" column="currency_id2" />
+		<result javaType="Integer" property="priceDecimalDigits" jdbcType="INTEGER" column="price_decimal_digits" />
+		<result javaType="Integer" property="countDecimalDigits" jdbcType="INTEGER" column="count_decimal_digits" />
+		<result javaType="java.math.BigDecimal" property="minPrice" jdbcType="DECIMAL" column="min_price" />
+		<result javaType="java.math.BigDecimal" property="minCount" jdbcType="DECIMAL" column="min_count" />
+		<result javaType="java.math.BigDecimal" property="minAmount" jdbcType="DECIMAL" column="min_amount" />
+		<result javaType="java.math.BigDecimal" property="maxPrice" jdbcType="DECIMAL" column="max_price" />
+		<result javaType="java.math.BigDecimal" property="maxCount" jdbcType="DECIMAL" column="max_count" />
+		<result javaType="java.math.BigDecimal" property="maxAmount" jdbcType="DECIMAL" column="max_amount" />
+		<result javaType="Byte" property="status" jdbcType="INTEGER" column="status" />
+		<result javaType="Integer" property="sort" jdbcType="INTEGER" column="sort" />
+		<result javaType="java.time.LocalDateTime" property="createTime" jdbcType="TIMESTAMP" column="create_time" />
+		<result javaType="java.time.LocalDateTime" property="updateTime" jdbcType="TIMESTAMP" column="update_time" />
+	</resultMap>
+
+	<!-- 通用查询结果列 -->
+	<sql id="Base_Column_List">
+		`id` AS id, 
+		`symbol` AS symbol, 
+		`currency_id1` AS currencyId1, 
+		`currency_id2` AS currencyId2, 
+		`price_decimal_digits` AS priceDecimalDigits, 
+		`count_decimal_digits` AS countDecimalDigits, 
+		`min_price` AS minPrice, 
+		`min_count` AS minCount, 
+		`min_amount` AS minAmount, 
+		`max_price` AS maxPrice, 
+		`max_count` AS maxCount, 
+		`max_amount` AS maxAmount, 
+		`status` AS status, 
+		`sort` AS sort, 
+		`create_time` AS createTime, 
+		`update_time` AS updateTime
+	</sql>
+
+</mapper>

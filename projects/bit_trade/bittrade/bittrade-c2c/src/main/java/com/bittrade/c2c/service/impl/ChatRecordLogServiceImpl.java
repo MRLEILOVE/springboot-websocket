@@ -48,7 +48,7 @@ public class ChatRecordLogServiceImpl
     private SimpUserRegistry userRegistry;
 
     @Autowired
-    private RedisTemplate<Object, Object> redisTemplate;
+    private RedisTemplate redisTemplate;
 
     /**
      * 未读消息redis key
@@ -91,7 +91,7 @@ public class ChatRecordLogServiceImpl
         Long senderId = messageVo.getSenderId();
         Long receiverId = messageVo.getReceiverId();
         String redisKey = String.format(REDIS_UNREAD_MSG_KEY, senderId, receiverId);
-        BoundListOperations<Object, Object> messageList = redisTemplate.boundListOps(redisKey);
+        BoundListOperations<String, Object> messageList = redisTemplate.boundListOps(redisKey);
         messageList.leftPush(messageVo);
         messageList.expire(30, TimeUnit.DAYS);
     }
@@ -132,8 +132,7 @@ public class ChatRecordLogServiceImpl
         chatRecordLog.setSenderId(senderId);
         chatRecordLog.setReceiverId(receiverId);
         chatRecordLog.setContent(content);
-        chatRecordLog.setSendType(messageType);
-        chatRecordLog.setRead(false);
+        chatRecordLog.setMessageType(messageType);
         chatRecordLogService.save(chatRecordLog);
     }
 
@@ -143,9 +142,9 @@ public class ChatRecordLogServiceImpl
         LoginUser currentUser = WebUtil.getLoginUser();
         Long senderId = currentUser.getUser_id();
         String redisKey = String.format(REDIS_UNREAD_MSG_KEY, senderId, receiverId);
-        BoundListOperations<Object, Object> unreadMsg = redisTemplate.boundListOps(redisKey);
+        BoundListOperations<String, Object> unreadMsg = redisTemplate.boundListOps(redisKey);
         Long unreadCount = unreadMsg.size();
-        for (int i = 0; i <= unreadCount; i++) {
+        for (int i = 0; i < unreadCount; i++) {
             Object message = unreadMsg.rightPop();
             //推送消息
             messagingTemplate.convertAndSendToUser(receiverId.toString(), StringUtils.EMPTY, message);

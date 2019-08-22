@@ -1,13 +1,12 @@
 package com.bittrade.pojo.vo;
 
-import com.bittrade.pojo.model.TAdvertInfo;
-import com.core.common.annotation.CheckEnumValue;
-import lombok.Data;
-
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Objects;
+
+import com.bittrade.pojo.model.TAdvertInfo;
+
+import lombok.Data;
 
 /**
  * 查询购买广告列表条件

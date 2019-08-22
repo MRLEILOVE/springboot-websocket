@@ -54,4 +54,13 @@ public class TCurrencyServiceImpl extends
 	public List<TCurrency> getCurrencies() {
 		return tCurrencyDAO.gets();
 	}
+
+	/**
+	 * 通过名称获取币种列表
+	 * @return
+	 */
+	@Override
+	public List<TCurrency> getCurrencies(List<String> list) {
+		return tCurrencyDAO.getCurrencies(list);
+	}
 }

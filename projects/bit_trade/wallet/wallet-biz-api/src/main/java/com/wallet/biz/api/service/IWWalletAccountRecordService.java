@@ -1,6 +1,9 @@
 package com.wallet.biz.api.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.bittrade.pojo.dto.AccountTypeDto;
+import com.bittrade.pojo.vo.RecordVO;
 import com.wallet.biz.pojo.model.WWalletAccountRecord;
 
 import java.math.BigDecimal;
@@ -32,5 +35,11 @@ public interface IWWalletAccountRecordService extends IService<WWalletAccountRec
      */
     void recordOut(Long userId, BigDecimal num, Integer currencyId, BigDecimal beforeAmount, int type);
 
-
+    /**
+     * 查詢资金账户记录
+     * @param userId 用户id
+     * @param accountTypeDto 条件对象
+     * @return
+     */
+    Page<RecordVO> queryFundAccountRecord(Long userId, AccountTypeDto accountTypeDto);
 }

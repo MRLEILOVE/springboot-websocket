@@ -1,0 +1,980 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+	This code is generated automatically. Please do not edit it.
+	现在字段也可以要彻底动态？
+-->
+<mapper namespace="com.bittrade.__default.DAO.IDefaultWWalletBillDAO">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.bittrade.pojo.model.WWalletBill">
+		<id javaType="Long" property="id" jdbcType="BIGINT" column="id" />
+		<result javaType="Long" property="userId" jdbcType="BIGINT" column="user_id" />
+		<result javaType="String" property="platform" jdbcType="VARCHAR" column="platform" />
+		<result javaType="String" property="orderId" jdbcType="VARCHAR" column="order_id" />
+		<result javaType="Integer" property="direction" jdbcType="INTEGER" column="direction" />
+		<result javaType="String" property="coinType" jdbcType="VARCHAR" column="coin_type" />
+		<result javaType="String" property="token" jdbcType="VARCHAR" column="token" />
+		<result javaType="String" property="contract" jdbcType="VARCHAR" column="contract" />
+		<result javaType="String" property="senderAddress" jdbcType="VARCHAR" column="sender_address" />
+		<result javaType="String" property="receiverAddress" jdbcType="VARCHAR" column="receiver_address" />
+		<result javaType="java.math.BigDecimal" property="amount" jdbcType="DECIMAL" column="amount" />
+		<result javaType="Long" property="block" jdbcType="BIGINT" column="block" />
+		<result javaType="String" property="tx" jdbcType="VARCHAR" column="tx" />
+		<result javaType="String" property="tradeStep" jdbcType="CHAR" column="trade_step" />
+		<result javaType="String" property="operationType" jdbcType="VARCHAR" column="operation_type" />
+		<result javaType="Byte" property="transferFlag" jdbcType="INTEGER" column="transfer_flag" />
+		<result javaType="Byte" property="flag" jdbcType="INTEGER" column="flag" />
+		<result javaType="String" property="remark" jdbcType="VARCHAR" column="remark" />
+		<result javaType="java.time.LocalDateTime" property="createTime" jdbcType="TIMESTAMP" column="create_time" />
+		<result javaType="java.time.LocalDateTime" property="updateTime" jdbcType="TIMESTAMP" column="update_time" />
+	</resultMap>
+
+	<!--
+		通用查询结果列
+		其他类似的类似，也可以公用（共用）引用。
+	-->
+	<sql id="Base_Column_List">
+		<choose>
+			<when test="strArr_field != null">
+		<foreach collection="strArr_field" index="index" item="item" open="" separator="," close="">
+			`${item}`
+		</foreach>
+			</when>
+			<otherwise>
+		`id` AS `id`, 
+		`user_id` AS `userId`, 
+		`platform` AS `platform`, 
+		`order_id` AS `orderId`, 
+		`direction` AS `direction`, 
+		`coin_type` AS `coinType`, 
+		`token` AS `token`, 
+		`contract` AS `contract`, 
+		`sender_address` AS `senderAddress`, 
+		`receiver_address` AS `receiverAddress`, 
+		`amount` AS `amount`, 
+		`block` AS `block`, 
+		`tx` AS `tx`, 
+		`trade_step` AS `tradeStep`, 
+		`operation_type` AS `operationType`, 
+		`transfer_flag` AS `transferFlag`, 
+		`flag` AS `flag`, 
+		`remark` AS `remark`, 
+		`create_time` AS `createTime`, 
+		`update_time` AS `updateTime`
+			</otherwise>
+		</choose>
+	</sql>
+	
+	<!-- 其他的也可以类似的加， yes， 类似蕾丝的。 -->
+	<sql id="sql_WHERE_forProperty">
+		<choose>
+			<when test="map_in != null">
+			
+		<foreach collection="map_in.entrySet()" index="map_index" item="map_item">
+		AND `${map_index}` IN 
+		<foreach collection="map_item" index="arr_index" item="arr_item" open="(" separator="," close=")">
+			#{arr_item}
+		</foreach>
+		</foreach>
+			
+			</when>
+			<!--
+			<when test="_parameter != null and _parameter.WWalletBill != null and WWalletBill.map_in != null">
+			</when>
+			<otherwise>
+			</otherwise>
+			-->
+		</choose>
+	</sql>
+	<sql id="sql_WHERE_forObject">
+		<choose>
+			<when test="wWalletBill.map_in != null">
+			
+		<foreach collection="wWalletBill.map_in.entrySet()" index="map_index" item="map_item">
+		AND `${map_index}` IN 
+		<foreach collection="map_item" index="arr_index" item="arr_item" open="(" separator="," close=")">
+			#{arr_item}
+		</foreach>
+		</foreach>
+			
+			</when>
+		</choose>
+	</sql>
+	
+	
+	<insert id="add" parameterType="com.bittrade.pojo.model.WWalletBill" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO w_wallet_bill(`user_id`, `platform`, `order_id`, `direction`, `coin_type`, `token`, `contract`, `sender_address`, `receiver_address`, `amount`, `block`, `tx`, `trade_step`, `operation_type`, `transfer_flag`, `flag`, `remark`, `create_time`, `update_time`)
+		VALUES(#{userId,jdbcType=BIGINT}, #{platform,jdbcType=VARCHAR}, #{orderId,jdbcType=VARCHAR}, #{direction,jdbcType=INTEGER}, #{coinType,jdbcType=VARCHAR}, #{token,jdbcType=VARCHAR}, #{contract,jdbcType=VARCHAR}, #{senderAddress,jdbcType=VARCHAR}, #{receiverAddress,jdbcType=VARCHAR}, #{amount,jdbcType=DECIMAL}, #{block,jdbcType=BIGINT}, #{tx,jdbcType=VARCHAR}, #{tradeStep,jdbcType=CHAR}, #{operationType,jdbcType=VARCHAR}, #{transferFlag,jdbcType=INTEGER}, #{flag,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+	</insert>
+	
+	<insert id="addWithSelective" parameterType="com.bittrade.pojo.model.WWalletBill" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO w_wallet_bill(
+			<if test="userId != null">
+			`user_id`, 
+			</if>
+			<if test="platform != null">
+			`platform`, 
+			</if>
+			<if test="orderId != null">
+			`order_id`, 
+			</if>
+			<if test="direction != null">
+			`direction`, 
+			</if>
+			<if test="coinType != null">
+			`coin_type`, 
+			</if>
+			<if test="token != null">
+			`token`, 
+			</if>
+			<if test="contract != null">
+			`contract`, 
+			</if>
+			<if test="senderAddress != null">
+			`sender_address`, 
+			</if>
+			<if test="receiverAddress != null">
+			`receiver_address`, 
+			</if>
+			<if test="amount != null">
+			`amount`, 
+			</if>
+			<if test="block != null">
+			`block`, 
+			</if>
+			<if test="tx != null">
+			`tx`, 
+			</if>
+			<if test="tradeStep != null">
+			`trade_step`, 
+			</if>
+			<if test="operationType != null">
+			`operation_type`, 
+			</if>
+			<if test="transferFlag != null">
+			`transfer_flag`, 
+			</if>
+			<if test="flag != null">
+			`flag`, 
+			</if>
+			<if test="remark != null">
+			`remark`, 
+			</if>
+			<if test="createTime != null">
+			`create_time`, 
+			</if>
+			<if test="updateTime != null">
+			`update_time`
+			</if>
+		)
+		VALUES(
+			<if test="userId != null">
+			#{userId,jdbcType=BIGINT}, 
+			</if>
+			<if test="platform != null">
+			#{platform,jdbcType=VARCHAR}, 
+			</if>
+			<if test="orderId != null">
+			#{orderId,jdbcType=VARCHAR}, 
+			</if>
+			<if test="direction != null">
+			#{direction,jdbcType=INTEGER}, 
+			</if>
+			<if test="coinType != null">
+			#{coinType,jdbcType=VARCHAR}, 
+			</if>
+			<if test="token != null">
+			#{token,jdbcType=VARCHAR}, 
+			</if>
+			<if test="contract != null">
+			#{contract,jdbcType=VARCHAR}, 
+			</if>
+			<if test="senderAddress != null">
+			#{senderAddress,jdbcType=VARCHAR}, 
+			</if>
+			<if test="receiverAddress != null">
+			#{receiverAddress,jdbcType=VARCHAR}, 
+			</if>
+			<if test="amount != null">
+			#{amount,jdbcType=DECIMAL}, 
+			</if>
+			<if test="block != null">
+			#{block,jdbcType=BIGINT}, 
+			</if>
+			<if test="tx != null">
+			#{tx,jdbcType=VARCHAR}, 
+			</if>
+			<if test="tradeStep != null">
+			#{tradeStep,jdbcType=CHAR}, 
+			</if>
+			<if test="operationType != null">
+			#{operationType,jdbcType=VARCHAR}, 
+			</if>
+			<if test="transferFlag != null">
+			#{transferFlag,jdbcType=INTEGER}, 
+			</if>
+			<if test="flag != null">
+			#{flag,jdbcType=INTEGER}, 
+			</if>
+			<if test="remark != null">
+			#{remark,jdbcType=VARCHAR}, 
+			</if>
+			<if test="createTime != null">
+			#{createTime,jdbcType=TIMESTAMP}, 
+			</if>
+			<if test="updateTime != null">
+			#{updateTime,jdbcType=TIMESTAMP}
+			</if>
+		)
+	</insert>
+	
+	<delete id="removeByPK">
+		DELETE FROM w_wallet_bill
+		<where>
+			AND `id` = #{id,jdbcType=BIGINT}
+		</where>
+	</delete>
+	
+	<delete id="removeBy" parameterType="com.bittrade.pojo.model.WWalletBill">
+		DELETE FROM w_wallet_bill
+		<where>
+			<if test="userId != null">
+			AND `user_id` = #{userId,jdbcType=BIGINT}
+			</if>
+			<if test="platform != null">
+			AND `platform` = #{platform,jdbcType=VARCHAR}
+			</if>
+			<if test="orderId != null">
+			AND `order_id` = #{orderId,jdbcType=VARCHAR}
+			</if>
+			<if test="direction != null">
+			AND `direction` = #{direction,jdbcType=INTEGER}
+			</if>
+			<if test="coinType != null">
+			AND `coin_type` = #{coinType,jdbcType=VARCHAR}
+			</if>
+			<if test="token != null">
+			AND `token` = #{token,jdbcType=VARCHAR}
+			</if>
+			<if test="contract != null">
+			AND `contract` = #{contract,jdbcType=VARCHAR}
+			</if>
+			<if test="senderAddress != null">
+			AND `sender_address` = #{senderAddress,jdbcType=VARCHAR}
+			</if>
+			<if test="receiverAddress != null">
+			AND `receiver_address` = #{receiverAddress,jdbcType=VARCHAR}
+			</if>
+			<if test="amount != null">
+			AND `amount` = #{amount,jdbcType=DECIMAL}
+			</if>
+			<if test="block != null">
+			AND `block` = #{block,jdbcType=BIGINT}
+			</if>
+			<if test="tx != null">
+			AND `tx` = #{tx,jdbcType=VARCHAR}
+			</if>
+			<if test="tradeStep != null">
+			AND `trade_step` = #{tradeStep,jdbcType=CHAR}
+			</if>
+			<if test="operationType != null">
+			AND `operation_type` = #{operationType,jdbcType=VARCHAR}
+			</if>
+			<if test="transferFlag != null">
+			AND `transfer_flag` = #{transferFlag,jdbcType=INTEGER}
+			</if>
+			<if test="flag != null">
+			AND `flag` = #{flag,jdbcType=INTEGER}
+			</if>
+			<if test="remark != null">
+			AND `remark` = #{remark,jdbcType=VARCHAR}
+			</if>
+			<if test="createTime != null">
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="updateTime != null">
+			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+		</where>
+	</delete>
+	
+	<update id="modifyByPK" parameterType="com.bittrade.pojo.model.WWalletBill">
+		UPDATE w_wallet_bill
+		<set>
+			`user_id` = #{userId,jdbcType=BIGINT}, 
+			`platform` = #{platform,jdbcType=VARCHAR}, 
+			`order_id` = #{orderId,jdbcType=VARCHAR}, 
+			`direction` = #{direction,jdbcType=INTEGER}, 
+			`coin_type` = #{coinType,jdbcType=VARCHAR}, 
+			`token` = #{token,jdbcType=VARCHAR}, 
+			`contract` = #{contract,jdbcType=VARCHAR}, 
+			`sender_address` = #{senderAddress,jdbcType=VARCHAR}, 
+			`receiver_address` = #{receiverAddress,jdbcType=VARCHAR}, 
+			`amount` = #{amount,jdbcType=DECIMAL}, 
+			`block` = #{block,jdbcType=BIGINT}, 
+			`tx` = #{tx,jdbcType=VARCHAR}, 
+			`trade_step` = #{tradeStep,jdbcType=CHAR}, 
+			`operation_type` = #{operationType,jdbcType=VARCHAR}, 
+			`transfer_flag` = #{transferFlag,jdbcType=INTEGER}, 
+			`flag` = #{flag,jdbcType=INTEGER}, 
+			`remark` = #{remark,jdbcType=VARCHAR}, 
+			`create_time` = #{createTime,jdbcType=TIMESTAMP}, 
+			`update_time` = #{updateTime,jdbcType=TIMESTAMP}, 
+		</set>
+		<where>
+			AND `id` = #{id,jdbcType=BIGINT}
+		</where>
+	</update>
+	
+	<update id="modifyWithSelectiveByPK" parameterType="com.bittrade.pojo.model.WWalletBill">
+		UPDATE w_wallet_bill
+		<set>
+			<if test="userId != null">
+			`user_id` = #{userId,jdbcType=BIGINT}, 
+			</if>
+			<if test="platform != null">
+			`platform` = #{platform,jdbcType=VARCHAR}, 
+			</if>
+			<if test="orderId != null">
+			`order_id` = #{orderId,jdbcType=VARCHAR}, 
+			</if>
+			<if test="direction != null">
+			`direction` = #{direction,jdbcType=INTEGER}, 
+			</if>
+			<if test="coinType != null">
+			`coin_type` = #{coinType,jdbcType=VARCHAR}, 
+			</if>
+			<if test="token != null">
+			`token` = #{token,jdbcType=VARCHAR}, 
+			</if>
+			<if test="contract != null">
+			`contract` = #{contract,jdbcType=VARCHAR}, 
+			</if>
+			<if test="senderAddress != null">
+			`sender_address` = #{senderAddress,jdbcType=VARCHAR}, 
+			</if>
+			<if test="receiverAddress != null">
+			`receiver_address` = #{receiverAddress,jdbcType=VARCHAR}, 
+			</if>
+			<if test="amount != null">
+			`amount` = #{amount,jdbcType=DECIMAL}, 
+			</if>
+			<if test="block != null">
+			`block` = #{block,jdbcType=BIGINT}, 
+			</if>
+			<if test="tx != null">
+			`tx` = #{tx,jdbcType=VARCHAR}, 
+			</if>
+			<if test="tradeStep != null">
+			`trade_step` = #{tradeStep,jdbcType=CHAR}, 
+			</if>
+			<if test="operationType != null">
+			`operation_type` = #{operationType,jdbcType=VARCHAR}, 
+			</if>
+			<if test="transferFlag != null">
+			`transfer_flag` = #{transferFlag,jdbcType=INTEGER}, 
+			</if>
+			<if test="flag != null">
+			`flag` = #{flag,jdbcType=INTEGER}, 
+			</if>
+			<if test="remark != null">
+			`remark` = #{remark,jdbcType=VARCHAR}, 
+			</if>
+			<if test="createTime != null">
+			`create_time` = #{createTime,jdbcType=TIMESTAMP}, 
+			</if>
+			<if test="updateTime != null">
+			`update_time` = #{updateTime,jdbcType=TIMESTAMP}, 
+			</if>
+		</set>
+		<where>
+			AND `id` = #{id,jdbcType=BIGINT}
+		</where>
+	</update>
+	
+	<update id="modifyBy">
+		UPDATE w_wallet_bill
+		<set>
+			`user_id` = #{wWalletBill.userId,jdbcType=BIGINT}, 
+			`platform` = #{wWalletBill.platform,jdbcType=VARCHAR}, 
+			`order_id` = #{wWalletBill.orderId,jdbcType=VARCHAR}, 
+			`direction` = #{wWalletBill.direction,jdbcType=INTEGER}, 
+			`coin_type` = #{wWalletBill.coinType,jdbcType=VARCHAR}, 
+			`token` = #{wWalletBill.token,jdbcType=VARCHAR}, 
+			`contract` = #{wWalletBill.contract,jdbcType=VARCHAR}, 
+			`sender_address` = #{wWalletBill.senderAddress,jdbcType=VARCHAR}, 
+			`receiver_address` = #{wWalletBill.receiverAddress,jdbcType=VARCHAR}, 
+			`amount` = #{wWalletBill.amount,jdbcType=DECIMAL}, 
+			`block` = #{wWalletBill.block,jdbcType=BIGINT}, 
+			`tx` = #{wWalletBill.tx,jdbcType=VARCHAR}, 
+			`trade_step` = #{wWalletBill.tradeStep,jdbcType=CHAR}, 
+			`operation_type` = #{wWalletBill.operationType,jdbcType=VARCHAR}, 
+			`transfer_flag` = #{wWalletBill.transferFlag,jdbcType=INTEGER}, 
+			`flag` = #{wWalletBill.flag,jdbcType=INTEGER}, 
+			`remark` = #{wWalletBill.remark,jdbcType=VARCHAR}, 
+			`create_time` = #{wWalletBill.createTime,jdbcType=TIMESTAMP}, 
+			`update_time` = #{wWalletBill.updateTime,jdbcType=TIMESTAMP}, 
+		</set>
+		<where>
+		<if test="condiWWalletBill != null">
+			<if test="condiWWalletBill.id != null">
+			AND `id` = #{condiWWalletBill.id,jdbcType=BIGINT}
+			</if>
+			<if test="condiWWalletBill.userId != null">
+			AND `user_id` = #{condiWWalletBill.userId,jdbcType=BIGINT}
+			</if>
+			<if test="condiWWalletBill.platform != null">
+			AND `platform` = #{condiWWalletBill.platform,jdbcType=VARCHAR}
+			</if>
+			<if test="condiWWalletBill.orderId != null">
+			AND `order_id` = #{condiWWalletBill.orderId,jdbcType=VARCHAR}
+			</if>
+			<if test="condiWWalletBill.direction != null">
+			AND `direction` = #{condiWWalletBill.direction,jdbcType=INTEGER}
+			</if>
+			<if test="condiWWalletBill.coinType != null">
+			AND `coin_type` = #{condiWWalletBill.coinType,jdbcType=VARCHAR}
+			</if>
+			<if test="condiWWalletBill.token != null">
+			AND `token` = #{condiWWalletBill.token,jdbcType=VARCHAR}
+			</if>
+			<if test="condiWWalletBill.contract != null">
+			AND `contract` = #{condiWWalletBill.contract,jdbcType=VARCHAR}
+			</if>
+			<if test="condiWWalletBill.senderAddress != null">
+			AND `sender_address` = #{condiWWalletBill.senderAddress,jdbcType=VARCHAR}
+			</if>
+			<if test="condiWWalletBill.receiverAddress != null">
+			AND `receiver_address` = #{condiWWalletBill.receiverAddress,jdbcType=VARCHAR}
+			</if>
+			<if test="condiWWalletBill.amount != null">
+			AND `amount` = #{condiWWalletBill.amount,jdbcType=DECIMAL}
+			</if>
+			<if test="condiWWalletBill.block != null">
+			AND `block` = #{condiWWalletBill.block,jdbcType=BIGINT}
+			</if>
+			<if test="condiWWalletBill.tx != null">
+			AND `tx` = #{condiWWalletBill.tx,jdbcType=VARCHAR}
+			</if>
+			<if test="condiWWalletBill.tradeStep != null">
+			AND `trade_step` = #{condiWWalletBill.tradeStep,jdbcType=CHAR}
+			</if>
+			<if test="condiWWalletBill.operationType != null">
+			AND `operation_type` = #{condiWWalletBill.operationType,jdbcType=VARCHAR}
+			</if>
+			<if test="condiWWalletBill.transferFlag != null">
+			AND `transfer_flag` = #{condiWWalletBill.transferFlag,jdbcType=INTEGER}
+			</if>
+			<if test="condiWWalletBill.flag != null">
+			AND `flag` = #{condiWWalletBill.flag,jdbcType=INTEGER}
+			</if>
+			<if test="condiWWalletBill.remark != null">
+			AND `remark` = #{condiWWalletBill.remark,jdbcType=VARCHAR}
+			</if>
+			<if test="condiWWalletBill.createTime != null">
+			AND `create_time` = #{condiWWalletBill.createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="condiWWalletBill.updateTime != null">
+			AND `update_time` = #{condiWWalletBill.updateTime,jdbcType=TIMESTAMP}
+			</if>
+		</if>
+		</where>
+	</update>
+	
+	<update id="modifyWithSelectiveBy">
+		UPDATE w_wallet_bill
+		<set>
+		<if test="wWalletBill != null">
+			<if test="wWalletBill.userId != null">
+			`user_id` = #{wWalletBill.userId,jdbcType=BIGINT}, 
+			</if>
+			<if test="wWalletBill.platform != null">
+			`platform` = #{wWalletBill.platform,jdbcType=VARCHAR}, 
+			</if>
+			<if test="wWalletBill.orderId != null">
+			`order_id` = #{wWalletBill.orderId,jdbcType=VARCHAR}, 
+			</if>
+			<if test="wWalletBill.direction != null">
+			`direction` = #{wWalletBill.direction,jdbcType=INTEGER}, 
+			</if>
+			<if test="wWalletBill.coinType != null">
+			`coin_type` = #{wWalletBill.coinType,jdbcType=VARCHAR}, 
+			</if>
+			<if test="wWalletBill.token != null">
+			`token` = #{wWalletBill.token,jdbcType=VARCHAR}, 
+			</if>
+			<if test="wWalletBill.contract != null">
+			`contract` = #{wWalletBill.contract,jdbcType=VARCHAR}, 
+			</if>
+			<if test="wWalletBill.senderAddress != null">
+			`sender_address` = #{wWalletBill.senderAddress,jdbcType=VARCHAR}, 
+			</if>
+			<if test="wWalletBill.receiverAddress != null">
+			`receiver_address` = #{wWalletBill.receiverAddress,jdbcType=VARCHAR}, 
+			</if>
+			<if test="wWalletBill.amount != null">
+			`amount` = #{wWalletBill.amount,jdbcType=DECIMAL}, 
+			</if>
+			<if test="wWalletBill.block != null">
+			`block` = #{wWalletBill.block,jdbcType=BIGINT}, 
+			</if>
+			<if test="wWalletBill.tx != null">
+			`tx` = #{wWalletBill.tx,jdbcType=VARCHAR}, 
+			</if>
+			<if test="wWalletBill.tradeStep != null">
+			`trade_step` = #{wWalletBill.tradeStep,jdbcType=CHAR}, 
+			</if>
+			<if test="wWalletBill.operationType != null">
+			`operation_type` = #{wWalletBill.operationType,jdbcType=VARCHAR}, 
+			</if>
+			<if test="wWalletBill.transferFlag != null">
+			`transfer_flag` = #{wWalletBill.transferFlag,jdbcType=INTEGER}, 
+			</if>
+			<if test="wWalletBill.flag != null">
+			`flag` = #{wWalletBill.flag,jdbcType=INTEGER}, 
+			</if>
+			<if test="wWalletBill.remark != null">
+			`remark` = #{wWalletBill.remark,jdbcType=VARCHAR}, 
+			</if>
+			<if test="wWalletBill.createTime != null">
+			`create_time` = #{wWalletBill.createTime,jdbcType=TIMESTAMP}, 
+			</if>
+			<if test="wWalletBill.updateTime != null">
+			`update_time` = #{wWalletBill.updateTime,jdbcType=TIMESTAMP}, 
+			</if>
+		</if>
+		</set>
+		<where>
+		<if test="condiWWalletBill != null">
+			<if test="condiWWalletBill.id != null">
+			AND `id` = #{condiWWalletBill.id,jdbcType=BIGINT}
+			</if>
+			<if test="condiWWalletBill.userId != null">
+			AND `user_id` = #{condiWWalletBill.userId,jdbcType=BIGINT}
+			</if>
+			<if test="condiWWalletBill.platform != null">
+			AND `platform` = #{condiWWalletBill.platform,jdbcType=VARCHAR}
+			</if>
+			<if test="condiWWalletBill.orderId != null">
+			AND `order_id` = #{condiWWalletBill.orderId,jdbcType=VARCHAR}
+			</if>
+			<if test="condiWWalletBill.direction != null">
+			AND `direction` = #{condiWWalletBill.direction,jdbcType=INTEGER}
+			</if>
+			<if test="condiWWalletBill.coinType != null">
+			AND `coin_type` = #{condiWWalletBill.coinType,jdbcType=VARCHAR}
+			</if>
+			<if test="condiWWalletBill.token != null">
+			AND `token` = #{condiWWalletBill.token,jdbcType=VARCHAR}
+			</if>
+			<if test="condiWWalletBill.contract != null">
+			AND `contract` = #{condiWWalletBill.contract,jdbcType=VARCHAR}
+			</if>
+			<if test="condiWWalletBill.senderAddress != null">
+			AND `sender_address` = #{condiWWalletBill.senderAddress,jdbcType=VARCHAR}
+			</if>
+			<if test="condiWWalletBill.receiverAddress != null">
+			AND `receiver_address` = #{condiWWalletBill.receiverAddress,jdbcType=VARCHAR}
+			</if>
+			<if test="condiWWalletBill.amount != null">
+			AND `amount` = #{condiWWalletBill.amount,jdbcType=DECIMAL}
+			</if>
+			<if test="condiWWalletBill.block != null">
+			AND `block` = #{condiWWalletBill.block,jdbcType=BIGINT}
+			</if>
+			<if test="condiWWalletBill.tx != null">
+			AND `tx` = #{condiWWalletBill.tx,jdbcType=VARCHAR}
+			</if>
+			<if test="condiWWalletBill.tradeStep != null">
+			AND `trade_step` = #{condiWWalletBill.tradeStep,jdbcType=CHAR}
+			</if>
+			<if test="condiWWalletBill.operationType != null">
+			AND `operation_type` = #{condiWWalletBill.operationType,jdbcType=VARCHAR}
+			</if>
+			<if test="condiWWalletBill.transferFlag != null">
+			AND `transfer_flag` = #{condiWWalletBill.transferFlag,jdbcType=INTEGER}
+			</if>
+			<if test="condiWWalletBill.flag != null">
+			AND `flag` = #{condiWWalletBill.flag,jdbcType=INTEGER}
+			</if>
+			<if test="condiWWalletBill.remark != null">
+			AND `remark` = #{condiWWalletBill.remark,jdbcType=VARCHAR}
+			</if>
+			<if test="condiWWalletBill.createTime != null">
+			AND `create_time` = #{condiWWalletBill.createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="condiWWalletBill.updateTime != null">
+			AND `update_time` = #{condiWWalletBill.updateTime,jdbcType=TIMESTAMP}
+			</if>
+		</if>
+		</where>
+	</update>
+	
+	<select id="getByPK" resultType="com.bittrade.pojo.model.WWalletBill">
+		SELECT 
+			`id`, 
+			`user_id`, 
+			`platform`, 
+			`order_id`, 
+			`direction`, 
+			`coin_type`, 
+			`token`, 
+			`contract`, 
+			`sender_address`, 
+			`receiver_address`, 
+			`amount`, 
+			`block`, 
+			`tx`, 
+			`trade_step`, 
+			`operation_type`, 
+			`transfer_flag`, 
+			`flag`, 
+			`remark`, 
+			`create_time`, 
+			`update_time`
+		FROM w_wallet_bill
+		<where>
+			AND `id` = #{id,jdbcType=BIGINT}
+		</where>
+	</select>
+	
+	<select id="getBy" resultType="com.bittrade.pojo.model.WWalletBill">
+		SELECT 
+			`id`, 
+			`user_id`, 
+			`platform`, 
+			`order_id`, 
+			`direction`, 
+			`coin_type`, 
+			`token`, 
+			`contract`, 
+			`sender_address`, 
+			`receiver_address`, 
+			`amount`, 
+			`block`, 
+			`tx`, 
+			`trade_step`, 
+			`operation_type`, 
+			`transfer_flag`, 
+			`flag`, 
+			`remark`, 
+			`create_time`, 
+			`update_time`
+		FROM w_wallet_bill
+		<where>
+			<if test="userId != null">
+			AND `user_id` = #{userId,jdbcType=BIGINT}
+			</if>
+			<if test="platform != null">
+			AND `platform` = #{platform,jdbcType=VARCHAR}
+			</if>
+			<if test="orderId != null">
+			AND `order_id` = #{orderId,jdbcType=VARCHAR}
+			</if>
+			<if test="direction != null">
+			AND `direction` = #{direction,jdbcType=INTEGER}
+			</if>
+			<if test="coinType != null">
+			AND `coin_type` = #{coinType,jdbcType=VARCHAR}
+			</if>
+			<if test="token != null">
+			AND `token` = #{token,jdbcType=VARCHAR}
+			</if>
+			<if test="contract != null">
+			AND `contract` = #{contract,jdbcType=VARCHAR}
+			</if>
+			<if test="senderAddress != null">
+			AND `sender_address` = #{senderAddress,jdbcType=VARCHAR}
+			</if>
+			<if test="receiverAddress != null">
+			AND `receiver_address` = #{receiverAddress,jdbcType=VARCHAR}
+			</if>
+			<if test="amount != null">
+			AND `amount` = #{amount,jdbcType=DECIMAL}
+			</if>
+			<if test="block != null">
+			AND `block` = #{block,jdbcType=BIGINT}
+			</if>
+			<if test="tx != null">
+			AND `tx` = #{tx,jdbcType=VARCHAR}
+			</if>
+			<if test="tradeStep != null">
+			AND `trade_step` = #{tradeStep,jdbcType=CHAR}
+			</if>
+			<if test="operationType != null">
+			AND `operation_type` = #{operationType,jdbcType=VARCHAR}
+			</if>
+			<if test="transferFlag != null">
+			AND `transfer_flag` = #{transferFlag,jdbcType=INTEGER}
+			</if>
+			<if test="flag != null">
+			AND `flag` = #{flag,jdbcType=INTEGER}
+			</if>
+			<if test="remark != null">
+			AND `remark` = #{remark,jdbcType=VARCHAR}
+			</if>
+			<if test="createTime != null">
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="updateTime != null">
+			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+		</where>
+		LIMIT 1
+	</select>
+	
+	<select id="get" resultType="com.bittrade.pojo.model.WWalletBill">
+		SELECT 
+			`id`, 
+			`user_id`, 
+			`platform`, 
+			`order_id`, 
+			`direction`, 
+			`coin_type`, 
+			`token`, 
+			`contract`, 
+			`sender_address`, 
+			`receiver_address`, 
+			`amount`, 
+			`block`, 
+			`tx`, 
+			`trade_step`, 
+			`operation_type`, 
+			`transfer_flag`, 
+			`flag`, 
+			`remark`, 
+			`create_time`, 
+			`update_time`
+		FROM w_wallet_bill
+		LIMIT 1
+	</select>
+	
+	<select id="getsBy" resultType="com.bittrade.pojo.model.WWalletBill">
+		SELECT 
+			<include refid="Base_Column_List"></include>
+		FROM w_wallet_bill
+		<where>
+			<if test="userId != null">
+			AND `user_id` = #{userId,jdbcType=BIGINT}
+			</if>
+			<if test="platform != null">
+			AND `platform` = #{platform,jdbcType=VARCHAR}
+			</if>
+			<if test="orderId != null">
+			AND `order_id` = #{orderId,jdbcType=VARCHAR}
+			</if>
+			<if test="direction != null">
+			AND `direction` = #{direction,jdbcType=INTEGER}
+			</if>
+			<if test="coinType != null">
+			AND `coin_type` = #{coinType,jdbcType=VARCHAR}
+			</if>
+			<if test="token != null">
+			AND `token` = #{token,jdbcType=VARCHAR}
+			</if>
+			<if test="contract != null">
+			AND `contract` = #{contract,jdbcType=VARCHAR}
+			</if>
+			<if test="senderAddress != null">
+			AND `sender_address` = #{senderAddress,jdbcType=VARCHAR}
+			</if>
+			<if test="receiverAddress != null">
+			AND `receiver_address` = #{receiverAddress,jdbcType=VARCHAR}
+			</if>
+			<if test="amount != null">
+			AND `amount` = #{amount,jdbcType=DECIMAL}
+			</if>
+			<if test="block != null">
+			AND `block` = #{block,jdbcType=BIGINT}
+			</if>
+			<if test="tx != null">
+			AND `tx` = #{tx,jdbcType=VARCHAR}
+			</if>
+			<if test="tradeStep != null">
+			AND `trade_step` = #{tradeStep,jdbcType=CHAR}
+			</if>
+			<if test="operationType != null">
+			AND `operation_type` = #{operationType,jdbcType=VARCHAR}
+			</if>
+			<if test="transferFlag != null">
+			AND `transfer_flag` = #{transferFlag,jdbcType=INTEGER}
+			</if>
+			<if test="flag != null">
+			AND `flag` = #{flag,jdbcType=INTEGER}
+			</if>
+			<if test="remark != null">
+			AND `remark` = #{remark,jdbcType=VARCHAR}
+			</if>
+			<if test="createTime != null">
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="updateTime != null">
+			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+			<include refid="sql_WHERE_forProperty"></include>
+		</where>
+	</select>
+	
+	<select id="gets" resultType="com.bittrade.pojo.model.WWalletBill">
+		SELECT 
+			<include refid="Base_Column_List"></include>
+		FROM w_wallet_bill
+	</select>
+	
+	<select id="getCntBy" resultType="int">
+		SELECT COUNT(1)
+		FROM w_wallet_bill
+		<where>
+		<if test="wWalletBill != null">
+			<if test="wWalletBill.userId != null">
+			AND `user_id` = #{wWalletBill.userId,jdbcType=BIGINT}
+			</if>
+			<if test="wWalletBill.platform != null">
+			AND `platform` = #{wWalletBill.platform,jdbcType=VARCHAR}
+			</if>
+			<if test="wWalletBill.orderId != null">
+			AND `order_id` = #{wWalletBill.orderId,jdbcType=VARCHAR}
+			</if>
+			<if test="wWalletBill.direction != null">
+			AND `direction` = #{wWalletBill.direction,jdbcType=INTEGER}
+			</if>
+			<if test="wWalletBill.coinType != null">
+			AND `coin_type` = #{wWalletBill.coinType,jdbcType=VARCHAR}
+			</if>
+			<if test="wWalletBill.token != null">
+			AND `token` = #{wWalletBill.token,jdbcType=VARCHAR}
+			</if>
+			<if test="wWalletBill.contract != null">
+			AND `contract` = #{wWalletBill.contract,jdbcType=VARCHAR}
+			</if>
+			<if test="wWalletBill.senderAddress != null">
+			AND `sender_address` = #{wWalletBill.senderAddress,jdbcType=VARCHAR}
+			</if>
+			<if test="wWalletBill.receiverAddress != null">
+			AND `receiver_address` = #{wWalletBill.receiverAddress,jdbcType=VARCHAR}
+			</if>
+			<if test="wWalletBill.amount != null">
+			AND `amount` = #{wWalletBill.amount,jdbcType=DECIMAL}
+			</if>
+			<if test="wWalletBill.block != null">
+			AND `block` = #{wWalletBill.block,jdbcType=BIGINT}
+			</if>
+			<if test="wWalletBill.tx != null">
+			AND `tx` = #{wWalletBill.tx,jdbcType=VARCHAR}
+			</if>
+			<if test="wWalletBill.tradeStep != null">
+			AND `trade_step` = #{wWalletBill.tradeStep,jdbcType=CHAR}
+			</if>
+			<if test="wWalletBill.operationType != null">
+			AND `operation_type` = #{wWalletBill.operationType,jdbcType=VARCHAR}
+			</if>
+			<if test="wWalletBill.transferFlag != null">
+			AND `transfer_flag` = #{wWalletBill.transferFlag,jdbcType=INTEGER}
+			</if>
+			<if test="wWalletBill.flag != null">
+			AND `flag` = #{wWalletBill.flag,jdbcType=INTEGER}
+			</if>
+			<if test="wWalletBill.remark != null">
+			AND `remark` = #{wWalletBill.remark,jdbcType=VARCHAR}
+			</if>
+			<if test="wWalletBill.createTime != null">
+			AND `create_time` = #{wWalletBill.createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="wWalletBill.updateTime != null">
+			AND `update_time` = #{wWalletBill.updateTime,jdbcType=TIMESTAMP}
+			</if>
+			<include refid="sql_WHERE_forObject"></include>
+		</if>
+		</where>
+	</select>
+	
+	<select id="getsByPage" resultType="com.bittrade.pojo.model.WWalletBill">
+		SELECT 
+			`id`, 
+			`user_id`, 
+			`platform`, 
+			`order_id`, 
+			`direction`, 
+			`coin_type`, 
+			`token`, 
+			`contract`, 
+			`sender_address`, 
+			`receiver_address`, 
+			`amount`, 
+			`block`, 
+			`tx`, 
+			`trade_step`, 
+			`operation_type`, 
+			`transfer_flag`, 
+			`flag`, 
+			`remark`, 
+			`create_time`, 
+			`update_time`
+		FROM w_wallet_bill
+		<where>
+		<if test="wWalletBill != null">
+			<if test="wWalletBill.userId != null">
+			AND `user_id` = #{wWalletBill.userId,jdbcType=BIGINT}
+			</if>
+			<if test="wWalletBill.platform != null">
+			AND `platform` = #{wWalletBill.platform,jdbcType=VARCHAR}
+			</if>
+			<if test="wWalletBill.orderId != null">
+			AND `order_id` = #{wWalletBill.orderId,jdbcType=VARCHAR}
+			</if>
+			<if test="wWalletBill.direction != null">
+			AND `direction` = #{wWalletBill.direction,jdbcType=INTEGER}
+			</if>
+			<if test="wWalletBill.coinType != null">
+			AND `coin_type` = #{wWalletBill.coinType,jdbcType=VARCHAR}
+			</if>
+			<if test="wWalletBill.token != null">
+			AND `token` = #{wWalletBill.token,jdbcType=VARCHAR}
+			</if>
+			<if test="wWalletBill.contract != null">
+			AND `contract` = #{wWalletBill.contract,jdbcType=VARCHAR}
+			</if>
+			<if test="wWalletBill.senderAddress != null">
+			AND `sender_address` = #{wWalletBill.senderAddress,jdbcType=VARCHAR}
+			</if>
+			<if test="wWalletBill.receiverAddress != null">
+			AND `receiver_address` = #{wWalletBill.receiverAddress,jdbcType=VARCHAR}
+			</if>
+			<if test="wWalletBill.amount != null">
+			AND `amount` = #{wWalletBill.amount,jdbcType=DECIMAL}
+			</if>
+			<if test="wWalletBill.block != null">
+			AND `block` = #{wWalletBill.block,jdbcType=BIGINT}
+			</if>
+			<if test="wWalletBill.tx != null">
+			AND `tx` = #{wWalletBill.tx,jdbcType=VARCHAR}
+			</if>
+			<if test="wWalletBill.tradeStep != null">
+			AND `trade_step` = #{wWalletBill.tradeStep,jdbcType=CHAR}
+			</if>
+			<if test="wWalletBill.operationType != null">
+			AND `operation_type` = #{wWalletBill.operationType,jdbcType=VARCHAR}
+			</if>
+			<if test="wWalletBill.transferFlag != null">
+			AND `transfer_flag` = #{wWalletBill.transferFlag,jdbcType=INTEGER}
+			</if>
+			<if test="wWalletBill.flag != null">
+			AND `flag` = #{wWalletBill.flag,jdbcType=INTEGER}
+			</if>
+			<if test="wWalletBill.remark != null">
+			AND `remark` = #{wWalletBill.remark,jdbcType=VARCHAR}
+			</if>
+			<if test="wWalletBill.createTime != null">
+			AND `create_time` = #{wWalletBill.createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="wWalletBill.updateTime != null">
+			AND `update_time` = #{wWalletBill.updateTime,jdbcType=TIMESTAMP}
+			</if>
+			<include refid="sql_WHERE_forObject"></include>
+		</if>
+		</where>
+		LIMIT #{page}, #{size}
+	</select>
+
+</mapper>

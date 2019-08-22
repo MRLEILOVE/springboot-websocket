@@ -22,7 +22,7 @@
 		<result javaType="Byte" property="openOpponentLimit" jdbcType="INTEGER" column="open_opponent_limit" />
 		<result javaType="Byte" property="certificationLevel" jdbcType="INTEGER" column="certification_level" />
 		<result javaType="java.time.LocalDateTime" property="registeredTime" jdbcType="TIMESTAMP" column="registered_time" />
-		<result javaType="java.time.LocalDateTime" property="paymentTime" jdbcType="TIMESTAMP" column="payment_time" />
+		<result javaType="Integer" property="paymentTime" jdbcType="INTEGER" column="payment_time" />
 		<result javaType="String" property="message" jdbcType="VARCHAR" column="message" />
 		<result javaType="Long" property="version" jdbcType="BIGINT" column="version" />
 		<result javaType="java.time.LocalDateTime" property="createTime" jdbcType="TIMESTAMP" column="create_time" />

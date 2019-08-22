@@ -36,5 +36,6 @@
 	<entry key="columns.ignore"></entry>
 	
 	<entry key="is_package_lower_case">true</entry>
+	<!-- true false -->
 	<entry key="is_use_module_name">false</entry>
 </properties>

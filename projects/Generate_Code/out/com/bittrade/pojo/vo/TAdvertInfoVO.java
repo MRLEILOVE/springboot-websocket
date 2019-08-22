@@ -34,7 +34,7 @@ public class TAdvertInfoVO extends BaseVO<TAdvertInfoVO> {
 	private Byte openOpponentLimit;
 	private Byte certificationLevel;
 	private java.time.LocalDateTime registeredTime;
-	private java.time.LocalDateTime paymentTime;
+	private Integer paymentTime;
 	private String message;
 	private Long version;
 	private java.time.LocalDateTime createTime;

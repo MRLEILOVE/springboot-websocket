@@ -2,17 +2,15 @@ package com.bittrade.currency.controller;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
+import com.bittrade.pojo.model.TCurrency;
+import com.bittrade.pojo.vo.CoinVo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import com.bittrade.currency.api.service.ITWalletTransferService;
 import com.bittrade.pojo.dto.TWalletTransferDTO;
@@ -62,8 +60,8 @@ public class TWalletTransferController extends BaseController<TWalletTransfer, T
     }
 
     @ApiOperation(value="查询用户钱包可用余额", notes="传用户id，账户id币种id")
-    @GetMapping(value = "/availableBalance")
-    public ReturnDTO<BigDecimal> availableBalanceFeign(@ALoginUser LoginUser user,@RequestParam("accountId")Long accountId, @RequestParam("currencyName")String currencyName){
+    @GetMapping(value = "/availableBalance/{accountId}/{currencyName}")
+    public ReturnDTO<BigDecimal> availableBalanceFeign(@ALoginUser LoginUser user,@PathVariable("accountId")Long accountId, @PathVariable("currencyName")String currencyName){
         if(user == null || user.getUser_id() == null){
             return ReturnDTO.error("用户未登录");
         }
@@ -71,8 +69,8 @@ public class TWalletTransferController extends BaseController<TWalletTransfer, T
     }
 
     @ApiOperation(value="两个账户共同币种", notes="两个账户共同币种")
-    @GetMapping(value = "/togetherCoin")
-    public ReturnDTO<List<String>> togetherCoin(@RequestParam("accountId1")Long accountId1, @RequestParam("accountId2")Long accountId2){
+    @GetMapping(value = "/togetherCoin/{accountId1}/{accountId2}")
+    public ReturnDTO<List<CoinVo>> togetherCoin(@PathVariable("accountId1")Long accountId1, @PathVariable("accountId2")Long accountId2){
         return ReturnDTO.ok(walletTransferService.togetherCoin( accountId1,accountId2));
     }
 }

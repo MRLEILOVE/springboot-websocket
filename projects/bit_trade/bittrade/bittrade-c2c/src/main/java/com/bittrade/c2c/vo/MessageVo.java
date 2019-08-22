@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.io.Serializable;
+
 /**
  * @author xzc
  * @date 2019-08-19 17:33
@@ -13,8 +15,9 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString
-public class MessageVo {
+public class MessageVo implements Serializable {
 
+    private static final long serialVersionUID = 1L;
     /**
      * 发送者名字
      */

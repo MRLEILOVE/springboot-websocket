@@ -83,16 +83,13 @@
 	</sql>
 	
 	
-	<insert id="add" parameterType="com.bittrade.pojo.model.TLegalCurrencyAccount">
-		INSERT INTO t_legal_currency_account(`id`, `user_id`, `coin_id`, `balance_amount`, `freeze_amount`, `c2c_already_deal_count`, `c2c_total_count`, `version`, `create_time`, `update_time`)
-		VALUES(#{id,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{coinId,jdbcType=INTEGER}, #{balanceAmount,jdbcType=DECIMAL}, #{freezeAmount,jdbcType=DECIMAL}, #{c2cAlreadyDealCount,jdbcType=INTEGER}, #{c2cTotalCount,jdbcType=INTEGER}, #{version,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+	<insert id="add" parameterType="com.bittrade.pojo.model.TLegalCurrencyAccount" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO t_legal_currency_account(`user_id`, `coin_id`, `balance_amount`, `freeze_amount`, `c2c_already_deal_count`, `c2c_total_count`, `version`, `create_time`, `update_time`)
+		VALUES(#{userId,jdbcType=BIGINT}, #{coinId,jdbcType=INTEGER}, #{balanceAmount,jdbcType=DECIMAL}, #{freezeAmount,jdbcType=DECIMAL}, #{c2cAlreadyDealCount,jdbcType=INTEGER}, #{c2cTotalCount,jdbcType=INTEGER}, #{version,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
 	</insert>
 	
-	<insert id="addWithSelective" parameterType="com.bittrade.pojo.model.TLegalCurrencyAccount">
+	<insert id="addWithSelective" parameterType="com.bittrade.pojo.model.TLegalCurrencyAccount" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO t_legal_currency_account(
-			<if test="id != null">
-			`id`, 
-			</if>
 			<if test="userId != null">
 			`user_id`, 
 			</if>
@@ -122,9 +119,6 @@
 			</if>
 		)
 		VALUES(
-			<if test="id != null">
-			#{id,jdbcType=BIGINT}, 
-			</if>
 			<if test="userId != null">
 			#{userId,jdbcType=BIGINT}, 
 			</if>
