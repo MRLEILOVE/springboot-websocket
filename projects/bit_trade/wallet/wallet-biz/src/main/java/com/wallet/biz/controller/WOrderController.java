@@ -1,11 +1,12 @@
 package com.wallet.biz.controller;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.core.common.DTO.ReturnDTO;
+import com.core.common.annotation.ALoginUser;
+import com.core.web.constant.entity.LoginUser;
 import com.wallet.biz.api.service.IWCoinConfigService;
-import com.wallet.biz.pojo.model.WCoinConfig;
 import com.wallet.biz.pojo.vo.WithdrawBillParamVo;
-import com.wallet.biz.service.IwalletCaseService;
+import com.wallet.biz.api.service.IwalletCaseService;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -15,13 +16,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import com.wallet.biz.api.service.IWOrderService;
-
-import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
 
 /**
  * 
@@ -40,74 +34,21 @@ public class WOrderController {
 
     @PostMapping("confirmTibi")
     @ApiOperation(value = "确定提币", notes = "确定提币")
-    public ReturnDTO confirmTibi(@RequestBody @Validated WithdrawBillParamVo withdrawBillParamVo) {
-        //判断该币种是否可以提币
-        WCoinConfig coinConfig = WCoinConfigService.getOne(new QueryWrapper<>(WCoinConfig.builder()
-                .coinType(withdrawBillParamVo.getCoinType())
-                .token(withdrawBillParamVo.getToken())
-                .valid("E")
-                .build()), true);
-        if(null == coinConfig){
-            return ReturnDTO.error("该币种暂时不支持提币");
+    public ReturnDTO confirmTibi(@RequestBody @Validated WithdrawBillParamVo withdrawBillParamVo,@ALoginUser LoginUser user) {
+        //用户判断
+        Long userId = user == null ? null : user.getUser_id();
+        if(userId == null){
+            return ReturnDTO.error("用户未登录");
+        }
+        if(user.checkPayPassWord(withdrawBillParamVo.getPassword())){
+            return ReturnDTO.error("密码错误");
+        }
+        return caseService.confirmTibi(withdrawBillParamVo,userId);
         }
 
-        return caseService.confirmTibi(withdrawBillParamVo);
+
     }
 /*
-    @PostMapping("chongbi")
-    @ApiOperation(value = "充币")
-    public String chongbi() throws  FlowException {
-        Long userId = RequestUtil.getCurrentUser().getUser_id();
-        if (userId == null) {
-            throw new FlowException("用户未登录");
-        }
-        CreateAddressParamDto paramDto = new CreateAddressParamDto();
-        paramDto.setUserId(userId);
-        String s = createAddressFactory.create(paramDto);
-        System.out.println(s);
-        if (s.contains("BTC_TOKEN")) {
-            s = s.replaceAll("BTC_TOKEN", "USDT");
-        }
-        return s;
-    }
-    */
-    @PostMapping("tibiFee")
-    @ApiOperation(value = "提币费率", notes = "提币费率")
-    public ReturnDTO tibiFee() {
-        return caseService.showfee();
-    }
-/*
-    @PostMapping("qrCode")
-    @ApiOperation(value = "二维码", notes = "二维码")
-    public Wrapper qrCode(@RequestBody @Validated CoinTypeDto coinTypeDto) throws FlowException, FileNotFoundException {
-        Long userId = RequestUtil.getCurrentUser().getUser_id();
-        if (userId == null) {
-            throw new FlowException("用户未登录");
-        }
-        EntityWrapper<WUserWallet>entityWrapper=new EntityWrapper<>();
-        if(CoinType.USDT.toString().equals(coinTypeDto.getToken())){
-            coinTypeDto.setToken("BTC_TOKEN");
-        }
-        entityWrapper.eq("user_id",userId).eq("coin_type",coinTypeDto.getToken());
-        WUserWallet wUserWallet1 = wUserWalletService.selectOne(entityWrapper);
-        if (null==wUserWallet1){
-            return WrapMapper.error("该用户还没有钱包地址");
-        }
-        if (null!=coinTypeDto.getUrl()&&!"".equals(coinTypeDto.getUrl())){
-            wUserWallet1.setCodeQr(coinTypeDto.getUrl());
-            boolean b = wUserWalletService.updateById(wUserWallet1);
-            if (b){
-                return WrapMapper.ok("success");
-            }
-            return WrapMapper.error("error");
-        }
-        if (null==wUserWallet1.getCodeQr()||"".equals(wUserWallet1.getCodeQr())){
-            return WrapMapper.error("该用户还没有二维码");
-        }
-        return WrapMapper.ok(wUserWallet1.getCodeQr());
-    }
-
-
     @PostMapping("record")
     @ApiOperation(value = "充提币记录", notes = "充提币记录")
     public Wrapper rechargeRecord(@RequestBody WalletDto walletDto) throws FlowException {
@@ -177,29 +118,6 @@ public class WOrderController {
         page.setPages(pages);
         return WrapMapper.ok(page);
     }
-*//*
-    @PostMapping("list")
-    @ApiOperation(value = "查询当前用户的币种余额", notes = "查询当前用户的币种余额")
-    public Wrapper list(@RequestBody CoinTypeDto coinTypeDto) throws FlowException {
-        Long user_id = RequestUtil.getCurrentUser().getUser_id();
-        if (user_id == null) {
-            throw new FlowException("用户未登录");
-        }
-
-        List<TWalletFundAccount> tWalletFundAccounts = iTwalletFundAccountService.list(user_id);
-        return WrapMapper.ok(tWalletFundAccounts);
-    }
-
-    @PostMapping("conversionTotal")
-    @ApiOperation(value = "总资金折合", notes = "总资金折合")
-    public Wrapper totalConversion() throws FlowException {
-        Long user_id = RequestUtil.getCurrentUser().getUser_id();
-        if (user_id == null) {
-            throw new FlowException("用户未登录");
-        }
-        ConversionVo conversionVo = iTwalletFundAccountService.totalConversion(user_id);
-        return WrapMapper.ok(conversionVo);
-    }
 
     @PostMapping("auditStatus")
     @ApiOperation(value = "审核记录", notes = "审核记录")
@@ -221,7 +139,7 @@ public class WOrderController {
         Page<TOrder> page1 = orderService.selectPage(page, entityWrapper);
         return WrapMapper.ok(page1);
     }
-*/
+
     @PostMapping("tibiMaxMin")
     @ApiOperation(value = "最大最小提币数量", notes = "最大最小提币数量")
     public ReturnDTO maxMinTibi() {
@@ -230,7 +148,7 @@ public class WOrderController {
 
     @PostMapping("jugment")
     @ApiOperation(value = "额度判断", notes = "额度判断")
-    public ReturnDTO judgment(/*@RequestBody @Validated JudgmentDto withDrawParamVo*/) {
-        return caseService.checkparam(/*withDrawParamVo*/);
-    }
-}
+    public ReturnDTO judgment(/*@RequestBody @Validated JudgmentDto withDrawParamVo*//*) {
+        return caseService.checkparam(/*withDrawParamVo*//*);
+    }*/
+//}

@@ -1,6 +1,7 @@
-package com.wallet.biz.service;
+package com.wallet.biz.api.service;
 
 import com.core.common.DTO.ReturnDTO;
+import com.wallet.biz.pojo.vo.AddressParamDto;
 import com.wallet.biz.pojo.vo.WithdrawBillParamVo;
 
 
@@ -13,5 +14,7 @@ public interface IwalletCaseService {
 
     ReturnDTO auditStatus();
 
-    ReturnDTO confirmTibi(WithdrawBillParamVo withdrawBillParamVo);
+    ReturnDTO confirmTibi(WithdrawBillParamVo withdrawBillParamVo,Long userID);
+
+    ReturnDTO chongbi(Long userId, AddressParamDto addressParamDto);
 }
