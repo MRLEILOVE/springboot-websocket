@@ -6,7 +6,10 @@ import java.util.Objects;
 
 import com.bittrade.pojo.model.TAdvertInfo;
 
+import com.core.common.annotation.CheckEnumValue;
 import lombok.Data;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * 查询购买广告列表条件
