@@ -50,7 +50,7 @@
 		SELECT w.currency_id as  currencyId,c.`name` AS currencyName,
 				w.total,w.trade_frozen AS tradeFrozen,w.transfer_frozen AS transferFrozen,(w.transfer_frozen + w.trade_frozen) AS totalFrozen
 		FROM w_wallet_account w
-		INNER JOIN t_currency c ON c.id = w.user_id
+		INNER JOIN t_currency c ON c.id = w.currency_id
 		WHERE w.user_id = #{userId};
 	</select>
 </mapper>
