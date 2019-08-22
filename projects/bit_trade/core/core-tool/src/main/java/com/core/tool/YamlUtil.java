@@ -33,6 +33,9 @@ public class YamlUtil {
 		} catch (IOException e) {
 			e.printStackTrace();
 //			log.error(e.toString());
+		} catch (Exception e) {
+			e.printStackTrace();
+//			log.error(e.toString());
 		} finally {
 		}
 		
@@ -50,6 +53,10 @@ public class YamlUtil {
 	 */
 	@SuppressWarnings("unchecked")
 	public static final String getYamlValue(Map<String, Object> map_yaml, String name) {
+		if (map_yaml == null || map_yaml.size() == 0 || name == null || name.length() == 0) {
+			return null;
+		}
+		
 		int i_idx;
 		if ((i_idx = name.indexOf('.')) == -1) {
 			return map_yaml.get(name).toString();

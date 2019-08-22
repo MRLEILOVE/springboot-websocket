@@ -29,7 +29,7 @@ public enum FundCoinEnumer {
 
     //根据key获取name的值
     public static String getValueByKey(int code){
-        for (TransferTypeEnum s : TransferTypeEnum.values()) {
+        for (FundCoinEnumer s : FundCoinEnumer.values()) {
             if(s.getType()== code){
                 return s.getName();
             }
@@ -39,7 +39,7 @@ public enum FundCoinEnumer {
 
     //根据匹配value的值获取key
     public static Integer getKeyByValue(String name){
-        for (TransferTypeEnum s : TransferTypeEnum.values()) {
+        for (FundCoinEnumer s : FundCoinEnumer.values()) {
             if(name.equals(s.getName())){
                 return s.getType();
             }
@@ -50,7 +50,7 @@ public enum FundCoinEnumer {
     //获取所有value
     public static List<String> getValues(){
         List<String> values = new ArrayList<>();
-        for(TransferTypeEnum s : TransferTypeEnum.values()){
+        for(FundCoinEnumer s : FundCoinEnumer.values()){
             values.add(s.getName());
         }
         return values;
