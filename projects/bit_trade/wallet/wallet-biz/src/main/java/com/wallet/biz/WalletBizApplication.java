@@ -21,10 +21,10 @@ import com.core.framework.BaseApplication;
 @EnableAsync
 @EnableScheduling
 @EnableDubbo
-public class WalletbizApplication extends BaseApplication {
+public class WalletBizApplication extends BaseApplication {
 
     public static void main(String[] args) {
-        run(WalletbizApplication.class, args);
+        run(WalletBizApplication.class, args);
     }
 
 }
