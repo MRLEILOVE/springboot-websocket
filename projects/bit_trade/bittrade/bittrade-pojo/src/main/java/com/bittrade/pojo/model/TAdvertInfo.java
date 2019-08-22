@@ -472,4 +472,15 @@ public class TAdvertInfo extends BaseModel<TAdvertInfo> {
 	public Boolean isSellType() {
 		return Objects.equals(TAdvertInfo.AdvertTypeEnum.SELL.getCode(), this.type);
 	}
+
+	/**
+	 * 定价方式是否为浮动价格
+	 * <br/>
+	 * create by: leigq
+	 * <br/>
+	 * create time: 2019/8/20 13:01
+	 */
+	public Boolean isFloatingPrice() {
+		return Objects.equals(PricingModeEnum.FLOAT.getCode(), this.pricingMode);
+	}
 }

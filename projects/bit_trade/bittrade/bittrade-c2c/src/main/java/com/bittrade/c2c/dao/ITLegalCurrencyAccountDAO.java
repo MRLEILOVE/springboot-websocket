@@ -38,10 +38,10 @@ public interface ITLegalCurrencyAccountDAO extends IDefaultTLegalCurrencyAccount
      * create time: 2019/8/20 14:19
      *
      * @param userId   : 用户id
-     * @param coinName : 币名
+     * @param coinId : 币id
      * @return 法币账户
      */
-    TLegalCurrencyAccount getByUserIdAndCoinName(@Param("userId") Long userId, @Param("coinName") String coinName);
+    TLegalCurrencyAccount getByUserIdAndCoinId(@Param("userId") Long userId, @Param("coinId") Long coinId);
 
     /**
      * c2c钱包入账

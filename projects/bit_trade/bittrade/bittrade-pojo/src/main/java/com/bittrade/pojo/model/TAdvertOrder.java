@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.core.framework.base.model.BaseModel;
 
 import lombok.*;
+import lombok.experimental.Accessors;
 
 /**
  * 
@@ -15,11 +16,17 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Accessors(chain = true)
 @EqualsAndHashCode(callSuper = false)
 @TableName(value="t_advert_order")
 public class TAdvertOrder extends BaseModel<TAdvertOrder> {
 	
 	private static final long serialVersionUID = 1L;
+
+	/**
+	 * 取消订单时间限制，默认下单 3 分钟内可取消订单
+	 */
+	public static final long CANCEL_ORDER_DURATION = 3;
 	
 	/**
 	 * 
@@ -190,13 +197,13 @@ public class TAdvertOrder extends BaseModel<TAdvertOrder> {
 	/**
 	 * 广告类别 1出售 2购买
 	 */
-	private Byte advertType;
+	private Integer advertType;
 	
 	/**
 	 * 广告留言
 	 */
 	private String advertMessage;
-	
+
 	/**
 	 * 购买者ID
 	 */
@@ -245,7 +252,7 @@ public class TAdvertOrder extends BaseModel<TAdvertOrder> {
 	/**
 	 * 状态（1，已拍下；2，已付款；3，已收款；5，已完成；6，已取消，7，超时关闭）
 	 */
-	private Byte status;
+	private Integer status;
 	
 	/**
 	 * 取消订单截止时间（默认为 点击 购买/出售 后 3 分钟）
@@ -255,7 +262,7 @@ public class TAdvertOrder extends BaseModel<TAdvertOrder> {
 	/**
 	 * 仲裁状态：0，未仲裁；1，已仲裁；
 	 */
-	private Byte arbitStatus;
+	private Integer arbitStatus;
 	
 	/**
 	 * 仲裁结果
@@ -321,6 +328,42 @@ public class TAdvertOrder extends BaseModel<TAdvertOrder> {
 		public static boolean isValidAdvertType(Integer advertType) {
 			for (TAdvertOrder.AdvertTypeEnum advertTypeEnum : TAdvertOrder.AdvertTypeEnum.values()) {
 				if (advertTypeEnum.code.equals(advertType)) {
+					return true;
+				}
+			}
+			return false;
+		}
+	}
+
+	/**
+	 * 仲裁状态
+	 * <br/>
+	 *
+	 * @author ：leigq
+	 * @date ：2019/8/19 17:58
+	 */
+	@AllArgsConstructor
+	public enum ArbitStatusEnum {
+		NO_ARBITRATION(0, "未仲裁"),
+		ARBITRATED(1, "已仲裁"),
+		;
+
+		@Getter
+		private Integer code;
+
+		@Getter
+		private String describe;
+
+		/**
+		 * 验证仲裁状态
+		 * <br/>
+		 * create by: leigq
+		 * <br/>
+		 * create time: 2019/8/19 17:24
+		 */
+		public static boolean isValidArbitStatus(Integer arbitStatus) {
+			for (TAdvertOrder.ArbitStatusEnum arbitStatusEnum : TAdvertOrder.ArbitStatusEnum.values()) {
+				if (arbitStatusEnum.code.equals(arbitStatus)) {
 					return true;
 				}
 			}

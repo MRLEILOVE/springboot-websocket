@@ -11,6 +11,7 @@ import com.bittrade.pojo.vo.QueryAdvertVO;
 import com.bittrade.pojo.vo.TAdvertInfoVO;
 import com.core.web.constant.entity.LoginUser;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -92,4 +93,6 @@ public interface ITAdvertInfoService extends IDefaultTAdvertInfoService<TAdvertI
 	 * @return  result
 	 */
 	TAdvertInfo getAdvertDetails(Long advertId);
+
+	Boolean placeAdvertOrder(Long advertId, BigDecimal amount, String payPassWord, LoginUser loginUser);
 }

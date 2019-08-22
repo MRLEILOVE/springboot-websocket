@@ -1,5 +1,6 @@
 package com.bittrade.c2c.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.bittrade.__default.service.impl.DefaultTAdvertOrderServiceImpl;
 import com.bittrade.c2c.dao.ITAdvertOrderDAO;
 import com.bittrade.c2c.service.ITAdvertOrderService;
@@ -31,4 +32,29 @@ public class TAdvertOrderServiceImpl extends DefaultTAdvertOrderServiceImpl<ITAd
 	public Long getPaymentOrPutCoinAging(Long userId, Integer type, Integer status) {
 		return baseDAO.getPaymentOrPutCoinAging(userId, type, status);
 	}
+
+	/**
+	 * 判断广告是否存在未完成的订单
+	 * <br/>
+	 * create by: leigq
+	 * <br/>
+	 * create time: 2019/8/22 16:14
+	 * @param advertId : 广告id
+	 * @return  if existence return true
+	 */
+	@Override
+	public boolean existenceNoCompleteOrders(Long advertId) {
+		Integer count = baseMapper.selectCount(new LambdaQueryWrapper<TAdvertOrder>()
+				.eq(TAdvertOrder::getAdvertId, advertId)
+				.and(advertOrder -> advertOrder
+						.eq(TAdvertOrder::getStatus, TAdvertOrder.StatusEnum.ALREADY_AUCTION.getCode())
+						.or()
+						.eq(TAdvertOrder::getStatus, TAdvertOrder.StatusEnum.ALREADY_PAID.getCode())
+						.or()
+						.eq(TAdvertOrder::getStatus, TAdvertOrder.StatusEnum.ALREADY_RECEIPT.getCode())
+				)
+		);
+		return count > 0;
+	}
+
 }
