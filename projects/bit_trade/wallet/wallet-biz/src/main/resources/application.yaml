@@ -15,7 +15,7 @@ spring:
       coin-config: 300
       user-wallet: 300
   profiles:
-    active: dev, common, dubbo_provider
+    active: dev, common, dubbo_provider, dubbo_consumer
   task:
     scheduling:
       pool:

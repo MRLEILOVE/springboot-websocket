@@ -11,7 +11,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 import com.alibaba.dubbo.config.spring.context.annotation.EnableDubbo;
 import com.core.framework.BaseApplication;
-import com.spring4all.swagger.EnableSwagger2Doc;
 
 @SpringBootApplication
 @MapperScan("com.wallet.biz.dao")
@@ -19,7 +18,6 @@ import com.spring4all.swagger.EnableSwagger2Doc;
 @EnableEurekaClient
 @EnableFeignClients
 @EnableHystrix
-@EnableSwagger2Doc
 @EnableAsync
 @EnableScheduling
 @EnableDubbo
