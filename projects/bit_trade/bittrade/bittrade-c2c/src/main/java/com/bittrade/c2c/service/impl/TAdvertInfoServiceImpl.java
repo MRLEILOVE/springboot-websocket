@@ -1,9 +1,12 @@
 package com.bittrade.c2c.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.additional.query.impl.LambdaQueryChainWrapper;
 import com.bittrade.__default.service.impl.DefaultTAdvertInfoServiceImpl;
 import com.bittrade.c2c.dao.ITAdvertInfoDAO;
 import com.bittrade.c2c.service.ITAdvertInfoService;
@@ -26,6 +29,7 @@ import com.core.web.constant.exception.BusinessException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.math.BigDecimal;
@@ -41,6 +45,7 @@ import java.util.stream.Collectors;
  * @author Administrator
  */
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class TAdvertInfoServiceImpl extends DefaultTAdvertInfoServiceImpl<ITAdvertInfoDAO, TAdvertInfo, TAdvertInfoDTO, TAdvertInfoVO> implements ITAdvertInfoService {
 
 	@Autowired
@@ -129,10 +134,6 @@ public class TAdvertInfoServiceImpl extends DefaultTAdvertInfoServiceImpl<ITAdve
 					.setRegisteredTime(advertInfoVO.getRegisteredTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
 			return baseMapper.insert(advertInfo) > 0;
 		} catch (Exception e) {
-			// 回滾账户余额  -> 余额 + 冻结 -
-			if (advertInfoVO.isSellType()) {
-				itLegalCurrencyAccountService.unFreezeAmount(user.getUser_id(), advertInfoVO.getCoinId(), amount);
-			}
 			log.error("发布广告异常：", e);
 			throw new BusinessException("發布廣告失敗");
 		}
@@ -173,7 +174,7 @@ public class TAdvertInfoServiceImpl extends DefaultTAdvertInfoServiceImpl<ITAdve
 		Long receiptWay = queryAdvertVO.getReceiptWay();
 		lambdaQueryWrapper.eq(Objects.nonNull(receiptWay), TAdvertInfo::getPaymentMethodId, receiptWay);
 
-		IPage<TAdvertInfo> advertInfoIPage = baseMapper.selectPage(page, lambdaQueryWrapper);
+		IPage<TAdvertInfo> advertInfoIPage = baseMapper.selectPage(page.setSearchCount(false), lambdaQueryWrapper);
 		// 广告列表
 		List<TAdvertInfo> advertInfos = advertInfoIPage.getRecords();
 		if (!CollectionUtils.isEmpty(advertInfos)) {
@@ -225,7 +226,7 @@ public class TAdvertInfoServiceImpl extends DefaultTAdvertInfoServiceImpl<ITAdve
 	public IPage<AdvertUserVO> listAdvertsUsers(Page<AdvertUserVO> page, Long coinId, LoginUser loginUser) {
 		// TODO 获取当前盘口价格
 		BigDecimal currentHandicapPrice = BigDecimal.valueOf(10.1);
-		IPage<AdvertUserVO> advertsUsers = baseDAO.listAdvertsUsers(page, coinId, loginUser.getUser_id());
+		IPage<AdvertUserVO> advertsUsers = baseDAO.listAdvertsUsers(page.setSearchCount(false), coinId, loginUser.getUser_id());
 		// 处理浮动价格
 		List<AdvertUserVO> collect = advertsUsers.getRecords().stream()
 				.map(au -> au.getPricingMode().equals(TAdvertInfo.PricingModeEnum.FLOAT.getCode()) ? au.setPrice(currentHandicapPrice) : au).collect(Collectors.toList());
@@ -358,12 +359,12 @@ public class TAdvertInfoServiceImpl extends DefaultTAdvertInfoServiceImpl<ITAdve
 	 * create time: 2019/8/22 14:35
 	 * @param advertId : 广告id
 	 * @param amount : 数量
-	 * @param payPassWord: 资金密码
+	 * @param payPassWord : 资金密码
 	 * @param loginUser : {@link LoginUser}
-	 * @return result
+	 * @return {@link TAdvertOrder}
 	 */
 	@Override
-	public Boolean placeAdvertOrder(Long advertId, BigDecimal amount, String payPassWord, LoginUser loginUser) {
+	public TAdvertOrder placeAdvertOrder(Long advertId, BigDecimal amount, String payPassWord, LoginUser loginUser) {
 		TAdvertInfo advert = getProcessingAdvert(advertId);
 		if (loginUser.getUser_id().equals(advert.getUserId())) {
 			throw new BusinessException("不允許操作自己發布的廣告");
@@ -414,14 +415,18 @@ public class TAdvertInfoServiceImpl extends DefaultTAdvertInfoServiceImpl<ITAdve
 				.setStatus(TAdvertOrder.StatusEnum.ALREADY_AUCTION.getCode())
 				.setCancelOrderDeadline(LocalDateTime.now().plusMinutes(TAdvertOrder.CANCEL_ORDER_DURATION))
 				.setArbitStatus(TAdvertOrder.ArbitStatusEnum.NO_ARBITRATION.getCode())
-				.setOverdueTime(LocalDateTime.now().plusMinutes(advert.getPaymentTime()));
+				.setOverdueTime(Objects.nonNull(advert.getPaymentTime()) ? LocalDateTime.now().plusMinutes(advert.getPaymentTime()) : null);
 		boolean saveAdvertOrderResult = itAdvertOrderService.save(order);
 		// 冻结广告余额， 剩余减，冻结加
 		advert.setBalanceAmount(advert.getBalanceAmount().subtract(amount));
 		advert.setFreezeAmount(advert.getFreezeAmount().add(amount));
 		boolean updateResult = updateById(advert);
 		// TODO 发短信通知买家、卖家
-		return saveAdvertOrderResult && updateResult;
+
+		if (saveAdvertOrderResult && updateResult) {
+			return itAdvertOrderService.getAdvertOrderDetails(order.getId());
+		}
+		return null;
 	}
 
 

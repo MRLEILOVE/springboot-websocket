@@ -1,5 +1,8 @@
 package com.bittrade.pojo.model;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.core.framework.base.model.BaseModel;
 
@@ -171,7 +174,7 @@ public class TAdvertOrder extends BaseModel<TAdvertOrder> {
 	/**
 	 * 主键
 	 */
-	@com.baomidou.mybatisplus.annotation.TableId(value = "id", type = com.baomidou.mybatisplus.annotation.IdType.AUTO)
+	@TableId(value = "id", type = IdType.AUTO)
 	private Long id;
 	
 	/**
@@ -298,6 +301,21 @@ public class TAdvertOrder extends BaseModel<TAdvertOrder> {
 	 * 修改时间
 	 */
 	private java.time.LocalDateTime updateTime;
+
+
+	/**
+	 * 币名称
+	 */
+	@TableField(exist = false)
+	private String coinName;
+
+	/**
+	 * 收款方式id，出售单为收款方式, 购买单为付款方式
+	 */
+	@TableField(exist = false)
+	private Long paymentMethodId;
+
+
 
 	/**
 	 * 广告类型
