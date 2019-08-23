@@ -1,11 +1,15 @@
 package com.bittrade.c2c.service.impl;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.bittrade.__default.service.impl.DefaultTLegalCurrencyRecordServiceImpl;
 import com.bittrade.c2c.dao.ITLegalCurrencyRecordDAO;
 import com.bittrade.c2c.service.ITLegalCurrencyRecordService;
+import com.bittrade.common.enums.LegalRecordStatusEnumer;
+import com.bittrade.pojo.dto.AccountTypeDto;
 import com.bittrade.pojo.dto.TLegalCurrencyRecordDTO;
 import com.bittrade.pojo.model.TLegalCurrencyCoin;
 import com.bittrade.pojo.model.TLegalCurrencyRecord;
+import com.bittrade.pojo.vo.RecordVO;
 import com.bittrade.pojo.vo.TLegalCurrencyRecordVO;
 import com.core.tool.SnowFlake;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +17,9 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * 
@@ -74,5 +81,35 @@ public class TLegalCurrencyRecordServiceImpl extends DefaultTLegalCurrencyRecord
                 .build();
         int result = legalCurrencyRecordDAO.add(record);
         return result;
+    }
+
+    /**
+     * 查詢法币账户划转记录
+     * @param userId 用户id
+     * @param accountTypeDto 请求对象
+     * @return
+     */
+    @Override
+    public Page<RecordVO> queryAccountRecord(Long userId, AccountTypeDto accountTypeDto) {
+        //1-转入 2-转出
+        List<Integer> types;
+        switch (accountTypeDto.getType()){
+            case 1:
+                types = Arrays.asList(LegalRecordStatusEnumer.FUNDS_TO_LEGAL.getCode(),LegalRecordStatusEnumer.FUNDS_TO_LEGAL.getCode());
+                break;
+            case 2:
+                types = Arrays.asList(LegalRecordStatusEnumer.LEGAL_TO_BIBI.getCode(),LegalRecordStatusEnumer.LEGAL_TO_FUNDS.getCode());
+                break;
+            default:
+                types = Arrays.asList(LegalRecordStatusEnumer.LEGAL_TO_BIBI.getCode(),
+                                      LegalRecordStatusEnumer.LEGAL_TO_FUNDS.getCode(),
+                                      LegalRecordStatusEnumer.FUNDS_TO_LEGAL.getCode(),
+                                      LegalRecordStatusEnumer.BIBI_TO_LEGAL.getCode());
+                break;
+        }
+        Page<RecordVO> page = new Page<>(accountTypeDto.getCurrent(),accountTypeDto.getSize());
+        List<RecordVO> list = legalCurrencyRecordDAO.queryFundAccountRecord(page,userId,types,accountTypeDto.getCurrencyId());
+        page.setRecords(list);
+        return page;
     }
 }

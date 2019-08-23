@@ -1,15 +1,19 @@
 package com.bittrade.c2c.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.additional.query.impl.LambdaQueryChainWrapper;
 import com.bittrade.__default.service.impl.DefaultTAdvertInfoServiceImpl;
 import com.bittrade.c2c.dao.ITAdvertInfoDAO;
 import com.bittrade.c2c.service.ITAdvertInfoService;
 import com.bittrade.c2c.service.ITAdvertOrderService;
 import com.bittrade.c2c.service.ITLegalCurrencyAccountService;
 import com.bittrade.c2c.service.ITLegalCurrencyCoinService;
+import com.bittrade.common.constant.ILegalCurrencyCoinConstants;
 import com.bittrade.pojo.dto.TAdvertInfoDTO;
 import com.bittrade.pojo.model.TAdvertInfo;
 import com.bittrade.pojo.model.TAdvertOrder;
@@ -19,12 +23,13 @@ import com.bittrade.pojo.vo.AdvertInfoVO;
 import com.bittrade.pojo.vo.AdvertUserVO;
 import com.bittrade.pojo.vo.QueryAdvertVO;
 import com.bittrade.pojo.vo.TAdvertInfoVO;
+import com.core.tool.SnowFlake;
 import com.core.web.constant.entity.LoginUser;
 import com.core.web.constant.exception.BusinessException;
-import com.netflix.discovery.converters.Auto;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.math.BigDecimal;
@@ -40,6 +45,7 @@ import java.util.stream.Collectors;
  * @author Administrator
  */
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class TAdvertInfoServiceImpl extends DefaultTAdvertInfoServiceImpl<ITAdvertInfoDAO, TAdvertInfo, TAdvertInfoDTO, TAdvertInfoVO> implements ITAdvertInfoService {
 
 	@Autowired
@@ -50,7 +56,6 @@ public class TAdvertInfoServiceImpl extends DefaultTAdvertInfoServiceImpl<ITAdve
 
 	@Autowired
 	private ITAdvertOrderService itAdvertOrderService;
-
 
 	/**
 	 * 发布广告
@@ -101,7 +106,7 @@ public class TAdvertInfoServiceImpl extends DefaultTAdvertInfoServiceImpl<ITAdve
 		} else {
 			// 发布出售
 			// 法幣账户
-			TLegalCurrencyAccount currencyAccount = itLegalCurrencyAccountService.getByUserIdAndCoinName(user.getUser_id(), coin.getName());
+			TLegalCurrencyAccount currencyAccount = itLegalCurrencyAccountService.getByUserIdAndCoinId(user.getUser_id(), coin.getId());
 			// 账户可用数量
 			if (amount.compareTo(currencyAccount.getBalanceAmount()) > 0) {
 				throw new BusinessException("賬戶可用餘額不足");
@@ -129,10 +134,6 @@ public class TAdvertInfoServiceImpl extends DefaultTAdvertInfoServiceImpl<ITAdve
 					.setRegisteredTime(advertInfoVO.getRegisteredTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
 			return baseMapper.insert(advertInfo) > 0;
 		} catch (Exception e) {
-			// 回滾账户余额  -> 余额 + 冻结 -
-			if (advertInfoVO.isSellType()) {
-				itLegalCurrencyAccountService.unFreezeAmount(user.getUser_id(), advertInfoVO.getCoinId(), amount);
-			}
 			log.error("发布广告异常：", e);
 			throw new BusinessException("發布廣告失敗");
 		}
@@ -173,13 +174,13 @@ public class TAdvertInfoServiceImpl extends DefaultTAdvertInfoServiceImpl<ITAdve
 		Long receiptWay = queryAdvertVO.getReceiptWay();
 		lambdaQueryWrapper.eq(Objects.nonNull(receiptWay), TAdvertInfo::getPaymentMethodId, receiptWay);
 
-		IPage<TAdvertInfo> advertInfoIPage = baseMapper.selectPage(page, lambdaQueryWrapper);
+		IPage<TAdvertInfo> advertInfoIPage = baseMapper.selectPage(page.setSearchCount(false), lambdaQueryWrapper);
 		// 广告列表
-		List<TAdvertInfo> records = advertInfoIPage.getRecords();
-		if (!CollectionUtils.isEmpty(records)) {
+		List<TAdvertInfo> advertInfos = advertInfoIPage.getRecords();
+		if (!CollectionUtils.isEmpty(advertInfos)) {
 			// TODO 获取当前盘口价格
 			BigDecimal currentHandicapPrice = BigDecimal.valueOf(10.1);
-			Iterator<TAdvertInfo> iterator = records.iterator();
+			Iterator<TAdvertInfo> iterator = advertInfos.iterator();
 			while (iterator.hasNext()) {
 				TAdvertInfo advertInfo = iterator.next();
 				if (TAdvertInfo.PricingModeEnum.FLOAT.getCode().equals(advertInfo.getPricingMode())) {
@@ -201,15 +202,10 @@ public class TAdvertInfoServiceImpl extends DefaultTAdvertInfoServiceImpl<ITAdve
 			}
 			// TODO 构建用户信息，远程调 jd 项目
 
-			// 构建成交量、成交率
-			records.forEach(record -> {
-				String coinName = itLegalCurrencyCoinService.getById(record.getCoinId()).getName();
-				TLegalCurrencyAccount account = itLegalCurrencyAccountService.getByUserIdAndCoinName(record.getUserId(), coinName);
-				record.setCoinName(coinName);
-				record.setC2cAlreadyDealCount(account.getC2cAlreadyDealCount());
-				int c2cTotalCount = account.getC2cTotalCount();
-				c2cTotalCount = c2cTotalCount  == 0 ? 1 : c2cTotalCount;
-				record.setC2cTurnoverRate(BigDecimal.valueOf(account.getC2cAlreadyDealCount()).divide(BigDecimal.valueOf(c2cTotalCount), 2, RoundingMode.DOWN));
+			advertInfos.forEach(advertInfo -> {
+				// 构建成交量、成交率
+				buildVolumeAndRate(advertInfo);
+				advertInfo.setCoinName(itLegalCurrencyCoinService.getById(advertInfo.getCoinId()).getName());
 			});
 		}
 		return advertInfoIPage;
@@ -230,7 +226,7 @@ public class TAdvertInfoServiceImpl extends DefaultTAdvertInfoServiceImpl<ITAdve
 	public IPage<AdvertUserVO> listAdvertsUsers(Page<AdvertUserVO> page, Long coinId, LoginUser loginUser) {
 		// TODO 获取当前盘口价格
 		BigDecimal currentHandicapPrice = BigDecimal.valueOf(10.1);
-		IPage<AdvertUserVO> advertsUsers = baseDAO.listAdvertsUsers(page, coinId, loginUser.getUser_id());
+		IPage<AdvertUserVO> advertsUsers = baseDAO.listAdvertsUsers(page.setSearchCount(false), coinId, loginUser.getUser_id());
 		// 处理浮动价格
 		List<AdvertUserVO> collect = advertsUsers.getRecords().stream()
 				.map(au -> au.getPricingMode().equals(TAdvertInfo.PricingModeEnum.FLOAT.getCode()) ? au.setPrice(currentHandicapPrice) : au).collect(Collectors.toList());
@@ -243,12 +239,26 @@ public class TAdvertInfoServiceImpl extends DefaultTAdvertInfoServiceImpl<ITAdve
 	 * create by: leigq
 	 * <br/>
 	 * create time: 2019/8/21 17:07
+	 *
 	 * @param advertIds : 多个广告 ids
 	 * @param loginUser : {@link LoginUser}
-	 * @return  result
+	 * @return result
 	 */
 	@Override
 	public Boolean suspendAdverts(List<Long> advertIds, LoginUser loginUser) {
+		// 是否存在未完成的订单
+		if (advertIds.size() == 1) {
+			boolean r = itAdvertOrderService.existenceNoCompleteOrders(advertIds.get(0));
+			if (r) {
+				throw new BusinessException("廣告存在爲完成的訂單，無法暫停");
+			}
+		}
+		advertIds.forEach(advertId -> {
+			boolean r = itAdvertOrderService.existenceNoCompleteOrders(advertId);
+			if (r) {
+				throw new BusinessException("部分廣告存在爲完成的訂單，無法暫停");
+			}
+		});
 		try {
 			advertIds.forEach(advertId -> {
 				TAdvertInfo info = TAdvertInfo.builder().status(TAdvertInfo.StatusEnum.PAUSE.getCode()).build();
@@ -280,6 +290,10 @@ public class TAdvertInfoServiceImpl extends DefaultTAdvertInfoServiceImpl<ITAdve
 		if (Objects.isNull(advertInfo)) {
 			return false;
 		}
+		// 是否存在未完成的订单
+		if (itAdvertOrderService.existenceNoCompleteOrders(advertId)) {
+			throw new BusinessException("廣告存在爲完成的訂單，無法撤銷");
+		}
 		if (TAdvertInfo.StatusEnum.revoked.getCode().equals(advertInfo.getStatus())) {
 			throw new BusinessException("請勿重複撤銷操作");
 		}
@@ -309,6 +323,122 @@ public class TAdvertInfoServiceImpl extends DefaultTAdvertInfoServiceImpl<ITAdve
 	 */
 	@Override
 	public TAdvertInfo getAdvertDetails(Long advertId) {
+		TAdvertInfo advertInfo = getProcessingAdvert(advertId);
+		if (TAdvertInfo.PricingModeEnum.FLOAT.getCode().equals(advertInfo.getPricingMode())) {
+			// TODO 获取当前盘口价格
+			BigDecimal currentHandicapPrice = BigDecimal.valueOf(10.1);
+			// 浮动交易价格 = 盘口价格 * 浮动比例
+			advertInfo.setPrice(currentHandicapPrice.multiply(advertInfo.getFloatingRatio()));
+			if (advertInfo.isBuyType()) {
+				if (advertInfo.getPrice().compareTo(advertInfo.getHidePrice()) >= 0) {
+					throw new BusinessException("廣告不存在，請刷新重試");
+				}
+			}
+			if (advertInfo.isSellType()) {
+				if (advertInfo.getPrice().compareTo(advertInfo.getHidePrice()) <= 0) {
+					throw new BusinessException("廣告不存在，請刷新重試");
+				}
+			}
+		}
+		// TODO 构建用户信息，远程调 jd 项目
+		// 构建成交量、成交率
+		buildVolumeAndRate(advertInfo);
+		advertInfo.setCoinName(itLegalCurrencyCoinService.getById(advertInfo.getCoinId()).getName());
+		// 付款时效，放币时效
+		// 卖单：放币时效  买单：付款时效， 单位：秒，前端处理格式
+		Long paymentOrPutCoinAging = itAdvertOrderService.getPaymentOrPutCoinAging(advertInfo.getUserId(), advertInfo.getType(), TAdvertOrder.StatusEnum.ALREADY_COMPLETE.getCode());
+		advertInfo.setPaymentOrPutCoinAging(paymentOrPutCoinAging);
+		return advertInfo;
+	}
+
+	/**
+	 * 购买、出售操作（下购买、出售订单）
+	 * <br/>
+	 * create by: leigq
+	 * <br/>
+	 * create time: 2019/8/22 14:35
+	 * @param advertId : 广告id
+	 * @param amount : 数量
+	 * @param payPassWord : 资金密码
+	 * @param loginUser : {@link LoginUser}
+	 * @return {@link TAdvertOrder}
+	 */
+	@Override
+	public TAdvertOrder placeAdvertOrder(Long advertId, BigDecimal amount, String payPassWord, LoginUser loginUser) {
+		TAdvertInfo advert = getProcessingAdvert(advertId);
+		if (loginUser.getUser_id().equals(advert.getUserId())) {
+			throw new BusinessException("不允許操作自己發布的廣告");
+		}
+		if (amount.compareTo(advert.getBalanceAmount()) > 0) {
+			throw new BusinessException("數量超出廣告餘額");
+		}
+		// 固定、浮动价格不一样
+		if (advert.isFloatingPrice()) {
+			// TODO 获取当前盘口价格
+			BigDecimal currentHandicapPrice = BigDecimal.valueOf(10.1);
+			advert.setPrice(currentHandicapPrice);
+		}
+		if (TAdvertInfo.AdvertTypeEnum.SELL.getCode().equals(advert.getType())) {
+			TLegalCurrencyAccount account = itLegalCurrencyAccountService.getByUserIdAndCoinId(loginUser.getUser_id(), advert.getCoinId());
+			if (account.getBalanceAmount().compareTo(amount) < 0) {
+				throw new BusinessException("賬戶可用餘額不足");
+			}
+			if (amount.multiply(advert.getPrice()).compareTo(advert.getMinLimit()) < 0) {
+				throw new BusinessException(String.format("廣告最小限額：%f", advert.getMinLimit()));
+			}
+			if (amount.multiply(advert.getPrice()).compareTo(advert.getMaxLimit()) > 0) {
+				throw new BusinessException(String.format("廣告最大限額：%f", advert.getMaxLimit()));
+			}
+			if (!loginUser.checkPayPassWord(payPassWord)) {
+				throw new BusinessException("資金密碼錯誤");
+			}
+		}
+		SnowFlake snowFlake = new SnowFlake(1, 1);
+		TAdvertOrder order = TAdvertOrder.builder()
+				.advertId(advertId)
+				.coinId(advert.getCoinId())
+				.orderNumber("C2C" + snowFlake.nextId())
+				.paymentLegalCurrency(ILegalCurrencyCoinConstants.LEGAL_CURRENCY_COIN_NAME)
+				.advertType(advert.getType())
+				.publisherId(advert.getUserId())
+				.build();
+		if (advert.isBuyType()) {
+			order.setBuyerId(advert.getUserId()).setSellerId(loginUser.getUser_id());
+		}
+		if (advert.isSellType()) {
+			order.setBuyerId(loginUser.getUser_id()).setSellerId(advert.getUserId());
+		}
+		order.setTransactionAmout(amount.multiply(advert.getPrice()))
+				.setTransactionNum(amount)
+				.setTransactionPrice(advert.getPrice())
+				.setRate(BigDecimal.ZERO)
+				.setStatus(TAdvertOrder.StatusEnum.ALREADY_AUCTION.getCode())
+				.setCancelOrderDeadline(LocalDateTime.now().plusMinutes(TAdvertOrder.CANCEL_ORDER_DURATION))
+				.setArbitStatus(TAdvertOrder.ArbitStatusEnum.NO_ARBITRATION.getCode())
+				.setOverdueTime(Objects.nonNull(advert.getPaymentTime()) ? LocalDateTime.now().plusMinutes(advert.getPaymentTime()) : null);
+		boolean saveAdvertOrderResult = itAdvertOrderService.save(order);
+		// 冻结广告余额， 剩余减，冻结加
+		advert.setBalanceAmount(advert.getBalanceAmount().subtract(amount));
+		advert.setFreezeAmount(advert.getFreezeAmount().add(amount));
+		boolean updateResult = updateById(advert);
+		// TODO 发短信通知买家、卖家
+
+		if (saveAdvertOrderResult && updateResult) {
+			return itAdvertOrderService.getAdvertOrderDetails(order.getId());
+		}
+		return null;
+	}
+
+
+	/**
+	 * 获取进行中的广告
+	 * <br/>
+	 * create by: leigq
+	 * <br/>
+	 * create time: 2019/8/22 14:34
+	 * @return  {@link TAdvertInfo}
+	 */
+	private TAdvertInfo getProcessingAdvert(Long advertId) {
 		LambdaQueryWrapper<TAdvertInfo> lambdaQueryWrapper = new LambdaQueryWrapper<TAdvertInfo>()
 				.eq(TAdvertInfo::getId, advertId)
 				.eq(TAdvertInfo::getStatus, TAdvertInfo.StatusEnum.PROCESSING.getCode());
@@ -316,37 +446,23 @@ public class TAdvertInfoServiceImpl extends DefaultTAdvertInfoServiceImpl<ITAdve
 		if (Objects.isNull(info)) {
 			throw new BusinessException("廣告不存在，請刷新重試");
 		}
-		if (TAdvertInfo.PricingModeEnum.FLOAT.getCode().equals(info.getPricingMode())) {
-			// TODO 获取当前盘口价格
-			BigDecimal currentHandicapPrice = BigDecimal.valueOf(10.1);
-			// 浮动交易价格 = 盘口价格 * 浮动比例
-			info.setPrice(currentHandicapPrice.multiply(info.getFloatingRatio()));
-			if (info.isBuyType()) {
-				if (info.getPrice().compareTo(info.getHidePrice()) >= 0) {
-					throw new BusinessException("廣告不存在，請刷新重試");
-				}
-			}
-			if (info.isSellType()) {
-				if (info.getPrice().compareTo(info.getHidePrice()) <= 0) {
-					throw new BusinessException("廣告不存在，請刷新重試");
-				}
-			}
-		}
-		// TODO 构建用户信息，远程调 jd 项目
+		return info;
+	}
 
-		// 构建成交量、成交率
-		String coinName = itLegalCurrencyCoinService.getById(info.getCoinId()).getName();
-		TLegalCurrencyAccount account = itLegalCurrencyAccountService.getByUserIdAndCoinName(info.getUserId(), coinName);
-		info.setCoinName(coinName);
-		info.setC2cAlreadyDealCount(account.getC2cAlreadyDealCount());
+	/**
+	 * 构建成交量、成交率
+	 * <br/>
+	 * create by: leigq
+	 * <br/>
+	 * create time: 2019/8/22 16:34
+	 * @param advertInfo : {@link TAdvertInfo}
+	 * @return
+	 */
+	private void buildVolumeAndRate(TAdvertInfo advertInfo) {
+		TLegalCurrencyAccount account = itLegalCurrencyAccountService.getByUserIdAndCoinId(advertInfo.getUserId(), advertInfo.getCoinId());
+		advertInfo.setC2cAlreadyDealCount(account.getC2cAlreadyDealCount());
 		int c2cTotalCount = account.getC2cTotalCount();
 		c2cTotalCount = c2cTotalCount == 0 ? 1 : c2cTotalCount;
-		info.setC2cTurnoverRate(BigDecimal.valueOf(account.getC2cAlreadyDealCount()).divide(BigDecimal.valueOf(c2cTotalCount), 2, RoundingMode.DOWN));
-
-		// 付款时效，放币时效
-		// 卖单：放币时效  买单：付款时效， 单位：秒，前端处理格式
-		Long paymentOrPutCoinAging = itAdvertOrderService.getPaymentOrPutCoinAging(info.getUserId(), info.getType(), TAdvertOrder.StatusEnum.ALREADY_COMPLETE.getCode());
-		info.setPaymentOrPutCoinAging(paymentOrPutCoinAging);
-		return info;
+		advertInfo.setC2cTurnoverRate(BigDecimal.valueOf(account.getC2cAlreadyDealCount()).divide(BigDecimal.valueOf(c2cTotalCount), 2, RoundingMode.DOWN));
 	}
 }

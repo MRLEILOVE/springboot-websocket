@@ -28,4 +28,8 @@
 		`create_time` AS createTime
 	</sql>
 
+    <select id="queryFundAccountRecord" resultType="com.bittrade.pojo.vo.RecordVO">
+
+	</select>
+
 </mapper>

@@ -5,12 +5,14 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.bittrade.__default.service.IDefaultTAdvertInfoService;
 import com.bittrade.pojo.dto.TAdvertInfoDTO;
 import com.bittrade.pojo.model.TAdvertInfo;
+import com.bittrade.pojo.model.TAdvertOrder;
 import com.bittrade.pojo.vo.AdvertInfoVO;
 import com.bittrade.pojo.vo.AdvertUserVO;
 import com.bittrade.pojo.vo.QueryAdvertVO;
 import com.bittrade.pojo.vo.TAdvertInfoVO;
 import com.core.web.constant.entity.LoginUser;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -92,4 +94,6 @@ public interface ITAdvertInfoService extends IDefaultTAdvertInfoService<TAdvertI
 	 * @return  result
 	 */
 	TAdvertInfo getAdvertDetails(Long advertId);
+
+	TAdvertOrder placeAdvertOrder(Long advertId, BigDecimal amount, String payPassWord, LoginUser loginUser);
 }

@@ -47,10 +47,10 @@ public interface ITLegalCurrencyAccountService extends IDefaultTLegalCurrencyAcc
      * <br/>
      * create time: 2019/8/20 14:19
      * @param userId : 用户id
-     * @param coinName : 币名
+     * @param coinId : 币 id
      * @return  法币账户
      */
-    TLegalCurrencyAccount getByUserIdAndCoinName(Long userId, String coinName);
+    TLegalCurrencyAccount getByUserIdAndCoinId(Long userId, Long coinId);
 
     /**
      * 获取用户法币账户总的usdt数量

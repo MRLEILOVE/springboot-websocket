@@ -8,8 +8,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -192,12 +190,12 @@ public class TLegalCurrencyAccountServiceImpl extends DefaultTLegalCurrencyAccou
      * <br/>
      * create time: 2019/8/20 14:19
      * @param userId : 用户id
-     * @param coinName : 币名
+     * @param coinId : 币 id
      * @return  法币账户
      */
     @Override
-    public TLegalCurrencyAccount getByUserIdAndCoinName(Long userId, String coinName) {
-        return legalCurrencyAccountDAO.getByUserIdAndCoinName(userId, coinName);
+    public TLegalCurrencyAccount getByUserIdAndCoinId(Long userId, Long coinId) {
+        return legalCurrencyAccountDAO.getByUserIdAndCoinId(userId, coinId);
     }
 
     /**

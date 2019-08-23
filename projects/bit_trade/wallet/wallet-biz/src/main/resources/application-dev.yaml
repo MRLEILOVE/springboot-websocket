@@ -110,6 +110,10 @@ swagger:
 
 
 btc:
+  config-wallet:
+    encrypt-key: 1000002072188457  #最少16位   8的倍数
+  user-wallet:
+    encrypt-key: 1000000170586104 #最少16位   8的倍数
   point:
     url: http://58.82.251.195:8888
     user: a61d8ccbf458819d

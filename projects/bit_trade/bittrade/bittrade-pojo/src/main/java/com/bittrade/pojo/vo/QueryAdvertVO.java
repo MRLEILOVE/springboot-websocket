@@ -4,7 +4,10 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Objects;
 
+import javax.validation.constraints.NotNull;
+
 import com.bittrade.pojo.model.TAdvertInfo;
+import com.core.common.annotation.CheckEnumValue;
 
 import lombok.Data;
 
@@ -23,6 +26,7 @@ public class QueryAdvertVO implements Serializable {
 	/**
 	 * 法币虚拟币id
 	 */
+	@NotNull(message = "coinId cannot be null")
 	private Long coinId;
 
 	/**
@@ -36,6 +40,8 @@ public class QueryAdvertVO implements Serializable {
 	/**
 	 * 广告类型 类型 1:出售 2:购买
 	 */
+	@NotNull(message = "AdvertType cannot be null")
+	@CheckEnumValue(enumClass = TAdvertInfo.AdvertTypeEnum.class, enumMethod = "isValidAdvertType")
 	private Integer AdvertType;
 
 	/**

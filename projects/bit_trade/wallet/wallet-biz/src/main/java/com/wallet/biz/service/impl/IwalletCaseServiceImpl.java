@@ -1,19 +1,25 @@
 package com.wallet.biz.service.impl;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.core.common.DTO.ReturnDTO;
-import com.wallet.biz.api.service.IWWalletAccountService;
-import com.wallet.biz.pojo.model.WWalletAccount;
+import com.wallet.biz.api.service.*;
+import com.wallet.biz.pojo.model.WOrder;
+import com.wallet.biz.pojo.model.WUserWallet;
+import com.wallet.biz.pojo.vo.AddressParamDto;
+import com.wallet.biz.pojo.vo.AddressResultDto;
 import com.wallet.biz.pojo.vo.WithdrawBillParamVo;
-import com.wallet.biz.service.IwalletCaseService;
+import com.wallet.biz.tool.SnowFlake;
+import com.wallet.biz.utils.AesUtils;
+import org.bitcoinj.core.ECKey;
+import org.bitcoinj.core.NetworkParameters;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
-import redis.clients.jedis.JedisCluster;
+import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.Map;
 
 
 @Service
@@ -25,7 +31,71 @@ public class IwalletCaseServiceImpl implements IwalletCaseService {
 */
     @Autowired
     IWWalletAccountService wWalletAccountService;
+    @Autowired
+    IWWalletBillService walletBillService;
+    @Autowired
+    IWOrderService orderService;
+    @Autowired
+    IWUserWalletService wUserWalletService;
+    @Autowired
+    private NetworkParameters networkParameters;
+    @Value("${btc.user-wallet.encrypt-key}")
+    private String encryptKey;
 
+
+    @Override
+    public ReturnDTO auditStatus(/*PageDto pageDto*/) {
+        return null;
+    }
+
+    @Override
+    public ReturnDTO confirmTibi(WithdrawBillParamVo withdrawBillParamVo,Long userID) {
+        SnowFlake snowFlake = new SnowFlake(1, 1);
+        WOrder daworder = WOrder.builder()
+                .userId(userID)
+                .orderId(String .valueOf(snowFlake.nextId()))
+                .orderType(-1)
+                .coinType(withdrawBillParamVo.getCoinType())
+                .token(withdrawBillParamVo.getToken())
+                .fee(new BigDecimal(withdrawBillParamVo.getFree()))
+                .amount(new BigDecimal(withdrawBillParamVo.getAmount()))
+                .receiverAddress(withdrawBillParamVo.getReceiverAddress())
+                .type(1)
+                .build();
+        return orderService.addOrder(daworder);
+    }
+
+    @Override
+    public ReturnDTO chongbi(Long userId, AddressParamDto addressParamDto) {
+        WUserWallet userWallet = wUserWalletService.getOne(new QueryWrapper<>(WUserWallet.builder()
+                .userId(userId)
+                .coinType(addressParamDto.getCoinType())
+                .build()), true);
+
+        if (userWallet == null) {
+            //创建钱包
+            try {
+                ECKey key = new ECKey();
+                userWallet = WUserWallet.builder()
+                        .userId(userId)
+                        .coinType(addressParamDto.getCoinType())
+                        .address(key.toAddress(networkParameters).toBase58())
+                        .privateKey(AesUtils.aesEncrypt(key.getPrivateKeyAsWiF(networkParameters), encryptKey))
+                        .flag((byte)1)
+                        .build();
+                wUserWalletService.save(userWallet);
+            } catch (Exception e) {
+//                log.error("CreateAddressStrategyBTC.execute={}", JSON.toJSONString(AddressParamDto), e);
+                return ReturnDTO.error("生成钱包地址失败，请重试");
+            }
+        }
+
+        return ReturnDTO.ok(AddressResultDto.builder()
+                .userId(userWallet.getUserId())
+                .token(addressParamDto.getToken())
+                .address(userWallet.getAddress())
+                .build());
+    }
     @Override
     public ReturnDTO showfee(){
         Map<String, Object> map = new HashMap<>();
@@ -167,88 +237,4 @@ public class IwalletCaseServiceImpl implements IwalletCaseService {
         return ReturnDTO.ok("success");
     }
 
-    @Override
-    public ReturnDTO auditStatus(/*PageDto pageDto*/) {
-        return null;
-    }
-
-    @Override
-    public ReturnDTO confirmTibi(WithdrawBillParamVo withdrawBillParamVo) {
- //       Long user_id = RequestUtil.getCurrentUser().getUser_id();
-/*
-        EntityWrapper<PersonalCard>entityWrapper=new EntityWrapper<>();
-        entityWrapper.eq("user_id",user_id);
-        PersonalCard personalCard = personalCardService.selectOne(entityWrapper);
-        if (null==personalCard){
-            return WrapMapper.error("用户未实名认证");
-        }
-        Integer authStauts = personalCard.getAuthStauts();
-        if (!AuthStatusEnum.authType.SUCCESS.getCode().equals(authStauts)){
-            return WrapMapper.error("用户实名认证审核还未通过");
-        }
-*//*
-        EntityWrapper<TWalletFundAccount> entityWrapper1=new EntityWrapper<>();
-        entityWrapper1.eq("user_id",user_id).eq("currency",withDrawParamVo.getToken());
-        TWalletFundAccount tWalletFundAccount = iTwalletFundAccountService.selectOne(entityWrapper1);
-        int i = tWalletFundAccount.getTotal().compareTo(new BigDecimal(withDrawParamVo.getAmount()).add(new BigDecimal(withDrawParamVo.getFree())));
-        if (i<0){
-            return WrapMapper.error("提币超过用户当前余额");
-        }*/
-        WWalletAccount walletAccount = wWalletAccountService.getOne(new QueryWrapper<>(WWalletAccount.builder()
-  /*              .userId(user_id).currencyId(withdrawBillParamVo.getToken())
-               .coinType(withdrawBillParamVo.getCoinType())
-                .token(withdrawBillParamVo.getToken())
-                .valid("E")*/
-                .build()), true);
-        if(null == walletAccount){
-            return ReturnDTO.error("该币种暂时不支持提币");
-        }
- /*       UserPayPassword userPayPassword=userPayPasswordService.selectByUserId(user_id);
-        if (null==userPayPassword){
-            return WrapMapper.error("支付密码未设置");
-        }
-        String idStr = Long.toString(user_id, 36);//userId
-        String md5Password = DigestUtils.md5Hex(withDrawParamVo.getPassword() + idStr);
-        if (!userPayPassword.getPassword().equals(md5Password)){
-            return WrapMapper.error("密码不正确");
-        }
-
-        Long id = (Long)redisTemplate.opsForValue().get("user" + user_id);
-        if (null!=id&&id.equals(user_id)){
-            return WrapMapper.error("3秒内不可重复提交订单");
-        }
-
-        redisTemplate.opsForValue().set("user"+user_id,user_id);
-        redisTemplate.expire("user"+user_id,3, TimeUnit.SECONDS);
-        SnowFlake snowFlake = new SnowFlake(1, 1);
-
-        BigDecimal add = (new BigDecimal(withDrawParamVo.getAmount()).add(new BigDecimal(withDrawParamVo.getFree())));
-        BigDecimal subtract = (new BigDecimal(withDrawParamVo.getAmount()).add(new BigDecimal(withDrawParamVo.getFree())));
-
-        tWalletFundAccount.setTransferFrozen(tWalletFundAccount.getTransferFrozen().add(add));
-        tWalletFundAccount.setTotal(tWalletFundAccount.getTotal().subtract(subtract));
-        TOrder order=new TOrder();
-        order.setAmount(new BigDecimal(withDrawParamVo.getAmount()));
-        order.setOrderId(String .valueOf(snowFlake.nextId()));
-        order.setReceiverAddress(withDrawParamVo.getReceiverAddress());
-        order.setToken(withDrawParamVo.getToken());
-        order.setUserId(user_id);
-        order.setType(AuditEnum.orderType.NOTAUDITED.getCode());
-        order.setFee(new BigDecimal(withDrawParamVo.getFree()));
-
-        boolean insert1 = iTwalletFundAccountService.updateById(tWalletFundAccount);
-        boolean insert = this.insert(order);
-        if (insert&&insert1){
-            return WrapMapper.ok("您的提币申请已经成功提交，请等待人工审核!");
-        }
-//        TOrder order2= TOrder;
-        return WrapMapper.error("充值出错");*/
-        return null;
-    }
-    
-    @Autowired
-    public void setJC(JedisCluster jc) {
-    	System.out.println( "jc=" + jc );
-    }
-    
 }
