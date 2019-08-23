@@ -1,8 +1,11 @@
 package com.bittrade.c2c.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.bittrade.__default.service.IDefaultTLegalCurrencyRecordService;
+import com.bittrade.pojo.dto.AccountTypeDto;
 import com.bittrade.pojo.dto.TLegalCurrencyRecordDTO;
 import com.bittrade.pojo.model.TLegalCurrencyCoin;
+import com.bittrade.pojo.vo.RecordVO;
 import com.bittrade.pojo.vo.TLegalCurrencyRecordVO;
 import com.bittrade.pojo.model.TLegalCurrencyRecord;
 
@@ -36,4 +39,12 @@ public interface ITLegalCurrencyRecordService extends IDefaultTLegalCurrencyReco
      * @return
      */
     Integer c2cRecordOut(Long userId, TLegalCurrencyCoin coin, BigDecimal beforeAmount, int type, BigDecimal num);
+
+    /**
+     * 查詢法币账户划转记录
+     * @param userId 用户id
+     * @param accountTypeDto 请求对象
+     * @return
+     */
+    Page<RecordVO> queryAccountRecord(Long userId, AccountTypeDto accountTypeDto);
 }

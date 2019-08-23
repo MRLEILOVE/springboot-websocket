@@ -39,13 +39,12 @@
 		WHEN r.type = 6 THEN '轉入資金賬戶'
 		ELSE  ''
 		END AS type
-		FROM t_wallet_fund_account_record r
 		FROM w_wallet_account_record r
 		LEFT JOIN w_order o ON o.order_id = r.order_id
 		LEFT JOIN t_currency c ON c.id = r.currency_id
 		WHERE r.user_id = #{userId}
-		<if test="currency != null">
-			AND r.currency = #{currency}
+		<if test="currencyId != null and currencyId != ''">
+			AND c.id = #{currencyId}
 		</if>
 		<if test="list != null and list.size() >0">
 			AND r.type in
@@ -54,6 +53,17 @@
 			</foreach>
 		</if>
 		ORDER BY r.id DESC
+	</select>
+
+    <select id="queryCurrencies" resultType="com.bittrade.pojo.model.TCurrency">
+		SELECT c.id,c.`name`
+		FROM t_currency c
+		WHERE c.`name` in
+		<if test="list != null and list.size() >0">
+			<foreach  item="item" collection="list" separator="," open="(" close=")">
+				#{item}
+			</foreach>
+		</if>
 	</select>
 
 </mapper>

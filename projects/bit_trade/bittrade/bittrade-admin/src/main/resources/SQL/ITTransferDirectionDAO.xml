@@ -22,4 +22,11 @@
 		`status` AS status
 	</sql>
 
+    <select id="findList" resultType="com.bittrade.admin.model.vo.wallet.DirectionVo">
+		SELECT d.id,m1.`name` AS mainAccount,m2.`name` AS targetAccount,d.`status`,d.update_time AS updateTime
+		FROM t_transfer_direction d
+		INNER JOIN t_account_manage m1 ON m1.id = d.main_account_id
+		INNER JOIN t_account_manage m2 ON m2.id = d.target_account_id
+	</select>
+
 </mapper>
