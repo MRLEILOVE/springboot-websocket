@@ -1,9 +1,13 @@
 package com.wallet.biz.controller;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.core.common.DTO.ReturnDTO;
 import com.core.common.annotation.ALoginUser;
 import com.core.web.constant.entity.LoginUser;
 import com.wallet.biz.api.service.IWCoinConfigService;
+import com.wallet.biz.api.service.IWOrderService;
+import com.wallet.biz.pojo.vo.AddressParamDto;
+import com.wallet.biz.pojo.vo.OrderVO;
 import com.wallet.biz.pojo.vo.WithdrawBillParamVo;
 import com.wallet.biz.api.service.IwalletCaseService;
 import io.swagger.annotations.ApiModel;
@@ -12,10 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * 
@@ -31,6 +32,9 @@ public class WOrderController {
     private IwalletCaseService caseService;
     @Autowired
     private IWCoinConfigService WCoinConfigService;
+    @Autowired
+    IWOrderService orderService;
+
 
     @PostMapping("confirmTibi")
     @ApiOperation(value = "确定提币", notes = "确定提币")
@@ -47,78 +51,93 @@ public class WOrderController {
         }
 
 
-    }
-/*
-    @PostMapping("record")
+
+    @GetMapping("rechargerecord")
     @ApiOperation(value = "充提币记录", notes = "充提币记录")
-    public Wrapper rechargeRecord(@RequestBody WalletDto walletDto) throws FlowException {
-        Long user_id = RequestUtil.getCurrentUser().getUser_id();
-        if (user_id == null) {
-            throw new FlowException("用户未登录");
+    public ReturnDTO rechargeRecord(@RequestBody @Validated AddressParamDto addressParamDto, @ALoginUser LoginUser user) {
+        Long userId = user == null ? null : user.getUser_id();
+        if (userId == null) {
+            return ReturnDTO.error("用户未登录");
         }
-
-        EntityWrapper<WUserWalletBill> chong = new EntityWrapper<>();
-        chong.eq("user_id", user_id).eq("flag",2).orderBy("create_time", false);
-        EntityWrapper<WWithdrawWalletBill> ti = new EntityWrapper<>();
-        ti.eq("user_id", user_id).eq("flag",2).orderBy("create_time", false);
-        if (null != walletDto.getToken() && !"".equals(walletDto.getToken())) {
-            ti.eq("token", walletDto.getToken());
-            chong.eq("token", walletDto.getToken());
-        }
-        List<CoinRecordVo> voList = new ArrayList<>();
-        long pages = 0L;//page1.getPages() + page2.getPages();
-        long totals = 0L;//page1.getTotal() + page2.getTotal();
-
-        if ("recharge".equals(walletDto.getType())) {
-            Page<WUserWalletBill> chongPage = new Page<>(walletDto.getCurrent(), walletDto.getSize() / 2);
-            Page<WUserWalletBill> page1 = userWalletBillService.selectPage(chongPage, chong);
-            List<WUserWalletBill> chongList = page1.getRecords();
-            for (WUserWalletBill userWalletBill : chongList) {
-                CoinRecordVo coinRecordVo = new CoinRecordVo();
-                coinRecordVo.setToken(userWalletBill.getToken());
-                coinRecordVo.setAmount(userWalletBill.getAmount().toPlainString());
-                coinRecordVo.setReceiverAddress(userWalletBill.getReceiverAddress());
-                coinRecordVo.setCreateTime(userWalletBill.getCreateTime());
-                coinRecordVo.setDirection(userWalletBill.getDirection());
-                voList.add(coinRecordVo);
-            }
-            pages += page1.getPages();
-            totals += page1.getTotal();
-        }
-
-        if ("withdraw".equals(walletDto.getType())) {
-            Page<WWithdrawWalletBill> tiPage = new Page<>(walletDto.getCurrent(), walletDto.getSize() / 2);
-            Page<WWithdrawWalletBill> page2 = withdrawWalletBillService.selectPage(tiPage, ti);
-            List<WWithdrawWalletBill> tiList = page2.getRecords();
-            for (WWithdrawWalletBill wWithdrawWalletBill : tiList) {
-                CoinRecordVo coinRecordVo = new CoinRecordVo();
-                coinRecordVo.setToken(wWithdrawWalletBill.getToken());
-                coinRecordVo.setAmount(wWithdrawWalletBill.getAmount().toPlainString());
-                coinRecordVo.setReceiverAddress(wWithdrawWalletBill.getReceiverAddress());
-                coinRecordVo.setCreateTime(wWithdrawWalletBill.getCreateTime());
-                coinRecordVo.setDirection(wWithdrawWalletBill.getDirection());
-                voList.add(coinRecordVo);
-            }
-            pages += page2.getPages();
-            totals += page2.getTotal();
-        }
-
-        Collections.sort(voList, new Comparator<CoinRecordVo>() {
-            @Override
-            public int compare(CoinRecordVo o1, CoinRecordVo o2) {
-                return o2.getCreateTime().compareTo(o1.getCreateTime());
-            }
-        });
-
-        PageVo<CoinRecordVo> page = new PageVo<>();
-        page.setRecords(voList);
-        page.setCurrent(walletDto.getCurrent());
-        page.setSize(walletDto.getSize());
-        page.setTotal(totals);
-        page.setPages(pages);
-        return WrapMapper.ok(page);
+//        Page<OrderVO> page = orderService.queryFundrechargeRecord(userId,addressParamDto);
+        return caseService.rechargeRecord(userId,addressParamDto);
     }
 
+    @GetMapping("withdrawrecord")
+    @ApiOperation(value = "充提币记录", notes = "充提币记录")
+    public ReturnDTO withdrawRecord(@RequestBody @Validated AddressParamDto addressParamDto, @ALoginUser LoginUser user) {
+        Long userId = user == null ? null : user.getUser_id();
+        if (userId == null) {
+            return ReturnDTO.error("用户未登录");
+        }
+//        Page<OrderVO> page = orderService.queryFundwithdrawRecord(userId,addressParamDto);
+        return caseService.withdrawRecord(userId,addressParamDto);
+    }
+//
+//        EntityWrapper<WUserWalletBill> chong = new EntityWrapper<>();
+//        chong.eq("user_id", user_id).eq("flag",2).orderBy("create_time", false);
+//        EntityWrapper<WWithdrawWalletBill> ti = new EntityWrapper<>();
+//        ti.eq("user_id", user_id).eq("flag",2).orderBy("create_time", false);
+//        if (null != walletDto.getToken() && !"".equals(walletDto.getToken())) {
+//            ti.eq("token", walletDto.getToken());
+//            chong.eq("token", walletDto.getToken());
+//        }
+//        List<CoinRecordVo> voList = new ArrayList<>();
+//        long pages = 0L;//page1.getPages() + page2.getPages();
+//        long totals = 0L;//page1.getTotal() + page2.getTotal();
+//
+//        if ("recharge".equals(walletDto.getType())) {
+//            Page<WUserWalletBill> chongPage = new Page<>(walletDto.getCurrent(), walletDto.getSize() / 2);
+//            Page<WUserWalletBill> page1 = userWalletBillService.selectPage(chongPage, chong);
+//            List<WUserWalletBill> chongList = page1.getRecords();
+//            for (WUserWalletBill userWalletBill : chongList) {
+//                CoinRecordVo coinRecordVo = new CoinRecordVo();
+//                coinRecordVo.setToken(userWalletBill.getToken());
+//                coinRecordVo.setAmount(userWalletBill.getAmount().toPlainString());
+//                coinRecordVo.setReceiverAddress(userWalletBill.getReceiverAddress());
+//                coinRecordVo.setCreateTime(userWalletBill.getCreateTime());
+//                coinRecordVo.setDirection(userWalletBill.getDirection());
+//                voList.add(coinRecordVo);
+//            }
+//            pages += page1.getPages();
+//            totals += page1.getTotal();
+//        }
+//
+//        if ("withdraw".equals(walletDto.getType())) {
+//            Page<WWithdrawWalletBill> tiPage = new Page<>(walletDto.getCurrent(), walletDto.getSize() / 2);
+//            Page<WWithdrawWalletBill> page2 = withdrawWalletBillService.selectPage(tiPage, ti);
+//            List<WWithdrawWalletBill> tiList = page2.getRecords();
+//            for (WWithdrawWalletBill wWithdrawWalletBill : tiList) {
+//                CoinRecordVo coinRecordVo = new CoinRecordVo();
+//                coinRecordVo.setToken(wWithdrawWalletBill.getToken());
+//                coinRecordVo.setAmount(wWithdrawWalletBill.getAmount().toPlainString());
+//                coinRecordVo.setReceiverAddress(wWithdrawWalletBill.getReceiverAddress());
+//                coinRecordVo.setCreateTime(wWithdrawWalletBill.getCreateTime());
+//                coinRecordVo.setDirection(wWithdrawWalletBill.getDirection());
+//                voList.add(coinRecordVo);
+//            }
+//            pages += page2.getPages();
+//            totals += page2.getTotal();
+//        }
+//
+//        Collections.sort(voList, new Comparator<CoinRecordVo>() {
+//            @Override
+//            public int compare(CoinRecordVo o1, CoinRecordVo o2) {
+//                return o2.getCreateTime().compareTo(o1.getCreateTime());
+//            }
+//        });
+//
+//        PageVo<CoinRecordVo> page = new PageVo<>();
+//        page.setRecords(voList);
+//        page.setCurrent(walletDto.getCurrent());
+//        page.setSize(walletDto.getSize());
+//        page.setTotal(totals);
+//        page.setPages(pages);
+//        return WrapMapper.ok(page);
+ //   }
+}
+
+/*
     @PostMapping("auditStatus")
     @ApiOperation(value = "审核记录", notes = "审核记录")
     public Wrapper auditStatus(@RequestBody PageDto pageDto) throws FlowException {

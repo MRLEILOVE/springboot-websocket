@@ -17,4 +17,8 @@ public interface IwalletCaseService {
     ReturnDTO confirmTibi(WithdrawBillParamVo withdrawBillParamVo,Long userID);
 
     ReturnDTO chongbi(Long userId, AddressParamDto addressParamDto);
+
+    ReturnDTO rechargeRecord(Long userId, AddressParamDto addressParamDto);
+
+    ReturnDTO withdrawRecord(Long userId, AddressParamDto addressParamDto);
 }

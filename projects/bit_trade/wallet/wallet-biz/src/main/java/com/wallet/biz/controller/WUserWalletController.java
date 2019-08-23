@@ -36,7 +36,7 @@ public class WUserWalletController {
         if(userId == null){
             return ReturnDTO.error("用户未登录");
         }
-        return ReturnDTO.ok(caseService.chongbi(userId,addressParamDto));
+        return caseService.chongbi(userId,addressParamDto);
     }
 /*
     public String chongbi() throws FlowException {

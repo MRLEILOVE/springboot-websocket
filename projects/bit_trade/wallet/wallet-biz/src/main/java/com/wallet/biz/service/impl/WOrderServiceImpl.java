@@ -3,13 +3,19 @@ package com.wallet.biz.service.impl;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.bittrade.currency.api.service.ITCurrencyService;
 import com.bittrade.pojo.model.TCurrency;
 import com.core.common.DTO.ReturnDTO;
 import com.wallet.biz.api.service.IWCoinConfigService;
+import com.wallet.biz.api.service.IWCoinService;
 import com.wallet.biz.api.service.IWWalletAccountService;
+import com.wallet.biz.pojo.model.WCoin;
 import com.wallet.biz.pojo.model.WCoinConfig;
 import com.wallet.biz.pojo.model.WWalletAccount;
+import com.wallet.biz.pojo.vo.AddressParamDto;
+import com.wallet.biz.pojo.vo.OrderVO;
+import com.wallet.biz.tool.SnowFlake;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
@@ -21,6 +27,7 @@ import com.wallet.biz.dao.IWOrderDAO;
 import com.wallet.biz.pojo.model.WOrder;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -36,8 +43,8 @@ public class WOrderServiceImpl extends ServiceImpl<IWOrderDAO, WOrder> implement
     private IWCoinConfigService WCoinConfigService;
     @Autowired
     IWWalletAccountService wWalletAccountService;
-    @Reference
-    ITCurrencyService tCurrencyService;
+    @Autowired
+    IWCoinService wCoinService;
     @Autowired
     private RedisTemplate<String,Object> redisTemplate;
 
@@ -47,29 +54,32 @@ public class WOrderServiceImpl extends ServiceImpl<IWOrderDAO, WOrder> implement
                 .coinType(order.getCoinType())
                 .token(order.getToken())
                 .valid("E")
-                .build()), true);
+                .build()));
 
-        TCurrency ordercurrency = tCurrencyService.getOne(new QueryWrapper<>(TCurrency.builder()
-                .name(order.getToken())
-                .isWithdraw((byte)1).build()),true);
+        WCoin orderWCoin = wCoinService.getOne(new QueryWrapper<>(WCoin.builder()
+                .token(order.getToken())
+                .isWithdraw("E").build()));
 
-        if(null == coinConfig || null == ordercurrency){ return ReturnDTO.error("该币种暂时不支持提币");}
+        if(null == coinConfig || null == orderWCoin){ return ReturnDTO.error("该币种暂时不支持提币");}
 
         WWalletAccount orderAccount = wWalletAccountService.getOne(new QueryWrapper<>(WWalletAccount.builder()
                 .userId(order.getUserId())
-                .currencyId(ordercurrency.getId())
-                .build()),true);
+                .currencyId(orderWCoin.getId().intValue())
+                .build()));
         BigDecimal chAmount = (new BigDecimal(String.valueOf(order.getAmount())).add(new BigDecimal(String.valueOf(order.getFee()))));
         int i = orderAccount.getTotal().compareTo(chAmount);
         if (i<0){
             return ReturnDTO.error("提币超过用户当前余额");
         }
-        Long id = (Long)redisTemplate.opsForValue().get("user" + order.getOrderId());
-        if (null!=id&&id.equals(order.getOrderId())){
+        Long id = (Long)redisTemplate.opsForValue().get("user" + order.getUserId());
+        if (null!=id&&id.equals(order.getUserId())){
             return ReturnDTO.error("3秒内不可重复提交订单");
         }
         redisTemplate.opsForValue().set("user"+order.getOrderId(),order.getOrderId());
         redisTemplate.expire("user"+order.getOrderId(),3, TimeUnit.SECONDS);
+        SnowFlake snowFlake = new SnowFlake(1, 1);
+        order.setOrderId(String .valueOf(snowFlake.nextId()));
+        order.setAmount(order.getAmount().multiply(new BigDecimal(-1)));
 
         orderAccount.setTransferFrozen(orderAccount.getTransferFrozen().add(chAmount));
         orderAccount.setTotal(orderAccount.getTotal().subtract(chAmount));

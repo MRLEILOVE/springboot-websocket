@@ -2,6 +2,8 @@ package com.wallet.biz.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.bittrade.pojo.vo.RecordVO;
 import com.core.common.DTO.ReturnDTO;
 import com.wallet.biz.api.service.*;
 import com.wallet.biz.pojo.model.WOrder;
@@ -19,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -50,10 +53,10 @@ public class IwalletCaseServiceImpl implements IwalletCaseService {
 
     @Override
     public ReturnDTO confirmTibi(WithdrawBillParamVo withdrawBillParamVo,Long userID) {
-        SnowFlake snowFlake = new SnowFlake(1, 1);
+//        SnowFlake snowFlake = new SnowFlake(1, 1);
         WOrder daworder = WOrder.builder()
                 .userId(userID)
-                .orderId(String .valueOf(snowFlake.nextId()))
+//                .orderId(String .valueOf(snowFlake.nextId()))
                 .orderType(-1)
                 .coinType(withdrawBillParamVo.getCoinType())
                 .token(withdrawBillParamVo.getToken())
@@ -96,6 +99,27 @@ public class IwalletCaseServiceImpl implements IwalletCaseService {
                 .address(userWallet.getAddress())
                 .build());
     }
+
+    @Override
+    public ReturnDTO rechargeRecord(Long userId, AddressParamDto addressParamDto) {
+        List<WOrder> list = orderService.list(new QueryWrapper<>(WOrder.builder()
+                .userId(userId)
+                .coinType(addressParamDto.getCoinType())
+                .token(addressParamDto.getToken())
+                .orderType(1).build()));
+        return ReturnDTO.ok(list);
+    }
+
+    @Override
+    public ReturnDTO withdrawRecord(Long userId, AddressParamDto addressParamDto) {
+        List<WOrder> list = orderService.list(new QueryWrapper<>(WOrder.builder()
+                .userId(userId)
+                .coinType(addressParamDto.getCoinType())
+                .token(addressParamDto.getToken())
+                .orderType(-1).build()));
+        return ReturnDTO.ok(list);
+    }
+
     @Override
     public ReturnDTO showfee(){
         Map<String, Object> map = new HashMap<>();
