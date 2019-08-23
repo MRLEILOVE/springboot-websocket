@@ -18,31 +18,28 @@ import com.core.common.DTO.PageDTO;
 import com.core.framework.base.controller.BaseController;
 
 /**
- * 
  * @author Administrator
- *
  */
 @Controller
 @ResponseBody
-@RequestMapping(value = { "/tAdvertInfo" }, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+@RequestMapping(value = {"/tAdvertInfo"}, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class TAdvertInfoController extends BaseController<TAdvertInfo, TAdvertInfoDTO, TAdvertInfoVO, ITAdvertInfoService> {
 
-	@Autowired
-	private ITAdvertInfoService advertInfoService;
+    @Autowired
+    private ITAdvertInfoService advertInfoService;
 
-	/**
-	 * 显示tab
-	 */
-	@GetMapping("displayPage")
-	private String displayPage() {
-		return "";
-	}
+    /**
+     * 显示tab
+     */
+    @GetMapping("displayPage")
+    private String displayPage() {
+        return "";
+    }
 
-	@ResponseBody
-	@PostMapping("/findList")
-	private PageDTO<TAdvertInfo> findList(AdvertInfoScreeningParameterVo parameterVo, @RequestBody PageDTO<TAdvertInfo> pageDTO) {
-		PageDTO<TAdvertInfo> page = advertInfoService.findList( parameterVo, pageDTO );
-		return page;
-	}
+    @ResponseBody
+    @PostMapping("/findList")
+    private PageDTO<TAdvertInfo> findList(AdvertInfoScreeningParameterVo parameterVo, @RequestBody PageDTO<TAdvertInfo> pageDTO) {
+        return null;
+    }
 
 }

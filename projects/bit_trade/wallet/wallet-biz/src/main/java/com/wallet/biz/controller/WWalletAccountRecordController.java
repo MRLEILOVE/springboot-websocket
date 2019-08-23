@@ -2,6 +2,7 @@ package com.wallet.biz.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.bittrade.pojo.dto.AccountTypeDto;
+import com.bittrade.pojo.model.TCurrency;
 import com.bittrade.pojo.vo.AssetRecordTypeVO;
 import com.bittrade.pojo.vo.RecordVO;
 import com.core.common.DTO.ReturnDTO;
@@ -40,6 +41,13 @@ public class WWalletAccountRecordController {
         list.add(new AssetRecordTypeVO(3,"轉入"));
         list.add(new AssetRecordTypeVO(4,"轉出"));
         return ReturnDTO.ok(list);
+    }
+
+    @ApiOperation(value="资金账户记录币种下拉框", notes="资金账户记录币种下拉框")
+    @GetMapping(value = "/queryCurrencies")
+    @ResponseBody
+    public ReturnDTO<List<TCurrency>> queryCurrencies(){
+        return ReturnDTO.ok(walletAccountRecordService.queryCurrencies());
     }
 
     @PostMapping("/queryFundAccountRecord")

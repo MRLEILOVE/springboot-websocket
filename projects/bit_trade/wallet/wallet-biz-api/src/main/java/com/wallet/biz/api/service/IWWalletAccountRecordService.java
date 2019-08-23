@@ -3,10 +3,12 @@ package com.wallet.biz.api.service;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.bittrade.pojo.dto.AccountTypeDto;
+import com.bittrade.pojo.model.TCurrency;
 import com.bittrade.pojo.vo.RecordVO;
 import com.wallet.biz.pojo.model.WWalletAccountRecord;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * 
@@ -42,4 +44,9 @@ public interface IWWalletAccountRecordService extends IService<WWalletAccountRec
      * @return
      */
     Page<RecordVO> queryFundAccountRecord(Long userId, AccountTypeDto accountTypeDto);
+
+    /**
+     * 资金账户记录币种下拉框
+     */
+    List<TCurrency> queryCurrencies();
 }
