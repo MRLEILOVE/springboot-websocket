@@ -1,12 +1,13 @@
 #svc_name: currency
 
 data:
-  #model-package: com.*.pojo.model.*
-  #mapper-locations: classpath*:/__default_SQL/**/I*DAO.xml,classpath*:/SQL/**/I*DAO.xml
   application:
     name: admin
   register-with-eureka: false
   fetch-registry: false
+#  连接:不指定数据库
+  datasource:
+    db:
 
 #dubbo.protocol.port: 20883
 
@@ -14,11 +15,11 @@ server:
   port: 2091
 
 spring:
-#  application:
-#    name: currency
+  #  application:
+  #    name: currency
   profiles:
     active: common
-  
+
   ###ThymeLeaf配置
   thymeleaf:
     #模板的模式，支持 HTML, XML TEXT JAVASCRIPT HTML5
@@ -33,3 +34,5 @@ spring:
     prefix: classpath:/templates/
     #配置页面后缀 
     suffix: .html
+mybatis:
+  mapper-locations: classpath:SQL/*.xml

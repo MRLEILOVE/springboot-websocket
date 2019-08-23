@@ -27,18 +27,17 @@ public class AdvertInfoScreeningParameterVo {
     private LocalDate releaseTimeEnd;
 
     /**
-     * 搜索（接受用户loginName，订单ID）
+     * 搜索（接收:用户loginName）
      */
     private String searchStr;
 
     /**
-     * 交易对:USDT/CNY
-     * BTC/CNY
+     * 币种
      */
-    private String symbol;
+    private String coinName;
 
     /**
      * 方向：买入、卖出
      */
-    private String direction;
+    private Integer advertInfoType;
 }
