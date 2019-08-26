@@ -44,7 +44,7 @@ public class CaptchaConfig {
 		properties.setProperty( "kaptcha.image.height", "60" );
 		properties.setProperty( "kaptcha.textproducer.font.size", "38" );
 		properties.setProperty( "kaptcha.session.key", "kaptchaCodeMath" );
-		properties.setProperty( "kaptcha.textproducer.impl", "com.jdcloud.provider.config.KaptchaTextCreator" );
+		properties.setProperty( "kaptcha.textproducer.impl", "com.bittrade.admin.config.KaptchaTextCreator" );
 		properties.setProperty( "kaptcha.textproducer.char.spac", "5" );
 		properties.setProperty( "kaptcha.textproducer.char.length", "6" );
 		properties.setProperty( "kaptcha.textproducer.font.names", "Arial,Courier" );

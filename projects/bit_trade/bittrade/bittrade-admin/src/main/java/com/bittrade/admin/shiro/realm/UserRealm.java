@@ -15,18 +15,20 @@ import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
-import com.jdcloud.base.constant.GlobalConstant.Sys;
-import com.jdcloud.core.expection.CaptchaException;
-import com.jdcloud.core.expection.RoleBlockedException;
-import com.jdcloud.core.expection.UserBlockedException;
-import com.jdcloud.core.expection.UserNotExistsException;
-import com.jdcloud.core.expection.UserPasswordNotMatchException;
-import com.jdcloud.core.expection.UserPasswordRetryLimitExceedException;
-import com.jdcloud.provider.pojo.SysUser;
-import com.jdcloud.provider.service.SysMenuService;
-import com.jdcloud.provider.service.SysRoleService;
-import com.jdcloud.provider.shiro.service.LoginService;
-import com.jdcloud.provider.utils.ShiroUtils;
+
+import com.bittrade.admin.constant.GlobalConstant.Sys;
+import com.bittrade.admin.exception.CaptchaException;
+import com.bittrade.admin.exception.RoleBlockedException;
+import com.bittrade.admin.exception.UserBlockedException;
+import com.bittrade.admin.exception.UserNotExistsException;
+import com.bittrade.admin.exception.UserPasswordNotMatchException;
+import com.bittrade.admin.exception.UserPasswordRetryLimitExceedException;
+import com.bittrade.admin.model.domain.SysUser;
+import com.bittrade.admin.service.sys.SysMenuService;
+import com.bittrade.admin.service.sys.SysRoleService;
+import com.bittrade.admin.shiro.service.LoginService;
+import com.bittrade.admin.util.ShiroUtil;
+
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -50,7 +52,7 @@ public class UserRealm extends AuthorizingRealm {
 	@Override
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
 
-		SysUser user = ShiroUtils.getUser();
+		SysUser user = ShiroUtil.getUser();
 		SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
 		// 如果是唯一ADMIN,解锁所有姿势
 		if (user.getLoginName().equals( Sys.ADMIN ) ) {

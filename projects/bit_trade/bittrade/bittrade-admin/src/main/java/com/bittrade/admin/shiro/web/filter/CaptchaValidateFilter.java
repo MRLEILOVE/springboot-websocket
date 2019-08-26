@@ -3,11 +3,14 @@ package com.bittrade.admin.shiro.web.filter;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.web.filter.AccessControlFilter;
+
+import com.bittrade.admin.shiro.constant.ShiroConstant;
+import com.bittrade.admin.util.ShiroUtil;
 import com.google.code.kaptcha.Constants;
-import com.jdcloud.provider.shiro.constant.ShiroConstant;
-import com.jdcloud.provider.utils.ShiroUtils;
+
 import lombok.Setter;
 
 /**
@@ -47,7 +50,7 @@ public class CaptchaValidateFilter extends AccessControlFilter {
 	}
 
 	public boolean validateResponse(HttpServletRequest request, String validateCode) {
-		Object obj = ShiroUtils.getSession().getAttribute( Constants.KAPTCHA_SESSION_KEY );
+		Object obj = ShiroUtil.getSession().getAttribute( Constants.KAPTCHA_SESSION_KEY );
 		String code = String.valueOf( obj != null ? obj : "" );
 		if (StringUtils.isEmpty( validateCode ) || !validateCode.equalsIgnoreCase( code )) {
 			return false;

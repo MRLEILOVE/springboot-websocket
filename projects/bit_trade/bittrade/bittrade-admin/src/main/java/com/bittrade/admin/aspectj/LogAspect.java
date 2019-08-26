@@ -18,12 +18,12 @@ import org.springframework.stereotype.Component;
 
 import com.bittrade.admin.annotation.Log;
 import com.bittrade.admin.enums.UserEnum;
+import com.bittrade.admin.model.domain.SysOperLog;
+import com.bittrade.admin.model.domain.SysUser;
+import com.bittrade.admin.service.sys.SysOperLogService;
 import com.bittrade.admin.util.JSONUtil;
 import com.bittrade.admin.util.ServletUtil;
-import com.jdcloud.provider.pojo.SysOperLog;
-import com.jdcloud.provider.pojo.SysUser;
-import com.jdcloud.provider.service.SysOperLogService;
-import com.jdcloud.provider.utils.ShiroUtils;
+import com.bittrade.admin.util.ShiroUtil;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -69,10 +69,10 @@ public class LogAspect {
 				return;
 			}
 			// 获取当前的用户
-			SysUser currentUser = ShiroUtils.getUser();
+			SysUser currentUser = ShiroUtil.getUser();
 			SysOperLog operLog = new SysOperLog();
 			operLog.setStatus( UserEnum.UserState.NORMAL_USER.getCode() );
-			String ip = ShiroUtils.getIp();
+			String ip = ShiroUtil.getIp();
 			operLog.setOperIp( ip );
 			operLog.setOperTime( new Date() );
 			operLog.setOperUrl( ServletUtil.getRequest().getRequestURI() );
@@ -93,7 +93,7 @@ public class LogAspect {
 			// 处理注解参数
 			getControllerMethodDescription( controllerLog, operLog );
 			taskExecutor.execute( () -> {
-				sysOperLogService.insert( operLog );
+				sysOperLogService.save( operLog );
 			} );
 		} catch (Exception e2) {
 			log.error( "<== log拦截异常" + e2.getMessage() );
