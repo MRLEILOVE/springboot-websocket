@@ -2,15 +2,17 @@ package com.bittrade.admin.shiro.session;
 
 import java.io.Serializable;
 import java.util.Date;
+
 import org.apache.shiro.session.Session;
 import org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.task.TaskExecutor;
-import com.jdcloud.provider.pojo.SysUserOnline;
-import com.jdcloud.provider.service.impl.SysUserOnlineServiceImpl;
-import com.jdcloud.provider.shiro.constant.OnlineStatus;
-import com.jdcloud.provider.shiro.service.AsyncFactory;
+
+import com.bittrade.admin.model.domain.SysUserOnline;
+import com.bittrade.admin.service.impl.sys.SysUserOnlineServiceImpl;
+import com.bittrade.admin.shiro.constant.OnlineStatus;
+import com.bittrade.admin.shiro.service.AsyncFactory;
 
 /**
  * 针对自定义的ShiroSession的db操作

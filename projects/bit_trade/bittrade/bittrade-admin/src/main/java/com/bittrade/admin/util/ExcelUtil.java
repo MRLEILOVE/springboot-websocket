@@ -246,7 +246,7 @@ public class ExcelUtil<T>
 						{
 							val = reverseByExp(String.valueOf(val), attr.readConverterExp());
 						}
-						ReflectUtils.invokeSetter(entity, propertyName, val);
+						ReflectUtil.invokeSetter(entity, propertyName, val);
 					}
 				}
 				list.add(entity);

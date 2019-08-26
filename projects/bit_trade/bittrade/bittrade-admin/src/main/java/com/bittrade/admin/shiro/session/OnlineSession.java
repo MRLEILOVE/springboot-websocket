@@ -1,7 +1,8 @@
 package com.bittrade.admin.shiro.session;
 
 import org.apache.shiro.session.mgt.SimpleSession;
-import com.jdcloud.provider.shiro.constant.OnlineStatus;
+
+import com.bittrade.admin.shiro.constant.OnlineStatus;
 
 /**
  * 在线用户会话属性

@@ -1,13 +1,16 @@
 package com.bittrade.admin.shiro.session;
 
 import javax.servlet.http.HttpServletRequest;
+
 import org.apache.shiro.session.Session;
 import org.apache.shiro.session.mgt.SessionContext;
 import org.apache.shiro.session.mgt.SessionFactory;
 import org.apache.shiro.web.session.mgt.WebSessionContext;
 import org.springframework.stereotype.Component;
-import com.jdcloud.util.http.IpUtils;
-import com.jdcloud.util.http.ServletUtils;
+
+import com.bittrade.admin.util.IpUtil;
+import com.bittrade.admin.util.ServletUtil;
+
 import eu.bitwalker.useragentutils.UserAgent;
 
 /**
@@ -29,7 +32,7 @@ public class OnlineSessionFactory implements SessionFactory {
 				String os = userAgent.getOperatingSystem().getName();
 				// 获取客户端浏览器
 				String browser = userAgent.getBrowser().getName();
-				session.setHost( IpUtils.getIpAddr( request ) );
+				session.setHost( IpUtil.getIpAddr( request ) );
 				session.setBrowser( browser );
 				session.setOs( os );
 			}

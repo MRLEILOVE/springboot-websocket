@@ -12,13 +12,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.stereotype.Component;
-import com.jdcloud.base.constant.GlobalConstant.Sys;
-import com.jdcloud.core.expection.UserPasswordNotMatchException;
-import com.jdcloud.core.expection.UserPasswordRetryLimitExceedException;
-import com.jdcloud.core.utils.MessageUtils;
-import com.jdcloud.provider.pojo.SysUser;
-import com.jdcloud.provider.utils.ShiroUtils;
-import com.jdcloud.util.http.ServletUtils;
+
+import com.bittrade.admin.constant.GlobalConstant.Sys;
+import com.bittrade.admin.exception.UserPasswordNotMatchException;
+import com.bittrade.admin.exception.UserPasswordRetryLimitExceedException;
+import com.bittrade.admin.model.domain.SysUser;
+import com.bittrade.admin.util.MessageUtil;
+import com.bittrade.admin.util.ServletUtil;
+import com.bittrade.admin.util.ShiroUtil;
+
 import eu.bitwalker.useragentutils.UserAgent;
 
 /**
@@ -54,7 +56,7 @@ public class PasswordService {
 	public void validate(SysUser user, String password) {
 		
 		final UserAgent userAgent = UserAgent.parseUserAgentString( ServletUtil.getRequest().getHeader( "User-Agent" ) );
-		final String ip = ShiroUtils.getIp();
+		final String ip = ShiroUtil.getIp();
 		String loginName = user.getLoginName();
 		// 如果没有配置错误次数,默认5次
 		Integer maxCount = StringUtils.isEmpty( maxRetryCount ) ? 5 : Integer.valueOf( maxRetryCount );
@@ -67,7 +69,7 @@ public class PasswordService {
 			throw new UserPasswordRetryLimitExceedException();
 		}
 		if (!matches( user, password )) {
-			taskExecutor.execute( () -> {AsyncFactory.recordLoginInfo( ip, userAgent, loginName, Sys.LOGIN_FAIL, MessageUtils.message( "user.password.retry.limit.exceed", maxRetryCount) );} );
+			taskExecutor.execute( () -> {AsyncFactory.recordLoginInfo( ip, userAgent, loginName, Sys.LOGIN_FAIL, MessageUtil.message( "user.password.retry.limit.exceed", maxRetryCount) );} );
 			loginRecordCache.put( loginName, retryCount );
 			throw new UserPasswordNotMatchException();
 		} else {

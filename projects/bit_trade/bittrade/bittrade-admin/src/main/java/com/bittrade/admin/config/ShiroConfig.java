@@ -2,7 +2,9 @@ package com.bittrade.admin.config;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+
 import javax.servlet.Filter;
+
 import org.apache.shiro.cache.ehcache.EhCacheManager;
 import org.apache.shiro.codec.Base64;
 import org.apache.shiro.mgt.SecurityManager;
@@ -16,15 +18,17 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.ResourceUtils;
-import com.jdcloud.provider.shiro.realm.UserRealm;
-import com.jdcloud.provider.shiro.session.OnlineSessionDAO;
-import com.jdcloud.provider.shiro.session.OnlineSessionFactory;
-import com.jdcloud.provider.shiro.web.filter.CaptchaValidateFilter;
-import com.jdcloud.provider.shiro.web.filter.LogoutFilter;
-import com.jdcloud.provider.shiro.web.filter.OnlineSessionFilter;
-import com.jdcloud.provider.shiro.web.filter.SyncOnlineSessionFilter;
-import com.jdcloud.provider.shiro.web.session.OnlineWebSessionManager;
-import com.jdcloud.provider.shiro.web.session.SpringSessionValidationScheduler;
+
+import com.bittrade.admin.shiro.realm.UserRealm;
+import com.bittrade.admin.shiro.session.OnlineSessionDAO;
+import com.bittrade.admin.shiro.session.OnlineSessionFactory;
+import com.bittrade.admin.shiro.web.filter.CaptchaValidateFilter;
+import com.bittrade.admin.shiro.web.filter.LogoutFilter;
+import com.bittrade.admin.shiro.web.filter.OnlineSessionFilter;
+import com.bittrade.admin.shiro.web.filter.SyncOnlineSessionFilter;
+import com.bittrade.admin.shiro.web.session.OnlineWebSessionManager;
+import com.bittrade.admin.shiro.web.session.SpringSessionValidationScheduler;
+
 import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
 import net.sf.ehcache.CacheManager;
 

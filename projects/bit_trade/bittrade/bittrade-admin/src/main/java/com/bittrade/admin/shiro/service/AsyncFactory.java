@@ -1,18 +1,20 @@
 package com.bittrade.admin.shiro.service;
 
 import java.util.Date;
-import com.jdcloud.base.constant.GlobalConstant.Sys;
-import com.jdcloud.base.enums.UserEnum.UserState;
-import com.jdcloud.core.support.SpringUtils;
-import com.jdcloud.provider.pojo.SysLogininfor;
-import com.jdcloud.provider.pojo.SysOperLog;
-import com.jdcloud.provider.pojo.SysUserOnline;
-import com.jdcloud.provider.service.SysOperLogService;
-import com.jdcloud.provider.service.impl.SysLogininforServiceImpl;
-import com.jdcloud.provider.service.impl.SysUserOnlineServiceImpl;
-import com.jdcloud.provider.shiro.session.OnlineSession;
-import com.jdcloud.util.Convert;
-import com.jdcloud.util.http.AddressUtils;
+
+import com.bittrade.admin.constant.GlobalConstant.Sys;
+import com.bittrade.admin.enums.UserEnum.UserState;
+import com.bittrade.admin.model.domain.SysLogininfor;
+import com.bittrade.admin.model.domain.SysOperLog;
+import com.bittrade.admin.model.domain.SysUserOnline;
+import com.bittrade.admin.service.impl.sys.SysLogininforServiceImpl;
+import com.bittrade.admin.service.impl.sys.SysUserOnlineServiceImpl;
+import com.bittrade.admin.service.sys.SysOperLogService;
+import com.bittrade.admin.shiro.session.OnlineSession;
+import com.bittrade.admin.util.AddressUtil;
+import com.bittrade.admin.util.ConvertUtil;
+import com.bittrade.admin.util.SpringUtil;
+
 import eu.bitwalker.useragentutils.UserAgent;
 
 /**
@@ -38,7 +40,7 @@ public class AsyncFactory {
 		online.setLastAccessTime( session.getLastAccessTime() );
 		online.setExpireTime( ConvertUtil.toInt( session.getTimeout() ) );
 		online.setIpaddr( session.getHost() );
-		online.setLoginLocation( AddressUtils.getRealAddressByIP( session.getHost() ) );
+		online.setLoginLocation( AddressUtil.getRealAddressByIP( session.getHost() ) );
 		online.setBrowser( session.getBrowser() );
 		online.setOs( session.getOs() );
 		online.setStatus( session.getStatus().toString() );
@@ -54,8 +56,8 @@ public class AsyncFactory {
 	 */
 	public static void recordOper(final SysOperLog operLog) {
 		// 远程查询操作地点
-		operLog.setOperLocation( AddressUtils.getRealAddressByIP( operLog.getOperIp() ) );
-		SpringUtil.getBean( SysOperLogService.class ).insert( operLog );
+		operLog.setOperLocation( AddressUtil.getRealAddressByIP( operLog.getOperIp() ) );
+		SpringUtil.getBean( SysOperLogService.class ).save( operLog );
 	}
 
 	/**
@@ -75,7 +77,7 @@ public class AsyncFactory {
 		SysLogininfor logininfor = new SysLogininfor();
 		logininfor.setLoginName( username );
 		logininfor.setIpaddr( ip );
-		logininfor.setLoginLocation( AddressUtils.getRealAddressByIP( ip ) );
+		logininfor.setLoginLocation( AddressUtil.getRealAddressByIP( ip ) );
 		logininfor.setBrowser( browser );
 		logininfor.setLoginTime( new Date() );
 		logininfor.setOs( os );
@@ -84,7 +86,7 @@ public class AsyncFactory {
 		if (Sys.LOGIN_FAIL.equals( status )) {
 			logininfor.setStatus( UserState.LOCK_USER.getCode() + "" );
 		}
-		SpringUtil.getBean( SysLogininforServiceImpl.class ).insert( logininfor );
+		SpringUtil.getBean( SysLogininforServiceImpl.class ).save( logininfor );
 	}
 
 }
