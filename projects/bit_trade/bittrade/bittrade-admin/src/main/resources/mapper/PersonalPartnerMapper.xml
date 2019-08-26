@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jdcloud.provider.mapper.PersonalPartnerMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.jdcloud.provider.pojo.PersonalPartner">
+        <id column="id" property="id" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="user_id" property="userId" />
+        <result column="investment" property="investment" />
+        <result column="type" property="type" />
+    </resultMap>
+
+
+    <!-- vo查询映射结果 -->
+    <resultMap id="BaseResultMapVo" type="com.jdcloud.provider.pojo.vo.PersonalPartnerVo">
+        <id column="id" property="id" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="user_id" property="userId" />
+        <result column="investment" property="investment" />
+        <result column="type" property="type" />
+        <result column="name" property="name" />
+        <result column="phone" property="phone" />
+    </resultMap>
+
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, create_time AS createTime, update_time AS updateTime, user_id AS userId, investment, type
+    </sql>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_ListVo">
+        p.id,  p.create_time AS createTime,p.update_time AS updateTime, p.user_id AS userId,  p.investment,p.type,
+        ca.name,ca.phone
+    </sql>
+
+    <select id="personalPartnerList" resultMap="BaseResultMapVo">
+        SELECT
+        <include refid="Base_Column_ListVo"/>
+        FROM
+        c_personal_partner p left join c_personal_card ca ON p.user_id = ca.user_id
+        <where>
+            <if test="personalPartnerDto.phone !=null and personalPartnerDto.phone!=''">
+                AND concat(IFNULL(ca.phone,''),IFNULL(ca.name,'')) like concat('%',#{personalPartnerDto.phone},'%')
+            </if>
+            <if test="personalPartnerDto.type !=null">
+                AND p.type = #{personalPartnerDto.type}
+            </if>
+        </where>
+        order by p.id DESC
+    </select>
+
+
+
+    <delete id="personalPartnerDeleteByIds" parameterType="Integer">
+        delete from c_personal_partner where id in
+        <foreach collection="array" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jdcloud.provider.mapper.BetaLockedAccountMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.jdcloud.provider.pojo.BetaLockedAccount">
+        <id column="id" property="id" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="user_id" property="userId" />
+        <result column="base_balance" property="baseBalance" />
+        <result column="balance" property="balance" />
+        <result column="total_enter" property="totalEnter" />
+        <result column="total_exit" property="totalExit" />
+        <result column="version" property="version" />
+    </resultMap>
+
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMapVo" type="com.jdcloud.provider.pojo.vo.BetaLockedAccountVo">
+        <id column="id" property="id" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="user_id" property="userId" />
+        <result column="base_balance" property="baseBalance" />
+        <result column="balance" property="balance" />
+        <result column="total_enter" property="totalEnter" />
+        <result column="total_exit" property="totalExit" />
+        <result column="version" property="version" />
+
+        <result column="name" property="name"/>
+        <result column="phone" property="phone"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+         la.id,
+         la.create_time AS createTime,
+         la.update_time AS updateTime,
+         la.user_id AS userId,
+         la.base_balance AS baseBalance,
+         la.balance,
+         la.total_enter AS totalEnter,
+         la.total_exit AS totalExit,
+         la.version
+    </sql>
+
+
+    <select id="getBetaLockedAccount" resultMap="BaseResultMapVo">
+        SELECT
+        ca.name,
+        ca.phone,
+        <include refid="Base_Column_List"/>
+        FROM   g_beta_locked_account  la LEFT JOIN
+        c_personal_card  ca ON  la.user_id = ca.user_id
+        <where>
+            <if test="dto.params.beginTime != null and dto.params.beginTime != ''">
+                AND DATE_FORMAT(la.create_time, '%Y-%m-%d') &gt;= DATE_FORMAT(#{dto.params.beginTime},'%Y-%m-%d')
+            </if>
+            <if test="dto.params.endTime != null and dto.params.endTime != ''">
+                AND DATE_FORMAT(la.create_time, '%Y-%m-%d') &lt;= DATE_FORMAT(#{dto.params.endTime}, '%Y-%m-%d')
+            </if>
+            <if test="dto.name!=null and dto.name!=''">
+                AND CONCAT(
+                ca.name,
+                ca.phone
+                ) like concat('%',#{dto.name}, '%')
+            </if>
+            <if test="dto.startBaseBanlence != null">
+                AND la.base_balance &gt;=#{dto.startBaseBanlence}
+            </if>
+            <if test="dto.endBaseBanlence != null">
+                AND la.base_balance &lt;=#{dto.endBaseBanlence}
+            </if>
+            <if test="dto.startBanlence != null">
+                AND la.balance &gt;=#{dto.startBanlence}
+            </if>
+            <if test="dto.endBanlence != null">
+                AND la.balance &lt;=#{dto.endBanlence}
+            </if>
+        </where>
+    </select>
+    <select id="betaLockedAccountExcelList" resultMap="BaseResultMapVo">
+        SELECT
+        ca.name,
+        ca.phone,
+        la.id,
+        la.create_time AS createTime,
+        la.update_time AS updateTime,
+        la.user_id AS userId,
+        round(la.base_balance,2) AS baseBalance,
+        round(la.balance,2) AS balance,
+        round(la.total_enter,2) AS totalEnter,
+        round(la.total_exit,2) AS totalExit,
+        la.version
+        FROM   g_beta_locked_account  la LEFT JOIN
+        c_personal_card  ca ON  la.user_id = ca.user_id
+        <where>
+            <if test="dto.params.beginTime != null and dto.params.beginTime != ''">
+                AND DATE_FORMAT(la.create_time, '%Y-%m-%d') &gt;= DATE_FORMAT(#{dto.params.beginTime},'%Y-%m-%d')
+            </if>
+            <if test="dto.params.endTime != null and dto.params.endTime != ''">
+                AND DATE_FORMAT(la.create_time, '%Y-%m-%d') &lt;= DATE_FORMAT(#{dto.params.endTime}, '%Y-%m-%d')
+            </if>
+            <if test="dto.name!=null and dto.name!=''">
+                AND CONCAT(
+                ca.name,
+                ca.phone
+                ) like concat('%',#{dto.name}, '%')
+            </if>
+            <if test="dto.startBaseBanlence != null">
+                AND la.base_balance &gt;=#{dto.startBaseBanlence}
+            </if>
+            <if test="dto.endBaseBanlence != null">
+                AND la.base_balance &lt;=#{dto.endBaseBanlence}
+            </if>
+            <if test="dto.startBanlence != null">
+                AND la.balance &gt;=#{dto.startBanlence}
+            </if>
+            <if test="dto.endBanlence != null">
+                AND la.balance &lt;=#{dto.endBanlence}
+            </if>
+        </where>
+        order by la.create_time desc
+    </select>
+
+
+</mapper>

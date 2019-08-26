@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jdcloud.provider.mapper.UserPortraitDataMapper">
+    <select id="listAreaData" resultType="com.jdcloud.provider.pojo.vo.PortraitDataVo">
+         SELECT
+            <if test="groupType == 1">
+                upd.`province` as portraitType,
+            </if>
+            <if test="groupType == 2">
+                upd.`city` as portraitType,
+            </if>
+            IFNULL(COUNT(*),0) AS num
+        FROM
+          `c_user_portrait_data` AS upd
+          <where>
+              AND UNIX_TIMESTAMP(upd.`create_time`) * 1000 >= #{startTime}
+              AND UNIX_TIMESTAMP(upd.`create_time`) * 1000 <![CDATA[ <= ]]> #{endTime}
+              <if test="groupType == 1">
+                  AND upd.`province` != '未知' GROUP BY upd.`province`
+              </if>
+              <if test="groupType == 2">
+                  AND upd.`city` != '未知' GROUP BY upd.`city`
+              </if>
+          </where>
+        ORDER BY num DESC
+        LIMIT 10;
+    </select>
+
+    <select id="listAgeData" resultType="com.jdcloud.provider.pojo.vo.PortraitDataVo">
+        SELECT
+          IFNULL(count(*),0) as num
+        FROM
+          `c_user_portrait_data` AS upd
+        <where>
+            AND upd.`age` between #{startAge} and #{endAge}
+            AND UNIX_TIMESTAMP(upd.`create_time`) * 1000 >= #{startTime}
+            AND UNIX_TIMESTAMP(upd.`create_time`) * 1000 <![CDATA[ <= ]]> #{endTime};
+        </where>
+    </select>
+
+    <select id="listSexData" resultType="com.jdcloud.provider.pojo.vo.PortraitDataVo">
+        SELECT
+        upd.`sex` AS portraitType,
+        COUNT(*) AS num
+        FROM
+        `c_user_portrait_data` AS upd
+        <where>
+            AND UNIX_TIMESTAMP(upd.`create_time`) * 1000 BETWEEN #{startTime} AND #{endTime}
+            AND upd.`sex` != '未知'
+        </where>
+        GROUP BY upd.`sex` ORDER BY num desc;
+    </select>
+
+    <select id="listConstellationData" resultType="com.jdcloud.provider.pojo.vo.PortraitDataVo">
+        SELECT
+        upd.`constellation` AS portraitType,
+        COUNT(*) AS num
+        FROM
+        `c_user_portrait_data` AS upd
+        <where>
+            AND UNIX_TIMESTAMP(upd.`create_time`) * 1000 BETWEEN #{startTime} AND #{endTime}
+            AND upd.`constellation` != '未知'
+        </where>
+        GROUP BY upd.`constellation`
+        ORDER BY upd.`constellation`;
+    </select>
+
+    <select id="listZodiacData" resultType="com.jdcloud.provider.pojo.vo.PortraitDataVo">
+        SELECT
+        upd.`zodiac` AS portraitType,
+        COUNT(*) AS num
+        FROM
+        `c_user_portrait_data` AS upd
+        <where>
+            AND UNIX_TIMESTAMP(upd.`create_time`) * 1000 BETWEEN #{startTime} AND #{endTime}
+            AND upd.`zodiac` != '未知'
+        </where>
+        GROUP BY upd.`zodiac`
+        ORDER BY upd.`zodiac`;
+    </select>
+</mapper>

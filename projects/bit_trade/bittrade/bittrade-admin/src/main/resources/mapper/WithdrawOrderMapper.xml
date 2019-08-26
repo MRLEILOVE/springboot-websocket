@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jdcloud.provider.mapper.WithdrawOrderMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.jdcloud.provider.pojo.WithdrawOrder">
+        <id column="withdraw_order_id" property="withdrawOrderId" />
+        <result column="user_id" property="userId" />
+        <result column="amount" property="amount" />
+        <result column="exchange_rate" property="exchangeRate" />
+        <result column="exchange_amount" property="exchangeAmount" />
+        <result column="type" property="type" />
+        <result column="status" property="status" />
+        <result column="remark" property="remark" />
+        <result column="auditor" property="auditor" />
+        <result column="audit_time" property="auditTime" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        withdraw_order_id AS withdrawOrderId, user_id AS userId, amount, exchange_rate AS exchangeRate, exchange_amount AS exchangeAmount, type, status, remark, auditor, audit_time AS auditTime, create_time AS createTime, update_time AS updateTime
+    </sql>
+
+    <select id="selectWithdrawOrderList" resultType="com.jdcloud.provider.dto.Withdraw">
+        SELECT
+        t1.withdraw_order_id orderNo,
+        t1.user_id userId,
+        t1.type orderType,
+        t1.amount,
+        t1.exchange_rate exchangeRate,
+        t1.exchange_amount exchangeAmount,
+        t1.create_time createTime,
+        t1.audit_time auditTime,
+        t1.status orderStatus,
+        t1.remark,
+        t1.auditor,
+        t2.login_name loginname,
+        t2.real_name realName,
+        t2.internal_account internalAccount
+        FROM t_withdraw_order t1
+        LEFT JOIN t_user_account t2 ON t1.user_id = t2.user_id
+        <where>
+            <if test="type != null">AND t1.type = #{type}</if>
+            <if test="internalAccount != null and internalAccount != ''">AND t2.internal_account = #{internalAccount}</if>
+            <if test="status != null">AND t1.status = #{status}</if>
+            <if test="keyWord != null">AND (t2.real_name LIKE CONCAT('%',#{keyWord},'%')
+                                            OR t2.login_name LIKE CONCAT('%',#{keyWord},'%')
+                                            OR t1.withdraw_order_id LIKE CONCAT('%',#{keyWord},'%'))</if>
+            <if test="beginTime != null">AND t1.create_time >= #{beginTime}</if>
+            <if test="closeTime != null">AND t1.create_time &lt;= #{closeTime}</if>
+        </where>
+        ORDER BY t1.status DESC, t1.create_time DESC
+        LIMIT #{begin}, #{size}
+    </select>
+
+    <select id="selectWithdrawOrderCount" resultType="java.lang.Integer">
+        SELECT count(t1.withdraw_order_id)
+        FROM t_withdraw_order t1
+        LEFT JOIN t_user_account t2 ON t1.user_id = t2.user_id
+        <where>
+            <if test="type != null">AND t1.type = #{type}</if>
+            <if test="internalAccount != null and internalAccount != ''">AND t2.internal_account = #{internalAccount}</if>
+            <if test="status != null">AND t1.status = #{status}</if>
+            <if test="keyWord != null">AND (t2.real_name LIKE CONCAT('%',#{keyWord},'%')
+                                            OR t2.login_name LIKE CONCAT('%',#{keyWord},'%')
+                                            OR t1.withdraw_order_id LIKE CONCAT('%',#{keyWord},'%'))</if>
+            <if test="beginTime != null">AND t1.create_time >= #{beginTime}</if>
+            <if test="closeTime != null">AND t1.create_time &lt;= #{closeTime}</if>
+        </where>
+    </select>
+
+    <select id="selectWithdrawStatistics" resultType="com.jdcloud.provider.dto.WithdrawStatistics">
+        SELECT
+          SUM(exchange_amount) totalUserWithdrawCNY,
+          SUM(amount) totalUserWithdrawUSDT,
+          COUNT(withdraw_order_id) withdrawCount,
+          type
+        FROM t_withdraw_order WHERE `status` = #{status} GROUP BY type
+    </select>
+
+    <select id="statisticsByUserId" resultType="com.jdcloud.provider.dto.StatisticsDto">
+      SELECT SUM(amount) withdrawAmount, SUM(exchange_amount) totalUserWithdrawCNY,type
+      FROM t_withdraw_order
+      WHERE user_id = #{userId} AND `status` = 1 GROUP BY type
+    </select>
+
+    <select id="queryAuditingCount" resultType="java.lang.Integer">
+        SELECT COUNT(withdraw_order_id) FROM t_withdraw_order WHERE `status` = #{status}
+    </select>
+</mapper>

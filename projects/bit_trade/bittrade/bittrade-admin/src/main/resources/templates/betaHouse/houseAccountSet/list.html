@@ -62,9 +62,11 @@
                     field: 'accountName',
                     title: '名称'
                 },
+
+
                 {
-                    field: 'outputFloatRatio',
-                    title: '产出浮动比',
+                    field: 'fixedRatio',
+                    title: '固定比',
                     formatter: function(value, row, index) {
                         var actions = [];
                         var loss = value == null?"0":numMulti(value,100)+"%";
@@ -73,8 +75,8 @@
                     }
                 },
                 {
-                    field: 'bigitalCurrencyProportion',
-                    title: '数字货币占比',
+                    field: 'floatRatioDown',
+                    title: '浮动比下限',
                     formatter: function(value, row, index) {
                         var actions = [];
                         var loss = value == null?"0":numMulti(value,100)+"%";
@@ -83,8 +85,8 @@
                     }
                 },
                 {
-                    field: 'floatMiningVolume',
-                    title: '挖矿量浮动比例',
+                    field: 'floatRatioUp',
+                    title: '浮动比上限',
                     formatter: function(value, row, index) {
                         var actions = [];
                         var loss = value == null?"0":numMulti(value,100)+"%";
@@ -92,22 +94,42 @@
                         return actions.join('');
                     }
                 },
+                // {
+                //     field: 'probability',
+                //     title: '获取概率',
+                //     formatter: function(value, row, index) {
+                //         var actions = [];
+                //         var loss = value == null?"0":numMulti(value,100)+"%";
+                //         actions.push('<span class="depreciate">' + loss + '</span>');
+                //         return actions.join('');
+                //     }
+                // },
+                // {
+                //     field: 'isCharm',
+                //     title: '关联智力',
+                //     formatter: function(value, row, index) {
+                //         return $.table.selectDictLabel(isCharms, value);
+                //     }
+                // },
                 {
-                    field: 'probability',
-                    title: '获取概率',
-                    formatter: function(value, row, index) {
-                        var actions = [];
-                        var loss = value == null?"0":numMulti(value,100)+"%";
-                        actions.push('<span class="depreciate">' + loss + '</span>');
-                        return actions.join('');
-                    }
+                    field: 'foodCoefficient',
+                    title: '狗粮系数'
                 },
                 {
-                    field: 'isCharm',
-                    title: '关联智力',
-                    formatter: function(value, row, index) {
-                        return $.table.selectDictLabel(isCharms, value);
-                    }
+                    field: 'powerCoefficient',
+                    title: '力量系数'
+                },
+                {
+                    field: 'agilityCoefficient',
+                    title: '敏捷系数'
+                },
+                {
+                    field: 'staminaCoefficient',
+                    title: '体力系数'
+                },
+                {
+                    field: 'correctCoefficient',
+                    title: '修正系数'
                 },
                 {
                     field: 'status',

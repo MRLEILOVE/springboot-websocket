@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jdcloud.provider.mapper.BetaImgLogMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.jdcloud.provider.pojo.BetaImgLog">
+        <id column="id" property="id" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="user_id" property="userId" />
+        <result column="by_wechat_img" property="byWechatImg" />
+        <result column="wechat_img" property="wechatImg" />
+        <result column="by_alipay_img" property="byAlipayImg" />
+        <result column="alipay_img" property="alipayImg" />
+        <result column="coverage_type" property="coverageType" />
+        <result column="pay_img" property="payImg" />
+    </resultMap>
+
+
+    <resultMap id="BaseResultMap_Vo" type="com.jdcloud.provider.pojo.vo.BetaImgLogVo">
+        <id column="id" property="id" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="user_id" property="userId" />
+        <result column="by_wechat_img" property="byWechatImg" />
+        <result column="wechat_img" property="wechatImg" />
+        <result column="by_alipay_img" property="byAlipayImg" />
+        <result column="alipay_img" property="alipayImg" />
+        <result column="coverage_type" property="coverageType" />
+        <result column="pay_img" property="payImg" />
+        <result column="name" property="name" />
+        <result column="phone" property="phone" />
+        <result column="pay_img" property="payImg" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, create_time AS createTime, update_time AS updateTime, user_id AS userId, by_wechat_img AS byWechatImg, wechat_img AS wechatImg, by_alipay_img AS byAlipayImg, alipay_img AS alipayImg, coverage_type AS coverageType
+        ,pay_img AS payImg
+    </sql>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List_Vo">
+         res.id,
+         res.create_time AS createTime,
+         res.update_time AS updateTime,
+         res.user_id AS userId,
+         res.by_wechat_img AS byWechatImg,
+         res.wechat_img AS wechatImg,
+         res.by_alipay_img AS byAlipayImg,
+         res.alipay_img AS alipayImg,
+         res.coverage_type AS coverageType,
+         res.pay_img AS payImg,
+         ca.NAME,
+         ca.phone
+    </sql>
+
+     <select id ="selectImgLog" resultMap="BaseResultMap_Vo">
+        SELECT
+          <include refid="Base_Column_List_Vo"/>
+        FROM
+        g_beta_coverage_Img  res
+        left join
+        c_personal_card ca
+        on
+        res.user_id = ca.user_id
+        where
+         1=1
+         <if test="imgLogDto.params.beginTime != null and imgLogDto.params.beginTime != ''">
+            and DATE_FORMAT(res.create_time, '%Y-%m-%d') &gt;= DATE_FORMAT(#{imgLogDto.params.beginTime},'%Y-%m-%d')
+         </if>
+         <if test="imgLogDto.params.endTime != null and imgLogDto.params.endTime != ''">
+            and DATE_FORMAT(res.create_time, '%Y-%m-%d') &lt;=  DATE_FORMAT(#{imgLogDto.params.endTime}, '%Y-%m-%d')
+         </if>
+         <if test="imgLogDto.name != null and imgLogDto.name != ''">
+             AND CONCAT(
+             ca.NAME,
+             ca.phone
+             ) like concat('%',#{imgLogDto.name}, '%')
+         </if>
+         <if test="imgLogDto.type != null and imgLogDto.type != ''">
+             and res.coverage_type =#{imgLogDto.type}
+         </if>
+     </select>
+
+
+
+    <delete id="deletebetaHeaderByIds" parameterType="Integer">
+        delete from g_beta_coverage_Img where id in
+        <foreach collection="array" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+
+    <select id ="selectImgLogDetails" resultMap="BaseResultMap_Vo">
+        SELECT
+        <include refid="Base_Column_List_Vo"/>
+        FROM
+        g_beta_coverage_Img  res
+        left join
+        c_personal_card ca
+        on
+        res.user_id = ca.user_id
+        where
+        res.id =#{id}
+    </select>
+
+
+
+</mapper>

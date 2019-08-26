@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+
+<div class="container-div">
+    <div class="row">
+        <div class="col-sm-12 search-collapse">
+            <form id="operlog-form">
+                <div class="select-list">
+                    <ul>
+                        <div style="overflow: auto;">
+                            <li class="select-time">
+                                <label>创建时间： </label>
+                                <input type="text" class="time-input" id="startTime" placeholder="开始时间"
+                                       name="params[beginTime]"/>
+                                <span>-</span>
+                                <input type="text" class="time-input" id="endTime" placeholder="结束时间"
+                                       name="params[endTime]"/>
+                            </li>
+                            <li>
+                                <label>搜索：</label><input type="text" placeholder="用户名&&手机号" name="name"/>
+                            </li>
+                            <li>
+                                <label>锁仓基数： </label><input type="number" min="0" name="startBaseBanlence" style="width: 80px"/> - <input type="number" min="0" name="endBaseBanlence" style="width: 80px"/>
+                                <label>&nbsp;&nbsp;账户余额： </label><input type="number" min="0" name="startBanlence" style="width: 80px"/> - <input type="number" min="0" name="endBanlence" style="width: 80px"/>
+                            </li>
+                            <li>
+                                <a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i
+                                        class="fa fa-search"></i>&nbsp;搜索</a>
+                                <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i
+                                        class="fa fa-refresh"></i>&nbsp;重置</a>
+                            </li>
+                        </div>
+                    </ul>
+                </div>
+            </form>
+        </div>
+        <div class="btn-group-sm" id="toolbar" role="group" >
+            <a class="btn btn-warning" onclick="$.table.exportExcel()">
+                <i class="fa fa-download"></i> 导出
+            </a>
+        </div>
+        <div class="col-sm-12 select-table table-striped" style="overflow: overlay;height: 94%;">
+            <table id="bootstrap-table" data-mobile-responsive="true"></table>
+        </div>
+    </div>
+</div>
+
+<div th:include="include :: footer"></div>
+<script th:inline="javascript">
+    layui.use('laydate', function () {
+        var laydate = layui.laydate;
+        var startTime = laydate.render({
+            elem: '#createTime',
+            type: 'date',
+            btns: ['now', 'confirm']
+        });
+        var endTime = laydate.render({
+            elem: '#endTime',
+            type: 'date',
+            btns: ['now', 'confirm']
+        });
+    });
+    var prefix = ctx + "beta/betaLockedAccount";
+    $(function () {
+        var options = {
+            url: prefix + "/list",
+            exportUrl: prefix + "/export",
+            sortName: "la.create_time",
+            sortOrder: "desc",
+            modalName: "用户资产",
+            search: false,
+            striped: true,
+            showExport: false,
+            columns: [
+                {
+                    field: 'name',
+                    title: '用户',
+                    formatter: function (value, row, index) {
+                        var actions = [];
+                        var nameVar = row.name == null ? "-" : row.name;
+                        var phoneVar = row.phone == null ? "" : row.phone;
+                        var nameVarAndphoneVar = nameVar + "/" + phoneVar;
+                        actions.push('<span class="depreciate">' + nameVarAndphoneVar + '</span>');
+                        return actions.join('');
+                    }
+                },
+                {
+                    field: 'baseBalance',
+                    title: '锁仓基数',
+                    sortable: true
+                },
+                {
+                    field: 'balance',
+                    title: '账户余额',
+                    sortable: true
+                },
+                {
+                    field: 'totalEnter',
+                    title: '总入金',
+                    sortable: true
+                },
+                {
+                    field: 'totalExit',
+                    title: '总出金',
+                    sortable: true
+                },
+                {
+                    field: 'createTime',
+                    title: '创建时间'
+                },
+               ]
+        };
+        $.table.init(options);
+    });
+</script>
+</body>
+</html>

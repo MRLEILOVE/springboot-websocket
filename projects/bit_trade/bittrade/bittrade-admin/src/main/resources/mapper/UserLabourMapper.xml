@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jdcloud.provider.mapper.UserLabourMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.jdcloud.provider.pojo.UserLabour">
+        <id column="id" property="id" />
+        <result column="parent_id" property="parentId" />
+        <result column="ancestors" property="ancestors" />
+        <result column="login_name" property="loginName" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="remark" property="remark" />
+        <result column="invitation_code" property="invitationCode" />
+        <result column="user_id" property="userId" />
+        <result column="generalize_id" property="generalizeId" />
+        <result column="service_id" property="serviceId" />
+        <result column="peers_service_id" property="peersServiceId" />
+        <result column="partner_id" property="partnerId" />
+        <result column="peers_partner_id" property="peersPartnerId" />
+        <result column="partnerV1_id" property="partnerv1Id" />
+        <result column="partnerV2_id" property="partnerv2Id" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+         id,
+         parent_id AS parentId,
+         ancestors,
+         login_name AS loginName,
+         create_time AS createTime,
+         update_time AS updateTime,
+         remark,
+         invitation_code AS invitationCode,
+         user_id AS userId,
+         generalize_id AS generalizeId,
+         service_id AS serviceId,
+         peers_service_id AS peersServiceId,
+         partner_id AS partnerId,
+         peers_partner_id AS peersPartnerId,
+         partnerV1_id AS partnerv1Id,
+         partnerV2_id AS partnerv2Id
+    </sql>
+
+    <select id="selectUserLabourThreeCount" resultType="java.lang.Long">
+        SELECT COUNT(*) FROM t_user_labour ul
+        WHERE ul.ancestors LIKE concat( #{userId}, '_%')
+    </select>
+
+    <select id="selectUserLabourThreeCountNow" resultType="java.lang.Long">
+        SELECT COUNT(*) FROM t_user_labour ul INNER JOIN t_user_labour ul2
+        on ul.parent_id = ul2.user_id where ul2.parent_id = #{userId}
+    </select>
+
+    <select id="selectUserLabourAuthCount" resultType="java.lang.Long">
+       SELECT COUNT(*) FROM t_user_labour ul
+       INNER JOIN c_personal_card pc ON ul.user_id = pc.user_id
+       WHERE pc.auth_stauts = 1 AND ul.ancestors LIKE concat( concat( '%',#{userId}), '%')
+    </select>
+
+    <select id="selectUserLabourAuthCountNow" resultType="java.lang.Long">
+        SELECT COUNT(*) from (SELECT ul.user_id FROM t_user_labour ul INNER JOIN t_user_labour ul2 on ul.parent_id = ul2.user_id
+        where ul2.parent_id = #{userId} or ul.parent_id = #{userId}) t
+	    INNER JOIN c_personal_card pc ON t.user_id = pc.user_id AND pc.auth_stauts = 1
+    </select>
+
+    <select id="selectUserLabourActiveCount" resultType="java.lang.Long">
+        SELECT COUNT(DISTINCT ul.user_id) FROM t_user_labour ul
+        INNER JOIN g_beta_order bo ON ul.user_id = bo.user_id
+        WHERE ul.ancestors LIKE concat( concat( '%',#{userId}), '%')
+    </select>
+
+    <select id="selectUserLabourOneAuthCount" resultType="java.lang.Long">
+       SELECT COUNT(*) FROM t_user_labour ul
+       INNER JOIN c_personal_card pc ON ul.user_id = pc.user_id
+       WHERE pc.auth_stauts = 1 AND ul.parent_id = #{userId}
+    </select>
+
+    <select id="selectUserLabourOneActiveCount" resultType="java.lang.Long">
+        SELECT COUNT(DISTINCT ul.user_id) FROM t_user_labour ul
+        INNER JOIN g_beta_order bo ON ul.user_id = bo.user_id
+        WHERE ul.parent_id = #{userId}
+    </select>
+
+    <select id="selectlistLimit" resultMap="BaseResultMap">
+         SELECT
+         generalize_id AS generalizeId,
+         service_id AS serviceId,
+         peers_service_id AS peersServiceId,
+         partner_id AS partnerId,
+         peers_partner_id AS peersPartnerId,
+         partnerV1_id AS partnerv1Id,
+         partnerV2_id AS partnerv2Id
+         FROM t_user_labour
+        WHERE parent_id = #{parentId} ORDER BY create_time  ASC  LIMIT 0,1
+    </select>
+
+    <select id="selectAllUserId" resultMap="BaseResultMap">
+         SELECT
+         user_id AS userId,
+         parent_id AS parentId
+         FROM t_user_labour
+    </select>
+
+    <select id="selectAllParentId" resultType="java.lang.Long">
+         SELECT parent_id FROM t_user_labour GROUP BY parent_id
+    </select>
+
+    <select id="selectByAuth" resultMap="BaseResultMap">
+        SELECT
+            ul.parent_id AS parentId,
+            ul.user_id AS userId
+        FROM
+            c_personal_card pc
+            INNER JOIN t_user_labour ul ON pc.user_id = ul.user_id
+            AND pc.auth_stauts = 1
+    </select>
+
+</mapper>

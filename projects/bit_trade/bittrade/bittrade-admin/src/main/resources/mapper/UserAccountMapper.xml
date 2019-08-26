@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jdcloud.provider.mapper.UserAccountMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.jdcloud.provider.pojo.UserAccount">
+        <id column="id" property="id" />
+        <result column="user_id" property="userId" />
+        <result column="login_name" property="loginName" />
+        <result column="real_name" property="realName" />
+        <result column="fhas_real_Validate" property="fhasRealValidate" />
+        <result column="balance" property="balance" />
+        <result column="balance_token" property="balanceToken" />
+        <result column="frozen_amount" property="frozenAmount" />
+        <result column="total_deposits" property="totalDeposits" />
+        <result column="total_recharge_token" property="totalRechargeToken" />
+        <result column="total_withdrawals" property="totalWithdrawals" />
+        <result column="used_margin" property="usedMargin" />
+        <result column="used_token" property="usedToken" />
+        <result column="token_number" property="tokenNumber" />
+        <result column="internal_account" property="internalAccount" />
+        <result column="version" property="version" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <resultMap id="BaseResultMapVo" type="com.jdcloud.provider.pojo.vo.UserAccountVo">
+        <id column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="login_name" property="loginName"/>
+        <result column="real_name" property="realName"/>
+        <result column="fhas_real_Validate" property="fhasRealValidate" />
+        <result column="agnt_id" property="agntId" />
+        <result column="parent_id" property="parentId" />
+        <result column="agnt_level" property="agntLevel" />
+        <result column="balance" property="balance"/>
+        <result column="balance_token" property="balanceToken" />
+        <result column="frozen_amount" property="frozenAmount"/>
+        <result column="total_deposits" property="totalDeposits"/>
+        <result column="total_withdrawals" property="totalWithdrawals"/>
+        <result column="used_margin" property="usedMargin"/>
+        <result column="internal_account" property="internalAccount" />
+        <result column="version" property="version"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="total_withdraw" property="totalWithdraw"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, user_id AS userId, login_name AS loginName, real_name AS realName, fhas_real_Validate AS fhasRealValidate, balance, balance_token AS balanceToken, frozen_amount AS frozenAmount, total_deposits AS totalDeposits, total_recharge_token AS totalRechargeToken, total_withdrawals AS totalWithdrawals, used_margin AS usedMargin, used_token AS usedToken, token_number AS tokenNumber, internal_account AS internalAccount, version, create_time AS createTime, update_time AS updateTime
+    </sql>
+    <sql id="selectUserVo">
+        select ua.id, ua.user_id , ua.login_name , pc.name AS real_name , ua.balance,ua.balance_token, ua.frozen_amount , ua.total_deposits , ua.total_withdrawals , ua.used_margin ,
+        ua.create_time ,ua.internal_account, ula.total_withdraw ,
+        IFNULL( ro.Deposits, 0 ) deposits,
+        IFNULL( pc.auth_stauts, 0 ) fhas_real_Validate,
+        IFNULL( ro.DepositsUser, 0 ) depositsUser,
+        IFNULL( ro.DepositsCNY, 0 ) depositsCNY,
+        IFNULL( ro.DepositsUserCNY, 0 ) depositsUserCNY,
+        IFNULL( wo.withdrawals, 0 ) withdrawals,
+        IFNULL( wo.withdrawalsUser, 0 ) withdrawalsUser,
+        IFNULL( wo.withdrawalsCNY, 0 ) withdrawalsCNY,
+        IFNULL( wo.withdrawalsUserCNY, 0 ) withdrawalsUserCNY
+        from t_user_account ua
+        LEFT JOIN c_personal_card pc ON ua.user_id = pc.user_id
+        LEFT JOIN t_user_labour_account ula ON ula.user_id = ua.user_id
+        LEFT JOIN ( SELECT
+        SUM( if(type=2,exchange_amount,0) ) deposits,
+        SUM( if(type=1,exchange_amount,0) ) depositsUser,
+        SUM( if(type=2,order_amount,0) ) depositsCNY,
+        SUM( if(type=1,order_amount,0) ) depositsUserCNY,
+        user_id FROM t_recharge_order WHERE `status` = 3 GROUP BY user_id  ) ro ON ua.user_id = ro.user_id
+        LEFT JOIN ( SELECT
+        SUM( if(type=2,amount,0) ) withdrawals,
+        SUM( if(type=1,amount,0) ) withdrawalsUser,
+        SUM( if(type=2,exchange_amount,0) ) withdrawalsCNY,
+        SUM( if(type=1,exchange_amount,0) ) withdrawalsUserCNY,
+        user_id FROM t_withdraw_order WHERE `status` = 1 GROUP BY user_id  ) wo ON ua.user_id = wo.user_id
+    </sql>
+
+    <select id="selectUserById" parameterType="java.lang.Long" resultMap="BaseResultMapVo">
+        <include refid="selectUserVo"/>
+        where ua.user_id = #{userId} limit 0,1
+    </select>
+
+    <select id="selectUserList" parameterType="com.jdcloud.provider.dto.UserAccountDto" resultMap="BaseResultMapVo">
+        <include refid="selectUserVo"/>
+        <where>
+            <if test="userDto.isAuth != null and userDto.isAuth != ''or userDto.isAuth == 0"><!-- 身份认证 -->
+                <if test="userDto.isAuth == 0">
+                    pc.auth_stauts IS NULL
+                </if>
+                <if test="userDto.isAuth != 0">
+                    pc.auth_stauts = #{userDto.isAuth}
+                </if>
+            </if>
+            <if test="userDto.internalAccount != null and userDto.internalAccount != ''">
+                AND ua.internal_account = #{userDto.internalAccount}
+            </if>
+            <if test="userDto.params.beginTime != null and userDto.params.beginTime != ''"><!-- 开始时间检索 -->
+                and date_format(ua.create_time,'%y%m%d') &gt;= date_format(#{userDto.params.beginTime},'%y%m%d')
+            </if>
+            <if test="userDto.params.endTime != null and userDto.params.endTime != ''"><!-- 开始时间检索 -->
+                and date_format(ua.create_time,'%y%m%d') &lt;= date_format(#{userDto.params.endTime},'%y%m%d')
+            </if>
+            <if test="userDto.params.condition != null and userDto.params.condition != ''">
+                <if test="userDto.params.type == 1">
+                    AND ua.login_name like concat('%', #{userDto.params.condition}, '%')
+                </if>
+                <if test="userDto.params.type == 2">
+                    AND pc.name like concat('%', #{userDto.params.condition}, '%')
+                </if>
+            </if>
+        </where>
+        order by ua.create_time desc
+    </select>
+
+
+    <update id="updateAccountById">
+        UPDATE t_user_account
+        <set>
+            <if test="id != null">id = #{id},</if>
+            <if test="realName != null">real_name = #{realName},</if>
+            <if test="fhasRealValidate != null">fhas_real_Validate = #{fhasRealValidate},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="balance != null">balance = #{balance},</if>
+            <if test="balanceToken != null">balance_token = #{balanceToken},</if>
+            <if test="frozenAmount != null">frozen_amount = #{frozenAmount},</if>
+            <if test="totalDeposits != null">total_deposits = #{totalDeposits},</if>
+            <if test="totalRechargeToken != null">total_recharge_token = #{totalRechargeToken},</if>
+            <if test="totalWithdrawals != null">total_withdrawals = #{totalWithdrawals},</if>
+            <if test="usedMargin != null">used_margin = #{usedMargin},</if>
+            <if test="usedToken != null">used_token = #{usedToken},</if>
+            <if test="tokenNumber != null">token_number = #{tokenNumber},</if>
+            <if test="internalAccount != null">internal_account = #{internalAccount},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            version = version + 1
+        </set>
+        WHERE id = #{id} AND version = #{version}
+    </update>
+
+    <update id="updateUserAccount" parameterType="com.jdcloud.provider.pojo.UserAccount">
+		UPDATE
+			t_user_account
+		<set>
+            <if test="balance != null">balance = balance + #{balance},</if>
+            <if test="usedMargin != null">used_margin = used_margin - #{usedMargin},</if>
+            <if test="balanceToken != null">balance_token = balance_token + #{balanceToken},</if>
+            <if test="usedToken != null">used_token = used_token - #{usedToken},</if>
+            update_time = #{updateTime},
+            version = version + 1
+        </set>
+		<where>
+			user_id = #{userId}
+        AND version = #{version}
+        <if test="usedMargin != null"> AND used_margin - #{usedMargin} &gt;= 0 </if>
+        <if test="balance != null"> AND balance + #{balance} &gt;= 0 </if>
+        <if test="balanceToken != null"> AND balance_token + #{balanceToken} &gt;= 0 </if>
+        <if test="usedToken != null"> AND used_token - #{usedToken} &gt;= 0  </if>
+        </where>
+	</update>
+
+    <select id="queryUser" resultMap="BaseResultMap">
+      SELECT
+        user_id AS userId, login_name AS loginName, real_name AS realName
+      FROM
+        t_user_account
+      WHERE
+        login_name LIKE CONCAT('%',#{keyWord},'%')
+      OR
+        real_name LIKE CONCAT('%',#{keyWord},'%')
+    </select>
+
+    <select id="queryRegisterCount" resultType="com.jdcloud.provider.dto.IndexDataDto">
+        SELECT
+          COUNT(id) registerCount,
+          COUNT(IF(create_time >= #{beginTime} AND #{endTime} >= create_time, id, null)) yesterdayRegisterCount,
+          COUNT(IF(create_time > #{endTime}, id, null)) todayRegisterCount,
+          (SELECT COUNT(0) FROM c_personal_card WHERE auth_stauts = 2) auditingIdentityCount
+        FROM t_user_account
+    </select>
+
+    <select id="userMonitor" resultType="com.jdcloud.provider.dto.IndexDataDto">
+        SELECT * from (
+            SELECT
+            COUNT( id ) registerCount,
+            COUNT( IF ( create_time &gt;= #{beginTime} AND #{endTime} &gt;= create_time, id, NULL ) ) yesterdayRegisterCount,
+            COUNT( IF ( create_time &gt; #{endTime}, id, NULL ) ) todayRegisterCount
+            FROM t_user_account) a,
+        (SELECT count(0) AS dayAuthSum, (SELECT count(0) AS authSum FROM c_personal_card WHERE auth_stauts = 1)
+        AS authSum FROM c_personal_card WHERE create_time &gt;= #{endTime} AND auth_stauts = 1) b,
+        (SELECT COUNT(0) AS auditingIdentityCount FROM c_personal_card WHERE auth_stauts = 2) c
+    </select>
+
+
+    <select id="sumRecharge" resultType="java.math.BigDecimal">
+        SELECT IFNULL(sum(re.amount),0)
+        FROM g_beta_account_record re
+        LEFT JOIN  g_beta_account ac ON ac.id = re.beta_account_id
+        WHERE ac.product_type =#{sumRechargeDto.productType} AND re.create_time &gt;=#{sumRechargeDto.startTime} AND re.create_time  &lt;= #{sumRechargeDto.endTime}
+        and re.amount &lt; 0
+    </select>
+
+</mapper>

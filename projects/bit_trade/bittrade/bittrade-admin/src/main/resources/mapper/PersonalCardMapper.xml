@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jdcloud.provider.mapper.PersonalCardMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.jdcloud.provider.pojo.PersonalCard">
+        <id column="id" property="id" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="user_id" property="userId" />
+        <result column="name" property="name" />
+        <result column="phone" property="phone" />
+        <result column="bank_name" property="bankName" />
+        <result column="bank_number" property="bankNumber" />
+        <result column="alipay" property="alipay" />
+        <result column="alipay_number" property="alipayNumber" />
+        <result column="wechat" property="wechat" />
+        <result column="wechat_number" property="wechatNumber" />
+        <result column="card_number" property="cardNumber" />
+        <result column="card_A_url" property="cardAUrl" />
+        <result column="card_B_url" property="cardBUrl" />
+        <result column="auth_stauts" property="authStauts" />
+        <result column="current_identity" property="currentIdentity" />
+        <result column="init_check" property="initCheck" />
+        <result column="old_flag" property="oldFlag" />
+        <result column="mpn_num" property="mpnNum" />
+        <result column="important_flag" property="importantFlag" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id,
+        create_time AS createTime,
+        update_time AS updateTime,
+        user_id AS userId,
+        NAME,
+        bank_name AS bankName,
+        bank_number AS bankNumber,
+        alipay,
+        alipay_number AS alipayNumber,
+        wechat,
+        wechat_number AS wechatNumber,
+        card_number AS cardNumber,
+        card_A_url AS cardAUrl,
+        card_B_url AS cardBUrl,
+        auth_stauts AS authStauts,
+        current_identity AS currentIdentity,
+        phone, init_check AS initCheck,
+        old_flag AS oldFlag,
+        mpn_num AS mpnNum,
+        important_flag AS importantFlag
+    </sql>
+
+    <select id="personalCardListPageList" resultMap="BaseResultMap">
+      SELECT <include refid="Base_Column_List"/>
+        FROM
+        c_personal_card pc
+        <where>
+            <if test="personalCardDto.params.beginTime != null and personalCardDto.params.beginTime != ''"><!-- 开始时间检索 -->
+                and date_format(pc.create_time,'%y%m%d') &gt;= date_format(#{personalCardDto.params.beginTime},'%y%m%d')
+            </if>
+            <if test="personalCardDto.params.endTime != null and personalCardDto.params.endTime != ''"><!-- 结束时间检索 -->
+                and date_format(pc.create_time,'%y%m%d') &lt;= date_format(#{personalCardDto.params.endTime},'%y%m%d')
+            </if>
+            <if test="personalCardDto.name!=null and personalCardDto.name!=''">
+                AND concat(IFNULL(pc.name,''),IFNULL(pc.phone,'')) like concat('%', #{personalCardDto.name}, '%')
+            </if>
+            <if test="personalCardDto.cardNumber!=null and personalCardDto.cardNumber!=''">
+                AND pc.card_number like concat('%', #{personalCardDto.cardNumber}, '%')
+            </if>
+            <if test="personalCardDto.authStauts!=null and personalCardDto.authStauts!=''">
+                AND pc.auth_stauts = #{personalCardDto.authStauts}
+            </if>
+            <if test="personalCardDto.bankName!=null and personalCardDto.bankName!=''">
+                AND pc.bank_name = #{personalCardDto.bankName}
+            </if>
+            <if test="personalCardDto.currentIdentity!=null">
+                AND pc.current_identity = #{personalCardDto.currentIdentity}
+            </if>
+
+            <if test="personalCardDto.bankNumber!=null and personalCardDto.bankNumber!=''">
+                AND pc.bank_number like concat('',#{personalCardDto.bankNumber},'%')
+            </if>
+            <if test="personalCardDto.alipayNumber!=null and personalCardDto.alipayNumber!=''">
+                AND pc.alipay_number like concat('',#{personalCardDto.alipayNumber},'%')
+            </if>
+            <if test="personalCardDto.wechatNumber!=null and personalCardDto.wechatNumber!=''">
+                AND pc.wechat_number like concat(#{personalCardDto.wechatNumber},'%')
+            </if>
+
+            <if test="personalCardDto.auth!=null and personalCardDto.auth!=''">
+                AND pc.auth_stauts != #{personalCardDto.auth}
+            </if>
+
+        </where>
+        ORDER BY
+        pc.auth_stauts %3 DESC,
+        pc.create_time asc
+    </select>
+
+
+
+    <select id="personalCardListPageListNew" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM c_personal_card pc
+        <where>
+            <if test="personalCardDto.params.beginTime != null and personalCardDto.params.beginTime != ''"><!-- 开始时间检索 -->
+                and date_format(pc.create_time,'%y%m%d') &gt;= date_format(#{personalCardDto.params.beginTime},'%y%m%d')
+            </if>
+            <if test="personalCardDto.params.endTime != null and personalCardDto.params.endTime != ''"><!-- 结束时间检索 -->
+                and date_format(pc.create_time,'%y%m%d') &lt;= date_format(#{personalCardDto.params.endTime},'%y%m%d')
+            </if>
+            <if test="personalCardDto.name!=null and personalCardDto.name!=''">
+                AND concat(IFNULL(pc.name,''),IFNULL(pc.phone,''),IFNULL(pc.card_number,'')) like concat('%', #{personalCardDto.name}, '%')
+            </if>
+            <!--<if test="personalCardDto.cardNumber!=null and personalCardDto.cardNumber!=''">
+                AND pc.card_number like concat('%', #{personalCardDto.cardNumber}, '%')
+            </if>-->
+            <if test="personalCardDto.authStauts!=null and personalCardDto.authStauts!=''">
+                AND pc.auth_stauts = #{personalCardDto.authStauts}
+            </if>
+            <if test="personalCardDto.bankName!=null and personalCardDto.bankName!=''">
+                AND pc.bank_name = #{personalCardDto.bankName}
+            </if>
+            <if test="personalCardDto.currentIdentity!=null">
+                AND pc.current_identity = #{personalCardDto.currentIdentity}
+            </if>
+
+            <if test="personalCardDto.bankNumber!=null and personalCardDto.bankNumber!=''">
+                AND concat(IFNULL(pc.bank_number,''),IFNULL(pc.alipay_number,''),IFNULL(pc.wechat_number,'')) like concat('%',#{personalCardDto.bankNumber},'%')
+            </if>
+
+            <!--<if test="personalCardDto.alipayNumber!=null and personalCardDto.alipayNumber!=''">
+                AND pc.alipay_number like concat('',#{personalCardDto.alipayNumber},'%')
+            </if>
+            <if test="personalCardDto.wechatNumber!=null and personalCardDto.wechatNumber!=''">
+                AND pc.wechat_number like concat(#{personalCardDto.wechatNumber},'%')
+            </if>-->
+
+            <if test="personalCardDto.auth!=null and personalCardDto.auth!=''">
+                AND pc.auth_stauts != #{personalCardDto.auth}
+            </if>
+            <if test="personalCardDto.minMPNnum != null">
+                AND pc.mpn_num &gt;= #{personalCardDto.minMPNnum}
+            </if>
+            <if test="personalCardDto.maxMPNnum != null">
+                AND pc.mpn_num &lt;= #{personalCardDto.maxMPNnum}
+            </if>
+            <if test="personalCardDto.oldFlag!=null">
+                AND pc.old_flag = #{personalCardDto.oldFlag}
+            </if>
+            <if test="personalCardDto.importantFlag!=null">
+                AND pc.important_flag = #{personalCardDto.importantFlag}
+            </if>
+        </where>
+        order by pc.update_time desc
+
+    </select>
+
+    <update id="updateMPNnumList">
+        update c_personal_card pc
+        set pc.mpn_num = #{personalCardDto.MPNnum}
+        <where>
+            <if test="personalCardDto.params.beginTime != null and personalCardDto.params.beginTime != ''"><!-- 开始时间检索 -->
+                and date_format(pc.create_time,'%y%m%d') &gt;= date_format(#{personalCardDto.params.beginTime},'%y%m%d')
+            </if>
+            <if test="personalCardDto.params.endTime != null and personalCardDto.params.endTime != ''"><!-- 结束时间检索 -->
+                and date_format(pc.create_time,'%y%m%d') &lt;= date_format(#{personalCardDto.params.endTime},'%y%m%d')
+            </if>
+            <if test="personalCardDto.name!=null and personalCardDto.name!=''">
+                AND concat(IFNULL(pc.name,''),IFNULL(pc.phone,''),IFNULL(pc.card_number,'')) like concat('%', #{personalCardDto.name}, '%')
+            </if>
+            <!--<if test="personalCardDto.cardNumber!=null and personalCardDto.cardNumber!=''">
+                AND pc.card_number like concat('%', #{personalCardDto.cardNumber}, '%')
+            </if>-->
+            <if test="personalCardDto.authStauts!=null and personalCardDto.authStauts!=''">
+                AND pc.auth_stauts = #{personalCardDto.authStauts}
+            </if>
+            <if test="personalCardDto.bankName!=null and personalCardDto.bankName!=''">
+                AND pc.bank_name = #{personalCardDto.bankName}
+            </if>
+            <if test="personalCardDto.currentIdentity!=null">
+                AND pc.current_identity = #{personalCardDto.currentIdentity}
+            </if>
+
+            <if test="personalCardDto.bankNumber!=null and personalCardDto.bankNumber!=''">
+                AND concat(IFNULL(pc.bank_number,''),IFNULL(pc.alipay_number,''),IFNULL(pc.wechat_number,'')) like concat('%',#{personalCardDto.bankNumber},'%')
+            </if>
+
+            <!--<if test="personalCardDto.alipayNumber!=null and personalCardDto.alipayNumber!=''">
+                AND pc.alipay_number like concat('',#{personalCardDto.alipayNumber},'%')
+            </if>
+            <if test="personalCardDto.wechatNumber!=null and personalCardDto.wechatNumber!=''">
+                AND pc.wechat_number like concat(#{personalCardDto.wechatNumber},'%')
+            </if>-->
+
+            <if test="personalCardDto.auth!=null and personalCardDto.auth!=''">
+                AND pc.auth_stauts != #{personalCardDto.auth}
+            </if>
+            <if test="personalCardDto.minMPNnum != null">
+                AND pc.mpn_num &gt;= #{personalCardDto.minMPNnum}
+            </if>
+            <if test="personalCardDto.maxMPNnum != null">
+                AND pc.mpn_num &lt;= #{personalCardDto.maxMPNnum}
+            </if>
+        </where>
+    </update>
+
+    <select id="personalCardListExcelList" resultType="com.jdcloud.provider.pojo.vo.PersonalCardVo">
+        SELECT
+        pc.update_time AS updateTime,
+        pc.user_id AS userId,
+        pc.name,
+        pc.auth_stauts AS authStauts,
+        pc.current_identity AS currentIdentity,
+        pc.phone,
+        pc.init_check AS initCheck,
+        pc.old_flag AS oldFlag,
+        pc.important_flag AS importantFlag,
+        pcone.name AS directPushName,
+        pcone.phone AS directPushPhone,
+        pctwo.name AS secondLevelRecommendName,
+        pctwo.phone AS secondLevelRecommendPhone
+        FROM
+        c_personal_card pc
+        LEFT join `t_user_labour` l
+        on pc.user_id = l.user_id
+        left join c_personal_card pcone
+        on l.parent_id = pcone.user_id
+        LEFT JOIN c_personal_card pctwo
+        ON SUBSTRING_INDEX(l.ancestors, ',', 1) = pctwo.user_id
+        <where>
+            <if test="personalCardDto.params.beginTime != null and personalCardDto.params.beginTime != ''"><!-- 开始时间检索 -->
+                and date_format(pc.create_time,'%y%m%d') &gt;= date_format(#{personalCardDto.params.beginTime},'%y%m%d')
+            </if>
+            <if test="personalCardDto.params.endTime != null and personalCardDto.params.endTime != ''"><!-- 结束时间检索 -->
+                and date_format(pc.create_time,'%y%m%d') &lt;= date_format(#{personalCardDto.params.endTime},'%y%m%d')
+            </if>
+            <if test="personalCardDto.name!=null and personalCardDto.name!=''">
+                AND concat(IFNULL(pc.name,''),IFNULL(pc.phone,''),IFNULL(pc.card_number,'')) like concat('%', #{personalCardDto.name}, '%')
+            </if>
+            <if test="personalCardDto.authStauts!=null and personalCardDto.authStauts!=''">
+                AND pc.auth_stauts = #{personalCardDto.authStauts}
+            </if>
+            <if test="personalCardDto.bankName!=null and personalCardDto.bankName!=''">
+                AND pc.bank_name = #{personalCardDto.bankName}
+            </if>
+            <if test="personalCardDto.currentIdentity!=null">
+                AND pc.current_identity = #{personalCardDto.currentIdentity}
+            </if>
+            <if test="personalCardDto.bankNumber!=null and personalCardDto.bankNumber!=''">
+                AND concat(IFNULL(pc.bank_number,''),IFNULL(pc.alipay_number,''),IFNULL(pc.wechat_number,'')) like concat('%',#{personalCardDto.bankNumber},'%')
+            </if>
+            <if test="personalCardDto.auth!=null and personalCardDto.auth!=''">
+                AND pc.auth_stauts != #{personalCardDto.auth}
+            </if>
+            <if test="personalCardDto.oldFlag!=null">
+                AND pc.old_flag = #{personalCardDto.oldFlag}
+            </if>
+            <if test="personalCardDto.importantFlag!=null">
+                AND pc.important_flag = #{personalCardDto.importantFlag}
+            </if>
+        </where>
+        order by pc.update_time desc
+    </select>
+
+
+
+    <select id="selectCheckPush" resultMap="BaseResultMap">
+        SELECT
+        ca.user_id AS userId
+        FROM  c_personal_card ca INNER JOIN  t_user_labour la on  ca.user_id = la.user_id
+        WHERE (select count(1) AS num FROM t_user_labour_account_record re WHERE ca.user_id = re.order_user_id) = 0 AND ca.auth_stauts = #{type}
+    </select>
+
+    <select id="recommendEarningsSum" resultType="java.lang.Integer">
+        SELECT count(1)
+        FROM  c_personal_card ca INNER JOIN  t_user_labour la on  ca.user_id = la.user_id
+        WHERE (select count(1) AS num FROM t_user_labour_account_record re WHERE ca.user_id = re.order_user_id) = 0 AND ca.auth_stauts = #{type}
+    </select>
+
+</mapper>

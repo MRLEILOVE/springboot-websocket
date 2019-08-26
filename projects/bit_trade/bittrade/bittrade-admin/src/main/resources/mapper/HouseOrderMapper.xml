@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jdcloud.provider.mapper.HouseOrderMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.jdcloud.provider.pojo.HouseOrder">
+        <id column="id" property="id" />
+        <result column="user_id" property="userId" />
+        <result column="user_name" property="userName" />
+        <result column="product_id" property="productId" />
+        <result column="product_name" property="productName" />
+        <result column="product_count" property="productCount" />
+        <result column="product_type" property="productType" />
+        <result column="product_price" property="productPrice" />
+        <result column="product_image" property="productImage" />
+        <result column="order_no" property="orderNo" />
+        <result column="total_price" property="totalPrice" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap_Vo" type="com.jdcloud.provider.pojo.vo.HouseOrderVo">
+        <id column="id" property="id" />
+        <result column="user_id" property="userId" />
+        <result column="user_name" property="userName" />
+        <result column="product_id" property="productId" />
+        <result column="product_name" property="productName" />
+        <result column="product_count" property="productCount" />
+        <result column="product_type" property="productType" />
+        <result column="product_price" property="productPrice" />
+        <result column="product_image" property="productImage" />
+        <result column="order_no" property="orderNo" />
+        <result column="total_price" property="totalPrice" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+
+        <result column="userName" property="userName"/>
+        <result column="phone" property="phone"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+         ord.id,
+         ord.user_id AS userId,
+         ord.user_name AS userName,
+         ord.product_id AS productId,
+         ord.product_name AS productName,
+         ord.product_count AS productCount,
+         ord.product_type AS productType,
+         ord.product_price AS productPrice,
+         ord.product_image AS productImage,
+         ord.order_no AS orderNo,
+         ord.total_price AS totalPrice,
+         ord.create_time AS createTime,
+         ord.update_time AS updateTime
+    </sql>
+
+
+
+
+    <select id="getHouseOrder" resultMap="BaseResultMap_Vo">
+	select
+     ca.name as userName,
+     ca.phone,
+    <include refid="Base_Column_List"/>
+	from
+	g_house_order ord  left join
+    c_personal_card ca on ord.user_id = ca.user_id
+    where 1=1
+        <if test="houseOrderDto.params.beginTime != null and houseOrderDto.params.beginTime != ''">
+            AND DATE_FORMAT(ord.create_time, '%Y-%m-%d') &gt;= DATE_FORMAT(#{houseOrderDto.params.beginTime},'%Y-%m-%d')
+        </if>
+        <if test="houseOrderDto.params.endTime != null and houseOrderDto.params.endTime != ''">
+            AND DATE_FORMAT(ord.create_time, '%Y-%m-%d') &lt;= DATE_FORMAT(#{houseOrderDto.params.endTime}, '%Y-%m-%d')
+        </if>
+        <if test="houseOrderDto.orderNo !=null and houseOrderDto.orderNo!=''">
+            AND ord.order_no =#{houseOrderDto.orderNo}
+        </if>
+        <if test="houseOrderDto.productPrice !=null and houseOrderDto.productPrice!=''">
+            AND ord.product_price =#{houseOrderDto.productPrice}
+        </if>
+        <if test="houseOrderDto.productType !=null and houseOrderDto.productType!=''">
+            AND ord.product_type =#{houseOrderDto.productType}
+        </if>
+        <if test="houseOrderDto.productName !=null and houseOrderDto.productName!=''">
+            AND ord.product_name =#{houseOrderDto.productName}
+        </if>
+        <if test="houseOrderDto.totalPrice !=null and houseOrderDto.totalPrice!=''">
+            AND ord.total_price =#{houseOrderDto.totalPrice}
+        </if>
+        <if test="houseOrderDto.userName !=null and houseOrderDto.userName!=''">
+            AND CONCAT(
+            ca.name,
+            ca.phone
+            ) like concat('%',#{houseOrderDto.userName},'%')
+        </if>
+    </select>
+
+
+
+</mapper>

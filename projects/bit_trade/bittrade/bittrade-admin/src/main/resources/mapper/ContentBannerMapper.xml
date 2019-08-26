@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jdcloud.provider.mapper.ContentBannerMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.jdcloud.provider.pojo.ContentBanner">
+        <id column="id" property="id" />
+        <result column="title" property="title" />
+        <result column="picture_url" property="pictureUrl" />
+        <result column="jump_url" property="jumpUrl" />
+        <result column="sort" property="sort" />
+        <result column="keyword" property="keyword" />
+        <result column="content" property="content" />
+        <result column="type" property="type" />
+        <result column="status" property="status" />
+        <result column="creater" property="creater" />
+        <result column="create_time" property="createTime" />
+        <result column="updater" property="updater" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, title, picture_url AS pictureUrl, jump_url AS jumpUrl, sort, keyword, content, type, status, creater, create_time AS createTime, updater, update_time AS updateTime
+    </sql>
+
+    <sql id="selectBanner">
+        select id, title, picture_url, jump_url, sort, keyword, content, type, status, creater, create_time, updater, update_time
+        from t_banner
+    </sql>
+
+    <select id="selectBannerList" parameterType="com.jdcloud.provider.pojo.ContentBanner" resultMap="BaseResultMap">
+        <include refid="selectBanner"/>
+        order by sort DESC, create_time DESC
+    </select>
+
+    <select id="selectBannerById" parameterType="Integer" resultMap="BaseResultMap">
+        <include refid="selectBanner"/>
+        where id = #{id}
+    </select>
+
+    <update id="updateBanner" parameterType="com.jdcloud.provider.pojo.ContentBanner">
+        update t_banner
+        <set>
+            <if test="title != null and title != ''">title = #{title},</if>
+            <if test="pictureUrl != null and pictureUrl != ''">picture_url = #{picturUrl},</if>
+            <if test="jumpUrl != null and jumpUrl != ''">jump_url = #{jumpUrl},</if>
+            <if test="sort != null and sort != ''">sort = #{sort},</if>
+            <if test="updater != null and updater != ''">updater = #{updater},</if>
+            update_time = sysdate()
+        </set>
+        where id = #{id}
+    </update>
+
+    <insert id="insertBanner" parameterType="com.jdcloud.provider.pojo.ContentBanner" useGeneratedKeys="true" keyProperty="id">
+        insert into t_banner(
+            <if test="title != null and title != ''">title,</if>
+            <if test="pictureUrl != null and pictureUrl != ''">picture_url,</if>
+            <if test="jumpUrl != null and jumpUrl != ''">jump_url,</if>
+            <if test="sort != null and sort != ''">sort,</if>
+            <if test="creater != null and creater != ''">creater,</if>
+            <if test="status != null and status != ''">status,</if>
+            create_time
+        )values(
+            <if test="title != null and title != ''">#{title},</if>
+            <if test="pictureUrl != null and pictureUrl != ''">#{pictureUrl},</if>
+            <if test="jumpUrl != null and jumpUrl != ''">#{jumpUrl},</if>
+            <if test="sort != null and sort != ''">#{sort},</if>
+            <if test="creater != null and creater != ''">#{creater},</if>
+            <if test="status != null and status != ''">#{status},</if>
+            sysdate()
+        )
+    </insert>
+
+    <delete id="deleteBannerById" parameterType="Integer">
+ 		delete from t_banner where id = #{id}
+ 	</delete>
+
+    <delete id="deleteBannerByIds" parameterType="Integer">
+        delete from t_banner where id in
+        <foreach collection="array" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

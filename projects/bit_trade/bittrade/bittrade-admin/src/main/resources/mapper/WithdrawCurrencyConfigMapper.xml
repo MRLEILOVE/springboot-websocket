@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jdcloud.provider.mapper.WithdrawCurrencyConfigMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.jdcloud.provider.pojo.WithdrawCurrencyConfig">
+        <id column="id" property="id" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="account_config_id" property="accountConfigId" />
+        <result column="min_num" property="minNum" />
+        <result column="max_num" property="maxNum" />
+        <result column="twenty_four_num" property="twentyFourNum" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, create_time AS createTime, update_time AS updateTime, account_config_id AS accountConfigId, min_num AS minNum, max_num AS maxNum, twenty_four_num AS twentyFourNum
+    </sql>
+
+    <select id="selectWithdrawCurrencyConfigPage" resultType="com.jdcloud.provider.pojo.vo.WithdrawCurrencyConfigVo">
+        SELECT
+          wcc.id,
+          wcc.create_time AS createTime,
+          wcc.update_time AS updateTime,
+          wcc.account_config_id AS accountConfigId,
+          wcc.min_num AS minNum,
+          wcc.max_num AS maxNum,
+          wcc.twenty_four_num AS twentyFourNum,
+          ac.id AS currencyId,
+          ac.icon AS icon,
+          ac.name AS currencyName
+        FROM
+          t_withdraw_currency_config wcc
+          INNER JOIN t_account_config ac
+            ON ac.id = wcc.account_config_id
+    </select>
+
+    <delete id="deleteByIds" parameterType="Integer">
+        delete from t_withdraw_currency_config where id in
+        <foreach collection="array" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

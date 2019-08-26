@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jdcloud.provider.mapper.AccountManageConfigMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.jdcloud.provider.pojo.AccountManageConfig">
+        <id column="id" property="id" />
+        <result column="sort" property="sort" />
+        <result column="account_id" property="accountId" />
+        <result column="account_config_id" property="accountConfigId" />
+        <result column="status" property="status" />
+
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMapVo" type="com.jdcloud.provider.pojo.vo.AccountManageConfigVo">
+        <id column="id" property="id" />
+        <result column="sort" property="sort" />
+        <result column="account_id" property="accountId" />
+        <result column="account_config_id" property="accountConfigId" />
+        <result column="keyword" property="keyword" />
+        <result column="status" property="status" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+         co.id,
+         co.sort,
+         co.account_id AS accountId,
+         co.account_config_id AS accountConfigId, co.create_time AS createTime, co.update_time AS updateTime,co.status
+    </sql>
+
+    <select id="getAccountConfig" resultMap="BaseResultMapVo">
+        select
+        fi.keyword,
+        <include refid="Base_Column_List"/>
+        from
+        t_account_manage_config co  left join   t_account_config fi on  co.account_config_id = fi.id
+        where 1=1
+        <if test="dto.params.beginTime != null and dto.params.beginTime != ''">
+            AND DATE_FORMAT(co.create_time, '%Y-%m-%d') &gt;= DATE_FORMAT(#{dto.params.beginTime},'%Y-%m-%d')
+        </if>
+        <if test="dto.params.endTime != null and dto.params.endTime != ''">
+            AND DATE_FORMAT(co.create_time, '%Y-%m-%d') &lt;= DATE_FORMAT(#{dto.params.endTime}, '%Y-%m-%d')
+        </if>
+        <if test="dto.name!=null and dto.name!=''">
+            AND CONCAT(
+            fi.name,
+            fi.keyword
+            ) like concat('%',#{dto.name}, '%')
+        </if>
+        <if test="dto.accountId != null and dto.accountId != '' ">
+            AND co.account_id = #{dto.accountId}
+        </if>
+    </select>
+
+</mapper>

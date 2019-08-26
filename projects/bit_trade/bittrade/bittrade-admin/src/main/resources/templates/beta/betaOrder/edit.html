@@ -59,6 +59,9 @@
                 <i class="btn btn-primary btn-success" onclick="audit(1)" shiro:hasPermission="orderList:audit">放狗</i>
                 <!--<i class="btn btn-primary btn-success" onclick="audits()" shiro:hasPermission="orderList:auditRefuseDogo">拒绝放狗</i>-->
             </div>
+            <div class="form-control-static" th:if="${vo.orderStauts==21}">
+                <i class="btn btn-primary btn-success" onclick="packAudit(1)" shiro:hasPermission="orderList:packAudit">通过</i>
+            </div>
         </div>
 
         <div class="form-group">
@@ -81,6 +84,8 @@
                 <div class="form-control-static" th:if="${vo.orderStauts==3}">待支付 </div>
                 <div class="form-control-static" th:if="${vo.orderStauts==4}">待放狗 </div>
                 <div class="form-control-static" th:if="${vo.orderStauts==5}">客诉 </div>
+                <div class="form-control-static" th:if="${vo.orderStauts==21}">审核中 </div>
+                <div class="form-control-static" th:if="${vo.orderStauts==22}">审核失败 </div>
             </div>
         </div>
 
@@ -252,6 +257,9 @@
             <div class="form-control-static" th:if="${vo.orderStauts==5}">
                 <i class="btn btn-danger btn-success" onclick="audits()" shiro:hasPermission="orderList:auditRefuseDogo">拒绝放狗</i>
             </div>
+            <div class="form-control-static" th:if="${vo.orderStauts==21}">
+                <i class="btn btn-danger btn-success" onclick="packAudit(2)" shiro:hasPermission="orderList:packAudit">拒绝</i>
+            </div>
             <label class="col-sm-3 control-label ">支付凭证：</label>
             <div class="col-sm-5">
                 <img class="information-img" alt="" id="" th:src="*{payImg}"height="450" width="350" />
@@ -364,6 +372,38 @@
         });
     }
 
+
+    function packAudit(type) {
+        var str = "";
+        if (type == 1) {
+            str = "通过";
+        }else if(type == 2){
+            str = "拒绝";
+        }else{
+            return;
+        }
+        $.modal.confirm("是否" + str+"出售收益？", function () {
+            if ($.validate.form()) {
+                var id = document.getElementById("id").value;
+                $.ajax({
+                    cache : true,
+                    type : "POST",
+                    url : ctx + "beta/betaOrder/packAudit",
+                    data : {
+                        "id":id,
+                        "type":type
+                    },
+                    async : false,
+                    error : function(request) {
+                        $.modal.alertError("系统错误");
+                    },
+                    success : function(data) {
+                        $.operate.saveSuccess(data);
+                    }
+                });
+            }
+        });
+    }
 
 </script>
 </body>

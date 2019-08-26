@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jdcloud.provider.mapper.AgntUserMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.jdcloud.provider.pojo.AgntUser">
+		<id column="agnt_id" property="agntId" />
+		<result column="agnt_level" property="agntLevel" />
+		<result column="agnt_name" property="agntName" />
+		<result column="parent_id" property="parentId" />
+		<result column="ancestors" property="ancestors" />
+		<result column="login_name" property="loginName" />
+		<result column="user_type" property="userType" />
+		<result column="email" property="email" />
+		<result column="phonenumber" property="phonenumber" />
+		<result column="sex" property="sex" />
+		<result column="password" property="password" />
+		<result column="salt" property="salt" />
+		<result column="status" property="status" />
+		<result column="del_flag" property="delFlag" />
+		<result column="login_ip" property="loginIp" />
+		<result column="login_date" property="loginDate" />
+		<result column="create_by" property="createBy" />
+		<result column="create_time" property="createTime" />
+		<result column="update_by" property="updateBy" />
+		<result column="update_time" property="updateTime" />
+		<result column="remark" property="remark" />
+		<result column="invitation_code" property="invitationCode" />
+		<result column="user_id" property="userId" />
+	</resultMap>
+	
+	<!-- 客户Vo -->
+	<resultMap type="com.jdcloud.provider.pojo.vo.ConsumerVo" id="consumerVoMap">
+		<result column="user_name" property="userName" />
+		<result column="user_phone" property="userPhone" />
+		<result column="user_id" property="userId" />
+		<result column="total_deposits" property="totalDeposits" />
+		<result column="total_withdrawals" property="totalWithdrawals" />
+		<result column="balance" property="balance" />
+		<result column="used_margin" property="usedMargin" />
+	</resultMap>
+
+	<!-- 订单Vo -->
+	<resultMap type="com.jdcloud.provider.pojo.vo.ContractVo" id="contractMap">
+		<result column="user_name" property="userName" />
+		<result column="user_phone" property="userPhone" />
+		<result column="order_id" property="orderId" />
+		<result column="direction" property="direction" />
+		<result column="open_price" property="openPrice" />
+		<result column="close_price" property="closePrice" />
+		<result column="used_margin" property="usedMargin" />
+		<result column="service_fee" property="serviceFee" />
+		<result column="status" property="status" />
+		<result column="symbol" property="symbol" />
+		<result column="lots" property="lots" />
+		<result column="multiple" property="multiple" />
+		<result column="open_time" property="openTime" />
+		<result column="close_time" property="closeTime" />
+		<result column="contract_type" property="contractType" />
+	</resultMap>
+	
+	<!-- 代理V -->
+	<resultMap type="com.jdcloud.provider.pojo.vo.AgntUserVo" id="agntUserVoMap">
+		<result column="agnt_id" property="agntId" />
+		<result column="agnt_level" property="agntLevel" />
+		<result column="agnt_name" property="agntName" />
+		<result column="login_name" property="loginName" />
+		<result column="last_agnt_name" property="lastAgntName" />
+		<result column="consumer_count" property="consumerCount" />
+		<result column="sub_agnt_count" property="subAgntCount" />
+		<result column="user_id" property="userId" />
+		<result column="user_type" property="userType" />
+	</resultMap>
+
+	<!-- 通用查询结果列 -->
+	<sql id="Base_Column_List">
+		agnt_id AS agntId, agnt_level AS agntLevel, agnt_name AS agntName, parent_id
+		 AS parentId, ancestors, login_name AS loginName, user_type AS
+		userType, email, phonenumber, sex, password, salt, status, del_flag AS
+		delFlag, login_ip AS loginIp, login_date AS loginDate, create_by AS
+		createBy, create_time AS createTime, update_by AS updateBy,
+		update_time AS updateTime, remark, invitation_code AS invitationCode
+	</sql>
+
+	<select id="selectAgntUserList" resultMap="BaseResultMap">
+		SELECT
+		au.`agnt_id`,
+		au.`agnt_level`,
+		au.`agnt_name`,
+		au.`user_type`,
+		au.`status`,
+		au.`create_time`,
+		au.`login_name`,
+		au2.`agnt_name` AS lastAgntName
+		FROM agnt_user au
+		LEFT JOIN agnt_user au2 ON au.`parent_id` = au2.`agnt_id`
+		where 1 = 1
+		<!-- 代理等级 -->
+		<if test="au.agntLevel != null and au.agntLevel != ''">
+			AND au.`agnt_level` = #{au.agntLevel}
+		</if>
+		<!-- 综合 -->
+		<if test="au.agntName != null and au.agntName != ''">
+			AND (au.`agnt_name` LIKE CONCAT('%',#{au.agntName},'%')
+			OR au.`login_name` LIKE CONCAT('%',#{au.agntName},'%'))
+		</if>
+	</select>
+
+	<select id="selectSubAgntCountById" resultType="Integer">
+		select count(*) from agnt_user where find_in_set (#{agntId},ancestors)
+	</select>
+
+	<select id="selectAgntById" parameterType="java.lang.Long" resultMap="BaseResultMap">
+		select au.agnt_id,au.agnt_name,au.agnt_level, au.login_name from
+		agnt_user au left join agnt_user_consumer auc
+		on auc.agnt_id = au.agnt_id
+		where
+		auc.user_id = #{cv.userId}
+	</select>
+
+	<select id="selectConsumerListById" resultMap="consumerVoMap">
+		SELECT uc.*,
+		ua.total_deposits, 	  <!-- 总充值 -->
+		ua.total_withdrawals, <!-- 总提现 -->
+		ua.balance,			  <!-- 账户余额 -->
+		ua.used_margin		  <!-- 占用保证金 -->
+		FROM agnt_user_consumer uc
+		LEFT JOIN t_user_account ua ON ua.`user_id`
+		= uc.`user_id`
+		WHERE uc.`agnt_id` = #{cv.agntId}
+
+		<if test="cv.userName != null and cv.userName != ''">
+			AND uc.`user_name` = #{cv.userName}
+		</if>
+		<if test="cv.userPhone != null and cv.userPhone != ''">
+			AND uc.`user_phone` = #{cv.userPhone}
+		</if>
+	</select>
+
+	<select id="selectConsumerOrderListById" resultMap="contractMap">
+		SELECT
+		t.*,
+		ac.`user_name`,
+		ac.`user_phone`
+		FROM (
+			<if test="cv.contractType == null or cv.contractType == 1 or cv.contractType == ''">
+			SELECT
+			co.order_id,				<!-- 订单ID -->
+			co.open_price,				<!-- 开盘价 -->
+			co.close_price,				<!--平仓价 -->
+			co.direction,				<!--方向（涨/跌）：1-买跌，2-买涨 -->
+			co.lots,					<!--手数  -->
+			co.used_margin,				<!--占用保证金 -->
+			co.service_fee, 			<!--手续费 -->
+			co.multiple,				<!--杠杆  -->
+			co.open_time,				<!--建仓时间 -->
+			co.close_time,				<!--交割时间 -->
+			co.status,					<!--状态：1-建仓 2-平仓  -->
+			"微合约" AS contract_type, 	<!-- 合约类型 -->
+			pm.`symbol`					<!-- 交易对 -->
+			FROM `t_contract_micro` co
+			JOIN t_product_micro pm ON pm.`id` = co.`product_id`
+			WHERE co.user_id = #{cv.userId}
+			</if>
+			<!-- 合约类型所有时,才会union all -->
+			<if test="cv.contractType == null or cv.contractType == ''">
+			UNION ALL
+			</if>
+			<if test="cv.contractType == null or cv.contractType == 2 or cv.contractType == ''">
+			SELECT
+			cp.order_id,
+			cp.open_price,
+			cp.close_price,
+			cp.direction,
+			cp.lots,
+			cp.used_margin,
+			cp.service_fee,
+			cp.multiple,
+			cp.open_time,
+			cp.close_time,
+			cp.status,
+			"永续" AS contract_type,
+			pm.`symbol`
+			FROM `t_contract_perpetual` cp
+			JOIN t_product_perpetual pm ON pm.`id` = cp.`product_id`
+			WHERE cp.user_id = #{cv.userId}
+			</if>
+		) t LEFT JOIN agnt_user_consumer ac ON ac.`user_id` = #{cv.userId}
+		where 1=1
+		<!-- 开始时间检索 -->
+		<if test="cv.params.beginTime != null and cv.params.beginTime != ''">
+			AND date_format(open_time,'%y%m%d') &gt;= date_format(#{cv.params.beginTime},'%y%m%d')
+		</if>
+		<!-- 结束时间检索 -->
+		<if test="cv.params.endTime != null and cv.params.endTime != ''">
+			AND date_format(open_time,'%y%m%d') &lt;= date_format(#{cv.params.endTime},'%y%m%d')
+		</if>
+		<!-- 订单状态 -->
+		<if test="cv.status != null and cv.status != ''">
+			AND status = #{cv.status}
+		</if>
+		<!-- 方向 -->
+		<if test="cv.direction != null and cv.direction != ''">
+			AND direction = #{cv.direction}
+		</if>
+		<!-- 订单号 -->
+		<if test="cv.orderId != null and cv.orderId != ''">
+			AND order_id = #{cv.orderId}
+		</if>
+		<!-- 综合 -->
+		<if test="cv.userName != null and cv.userName != ''">
+			AND (ac.`user_name` = #{cv.userName} OR ac.`user_phone` = #{cv.userName} )
+		</if>
+	</select>
+
+	<select id="selectAgntListById" resultMap="agntUserVoMap">
+		SELECT
+		<!-- 代理ID -->
+		au.agnt_id,
+		<!-- 代理姓名 -->
+		au.`agnt_name`,
+		<!-- 代理账号 -->
+		au.`login_name`,
+		<!-- 代理账号 -->
+		au.`agnt_level`,
+		<!-- 关联平台用户ID -->
+		au.`user_id`,
+		<!-- 上级代理姓名 -->
+		au2.`agnt_name` AS last_agnt_name,
+		<!-- 客户数量：不计下级代理 -->
+		COUNT(auc.`user_id`) AS consumer_count,
+		<!-- 下级代理数量 -->
+		(	SELECT
+			COUNT(*)
+			FROM agnt_user
+			WHERE FIND_IN_SET (au.`agnt_id`,ancestors)
+		) AS sub_agnt_count
+		FROM agnt_user au
+		LEFT JOIN agnt_user au2 ON au.`parent_id` = au2.`agnt_id`
+		LEFT JOIN agnt_user_consumer auc ON auc.`agnt_id` = au.`agnt_id`
+		WHERE FIND_IN_SET (#{av.agntId},au.`ancestors`)
+		<!-- 代理级别 -->
+		<if test="av.agntLevel != null and av.agntLevel != ''">
+			AND au.agnt_level = #{av.agntLevel}
+		</if>
+		<!-- 综合 -->
+		<if test="av.agntName != null and av.agntName != ''">
+			AND (au.`agnt_name` = #{av.agntName} OR au.`login_name` = #{av.agntName} )
+		</if>
+		GROUP BY au.`agnt_id`
+	</select>
+
+    <select id="selectAgntList" resultMap="agntUserVoMap">
+        SELECT
+		<!-- 账号类型 -->
+		au.user_type,
+        <!-- 代理ID -->
+        au.agnt_id,
+        <!-- 代理姓名 -->
+        au.`agnt_name`,
+        <!-- 代理账号 -->
+        au.`login_name`,
+        <!-- 代理账号 -->
+        au.`agnt_level`,
+        <!-- 关联平台用户ID -->
+        au.`user_id`,
+        <!-- 上级代理姓名 -->
+        au2.`agnt_name` AS last_agnt_name,
+        <!-- 客户数量：不计下级代理 -->
+        COUNT(auc.`user_id`) AS consumer_count,
+        <!-- 下级代理数量 -->
+        (	SELECT
+            COUNT(*)
+            FROM agnt_user
+            WHERE FIND_IN_SET (au.`agnt_id`,ancestors)
+        ) AS sub_agnt_count
+        FROM agnt_user au
+        LEFT JOIN agnt_user au2 ON au.`parent_id` = au2.`agnt_id`
+        LEFT JOIN agnt_user_consumer auc ON auc.`agnt_id` = au.`agnt_id`
+        <where>
+            <if test="av.agntId != null and av.agntId != ''">
+                AND FIND_IN_SET (#{av.agntId},au.`ancestors`)
+            </if>
+            <!-- 代理级别 -->
+            <if test="av.agntLevel != null and av.agntLevel != ''">
+                AND au.agnt_level = #{av.agntLevel}
+            </if>
+            <!-- 综合 -->
+            <if test="av.keyWord != null">
+				AND (au.`agnt_name` LIKE CONCAT('%',#{av.keyWord},'%')
+				OR au.`login_name` LIKE CONCAT('%',#{av.keyWord},'%')
+				OR au2.`agnt_name` LIKE CONCAT('%',#{av.keyWord},'%'))
+            </if>
+        </where>
+        GROUP BY au.`agnt_id`
+    </select>
+
+	<select id="queryAgnt" resultMap="BaseResultMap">
+		select <include refid="Base_Column_List"/>
+		from agnt_user
+		<where>
+		    (login_name LIKE CONCAT('%',#{keyword},'%') OR agnt_name LIKE CONCAT('%',#{keyword},'%'))
+			<if test="agntLevel != null and agntLevel != ''">AND agnt_level = #{agntLevel}</if>
+		</where>
+	</select>
+
+    <select id="agntCount" resultType="com.jdcloud.provider.dto.AgntCountDto">
+        SELECT count(agnt_id) agntCount, agnt_level agntLevel from agnt_user
+        GROUP BY agnt_level
+    </select>
+</mapper>

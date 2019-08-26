@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jdcloud.provider.mapper.BetaAccountRecordMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.jdcloud.provider.pojo.BetaAccountRecord">
+        <id column="id" property="id" />
+        <result column="create_time" property="createTime" />
+        <result column="user_id" property="userId" />
+        <result column="beta_account_id" property="betaAccountId" />
+        <result column="before_amount" property="beforeAmount" />
+        <result column="amount" property="amount" />
+        <result column="after_amount" property="afterAmount" />
+        <result column="remark" property="remark" />
+    </resultMap>
+
+    <!-- VO通用查询映射结果 -->
+    <resultMap id="BaseResultMap_vo" type="com.jdcloud.provider.pojo.vo.BetaAccountRecordVo">
+        <id column="id" property="id" />
+        <result column="create_time" property="createTime" />
+        <result column="user_id" property="userId" />
+        <result column="beta_account_id" property="betaAccountId" />
+        <result column="before_amount" property="beforeAmount" />
+        <result column="amount" property="amount" />
+        <result column="after_amount" property="afterAmount" />
+        <result column="remark" property="remark" />
+
+        <result column="name" property="name" />
+        <result column="phone" property="phone" />
+    </resultMap>
+
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, create_time AS createTime, user_id AS userId, beta_account_id AS betaAccountId, before_amount AS beforeAmount, amount, after_amount AS afterAmount, remark
+    </sql>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List_vo">
+         ac.id, ac.create_time AS createTime, ac.user_id AS userId, ac.beta_account_id AS betaAccountId, ac.before_amount AS beforeAmount, ac.amount, ac.after_amount AS afterAmount, ac.remark,
+         ca.name,
+         ca.phone
+    </sql>
+
+
+    <select id="betaAccountRecord" resultMap="BaseResultMap_vo">
+        select
+        <include refid="Base_Column_List_vo"/>
+        from g_beta_account_record ac
+        LEFT JOIN c_personal_card ca ON ac.user_id = ca.user_id
+        where ac.beta_account_id = #{id}
+        <if test="dto.params.beginTime != null and dto.params.beginTime !=''">
+            and DATE_FORMAT(ac.create_time, '%Y-%m-%d') &gt;= DATE_FORMAT(#{dto.params.beginTime}, '%Y-%m-%d')
+        </if>
+        <if test="dto.params.endTime != null and dto.params.endTime !=''">
+            and DATE_FORMAT(ac.create_time, '%Y-%m-%d') &lt;= DATE_FORMAT(#{dto.params.endTime}, '%Y-%m-%d')
+        </if>
+        <if test="dto.keyword !=null and dto.keyword!=''">
+            AND concat(IFNULL(ca.name,''),IFNULL(ca.phone,''),IFNULL(ac.remark,'')) like concat('%',#{dto.keyword}, '%')
+        </if>
+    </select>
+
+</mapper>

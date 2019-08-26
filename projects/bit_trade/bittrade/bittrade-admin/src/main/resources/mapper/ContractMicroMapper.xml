@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jdcloud.provider.mapper.ContractMicroMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.jdcloud.provider.pojo.ContractMicro">
+        <id column="order_id" property="orderId" />
+        <result column="client_type" property="clientType" />
+        <result column="user_id" property="userId" />
+        <result column="symbol" property="symbol" />
+        <result column="login_name" property="loginName" />
+        <result column="internal_account" property="internalAccount" />
+        <result column="real_name" property="realName" />
+        <result column="direction" property="direction" />
+        <result column="token_order" property="tokenOrder" />
+        <result column="open_price" property="openPrice" />
+        <result column="market_price" property="marketPrice" />
+        <result column="close_price" property="closePrice" />
+        <result column="multiple" property="multiple" />
+        <result column="lots" property="lots" />
+        <result column="slippage" property="slippage" />
+        <result column="used_margin" property="usedMargin" />
+        <result column="profit_loss" property="profitLoss" />
+        <!--<result column="profit_percent" property="profitPercent" />-->
+        <result column="service_fee" property="serviceFee" />
+        <result column="status" property="status" />
+        <result column="isShow" property="isShow" />
+        <result column="delivery_time" property="deliveryTime" />
+        <result column="remark" property="remark" />
+        <result column="open_time" property="openTime" />
+        <result column="close_time" property="closeTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="client_order_id" property="clientOrderId" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        order_id AS orderId, user_id AS userId, product_id AS productId, direction, token_order AS tokenOrder, open_price AS openPrice, market_price AS marketPrice, close_price AS closePrice, multiple, lots, slippage, used_margin AS usedMargin, profit_loss AS profitLoss, profit_percent AS profitPercent, service_fee AS serviceFee, status, delivery_time AS deliveryTime, remark, isShow, open_time AS openTime, close_time AS closeTime, fact_close_time AS factCloseTime, update_time AS updateTime
+    </sql>
+    <sql id="selectMicroVo">
+        select m.order_id ,m.client_type ,concat(m.client_type , m.order_id) AS client_order_id, m.user_id  ,pm.symbol symbol,ua.login_name login_name ,ua.internal_account internal_account ,ua.real_name real_name, m.direction, m.open_price ,
+         m.market_price , m.close_price , m.used_margin ,ua.internal_account,
+         m.token_order,m.profit_loss , m.service_fee , m.status, m.delivery_time ,m.remark, m.open_time , m.close_time
+        from t_contract_micro m left join t_product_micro pm on m.product_id=pm.id left join t_user_account ua on ua.user_id=m.user_id
+    </sql>
+
+    <select id="selectContractMicroList" parameterType="com.jdcloud.provider.pojo.ContractMicro" resultMap="BaseResultMap">
+        <include refid="selectMicroVo"/>
+        <where>
+            <if test="micro.status != null and micro.status != ''">
+                AND m.status = #{micro.status}
+            </if>
+            <if test="micro.internalAccount != null and micro.internalAccount != ''">
+                AND ua.internal_account = #{micro.internalAccount}
+            </if>
+            <if test="micro.tokenOrder != null and micro.tokenOrder != ''">
+                AND m.token_order = #{micro.tokenOrder}
+            </if>
+            <if test="micro.clientType != null and micro.clientType != ''">
+                AND m.client_type = #{micro.clientType}
+            </if>
+            <if test="micro.direction != null and micro.direction != ''">
+                AND m.direction like concat('%', #{micro.direction}, '%')
+            </if>
+            <if test="micro.profitAndLoss != null and micro.profitAndLoss != ''">
+                <if test="micro.profitAndLoss == 1"><!-- 盈 -->
+                    and profit_loss > 0
+                </if>
+                <if test="micro.profitAndLoss == 2"><!-- 亏 -->
+                    and profit_loss &lt; 0
+                </if>
+            </if>
+            <if test="micro.params.status != null and micro.params.status != '' and micro.params.status == 1">
+                <if test="micro.params.beginTime != null and micro.params.beginTime != ''"><!-- 开始时间检索 -->
+                    and date_format(m.open_time,'%y%m%d') &gt;= date_format(#{micro.params.beginTime},'%y%m%d')
+                </if>
+                <if test="micro.params.endTime != null and micro.params.endTime != ''"><!-- 结束时间检索 -->
+                    and date_format(m.open_time,'%y%m%d') &lt;= date_format(#{micro.params.endTime},'%y%m%d')
+                </if>
+            </if>
+            <if test="micro.params.status != null and micro.params.status != '' and micro.params.status == 2">
+                <if test="micro.params.beginTime != null and micro.params.beginTime != ''"><!-- 开始时间检索 -->
+                    and date_format(m.close_time,'%y%m%d') &gt;= date_format(#{micro.params.beginTime},'%y%m%d')
+                </if>
+                <if test="micro.params.endTime != null and micro.params.endTime != ''"><!-- 结束时间检索 -->
+                    and date_format(m.close_time,'%y%m%d') &lt;= date_format(#{micro.params.endTime},'%y%m%d')
+                </if>
+            </if>
+            <if test="micro.params.condition != null and micro.params.condition != ''">
+                <if test="micro.params.type == 1">
+                    AND (m.order_id like concat('%', #{micro.params.condition}, '%') OR ua.login_name like concat('%', #{micro.params.condition}, '%'))
+                </if>
+                <if test="micro.params.type == 2">
+                    AND (concat(m.client_type , m.order_id) like concat('%', #{micro.params.condition}, '%') OR ua.real_name like concat('%', #{micro.params.condition}, '%'))
+                </if>
+            </if>
+        </where>
+        order by m.open_time desc
+    </select>
+</mapper>

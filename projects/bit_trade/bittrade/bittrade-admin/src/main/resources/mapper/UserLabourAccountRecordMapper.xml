@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jdcloud.provider.mapper.UserLabourAccountRecordMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.jdcloud.provider.pojo.UserLabourAccountRecord">
+        <id column="id" property="id" />
+        <result column="user_id" property="userId" />
+        <result column="type" property="type" />
+        <result column="symbol" property="symbol" />
+        <result column="direction" property="direction" />
+        <result column="before_amount" property="beforeAmount" />
+        <result column="amount" property="amount" />
+        <result column="after_amount" property="afterAmount" />
+        <result column="order_id" property="orderId" />
+        <result column="order_user_id" property="orderUserId" />
+        <result column="hierarchy" property="hierarchy" />
+        <result column="remark" property="remark" />
+        <result column="order_time" property="orderTime" />
+        <result column="create_time" property="createTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, user_id AS userId, type, symbol, direction, before_amount AS beforeAmount, amount, after_amount AS afterAmount, order_id AS orderId, order_user_id AS orderUserId, hierarchy, remark, order_time AS orderTime, create_time AS createTime
+    </sql>
+
+</mapper>

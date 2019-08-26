@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jdcloud.provider.mapper.BetaStatisticsUserMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.jdcloud.provider.pojo.BetaStatisticsUser">
+        <id column="id" property="id"/>
+        <result column="create_date" property="createDate"/>
+        <result column="update_date" property="updateDate"/>
+        <result column="registering" property="registering"/>
+        <result column="realname_number" property="realnameNumber"/>
+        <result column="file_created_date" property="fileCreatedDate"/>
+        <result column="statistic_type" property="statisticType"/>
+        <result column="buy_user_sum" property="buyUserSum"/>
+        <result column="sell_user_sum" property="sellUserSum"/>
+        <result column="buy_peice_sum" property="buyPeiceSum"/>
+        <result column="day_first_buy" property="dayFirstBuy"/>
+        <result column="hold_a_position" property="holdAPosition"/>
+        <result column="global_value" property="globalValue"/>
+        <result column="prospection_earnings" property="prospectionEarnings"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, create_date AS createDate, update_date AS updateDate, registering, realname_number AS realnameNumber, file_created_date AS fileCreatedDate, statistic_type AS statisticType, buy_user_sum AS buyUserSum, sell_user_sum AS sellUserSum, buy_peice_sum AS buyPeiceSum, day_first_buy AS dayFirstBuy, hold_a_position AS holdAPosition, global_value AS globalValue, prospection_earnings AS prospectionEarnings
+    </sql>
+
+
+    <select id="registeredcodeList" resultMap="BaseResultMap">
+        select
+        *
+        from
+        g_beta_statistics_user
+        where
+        1=1
+        <if test="vo.time !=null and vo.time!=''">
+            and date_format(create_date,'%y%m%d%H%i%S') &gt;= date_format(#{vo.time},'%y%m%d%H%i%S')
+        </if>
+        <if test="vo.endTime !=null and vo.endTime!=''">
+            and date_format(create_date,'%y%m%d%H%i%S') &lt;= date_format(#{vo.endTime},'%y%m%d%H%i%S')
+        </if>
+        <if test="vo.statisticType !=null and vo.statisticType!=''">
+            AND statistic_type = #{vo.statisticType}
+        </if>
+    </select>
+
+    <select id="getRegistereList" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        g_beta_statistics_user
+        WHERE 1=1
+        <if test="dto.params.beginTime != null and dto.params.beginTime != ''">
+            AND DATE_FORMAT(ho.create_date, '%Y-%m-%d') &gt;= DATE_FORMAT(#{dto.params.beginTime},'%Y-%m-%d')
+        </if>
+        <if test="dto.params.endTime != null and dto.params.endTime != ''">
+            AND DATE_FORMAT(ho.create_date, '%Y-%m-%d') &lt;= DATE_FORMAT(#{dto.params.endTime}, '%Y-%m-%d')
+        </if>
+        <if test="dto.statisticType !=null and dto.statisticType!=''">
+            AND statistic_type = #{dto.statisticType}
+        </if>
+    </select>
+
+    <select id="getSumHouseNum" resultType="java.lang.Integer">
+        SELECT SUM(house_num) sumHouseNum FROM g_beta_statistics_user WHERE statistic_type=#{type}
+    </select>
+
+</mapper>

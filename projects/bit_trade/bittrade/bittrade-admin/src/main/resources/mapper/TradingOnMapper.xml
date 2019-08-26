@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jdcloud.provider.mapper.TradingOnMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.jdcloud.provider.pojo.TradingOn">
+        <id column="id" property="id" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="currency_name" property="currencyName" />
+        <result column="currency_id" property="currencyId" />
+        <result column="number_name" property="numberName" />
+        <result column="number_id" property="numberId" />
+        <result column="status" property="status" />
+        <result column="sort" property="sort" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, create_time AS createTime, update_time AS updateTime, currency_name AS currencyName, currency_id AS currencyId, nmuber_name AS nmuberName, number_id AS numberId, status, sort
+    </sql>
+
+
+</mapper>

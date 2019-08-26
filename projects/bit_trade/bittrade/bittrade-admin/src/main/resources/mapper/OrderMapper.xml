@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jdcloud.provider.mapper.OrderMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.jdcloud.provider.pojo.Order">
+    <id column="id" property="id" />
+    <result column="user_id" property="userId" />
+    <result column="order_id" property="orderId" />
+    <result column="fee" property="fee" />
+    <result column="token" property="token" />
+    <result column="amount" property="amount" />
+    <result column="receiver_address" property="receiverAddress" />
+    <result column="type" property="type" />
+    <result column="operator" property="operator" />
+    <result column="create_time" property="createTime" />
+    <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <resultMap id="BaseResultMap_Vo" type="com.jdcloud.provider.pojo.vo.OrderVo">
+        <id column="id" property="id" />
+        <result column="user_id" property="userId" />
+        <result column="order_id" property="orderId" />
+        <result column="fee" property="fee" />
+        <result column="token" property="token" />
+        <result column="amount" property="amount" />
+        <result column="receiver_address" property="receiverAddress" />
+        <result column="type" property="type" />
+        <result column="operator" property="operator" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+
+        <result column="name" property="name" />
+        <result column="phone" property="phone" />
+    </resultMap>
+
+
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, user_id AS userId, order_id AS orderId, fee, token, amount, receiver_address AS receiverAddress, type, operator, create_time AS createTime, update_time AS updateTime
+    </sql>
+
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List_Vo">
+        id, user_id AS userId, order_id AS orderId, fee, token, amount, receiver_address AS receiverAddress, type, operator, create_time AS createTime, update_time AS updateTime,ca.name,
+       ca.phone
+    </sql>
+
+
+    <select id="orderList" resultMap="BaseResultMap_Vo">
+         id,
+         user_id AS userId,
+         order_id AS orderId,
+         fee,
+         token,
+         amount,
+         receiver_address AS receiverAddress,
+         type,
+         operator,
+         create_time AS createTime,
+         update_time AS updateTime,
+         ca. NAME,
+         ca.phone
+         from
+         t_order tor left join c_personal_card ca on tor.user_id =ca.user_id
+          where 1=1
+        <if test="orderDto.name !=null and orderDto.name !=''">
+            AND CONCAT(
+            ca.name,
+            ca.phone
+            )LIKE concat('%',#{orderDto.name}, '%')
+        </if>
+    </select>
+
+
+    <select id="getOrderCount" resultType="java.math.BigDecimal">
+        SELECT
+        SUM(der.amount)
+        FROM
+        	t_order der inner join  w_withdraw_wallet_bill bil on der.order_id = bil.order_id
+        WHERE
+        der.create_time &gt;= #{startDate}
+        AND der.create_time &lt;= #{endDate}
+        AND der.type =#{type}
+        AND der.token =#{token}
+    </select>
+
+
+    <select id="getOrderCoinCount" resultType="java.math.BigDecimal">
+        SELECT
+        SUM(der.amount)
+        FROM
+        	t_order der inner join  w_user_wallet_bill bil on der.order_id = bil.order_id
+        WHERE
+        der.create_time &gt;= #{startDate}
+        AND der.create_time &lt;= #{endDate}
+        AND der.type =#{type}
+        AND der.token =#{token}
+    </select>
+
+
+    <select id="getOrderCoinCountSucceed " resultType="java.math.BigDecimal">
+        SELECT
+        SUM(der.amount)
+        FROM
+        	t_order der inner join  w_user_wallet_bill bil on der.order_id = bil.order_id
+        WHERE
+        der.create_time &gt;= #{startDate}
+        AND der.create_time &lt;= #{endDate}
+        AND der.type =#{type}
+        AND der.token =#{token}
+    </select>
+
+
+</mapper>

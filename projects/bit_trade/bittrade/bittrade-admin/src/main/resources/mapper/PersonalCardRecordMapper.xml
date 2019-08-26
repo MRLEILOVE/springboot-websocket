@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jdcloud.provider.mapper.PersonalCardRecordMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.jdcloud.provider.pojo.PersonalCardRecord">
+        <id column="id" property="id"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="user_id" property="userId"/>
+        <result column="bank_name" property="bankName"/>
+        <result column="bank_number" property="bankNumber"/>
+        <result column="alipay" property="alipay"/>
+        <result column="alipay_number" property="alipayNumber"/>
+        <result column="wechat" property="wechat"/>
+        <result column="wechat_number" property="wechatNumber"/>
+        <result column="bank_name_now" property="bankNameNow"/>
+        <result column="bank_number_now" property="bankNumberNow"/>
+        <result column="alipay_now" property="alipayNow"/>
+        <result column="alipay_number_now" property="alipayNumberNow"/>
+        <result column="wechat_now" property="wechatNow"/>
+        <result column="wechat_number_now" property="wechatNumberNow"/>
+    </resultMap>
+
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMapVo" type="com.jdcloud.provider.pojo.vo.PersonalCardRecordVo">
+        <id column="id" property="id"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="user_id" property="userId"/>
+        <result column="bank_name" property="bankName"/>
+        <result column="bank_number" property="bankNumber"/>
+        <result column="alipay" property="alipay"/>
+        <result column="alipay_number" property="alipayNumber"/>
+        <result column="wechat" property="wechat"/>
+        <result column="wechat_number" property="wechatNumber"/>
+        <result column="bank_name_now" property="bankNameNow"/>
+        <result column="bank_number_now" property="bankNumberNow"/>
+        <result column="alipay_now" property="alipayNow"/>
+        <result column="alipay_number_now" property="alipayNumberNow"/>
+        <result column="wechat_now" property="wechatNow"/>
+        <result column="wechat_number_now" property="wechatNumberNow"/>
+
+        <result column="name" property="name"/>
+        <result column="phone" property="phone"/>
+
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, create_time AS createTime, update_time AS updateTime, user_id AS userId, bank_name AS bankName, bank_number AS bankNumber, alipay, alipay_number AS alipayNumber, wechat, wechat_number AS wechatNumber, bank_name_now AS bankNameNow, bank_number_now AS bankNumberNow, alipay_now AS alipayNow, alipay_number_now AS alipayNumberNow, wechat_now AS wechatNow, wechat_number_now AS wechatNumberNow
+    </sql>
+
+
+    <select id="getrecordList" resultMap="BaseResultMapVo">
+        SELECT
+        ca.name,
+        ca.phone,
+        <include refid="Base_Column_List"/>
+        FROM c_personal_card_record cr   LEFT JOIN c_personal_card ca ON ca.user_id = cr.user_id
+        <if test="actionDto.params.beginTime != null and actionDto.params.beginTime != ''">
+            AND DATE_FORMAT(cr.create_time, '%Y-%m-%d') &gt;= DATE_FORMAT(#{actionDto.params.beginTime},'%Y-%m-%d')
+        </if>
+        <if test="actionDto.params.endTime != null and actionDto.params.endTime != ''">
+            AND DATE_FORMAT(cr.create_time, '%Y-%m-%d') &lt;= DATE_FORMAT(#{actionDto.params.endTime}, '%Y-%m-%d')
+        </if>
+        <if test="actionDto.userName !=null and actionDto.userName!=''">
+            AND CONCAT(
+            ca.name,
+            ca.phone
+            ) like concat('%',#{actionDto.name}, '%')
+        </if>
+    </select>
+
+
+</mapper>

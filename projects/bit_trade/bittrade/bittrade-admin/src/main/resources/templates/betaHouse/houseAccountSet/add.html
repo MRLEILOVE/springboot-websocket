@@ -8,7 +8,7 @@
 
         <div class="form-group">
             <label class="col-sm-3 control-label">币种：</label>
-            <div class="col-sm-3">
+            <div class="col-sm-4">
                 <select class="form-control" id="accountConfigId" name="accountConfigId"
                         th:with="accountConfigList=${accountConfigList}"
                         style="width: auto;" >
@@ -17,40 +17,95 @@
                 </select>
             </div>
         </div>
+
         <div class="form-group">
-            <label class="col-sm-3 control-label">产出浮动比：</label>
-            <div class="col-sm-2">
-                <input class="form-control" type="text"
-                       name="outputFloatRatio" id="outputFloatRatio" required>
+            <label class="col-sm-3 control-label">固定比：</label>
+            <div class="col-sm-4">
+                <!--<input class="form-control" type="text" name="fixedRatio" id="fixedRatio" required>-->
+                <input class="form-control"  type="number" name="fixedRatio"
+                       id="fixedRatio" max="100" min="0" required>
             </div>
             <label class="control-label">% 不超过100%</label>
         </div>
 
         <div class="form-group">
-            <label class="col-sm-3 control-label">数字货币占比：</label>
-            <div class="col-sm-2">
-                <input class="form-control" type="text" name="bigitalCurrencyProportion"
-                       id="bigitalCurrencyProportion"  onkeyup="this.value=this.value.replace(/-[1-9]\d*/,'')"required>
+            <label class="col-sm-3 control-label">浮动比上限：</label>
+            <div class="col-sm-4">
+                <!--<input class="form-control" type="text" name="floatRatioUp" id="floatRatioUp" required>-->
+                <input class="form-control"  type="number" name="floatRatioUp"
+                       id="floatRatioUp" max="100" min="0" required>
             </div>
             <label class="control-label">% 不超过100%</label>
         </div>
 
         <div class="form-group">
-            <label class="col-sm-3 control-label">挖矿量浮动比例：</label>
-            <div class="col-sm-2">
-                <input class="form-control" type="text" name="floatMiningVolume"
-                       id="floatMiningVolume" required>
+            <label class="col-sm-3 control-label">浮动比下限：</label>
+            <div class="col-sm-4">
+                <!--<input class="form-control" type="text" name="floatRatioDown" id="floatRatioDown" required>-->
+                <input class="form-control"  type="number" name="floatRatioDown"
+                       id="floatRatioDown" max="100" min="0" required>
             </div>
             <label class="control-label">% 不超过100%</label>
         </div>
 
         <div class="form-group">
-            <label class="col-sm-3 control-label">获取概率：</label>
-            <div class="col-sm-2">
-                <input class="form-control" type="text" name="probability" id="probability" required>
+            <label class="col-sm-3 control-label">狗粮系数：</label>
+            <div class="col-sm-4">
+                <!--<input class="form-control" type="text" name="foodCoefficient" id="foodCoefficient" required>-->
+                <input class="form-control"  type="number" name="foodCoefficient"
+                       id="foodCoefficient" max="100000" min="0" required>
             </div>
-            <label class="control-label">% 不超过100%</label>
+            <label class="control-label">不小于0</label>
         </div>
+
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">力量系数：</label>
+            <div class="col-sm-4">
+                <!--<input class="form-control" type="text" name="powerCoefficient" id="powerCoefficient" required>-->
+                <input class="form-control"  type="number" name="powerCoefficient"
+                       id="powerCoefficient" max="100000" min="0" required>
+            </div>
+            <label class="control-label">不小于0</label>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">敏捷系数：</label>
+            <div class="col-sm-4">
+                <!--<input class="form-control" type="text" name="agilityCoefficient" id="agilityCoefficient" required>-->
+                <input class="form-control"  type="number" name="agilityCoefficient"
+                       id="agilityCoefficient" max="100000" min="0" required>
+            </div>
+            <label class="control-label">不小于0</label>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">体力系数：</label>
+            <div class="col-sm-4">
+                <!--<input class="form-control" type="text" name="staminaCoefficient" id="staminaCoefficient" required>-->
+                <input class="form-control"  type="number" name="staminaCoefficient"
+                       id="staminaCoefficient" max="100000" min="0" required>
+            </div>
+            <label class="control-label">不小于0</label>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">修正系数：</label>
+            <div class="col-sm-4">
+                <!--<input class="form-control" type="text" name="correctCoefficient" id="correctCoefficient" required>-->
+                <input class="form-control"  type="number" name="correctCoefficient"
+                       id="correctCoefficient" max="100000" min="0" required>
+            </div>
+            <label class="control-label">不小于0</label>
+        </div>
+
+        <!--<div class="form-group">-->
+            <!--<label class="col-sm-3 control-label">获取概率：</label>-->
+            <!--<div class="col-sm-2">-->
+                <!--<input class="form-control" type="text" name="probability" id="probability" required>-->
+            <!--</div>-->
+            <!--<label class="control-label">不小于0</label>-->
+        <!--</div>-->
 
         <div class="form-group">
             <label class="col-sm-3 control-label">是否启用：</label>
@@ -62,7 +117,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+    <!--    <div class="form-group">
             <label class="col-sm-3 control-label">关联智力：</label>
             <div class="col-sm-9">
                 <div class="radio-box" th:each="dict : ${@dict.getType('house_house_account_set_isCharm')}">
@@ -70,7 +125,7 @@
                     <label th:for="${dict.dictCode}" th:text="${dict.dictLabel}"></label>
                 </div>
             </div>
-        </div>
+        </div>-->
 
     </form>
 </div>

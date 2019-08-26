@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jdcloud.provider.mapper.ArticleMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.jdcloud.provider.pojo.Article">
+        <id column="id" property="id" />
+        <result column="classify_id" property="classifyId" />
+        <result column="title" property="title" />
+        <result column="short_text" property="shortText" />
+        <result column="full_text" property="fullText" />
+        <result column="image_url" property="imageUrl" />
+        <result column="published" property="published" />
+        <result column="allow_comments" property="allowComments" />
+        <result column="view_times" property="viewTimes" />
+        <result column="favorite_times" property="favoriteTimes" />
+        <result column="type" property="type" />
+        <result column="caution" property="caution" />
+        <result column="publish_time" property="publishTime" />
+        <result column="create_time" property="createTime" />
+        <result column="past_time" property="pastTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="classifyName" property="classifyName" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, classify_id AS classifyId,title, short_text AS shortText, full_text AS fullText, image_url AS imageUrl, published, allow_comments AS allowComments, view_times AS viewTimes, favorite_times AS favoriteTimes, type, caution, publish_time AS publishTime, create_time AS createTime, past_time AS pastTime, update_time AS updateTime
+    </sql>
+    <sql id="BaseAll_Column_List">
+        a.id,a.classify_id AS classifyId, a.title, a.short_text AS shortText, a.image_url AS imageUrl, a.published, a.allow_comments AS allowComments, a.view_times AS viewTimes, a.favorite_times AS favoriteTimes,
+         a.type, a.caution, a.publish_time AS publishTime, a.create_time AS createTime, a.past_time AS pastTime, a.update_time AS updateTime
+    </sql>
+    <sql id="Base_LongColumn_List">
+        a.full_text AS fullText
+    </sql>
+    <sql id="Classify_Column_List">
+        ac.name AS classifyName
+    </sql>
+
+    <select id="selectArticleById" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_article
+        where id = #{articleId}
+    </select>
+
+    <select id="selectArticleList" parameterType="com.jdcloud.provider.pojo.Article" resultMap="BaseResultMap">
+        select
+        <include refid="BaseAll_Column_List" /> , <include refid="Classify_Column_List" />
+        from t_article a left join t_article_classify ac on a.classify_id = ac.id
+        <where>
+            <if test="article.type != null and article.type != ''">
+                <if test="article.type == 4">
+                    AND a.type = #{article.type}
+                </if>
+                <if test="article.type != 4">
+                    AND (a.type = 1 or a.type = 5)
+                </if>
+            </if>
+            <if test="article.classifyId != null and article.classifyId != ''">
+                AND a.classify_id = #{article.classifyId}
+            </if>
+            <if test="article.status != null and article.status != ''">
+                <if test="article.status == 1">
+                    and date_format(a.publish_time,'%y%m%d%H%i%S') &gt; date_format(#{article.params.selectTime},'%y%m%d%H%i%S')
+                </if>
+                <if test="article.status == 2">
+                    and date_format(a.publish_time,'%y%m%d%H%i%S') &lt; date_format(#{article.params.selectTime},'%y%m%d%H%i%S')
+                    and date_format(a.past_time,'%y%m%d%H%i%S') &gt; date_format(#{article.params.selectTime},'%y%m%d%H%i%S')
+                </if>
+                <if test="article.status == 3">
+                    and date_format(a.past_time,'%y%m%d%H%i%S') &lt; date_format(#{article.params.selectTime},'%y%m%d%H%i%S')
+                </if>
+            </if>
+            <if test="article.params.status != null and article.params.status != '' and article.params.status == 1">
+                <if test="article.params.beginTime != null and article.params.beginTime != ''"><!-- 开始时间检索 -->
+                    and date_format(a.create_time,'%y%m%d') &gt;= date_format(#{article.params.beginTime},'%y%m%d')
+                </if>
+                <if test="article.params.endTime != null and article.params.endTime != ''"><!-- 结束时间检索 -->
+                    and date_format(a.create_time,'%y%m%d') &lt;= date_format(#{article.params.endTime},'%y%m%d')
+                </if>
+            </if>
+            <if test="article.params.status != null and article.params.status != '' and article.params.status == 2">
+                <if test="article.params.beginTime != null and article.params.beginTime != ''"><!-- 开始时间检索 -->
+                    and date_format(a.publish_time,'%y%m%d') &gt;= date_format(#{article.params.beginTime},'%y%m%d')
+                </if>
+                <if test="article.params.endTime != null and article.params.endTime != ''"><!-- 结束时间检索 -->
+                    and date_format(a.publish_time,'%y%m%d') &lt;= date_format(#{article.params.endTime},'%y%m%d')
+                </if>
+            </if>
+            <if test="article.title != null and article.title != ''">
+                AND a.title like concat('%', #{article.title}, '%')
+            </if>
+        </where>
+        order by a.create_time desc
+    </select>
+
+</mapper>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jdcloud.provider.mapper.PersonalAccountRecordMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.jdcloud.provider.pojo.PersonalAccountRecord">
+        <id column="id" property="id" />
+        <result column="create_time" property="createTime" />
+        <result column="user_id" property="userId" />
+        <result column="entrust_id" property="entrustId" />
+        <result column="peraccount_id" property="peraccountId" />
+        <result column="before_amount" property="beforeAmount" />
+        <result column="amount" property="amount" />
+        <result column="after_amount" property="afterAmount" />
+        <result column="product_type" property="productType" />
+        <result column="version" property="version" />
+        <result column="remark" property="remark" />
+    </resultMap>
+
+
+    <!-- 通用Vo查询映射结果 -->
+    <resultMap id="BaseResultMap_Vo" type="com.jdcloud.provider.pojo.vo.PersonalAccountRecordVo">
+        <id column="id" property="id" />
+        <result column="create_time" property="createTime" />
+        <result column="user_id" property="userId" />
+        <result column="entrust_id" property="entrustId" />
+        <result column="peraccount_id" property="peraccountId" />
+        <result column="before_amount" property="beforeAmount" />
+        <result column="amount" property="amount" />
+        <result column="after_amount" property="afterAmount" />
+        <result column="product_type" property="productType" />
+        <result column="version" property="version" />
+        <result column="remark" property="remark" />
+
+        <result column="name" property="name" />
+        <result column="phone" property="phone" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, create_time AS createTime, user_id AS userId, entrust_id AS entrustId, peraccount_id AS peraccountId, before_amount AS beforeAmount, amount, after_amount AS afterAmount, product_type AS productType, version, remark
+    </sql>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List_Vo">
+         re.id,
+         re.create_time AS createTime,
+         re.user_id AS userId,
+         re.entrust_id AS entrustId,
+         re.peraccount_id AS peraccountId,
+         re.before_amount AS beforeAmount,
+         re.amount,
+         re.after_amount AS afterAmount,
+         re.product_type AS productType,
+         re.remark AS remark,
+         re.version,
+         ca.name,
+         ca.phone
+    </sql>
+
+    <select id="getAccountList" resultMap="BaseResultMap_Vo">
+        SELECT
+        <include refid="Base_Column_List_Vo"/>
+        from
+        c_personal_account_record re
+        LEFT JOIN c_personal_card ca ON re.user_id = ca.user_id
+        where
+        1=1
+        <if test="accountRecordDto.peraccountId !=null and accountRecordDto.peraccountId !=''">
+            and  re.peraccount_id =#{accountRecordDto.peraccountId}
+        </if>
+    </select>
+
+</mapper>

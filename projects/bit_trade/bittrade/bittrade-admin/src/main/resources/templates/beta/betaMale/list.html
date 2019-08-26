@@ -76,8 +76,6 @@
 											th:value="${dict.dictValue}"></option>
 								</select>
 							</li>
-
-
 							<li>
 								<label>套餐： </label>
 								<select name="comboId" th:with="type=${list}" style="width: auto;">
@@ -87,7 +85,22 @@
 											th:value="${dict.id}"></option>
 								</select>
 							</li>
-
+							<li>
+								<label>优先级： </label>
+								<select name="waitSum" style="width: auto;">
+									<option value="">所有</option>
+									<option value="900">1档</option>
+									<option value="800">2档</option>
+									<option value="700">3档</option>
+									<option value="600">4档</option>
+									<option value="500">5档</option>
+									<option value="400">6档</option>
+									<option value="300">7档</option>
+									<option value="200">8档</option>
+									<option value="100">9档</option>
+									<option value="0">10档</option>
+								</select>
+							</li>
 							<li>
 								<a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
 								<a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
@@ -101,11 +114,10 @@
 				<a class="btn btn-success" onclick="$.operate.add()" shiro:hasPermission="betaMale:add">
 					<i class="fa fa-plus"></i> 新增
 				</a>
-				<a class="btn btn-success" onclick="$.table.importExcel();" shiro:hasPermission="orderList:importExcel">
-					<i class="fa fa-upload"></i> 导入
+				<a class="btn btn-success" onclick="$.table.importExcel('importForm');" shiro:hasPermission="orderList:importExcel">
+					<i class="fa fa-upload"></i> 导入公狗
 				</a>
 				<form id="importForm" enctype="multipart/form-data" class="mt30 mb10" style="display: none;">
-
 					<div class="col-xs-offset-1">
 						<input type="file" id="file" name="file"/>
 						<div class="mt10 pt5">
@@ -122,6 +134,24 @@
 				<a class="btn btn-success" onclick="importRecord()" shiro:hasPermission="betaMaleImportRecord:list">
 					<i class="fa fa-list"></i> 导入记录
 				</a>
+				<a class="btn btn-success" onclick="$.table.importExcel2('importFormWaitsum', 'betaMale/importExcelWaitSum', 'fileWaitsum');" shiro:hasPermission="betaMale:importExcelWaitSum">
+					<i class="fa fa-upload"></i> 导入优先级
+				</a>
+				<a class="btn btn-success" onclick="clearWaitSum()" shiro:hasPermission="betaMale:clearWaitSum">
+					<i class="fa fa-upload"></i> 重置优先级
+				</a>
+				<form id="importFormWaitsum" enctype="multipart/form-data" class="mt30 mb10" style="display: none;">
+					<div class="col-xs-offset-1">
+						<input type="file" id="fileWaitsum" name="fileWaitsum"/>
+						<div class="mt10 pt5">
+							<a href="/templateFile/公狗优先级模板.xlsx" download="公狗优先级模板.xlsx" class="btn btn-default btn-xs">
+								<i class="fa fa-file-excel-o"></i> 下载模板</a>
+						</div>
+						<font color="red" class="pull-left mt10">
+							提示：仅允许导入“xls”或“xlsx”格式文件！
+						</font>
+					</div>
+				</form>
 			</div>
 
 			<div class="col-sm-12 select-table table-striped">
@@ -334,6 +364,34 @@
 						$.modal.alertError(result.result);
 					}
 				}
+			});
+		}
+
+		function clearWaitSum() {
+
+			$.modal.confirm("是否重置优先级", function () {
+				var index = layer.msg('重置中', {
+					icon: 16,
+					shade: 0.1,
+					time: false
+				});
+				$.ajax({
+					url: prefix + "/clearWaitSum",
+					data: {},
+					cache: false,
+					dataType: "json",
+					type: 'POST',
+					success: function (result) {
+						layer.close(index);
+						if (result.code == web_status.SUCCESS) {
+							$.modal.closeAll();
+							$.modal.alertSuccess("重置成功");
+							$.table.refresh();
+						}else {
+							$.modal.alertError(result.result);
+						}
+					}
+				});
 			});
 		}
 

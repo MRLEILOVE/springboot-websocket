@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jdcloud.provider.mapper.TwalletFundAccountRecordMapper">
+    <resultMap id="BaseResultMap" type="com.jdcloud.provider.pojo.TWalletFundAccountRecord">
+        <id column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="currency" property="currency"/>
+        <result column="before_amount" property="beforeAmount"/>
+        <result column="after_amount" property="afterAmount"/>
+        <result column="change_amount" property="changeAmount"/>
+        <result column="type" property="type"/>
+        <result column="create_time" property="createTime"/>
+    </resultMap>
+
+</mapper>

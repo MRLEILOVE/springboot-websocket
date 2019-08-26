@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jdcloud.provider.mapper.WithdrawWalletBillMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.jdcloud.provider.pojo.WithdrawWalletBill">
+        <id column="id" property="id" />
+        <result column="user_id" property="userId" />
+        <result column="platform" property="platform" />
+        <result column="order_id" property="orderId" />
+        <result column="direction" property="direction" />
+        <result column="coin_type" property="coinType" />
+        <result column="token" property="token" />
+        <result column="contract" property="contract" />
+        <result column="sender_address" property="senderAddress" />
+        <result column="receiver_address" property="receiverAddress" />
+        <result column="amount" property="amount" />
+        <result column="block" property="block" />
+        <result column="tx" property="tx" />
+        <result column="trade_step" property="tradeStep" />
+        <result column="operation_type" property="operationType" />
+        <result column="transfer_flag" property="transferFlag" />
+        <result column="flag" property="flag" />
+        <result column="remark" property="remark" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMapVo" type="com.jdcloud.provider.pojo.vo.WithdrawWalletBillVo">
+        <id column="id" property="id" />
+        <result column="user_id" property="userId" />
+        <result column="platform" property="platform" />
+        <result column="order_id" property="orderId" />
+        <result column="direction" property="direction" />
+        <result column="coin_type" property="coinType" />
+        <result column="token" property="token" />
+        <result column="contract" property="contract" />
+        <result column="sender_address" property="senderAddress" />
+        <result column="receiver_address" property="receiverAddress" />
+        <result column="amount" property="amount" />
+        <result column="block" property="block" />
+        <result column="tx" property="tx" />
+        <result column="trade_step" property="tradeStep" />
+        <result column="operation_type" property="operationType" />
+        <result column="transfer_flag" property="transferFlag" />
+        <result column="flag" property="flag" />
+        <result column="remark" property="remark" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+
+        <result column="name" property="name"/>
+        <result column="phone" property="phone"/>
+
+        <result column="before_amount" property="beforeAmount"/>
+        <result column="after_amount" property="afterAmount"/>
+        <result column="change_amount" property="changeAmount"/>
+        <result column="fee" property="fee"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+         wb.id,
+         wb.user_id AS userId,
+         wb.platform,
+         wb.order_id AS orderId,
+         wb.direction,
+         wb.coin_type AS coinType,
+         wb.token,
+         wb.contract,
+         wb.sender_address AS senderAddress,
+         wb.receiver_address AS receiverAddress,
+         wb.amount,
+         wb.block,
+         wb.tx,
+         wb.trade_step AS tradeStep,
+         wb.operation_type AS operationType,
+         wb.transfer_flag AS transferFlag,
+         wb.flag,
+         wb.remark,
+         wb.create_time AS createTime,
+         wb.update_time AS updateTime
+    </sql>
+
+
+    <select id="selectWithdrawWalletBill" resultMap="BaseResultMapVo">
+        SELECT
+        ca.name,
+        ca.phone,
+
+        red.before_amount as beforeAmount,
+        red.after_amount as afterAmount,
+        red.change_amount as changeAmount,
+        red.id,
+        tor.fee,
+         wb.user_id AS userId,
+         wb.platform,
+         wb.order_id AS orderId,
+         wb.direction,
+         wb.coin_type AS coinType,
+         wb.token,
+         wb.contract,
+         wb.sender_address AS senderAddress,
+         wb.receiver_address AS receiverAddress,
+         wb.amount,
+         wb.block,
+         wb.tx,
+         wb.trade_step AS tradeStep,
+         wb.operation_type AS operationType,
+         wb.transfer_flag AS transferFlag,
+         wb.flag,
+         wb.remark,
+         wb.create_time AS createTime,
+         wb.update_time AS updateTime
+        from
+        t_wallet_fund_account_record red
+        LEFT JOIN t_order tor on tor.order_id = red.order_id
+        LEFT JOIN w_withdraw_wallet_bill wb ON  tor.order_id =wb.order_id
+        LEFT JOIN c_personal_card ca ON ca.user_id = tor.user_id
+        WHERE
+        1=1
+        <if test="dto.type!=null and dto.type!=''">
+            and red.type = #{dto.type}
+        </if>
+
+        <if test="dto.userId!=null and dto.userId!=''">
+            and  red.user_id  &lt;= #{dto.userId}
+        </if>
+        <if test="dto.name!=null and dto.name!=''">
+            AND CONCAT(
+            ca.name,
+            ca.phone
+            ) like concat('%',#{dto.name}, '%')
+        </if>
+        <if test="dto.params.beginTime != null and dto.params.beginTime != ''">
+            AND DATE_FORMAT(red.create_time, '%Y-%m-%d') &gt;= DATE_FORMAT(#{dto.params.beginTime},'%Y-%m-%d')
+        </if>
+        <if test="dto.params.endTime != null and dto.params.endTime != ''">
+            AND DATE_FORMAT(red.create_time, '%Y-%m-%d') &lt;= DATE_FORMAT(#{dto.params.endTime}, '%Y-%m-%d')
+        </if>
+        <if test="dto.transferFlag!=null and dto.transferFlag!='' or dto.transferFlag==0">
+            and wb.transfer_flag = #{dto.transferFlag}
+        </if>
+        <if test="dto.token!=null and dto.token!=''">
+            and red.currency = #{dto.token}
+        </if>
+
+    </select>
+
+    <select id="selectWithdrawWalletBillDetail" resultMap="BaseResultMapVo">
+        SELECT
+        ca.name,
+        ca.phone,
+
+        red.before_amount as beforeAmount,
+        red.after_amount as afterAmount,
+        red.change_amount as changeAmount,
+        tor.fee,
+        <include refid="Base_Column_List"/>
+        from
+        t_wallet_fund_account_record red
+        LEFT JOIN t_order tor on tor.order_id = red.order_id
+        LEFT JOIN w_withdraw_wallet_bill wb ON  tor.order_id =wb.order_id
+        LEFT JOIN c_personal_card ca ON ca.user_id = tor.user_id
+        WHERE 1=1
+         and  red.id = #{id}
+    </select>
+
+
+
+</mapper>

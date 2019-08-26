@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jdcloud.provider.mapper.GradedWithdrawalLimitMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.jdcloud.provider.pojo.GradedWithdrawalLimit">
+        <id column="id" property="id" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="account_config_id" property="accountConfigId" />
+        <result column="graded" property="graded" />
+        <result column="graded_name" property="gradedName" />
+        <result column="withdraw_to_btc" property="withdrawToBtc" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, create_time AS createTime, update_time AS updateTime, account_config_id AS accountConfigId, graded, graded_name AS gradedName, withdraw_to_btc AS withdrawToBtc
+    </sql>
+    <select id="selectGradedWithdrawalLimitPage" resultType="com.jdcloud.provider.pojo.vo.GradedWithdrawalLimitVo">
+        select
+          gwl.id,
+          gwl.create_time AS createTime,
+          gwl.update_time AS updateTime,
+          gwl.account_config_id AS accountConfigId,
+          gwl.graded,
+          gwl.graded_name AS gradedName,
+          gwl.withdraw_to_btc AS withdrawToBtc,
+          ac.id AS currencyId,
+          ac.name AS currencyName
+        from
+          t_graded_withdrawal_limit gwl
+          INNER JOIN t_account_config ac
+            ON ac.id = gwl.account_config_id
+    </select>
+
+    <delete id="deleteByIds" parameterType="Integer">
+        delete from t_graded_withdrawal_limit where id in
+        <foreach collection="array" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

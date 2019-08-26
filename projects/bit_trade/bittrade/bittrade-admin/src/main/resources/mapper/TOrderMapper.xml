@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jdcloud.provider.mapper.TOrderMapper">
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.jdcloud.provider.pojo.TOrder">
+        <id column="id" property="id" />
+        <result column="user_id" property="userId" />
+        <result column="order_id" property="orderId" />
+        <result column="fee" property="fee" />
+        <result column="token" property="token" />
+        <result column="amount" property="amount" />
+        <result column="receiver_address" property="receiverAddress" />
+        <result column="type" property="type" />
+        <result column="operator" property="operator" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+
+    <resultMap id="BaseResultMapVo" type="com.jdcloud.provider.pojo.vo.TOrderVo">
+        <id column="id" property="id" />
+        <result column="user_id" property="userId" />
+        <result column="order_id" property="orderId" />
+        <result column="fee" property="fee" />
+        <result column="token" property="token" />
+        <result column="amount" property="amount" />
+        <result column="receiver_address" property="receiverAddress" />
+        <result column="type" property="type" />
+        <result column="operator" property="operator" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="name" property="name" />
+        <result column="phone" property="phone" />
+        <result column="flag" property="flag" />
+    </resultMap>
+
+
+
+ <!--   &lt;!&ndash; 通用查询结果列 &ndash;&gt;
+    <sql id="Base_Column_List">
+        withdraw_order_id AS withdrawOrderId, user_id AS userId, amount, exchange_rate AS exchangeRate, exchange_amount AS exchangeAmount, type, status, remark, auditor, audit_time AS auditTime, create_time AS createTime, update_time AS updateTime
+    </sql>-->
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List_Vo">
+         tor.id,
+         tor.user_id AS userId,
+         tor.order_id AS orderId,
+         tor.fee,
+         tor.token,
+         tor.amount,
+         tor.receiver_address AS receiverAddress,
+         tor.type,
+         tor.operator,
+         tor.create_time AS createTime,
+         tor.update_time AS updateTime,
+         ca. NAME,
+         ca.phone
+    </sql>
+
+
+    <select id="selectTOrderList" resultMap="BaseResultMap">
+        SELECT
+       id,user_id,order_id,fee,token,amount,receiver_address,type,operator,create_time,update_time
+        FROM t_order where type='customer'
+            <if test="userId != null and userId != ''">AND user_id = #{userId}</if>
+            <if test="orderId != null and orderId != ''">AND order_id = #{orderId}</if>
+            <if test="fee != null and fee!=''">AND fee=#{fee}</if>
+            <if test="token != null and token!=''">AND token=#{token}</if>
+            <if test="type != null and type!=''">AND type=#{type}</if>
+            <if test="amount != null and amount!=''">AND amount=#{amount}</if>
+            <if test="receiverAddress != null and receiverAddress!=''">AND receiver_address=#{receiverAddress}</if>
+            <if test="beginTime != null">AND create_time >= #{beginTime}</if>
+            <if test="closeTime != null">AND create_time &lt;= #{closeTime}</if>
+        ORDER BY create_time DESC
+        LIMIT #{begin}, #{size}
+    </select>
+
+    <select id="selectOderCount" resultType="java.lang.Integer">
+
+        SELECT count(t1.id)
+        FROM t_order t1
+        <where>
+            <if test="id != null and id != ''">AND t1.type = #{type}</if>
+            <if test="userId != null and userId != ''">AND t1.user_id = #{userId}</if>
+            <if test="orderId != null and orderId != ''">AND t1.order_id = #{orderId}</if>
+            <if test="fee != null and fee!=''">AND t1.fee=#{fee}</if>
+            <if test="token != null and token!=''">AND t1.token=#{token}</if>
+            <if test="amount != null and amount!=''">AND t1.amount=#{amount}</if>
+            <if test="receiverAddress != null and receiverAddress!=''">AND t1.receiver_address=#{receiverAddress}</if>
+            <if test="type != null and type!=''">AND t1.type=#{type}</if>
+            <if test="beginTime != null">AND t1.create_time >= #{beginTime}</if>
+            <if test="closeTime != null">AND t1.create_time &lt;= #{closeTime}</if>
+        </where>
+    </select>
+
+    <select id="selectWithdrawStatistics" resultType="com.jdcloud.provider.dto.WithdrawStatistics">
+        SELECT
+          SUM(exchange_amount) totalUserWithdrawCNY,
+          SUM(amount) totalUserWithdrawUSDT,
+          COUNT(withdraw_order_id) withdrawCount,
+          type
+        FROM t_withdraw_order WHERE `status` = #{status} GROUP BY type
+    </select>
+
+    <select id="statisticsByUserId" resultType="com.jdcloud.provider.dto.StatisticsDto">
+      SELECT SUM(amount) withdrawAmount, SUM(exchange_amount) totalUserWithdrawCNY,type
+      FROM t_withdraw_order
+      WHERE user_id = #{userId} AND `status` = 1 GROUP BY type
+    </select>
+
+    <select id="queryAuditingCount" resultType="java.lang.Integer">
+        SELECT COUNT(withdraw_order_id) FROM t_withdraw_order WHERE `status` = #{status}
+    </select>
+
+
+    <select id="getCustomerList" resultMap="BaseResultMapVo">
+        SELECT
+        <include refid="Base_Column_List_Vo"/>
+        FROM
+        T_ORDER tor LEFT JOIN c_personal_card ca ON ca.user_id = tor.user_id
+        <where>
+            <if test="tOrderDto.params.beginTime != null and tOrderDto.params.beginTime != ''">
+                AND DATE_FORMAT(tor.create_time, '%Y-%m-%d') &gt;= DATE_FORMAT(#{tOrderDto.params.beginTime},'%Y-%m-%d')
+            </if>
+
+            <if test="tOrderDto.params.endTime != null and tOrderDto.params.endTime != ''">
+                AND DATE_FORMAT(tor.create_time, '%Y-%m-%d') &lt;= DATE_FORMAT(#{tOrderDto.params.endTime}, '%Y-%m-%d')
+            </if>
+            <if test="tOrderDto.name !=null and tOrderDto.name!=''">
+                AND CONCAT(
+                ca.name,
+                ca.phone
+                ) LIKE concat('%',#{tOrderDto.name}, '%')
+            </if>
+            <if test="tOrderDto.type !=null and tOrderDto.type!=''">
+                AND tor.type =#{tOrderDto.type}
+            </if>
+        </where>
+        ORDER BY FIELD(tor.type,1,-1,2,3,4,5);
+    </select>
+
+
+
+    <select id="getFinanceList" resultMap="BaseResultMapVo">
+        SELECT
+        wb.flag,
+        <include refid="Base_Column_List_Vo"/>
+        FROM
+        T_ORDER tor LEFT JOIN c_personal_card ca ON ca.user_id = tor.user_id
+        left join w_withdraw_wallet_bill wb on   tor.order_id = wb.order_id
+        <where>
+            <if test="tOrderDto.params.beginTime != null and tOrderDto.params.beginTime != ''">
+                AND DATE_FORMAT(tor.create_time, '%Y-%m-%d') &gt;= DATE_FORMAT(#{tOrderDto.params.beginTime},'%Y-%m-%d')
+            </if>
+
+            <if test="tOrderDto.params.endTime != null and tOrderDto.params.endTime != ''">
+                AND DATE_FORMAT(tor.create_time, '%Y-%m-%d') &lt;= DATE_FORMAT(#{tOrderDto.params.endTime}, '%Y-%m-%d')
+            </if>
+            <if test="tOrderDto.name !=null and tOrderDto.name!=''">
+                AND CONCAT(
+                ca.name,
+                ca.phone
+                ) LIKE concat('%',#{tOrderDto.name}, '%')
+            </if>
+            <if test="tOrderDto.type !=null and tOrderDto.type!=''">
+                AND tor.type &gt;= #{tOrderDto.type}
+            </if>
+        </where>
+        ORDER BY FIELD(tor.type,2,3,4,5,-1,1), tor.create_time asc
+    </select>
+
+
+
+    <select id="getCustomerPage" resultMap="BaseResultMapVo">
+        SELECT
+        wb.flag,
+        <include refid="Base_Column_List_Vo"/>
+        FROM
+        T_ORDER tor LEFT JOIN c_personal_card ca ON ca.user_id = tor.user_id
+        left join w_withdraw_wallet_bill wb on   tor.order_id = wb.order_id
+        <where>
+            <if test="tOrderDto.params.beginTime != null and tOrderDto.params.beginTime != ''">
+                AND DATE_FORMAT(tor.create_time, '%Y-%m-%d') &gt;= DATE_FORMAT(#{tOrderDto.params.beginTime},'%Y-%m-%d')
+            </if>
+
+            <if test="tOrderDto.params.endTime != null and tOrderDto.params.endTime != ''">
+                AND DATE_FORMAT(tor.create_time, '%Y-%m-%d') &lt;= DATE_FORMAT(#{tOrderDto.params.endTime}, '%Y-%m-%d')
+            </if>
+            <if test="tOrderDto.name !=null and tOrderDto.name!=''">
+                AND CONCAT(
+                ca.name,
+                ca.phone
+                ) LIKE concat('%',#{tOrderDto.name}, '%')
+            </if>
+        </where>
+        ORDER BY FIELD(tor.type,1,-1,2,3,4,5), tor.create_time asc
+    </select>
+
+
+
+    <select id="getCustomerDetail" resultMap="BaseResultMapVo">
+        SELECT
+        <include refid="Base_Column_List_Vo"/>
+        FROM
+        T_ORDER tor LEFT JOIN c_personal_card ca ON ca.user_id = tor.user_id
+        <where>
+            <if test="id !=null and id!=''">
+                AND tor.id =#{id}
+            </if>
+        </where>
+    </select>
+
+</mapper>

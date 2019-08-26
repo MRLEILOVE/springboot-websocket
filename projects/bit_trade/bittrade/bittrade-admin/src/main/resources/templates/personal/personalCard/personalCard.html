@@ -74,6 +74,24 @@
                                 <option th:each="i:${#numbers.sequence(0,100)}" th:text="${i}" th:value="${i}"></option>
                             </select>%
                         </li>
+                        <li>
+                            <label>用户标识： </label>
+                            <select name="oldFlag" th:with="type=${@dict.getType('personalCard_user_oldFlags')}"
+                                    style="width: auto;">
+                                <option value="">所有</option>
+                                <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                                        th:value="${dict.dictValue}"></option>
+                            </select>
+                        </li>
+                        <li>
+                            <label>重点用户标识： </label>
+                            <select name="importantFlag" th:with="type=${@dict.getType('important_flag')}"
+                                    style="width: auto;">
+                                <option value="">所有</option>
+                                <option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+                                        th:value="${dict.dictValue}"></option>
+                            </select>
+                        </li>
                     </ul>
                 </div>
             </form>
@@ -132,6 +150,7 @@
 
     var oldFlags = [[${@dict.getType('personalCard_user_oldFlags')}]];// 老用户标识0=新用户1=老用户
     var currentIdentity = [[${@dict.getType('personalCard_currentIdentity')}]];
+    var importantFlags = [[${@dict.getType('important_flag')}]];// 重点用户标识0=普通用户1=重点用户
     var prefix = ctx + "personal/personalCard";
     $(function () {
         var options = {
@@ -226,6 +245,13 @@
                     title: '用户标识',
                     formatter: function (value, row, index) {
                         return $.table.selectDictLabel(oldFlags, value);
+                    }
+                },
+                {
+                    field: 'importantFlag',
+                    title: '重点用户标识',
+                    formatter: function (value, row, index) {
+                        return $.table.selectDictLabel(importantFlags, value);
                     }
                 },
                 {

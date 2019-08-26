@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jdcloud.provider.mapper.AcceptDealerMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.jdcloud.provider.pojo.AcceptDealer">
+        <id column="id" property="id" />
+        <result column="accept_name" property="acceptName" />
+        <result column="accept_businessId" property="acceptBusinessid" />
+        <result column="accept_key" property="acceptKey" />
+        <result column="accept_recharge_url" property="acceptRechargeUrl" />
+        <result column="icon_url" property="iconUrl" />
+        <result column="sort" property="sort" />
+        <result column="status" property="status" />
+        <result column="type" property="type" />
+        <result column="remark" property="remark" />
+        <result column="create_time" property="createTime" />
+        <result column="creater" property="creater" />
+        <result column="update_time" property="updateTime" />
+        <result column="updater" property="updater" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, accept_name AS acceptName, accept_businessId AS acceptBusinessid, accept_key AS acceptKey, accept_recharge_url AS acceptRechargeUrl, icon_url AS iconUrl, sort, status, type, remark, create_time AS createTime, creater, update_time AS updateTime, updater
+    </sql>
+
+    <select id="selectAcceptDealerList" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List"/>
+        FROM t_accept_dealer
+        <where>
+            <if test="config.keyWord != null and config.keyWord != ''">
+                AND accept_name LIKE CONCAT('%',#{config.keyWord},'%')
+            </if>
+        </where>
+        ORDER BY create_time DESC
+    </select>
+
+</mapper>

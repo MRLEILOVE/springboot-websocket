@@ -13,7 +13,7 @@
 						<ul>
 							<div style="overflow: auto;">
 								<li>
-									<select name="params[status]">
+									<select name="params[status]" style="width: auto;">
 										<option value="1">创建</option>
 										<option value="2">支付</option>
 										<option value="3">完成</option>
@@ -30,7 +30,7 @@
 								</li>
 								<li>
 									<label>状态： </label>
-									<select name="orderStauts" th:with="type=${@dict.getType('beta_order_stauts')}">
+									<select name="orderStauts" style="width: auto;" th:with="type=${@dict.getType('beta_order_stauts')}">
 										<option value="">所有</option>
 										<option th:each="dict : ${type}" th:text="${dict.dictLabel}"
 												th:value="${dict.dictValue}"></option>
@@ -56,6 +56,24 @@
 							</li>
 							<li>
 								<label>搜索： </label><input type="text" placeholder="转让人&&手机号码" name="sellUserName"/>
+							</li>
+							<li>
+								<label>用户标识： </label>
+								<select name="oldFlag" th:with="type=${@dict.getType('personalCard_user_oldFlags')}"
+										style="width: auto;">
+									<option value="">所有</option>
+									<option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+											th:value="${dict.dictValue}"></option>
+								</select>
+							</li>
+							<li>
+								<label>重点用户标识： </label>
+								<select name="importantFlag" th:with="type=${@dict.getType('important_flag')}"
+										style="width: auto;">
+									<option value="">所有</option>
+									<option th:each="dict : ${type}" th:text="${dict.dictLabel}"
+											th:value="${dict.dictValue}"></option>
+								</select>
 							</li>
 							<li>
 								<a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>

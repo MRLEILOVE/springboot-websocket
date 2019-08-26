@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jdcloud.provider.mapper.HouseBackpackUseMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.jdcloud.provider.pojo.HouseBackpackUse">
+        <id column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="house_id" property="houseId"/>
+        <result column="product_id" property="productId"/>
+        <result column="backpack_id" property="backpackId"/>
+        <result column="use_count" property="useCount"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="status" property="status"/>
+        <result column="version" property="version"/>
+    </resultMap>
+
+    <!-- 通用vo查询映射结果 -->
+    <resultMap id="BaseResultMap_Vo" type="com.jdcloud.provider.pojo.vo.HouseBackpackUseVo">
+        <id column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="house_id" property="houseId"/>
+        <result column="product_id" property="productId"/>
+        <result column="backpack_id" property="backpackId"/>
+        <result column="use_count" property="useCount"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="status" property="status"/>
+        <result column="version" property="version"/>
+
+        <result column="price" property="price"/>
+        <result column="name" property="name"/>
+
+        <result column="power" property="power"/>
+        <result column="agility" property="agility"/>
+        <result column="stamina" property="stamina"/>
+        <result column="intelligence" property="intelligence"/>
+        <result column="charm" property="charm"/>
+
+        <result column="userName" property="userName"/>
+        <result column="phone" property="phone"/>
+
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, user_id AS userId, house_id AS houseId, product_id AS productId, backpack_id AS backpackId, use_count AS useCount, create_time AS createTime, update_time AS updateTime, status, version
+    </sql>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List_Vo">
+         us.id,
+         us.user_id AS userId,
+         us.house_id AS houseId,
+         us.product_id AS productId,
+         us.backpack_id AS backpackId,
+         us.use_count AS useCount,
+         us.create_time AS createTime,
+         us.update_time AS updateTime,
+         us.status,
+         us.version,
+
+         pr.price,
+         pr.name,
+         pr.power,
+         pr.agility,
+         pr.stamina,
+         pr.intelligence,
+         pr.charm
+
+
+     </sql>
+
+    <select id="getBackpackUseList" resultMap="BaseResultMap_Vo">
+        SELECT
+        ca.name as userName,
+        ca.phone,
+        <include refid="Base_Column_List_Vo"/>
+        FROM
+        g_house_backpack_use us LEFT JOIN
+        g_house_product pr ON us.product_id = pr.id
+        LEFT JOIN c_personal_card ca ON ca.user_id = us.user_id
+        WHERE
+        1=1
+        <if test="houseBackpackUseDto.houseId !=null and  houseBackpackUseDto.houseId !=''">
+            AND us.house_id = #{houseBackpackUseDto.houseId}
+        </if>
+
+        <if test="houseBackpackUseDto.userId !=null and  houseBackpackUseDto.userId !=''">
+            AND us.user_id = #{houseBackpackUseDto.userId}
+        </if>
+        <if test="houseBackpackUseDto.params.beginTime != null and houseBackpackUseDto.params.beginTime != ''">
+            AND DATE_FORMAT(us.create_time, '%Y-%m-%d') &gt;=
+            DATE_FORMAT(#{houseBackpackUseDto.params.beginTime},'%Y-%m-%d')
+        </if>
+        <if test="houseBackpackUseDto.params.endTime != null and houseBackpackUseDto.params.endTime != ''">
+            AND DATE_FORMAT(us.create_time, '%Y-%m-%d') &lt;= DATE_FORMAT(#{houseBackpackUseDto.params.endTime},
+            '%Y-%m-%d')
+        </if>
+
+        <if test="houseBackpackUseDto.status != null and houseBackpackUseDto.status != ''or houseBackpackUseDto.status ==0 ">
+            AND us.status = #{houseBackpackUseDto.status}
+        </if>
+
+    </select>
+
+
+    <select id="selectBackpackUseList" resultType="com.jdcloud.provider.pojo.vo.HouseBackpackUseVo">
+        SELECT u.id, b.user_id AS userId, u.house_id AS houseId, u.product_id AS productId,u.backpack_id AS backpackId
+        ,puppy_id AS puppyId, u.use_count AS useCount, u.create_time AS createTime, u.update_time AS updateTime,
+        u.status,u.version
+        ,b.quality, b.power, b.agility, b.stamina, b.intelligence, b.charm ,b.product_type AS
+        productType,b.speed_up_time AS speedupTime
+        FROM g_house_backpack b
+        INNER JOIN g_house_backpack_use u ON u.backpack_id=b.id AND u.status=0 AND u.house_id=#{houseId}
+        <if test="puppyId!=null">AND u.puppy_id=#{puppyId}</if>
+        WHERE b.product_type in (${type}) AND b.be_suitable=#{beSuitable}
+    </select>
+
+
+</mapper>

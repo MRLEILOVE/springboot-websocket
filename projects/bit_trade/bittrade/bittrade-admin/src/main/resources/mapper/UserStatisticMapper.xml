@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jdcloud.provider.mapper.UserStatisticMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.jdcloud.provider.pojo.UserStatistic">
+        <id column="id" property="id" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="user_id" property="userId" />
+        <result column="team_count" property="teamCount" />
+        <result column="team_count_one" property="teamCountOne" />
+        <result column="team_count_two" property="teamCountTwo" />
+        <result column="team_score_sum" property="teamScoreSum" />
+        <result column="team_score_sum_one" property="teamScoreSumOne" />
+        <result column="team_score_sum_two" property="teamScoreSumTwo" />
+        <result column="team_account_sum" property="teamAccountSum" />
+        <result column="team_account_sum_one" property="teamAccountSumOne" />
+        <result column="team_account_sum_two" property="teamAccountSumTwo" />
+        <result column="team_total_sum" property="teamTotalSum" />
+        <result column="team_total_sum_one" property="teamTotalSumOne" />
+        <result column="team_total_sum_two" property="teamTotalSumTwo" />
+        <result column="version" property="version" />
+    </resultMap>
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap_vo" type="com.jdcloud.provider.pojo.vo.UserStatisticVo">
+        <id column="id" property="id" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="user_id" property="userId" />
+        <result column="team_count" property="teamCount" />
+        <result column="team_count_one" property="teamCountOne" />
+        <result column="team_count_two" property="teamCountTwo" />
+        <result column="team_score_sum" property="teamScoreSum" />
+        <result column="team_score_sum_one" property="teamScoreSumOne" />
+        <result column="team_score_sum_two" property="teamScoreSumTwo" />
+        <result column="team_account_sum" property="teamAccountSum" />
+        <result column="team_account_sum_one" property="teamAccountSumOne" />
+        <result column="team_account_sum_two" property="teamAccountSumTwo" />
+        <result column="team_total_sum" property="teamTotalSum" />
+        <result column="team_total_sum_one" property="teamTotalSumOne" />
+        <result column="team_total_sum_two" property="teamTotalSumTwo" />
+        <result column="version" property="version" />
+
+        <result column="name" property="name" />
+        <result column="phone" property="phone" />
+        <result column="current_identity" property="currentIdentity" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, create_time AS createTime, update_time AS updateTime, team_count AS teamCount, team_count_one AS teamCountOne, team_count_two AS teamCountTwo, team_score_sum AS teamScoreSum, team_score_sum_one AS teamScoreSumOne, team_score_sum_two AS teamScoreSumTwo, team_account_sum AS teamAccountSum, team_account_sum_one AS teamAccountSumOne, team_account_sum_two AS teamAccountSumTwo, team_total_sum AS teamTotalSum, team_total_sum_one AS teamTotalSumOne, team_total_sum_two AS teamTotalSumTwo, version,user_id AS userId
+    </sql>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List_vo">
+         st.id,
+         st.create_time AS createTime,
+         st.update_time AS updateTime,
+         st.team_count AS teamCount,
+         st.team_count_one AS teamCountOne,
+         st.team_count_two AS teamCountTwo,
+         st.team_score_sum AS teamScoreSum,
+         st.team_score_sum_one AS teamScoreSumOne,
+         st.team_score_sum_two AS teamScoreSumTwo,
+         st.team_account_sum AS teamAccountSum,
+         st.team_account_sum_one AS teamAccountSumOne,
+         st.team_account_sum_two AS teamAccountSumTwo,
+         st.team_total_sum AS teamTotalSum,
+         st.team_total_sum_one AS teamTotalSumOne,
+         st.team_total_sum_two AS teamTotalSumTwo,
+         st.version,
+         st.user_id AS userId,
+         ca.name,
+         ca.phone,
+         ca.current_identity AS currentIdentity
+    </sql>
+
+    <select id="selectByParentId" resultType="java.lang.Long">
+        SELECT parent_id FROM t_user_labour WHERE user_id = #{userId}
+    </select>
+
+    <select id="selectAllUserId" resultMap="BaseResultMap">
+        SELECT id, create_time AS createTime,update_time AS updateTime, user_id AS userId FROM t_user_statistic
+    </select>
+
+
+    <select id="selectUserList" resultMap="BaseResultMap_vo">
+        SELECT
+        <include refid="Base_Column_List_vo"/>
+        FROM
+            t_user_statistic st
+        LEFT JOIN c_personal_card ca ON st.user_id = ca.user_id
+        <where>
+            1=1
+            <if test="userStatisticDto.name !=null and userStatisticDto.name !=''">
+                AND ca.name like concat('%', #{userStatisticDto.name}, '%') or ca.phone  like concat('%',#{userStatisticDto.name}, '%')
+            </if>
+            <if test="userStatisticDto.currentIdentity !=null and userStatisticDto.currentIdentity !=''">
+                AND ca.current_identity =#{userStatisticDto.currentIdentity}
+            </if>
+            <if test="userStatisticDto.userId !=null and userStatisticDto.userId !=''">
+                AND st.user_id in (SELECT user_id FROM t_user_labour WHERE parent_id=#{userStatisticDto.userId})
+            </if>
+        </where>
+    </select>
+
+
+    <select id="selectAil" resultMap="BaseResultMap_vo">
+        SELECT
+        <include refid="Base_Column_List_vo"/>
+        FROM
+        t_user_statistic st
+        LEFT JOIN c_personal_card ca ON st.user_id = ca.user_id
+        where
+        st.id =#{id}
+    </select>
+</mapper>

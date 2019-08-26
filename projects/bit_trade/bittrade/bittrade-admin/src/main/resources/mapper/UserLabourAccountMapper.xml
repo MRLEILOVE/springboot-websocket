@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jdcloud.provider.mapper.UserLabourAccountMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.jdcloud.provider.pojo.UserLabourAccount">
+        <id column="id" property="id" />
+        <result column="user_id" property="userId" />
+        <result column="balance" property="balance" />
+        <result column="total_balance" property="totalBalance" />
+        <result column="total_withdraw" property="totalWithdraw" />
+        <result column="total_volume" property="totalVolume" />
+        <result column="version" property="version" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+    <resultMap id="LabourUserVoMap" type="com.jdcloud.provider.pojo.vo.LabourUserVo">
+        <result column="loginName" property="loginName" />
+        <result column="labourMoney" property="labourMoney" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, user_id AS userId, balance, total_balance AS totalBalance, total_withdraw AS totalWithdraw, total_volume AS totalVolume, version, create_time AS createTime, update_time AS updateTime
+    </sql>
+    <!-- 通用查询结果列 -->
+    <sql id="Labour_Column_List">
+        ula.id, ula.user_id AS userId, ula.balance, ula.total_balance AS totalBalance,
+        ula.total_withdraw AS totalWithdraw, ula.total_volume AS totalVolume,
+        ula.version, ula.create_time AS createTime, ula.update_time AS updateTime ,
+        pc.phone AS loginName,pc.name AS realName,IFNULL( ul.labourTwo, 0 ) AS labourTwo
+    </sql>
+
+
+    <select id="selectLabourUserTWO" resultMap="LabourUserVoMap">
+        SELECT ul.login_name AS loginName ,labourMoney FROM t_user_labour ul LEFT JOIN
+        (SELECT order_user_id AS user_id , SUM(amount) AS labourMoney FROM t_user_labour_account_record WHERE hierarchy = 1 GROUP BY order_user_id) lar
+        on ul.user_id = lar.user_id
+        WHERE ul.user_id = #{userId}
+        ORDER BY labourMoney DESC
+    </select>
+
+    <select id="selectUserLabourList" parameterType="com.jdcloud.provider.dto.LabourDto" resultType="com.jdcloud.provider.pojo.vo.LabourVo">
+        select  <include refid="Labour_Column_List"/>
+        FROM t_user_labour_account ula
+        LEFT JOIN c_personal_card pc ON ula.user_id = pc.user_id
+        LEFT JOIN t_user_account ua ON ula.user_id = ua.user_id
+        INNER JOIN( SELECT
+        COUNT(1) AS labourTwo,
+        tul.parent_id FROM t_user_labour tul GROUP BY tul.parent_id  ) ul ON pc.user_id = ul.parent_id
+        <where>
+            <if test="labourDto.params.condition != null and labourDto.params.condition != ''">
+                <if test="labourDto.params.type == 1">
+                    AND ua.login_name like concat('%', #{labourDto.params.condition}, '%')
+                </if>
+                <if test="labourDto.params.type == 2">
+                    AND pc.name like concat('%', #{labourDto.params.condition}, '%')
+                </if>
+            </if>
+        </where>
+    </select>
+
+    <select id="selectUserLabourSum" resultType="java.math.BigDecimal">
+        SELECT SUM(total_balance) FROM t_user_labour_account
+    </select>
+
+
+    <update id="updateLabourAccount" parameterType="com.jdcloud.provider.pojo.UserLabourAccount">
+        UPDATE
+        t_user_labour_account
+        <set>
+            <if test="balance != null">balance = #{balance},</if>
+            <if test="totalBalance != null">total_balance = #{totalBalance},</if>
+            <if test="totalVolume != null">total_volume = #{totalVolume},</if>
+            update_time = #{updateTime},
+            version = version + 1
+        </set>
+        <where>
+            user_id = #{userId} AND version = #{version}
+        </where>
+    </update>
+
+
+</mapper>

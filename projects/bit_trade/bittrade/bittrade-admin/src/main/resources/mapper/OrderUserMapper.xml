@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jdcloud.provider.mapper.OrderUserMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.jdcloud.provider.pojo.OrderUser">
+        <id column="id" property="id" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="user_id" property="userId" />
+        <result column="entrust_id" property="entrustId" />
+        <result column="order_number" property="orderNumber" />
+        <result column="price" property="price" />
+        <result column="quantity" property="quantity" />
+        <result column="product_type" property="productType" />
+        <result column="total_price" property="totalPrice" />
+        <result column="type" property="type" />
+        <result column="order_stauts" property="orderStauts" />
+        <result column="order_stauts_type" property="orderStautsType" />
+        <result column="remark" property="remark" />
+        <result column="order_entrust_user_id" property="orderEntrustUserId" />
+    </resultMap>
+
+   <!--VO的映射结构-->
+    <resultMap id="BaseResultMapVo" type="com.jdcloud.provider.pojo.vo.OrderUserDetailsVo">
+        <id column="id" property="id" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="user_id" property="userId" />
+        <result column="entrust_id" property="entrustId" />
+        <result column="order_number" property="orderNumber" />
+        <result column="price" property="price" />
+        <result column="quantity" property="quantity" />
+        <result column="product_type" property="productType" />
+        <result column="total_price" property="totalPrice" />
+        <result column="type" property="type" />
+        <result column="order_stauts" property="orderStauts" />
+        <result column="order_stauts_type" property="orderStautsType" />
+        <result column="remark" property="remark" />
+        <result column="order_entrust_user_id" property="orderEntrustUserId" />
+   <!-- <result column="login_name" property="loginName" />
+        <result column="real_name" property="realName" />-->
+
+        <result column="name" property="loginName" />
+        <result column="phone" property="realName" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, create_time AS createTime, update_time AS updateTime, user_id AS userId, entrust_id AS entrustId, order_number AS orderNumber, price, quantity, product_type AS productType, total_price AS totalPrice, type, order_stauts AS orderStauts, order_stauts_type AS orderStautsType, remark, order_entrust_user_id AS orderEntrustUserId
+    </sql>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_ListVo">
+        ou.id, ou.create_time AS createTime, ou.update_time AS updateTime, ou.user_id AS userId, ou.entrust_id AS entrustId, ou.order_number AS orderNumber,
+        ou.price, ou.quantity, ou.product_type AS productType, ou.total_price AS totalPrice, ou.type, ou.order_stauts AS orderStauts, ou.order_stauts_type AS orderStautsType,
+        ou.remark, ou.order_entrust_user_id AS orderEntrustUserId,
+        ua.name AS loginName, ua.phone AS realName
+    </sql>
+
+
+    <select id="orderUserdetails" resultMap="BaseResultMap">
+        SELECT
+        ou.create_time AS createTime,
+        ou.update_time as updateTime,
+        ou.order_number AS orderNumber,
+        ou.price AS price,
+        ou.quantity AS quantity,
+        ou.product_type AS productType,
+        ou.total_price AS totalPrice,
+        ou.type as type,
+        ou.order_stauts AS orderStauts,
+        ou.remark AS remark,
+        ou.order_entrust_user_id AS orderEntrustUserId
+        FROM
+            c_order_user ou
+            WHERE
+            ou.id =#{id}
+    </select>
+
+
+    <select id="selectOrderUserPage" resultMap="BaseResultMap">
+          select * from  c_order_user ou
+          where 1 = 1
+            <if test="orderUserListDto.orderStauts != null and orderUserListDto.orderStauts != '' or orderUserListDto.orderStauts == 0">
+               AND ou.order_stauts = #{orderUserListDto.orderStauts}
+            </if>
+            <if test="orderUserListDto.orderNumber != null and orderUserListDto.orderNumber != ''">
+                AND ou.order_number like concat('%', #{orderUserListDto.orderNumber}, '%')
+            </if>
+            <if test="orderUserListDto.productType != null and orderUserListDto.productType != ''">
+                AND ou.product_type = #{orderUserListDto.productType}
+            </if>
+            <if test="orderUserListDto.type != null and orderUserListDto.type != ''">
+                AND ou.type = #{orderUserListDto.type}
+            </if>
+            <if test="orderUserListDto.orderStautsType != null and orderUserListDto.orderStautsType != '' ">
+                AND ou.order_stauts_type = #{orderUserListDto.orderStautsType}
+            </if>
+
+    </select>
+
+
+    <select id="selectOrderUserDetails" resultMap="BaseResultMapVo">
+        SELECT <include refid="Base_Column_ListVo"/>
+        FROM
+        c_order_user ou left JOIN c_personal_card ua on ua.user_id = ou.user_id
+        WHERE
+        ou.id = #{id}
+
+    </select>
+
+    <select id="selectOrderUserDetailsPage" resultMap="BaseResultMapVo">
+        SELECT <include refid="Base_Column_ListVo"/>
+        FROM
+        c_order_user ou left JOIN c_personal_card ua on ua.user_id = ou.user_id
+        WHERE 1 = 1
+        <if test="orderUserListDto.orderStauts != null and orderUserListDto.orderStauts != '' or orderUserListDto.orderStauts == 0">
+            AND ou.order_stauts = #{orderUserListDto.orderStauts}
+        </if>
+        <if test="orderUserListDto.orderNumber != null and orderUserListDto.orderNumber != ''">
+            AND ou.order_number like concat('%', #{orderUserListDto.orderNumber}, '%')
+        </if>
+        <if test="orderUserListDto.productType != null and orderUserListDto.productType != ''">
+            AND ou.product_type = #{orderUserListDto.productType}
+        </if>
+        <if test="orderUserListDto.type != null and orderUserListDto.type != ''">
+            AND ou.type = #{orderUserListDto.type}
+        </if>
+        <if test="orderUserListDto.orderStautsType != null and orderUserListDto.orderStautsType != '' ">
+            AND ou.order_stauts_type = #{orderUserListDto.orderStautsType}
+        </if>
+        <if test="orderUserListDto.id != null and orderUserListDto.id != '' ">
+        </if>
+        <if test="orderUserListDto.loginName != null and orderUserListDto.loginName != ''">
+            AND ua.phone like concat('%', #{orderUserListDto.loginName}, '%')
+        </if>
+        <if test="orderUserListDto.realName != null and orderUserListDto.realName != ''">
+            AND ua.name like concat('%', #{orderUserListDto.realName}, '%')
+        </if>
+        <if test="orderUserListDto.entrustId !=null and orderUserListDto.entrustId !=''">
+            AND ou.entrust_id =#{orderUserListDto.entrustId}
+        </if>
+
+        <if test="orderUserListDto.params.beginTime != null and orderUserListDto.params.beginTime != ''"><!-- 开始时间检索 -->
+            <![CDATA[
+				AND	DATE_FORMAT(ou.create_time, '%Y-%m-%d')>= DATE_FORMAT(#{orderUserListDto.params.beginTime}, '%Y-%m-%d')
+			]]>
+        </if>
+        <if test="orderUserListDto.params.endTime != null and orderUserListDto.params.endTime != ''"><!-- 开始时间检索 -->
+            <![CDATA[
+				AND	DATE_FORMAT(ou.create_time, '%Y-%m-%d')<= DATE_FORMAT(#{orderUserListDto.params.beginTime}, '%Y-%m-%d')
+			]]>
+        </if>
+    </select>
+
+
+    <select id="OrderUserExcelList" resultMap="BaseResultMapVo">
+        SELECT <include refid="Base_Column_ListVo"/>
+        FROM
+        c_order_user ou left JOIN c_personal_card ua on ua.user_id = ou.user_id
+        WHERE 1 = 1
+        <if test="orderUserListDto.orderStauts != null and orderUserListDto.orderStauts != '' or orderUserListDto.orderStauts == 0">
+            AND ou.order_stauts = #{orderUserListDto.orderStauts}
+        </if>
+        <if test="orderUserListDto.orderNumber != null and orderUserListDto.orderNumber != ''">
+            AND ou.order_number like concat('%', #{orderUserListDto.orderNumber}, '%')
+        </if>
+        <if test="orderUserListDto.productType != null and orderUserListDto.productType != ''">
+            AND ou.product_type = #{orderUserListDto.productType}
+        </if>
+        <if test="orderUserListDto.type != null and orderUserListDto.type != ''">
+            AND ou.type = #{orderUserListDto.type}
+        </if>
+        <if test="orderUserListDto.orderStautsType != null and orderUserListDto.orderStautsType != '' ">
+            AND ou.order_stauts_type = #{orderUserListDto.orderStautsType}
+        </if>
+        <if test="orderUserListDto.id != null and orderUserListDto.id != '' ">
+            AND ou.id = #{orderUserListDto.id}
+        </if>
+        <if test="orderUserListDto.loginName != null and orderUserListDto.loginName != ''">
+            AND ua.phone like concat('%', #{orderUserListDto.loginName}, '%')
+        </if>
+        <if test="orderUserListDto.realName != null and orderUserListDto.realName != ''">
+            AND ua.name like concat('%', #{orderUserListDto.realName}, '%')
+        </if>
+        order by  ou.id DESC
+    </select>
+
+</mapper>

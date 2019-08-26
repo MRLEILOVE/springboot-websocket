@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org"
+	xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+	<div class="container-div">
+		<div class="row">
+			<div class="col-sm-12 search-collapse">
+
+				<form id="operlog-form">
+					<div class="select-list">
+						<ul>
+							<div style="overflow: auto;">
+								<li class="select-time">
+									<label>时间： </label>
+									<input type="text" class="time-input" id="startTime" placeholder="开始时间"
+										   name="params[beginTime]"/>
+									<span>-</span>
+									<input type="text" class="time-input" id="endTime" placeholder="结束时间"
+										   name="params[endTime]"/>
+								</li>
+								<li>
+									<label>套餐： </label><select name="comboId" th:with="type=${list}">
+									<option value="">所有</option>
+									<option th:each="dict : ${type}" th:text="${dict.dogName+'&nbsp;&nbsp;&nbsp;周期'+dict.days+
+								'&nbsp;&nbsp;天'+'&nbsp;&nbsp;&nbsp; 价格'+dict.minPrice+'~'+dict.maxPrice+'&nbsp;&nbsp;&nbsp;&nbsp;收益率：'+dict.earningsRatio+'%'}"
+											th:value="${dict.id}"></option>
+								</select>
+								</li>
+							</div>
+							<li>
+								<label>搜索： </label><input type="text" placeholder="订单编号" name="orderNumber"/>
+							</li>
+							<li>
+								<label>搜索： </label><input type="text" placeholder="转让人&&手机号码" name="sellUserName"/>
+							</li>
+							<li>
+								<a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+								<a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+							</li>
+						</ul>
+					</div>
+				</form>
+			</div>
+
+			<div class="btn-group-sm" id="toolbar" role="group">
+
+			</div>
+
+			<div class="col-sm-12 select-table table-striped" style="overflow: overlay;height: 78%;">
+				<table id="bootstrap-table" data-mobile-responsive="true"></table>
+			</div>
+		</div>
+	</div>
+	
+	<div th:include="include :: footer"></div>
+	<script th:inline="javascript">
+        var orderStautss = [[${@dict.getType('beta_order_stauts')}]];//订单状态
+        var orderDetails = [[${@dict.getType('orderListDetails:edit')}]];//订单详情
+
+		var prefix = ctx + "beta/betaOrder";
+		$(function() {
+		    var options = {
+                url: prefix + "/auditListData",
+                updateUrl: prefix + "/edit/{id}",
+                exportUrl: prefix + "/export",
+                sortName: "bo.order_stauts asc,bo.create_time",
+                sortOrder: "desc",
+		        modalName: "详情",
+		        search: false,
+		        showExport: false,
+		        columns: [
+                    {
+                        field: 'orderNumber',
+                        title: '编号'
+                    },
+                    {
+                        field: 'dogName',
+                        title: '名称'
+                    },
+                    {
+                        field: 'sellUserName',
+                        title: '转让人',
+                        formatter: function(value, row, index) {
+                            var actions = [];
+                            var sellUserName = value+"/"+row.sellUserPhone;
+                            actions.push('<span class="depreciate">' + sellUserName + '</span>');
+                            return actions.join('');
+                        }
+                    },
+					{
+                        field: 'price',
+                        title: '价格',
+						sortable: true
+                    },
+                    {
+                        field: 'earningsPrice',
+                        title: '收益价'
+                    },
+                    {
+                        field: 'orderStauts',
+                        title: '状态',
+                        formatter: function(value, row, index) {
+                            return $.table.selectDictLabel(orderStautss, value);
+                        }
+                    },
+                    {
+                        field: 'feminaId',
+                        title: '狗Id'
+                    },
+				 	{
+					title: '操作',
+					align: 'center',
+					formatter: function(value, row, index) {
+						var actions = [];
+                        actions.push('<a class="btn btn-info btn-xs'+orderDetails+'" href="#" onclick="edits(\'' + row.id + '\')"><i class="fa fa-key"></i>订单详情</a>');
+						return actions.join('');
+					}
+				}]
+		    };
+		    $.table.init(options);
+		});
+
+       //订单详情
+        function edits(id) {
+            var url = prefix + '/orderListDetails/' + id;
+            $.modal.openFull("订单详情",url,888,450)
+        }
+	</script>
+</form>
+</body>
+</html>

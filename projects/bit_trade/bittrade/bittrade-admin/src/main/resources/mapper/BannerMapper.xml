@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jdcloud.provider.mapper.BannerMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.jdcloud.provider.pojo.Banner">
+        <id column="id" property="id" />
+        <result column="title" property="title" />
+        <result column="picture_url" property="pictureUrl" />
+        <result column="app_jump_url" property="appJumpUrl" />
+        <result column="jump_url" property="jumpUrl" />
+        <result column="sort" property="sort" />
+        <result column="keyword" property="keyword" />
+        <result column="content" property="content" />
+        <result column="type" property="type" />
+        <result column="status" property="status" />
+        <result column="start_time" property="startTime" />
+        <result column="close_time" property="closeTime" />
+        <result column="creater" property="creater" />
+        <result column="create_time" property="createTime" />
+        <result column="updater" property="updater" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, title, picture_url AS pictureUrl, app_jump_url AS appJumpUrl, jump_url AS jumpUrl, sort, keyword, content, type, status, start_time AS startTime, close_time AS closeTime, creater, create_time AS createTime, updater, update_time AS updateTime
+    </sql>
+
+    <select id="selectBannerList" resultType="com.jdcloud.provider.dto.BannerDto">
+        SELECT
+        (CASE
+         WHEN (start_time > NOW()) THEN 1
+         WHEN (NOW() > start_time AND close_time > NOW()) then 2
+         WHEN NOW() > close_time THEN 3 END) timeStatus,
+        <include refid="Base_Column_List"></include>
+        FROM t_banner
+        <where>
+            <if test="timeStatus == 1">AND start_time > NOW()</if>
+            <if test="timeStatus == 2">AND NOW() > start_time AND close_time > NOW()</if>
+            <if test="timeStatus == 3">AND NOW() > close_time</if>
+            <if test="keyWord != null">AND title LIKE CONCAT('%',#{keyWords},'%')</if>
+            <if test="beginTime != null">AND start_time >= #{beginTime}</if>
+            <if test="closeTime != null">AND start_time &lt;= #{closeTime}</if>
+        </where>
+        ORDER BY create_time DESC
+        LIMIT #{begin}, #{size}
+    </select>
+
+    <select id="selectBannerCount" resultType="java.lang.Integer">
+        SELECT
+        count(id)
+        FROM t_banner
+        <where>
+            <if test="timeStatus == 1">AND start_time > NOW()</if>
+            <if test="timeStatus == 2">AND NOW() > start_time AND close_time > NOW()</if>
+            <if test="timeStatus == 3">AND NOW() > close_time</if>
+            <if test="keyWord != null">AND title LIKE CONCAT('%',#{keyWords},'%')</if>
+            <if test="beginTime != null">AND start_time >= #{beginTime}</if>
+            <if test="closeTime != null">AND start_time &lt;= #{closeTime}</if>
+        </where>
+    </select>
+</mapper>

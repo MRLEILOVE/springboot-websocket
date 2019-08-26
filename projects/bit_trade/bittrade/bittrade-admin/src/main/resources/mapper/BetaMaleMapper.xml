@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jdcloud.provider.mapper.BetaMaleMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.jdcloud.provider.pojo.BetaMale">
+        <id column="id" property="id" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="combo_id" property="comboId" />
+        <result column="price" property="price" />
+        <result column="earnings_price" property="earningsPrice" />
+        <result column="premium_stauts" property="premiumStauts" />
+        <result column="presell_time" property="presellTime" />
+        <result column="beta_activate" property="betaActivate" />
+        <result column="user_id" property="userId" />
+        <result column="order_id" property="orderId" />
+        <result column="sell_status" property="sellStatus" />
+        <result column="platform_and_user" property="platformAndUser" />
+        <result column="wait_sum" property="waitSum" />
+    </resultMap>
+
+    <!-- vo通用查询映射结果 -->
+    <resultMap id="BaseResultMap_vo" type="com.jdcloud.provider.pojo.vo.BetaMaleVo">
+        <id column="id" property="id" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="combo_id" property="comboId" />
+        <result column="price" property="price" />
+        <result column="earnings_price" property="earningsPrice" />
+        <result column="premium_stauts" property="premiumStauts" />
+        <result column="presell_time" property="presellTime" />
+        <result column="beta_activate" property="betaActivate" />
+        <result column="user_id" property="userId" />
+        <result column="order_id" property="orderId" />
+        <result column="sell_status" property="sellStatus" />
+        <result column="platform_and_user" property="platformAndUser" />
+
+        <result column="days" property="days" />
+        <result column="min_price" property="minPrice" />
+        <result column="max_price" property="maxPrice" />
+        <result column="earnings_ratio" property="earningsRatio" />
+        <result column="differential" property="differential" />
+        <result column="dog_name" property="dogName" />
+        <result column="level" property="level" />
+        <result column="start_time" property="startTime" />
+        <result column="end_time" property="endTime" />
+        <result column="dog_img" property="dogImg" />
+
+        <result column="name" property="name" />
+        <result column="phone" property="phone" />
+
+        <result column="orderStauts" property="orderStauts" />
+        <result column="maleRemainSum" property="maleRemainSum" />
+    </resultMap>
+
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+         id,
+         create_time AS createTime,
+         update_time AS updateTime,
+         combo_id AS comboId,
+         price,
+         earnings_price AS earningsPrice,
+         premium_stauts AS premiumStauts,
+         presell_time AS presellTime,
+         beta_activate AS betaActivate,
+         user_id AS userId,
+         order_id AS orderId,
+         sell_status AS sellStatus,
+         platform_and_user AS platformAndUser
+    </sql>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List_vo">
+         b.user_id AS userId,
+         b.id,
+         b.create_time AS createTime,
+         b.update_time AS updateTime,
+         b.combo_id AS comboId,
+         b.price,
+         b.earnings_price AS earningsPrice,
+         b.premium_stauts AS premiumStauts,
+         b.presell_time AS presellTime,
+         b.beta_activate AS betaActivate,
+         b.order_id AS orderId,
+         b.sell_status AS sellStatus,
+         b.platform_and_user AS platformAndUser,
+         co.days,
+         co.min_price AS minPrice,
+         co.max_price AS maxPrice,
+         co.earnings_ratio AS earningsRatio,
+         co.differential,
+         co.dog_name AS dogName,
+         co.LEVEL,
+         co.start_time AS startTime,
+         co.end_time AS endTime,
+         co.dog_img AS dogImg,
+
+         ca.name,
+         ca.phone
+   </sql>
+
+
+    <select id="selectBetaMaleListPage" resultMap="BaseResultMap_vo">
+        SELECT
+        <include refid="Base_Column_List_vo"/>
+        ,gbo.order_stauts AS orderStauts
+        FROM g_beta_male b
+        INNER JOIN g_combo_group co on b.combo_id =co.id
+        LEFT JOIN c_personal_card ca on ca.user_id = b.user_id
+        LEFT JOIN g_beta_order gbo on b.order_id = gbo.id
+        <where>
+            <if test="betaMaleDto.premiumStauts != null and betaMaleDto.premiumStauts != ''">
+                and b.premium_stauts =#{betaMaleDto.premiumStauts}
+            </if>
+            <if test="betaMaleDto.betaActivate != null and betaMaleDto.betaActivate!='' or betaMaleDto.betaActivate == 0">
+                and b.beta_activate =#{betaMaleDto.betaActivate}
+            </if>
+            <if test="betaMaleDto.params.beginTime != null and betaMaleDto.params.beginTime !=''">
+                and DATE_FORMAT(b.create_time, '%Y-%m-%d') &gt;= DATE_FORMAT(#{betaMaleDto.params.beginTime}, '%Y-%m-%d')
+            </if>
+            <if test="betaMaleDto.params.endTime != null and betaMaleDto.params.endTime !=''">
+                and DATE_FORMAT(b.create_time, '%Y-%m-%d') &lt;= DATE_FORMAT(#{betaMaleDto.params.endTime}, '%Y-%m-%d')
+            </if>
+            <if test="betaMaleDto.platformAndUser != null and betaMaleDto.platformAndUser!='' or betaMaleDto.platformAndUser==0">
+                and b.platform_and_user =#{betaMaleDto.platformAndUser}
+            </if>
+            <if test="betaMaleDto.comboId != null and betaMaleDto.comboId!=''">
+                AND co.id = #{betaMaleDto.comboId}
+            </if>
+            <if test="betaMaleDto.name != null and betaMaleDto.name != ''">
+                AND concat(IFNULL(ca.name,''),IFNULL(ca.phone,'')) like concat('%',#{betaMaleDto.name}, '%')
+            </if>
+            <if test="betaMaleDto.betasellStatus != null">
+                AND b.sell_status = #{betaMaleDto.betasellStatus}
+            </if>
+            <if test="betaMaleDto.betaOrderStauts != null">
+                AND gbo.order_stauts = #{betaMaleDto.betaOrderStauts}
+            </if>
+            <if test="betaMaleDto.price != null and betaMaleDto.price!=''">
+                AND b.price = #{betaMaleDto.price}
+            </if>
+
+            <if test="betaMaleDto.userId != null and betaMaleDto.userId!=''">
+                AND b.user_id = #{betaMaleDto.userId}
+            </if>
+
+            <if test="betaMaleDto.id != null and betaMaleDto.id!=''">
+                AND b.id = #{betaMaleDto.id}
+            </if>
+            <if test="betaMaleDto.waitSum != null">
+                <if test="betaMaleDto.waitSum != 0 ">
+                    AND b.wait_sum = #{betaMaleDto.waitSum}
+                </if>
+                <if test="betaMaleDto.waitSum == 0 ">
+                    AND b.wait_sum &gt; 0 AND b.wait_sum &lt; 100
+                </if>
+            </if>
+        </where>
+    </select>
+
+
+    <select id="selectBetaMale" resultMap="BaseResultMap_vo">
+        SELECT
+        <include refid="Base_Column_List_vo"/>
+        from g_beta_male b INNER join g_combo_group co on b.combo_id =co.id
+        left join c_personal_card ca on ca.user_id = b.user_id
+        where b.id=#{id}
+    </select>
+
+    <update id="updateEditRecovery" parameterType="com.jdcloud.provider.pojo.BetaMale">
+        update g_beta_male
+        <set>
+            <if test="comboId != null and comboId != ''">combo_id = #{comboId},</if>
+            <if test="price != null and price!=''">price = #{price},</if>
+            <if test="earningsPrice != null and earningsPrice != ''">earnings_price = #{earningsPrice},</if>
+            <if test="premiumStauts != null and premiumStauts != ''">premium_stauts = #{premiumStauts},</if>
+            <if test="betaActivate != null and betaActivate != ''">beta_activate = #{betaActivate},</if>
+            <if test="userId != ''">user_id = #{userId}</if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteByIds" parameterType="Integer">
+        delete from g_beta_male where id in
+        <foreach collection="array" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="selectExpectedTime" resultMap="BaseResultMap">
+        select * from g_beta_male where now() &gt; presell_time
+        and id = #{id} and sell_status = 0
+    </select>
+
+    <select id="selectByTodayRemain" resultMap="BaseResultMap_vo">
+        SELECT
+        cg.id AS combo_id,
+        IFNULL( t.remainSum, 0 ) maleRemainSum
+        FROM
+        g_combo_group cg
+        LEFT JOIN (
+        SELECT
+        bm.combo_id,
+        COUNT( combo_id ) remainSum
+        FROM
+        g_beta_male bm
+        WHERE
+        bm.sell_status = 0
+        AND bm.beta_activate = 1
+        AND bm.presell_time &lt;= #{days}
+        GROUP BY
+        bm.combo_id
+        ) t ON cg.id = t.combo_id
+    </select>
+
+    <select id="selectByTodayRemainOne" resultMap="BaseResultMap_vo">
+        SELECT
+        cg.id AS combo_id,
+        IFNULL( t.remainSum, 0 ) maleRemainSum
+        FROM
+        g_combo_group cg
+        LEFT JOIN (
+        SELECT
+        bm.combo_id,
+        COUNT( combo_id ) remainSum
+        FROM
+        g_beta_male bm
+        WHERE
+        bm.sell_status = 0
+        AND bm.beta_activate = 1
+        AND bm.presell_time &lt;= #{days}
+        GROUP BY
+        bm.combo_id
+        ) t ON cg.id = t.combo_id
+        where cg.id = #{comboId}
+    </select>
+
+    <update id="updateByOrderNumber">
+        UPDATE g_beta_male SET wait_sum = #{waitSum} WHERE id in
+	    (SELECT femina_id FROM g_beta_order WHERE order_number = #{orderNumber})
+    </update>
+
+    <update id="clearWaitSum">
+        UPDATE g_beta_male SET wait_sum = 0
+    </update>
+
+</mapper>
