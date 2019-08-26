@@ -7,7 +7,6 @@ import com.core.web.constant.entity.LoginUser;
 import com.wallet.biz.api.service.IWCoinConfigService;
 import com.wallet.biz.api.service.IWOrderService;
 import com.wallet.biz.pojo.vo.AddressParamDto;
-import com.wallet.biz.pojo.vo.OrderVO;
 import com.wallet.biz.pojo.vo.WithdrawBillParamVo;
 import com.wallet.biz.api.service.IwalletCaseService;
 import io.swagger.annotations.ApiModel;

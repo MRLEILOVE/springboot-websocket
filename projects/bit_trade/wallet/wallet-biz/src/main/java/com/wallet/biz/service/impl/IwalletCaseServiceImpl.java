@@ -73,7 +73,7 @@ public class IwalletCaseServiceImpl implements IwalletCaseService {
         WUserWallet userWallet = wUserWalletService.getOne(new QueryWrapper<>(WUserWallet.builder()
                 .userId(userId)
                 .coinType(addressParamDto.getCoinType())
-                .build()), true);
+                .build()));
 
         if (userWallet == null) {
             //创建钱包
@@ -118,6 +118,19 @@ public class IwalletCaseServiceImpl implements IwalletCaseService {
                 .token(addressParamDto.getToken())
                 .orderType(-1).build()));
         return ReturnDTO.ok(list);
+    }
+
+    @Override
+    public ReturnDTO qrCode(Long userId, AddressParamDto addressParamDto) {
+        WUserWallet userWallet = wUserWalletService.getOne(new QueryWrapper<>(WUserWallet.builder()
+                .userId(userId)
+                .coinType(addressParamDto.getCoinType())
+                .build()));
+
+        if (userWallet == null || userWallet.getCodeQr()==null) {
+            return ReturnDTO.error("该用户还没有二维码");
+        }
+        return ReturnDTO.ok(userWallet.getCodeQr());
     }
 
     @Override

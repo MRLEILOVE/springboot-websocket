@@ -14,7 +14,6 @@ import com.wallet.biz.pojo.model.WCoin;
 import com.wallet.biz.pojo.model.WCoinConfig;
 import com.wallet.biz.pojo.model.WWalletAccount;
 import com.wallet.biz.pojo.vo.AddressParamDto;
-import com.wallet.biz.pojo.vo.OrderVO;
 import com.wallet.biz.tool.SnowFlake;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;

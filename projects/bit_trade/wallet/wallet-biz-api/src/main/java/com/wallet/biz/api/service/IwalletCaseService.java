@@ -21,4 +21,6 @@ public interface IwalletCaseService {
     ReturnDTO rechargeRecord(Long userId, AddressParamDto addressParamDto);
 
     ReturnDTO withdrawRecord(Long userId, AddressParamDto addressParamDto);
+
+    ReturnDTO qrCode(Long userId, AddressParamDto addressParamDto);
 }
