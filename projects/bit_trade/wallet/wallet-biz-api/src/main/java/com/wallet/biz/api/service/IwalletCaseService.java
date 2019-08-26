@@ -1,7 +1,8 @@
 package com.wallet.biz.api.service;
 
 import com.core.common.DTO.ReturnDTO;
-import com.wallet.biz.pojo.vo.AddressParamDto;
+import com.wallet.biz.pojo.vo.CoinTypeVO;
+import com.wallet.biz.pojo.vo.WalletAddressVO;
 import com.wallet.biz.pojo.vo.WithdrawBillParamVo;
 
 
@@ -16,11 +17,13 @@ public interface IwalletCaseService {
 
     ReturnDTO confirmTibi(WithdrawBillParamVo withdrawBillParamVo,Long userID);
 
-    ReturnDTO chongbi(Long userId, AddressParamDto addressParamDto);
+    ReturnDTO chongbi(Long userId, CoinTypeVO coinTypeVO);
 
-    ReturnDTO rechargeRecord(Long userId, AddressParamDto addressParamDto);
+    ReturnDTO rechargeRecord(Long userId, CoinTypeVO coinTypeVO);
 
-    ReturnDTO withdrawRecord(Long userId, AddressParamDto addressParamDto);
+    ReturnDTO withdrawRecord(Long userId, CoinTypeVO coinTypeVO);
 
-    ReturnDTO qrCode(Long userId, AddressParamDto addressParamDto);
+    ReturnDTO qrCode(Long userId, CoinTypeVO coinTypeVO);
+
+    ReturnDTO addaddress(Long userId, WalletAddressVO walletAddressVO);
 }

@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.core.common.DTO.ReturnDTO;
 import com.wallet.biz.api.service.IWCoinService;
 import com.wallet.biz.pojo.model.WCoin;
-import com.wallet.biz.pojo.vo.AddressParamDto;
+import com.wallet.biz.pojo.vo.CoinTypeVO;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -34,21 +34,24 @@ public class WCoinController {
     public ReturnDTO rechargecoinlist(){
         List<WCoin> Rechargecoinlist = wCoinService.list(new QueryWrapper<>(WCoin.builder()
                 .isRecharge("E").build()));
+        if (null == Rechargecoinlist){
+            return ReturnDTO.error("");
+        }
         return getReturnDTO(Rechargecoinlist);
     }
 
     @GetMapping("/Withdrawcoinlist")
     @ApiOperation(value = "可充币种列表", notes = "可充币种列表")
-    public ReturnDTO Withdrawcoinlist(){
+    public ReturnDTO withdrawcoinlist(){
         List<WCoin> Withdrawcoinlist = wCoinService.list(new QueryWrapper<>(WCoin.builder()
                 .isWithdraw("E").build()));
         return getReturnDTO(Withdrawcoinlist);
     }
 
     private ReturnDTO getReturnDTO(List<WCoin> WCoinlist) {
-        List<AddressParamDto> coinlist = new ArrayList<>();
+        List<CoinTypeVO> coinlist = new ArrayList<>();
         for (WCoin list : WCoinlist){
-            AddressParamDto coin = new AddressParamDto();
+            CoinTypeVO coin = new CoinTypeVO();
             coin.setCoinType(list.getCoinType());
             coin.setToken(list.getToken());
             coinlist.add(coin);

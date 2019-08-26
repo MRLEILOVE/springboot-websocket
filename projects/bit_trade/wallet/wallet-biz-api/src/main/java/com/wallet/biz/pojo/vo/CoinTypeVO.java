@@ -12,7 +12,9 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 @ApiModel("币种")
-public class AddressParamDto {
+public class CoinTypeVO {
+
+    private static final long serialVersionUID = 1L;
 
  //   @NotNull(message = "币种类型不能为空")
     @ApiModelProperty("币种类型")

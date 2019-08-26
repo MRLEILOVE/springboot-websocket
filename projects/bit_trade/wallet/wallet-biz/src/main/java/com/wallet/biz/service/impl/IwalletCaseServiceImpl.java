@@ -1,17 +1,16 @@
 package com.wallet.biz.service.impl;
 
-import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.bittrade.pojo.vo.RecordVO;
 import com.core.common.DTO.ReturnDTO;
 import com.wallet.biz.api.service.*;
+import com.wallet.biz.pojo.model.WCoin;
 import com.wallet.biz.pojo.model.WOrder;
 import com.wallet.biz.pojo.model.WUserWallet;
-import com.wallet.biz.pojo.vo.AddressParamDto;
+import com.wallet.biz.pojo.model.WWalletAddress;
+import com.wallet.biz.pojo.vo.CoinTypeVO;
 import com.wallet.biz.pojo.vo.AddressResultDto;
+import com.wallet.biz.pojo.vo.WalletAddressVO;
 import com.wallet.biz.pojo.vo.WithdrawBillParamVo;
-import com.wallet.biz.tool.SnowFlake;
 import com.wallet.biz.utils.AesUtils;
 import org.bitcoinj.core.ECKey;
 import org.bitcoinj.core.NetworkParameters;
@@ -20,6 +19,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,6 +34,10 @@ public class IwalletCaseServiceImpl implements IwalletCaseService {
 */
     @Autowired
     IWWalletAccountService wWalletAccountService;
+    @Autowired
+    IWWalletAddressService wWalletAddressService;
+    @Autowired
+    IWCoinService wCoinService;
     @Autowired
     IWWalletBillService walletBillService;
     @Autowired
@@ -69,10 +73,10 @@ public class IwalletCaseServiceImpl implements IwalletCaseService {
     }
 
     @Override
-    public ReturnDTO chongbi(Long userId, AddressParamDto addressParamDto) {
+    public ReturnDTO chongbi(Long userId, CoinTypeVO coinTypeVO) {
         WUserWallet userWallet = wUserWalletService.getOne(new QueryWrapper<>(WUserWallet.builder()
                 .userId(userId)
-                .coinType(addressParamDto.getCoinType())
+                .coinType(coinTypeVO.getCoinType())
                 .build()));
 
         if (userWallet == null) {
@@ -81,7 +85,7 @@ public class IwalletCaseServiceImpl implements IwalletCaseService {
                 ECKey key = new ECKey();
                 userWallet = WUserWallet.builder()
                         .userId(userId)
-                        .coinType(addressParamDto.getCoinType())
+                        .coinType(coinTypeVO.getCoinType())
                         .address(key.toAddress(networkParameters).toBase58())
                         .privateKey(AesUtils.aesEncrypt(key.getPrivateKeyAsWiF(networkParameters), encryptKey))
                         .flag((byte)1)
@@ -95,36 +99,36 @@ public class IwalletCaseServiceImpl implements IwalletCaseService {
 
         return ReturnDTO.ok(AddressResultDto.builder()
                 .userId(userWallet.getUserId())
-                .token(addressParamDto.getToken())
+                .token(coinTypeVO.getToken())
                 .address(userWallet.getAddress())
                 .build());
     }
 
     @Override
-    public ReturnDTO rechargeRecord(Long userId, AddressParamDto addressParamDto) {
+    public ReturnDTO rechargeRecord(Long userId, CoinTypeVO coinTypeVO) {
         List<WOrder> list = orderService.list(new QueryWrapper<>(WOrder.builder()
                 .userId(userId)
-                .coinType(addressParamDto.getCoinType())
-                .token(addressParamDto.getToken())
+                .coinType(coinTypeVO.getCoinType())
+                .token(coinTypeVO.getToken())
                 .orderType(1).build()));
         return ReturnDTO.ok(list);
     }
 
     @Override
-    public ReturnDTO withdrawRecord(Long userId, AddressParamDto addressParamDto) {
+    public ReturnDTO withdrawRecord(Long userId, CoinTypeVO coinTypeVO) {
         List<WOrder> list = orderService.list(new QueryWrapper<>(WOrder.builder()
                 .userId(userId)
-                .coinType(addressParamDto.getCoinType())
-                .token(addressParamDto.getToken())
+                .coinType(coinTypeVO.getCoinType())
+                .token(coinTypeVO.getToken())
                 .orderType(-1).build()));
         return ReturnDTO.ok(list);
     }
 
     @Override
-    public ReturnDTO qrCode(Long userId, AddressParamDto addressParamDto) {
+    public ReturnDTO qrCode(Long userId, CoinTypeVO coinTypeVO) {
         WUserWallet userWallet = wUserWalletService.getOne(new QueryWrapper<>(WUserWallet.builder()
                 .userId(userId)
-                .coinType(addressParamDto.getCoinType())
+                .coinType(coinTypeVO.getCoinType())
                 .build()));
 
         if (userWallet == null || userWallet.getCodeQr()==null) {
@@ -132,6 +136,46 @@ public class IwalletCaseServiceImpl implements IwalletCaseService {
         }
         return ReturnDTO.ok(userWallet.getCodeQr());
     }
+
+    @Override
+    public ReturnDTO addaddress(Long userId, WalletAddressVO walletAddressVO) {
+        WCoin wCoin = wCoinService.getOne(new QueryWrapper<>(WCoin.builder()
+                .token(walletAddressVO.getTokenType()).build()));
+        if (wCoin == null) {
+            return ReturnDTO.error("尚不支持该币种");
+        }
+
+        WWalletAddress wWalletAddress = wWalletAddressService.getOne(new QueryWrapper<>(WWalletAddress.builder()
+                .userId(userId)
+                .tokenType(walletAddressVO.getTokenType())
+                .address(walletAddressVO.getAddress()).build()));
+        if (null == wWalletAddress) {
+            wWalletAddress = WWalletAddress.builder()
+                    .status((byte) 0)
+                    .tokenType(walletAddressVO.getTokenType())
+                    .userId(userId)
+                    .address(walletAddressVO.getAddress())
+                    .name(walletAddressVO.getName())
+                    .currencyId(wCoin.getId().intValue())
+                    .createTime(LocalDateTime.now())
+                    .updateTime(LocalDateTime.now()).build();
+        }
+        if (wWalletAddress.getStatus() == (byte) 1) {
+            return ReturnDTO.error("提币地址已存在，请勿重复添加");
+        }
+        try {
+            wWalletAddress.setStatus((byte) 1);
+            boolean insert = wWalletAddressService.saveOrUpdate(wWalletAddress);
+            if (insert) {
+                return ReturnDTO.ok("提币地址已经成功添加");
+            }
+        } catch (Exception e) {
+            return ReturnDTO.error("提币地址添加出错");
+        }
+        return ReturnDTO.error("提币地址已存在，请勿重复添加");
+    }
+
+
 
     @Override
     public ReturnDTO showfee(){

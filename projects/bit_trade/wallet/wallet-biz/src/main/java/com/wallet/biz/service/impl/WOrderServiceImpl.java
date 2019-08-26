@@ -1,11 +1,6 @@
 package com.wallet.biz.service.impl;
 
-import com.alibaba.dubbo.config.annotation.Reference;
-import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.bittrade.currency.api.service.ITCurrencyService;
-import com.bittrade.pojo.model.TCurrency;
 import com.core.common.DTO.ReturnDTO;
 import com.wallet.biz.api.service.IWCoinConfigService;
 import com.wallet.biz.api.service.IWCoinService;
@@ -13,7 +8,6 @@ import com.wallet.biz.api.service.IWWalletAccountService;
 import com.wallet.biz.pojo.model.WCoin;
 import com.wallet.biz.pojo.model.WCoinConfig;
 import com.wallet.biz.pojo.model.WWalletAccount;
-import com.wallet.biz.pojo.vo.AddressParamDto;
 import com.wallet.biz.tool.SnowFlake;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -26,7 +20,6 @@ import com.wallet.biz.dao.IWOrderDAO;
 import com.wallet.biz.pojo.model.WOrder;
 
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**

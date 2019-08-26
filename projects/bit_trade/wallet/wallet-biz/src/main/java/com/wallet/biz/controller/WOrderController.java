@@ -1,15 +1,13 @@
 package com.wallet.biz.controller;
 
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.core.common.DTO.ReturnDTO;
 import com.core.common.annotation.ALoginUser;
 import com.core.web.constant.entity.LoginUser;
 import com.wallet.biz.api.service.IWCoinConfigService;
 import com.wallet.biz.api.service.IWOrderService;
-import com.wallet.biz.pojo.vo.AddressParamDto;
+import com.wallet.biz.pojo.vo.CoinTypeVO;
 import com.wallet.biz.pojo.vo.WithdrawBillParamVo;
 import com.wallet.biz.api.service.IwalletCaseService;
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -53,24 +51,24 @@ public class WOrderController {
 
     @GetMapping("rechargerecord")
     @ApiOperation(value = "充提币记录", notes = "充提币记录")
-    public ReturnDTO rechargeRecord(@RequestBody @Validated AddressParamDto addressParamDto, @ALoginUser LoginUser user) {
+    public ReturnDTO rechargeRecord(@RequestBody @Validated CoinTypeVO coinTypeVO, @ALoginUser LoginUser user) {
         Long userId = user == null ? null : user.getUser_id();
         if (userId == null) {
             return ReturnDTO.error("用户未登录");
         }
 //        Page<OrderVO> page = orderService.queryFundrechargeRecord(userId,addressParamDto);
-        return caseService.rechargeRecord(userId,addressParamDto);
+        return caseService.rechargeRecord(userId, coinTypeVO);
     }
 
     @GetMapping("withdrawrecord")
     @ApiOperation(value = "充提币记录", notes = "充提币记录")
-    public ReturnDTO withdrawRecord(@RequestBody @Validated AddressParamDto addressParamDto, @ALoginUser LoginUser user) {
+    public ReturnDTO withdrawRecord(@RequestBody @Validated CoinTypeVO coinTypeVO, @ALoginUser LoginUser user) {
         Long userId = user == null ? null : user.getUser_id();
         if (userId == null) {
             return ReturnDTO.error("用户未登录");
         }
 //        Page<OrderVO> page = orderService.queryFundwithdrawRecord(userId,addressParamDto);
-        return caseService.withdrawRecord(userId,addressParamDto);
+        return caseService.withdrawRecord(userId, coinTypeVO);
     }
 //
 //        EntityWrapper<WUserWalletBill> chong = new EntityWrapper<>();
