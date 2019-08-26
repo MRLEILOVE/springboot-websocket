@@ -14,11 +14,11 @@ import javax.validation.constraints.NotNull;
 @ApiModel("币种")
 public class AddressParamDto {
 
-    @NotNull(message = "币种类型不能为空")
+ //   @NotNull(message = "币种类型不能为空")
     @ApiModelProperty("币种类型")
     private String coinType;
 
-    @NotNull(message = "具体币种不能为空")
+//    @NotNull(message = "具体币种不能为空")
     @ApiModelProperty("具体币种")
     private String token;
 }
