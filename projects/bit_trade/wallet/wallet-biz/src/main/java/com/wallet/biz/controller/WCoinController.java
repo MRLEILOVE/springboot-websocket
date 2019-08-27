@@ -58,4 +58,12 @@ public class WCoinController {
         }
         return ReturnDTO.ok(coinlist);
     }
+
+    @GetMapping("/getList")
+    @ApiOperation(value = "获取币种列表", notes = "获取币种列表")
+    public ReturnDTO<List<WCoin>> getList(){
+        List<WCoin> list = wCoinService.list(new QueryWrapper<>(WCoin.builder()
+                .status((byte) 1).build()));
+        return ReturnDTO.ok(list);
+    }
 }

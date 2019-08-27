@@ -29,7 +29,30 @@
 	</sql>
 
     <select id="queryFundAccountRecord" resultType="com.bittrade.pojo.vo.RecordVO">
-
+		SELECT
+		c.`name` as currency,r.change_amount as changeAmount,r.create_time as time,0 as fee,
+		CASE
+			WHEN r.type = 1 THEN '買入'
+			WHEN r.type = 2 THEN '賣出'
+			WHEN r.type = 3 THEN '轉出幣幣錢包'
+			WHEN r.type = 4 THEN '轉出資金錢包'
+			WHEN r.type = 5 THEN '轉入法幣錢包'
+			WHEN r.type = 6 THEN '轉出法幣錢包'
+			ELSE ''
+		END as type
+		FROM t_legal_currency_record r
+		INNER JOIN t_legal_currency_coin c on c.id = r.coin_id
+		WHERE r.user_id =  #{userId}
+		<if test="currencyId != null and currencyId != ''">
+			AND c.id = #{currencyId}
+		</if>
+		<if test="list != null and list.size() >0">
+			AND r.type in
+			<foreach  item="item" collection="list" separator="," open="(" close=")">
+				#{item}
+			</foreach>
+		</if>
+		ORDER BY r.id DESC
 	</select>
 
 </mapper>
