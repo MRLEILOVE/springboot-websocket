@@ -17,4 +17,10 @@ public interface IWCoinService extends IService<WCoin> {
      * 获取币种列表
      */
     List<CoinVo> getCoins();
+
+    /**
+     * 根据名称获取币种
+     * @param coinName
+     */
+    WCoin getByName(String coinName);
 }

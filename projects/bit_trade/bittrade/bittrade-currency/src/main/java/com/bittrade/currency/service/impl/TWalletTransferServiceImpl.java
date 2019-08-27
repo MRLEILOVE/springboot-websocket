@@ -21,6 +21,7 @@ import com.core.tool.SnowFlake;
 import com.wallet.biz.api.service.IWCoinService;
 import com.wallet.biz.api.service.IWWalletAccountRecordService;
 import com.wallet.biz.api.service.IWWalletAccountService;
+import com.wallet.biz.pojo.model.WCoin;
 import com.wallet.biz.pojo.model.WWalletAccount;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -209,12 +210,9 @@ public class TWalletTransferServiceImpl extends DefaultTWalletTransferServiceImp
         }
 
         //获取币种
-        TCurrency currency = getCurrency(transferDto.getCurrency());
-        if(currency == null){
-            throw new Exception("币币账户币种为空");
-        }
+        WCoin wCoin = wCoinService.getByName(transferDto.getCurrency());
         //获取资金钱包
-        WWalletAccount fundAccount = wWalletAccountService.getAccount(transferDto.getUserId(), currency.getId());
+        WWalletAccount fundAccount = wWalletAccountService.getAccount(transferDto.getUserId(), wCoin.getId().intValue());
         //搞个变量存储资金钱包原来有多少钱
         BigDecimal fundTotal = fundAccount.getTotal();
 
@@ -233,7 +231,7 @@ public class TWalletTransferServiceImpl extends DefaultTWalletTransferServiceImp
             throw new Exception("c2c钱包划转资金钱包失败，请稍后再试");
         }
         //资金钱包流水（划入）
-        wWalletAccountRecordService.recordIn(transferDto.getUserId(),transferDto.getNum(),currency.getId(),fundTotal,FundRecordTypeEnumer.C2C_TO_FUNDS.getCode());
+        wWalletAccountRecordService.recordIn(transferDto.getUserId(),transferDto.getNum(),wCoin.getId().intValue(),fundTotal,FundRecordTypeEnumer.C2C_TO_FUNDS.getCode());
 
         return ReturnDTO.ok("划转成功");
     }
@@ -242,14 +240,11 @@ public class TWalletTransferServiceImpl extends DefaultTWalletTransferServiceImp
      * 资金钱包划转币币钱包
      */
     private ReturnDTO tf_fund_to_bibi(TransferDto transferDto) throws Exception {
-        //获取币种
-        TCurrency currency = getCurrency(transferDto.getCurrency());
-        if(currency == null){
-            throw new Exception("币币账户币种为空");
-        }
+        //获取资金账户币种
+        WCoin wcoin = wCoinService.getByName(transferDto.getCurrency());
 
         //获取资金钱包
-        WWalletAccount fundAccount = wWalletAccountService.getAccount(transferDto.getUserId(), currency.getId());
+        WWalletAccount fundAccount = wWalletAccountService.getAccount(transferDto.getUserId(), wcoin.getId().intValue());
         //搞个变量存储资金钱包原来有多少钱
         BigDecimal fundTotal = fundAccount.getTotal();
         //检查资金钱包余额是否充足
@@ -257,8 +252,13 @@ public class TWalletTransferServiceImpl extends DefaultTWalletTransferServiceImp
             return ReturnDTO.error("划转失败,资金账户余额不足");
         }
 
+        //获取币种
+        TCurrency currency = getCurrency(transferDto.getCurrency());
+        if(currency == null){
+            throw new Exception("币币账户币种为空");
+        }
         //获取币币钱包
-        TWallet wallet = getWallet(transferDto.getUserId(),currency.getId());
+        TWallet wallet = getWallet(transferDto.getUserId(),wcoin.getId().intValue());
         //搞个变量存储原来有多少钱
         BigDecimal bibibeforeAmount = wallet.getTotal();
 
@@ -299,8 +299,11 @@ public class TWalletTransferServiceImpl extends DefaultTWalletTransferServiceImp
             return ReturnDTO.error("划转失败,币币账户余额不足");
         }
 
+        //获取资金账户币种
+        WCoin wcoin = wCoinService.getByName(transferDto.getCurrency());
+
         //获取资金钱包
-        WWalletAccount fundAccount = wWalletAccountService.getAccount(transferDto.getUserId(), currency.getId());
+        WWalletAccount fundAccount = wWalletAccountService.getAccount(transferDto.getUserId(), wcoin.getId().intValue());
         //搞个变量存储资金钱包原来有多少钱
         BigDecimal fundTotal = fundAccount.getTotal();
 
@@ -319,7 +322,7 @@ public class TWalletTransferServiceImpl extends DefaultTWalletTransferServiceImp
             throw new Exception("币币钱包划转资金钱包失败，请稍后再试");
         }
         //资金钱包流水（划入）
-        wWalletAccountRecordService.recordIn(transferDto.getUserId(),transferDto.getNum(),currency.getId(),fundTotal,FundRecordTypeEnumer.BIBI_TO_FUNDS.getCode());
+        wWalletAccountRecordService.recordIn(transferDto.getUserId(),transferDto.getNum(),wcoin.getId().intValue(),fundTotal,FundRecordTypeEnumer.BIBI_TO_FUNDS.getCode());
 
         return ReturnDTO.ok("划转成功");
     }
