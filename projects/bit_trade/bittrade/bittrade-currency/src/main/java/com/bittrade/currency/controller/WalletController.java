@@ -14,12 +14,12 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.bittrade.currency.api.service.ITCurrencyService;
-import com.bittrade.currency.api.service.ITWalletService;
 import com.bittrade.currency.api.service.IWUserWalletBillService;
 import com.bittrade.currency.api.service.IWUserWalletService;
 import com.bittrade.currency.api.service.IWWithdrawWalletBillService;
 import com.bittrade.pojo.model.WUserWalletBill;
 import com.bittrade.pojo.model.WWithdrawWalletBill;
+import com.common.bittrade.service.ITWalletService;
 
 import io.swagger.annotations.ApiOperation;
 

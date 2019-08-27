@@ -1,7 +1,7 @@
 package com.wallet.biz.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.wallet.biz.pojo.model.TParamConfig;
+import com.bittrade.pojo.model.TParamConfig;
 
 /**
  * 

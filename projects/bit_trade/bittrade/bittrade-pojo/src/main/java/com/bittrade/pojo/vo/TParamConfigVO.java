@@ -1,7 +1,6 @@
 package com.bittrade.pojo.vo;
 
 import com.core.framework.base.VO.BaseVO;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

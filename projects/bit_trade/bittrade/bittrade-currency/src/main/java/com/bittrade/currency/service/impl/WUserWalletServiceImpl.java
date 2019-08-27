@@ -6,8 +6,8 @@ import com.bittrade.__default.service.impl.DefaultWUserWalletServiceImpl;
 import com.bittrade.currency.api.service.IWUserWalletService;
 import com.bittrade.currency.dao.IWUserWalletDAO;
 import com.bittrade.pojo.dto.WUserWalletDTO;
-import com.bittrade.pojo.vo.WUserWalletVO;
 import com.bittrade.pojo.model.WUserWallet;
+import com.bittrade.pojo.vo.WUserWalletVO;
 
 /**
  * 

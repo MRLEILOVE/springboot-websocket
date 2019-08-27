@@ -13,10 +13,10 @@ import org.springframework.util.StringUtils;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.bittrade.admin.dao.sys.SysRoleDeptMapper;
-import com.bittrade.admin.dao.sys.SysRoleMapper;
-import com.bittrade.admin.dao.sys.SysRoleMenuMapper;
-import com.bittrade.admin.dao.sys.SysUserRoleMapper;
+import com.bittrade.admin.dao.sys.ISysRoleDeptDAO;
+import com.bittrade.admin.dao.sys.ISysRoleDAO;
+import com.bittrade.admin.dao.sys.ISysRoleMenuDAO;
+import com.bittrade.admin.dao.sys.ISysUserRoleDAO;
 import com.bittrade.admin.enums.UserEnum.UserState;
 import com.bittrade.admin.model.domain.SysRole;
 import com.bittrade.admin.model.domain.SysRoleDept;
@@ -33,14 +33,14 @@ import com.bittrade.admin.util.ConvertUtil;
  * @since 2018-11-03
  */
 @Service
-public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> implements SysRoleService {
+public class SysRoleServiceImpl extends ServiceImpl<ISysRoleDAO, SysRole> implements SysRoleService {
 
 	@Autowired
-	private SysRoleMenuMapper roleMenuMapper;
+	private ISysRoleMenuDAO roleMenuMapper;
 	@Autowired
-    private SysUserRoleMapper userRoleMapper;
+    private ISysUserRoleDAO userRoleMapper;
     @Autowired
-    private SysRoleDeptMapper roleDeptMapper;
+    private ISysRoleDeptDAO roleDeptMapper;
 
 	@Override
 	public Set<String> selectRoleKeys(Integer userId) {

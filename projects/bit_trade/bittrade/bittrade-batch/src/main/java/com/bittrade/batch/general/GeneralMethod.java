@@ -5,9 +5,9 @@ import java.time.LocalDateTime;
 
 import com.bittrade.batch.enumer.ParamConfigEnum.ParamStatus;
 import com.bittrade.currency.api.service.ITParamConfigService;
-import com.bittrade.currency.api.service.ITWalletService;
 import com.bittrade.pojo.model.TParamConfig;
 import com.bittrade.pojo.model.TWallet;
+import com.common.bittrade.service.ITWalletService;
 
 public class GeneralMethod {
 

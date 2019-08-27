@@ -25,6 +25,7 @@
 		<module>test</module>
 		<module>bittrade</module>
 		<module>wallet</module>
+		<module>common-bittrade</module>
 	</modules>
 
 	<properties>
@@ -41,6 +42,17 @@
 
 	<dependencyManagement>
 		<dependencies>
+			<!-- <dependency>
+				<groupId>com.bittrade</groupId>
+				<artifactId>bittrade</artifactId>
+				<version>${project.version}</version>
+			</dependency> -->
+			<dependency>
+				<groupId>com.bittrade</groupId>
+				<artifactId>common-bittrade</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			
 			<dependency>
 				<groupId>org.apache.commons</groupId>
 				<artifactId>commons-compress</artifactId>

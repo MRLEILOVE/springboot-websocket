@@ -1,6 +1,7 @@
 #svc_name: currency
 
 data:
+  model-package: com.**.model.domain.*
   application:
     name: admin
   register-with-eureka: false
@@ -34,8 +35,6 @@ spring:
     prefix: classpath:/templates/
     #配置页面后缀 
     suffix: .html
-mybatis:
-  mapper-locations: classpath:SQL/**/*.xml
 
 
 

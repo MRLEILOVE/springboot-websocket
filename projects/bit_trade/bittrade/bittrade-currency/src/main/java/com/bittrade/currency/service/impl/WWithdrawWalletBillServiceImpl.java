@@ -6,8 +6,8 @@ import com.bittrade.__default.service.impl.DefaultWWithdrawWalletBillServiceImpl
 import com.bittrade.currency.api.service.IWWithdrawWalletBillService;
 import com.bittrade.currency.dao.IWWithdrawWalletBillDAO;
 import com.bittrade.pojo.dto.WWithdrawWalletBillDTO;
-import com.bittrade.pojo.vo.WWithdrawWalletBillVO;
 import com.bittrade.pojo.model.WWithdrawWalletBill;
+import com.bittrade.pojo.vo.WWithdrawWalletBillVO;
 
 /**
  * 

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.bittrade.admin.dao.sys.SysDictDataMapper;
+import com.bittrade.admin.dao.sys.ISysDictDataDAO;
 import com.bittrade.admin.model.domain.SysDictData;
 import com.bittrade.admin.service.sys.SysDictDataService;
 import com.bittrade.admin.util.ConvertUtil;
@@ -25,7 +25,7 @@ import com.google.common.collect.Lists;
  * @since 2018-11-09
  */
 @Service
-public class SysDictDataServiceImpl extends ServiceImpl<SysDictDataMapper, SysDictData> implements SysDictDataService {
+public class SysDictDataServiceImpl extends ServiceImpl<ISysDictDataDAO, SysDictData> implements SysDictDataService {
 
 	private final RedisTemplate redisTemplate;
 

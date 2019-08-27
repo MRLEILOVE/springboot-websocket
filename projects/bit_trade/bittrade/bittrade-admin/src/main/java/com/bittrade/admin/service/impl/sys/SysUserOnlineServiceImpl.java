@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.bittrade.admin.dao.sys.SysUserOnlineMapper;
+import com.bittrade.admin.dao.sys.ISysUserOnlineDAO;
 import com.bittrade.admin.model.domain.SysUserOnline;
 import com.bittrade.admin.util.DateUtils;
 
@@ -23,7 +23,7 @@ import com.bittrade.admin.util.DateUtils;
 public class SysUserOnlineServiceImpl {
 
 	@Autowired
-	private SysUserOnlineMapper userOnlineDao;
+	private ISysUserOnlineDAO userOnlineDao;
 
 	/**
 	 * 通过会话序号查询信息

@@ -64,6 +64,11 @@ public class WUserWallet extends BaseModel<WUserWallet> {
 		public static final String PRIVATE_KEY = "private_key";
 		
 		/**
+		 * 二维码
+		 */
+		public static final String CODE_QR = "code_qr";
+		
+		/**
 		 * 是否需要处理  0:否   1是
 		 */
 		public static final String FLAG = "flag";
@@ -115,6 +120,11 @@ public class WUserWallet extends BaseModel<WUserWallet> {
 	 * 私钥
 	 */
 	private String privateKey;
+	
+	/**
+	 * 二维码
+	 */
+	private String codeQr;
 	
 	/**
 	 * 是否需要处理  0:否   1是
