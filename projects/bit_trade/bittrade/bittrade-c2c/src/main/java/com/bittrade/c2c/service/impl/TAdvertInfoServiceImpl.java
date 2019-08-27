@@ -25,18 +25,19 @@ import com.bittrade.c2c.service.ITAdvertInfoService;
 import com.bittrade.c2c.service.ITAdvertOrderService;
 import com.bittrade.common.constant.ILegalCurrencyCoinConstants;
 import com.bittrade.pojo.dto.TAdvertInfoDTO;
+import com.bittrade.pojo.dto.TAdvertInfoDTO.AdvertTypeEnum;
 import com.bittrade.pojo.dto.TAdvertInfoDTO.PricingModeEnum;
 import com.bittrade.pojo.dto.TAdvertOrderDTO;
 import com.bittrade.pojo.model.TAdvertInfo;
 import com.bittrade.pojo.model.TAdvertOrder;
 import com.bittrade.pojo.model.TLegalCurrencyAccount;
 import com.bittrade.pojo.model.TLegalCurrencyCoin;
-import com.bittrade.pojo.vo.AdvertInfoVO;
 import com.bittrade.pojo.vo.AdvertUserVO;
 import com.bittrade.pojo.vo.QueryAdvertVO;
 import com.bittrade.pojo.vo.TAdvertInfoVO;
 import com.common.bittrade.service.ITLegalCurrencyAccountService;
 import com.common.bittrade.service.ITLegalCurrencyCoinService;
+import com.core.tool.BeanUtil;
 import com.core.tool.SnowFlake;
 import com.core.web.constant.entity.LoginUser;
 import com.core.web.constant.exception.BusinessException;
@@ -69,40 +70,40 @@ public class TAdvertInfoServiceImpl extends DefaultTAdvertInfoServiceImpl<ITAdve
 	 * @return result
 	 */
 	@Override
-	public Boolean publishAdvert(LoginUser user, AdvertInfoVO advertInfoVO) {
-		if (advertInfoVO.isFloatPricing()) {
+	public Boolean publishAdvert(LoginUser user, TAdvertInfoDTO advertInfoDTO) {
+		if (advertInfoDTO.isFloatPricing()) {
 			// 浮动定价方式
-			if (Objects.isNull(advertInfoVO.getFloatingRatio())) {
+			if (Objects.isNull(advertInfoDTO.getFloatingRatio())) {
 				throw new BusinessException("浮動比例必填");
 			}
-			if (Objects.isNull(advertInfoVO.getHidePrice())) {
+			if (Objects.isNull(advertInfoDTO.getHidePrice())) {
 				throw new BusinessException("隱藏價格必填");
 			}
-			advertInfoVO.setPrice(null);
+			advertInfoDTO.setPrice(null);
 		} else {
 			// 固定价格方式
-			advertInfoVO.setFloatingRatio(null);
-			advertInfoVO.setHidePrice(null);
+			advertInfoDTO.setFloatingRatio(null);
+			advertInfoDTO.setHidePrice(null);
 		}
 
 		// 获取对应虚拟币
-		TLegalCurrencyCoin coin = itLegalCurrencyCoinService.getById(advertInfoVO.getCoinId());
+		TLegalCurrencyCoin coin = itLegalCurrencyCoinService.getById(advertInfoDTO.getCoinId());
 
 		// 广告交易数量
-		BigDecimal amount = advertInfoVO.getAmount();
+		BigDecimal amount = advertInfoDTO.getAmount();
 		// 发布广告最小数量
 		if (amount.compareTo(coin.getMinQuota()) < 0) {
 			throw new BusinessException(String.format("發布廣告數量最少需 %f 個", coin.getMinQuota()));
 		}
 
 		// 验证支付密码
-		if (!user.checkPayPassWord(advertInfoVO.getPayPassword())) {
+		if (!user.checkPayPassWord(advertInfoDTO.getPayPassword())) {
 			throw new BusinessException("支付密碼錯誤");
 		}
 
-		if (advertInfoVO.isBuyType()) {
+		if (advertInfoDTO.isBuyType()) {
 			// 发布购买，购买无付款时间限制
-			advertInfoVO.setPaymentTime(null);
+			advertInfoDTO.setPaymentTime(null);
 		} else {
 			// 发布出售
 			// 法幣账户
@@ -113,7 +114,7 @@ public class TAdvertInfoServiceImpl extends DefaultTAdvertInfoServiceImpl<ITAdve
 			}
 			try {
 				// 扣除账户余额  -> 余额 - 冻结 +
-				itLegalCurrencyAccountService.freezeAmount(user.getUser_id(), advertInfoVO.getCoinId(), amount);
+				itLegalCurrencyAccountService.freezeAmount(user.getUser_id(), advertInfoDTO.getCoinId(), amount);
 			} catch (Exception e) {
 				log.error("发布广告异常：", e);
 				throw new BusinessException("發布廣告失敗");
@@ -122,16 +123,16 @@ public class TAdvertInfoServiceImpl extends DefaultTAdvertInfoServiceImpl<ITAdve
 
 		try {
 			TAdvertInfo advertInfo = TAdvertInfo.builder().build();
-			BeanUtils.copyProperties(advertInfoVO, advertInfo);
+			BeanUtils.copyProperties(advertInfoDTO, advertInfo);
 			// 填充其余参数
 			advertInfo.setUserId(user.getUser_id())
-					.setFloatingRatio(Objects.nonNull(advertInfoVO.getFloatingRatio()) ? BigDecimal.valueOf(advertInfoVO.getFloatingRatio()).divide(BigDecimal.valueOf(100), 2, RoundingMode.DOWN) : null)
+					.setFloatingRatio(Objects.nonNull(advertInfoDTO.getFloatingRatio()) ? advertInfoDTO.getFloatingRatio().divide(BigDecimal.valueOf(100), 2, RoundingMode.DOWN) : null)
 					.setBalanceAmount(amount)
 					// TODO 支付方式待改
-					.setPaymentMethodId(advertInfoVO.getPaymentMethodId().stream().findFirst().get())
+					.setPaymentMethodId(advertInfoDTO.getPaymentMethodId().stream().findFirst().get())
 					.setStatus(TAdvertInfoDTO.StatusEnum.PROCESSING.getCode())
-					.setPaymentTime(Objects.nonNull(advertInfoVO.getPaymentTime()) ? advertInfoVO.getPaymentTime() : null)
-					.setRegisteredTime(advertInfoVO.getRegisteredTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
+					.setPaymentTime(Objects.nonNull(advertInfoDTO.getPaymentTime()) ? advertInfoDTO.getPaymentTime() : null)
+					.setRegisteredTime(advertInfoDTO.getRegisteredTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
 			return baseMapper.insert(advertInfo) > 0;
 		} catch (Exception e) {
 			log.error("发布广告异常：", e);
@@ -186,13 +187,13 @@ public class TAdvertInfoServiceImpl extends DefaultTAdvertInfoServiceImpl<ITAdve
 				if (TAdvertInfoDTO.PricingModeEnum.FLOAT.getCode().equals(advertInfo.getPricingMode())) {
 					// 浮动交易价格 = 盘口价格 * 浮动比例
 					advertInfo.setPrice(currentHandicapPrice.multiply(advertInfo.getFloatingRatio()));
-					if (advertInfo.isBuyType()) {
+					if (advertInfo.getType() == TAdvertInfoDTO.AdvertTypeEnum.BUY.getCode()) {
 						if (advertInfo.getPrice().compareTo(advertInfo.getHidePrice()) <= 0) {
 							// 剔除 浮动交易价格 <= 隐藏价格 的广告
 							iterator.remove();
 						}
 					}
-					if (advertInfo.isSellType()) {
+					if (advertInfo.getType() == TAdvertInfoDTO.AdvertTypeEnum.SELL.getCode()) {
 						if (advertInfo.getPrice().compareTo(advertInfo.getHidePrice()) >= 0) {
 							// 剔除 浮动交易价格 >= 隐藏价格 的广告
 							iterator.remove();
@@ -302,7 +303,7 @@ public class TAdvertInfoServiceImpl extends DefaultTAdvertInfoServiceImpl<ITAdve
 				.eq(TAdvertInfo::getId, advertId)
 		);
 		// 出售需退还广告余额
-		if (advertInfo.isSellType()) {
+		if (advertInfo.getType() == TAdvertInfoDTO.AdvertTypeEnum.SELL.getCode()) {
 			// 广告余额
 			BigDecimal balanceAmount = advertInfo.getBalanceAmount();
 			// 用户账户可用 + balanceAmount，冻结 - balanceAmount
@@ -322,33 +323,35 @@ public class TAdvertInfoServiceImpl extends DefaultTAdvertInfoServiceImpl<ITAdve
 	 * @return  result
 	 */
 	@Override
-	public TAdvertInfo getAdvertDetails(Long advertId) {
+	public TAdvertInfoDTO getAdvertDetails(Long advertId) {
 		TAdvertInfo advertInfo = getProcessingAdvert(advertId);
-		if (TAdvertInfoDTO.PricingModeEnum.FLOAT.getCode().equals(advertInfo.getPricingMode())) {
+		TAdvertInfoDTO advertInfoDTO = new TAdvertInfoDTO();
+		BeanUtil.copyObj(advertInfo, advertInfoDTO);
+		if (TAdvertInfoDTO.PricingModeEnum.FLOAT.getCode().equals(advertInfoDTO.getPricingMode())) {
 			// TODO 获取当前盘口价格
 			BigDecimal currentHandicapPrice = BigDecimal.valueOf(10.1);
 			// 浮动交易价格 = 盘口价格 * 浮动比例
-			advertInfo.setPrice(currentHandicapPrice.multiply(advertInfo.getFloatingRatio()));
-			if (advertInfo.isBuyType()) {
-				if (advertInfo.getPrice().compareTo(advertInfo.getHidePrice()) >= 0) {
+			advertInfoDTO.setPrice(currentHandicapPrice.multiply(advertInfoDTO.getFloatingRatio()));
+			if (advertInfoDTO.isBuyType()) {
+				if (advertInfoDTO.getPrice().compareTo(advertInfoDTO.getHidePrice()) >= 0) {
 					throw new BusinessException("廣告不存在，請刷新重試");
 				}
 			}
-			if (advertInfo.isSellType()) {
-				if (advertInfo.getPrice().compareTo(advertInfo.getHidePrice()) <= 0) {
+			if (advertInfoDTO.isSellType()) {
+				if (advertInfoDTO.getPrice().compareTo(advertInfoDTO.getHidePrice()) <= 0) {
 					throw new BusinessException("廣告不存在，請刷新重試");
 				}
 			}
 		}
 		// TODO 构建用户信息，远程调 jd 项目
 		// 构建成交量、成交率
-		buildVolumeAndRate(advertInfo);
-		advertInfo.setCoinName(itLegalCurrencyCoinService.getById(advertInfo.getCoinId()).getName());
+		buildVolumeAndRate(advertInfoDTO);
+		advertInfoDTO.setCoinName(itLegalCurrencyCoinService.getById(advertInfoDTO.getCoinId()).getName());
 		// 付款时效，放币时效
 		// 卖单：放币时效  买单：付款时效， 单位：秒，前端处理格式
-		Long paymentOrPutCoinAging = itAdvertOrderService.getPaymentOrPutCoinAging(advertInfo.getUserId(), advertInfo.getType(), TAdvertOrder.StatusEnum.ALREADY_COMPLETE.getCode());
-		advertInfo.setPaymentOrPutCoinAging(paymentOrPutCoinAging);
-		return advertInfo;
+		Long paymentOrPutCoinAging = itAdvertOrderService.getPaymentOrPutCoinAging(advertInfoDTO.getUserId(), advertInfoDTO.getType(), TAdvertOrderDTO.StatusEnum.ALREADY_COMPLETE.getCode());
+		advertInfoDTO.setPaymentOrPutCoinAging(paymentOrPutCoinAging);
+		return advertInfoDTO;
 	}
 
 	/**
@@ -364,7 +367,7 @@ public class TAdvertInfoServiceImpl extends DefaultTAdvertInfoServiceImpl<ITAdve
 	 * @return {@link TAdvertOrder}
 	 */
 	@Override
-	public TAdvertOrder placeAdvertOrder(Long advertId, BigDecimal amount, String payPassWord, LoginUser loginUser) {
+	public TAdvertOrderDTO placeAdvertOrder(Long advertId, BigDecimal amount, String payPassWord, LoginUser loginUser) {
 		TAdvertInfo advert = getProcessingAdvert(advertId);
 		if (loginUser.getUser_id().equals(advert.getUserId())) {
 			throw new BusinessException("不允許操作自己發布的廣告");
@@ -405,7 +408,7 @@ public class TAdvertInfoServiceImpl extends DefaultTAdvertInfoServiceImpl<ITAdve
 		if (TAdvertInfoDTO.AdvertTypeEnum.BUY.getCode() == advert.getType()) {
 			order.setBuyerId(advert.getUserId()).setSellerId(loginUser.getUser_id());
 		}
-		if (advert.isSellType()) {
+		if (advert.getType() == AdvertTypeEnum.SELL.getCode()) {
 			order.setBuyerId(loginUser.getUser_id()).setSellerId(advert.getUserId());
 		}
 		order.setTransactionAmout(amount.multiply(advert.getPrice()))
@@ -458,7 +461,7 @@ public class TAdvertInfoServiceImpl extends DefaultTAdvertInfoServiceImpl<ITAdve
 	 * @param advertInfo : {@link TAdvertInfo}
 	 * @return
 	 */
-	private void buildVolumeAndRate(TAdvertInfo advertInfo) {
+	private void buildVolumeAndRate(TAdvertInfoDTO advertInfo) {
 		TLegalCurrencyAccount account = itLegalCurrencyAccountService.getByUserIdAndCoinId(advertInfo.getUserId(), advertInfo.getCoinId());
 		advertInfo.setC2cAlreadyDealCount(account.getC2cAlreadyDealCount());
 		int c2cTotalCount = account.getC2cTotalCount();

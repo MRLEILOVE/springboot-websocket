@@ -1,19 +1,18 @@
 package com.bittrade.c2c.service;
 
+import java.math.BigDecimal;
+import java.util.List;
+
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.bittrade.__default.service.IDefaultTAdvertInfoService;
 import com.bittrade.pojo.dto.TAdvertInfoDTO;
+import com.bittrade.pojo.dto.TAdvertOrderDTO;
 import com.bittrade.pojo.model.TAdvertInfo;
-import com.bittrade.pojo.model.TAdvertOrder;
-import com.bittrade.pojo.vo.AdvertInfoVO;
 import com.bittrade.pojo.vo.AdvertUserVO;
 import com.bittrade.pojo.vo.QueryAdvertVO;
 import com.bittrade.pojo.vo.TAdvertInfoVO;
 import com.core.web.constant.entity.LoginUser;
-
-import java.math.BigDecimal;
-import java.util.List;
 
 /**
  * @author Administrator
@@ -28,10 +27,10 @@ public interface ITAdvertInfoService extends IDefaultTAdvertInfoService<TAdvertI
 	 * create time: 2019/8/19 14:43
 	 *
 	 * @param user         {@link LoginUser}
-	 * @param advertInfoVO {@link AdvertInfoVO}
+	 * @param advertInfoDTO {@link AdvertInfoVO}
 	 * @return result
 	 */
-	Boolean publishAdvert(LoginUser user, AdvertInfoVO advertInfoVO);
+	Boolean publishAdvert(LoginUser user, TAdvertInfoDTO advertInfoDTO);
 
 	/**
 	 * 获取广告列表
@@ -93,7 +92,7 @@ public interface ITAdvertInfoService extends IDefaultTAdvertInfoService<TAdvertI
 	 * @param advertId : 广告 id
 	 * @return  result
 	 */
-	TAdvertInfo getAdvertDetails(Long advertId);
+	TAdvertInfoDTO getAdvertDetails(Long advertId);
 
-	TAdvertOrder placeAdvertOrder(Long advertId, BigDecimal amount, String payPassWord, LoginUser loginUser);
+	TAdvertOrderDTO placeAdvertOrder(Long advertId, BigDecimal amount, String payPassWord, LoginUser loginUser);
 }

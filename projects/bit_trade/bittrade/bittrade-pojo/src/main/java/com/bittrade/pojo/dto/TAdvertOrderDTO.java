@@ -17,6 +17,11 @@ import lombok.Getter;
 public class TAdvertOrderDTO extends BaseDTO<TAdvertOrderDTO> {
 
 	/**
+	 * 取消订单时间限制，默认下单 3 分钟内可取消订单
+	 */
+	public static final long CANCEL_ORDER_DURATION = 3;
+
+	/**
 	 * 广告类型
 	 * <br/>
 	 *
