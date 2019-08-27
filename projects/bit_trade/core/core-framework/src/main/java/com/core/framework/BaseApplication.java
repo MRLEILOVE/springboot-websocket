@@ -23,7 +23,9 @@ import com.core.tool.YamlUtil;
 		// web .
 		"com.core.web.common.props", 
 		"com.core.web.common.config", 
-		"com.core.web.common.exception" 
+		"com.core.web.common.exception", 
+		// common-bittrade
+		"com.common.bittrade", 
 		})
 @EnableTransactionManagement
 //@com.spring4all.swagger.EnableSwagger2Doc
