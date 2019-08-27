@@ -59,11 +59,11 @@ public class TWalletServiceImpl extends DefaultTWalletServiceImpl<ITWalletDAO, T
 	private ITWalletDAO				walletDAO;
 	@Autowired
 	private JedisCluster			jedisCluster;
-	@Autowired
+	@Reference
 	private ITCurrencyTradeService		currencyTradeService;
 	@Autowired
 	private ITWalletRecordDAO		walletRecordDAO;
-	@Autowired
+	@Reference
 	private ITCurrencyService 			currencyService;
 	@Reference
 	private ITLegalCurrencyAccountService legalCurrencyAccountService;
