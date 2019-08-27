@@ -27,8 +27,4 @@ public interface IWWalletAccountRecordDAO extends BaseMapper<WWalletAccountRecor
      */
     List<RecordVO> queryFundAccountRecord(Page<RecordVO> page,@Param("userId") Long userId, @Param("list") List<Integer> list, @Param("currencyId") Integer currencyId);
 
-    /**
-     * 资金账户记录币种下拉框
-     */
-    List<TCurrency> queryCurrencies(@Param("list") List list);
 }

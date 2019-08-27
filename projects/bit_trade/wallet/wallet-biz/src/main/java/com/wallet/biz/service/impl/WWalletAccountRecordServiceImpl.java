@@ -1,16 +1,20 @@
 package com.wallet.biz.service.impl;
 
 import com.alibaba.dubbo.config.annotation.Service;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.bittrade.common.enums.FundCoinEnumer;
 import com.bittrade.common.enums.FundRecordTypeEnumer;
+import com.bittrade.common.enums.StatusEnumer;
 import com.bittrade.pojo.dto.AccountTypeDto;
 import com.bittrade.pojo.model.TCurrency;
 import com.bittrade.pojo.vo.RecordVO;
 import com.core.tool.SnowFlake;
 import com.wallet.biz.api.service.IWWalletAccountRecordService;
+import com.wallet.biz.dao.IWCoinDAO;
 import com.wallet.biz.dao.IWWalletAccountRecordDAO;
+import com.wallet.biz.pojo.model.WCoin;
 import com.wallet.biz.pojo.model.WWalletAccountRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -32,6 +36,8 @@ public class WWalletAccountRecordServiceImpl extends ServiceImpl<IWWalletAccount
     private static final SnowFlake SNOW_FLAKE__ENTRUST	= new SnowFlake( 2, 2);
     @Autowired
     private IWWalletAccountRecordDAO wWalletAccountRecordDAO;
+    @Autowired
+    private IWCoinDAO wCoinDAO;
 
     /**
      * 资金账户流水（划入）
@@ -123,7 +129,9 @@ public class WWalletAccountRecordServiceImpl extends ServiceImpl<IWWalletAccount
      * @return
      */
     @Override
-    public List<TCurrency> queryCurrencies() {
-        return wWalletAccountRecordDAO.queryCurrencies(FundCoinEnumer.getValues());
+    public List<WCoin> queryCurrencies() {
+        QueryWrapper<WCoin> qry = new QueryWrapper<>();
+        qry.eq(WCoin.FieldNames.STATUS, StatusEnumer.ENABLE.getCode());
+        return wCoinDAO.selectList(qry);
     }
 }

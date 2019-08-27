@@ -29,7 +29,7 @@
 	</sql>
 
     <select id="queryFundAccountRecord" resultType="com.bittrade.pojo.vo.RecordVO">
-		SELECT r.currency,r.create_time AS time,r.after_amount AS afterAmount,r.before_amount AS beforeAmount,r.change_amount + IFNULL(o.fee,0) AS changeAmount,IFNULL(o.fee,0) AS fee,
+		SELECT c.token AS currency,r.create_time AS time,r.after_amount AS afterAmount,r.before_amount AS beforeAmount,r.change_amount + IFNULL(o.fee,0) AS changeAmount,IFNULL(o.fee,0) AS fee,
 		CASE
 		WHEN r.type = 1 THEN '充币'
 		WHEN r.type = 2 THEN '提币'
@@ -41,7 +41,7 @@
 		END AS type
 		FROM w_wallet_account_record r
 		LEFT JOIN w_order o ON o.order_id = r.order_id
-		LEFT JOIN t_currency c ON c.id = r.currency_id
+		LEFT JOIN w_coin c on c.id = r.currency_id
 		WHERE r.user_id = #{userId}
 		<if test="currencyId != null and currencyId != ''">
 			AND c.id = #{currencyId}
@@ -53,17 +53,6 @@
 			</foreach>
 		</if>
 		ORDER BY r.id DESC
-	</select>
-
-    <select id="queryCurrencies" resultType="com.bittrade.pojo.model.TCurrency">
-		SELECT c.id,c.`name`
-		FROM t_currency c
-		WHERE c.`name` in
-		<if test="list != null and list.size() >0">
-			<foreach  item="item" collection="list" separator="," open="(" close=")">
-				#{item}
-			</foreach>
-		</if>
 	</select>
 
 </mapper>

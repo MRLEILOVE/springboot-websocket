@@ -9,6 +9,7 @@ import com.core.common.DTO.ReturnDTO;
 import com.core.common.annotation.ALoginUser;
 import com.core.web.constant.entity.LoginUser;
 import com.wallet.biz.api.service.IWWalletAccountRecordService;
+import com.wallet.biz.pojo.model.WCoin;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -46,7 +47,7 @@ public class WWalletAccountRecordController {
     @ApiOperation(value="资金账户记录币种下拉框", notes="资金账户记录币种下拉框")
     @GetMapping(value = "/queryCurrencies")
     @ResponseBody
-    public ReturnDTO<List<TCurrency>> queryCurrencies(){
+    public ReturnDTO<List<WCoin>> queryCurrencies(){
         return ReturnDTO.ok(walletAccountRecordService.queryCurrencies());
     }
 

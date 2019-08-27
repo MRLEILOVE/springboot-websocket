@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.bittrade.pojo.dto.AccountTypeDto;
 import com.bittrade.pojo.model.TCurrency;
 import com.bittrade.pojo.vo.RecordVO;
+import com.wallet.biz.pojo.model.WCoin;
 import com.wallet.biz.pojo.model.WWalletAccountRecord;
 
 import java.math.BigDecimal;
@@ -48,5 +49,5 @@ public interface IWWalletAccountRecordService extends IService<WWalletAccountRec
     /**
      * 资金账户记录币种下拉框
      */
-    List<TCurrency> queryCurrencies();
+    List<WCoin> queryCurrencies();
 }

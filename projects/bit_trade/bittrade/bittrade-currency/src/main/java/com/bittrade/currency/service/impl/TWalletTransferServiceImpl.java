@@ -18,6 +18,7 @@ import com.bittrade.pojo.vo.LegalCurrencyCoinVO;
 import com.bittrade.pojo.vo.TWalletTransferVO;
 import com.core.common.DTO.ReturnDTO;
 import com.core.tool.SnowFlake;
+import com.wallet.biz.api.service.IWCoinService;
 import com.wallet.biz.api.service.IWWalletAccountRecordService;
 import com.wallet.biz.api.service.IWWalletAccountService;
 import com.wallet.biz.pojo.model.WWalletAccount;
@@ -66,6 +67,8 @@ public class TWalletTransferServiceImpl extends DefaultTWalletTransferServiceImp
     private IWWalletAccountService wWalletAccountService;
     @Reference
     private IWWalletAccountRecordService wWalletAccountRecordService;
+    @Reference
+    private IWCoinService wCoinService;
 
     /**
      * 资金划转
@@ -639,8 +642,10 @@ public class TWalletTransferServiceImpl extends DefaultTWalletTransferServiceImp
         }
         if("資金賬戶".equals(account.getName())){
             //通过枚举获取
-            List<String> coins = FundCoinEnumer.getValues();
-            return currencyDAO.getFundCoinVo(coins);
+            /*List<String> coins = FundCoinEnumer.getValues();
+            return currencyDAO.getFundCoinVo(coins);*/
+
+            return wCoinService.getCoins();
         }else if("幣幣賬戶".equals(account.getName())){
             List<CoinVo> coins = new ArrayList<>();
             TCurrency qry = TCurrency.builder().status(StatusEnumer.ENABLE.getCode()).build();

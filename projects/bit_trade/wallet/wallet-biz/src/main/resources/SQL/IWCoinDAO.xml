@@ -30,4 +30,10 @@
 		`update_time` AS updateTime
 	</sql>
 
+    <select id="getCoins" resultType="com.bittrade.pojo.vo.CoinVo">
+		SELECT w.token as name
+		FROM w_coin w
+		WHERE w.`status` = 1
+	</select>
+
 </mapper>
