@@ -1,5 +1,4 @@
-package com.core.web.common.config.oauth2;
-//package com.bittrade.currency.conf.oauth2;
+//package com.core.web.common.config.oauth2;
 //
 //import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.security.core.authority.AuthorityUtils;
@@ -11,7 +10,7 @@ package com.core.web.common.config.oauth2;
 //import org.springframework.stereotype.Component;
 //
 //@Component
-//public class SSOUserDetailsService implements UserDetailsService {
+//public class SSOUserDetailsService__ implements UserDetailsService {
 //
 //	@Autowired
 //	private PasswordEncoder passwordEncoder;

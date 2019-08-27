@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.alibaba.dubbo.config.annotation.Reference;
 import com.bittrade.__default.service.impl.DefaultTWalletTransferServiceImpl;
 import com.bittrade.common.enums.FundRecordTypeEnumer;
 import com.bittrade.common.enums.LegalRecordStatusEnumer;
@@ -72,19 +71,19 @@ public class TWalletTransferServiceImpl extends
 	private ITWalletRecordService walletRecordService;
 	@Autowired
 	private ITWalletTransferService walletTransferService;
-	@Reference
+	@Autowired
 	private ITLegalCurrencyAccountService legalCurrencyAccountService;
-	@Reference
+	@Autowired
 	private ITLegalCurrencyRecordService legalCurrencyRecordService;
-	@Reference
+	@Autowired
 	private ITLegalCurrencyCoinService legalCurrencyCoinService;
 	@Autowired
 	private ITAccountManageDAO accountManageDAO;
-	@Reference
+	@Autowired
 	private IWWalletAccountService wWalletAccountService;
-	@Reference
+	@Autowired
 	private IWWalletAccountRecordService wWalletAccountRecordService;
-	@Reference
+	@Autowired
 	private IWCoinService wCoinService;
 
 	/**

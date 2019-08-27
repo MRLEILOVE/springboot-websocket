@@ -11,7 +11,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
  * 角色和菜单关联表
  * </p>
  *
- * @author ourblue
+ * @author who ?
  * @since 2018-11-03
  */
 @TableName("sys_role_menu")

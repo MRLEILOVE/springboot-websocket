@@ -13,7 +13,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
  * 参数配置表
  * </p>
  *
- * @author ourblue
+ * @author who ?
  * @since 2018-11-03
  */
 @TableName("sys_config")

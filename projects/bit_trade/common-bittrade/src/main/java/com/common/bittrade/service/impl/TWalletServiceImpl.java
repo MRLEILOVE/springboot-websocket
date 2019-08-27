@@ -65,9 +65,9 @@ public class TWalletServiceImpl extends DefaultTWalletServiceImpl<ITWalletDAO, T
 	private ITWalletRecordDAO		walletRecordDAO;
 	@Reference
 	private ITCurrencyService 			currencyService;
-	@Reference
+	@Autowired
 	private ITLegalCurrencyAccountService legalCurrencyAccountService;
-	@Reference
+	@Autowired
 	private IWWalletAccountService wWalletAccountService;
 
 

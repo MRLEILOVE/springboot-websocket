@@ -13,7 +13,7 @@ import com.bittrade.admin.model.domain.SysUserOnline;
  * 在线用户记录 Mapper 接口
  * </p>
  *
- * @author ourblue
+ * @author who ?
  * @since 2018-11-03
  */
 public interface ISysUserOnlineDAO extends BaseMapper<SysUserOnline> {

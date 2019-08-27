@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 /**
  * 用户状态
  *
- * @author ourblue
+ * @author who ?
  *
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)

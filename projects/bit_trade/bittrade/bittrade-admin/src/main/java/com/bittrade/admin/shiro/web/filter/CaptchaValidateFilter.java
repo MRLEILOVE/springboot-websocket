@@ -16,7 +16,7 @@ import lombok.Setter;
 /**
  * code filters
  * 
- * @author ourblue
+ * @author who ?
  *
  */
 public class CaptchaValidateFilter extends AccessControlFilter {

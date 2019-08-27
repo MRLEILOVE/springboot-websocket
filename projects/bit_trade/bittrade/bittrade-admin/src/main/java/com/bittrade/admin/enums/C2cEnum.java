@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 /**
  * 用户状态
  *
- * @author ourblue
+ * @author who ?
  *
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)

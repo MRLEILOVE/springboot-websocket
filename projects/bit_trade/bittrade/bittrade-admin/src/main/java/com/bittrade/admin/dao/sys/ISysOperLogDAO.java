@@ -13,7 +13,7 @@ import com.bittrade.admin.model.domain.SysOperLog;
  * 操作日志记录 Mapper 接口
  * </p>
  *
- * @author ourblue
+ * @author who ?
  * @since 2018-11-03
  */
 public interface ISysOperLogDAO extends BaseMapper<SysOperLog> {

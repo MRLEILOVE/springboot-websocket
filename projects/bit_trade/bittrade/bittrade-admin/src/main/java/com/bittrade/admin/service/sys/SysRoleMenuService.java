@@ -8,7 +8,7 @@ import com.bittrade.admin.model.domain.SysRoleMenu;
  * 角色和菜单关联表 服务类
  * </p>
  *
- * @author ourblue
+ * @author who ?
  * @since 2018-11-03
  */
 public interface SysRoleMenuService extends IService<SysRoleMenu> {

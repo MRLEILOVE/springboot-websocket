@@ -5,7 +5,7 @@ import com.bittrade.admin.util.MessageUtil;
 /**
  * user 用户密码不正确或不符合规范异常类
  * 
- * @author ourblue
+ * @author who ?
  *
  */
 public class UserPasswordNotMatchException extends BusinessException {

@@ -5,7 +5,7 @@ import com.bittrade.admin.util.MessageUtil;
 /**
  * user 不存在异常
  * 
- * @author ourblue
+ * @author who ?
  *
  */
 public class UserNotExistsException extends BusinessException {

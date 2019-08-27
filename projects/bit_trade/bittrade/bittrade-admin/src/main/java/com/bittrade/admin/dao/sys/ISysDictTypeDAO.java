@@ -13,7 +13,7 @@ import com.bittrade.admin.model.domain.SysDictType;
  * 字典类型表 Mapper 接口
  * </p>
  *
- * @author ourblue
+ * @author who ?
  * @since 2018-11-09
  */
 public interface ISysDictTypeDAO extends BaseMapper<SysDictType> {

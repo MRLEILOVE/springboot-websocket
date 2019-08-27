@@ -14,7 +14,7 @@ import com.bittrade.admin.model.domain.base.BaseEntity;
  * 
  * </p>
  *
- * @author ourblue
+ * @author who ?
  * @since 2018-11-03
  */
 @TableName("sys_role")

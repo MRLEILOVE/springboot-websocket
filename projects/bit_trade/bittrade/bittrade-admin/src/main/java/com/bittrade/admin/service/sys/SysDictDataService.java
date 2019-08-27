@@ -11,7 +11,7 @@ import com.bittrade.admin.model.domain.SysDictData;
  * 字典数据表 服务类
  * </p>
  *
- * @author ourblue
+ * @author who ?
  * @since 2018-11-09
  */
 public interface SysDictDataService extends IService<SysDictData> {

@@ -11,7 +11,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
  * 在线用户记录
  * </p>
  *
- * @author ourblue
+ * @author who ?
  * @since 2018-11-03
  */
 @TableName("sys_user_online")

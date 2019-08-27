@@ -3,7 +3,7 @@ package com.bittrade.admin.shiro.constant;
 /**
  * .权限通用常量
  * 
- * @author ourblue
+ * @author who ?
  *
  */
 public class PmsnConstant {

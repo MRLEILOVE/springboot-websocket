@@ -20,7 +20,7 @@ import eu.bitwalker.useragentutils.UserAgent;
 /**
  * .异步任务
  * 
- * @author ourblue
+ * @author who ?
  *
  */
 public class AsyncFactory {

@@ -12,7 +12,7 @@ import com.bittrade.admin.model.domain.SysRole;
  * 服务类
  * </p>
  *
- * @author ourblue
+ * @author who ?
  * @since 2018-11-03
  */
 public interface SysRoleService extends IService<SysRole> {

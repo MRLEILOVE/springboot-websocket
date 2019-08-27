@@ -19,7 +19,7 @@ import com.bittrade.admin.service.sys.SysDeptService;
  * 部门表 服务实现类
  * </p>
  *
- * @author ourblue
+ * @author who ?
  * @since 2018-11-03
  */
 @Service

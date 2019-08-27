@@ -14,7 +14,7 @@ import com.bittrade.admin.model.domain.base.BaseEntity;
  * 字典数据表
  * </p>
  *
- * @author ourblue
+ * @author who ?
  * @since 2018-11-09
  */
 @TableName("sys_dict_data")

@@ -20,7 +20,7 @@
 // * @create 
 // * @since 1.0.0
 // */
-//public class RedisTokenStore implements TokenStore {
+//public class RedisTokenStore__ implements TokenStore {
 //
 //    private static final String ACCESS = "access:";
 //    private static final String AUTH_TO_ACCESS = "auth_to_access:";
@@ -36,7 +36,7 @@
 //    private RedisTokenStoreSerializationStrategy serializationStrategy = new JdkSerializationStrategy();
 //    private String prefix = "";
 //
-//    public RedisTokenStore(RedisConnectionFactory connectionFactory) {
+//    public RedisTokenStore__(RedisConnectionFactory connectionFactory) {
 //        this.connectionFactory = connectionFactory;
 //    }
 //

@@ -10,7 +10,7 @@ import com.bittrade.admin.model.domain.SysConfig;
  * 参数配置表 Mapper 接口
  * </p>
  *
- * @author ourblue
+ * @author who ?
  * @since 2018-11-03
  */
 public interface ISysConfigDAO extends BaseMapper<SysConfig> {

@@ -1,5 +1,4 @@
-package com.core.web.common.config.oauth2;
-//package com.bittrade.currency.conf.oauth2;
+//package com.core.web.common.config.oauth2;
 //
 //import java.util.ArrayList;
 //import java.util.HashMap;
@@ -27,7 +26,7 @@ package com.core.web.common.config.oauth2;
 //
 //@Configuration
 //@EnableAuthorizationServer
-//public class SSOAuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
+//public class SSOAuthorizationServerConfig__ extends AuthorizationServerConfigurerAdapter {
 //
 //	public static final String		SIGNING_KEY	= "JWT_sign";
 //	public static final String		CLIENT_ID_1	= "clientID1";

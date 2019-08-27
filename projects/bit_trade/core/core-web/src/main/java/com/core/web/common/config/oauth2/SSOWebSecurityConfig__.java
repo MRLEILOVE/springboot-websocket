@@ -1,5 +1,4 @@
-package com.core.web.common.config.oauth2;
-//package com.bittrade.currency.conf.oauth2;
+//package com.core.web.common.config.oauth2;
 //
 //import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.context.annotation.Bean;
@@ -14,7 +13,7 @@ package com.core.web.common.config.oauth2;
 //@Configuration
 //@EnableWebSecurity
 ////@org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
-//public class SSOWebSecurityConfig extends WebSecurityConfigurerAdapter {
+//public class SSOWebSecurityConfig__ extends WebSecurityConfigurerAdapter {
 //	
 //	@Autowired
 //	private SSOUserDetailsService userDetailsService;

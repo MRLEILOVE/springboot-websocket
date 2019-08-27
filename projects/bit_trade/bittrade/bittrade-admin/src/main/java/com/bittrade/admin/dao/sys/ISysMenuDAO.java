@@ -12,7 +12,7 @@ import com.bittrade.admin.model.domain.SysMenu;
  * 菜单权限表 Mapper 接口
  * </p>
  *
- * @author ourblue
+ * @author who ?
  * @since 2018-11-03
  */
 public interface ISysMenuDAO extends BaseMapper<SysMenu> {

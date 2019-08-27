@@ -10,7 +10,7 @@ import com.bittrade.admin.model.domain.SysDept;
  * 部门表 Mapper 接口
  * </p>
  *
- * @author ourblue
+ * @author who ?
  * @since 2018-11-03
  */
 public interface ISysDeptDAO extends BaseMapper<SysDept> {

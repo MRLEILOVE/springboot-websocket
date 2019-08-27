@@ -13,7 +13,7 @@ import com.bittrade.admin.model.domain.SysLogininfor;
  * 系统访问记录 Mapper 接口
  * </p>
  *
- * @author ourblue
+ * @author who ?
  * @since 2018-11-03
  */
 public interface ISysLogininforDAO extends BaseMapper<SysLogininfor> {

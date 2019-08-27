@@ -10,7 +10,7 @@ import com.bittrade.admin.model.domain.SysUserRole;
  * 用户和角色关联表 Mapper 接口
  * </p>
  *
- * @author ourblue
+ * @author who ?
  * @since 2018-11-03
  */
 public interface ISysUserRoleDAO extends BaseMapper<SysUserRole> {

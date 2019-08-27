@@ -20,7 +20,7 @@ import com.bittrade.admin.util.ConvertUtil;
  * 字典类型表 服务实现类
  * </p>
  *
- * @author ourblue
+ * @author who ?
  * @since 2018-11-09
  */
 @Service

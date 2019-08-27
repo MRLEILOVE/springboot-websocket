@@ -5,7 +5,7 @@ import com.bittrade.admin.util.MessageUtil;
 /**
  * .角色锁定异常
  * 
- * @author ourblue
+ * @author who ?
  *
  */
 public class RoleBlockedException extends BusinessException {

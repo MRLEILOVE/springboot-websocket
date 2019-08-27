@@ -14,7 +14,7 @@ import com.bittrade.admin.model.domain.base.BaseEntity;
  * 系统访问记录
  * </p>
  *
- * @author ourblue
+ * @author who ?
  * @since 2018-11-03
  */
 @TableName("sys_logininfor")
