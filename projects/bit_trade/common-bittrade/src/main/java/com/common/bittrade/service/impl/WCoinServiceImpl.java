@@ -2,6 +2,7 @@ package com.common.bittrade.service.impl;
 
 import java.util.List;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -29,6 +30,13 @@ public class WCoinServiceImpl extends ServiceImpl<IWCoinDAO, WCoin> implements I
 	@Override
 	public List<CoinVo> getCoins() {
 		return wCoinDAO.getCoins();
+	}
+
+	@Override
+	public WCoin getByName(String coinName) {
+		QueryWrapper<WCoin> qry = new QueryWrapper<>();
+		qry.eq(WCoin.FieldNames.TOKEN,coinName);
+		return wCoinDAO.selectOne(qry);
 	}
 
 }
