@@ -21,6 +21,7 @@ public class WCoinVO extends BaseVO<WCoinVO> {
 	private String contract;
 	private String isRecharge;
 	private String isWithdraw;
+	private Byte status;
 	private String remark;
 	private java.time.LocalDateTime createTime;
 	private java.time.LocalDateTime updateTime;

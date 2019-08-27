@@ -10,6 +10,7 @@
 		<result javaType="String" property="contract" jdbcType="VARCHAR" column="contract" />
 		<result javaType="String" property="isRecharge" jdbcType="CHAR" column="is_recharge" />
 		<result javaType="String" property="isWithdraw" jdbcType="CHAR" column="is_withdraw" />
+		<result javaType="Byte" property="status" jdbcType="INTEGER" column="status" />
 		<result javaType="String" property="remark" jdbcType="VARCHAR" column="remark" />
 		<result javaType="java.time.LocalDateTime" property="createTime" jdbcType="TIMESTAMP" column="create_time" />
 		<result javaType="java.time.LocalDateTime" property="updateTime" jdbcType="TIMESTAMP" column="update_time" />
@@ -23,6 +24,7 @@
 		`contract` AS contract,
 		`is_recharge` AS isRecharge,
 		`is_withdraw` AS isWithdraw,
+		`status` AS status,
 		`remark` AS remark, 
 		`create_time` AS createTime, 
 		`update_time` AS updateTime

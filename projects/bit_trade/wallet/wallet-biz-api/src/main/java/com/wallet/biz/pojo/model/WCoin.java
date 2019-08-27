@@ -57,6 +57,8 @@ public class WCoin extends BaseModel<WCoin> {
 		 * 是否允许提现 禁用D  启用E
 		 */
 		public static final String IS_WITHDRAW = "is_withdraw";
+
+		public static final String STATUS = "status";
 		
 		/**
 		 * 备注
@@ -105,6 +107,8 @@ public class WCoin extends BaseModel<WCoin> {
 	 * 是否允许提现 禁用D  启用E
 	 */
 	private String isWithdraw;
+
+	private Byte status;
 	
 	/**
 	 * 备注
