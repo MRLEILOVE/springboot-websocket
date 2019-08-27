@@ -1,10 +1,11 @@
 package com.wallet.biz.service.impl;
 
+import org.springframework.stereotype.Service;
+
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.bittrade.pojo.model.TParamConfig;
 import com.wallet.biz.api.service.ITParamConfigService;
 import com.wallet.biz.dao.ITParamConfigDAO;
-import com.wallet.biz.pojo.model.TParamConfig;
-import org.springframework.stereotype.Service;
 
 /**
  * 

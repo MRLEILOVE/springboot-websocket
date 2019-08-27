@@ -1,19 +1,25 @@
 package com.wallet.biz.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.stereotype.Controller;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.bittrade.pojo.vo.CoinTypeVO;
+import com.bittrade.pojo.vo.WithdrawBillParamVo;
 import com.core.common.DTO.ReturnDTO;
 import com.core.common.annotation.ALoginUser;
 import com.core.web.constant.entity.LoginUser;
 import com.wallet.biz.api.service.IWCoinConfigService;
 import com.wallet.biz.api.service.IWOrderService;
-import com.wallet.biz.pojo.vo.CoinTypeVO;
-import com.wallet.biz.pojo.vo.WithdrawBillParamVo;
 import com.wallet.biz.api.service.IwalletCaseService;
+
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.stereotype.Controller;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
 
 /**
  * 

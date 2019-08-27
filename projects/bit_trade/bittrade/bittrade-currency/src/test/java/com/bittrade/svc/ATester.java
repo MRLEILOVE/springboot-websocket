@@ -6,10 +6,10 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.bittrade.currency.api.service.ITCurrencyTradeService;
-import com.bittrade.currency.api.service.ITWalletService;
 import com.bittrade.pojo.model.TCurrencyTrade;
 import com.bittrade.pojo.model.TWallet;
 import com.bittrade.svc.base.BaseTester;
+import com.common.bittrade.service.ITWalletService;
 
 import redis.clients.jedis.JedisCluster;
 

@@ -1,28 +1,35 @@
 package com.wallet.biz.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.core.common.DTO.ReturnDTO;
-import com.wallet.biz.api.service.*;
-import com.wallet.biz.pojo.model.WCoin;
-import com.wallet.biz.pojo.model.WOrder;
-import com.wallet.biz.pojo.model.WUserWallet;
-import com.wallet.biz.pojo.model.WWalletAddress;
-import com.wallet.biz.pojo.vo.CoinTypeVO;
-import com.wallet.biz.pojo.vo.AddressResultDto;
-import com.wallet.biz.pojo.vo.WalletAddressVO;
-import com.wallet.biz.pojo.vo.WithdrawBillParamVo;
-import com.wallet.biz.utils.AesUtils;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.bitcoinj.core.ECKey;
 import org.bitcoinj.core.NetworkParameters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.bittrade.pojo.model.WCoin;
+import com.bittrade.pojo.model.WOrder;
+import com.bittrade.pojo.model.WUserWallet;
+import com.bittrade.pojo.model.WWalletAddress;
+import com.bittrade.pojo.vo.AddressResultDto;
+import com.bittrade.pojo.vo.CoinTypeVO;
+import com.bittrade.pojo.vo.WalletAddressVO;
+import com.bittrade.pojo.vo.WithdrawBillParamVo;
+import com.common.bittrade.service.IWCoinService;
+import com.common.bittrade.service.IWWalletAccountService;
+import com.core.common.DTO.ReturnDTO;
+import com.wallet.biz.api.service.IWOrderService;
+import com.wallet.biz.api.service.IWUserWalletService;
+import com.wallet.biz.api.service.IWWalletAddressService;
+import com.wallet.biz.api.service.IWWalletBillService;
+import com.wallet.biz.api.service.IwalletCaseService;
+import com.wallet.biz.utils.AesUtils;
 
 
 @Service

@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.bittrade.currency.api.service.ITWalletService;
 import com.bittrade.pojo.dto.TWalletDTO;
 import com.bittrade.pojo.model.TWallet;
 import com.bittrade.pojo.vo.AssetsVO;
@@ -19,6 +18,7 @@ import com.bittrade.pojo.vo.CoinAccountVO;
 import com.bittrade.pojo.vo.ConversionVo;
 import com.bittrade.pojo.vo.TWalletVO;
 import com.bittrade.pojo.vo.UserWalletVO;
+import com.common.bittrade.service.ITWalletService;
 import com.core.common.DTO.ReturnDTO;
 import com.core.common.annotation.ALoginUser;
 import com.core.framework.base.controller.BaseController;
