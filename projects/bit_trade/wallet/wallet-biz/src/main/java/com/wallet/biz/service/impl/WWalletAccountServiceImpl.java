@@ -8,6 +8,8 @@ import com.bittrade.common.enums.FundCoinEnumer;
 import com.bittrade.currency.api.service.ITCurrencyService;
 import com.bittrade.pojo.model.TCurrency;
 import com.core.tool.SnowFlake;
+import com.wallet.biz.dao.IWCoinDAO;
+import com.wallet.biz.pojo.model.WCoin;
 import com.wallet.biz.pojo.vo.AssetsVO;
 import com.wallet.biz.pojo.vo.ConversionVo;
 import com.wallet.biz.utils.RedisKeyUtil;
@@ -40,13 +42,10 @@ public class WWalletAccountServiceImpl extends ServiceImpl<IWWalletAccountDAO, W
     private static final SnowFlake SNOW_FLAKE__ENTRUST	= new SnowFlake( 2, 2);
     @Autowired
     private IWWalletAccountDAO walletAccountDAO;
-/*    @Autowired
-    private JedisCluster jedisCluster;*/
-
     @Autowired
     private RedisTemplate<String,String> redisTemplate;
-    @Reference
-    private ITCurrencyService currencyService;
+    @Autowired
+    private IWCoinDAO wCoinDAO;
 
     /**
      * 通过用户ID跟币种id获取资金钱包
@@ -130,21 +129,24 @@ public class WWalletAccountServiceImpl extends ServiceImpl<IWWalletAccountDAO, W
         //获取用户所有的法币钱包
         List<AssetsVO> AssetsVOs = walletAccountDAO.getAssets(userId);
         //查询币种列表
-        List<TCurrency> currencies = currencyService.getCurrencies(FundCoinEnumer.getValues());
+//        List<TCurrency> currencies = currencyService.getCurrencies(FundCoinEnumer.getValues());
+        QueryWrapper<WCoin> qryCoin = new QueryWrapper<>();
+        qryCoin.eq(WCoin.FieldNames.STATUS,1);
+        List<WCoin> wCoins = wCoinDAO.selectList(qryCoin);
         if(AssetsVOs == null || AssetsVOs.size() <= 0){
             //为用户创建全部钱包
-            createAllWallet(currencies,userId);
+            createAllWallet(wCoins,userId);
             //封装好数据后返回给前端
-            currencies.stream().forEach(x -> {
-                AssetsVO assetsVO = AssetsVO.builder().total(BigDecimal.ZERO).totalFrozen(BigDecimal.ZERO).currencyId(x.getId().longValue()).tradeFrozen(BigDecimal.ZERO).transferFrozen(BigDecimal.ZERO).currencyName(x.getName()).build();
+            wCoins.stream().forEach(x -> {
+                AssetsVO assetsVO = AssetsVO.builder().total(BigDecimal.ZERO).totalFrozen(BigDecimal.ZERO).currencyId(x.getId()).tradeFrozen(BigDecimal.ZERO).transferFrozen(BigDecimal.ZERO).currencyName(x.getToken()).build();
                 AssetsVOs.add(assetsVO);
             });
-        }else if(currencies.size() > AssetsVOs.size()){
+        }else if(wCoins.size() > AssetsVOs.size()){
             //为用户创建缺失的钱包
-            List<TCurrency> lockCurrency = createLockWallet(currencies,AssetsVOs,userId);
+            List<WCoin> lockCurrency = createLockWallet(wCoins,AssetsVOs,userId);
             lockCurrency.stream().forEach(x ->{
                 //将缺失的钱包添加到用户钱包列表，然后返回数据给前端
-                AssetsVO assetsVO = AssetsVO.builder().total(BigDecimal.ZERO).totalFrozen(BigDecimal.ZERO).currencyId(x.getId().longValue()).tradeFrozen(BigDecimal.ZERO).transferFrozen(BigDecimal.ZERO).currencyName(x.getName()).build();
+                AssetsVO assetsVO = AssetsVO.builder().total(BigDecimal.ZERO).totalFrozen(BigDecimal.ZERO).currencyId(x.getId().longValue()).tradeFrozen(BigDecimal.ZERO).transferFrozen(BigDecimal.ZERO).currencyName(x.getToken()).build();
                 AssetsVOs.add(assetsVO);
             });
         }
@@ -188,8 +190,8 @@ public class WWalletAccountServiceImpl extends ServiceImpl<IWWalletAccountDAO, W
      * @param userId 用户id
      * @return 缺失钱包的币种列表
      */
-    private List<TCurrency> createLockWallet(List<TCurrency> currencies, List<AssetsVO> userAccountVOs, Long userId) {
-        List<TCurrency> lockList = new ArrayList<>();//需要返回的缺失钱包的币种列表
+    private List<WCoin> createLockWallet(List<WCoin> currencies, List<AssetsVO> userAccountVOs, Long userId) {
+        List<WCoin> lockList = new ArrayList<>();//需要返回的缺失钱包的币种列表
         Map<String,String> existAccountMap = new HashMap<>();//已经存在的钱包Map
 
         //将已经存在的钱包封装进existAccountMap
@@ -199,11 +201,11 @@ public class WWalletAccountServiceImpl extends ServiceImpl<IWWalletAccountDAO, W
 
         //遍历币种列表，寻找以及创建缺失的钱包列表
         currencies.stream().forEach(x -> {
-            if(existAccountMap.get(x.getName()) == null){
+            if(existAccountMap.get(x.getToken()) == null){
                 //将对象加入lockList
                 lockList.add(x);
                 //创建钱包
-                createWallet(x.getId(),userId);
+                createWallet(x.getId().intValue(),userId);
             }
         });
         return lockList;
@@ -214,27 +216,24 @@ public class WWalletAccountServiceImpl extends ServiceImpl<IWWalletAccountDAO, W
      * @param currencies
      * @param userId
      */
-    private void createAllWallet(List<TCurrency> currencies, Long userId) {
+    private void createAllWallet(List<WCoin> currencies, Long userId) {
         if(currencies != null && currencies.size() > 0){
             currencies.forEach(x ->{
-                //是否在枚举中，币币账户跟资金账户公用了一个币种表，但是资金账户现在只有BTC跟USDT
-                if(FundCoinEnumer.getKeyByValue(x.getName()) != null){
-                    createWallet(x.getId(),userId);
-                }
+                createWallet(x.getId().intValue(),userId);
             });
         }
     }
 
     /**
      * 为用户创建钱包
-     * @param currencyId 币种id
+     * @param coinId 币种id
      * @param userId 用户id
      */
-    private WWalletAccount createWallet(Integer currencyId, Long userId) {
+    private WWalletAccount createWallet(Integer coinId, Long userId) {
         WWalletAccount account = WWalletAccount.builder()
                 .id(SNOW_FLAKE__ENTRUST.nextId())
                 .userId(userId)
-                .currencyId(currencyId)
+                .currencyId(coinId)
                 .total(BigDecimal.ZERO)
                 .tradeFrozen(BigDecimal.ZERO)
                 .transferFrozen(BigDecimal.ZERO)
