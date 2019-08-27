@@ -21,8 +21,6 @@ public class TCurrencyVO extends BaseVO<TCurrencyVO> {
 	private String shortName;
 	private Byte status;
 	private Byte type;
-	private Byte isRecharge;
-	private Byte isWithdraw;
 	private String desc;
 	private java.time.LocalDateTime createTime;
 
