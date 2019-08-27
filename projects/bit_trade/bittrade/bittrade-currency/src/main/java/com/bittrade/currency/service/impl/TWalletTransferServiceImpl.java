@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.bittrade.pojo.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,14 +27,6 @@ import com.bittrade.currency.dao.ITCurrencyDAO;
 import com.bittrade.currency.dao.ITWalletTransferDAO;
 import com.bittrade.pojo.dto.TWalletTransferDTO;
 import com.bittrade.pojo.dto.TransferDto;
-import com.bittrade.pojo.model.TAccountManage;
-import com.bittrade.pojo.model.TCurrency;
-import com.bittrade.pojo.model.TLegalCurrencyAccount;
-import com.bittrade.pojo.model.TLegalCurrencyCoin;
-import com.bittrade.pojo.model.TWallet;
-import com.bittrade.pojo.model.TWalletRecord;
-import com.bittrade.pojo.model.TWalletTransfer;
-import com.bittrade.pojo.model.WWalletAccount;
 import com.bittrade.pojo.vo.CoinVo;
 import com.bittrade.pojo.vo.LegalCurrencyCoinVO;
 import com.bittrade.pojo.vo.TWalletTransferVO;
@@ -163,14 +156,14 @@ public class TWalletTransferServiceImpl extends
 	 * 资金账户划转法币账户
 	 */
 	private ReturnDTO tf_fund_to_personal(TransferDto transferDto) throws Exception {
-		// 获取币种
-		TCurrency currency = getCurrency(transferDto.getCurrency());
-		if (currency == null) {
-			throw new Exception("币币账户币种为空");
+		// 获取资金账户币种
+		WCoin wCoin = wCoinService.getByName(transferDto.getCurrency());
+		if (wCoin == null) {
+			throw new Exception("资金账户币种为空");
 		}
 
 		// 获取资金钱包
-		WWalletAccount fundAccount = wWalletAccountService.getAccount(transferDto.getUserId(), currency.getId());
+		WWalletAccount fundAccount = wWalletAccountService.getAccount(transferDto.getUserId(), wCoin.getId().intValue());
 		// 搞个变量存储资金钱包原来有多少钱
 		BigDecimal fundTotal = fundAccount.getTotal();
 		// 检查资金钱包余额是否充足
@@ -196,7 +189,7 @@ public class TWalletTransferServiceImpl extends
 			throw new Exception("资金钱包划转法币钱包失败，请稍后再试");
 		}
 		// 资金钱包流水（划出）
-		wWalletAccountRecordService.recordOut(transferDto.getUserId(), transferDto.getNum(), currency.getId(),
+		wWalletAccountRecordService.recordOut(transferDto.getUserId(), transferDto.getNum(), wCoin.getId().intValue(),
 				fundTotal, FundRecordTypeEnumer.FUNDS_TO_C2C.getCode());
 
 		// c2c钱包+
@@ -230,13 +223,13 @@ public class TWalletTransferServiceImpl extends
 			return ReturnDTO.error("划转失败,资金账户余额不足");
 		}
 
-		// 获取币种
-		TCurrency currency = getCurrency(transferDto.getCurrency());
-		if (currency == null) {
-			throw new Exception("币币账户币种为空");
+		// 获取资金账户币种
+		WCoin wCoin = wCoinService.getByName(transferDto.getCurrency());
+		if (wCoin == null) {
+			throw new Exception("资金账户币种为空");
 		}
 		// 获取资金钱包
-		WWalletAccount fundAccount = wWalletAccountService.getAccount(transferDto.getUserId(), currency.getId());
+		WWalletAccount fundAccount = wWalletAccountService.getAccount(transferDto.getUserId(), wCoin.getId().intValue());
 		// 搞个变量存储资金钱包原来有多少钱
 		BigDecimal fundTotal = fundAccount.getTotal();
 
@@ -257,7 +250,7 @@ public class TWalletTransferServiceImpl extends
 			throw new Exception("c2c钱包划转资金钱包失败，请稍后再试");
 		}
 		// 资金钱包流水（划入）
-		wWalletAccountRecordService.recordIn(transferDto.getUserId(), transferDto.getNum(), currency.getId(), fundTotal,
+		wWalletAccountRecordService.recordIn(transferDto.getUserId(), transferDto.getNum(), wCoin.getId().intValue(), fundTotal,
 				FundRecordTypeEnumer.C2C_TO_FUNDS.getCode());
 
 		return ReturnDTO.ok("划转成功");
@@ -267,19 +260,25 @@ public class TWalletTransferServiceImpl extends
 	 * 资金钱包划转币币钱包
 	 */
 	private ReturnDTO tf_fund_to_bibi(TransferDto transferDto) throws Exception {
-		// 获取币种
-		TCurrency currency = getCurrency(transferDto.getCurrency());
-		if (currency == null) {
-			throw new Exception("币币账户币种为空");
+		//获取资金账户币种
+		WCoin wCoin = wCoinService.getByName(transferDto.getCurrency());
+		if (wCoin == null) {
+			throw new Exception("资金账户币种为空");
 		}
 
 		// 获取资金钱包
-		WWalletAccount fundAccount = wWalletAccountService.getAccount(transferDto.getUserId(), currency.getId());
+		WWalletAccount fundAccount = wWalletAccountService.getAccount(transferDto.getUserId(), wCoin.getId().intValue());
 		// 搞个变量存储资金钱包原来有多少钱
 		BigDecimal fundTotal = fundAccount.getTotal();
 		// 检查资金钱包余额是否充足
 		if (fundTotal.compareTo(transferDto.getNum()) == -1) {
 			return ReturnDTO.error("划转失败,资金账户余额不足");
+		}
+
+		// 获取币币账户币种
+		TCurrency currency = getCurrency(transferDto.getCurrency());
+		if (currency == null) {
+			throw new Exception("币币账户币种为空");
 		}
 
 		// 获取币币钱包
@@ -301,7 +300,7 @@ public class TWalletTransferServiceImpl extends
 			throw new Exception("币币钱包划转资金钱包失败，请稍后再试");
 		}
 		// 资金钱包流水（划出）
-		wWalletAccountRecordService.recordOut(transferDto.getUserId(), transferDto.getNum(), currency.getId(),
+		wWalletAccountRecordService.recordOut(transferDto.getUserId(), transferDto.getNum(), wCoin.getId().intValue(),
 				fundTotal, FundRecordTypeEnumer.BIBI_TO_FUNDS.getCode());
 		return ReturnDTO.ok("划转成功");
 	}
@@ -325,8 +324,14 @@ public class TWalletTransferServiceImpl extends
 			return ReturnDTO.error("划转失败,币币账户余额不足");
 		}
 
+		//获取资金币种
+		WCoin wCoin = wCoinService.getByName(transferDto.getCurrency());
+		if (wCoin == null) {
+			throw new Exception("资金账户币种为空");
+		}
+
 		// 获取资金钱包
-		WWalletAccount fundAccount = wWalletAccountService.getAccount(transferDto.getUserId(), currency.getId());
+		WWalletAccount fundAccount = wWalletAccountService.getAccount(transferDto.getUserId(), wCoin.getId().intValue());
 		// 搞个变量存储资金钱包原来有多少钱
 		BigDecimal fundTotal = fundAccount.getTotal();
 
@@ -345,7 +350,7 @@ public class TWalletTransferServiceImpl extends
 			throw new Exception("币币钱包划转资金钱包失败，请稍后再试");
 		}
 		// 资金钱包流水（划入）
-		wWalletAccountRecordService.recordIn(transferDto.getUserId(), transferDto.getNum(), currency.getId(), fundTotal,
+		wWalletAccountRecordService.recordIn(transferDto.getUserId(), transferDto.getNum(), wCoin.getId().intValue(), fundTotal,
 				FundRecordTypeEnumer.BIBI_TO_FUNDS.getCode());
 
 		return ReturnDTO.ok("划转成功");
