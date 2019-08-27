@@ -1,12 +1,13 @@
 package com.bittrade.pojo.model;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.core.framework.base.model.BaseModel;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 /**
@@ -25,11 +26,6 @@ import lombok.experimental.Accessors;
 public class TAdvertOrder extends BaseModel<TAdvertOrder> {
 	
 	private static final long serialVersionUID = 1L;
-
-	/**
-	 * 取消订单时间限制，默认下单 3 分钟内可取消订单
-	 */
-	public static final long CANCEL_ORDER_DURATION = 3;
 	
 	/**
 	 * 
@@ -90,7 +86,7 @@ public class TAdvertOrder extends BaseModel<TAdvertOrder> {
 		public static final String PUBLISHER_ID = "publisher_id";
 		
 		/**
-		 * 取消者ID（仅取消状态需填）
+		 * 取消者ID,系统超时取消填0（仅取消状态需填）
 		 */
 		public static final String CANCELLER_ID = "canceller_id";
 		
@@ -120,7 +116,7 @@ public class TAdvertOrder extends BaseModel<TAdvertOrder> {
 		public static final String CHARGE = "charge";
 		
 		/**
-		 * 状态（1，已拍下；2，已付款；3，已收款；5，已完成；6，已取消，7，超时关闭）
+		 * 状态（0,未操作; 1，已拍下；2，已付款；3，已收款；5，已完成；6，已取消，7，超时关闭）
 		 */
 		public static final String STATUS = "status";
 		
@@ -174,7 +170,7 @@ public class TAdvertOrder extends BaseModel<TAdvertOrder> {
 	/**
 	 * 主键
 	 */
-	@TableId(value = "id", type = IdType.AUTO)
+	@com.baomidou.mybatisplus.annotation.TableId(value = "id", type = com.baomidou.mybatisplus.annotation.IdType.AUTO)
 	private Long id;
 	
 	/**
@@ -206,7 +202,7 @@ public class TAdvertOrder extends BaseModel<TAdvertOrder> {
 	 * 广告留言
 	 */
 	private String advertMessage;
-
+	
 	/**
 	 * 购买者ID
 	 */
@@ -223,7 +219,7 @@ public class TAdvertOrder extends BaseModel<TAdvertOrder> {
 	private Long publisherId;
 	
 	/**
-	 * 取消者ID（仅取消状态需填）
+	 * 取消者ID,系统超时取消填0（仅取消状态需填）
 	 */
 	private Long cancellerId;
 	
@@ -253,9 +249,9 @@ public class TAdvertOrder extends BaseModel<TAdvertOrder> {
 	private java.math.BigDecimal charge;
 	
 	/**
-	 * 状态（1，已拍下；2，已付款；3，已收款；5，已完成；6，已取消，7，超时关闭）
+	 * 状态（0,未操作; 1，已拍下；2，已付款；3，已收款；5，已完成；6，已取消，7，超时关闭）
 	 */
-	private Integer status;
+	private Byte status;
 	
 	/**
 	 * 取消订单截止时间（默认为 点击 购买/出售 后 3 分钟）
@@ -265,7 +261,7 @@ public class TAdvertOrder extends BaseModel<TAdvertOrder> {
 	/**
 	 * 仲裁状态：0，未仲裁；1，已仲裁；
 	 */
-	private Integer arbitStatus;
+	private Byte arbitStatus;
 	
 	/**
 	 * 仲裁结果
@@ -301,133 +297,5 @@ public class TAdvertOrder extends BaseModel<TAdvertOrder> {
 	 * 修改时间
 	 */
 	private java.time.LocalDateTime updateTime;
-
-
-	/**
-	 * 币名称
-	 */
-	@TableField(exist = false)
-	private String coinName;
-
-	/**
-	 * 收款方式id，出售单为收款方式, 购买单为付款方式
-	 */
-	@TableField(exist = false)
-	private Long paymentMethodId;
-
-
-
-	/**
-	 * 广告类型
-	 * <br/>
-	 *
-	 * @author ：leigq
-	 * @date ：2019/8/19 17:58
-	 */
-	@AllArgsConstructor
-	public enum AdvertTypeEnum {
-		SELL(1, "出售"),
-		BUY(2, "购买"),
-		;
-
-		@Getter
-		private Integer code;
-
-		@Getter
-		private String describe;
-
-		/**
-		 * 验证广告类型
-		 * <br/>
-		 * create by: leigq
-		 * <br/>
-		 * create time: 2019/8/19 17:24
-		 */
-		public static boolean isValidAdvertType(Integer advertType) {
-			for (TAdvertOrder.AdvertTypeEnum advertTypeEnum : TAdvertOrder.AdvertTypeEnum.values()) {
-				if (advertTypeEnum.code.equals(advertType)) {
-					return true;
-				}
-			}
-			return false;
-		}
-	}
-
-	/**
-	 * 仲裁状态
-	 * <br/>
-	 *
-	 * @author ：leigq
-	 * @date ：2019/8/19 17:58
-	 */
-	@AllArgsConstructor
-	public enum ArbitStatusEnum {
-		NO_ARBITRATION(0, "未仲裁"),
-		ARBITRATED(1, "已仲裁"),
-		;
-
-		@Getter
-		private Integer code;
-
-		@Getter
-		private String describe;
-
-		/**
-		 * 验证仲裁状态
-		 * <br/>
-		 * create by: leigq
-		 * <br/>
-		 * create time: 2019/8/19 17:24
-		 */
-		public static boolean isValidArbitStatus(Integer arbitStatus) {
-			for (TAdvertOrder.ArbitStatusEnum arbitStatusEnum : TAdvertOrder.ArbitStatusEnum.values()) {
-				if (arbitStatusEnum.code.equals(arbitStatus)) {
-					return true;
-				}
-			}
-			return false;
-		}
-	}
-
-
-	/**
-	 * 订单状态
-	 * <br/>
-	 *
-	 * @author ：leigq
-	 * @date ：2019/8/19 17:58
-	 */
-	@AllArgsConstructor
-	public enum StatusEnum {
-		ALREADY_AUCTION(1, "已拍下"),
-		ALREADY_PAID(2, "已付款"),
-		ALREADY_RECEIPT(3, "已收款"),
-		ALREADY_COMPLETE(5, "已完成"),
-		ALREADY_CANCEL(6, "已取消"),
-		TIMEOUT_OFF(7, "超时关闭"),
-		;
-
-		@Getter
-		private Integer code;
-
-		@Getter
-		private String describe;
-
-		/**
-		 * 验证订单状态
-		 * <br/>
-		 * create by: leigq
-		 * <br/>
-		 * create time: 2019/8/19 17:24
-		 */
-		public static boolean isValidStatus(Integer status) {
-			for (TAdvertOrder.StatusEnum statusEnum : TAdvertOrder.StatusEnum.values()) {
-				if (statusEnum.code.equals(status)) {
-					return true;
-				}
-			}
-			return false;
-		}
-	}
-
+	
 }

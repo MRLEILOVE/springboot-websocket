@@ -1,0 +1,696 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+	This code is generated automatically. Please do not edit it.
+	现在字段也可以要彻底动态？
+-->
+<mapper namespace="com.bittrade.__default.DAO.IDefaultSysJobDAO">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.bittrade.pojo.model.SysJob">
+		<id javaType="Long" property="jobId" jdbcType="BIGINT" column="job_id" />
+		<id javaType="String" property="jobName" jdbcType="VARCHAR" column="job_name" />
+		<id javaType="String" property="jobGroup" jdbcType="VARCHAR" column="job_group" />
+		<result javaType="String" property="methodName" jdbcType="VARCHAR" column="method_name" />
+		<result javaType="String" property="methodParams" jdbcType="VARCHAR" column="method_params" />
+		<result javaType="String" property="cronExpression" jdbcType="VARCHAR" column="cron_expression" />
+		<result javaType="String" property="misfirePolicy" jdbcType="VARCHAR" column="misfire_policy" />
+		<result javaType="String" property="concurrent" jdbcType="CHAR" column="concurrent" />
+		<result javaType="String" property="status" jdbcType="CHAR" column="status" />
+		<result javaType="String" property="createBy" jdbcType="VARCHAR" column="create_by" />
+		<result javaType="java.time.LocalDateTime" property="createTime" jdbcType="TIMESTAMP" column="create_time" />
+		<result javaType="String" property="updateBy" jdbcType="VARCHAR" column="update_by" />
+		<result javaType="java.time.LocalDateTime" property="updateTime" jdbcType="TIMESTAMP" column="update_time" />
+		<result javaType="String" property="remark" jdbcType="VARCHAR" column="remark" />
+	</resultMap>
+
+	<!--
+		通用查询结果列
+		其他类似的类似，也可以公用（共用）引用。
+	-->
+	<sql id="Base_Column_List">
+		<choose>
+			<when test="strArr_field != null">
+		<foreach collection="strArr_field" index="index" item="item" open="" separator="," close="">
+			`${item}`
+		</foreach>
+			</when>
+			<otherwise>
+		`job_id` AS `jobId`, 
+		`job_name` AS `jobName`, 
+		`job_group` AS `jobGroup`, 
+		`method_name` AS `methodName`, 
+		`method_params` AS `methodParams`, 
+		`cron_expression` AS `cronExpression`, 
+		`misfire_policy` AS `misfirePolicy`, 
+		`concurrent` AS `concurrent`, 
+		`status` AS `status`, 
+		`create_by` AS `createBy`, 
+		`create_time` AS `createTime`, 
+		`update_by` AS `updateBy`, 
+		`update_time` AS `updateTime`, 
+		`remark` AS `remark`
+			</otherwise>
+		</choose>
+	</sql>
+	
+	<!-- 其他的也可以类似的加， yes， 类似蕾丝的。 -->
+	<sql id="sql_WHERE_forProperty">
+		<choose>
+			<when test="map_in != null">
+			
+		<foreach collection="map_in.entrySet()" index="map_index" item="map_item">
+		AND `${map_index}` IN 
+		<foreach collection="map_item" index="arr_index" item="arr_item" open="(" separator="," close=")">
+			#{arr_item}
+		</foreach>
+		</foreach>
+			
+			</when>
+			<!--
+			<when test="_parameter != null and _parameter.SysJob != null and SysJob.map_in != null">
+			</when>
+			<otherwise>
+			</otherwise>
+			-->
+		</choose>
+	</sql>
+	<sql id="sql_WHERE_forObject">
+		<choose>
+			<when test="sysJob.map_in != null">
+			
+		<foreach collection="sysJob.map_in.entrySet()" index="map_index" item="map_item">
+		AND `${map_index}` IN 
+		<foreach collection="map_item" index="arr_index" item="arr_item" open="(" separator="," close=")">
+			#{arr_item}
+		</foreach>
+		</foreach>
+			
+			</when>
+		</choose>
+	</sql>
+	
+	
+	<insert id="add" parameterType="com.bittrade.pojo.model.SysJob" useGeneratedKeys="true" keyProperty="jobId">
+		INSERT INTO sys_job(`job_name`, `job_group`, `method_name`, `method_params`, `cron_expression`, `misfire_policy`, `concurrent`, `status`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`)
+		VALUES(#{jobName,jdbcType=VARCHAR}, #{jobGroup,jdbcType=VARCHAR}, #{methodName,jdbcType=VARCHAR}, #{methodParams,jdbcType=VARCHAR}, #{cronExpression,jdbcType=VARCHAR}, #{misfirePolicy,jdbcType=VARCHAR}, #{concurrent,jdbcType=CHAR}, #{status,jdbcType=CHAR}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{remark,jdbcType=VARCHAR})
+	</insert>
+	
+	<insert id="addWithSelective" parameterType="com.bittrade.pojo.model.SysJob" useGeneratedKeys="true" keyProperty="jobId">
+		INSERT INTO sys_job(
+			<if test="jobName != null">
+			`job_name`, 
+			</if>
+			<if test="jobGroup != null">
+			`job_group`, 
+			</if>
+			<if test="methodName != null">
+			`method_name`, 
+			</if>
+			<if test="methodParams != null">
+			`method_params`, 
+			</if>
+			<if test="cronExpression != null">
+			`cron_expression`, 
+			</if>
+			<if test="misfirePolicy != null">
+			`misfire_policy`, 
+			</if>
+			<if test="concurrent != null">
+			`concurrent`, 
+			</if>
+			<if test="status != null">
+			`status`, 
+			</if>
+			<if test="createBy != null">
+			`create_by`, 
+			</if>
+			<if test="createTime != null">
+			`create_time`, 
+			</if>
+			<if test="updateBy != null">
+			`update_by`, 
+			</if>
+			<if test="updateTime != null">
+			`update_time`, 
+			</if>
+			<if test="remark != null">
+			`remark`
+			</if>
+		)
+		VALUES(
+			<if test="jobName != null">
+			#{jobName,jdbcType=VARCHAR}, 
+			</if>
+			<if test="jobGroup != null">
+			#{jobGroup,jdbcType=VARCHAR}, 
+			</if>
+			<if test="methodName != null">
+			#{methodName,jdbcType=VARCHAR}, 
+			</if>
+			<if test="methodParams != null">
+			#{methodParams,jdbcType=VARCHAR}, 
+			</if>
+			<if test="cronExpression != null">
+			#{cronExpression,jdbcType=VARCHAR}, 
+			</if>
+			<if test="misfirePolicy != null">
+			#{misfirePolicy,jdbcType=VARCHAR}, 
+			</if>
+			<if test="concurrent != null">
+			#{concurrent,jdbcType=CHAR}, 
+			</if>
+			<if test="status != null">
+			#{status,jdbcType=CHAR}, 
+			</if>
+			<if test="createBy != null">
+			#{createBy,jdbcType=VARCHAR}, 
+			</if>
+			<if test="createTime != null">
+			#{createTime,jdbcType=TIMESTAMP}, 
+			</if>
+			<if test="updateBy != null">
+			#{updateBy,jdbcType=VARCHAR}, 
+			</if>
+			<if test="updateTime != null">
+			#{updateTime,jdbcType=TIMESTAMP}, 
+			</if>
+			<if test="remark != null">
+			#{remark,jdbcType=VARCHAR}
+			</if>
+		)
+	</insert>
+	
+	<delete id="removeByPK">
+		DELETE FROM sys_job
+		<where>
+			AND `job_id` = #{jobId,jdbcType=BIGINT}
+			AND `job_name` = #{jobName,jdbcType=VARCHAR}
+			AND `job_group` = #{jobGroup,jdbcType=VARCHAR}
+		</where>
+	</delete>
+	
+	<delete id="removeBy" parameterType="com.bittrade.pojo.model.SysJob">
+		DELETE FROM sys_job
+		<where>
+			<if test="methodName != null">
+			AND `method_name` = #{methodName,jdbcType=VARCHAR}
+			</if>
+			<if test="methodParams != null">
+			AND `method_params` = #{methodParams,jdbcType=VARCHAR}
+			</if>
+			<if test="cronExpression != null">
+			AND `cron_expression` = #{cronExpression,jdbcType=VARCHAR}
+			</if>
+			<if test="misfirePolicy != null">
+			AND `misfire_policy` = #{misfirePolicy,jdbcType=VARCHAR}
+			</if>
+			<if test="concurrent != null">
+			AND `concurrent` = #{concurrent,jdbcType=CHAR}
+			</if>
+			<if test="status != null">
+			AND `status` = #{status,jdbcType=CHAR}
+			</if>
+			<if test="createBy != null">
+			AND `create_by` = #{createBy,jdbcType=VARCHAR}
+			</if>
+			<if test="createTime != null">
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="updateBy != null">
+			AND `update_by` = #{updateBy,jdbcType=VARCHAR}
+			</if>
+			<if test="updateTime != null">
+			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="remark != null">
+			AND `remark` = #{remark,jdbcType=VARCHAR}
+			</if>
+		</where>
+	</delete>
+	
+	<update id="modifyByPK" parameterType="com.bittrade.pojo.model.SysJob">
+		UPDATE sys_job
+		<set>
+			`method_name` = #{methodName,jdbcType=VARCHAR}, 
+			`method_params` = #{methodParams,jdbcType=VARCHAR}, 
+			`cron_expression` = #{cronExpression,jdbcType=VARCHAR}, 
+			`misfire_policy` = #{misfirePolicy,jdbcType=VARCHAR}, 
+			`concurrent` = #{concurrent,jdbcType=CHAR}, 
+			`status` = #{status,jdbcType=CHAR}, 
+			`create_by` = #{createBy,jdbcType=VARCHAR}, 
+			`create_time` = #{createTime,jdbcType=TIMESTAMP}, 
+			`update_by` = #{updateBy,jdbcType=VARCHAR}, 
+			`update_time` = #{updateTime,jdbcType=TIMESTAMP}, 
+			`remark` = #{remark,jdbcType=VARCHAR}, 
+		</set>
+		<where>
+			AND `job_id` = #{jobId,jdbcType=BIGINT}
+			AND `job_name` = #{jobName,jdbcType=VARCHAR}
+			AND `job_group` = #{jobGroup,jdbcType=VARCHAR}
+		</where>
+	</update>
+	
+	<update id="modifyWithSelectiveByPK" parameterType="com.bittrade.pojo.model.SysJob">
+		UPDATE sys_job
+		<set>
+			<if test="methodName != null">
+			`method_name` = #{methodName,jdbcType=VARCHAR}, 
+			</if>
+			<if test="methodParams != null">
+			`method_params` = #{methodParams,jdbcType=VARCHAR}, 
+			</if>
+			<if test="cronExpression != null">
+			`cron_expression` = #{cronExpression,jdbcType=VARCHAR}, 
+			</if>
+			<if test="misfirePolicy != null">
+			`misfire_policy` = #{misfirePolicy,jdbcType=VARCHAR}, 
+			</if>
+			<if test="concurrent != null">
+			`concurrent` = #{concurrent,jdbcType=CHAR}, 
+			</if>
+			<if test="status != null">
+			`status` = #{status,jdbcType=CHAR}, 
+			</if>
+			<if test="createBy != null">
+			`create_by` = #{createBy,jdbcType=VARCHAR}, 
+			</if>
+			<if test="createTime != null">
+			`create_time` = #{createTime,jdbcType=TIMESTAMP}, 
+			</if>
+			<if test="updateBy != null">
+			`update_by` = #{updateBy,jdbcType=VARCHAR}, 
+			</if>
+			<if test="updateTime != null">
+			`update_time` = #{updateTime,jdbcType=TIMESTAMP}, 
+			</if>
+			<if test="remark != null">
+			`remark` = #{remark,jdbcType=VARCHAR}, 
+			</if>
+		</set>
+		<where>
+			AND `job_id` = #{jobId,jdbcType=BIGINT}
+			AND `job_name` = #{jobName,jdbcType=VARCHAR}
+			AND `job_group` = #{jobGroup,jdbcType=VARCHAR}
+		</where>
+	</update>
+	
+	<update id="modifyBy">
+		UPDATE sys_job
+		<set>
+			`method_name` = #{sysJob.methodName,jdbcType=VARCHAR}, 
+			`method_params` = #{sysJob.methodParams,jdbcType=VARCHAR}, 
+			`cron_expression` = #{sysJob.cronExpression,jdbcType=VARCHAR}, 
+			`misfire_policy` = #{sysJob.misfirePolicy,jdbcType=VARCHAR}, 
+			`concurrent` = #{sysJob.concurrent,jdbcType=CHAR}, 
+			`status` = #{sysJob.status,jdbcType=CHAR}, 
+			`create_by` = #{sysJob.createBy,jdbcType=VARCHAR}, 
+			`create_time` = #{sysJob.createTime,jdbcType=TIMESTAMP}, 
+			`update_by` = #{sysJob.updateBy,jdbcType=VARCHAR}, 
+			`update_time` = #{sysJob.updateTime,jdbcType=TIMESTAMP}, 
+			`remark` = #{sysJob.remark,jdbcType=VARCHAR}, 
+		</set>
+		<where>
+		<if test="condiSysJob != null">
+			<if test="condiSysJob.jobId != null">
+			AND `job_id` = #{condiSysJob.jobId,jdbcType=BIGINT}
+			</if>
+			<if test="condiSysJob.jobName != null">
+			AND `job_name` = #{condiSysJob.jobName,jdbcType=VARCHAR}
+			</if>
+			<if test="condiSysJob.jobGroup != null">
+			AND `job_group` = #{condiSysJob.jobGroup,jdbcType=VARCHAR}
+			</if>
+			<if test="condiSysJob.methodName != null">
+			AND `method_name` = #{condiSysJob.methodName,jdbcType=VARCHAR}
+			</if>
+			<if test="condiSysJob.methodParams != null">
+			AND `method_params` = #{condiSysJob.methodParams,jdbcType=VARCHAR}
+			</if>
+			<if test="condiSysJob.cronExpression != null">
+			AND `cron_expression` = #{condiSysJob.cronExpression,jdbcType=VARCHAR}
+			</if>
+			<if test="condiSysJob.misfirePolicy != null">
+			AND `misfire_policy` = #{condiSysJob.misfirePolicy,jdbcType=VARCHAR}
+			</if>
+			<if test="condiSysJob.concurrent != null">
+			AND `concurrent` = #{condiSysJob.concurrent,jdbcType=CHAR}
+			</if>
+			<if test="condiSysJob.status != null">
+			AND `status` = #{condiSysJob.status,jdbcType=CHAR}
+			</if>
+			<if test="condiSysJob.createBy != null">
+			AND `create_by` = #{condiSysJob.createBy,jdbcType=VARCHAR}
+			</if>
+			<if test="condiSysJob.createTime != null">
+			AND `create_time` = #{condiSysJob.createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="condiSysJob.updateBy != null">
+			AND `update_by` = #{condiSysJob.updateBy,jdbcType=VARCHAR}
+			</if>
+			<if test="condiSysJob.updateTime != null">
+			AND `update_time` = #{condiSysJob.updateTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="condiSysJob.remark != null">
+			AND `remark` = #{condiSysJob.remark,jdbcType=VARCHAR}
+			</if>
+		</if>
+		</where>
+	</update>
+	
+	<update id="modifyWithSelectiveBy">
+		UPDATE sys_job
+		<set>
+		<if test="sysJob != null">
+			<if test="sysJob.methodName != null">
+			`method_name` = #{sysJob.methodName,jdbcType=VARCHAR}, 
+			</if>
+			<if test="sysJob.methodParams != null">
+			`method_params` = #{sysJob.methodParams,jdbcType=VARCHAR}, 
+			</if>
+			<if test="sysJob.cronExpression != null">
+			`cron_expression` = #{sysJob.cronExpression,jdbcType=VARCHAR}, 
+			</if>
+			<if test="sysJob.misfirePolicy != null">
+			`misfire_policy` = #{sysJob.misfirePolicy,jdbcType=VARCHAR}, 
+			</if>
+			<if test="sysJob.concurrent != null">
+			`concurrent` = #{sysJob.concurrent,jdbcType=CHAR}, 
+			</if>
+			<if test="sysJob.status != null">
+			`status` = #{sysJob.status,jdbcType=CHAR}, 
+			</if>
+			<if test="sysJob.createBy != null">
+			`create_by` = #{sysJob.createBy,jdbcType=VARCHAR}, 
+			</if>
+			<if test="sysJob.createTime != null">
+			`create_time` = #{sysJob.createTime,jdbcType=TIMESTAMP}, 
+			</if>
+			<if test="sysJob.updateBy != null">
+			`update_by` = #{sysJob.updateBy,jdbcType=VARCHAR}, 
+			</if>
+			<if test="sysJob.updateTime != null">
+			`update_time` = #{sysJob.updateTime,jdbcType=TIMESTAMP}, 
+			</if>
+			<if test="sysJob.remark != null">
+			`remark` = #{sysJob.remark,jdbcType=VARCHAR}, 
+			</if>
+		</if>
+		</set>
+		<where>
+		<if test="condiSysJob != null">
+			<if test="condiSysJob.jobId != null">
+			AND `job_id` = #{condiSysJob.jobId,jdbcType=BIGINT}
+			</if>
+			<if test="condiSysJob.jobName != null">
+			AND `job_name` = #{condiSysJob.jobName,jdbcType=VARCHAR}
+			</if>
+			<if test="condiSysJob.jobGroup != null">
+			AND `job_group` = #{condiSysJob.jobGroup,jdbcType=VARCHAR}
+			</if>
+			<if test="condiSysJob.methodName != null">
+			AND `method_name` = #{condiSysJob.methodName,jdbcType=VARCHAR}
+			</if>
+			<if test="condiSysJob.methodParams != null">
+			AND `method_params` = #{condiSysJob.methodParams,jdbcType=VARCHAR}
+			</if>
+			<if test="condiSysJob.cronExpression != null">
+			AND `cron_expression` = #{condiSysJob.cronExpression,jdbcType=VARCHAR}
+			</if>
+			<if test="condiSysJob.misfirePolicy != null">
+			AND `misfire_policy` = #{condiSysJob.misfirePolicy,jdbcType=VARCHAR}
+			</if>
+			<if test="condiSysJob.concurrent != null">
+			AND `concurrent` = #{condiSysJob.concurrent,jdbcType=CHAR}
+			</if>
+			<if test="condiSysJob.status != null">
+			AND `status` = #{condiSysJob.status,jdbcType=CHAR}
+			</if>
+			<if test="condiSysJob.createBy != null">
+			AND `create_by` = #{condiSysJob.createBy,jdbcType=VARCHAR}
+			</if>
+			<if test="condiSysJob.createTime != null">
+			AND `create_time` = #{condiSysJob.createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="condiSysJob.updateBy != null">
+			AND `update_by` = #{condiSysJob.updateBy,jdbcType=VARCHAR}
+			</if>
+			<if test="condiSysJob.updateTime != null">
+			AND `update_time` = #{condiSysJob.updateTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="condiSysJob.remark != null">
+			AND `remark` = #{condiSysJob.remark,jdbcType=VARCHAR}
+			</if>
+		</if>
+		</where>
+	</update>
+	
+	<select id="getByPK" resultType="com.bittrade.pojo.model.SysJob">
+		SELECT 
+			`job_id`, 
+			`job_name`, 
+			`job_group`, 
+			`method_name`, 
+			`method_params`, 
+			`cron_expression`, 
+			`misfire_policy`, 
+			`concurrent`, 
+			`status`, 
+			`create_by`, 
+			`create_time`, 
+			`update_by`, 
+			`update_time`, 
+			`remark`
+		FROM sys_job
+		<where>
+			AND `job_id` = #{jobId,jdbcType=BIGINT}
+			AND `job_name` = #{jobName,jdbcType=VARCHAR}
+			AND `job_group` = #{jobGroup,jdbcType=VARCHAR}
+		</where>
+	</select>
+	
+	<select id="getBy" resultType="com.bittrade.pojo.model.SysJob">
+		SELECT 
+			`job_id`, 
+			`job_name`, 
+			`job_group`, 
+			`method_name`, 
+			`method_params`, 
+			`cron_expression`, 
+			`misfire_policy`, 
+			`concurrent`, 
+			`status`, 
+			`create_by`, 
+			`create_time`, 
+			`update_by`, 
+			`update_time`, 
+			`remark`
+		FROM sys_job
+		<where>
+			<if test="methodName != null">
+			AND `method_name` = #{methodName,jdbcType=VARCHAR}
+			</if>
+			<if test="methodParams != null">
+			AND `method_params` = #{methodParams,jdbcType=VARCHAR}
+			</if>
+			<if test="cronExpression != null">
+			AND `cron_expression` = #{cronExpression,jdbcType=VARCHAR}
+			</if>
+			<if test="misfirePolicy != null">
+			AND `misfire_policy` = #{misfirePolicy,jdbcType=VARCHAR}
+			</if>
+			<if test="concurrent != null">
+			AND `concurrent` = #{concurrent,jdbcType=CHAR}
+			</if>
+			<if test="status != null">
+			AND `status` = #{status,jdbcType=CHAR}
+			</if>
+			<if test="createBy != null">
+			AND `create_by` = #{createBy,jdbcType=VARCHAR}
+			</if>
+			<if test="createTime != null">
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="updateBy != null">
+			AND `update_by` = #{updateBy,jdbcType=VARCHAR}
+			</if>
+			<if test="updateTime != null">
+			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="remark != null">
+			AND `remark` = #{remark,jdbcType=VARCHAR}
+			</if>
+		</where>
+		LIMIT 1
+	</select>
+	
+	<select id="get" resultType="com.bittrade.pojo.model.SysJob">
+		SELECT 
+			`job_id`, 
+			`job_name`, 
+			`job_group`, 
+			`method_name`, 
+			`method_params`, 
+			`cron_expression`, 
+			`misfire_policy`, 
+			`concurrent`, 
+			`status`, 
+			`create_by`, 
+			`create_time`, 
+			`update_by`, 
+			`update_time`, 
+			`remark`
+		FROM sys_job
+		LIMIT 1
+	</select>
+	
+	<select id="getsBy" resultType="com.bittrade.pojo.model.SysJob">
+		SELECT 
+			<include refid="Base_Column_List"></include>
+		FROM sys_job
+		<where>
+			<if test="methodName != null">
+			AND `method_name` = #{methodName,jdbcType=VARCHAR}
+			</if>
+			<if test="methodParams != null">
+			AND `method_params` = #{methodParams,jdbcType=VARCHAR}
+			</if>
+			<if test="cronExpression != null">
+			AND `cron_expression` = #{cronExpression,jdbcType=VARCHAR}
+			</if>
+			<if test="misfirePolicy != null">
+			AND `misfire_policy` = #{misfirePolicy,jdbcType=VARCHAR}
+			</if>
+			<if test="concurrent != null">
+			AND `concurrent` = #{concurrent,jdbcType=CHAR}
+			</if>
+			<if test="status != null">
+			AND `status` = #{status,jdbcType=CHAR}
+			</if>
+			<if test="createBy != null">
+			AND `create_by` = #{createBy,jdbcType=VARCHAR}
+			</if>
+			<if test="createTime != null">
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="updateBy != null">
+			AND `update_by` = #{updateBy,jdbcType=VARCHAR}
+			</if>
+			<if test="updateTime != null">
+			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="remark != null">
+			AND `remark` = #{remark,jdbcType=VARCHAR}
+			</if>
+			<include refid="sql_WHERE_forProperty"></include>
+		</where>
+	</select>
+	
+	<select id="gets" resultType="com.bittrade.pojo.model.SysJob">
+		SELECT 
+			<include refid="Base_Column_List"></include>
+		FROM sys_job
+	</select>
+	
+	<select id="getCntBy" resultType="int">
+		SELECT COUNT(1)
+		FROM sys_job
+		<where>
+		<if test="sysJob != null">
+			<if test="sysJob.methodName != null">
+			AND `method_name` = #{sysJob.methodName,jdbcType=VARCHAR}
+			</if>
+			<if test="sysJob.methodParams != null">
+			AND `method_params` = #{sysJob.methodParams,jdbcType=VARCHAR}
+			</if>
+			<if test="sysJob.cronExpression != null">
+			AND `cron_expression` = #{sysJob.cronExpression,jdbcType=VARCHAR}
+			</if>
+			<if test="sysJob.misfirePolicy != null">
+			AND `misfire_policy` = #{sysJob.misfirePolicy,jdbcType=VARCHAR}
+			</if>
+			<if test="sysJob.concurrent != null">
+			AND `concurrent` = #{sysJob.concurrent,jdbcType=CHAR}
+			</if>
+			<if test="sysJob.status != null">
+			AND `status` = #{sysJob.status,jdbcType=CHAR}
+			</if>
+			<if test="sysJob.createBy != null">
+			AND `create_by` = #{sysJob.createBy,jdbcType=VARCHAR}
+			</if>
+			<if test="sysJob.createTime != null">
+			AND `create_time` = #{sysJob.createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="sysJob.updateBy != null">
+			AND `update_by` = #{sysJob.updateBy,jdbcType=VARCHAR}
+			</if>
+			<if test="sysJob.updateTime != null">
+			AND `update_time` = #{sysJob.updateTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="sysJob.remark != null">
+			AND `remark` = #{sysJob.remark,jdbcType=VARCHAR}
+			</if>
+			<include refid="sql_WHERE_forObject"></include>
+		</if>
+		</where>
+	</select>
+	
+	<select id="getsByPage" resultType="com.bittrade.pojo.model.SysJob">
+		SELECT 
+			`job_id`, 
+			`job_name`, 
+			`job_group`, 
+			`method_name`, 
+			`method_params`, 
+			`cron_expression`, 
+			`misfire_policy`, 
+			`concurrent`, 
+			`status`, 
+			`create_by`, 
+			`create_time`, 
+			`update_by`, 
+			`update_time`, 
+			`remark`
+		FROM sys_job
+		<where>
+		<if test="sysJob != null">
+			<if test="sysJob.methodName != null">
+			AND `method_name` = #{sysJob.methodName,jdbcType=VARCHAR}
+			</if>
+			<if test="sysJob.methodParams != null">
+			AND `method_params` = #{sysJob.methodParams,jdbcType=VARCHAR}
+			</if>
+			<if test="sysJob.cronExpression != null">
+			AND `cron_expression` = #{sysJob.cronExpression,jdbcType=VARCHAR}
+			</if>
+			<if test="sysJob.misfirePolicy != null">
+			AND `misfire_policy` = #{sysJob.misfirePolicy,jdbcType=VARCHAR}
+			</if>
+			<if test="sysJob.concurrent != null">
+			AND `concurrent` = #{sysJob.concurrent,jdbcType=CHAR}
+			</if>
+			<if test="sysJob.status != null">
+			AND `status` = #{sysJob.status,jdbcType=CHAR}
+			</if>
+			<if test="sysJob.createBy != null">
+			AND `create_by` = #{sysJob.createBy,jdbcType=VARCHAR}
+			</if>
+			<if test="sysJob.createTime != null">
+			AND `create_time` = #{sysJob.createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="sysJob.updateBy != null">
+			AND `update_by` = #{sysJob.updateBy,jdbcType=VARCHAR}
+			</if>
+			<if test="sysJob.updateTime != null">
+			AND `update_time` = #{sysJob.updateTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="sysJob.remark != null">
+			AND `remark` = #{sysJob.remark,jdbcType=VARCHAR}
+			</if>
+			<include refid="sql_WHERE_forObject"></include>
+		</if>
+		</where>
+		LIMIT #{page}, #{size}
+	</select>
+
+</mapper>

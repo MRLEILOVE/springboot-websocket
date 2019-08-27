@@ -42,6 +42,7 @@ public class SysDeptController extends BaseController {
 	@RequiresPermissions("system:dept:view")
 	@GetMapping()
 	public String dept() {
+		
 		return prefix + "/dept";
 	}
 

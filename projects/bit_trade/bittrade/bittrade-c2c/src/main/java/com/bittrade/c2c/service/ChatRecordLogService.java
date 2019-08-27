@@ -4,14 +4,14 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.bittrade.c2c.vo.MessageVo;
 import com.bittrade.c2c.vo.SendOrderVo;
 import com.bittrade.c2c.vo.SendVo;
-import com.bittrade.pojo.model.ChatRecordLog;
+import com.bittrade.pojo.model.TChatRecordLog;
 
 /**
  * @author xzc
  * @date 2019-08-19 20:34
  * @description
  */
-public interface ChatRecordLogService extends IService<ChatRecordLog> {
+public interface ChatRecordLogService extends IService<TChatRecordLog> {
 
     /**
      * 发送消息

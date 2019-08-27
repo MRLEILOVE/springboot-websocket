@@ -16,7 +16,7 @@ public interface ITAdvertOrderService extends IDefaultTAdvertOrderService<TAdver
 
 	boolean existenceNoCompleteOrders(Long advertId);
 
-	TAdvertOrder getAdvertOrderDetails(Long orderId);
+	TAdvertOrderDTO getAdvertOrderDetails(Long orderId);
 
 	boolean cancelAdvertOrder(Long orderId);
 }

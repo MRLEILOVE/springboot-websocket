@@ -19,7 +19,7 @@ import com.bittrade.c2c.service.ChatRecordLogService;
 import com.bittrade.c2c.vo.MessageVo;
 import com.bittrade.c2c.vo.SendOrderVo;
 import com.bittrade.c2c.vo.SendVo;
-import com.bittrade.pojo.model.ChatRecordLog;
+import com.bittrade.pojo.model.TChatRecordLog;
 import com.core.web.constant.entity.LoginUser;
 import com.core.web.tool.WebUtil;
 import com.google.common.base.Preconditions;
@@ -35,7 +35,7 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @Transactional(rollbackFor = Exception.class)
 public class ChatRecordLogServiceImpl
-        extends ServiceImpl<ChatRecordLogDAO, ChatRecordLog>
+        extends ServiceImpl<ChatRecordLogDAO, TChatRecordLog>
         implements ChatRecordLogService {
 
     @Autowired
@@ -128,7 +128,7 @@ public class ChatRecordLogServiceImpl
         Long receiverId = messageVo.getReceiverId();
         String content = messageVo.getContent();
         Integer messageType = messageVo.getMessageType();
-        ChatRecordLog chatRecordLog = new ChatRecordLog();
+        TChatRecordLog chatRecordLog = new TChatRecordLog();
         chatRecordLog.setSenderId(senderId);
         chatRecordLog.setReceiverId(receiverId);
         chatRecordLog.setContent(content);

@@ -16,11 +16,12 @@ import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import com.bittrade.pojo.model.TAdvertInfo;
 import com.core.common.annotation.CheckEnumValue;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 
 /**
  * 广告VO
@@ -32,6 +33,161 @@ import lombok.Data;
 @Data
 @Builder
 public class AdvertInfoVO implements Serializable {
+
+	/**
+	 * 广告类型
+	 * <br/>
+	 *
+	 * @author ：leigq
+	 * @date ：2019/8/19 17:58
+	 */
+	@AllArgsConstructor
+	public enum AdvertTypeEnum {
+		SELL(1, "出售"),
+		BUY(2, "购买"),
+		;
+
+		@Getter
+		private Integer code;
+
+		@Getter
+		private String describe;
+
+		/**
+		 * 验证广告类型
+		 * <br/>
+		 * create by: leigq
+		 * <br/>
+		 * create time: 2019/8/19 17:24
+		 */
+		public static boolean isValidAdvertType(Integer advertType) {
+			for (AdvertTypeEnum advertTypeEnum : AdvertTypeEnum.values()) {
+				if (advertTypeEnum.code.equals(advertType)) {
+					return true;
+				}
+			}
+			return false;
+		}
+	}
+
+	/**
+	 * 定价方式
+	 * <br/>
+	 * @author     ：leigq
+	 * @date       ：2019/8/19 20:24
+	 */
+	@AllArgsConstructor
+	public enum PricingModeEnum {
+		FIXED(1, "固定价格"),
+		FLOAT(2, "浮动价格"),
+		;
+
+		@Getter
+		private Integer code;
+
+		@Getter
+		private String describe;
+
+		/**
+		 * 验证广告类型
+		 * <br/>
+		 * create by: leigq
+		 * <br/>
+		 * create time: 2019/8/19 17:24
+		 */
+		public static boolean isValidPricingMode(Integer pricingMode) {
+			for (PricingModeEnum pricingModeEnum : PricingModeEnum.values()) {
+				if (pricingModeEnum.code.equals(pricingMode)) {
+					return true;
+				}
+			}
+			return false;
+		}
+	}
+
+	/**
+	 * 状态
+	 * <br/>
+	 * @author     ：leigq
+	 * @date       ：2019/8/19 20:24
+	 */
+	@AllArgsConstructor
+	public enum StatusEnum {
+		PROCESSING(1, "进行中"),
+		PAUSE(2, "已下架(暂停)"),
+		revoked(3, "已撤销"),
+		;
+
+		@Getter
+		private Integer code;
+		@Getter
+		private String describe;
+
+		public static boolean isValidStatus(Integer status) {
+			for (StatusEnum statusEnum : StatusEnum.values()) {
+				if (statusEnum.code.equals(status)) {
+					return true;
+				}
+			}
+			return false;
+		}
+	}
+
+	/**
+	 * 认证等级
+	 * <br/>
+	 * @author     ：leigq
+	 * @date       ：2019/8/19 20:24
+	 */
+	@AllArgsConstructor
+	public enum CertificationLevel {
+		FIRST_LEVEL(1, "一级"),
+		SECONDARY(2, "二级"),
+		THIRD_LEVEL(3, "三级"),
+		;
+
+		@Getter
+		private Integer code;
+		@Getter
+		private String describe;
+
+		public static boolean isValidCertificationLevel(Integer level) {
+			for (CertificationLevel certificationLevel : CertificationLevel.values()) {
+				if (certificationLevel.code.equals(level)) {
+					return true;
+				}
+			}
+			return false;
+		}
+	}
+
+	/**
+	 * 付款时间
+	 * <br/>
+	 * @author     ：leigq
+	 * @date       ：2019/8/19 20:24
+	 */
+	@AllArgsConstructor
+	public enum PaymentTime {
+		TEN_MINUTES(10, "十分钟"),
+		FIFTEEN_MINUTES(15, "十五分钟"),
+		TWENTY_MINUTES(20, "二十分钟"),
+		;
+
+		@Getter
+		private Integer code;
+		@Getter
+		private String describe;
+
+		public static boolean isValidPaymentTime(Integer time) {
+			for (PaymentTime paymentTime : PaymentTime.values()) {
+				if (paymentTime.code.equals(time)) {
+					return true;
+				}
+			}
+			return false;
+		}
+	}
 
 	private static final long serialVersionUID = -5820626891608577661L;
 
@@ -45,14 +201,14 @@ public class AdvertInfoVO implements Serializable {
 	 * 类型 1:出售 2:购买
 	 */
 	@NotNull(message = "type cannot be null")
-	@CheckEnumValue(enumClass = TAdvertInfo.AdvertTypeEnum.class, enumMethod = "isValidAdvertType")
+	@CheckEnumValue(enumClass = AdvertTypeEnum.class, enumMethod = "isValidAdvertType")
 	private Integer type;
 
 	/**
 	 * 定价方式 1：固定价格 2：浮动价格
 	 */
 	@NotNull(message = "pricingMode cannot be null")
-	@CheckEnumValue(enumClass = TAdvertInfo.PricingModeEnum.class, enumMethod = "isValidPricingMode")
+	@CheckEnumValue(enumClass = PricingModeEnum.class, enumMethod = "isValidPricingMode")
 	private Integer pricingMode;
 
 	/**
@@ -98,14 +254,14 @@ public class AdvertInfoVO implements Serializable {
 	/**
 	 * 对手限制-付款时间
 	 */
-	@CheckEnumValue(enumClass = TAdvertInfo.PaymentTime.class, enumMethod = "isValidPaymentTime")
+	@CheckEnumValue(enumClass = PaymentTime.class, enumMethod = "isValidPaymentTime")
 	private Integer paymentTime;
 
 	/**
 	 * 对手限制-认证等级
 	 */
 	@NotNull(message = "認證等級必填")
-	@CheckEnumValue(enumClass = TAdvertInfo.CertificationLevel.class, enumMethod = "isValidCertificationLevel")
+	@CheckEnumValue(enumClass = CertificationLevel.class, enumMethod = "isValidCertificationLevel")
 	private Integer certificationLevel;
 
 	/**
@@ -145,7 +301,7 @@ public class AdvertInfoVO implements Serializable {
 	 * create time: 2019/8/20 13:01
 	 */
 	public Boolean isFloatPricing() {
-		return Objects.equals(TAdvertInfo.PricingModeEnum.FLOAT.getCode(), this.pricingMode);
+		return Objects.equals(PricingModeEnum.FLOAT.getCode(), this.pricingMode);
 	}
 
 	/**
@@ -156,7 +312,7 @@ public class AdvertInfoVO implements Serializable {
 	 * create time: 2019/8/20 13:01
 	 */
 	public Boolean isBuyType() {
-		return Objects.equals(TAdvertInfo.AdvertTypeEnum.BUY.getCode(), this.type);
+		return Objects.equals(AdvertTypeEnum.BUY.getCode(), this.type);
 	}
 
 	/**
@@ -167,7 +323,7 @@ public class AdvertInfoVO implements Serializable {
 	 * create time: 2019/8/20 13:01
 	 */
 	public Boolean isSellType() {
-		return Objects.equals(TAdvertInfo.AdvertTypeEnum.SELL.getCode(), this.type);
+		return Objects.equals(AdvertTypeEnum.SELL.getCode(), this.type);
 	}
 
 }

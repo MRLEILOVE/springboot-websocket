@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bittrade.currency.dao.ISysMenuDAO">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.bittrade.pojo.model.SysMenu">
+		<id javaType="int" property="id" jdbcType="INTEGER" column="id" />
+		<result javaType="String" property="menuName" jdbcType="VARCHAR" column="menu_name" />
+		<result javaType="Integer" property="parentId" jdbcType="INTEGER" column="parent_id" />
+		<result javaType="Integer" property="orderNum" jdbcType="INTEGER" column="order_num" />
+		<result javaType="String" property="url" jdbcType="VARCHAR" column="url" />
+		<result javaType="String" property="menuType" jdbcType="CHAR" column="menu_type" />
+		<result javaType="String" property="visible" jdbcType="CHAR" column="visible" />
+		<result javaType="String" property="perms" jdbcType="VARCHAR" column="perms" />
+		<result javaType="String" property="icon" jdbcType="VARCHAR" column="icon" />
+		<result javaType="String" property="createBy" jdbcType="VARCHAR" column="create_by" />
+		<result javaType="java.time.LocalDateTime" property="createTime" jdbcType="TIMESTAMP" column="create_time" />
+		<result javaType="String" property="updateBy" jdbcType="VARCHAR" column="update_by" />
+		<result javaType="java.time.LocalDateTime" property="updateTime" jdbcType="TIMESTAMP" column="update_time" />
+		<result javaType="String" property="remark" jdbcType="VARCHAR" column="remark" />
+	</resultMap>
+
+	<!-- 通用查询结果列 -->
+	<sql id="Base_Column_List">
+		`menu_id` AS menuId, 
+		`menu_name` AS menuName, 
+		`parent_id` AS parentId, 
+		`order_num` AS orderNum, 
+		`url` AS url, 
+		`menu_type` AS menuType, 
+		`visible` AS visible, 
+		`perms` AS perms, 
+		`icon` AS icon, 
+		`create_by` AS createBy, 
+		`create_time` AS createTime, 
+		`update_by` AS updateBy, 
+		`update_time` AS updateTime, 
+		`remark` AS remark
+	</sql>
+
+</mapper>

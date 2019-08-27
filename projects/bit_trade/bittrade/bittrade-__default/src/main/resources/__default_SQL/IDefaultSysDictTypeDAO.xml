@@ -1,0 +1,529 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+	This code is generated automatically. Please do not edit it.
+	现在字段也可以要彻底动态？
+-->
+<mapper namespace="com.bittrade.__default.DAO.IDefaultSysDictTypeDAO">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.bittrade.pojo.model.SysDictType">
+		<id javaType="Integer" property="dictId" jdbcType="INTEGER" column="dict_id" />
+		<result javaType="String" property="dictName" jdbcType="VARCHAR" column="dict_name" />
+		<result javaType="String" property="dictType" jdbcType="VARCHAR" column="dict_type" />
+		<result javaType="String" property="status" jdbcType="CHAR" column="status" />
+		<result javaType="String" property="createBy" jdbcType="VARCHAR" column="create_by" />
+		<result javaType="java.time.LocalDateTime" property="createTime" jdbcType="TIMESTAMP" column="create_time" />
+		<result javaType="String" property="updateBy" jdbcType="VARCHAR" column="update_by" />
+		<result javaType="java.time.LocalDateTime" property="updateTime" jdbcType="TIMESTAMP" column="update_time" />
+		<result javaType="String" property="remark" jdbcType="VARCHAR" column="remark" />
+	</resultMap>
+
+	<!--
+		通用查询结果列
+		其他类似的类似，也可以公用（共用）引用。
+	-->
+	<sql id="Base_Column_List">
+		<choose>
+			<when test="strArr_field != null">
+		<foreach collection="strArr_field" index="index" item="item" open="" separator="," close="">
+			`${item}`
+		</foreach>
+			</when>
+			<otherwise>
+		`dict_id` AS `dictId`, 
+		`dict_name` AS `dictName`, 
+		`dict_type` AS `dictType`, 
+		`status` AS `status`, 
+		`create_by` AS `createBy`, 
+		`create_time` AS `createTime`, 
+		`update_by` AS `updateBy`, 
+		`update_time` AS `updateTime`, 
+		`remark` AS `remark`
+			</otherwise>
+		</choose>
+	</sql>
+	
+	<!-- 其他的也可以类似的加， yes， 类似蕾丝的。 -->
+	<sql id="sql_WHERE_forProperty">
+		<choose>
+			<when test="map_in != null">
+			
+		<foreach collection="map_in.entrySet()" index="map_index" item="map_item">
+		AND `${map_index}` IN 
+		<foreach collection="map_item" index="arr_index" item="arr_item" open="(" separator="," close=")">
+			#{arr_item}
+		</foreach>
+		</foreach>
+			
+			</when>
+			<!--
+			<when test="_parameter != null and _parameter.SysDictType != null and SysDictType.map_in != null">
+			</when>
+			<otherwise>
+			</otherwise>
+			-->
+		</choose>
+	</sql>
+	<sql id="sql_WHERE_forObject">
+		<choose>
+			<when test="sysDictType.map_in != null">
+			
+		<foreach collection="sysDictType.map_in.entrySet()" index="map_index" item="map_item">
+		AND `${map_index}` IN 
+		<foreach collection="map_item" index="arr_index" item="arr_item" open="(" separator="," close=")">
+			#{arr_item}
+		</foreach>
+		</foreach>
+			
+			</when>
+		</choose>
+	</sql>
+	
+	
+	<insert id="add" parameterType="com.bittrade.pojo.model.SysDictType" useGeneratedKeys="true" keyProperty="dictId">
+		INSERT INTO sys_dict_type(`dict_name`, `dict_type`, `status`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`)
+		VALUES(#{dictName,jdbcType=VARCHAR}, #{dictType,jdbcType=VARCHAR}, #{status,jdbcType=CHAR}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{remark,jdbcType=VARCHAR})
+	</insert>
+	
+	<insert id="addWithSelective" parameterType="com.bittrade.pojo.model.SysDictType" useGeneratedKeys="true" keyProperty="dictId">
+		INSERT INTO sys_dict_type(
+			<if test="dictName != null">
+			`dict_name`, 
+			</if>
+			<if test="dictType != null">
+			`dict_type`, 
+			</if>
+			<if test="status != null">
+			`status`, 
+			</if>
+			<if test="createBy != null">
+			`create_by`, 
+			</if>
+			<if test="createTime != null">
+			`create_time`, 
+			</if>
+			<if test="updateBy != null">
+			`update_by`, 
+			</if>
+			<if test="updateTime != null">
+			`update_time`, 
+			</if>
+			<if test="remark != null">
+			`remark`
+			</if>
+		)
+		VALUES(
+			<if test="dictName != null">
+			#{dictName,jdbcType=VARCHAR}, 
+			</if>
+			<if test="dictType != null">
+			#{dictType,jdbcType=VARCHAR}, 
+			</if>
+			<if test="status != null">
+			#{status,jdbcType=CHAR}, 
+			</if>
+			<if test="createBy != null">
+			#{createBy,jdbcType=VARCHAR}, 
+			</if>
+			<if test="createTime != null">
+			#{createTime,jdbcType=TIMESTAMP}, 
+			</if>
+			<if test="updateBy != null">
+			#{updateBy,jdbcType=VARCHAR}, 
+			</if>
+			<if test="updateTime != null">
+			#{updateTime,jdbcType=TIMESTAMP}, 
+			</if>
+			<if test="remark != null">
+			#{remark,jdbcType=VARCHAR}
+			</if>
+		)
+	</insert>
+	
+	<delete id="removeByPK">
+		DELETE FROM sys_dict_type
+		<where>
+			AND `dict_id` = #{dictId,jdbcType=INTEGER}
+		</where>
+	</delete>
+	
+	<delete id="removeBy" parameterType="com.bittrade.pojo.model.SysDictType">
+		DELETE FROM sys_dict_type
+		<where>
+			<if test="dictName != null">
+			AND `dict_name` = #{dictName,jdbcType=VARCHAR}
+			</if>
+			<if test="dictType != null">
+			AND `dict_type` = #{dictType,jdbcType=VARCHAR}
+			</if>
+			<if test="status != null">
+			AND `status` = #{status,jdbcType=CHAR}
+			</if>
+			<if test="createBy != null">
+			AND `create_by` = #{createBy,jdbcType=VARCHAR}
+			</if>
+			<if test="createTime != null">
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="updateBy != null">
+			AND `update_by` = #{updateBy,jdbcType=VARCHAR}
+			</if>
+			<if test="updateTime != null">
+			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="remark != null">
+			AND `remark` = #{remark,jdbcType=VARCHAR}
+			</if>
+		</where>
+	</delete>
+	
+	<update id="modifyByPK" parameterType="com.bittrade.pojo.model.SysDictType">
+		UPDATE sys_dict_type
+		<set>
+			`dict_name` = #{dictName,jdbcType=VARCHAR}, 
+			`dict_type` = #{dictType,jdbcType=VARCHAR}, 
+			`status` = #{status,jdbcType=CHAR}, 
+			`create_by` = #{createBy,jdbcType=VARCHAR}, 
+			`create_time` = #{createTime,jdbcType=TIMESTAMP}, 
+			`update_by` = #{updateBy,jdbcType=VARCHAR}, 
+			`update_time` = #{updateTime,jdbcType=TIMESTAMP}, 
+			`remark` = #{remark,jdbcType=VARCHAR}, 
+		</set>
+		<where>
+			AND `dict_id` = #{dictId,jdbcType=INTEGER}
+		</where>
+	</update>
+	
+	<update id="modifyWithSelectiveByPK" parameterType="com.bittrade.pojo.model.SysDictType">
+		UPDATE sys_dict_type
+		<set>
+			<if test="dictName != null">
+			`dict_name` = #{dictName,jdbcType=VARCHAR}, 
+			</if>
+			<if test="dictType != null">
+			`dict_type` = #{dictType,jdbcType=VARCHAR}, 
+			</if>
+			<if test="status != null">
+			`status` = #{status,jdbcType=CHAR}, 
+			</if>
+			<if test="createBy != null">
+			`create_by` = #{createBy,jdbcType=VARCHAR}, 
+			</if>
+			<if test="createTime != null">
+			`create_time` = #{createTime,jdbcType=TIMESTAMP}, 
+			</if>
+			<if test="updateBy != null">
+			`update_by` = #{updateBy,jdbcType=VARCHAR}, 
+			</if>
+			<if test="updateTime != null">
+			`update_time` = #{updateTime,jdbcType=TIMESTAMP}, 
+			</if>
+			<if test="remark != null">
+			`remark` = #{remark,jdbcType=VARCHAR}, 
+			</if>
+		</set>
+		<where>
+			AND `dict_id` = #{dictId,jdbcType=INTEGER}
+		</where>
+	</update>
+	
+	<update id="modifyBy">
+		UPDATE sys_dict_type
+		<set>
+			`dict_name` = #{sysDictType.dictName,jdbcType=VARCHAR}, 
+			`dict_type` = #{sysDictType.dictType,jdbcType=VARCHAR}, 
+			`status` = #{sysDictType.status,jdbcType=CHAR}, 
+			`create_by` = #{sysDictType.createBy,jdbcType=VARCHAR}, 
+			`create_time` = #{sysDictType.createTime,jdbcType=TIMESTAMP}, 
+			`update_by` = #{sysDictType.updateBy,jdbcType=VARCHAR}, 
+			`update_time` = #{sysDictType.updateTime,jdbcType=TIMESTAMP}, 
+			`remark` = #{sysDictType.remark,jdbcType=VARCHAR}, 
+		</set>
+		<where>
+		<if test="condiSysDictType != null">
+			<if test="condiSysDictType.dictId != null">
+			AND `dict_id` = #{condiSysDictType.dictId,jdbcType=INTEGER}
+			</if>
+			<if test="condiSysDictType.dictName != null">
+			AND `dict_name` = #{condiSysDictType.dictName,jdbcType=VARCHAR}
+			</if>
+			<if test="condiSysDictType.dictType != null">
+			AND `dict_type` = #{condiSysDictType.dictType,jdbcType=VARCHAR}
+			</if>
+			<if test="condiSysDictType.status != null">
+			AND `status` = #{condiSysDictType.status,jdbcType=CHAR}
+			</if>
+			<if test="condiSysDictType.createBy != null">
+			AND `create_by` = #{condiSysDictType.createBy,jdbcType=VARCHAR}
+			</if>
+			<if test="condiSysDictType.createTime != null">
+			AND `create_time` = #{condiSysDictType.createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="condiSysDictType.updateBy != null">
+			AND `update_by` = #{condiSysDictType.updateBy,jdbcType=VARCHAR}
+			</if>
+			<if test="condiSysDictType.updateTime != null">
+			AND `update_time` = #{condiSysDictType.updateTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="condiSysDictType.remark != null">
+			AND `remark` = #{condiSysDictType.remark,jdbcType=VARCHAR}
+			</if>
+		</if>
+		</where>
+	</update>
+	
+	<update id="modifyWithSelectiveBy">
+		UPDATE sys_dict_type
+		<set>
+		<if test="sysDictType != null">
+			<if test="sysDictType.dictName != null">
+			`dict_name` = #{sysDictType.dictName,jdbcType=VARCHAR}, 
+			</if>
+			<if test="sysDictType.dictType != null">
+			`dict_type` = #{sysDictType.dictType,jdbcType=VARCHAR}, 
+			</if>
+			<if test="sysDictType.status != null">
+			`status` = #{sysDictType.status,jdbcType=CHAR}, 
+			</if>
+			<if test="sysDictType.createBy != null">
+			`create_by` = #{sysDictType.createBy,jdbcType=VARCHAR}, 
+			</if>
+			<if test="sysDictType.createTime != null">
+			`create_time` = #{sysDictType.createTime,jdbcType=TIMESTAMP}, 
+			</if>
+			<if test="sysDictType.updateBy != null">
+			`update_by` = #{sysDictType.updateBy,jdbcType=VARCHAR}, 
+			</if>
+			<if test="sysDictType.updateTime != null">
+			`update_time` = #{sysDictType.updateTime,jdbcType=TIMESTAMP}, 
+			</if>
+			<if test="sysDictType.remark != null">
+			`remark` = #{sysDictType.remark,jdbcType=VARCHAR}, 
+			</if>
+		</if>
+		</set>
+		<where>
+		<if test="condiSysDictType != null">
+			<if test="condiSysDictType.dictId != null">
+			AND `dict_id` = #{condiSysDictType.dictId,jdbcType=INTEGER}
+			</if>
+			<if test="condiSysDictType.dictName != null">
+			AND `dict_name` = #{condiSysDictType.dictName,jdbcType=VARCHAR}
+			</if>
+			<if test="condiSysDictType.dictType != null">
+			AND `dict_type` = #{condiSysDictType.dictType,jdbcType=VARCHAR}
+			</if>
+			<if test="condiSysDictType.status != null">
+			AND `status` = #{condiSysDictType.status,jdbcType=CHAR}
+			</if>
+			<if test="condiSysDictType.createBy != null">
+			AND `create_by` = #{condiSysDictType.createBy,jdbcType=VARCHAR}
+			</if>
+			<if test="condiSysDictType.createTime != null">
+			AND `create_time` = #{condiSysDictType.createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="condiSysDictType.updateBy != null">
+			AND `update_by` = #{condiSysDictType.updateBy,jdbcType=VARCHAR}
+			</if>
+			<if test="condiSysDictType.updateTime != null">
+			AND `update_time` = #{condiSysDictType.updateTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="condiSysDictType.remark != null">
+			AND `remark` = #{condiSysDictType.remark,jdbcType=VARCHAR}
+			</if>
+		</if>
+		</where>
+	</update>
+	
+	<select id="getByPK" resultType="com.bittrade.pojo.model.SysDictType">
+		SELECT 
+			`dict_id`, 
+			`dict_name`, 
+			`dict_type`, 
+			`status`, 
+			`create_by`, 
+			`create_time`, 
+			`update_by`, 
+			`update_time`, 
+			`remark`
+		FROM sys_dict_type
+		<where>
+			AND `dict_id` = #{dictId,jdbcType=INTEGER}
+		</where>
+	</select>
+	
+	<select id="getBy" resultType="com.bittrade.pojo.model.SysDictType">
+		SELECT 
+			`dict_id`, 
+			`dict_name`, 
+			`dict_type`, 
+			`status`, 
+			`create_by`, 
+			`create_time`, 
+			`update_by`, 
+			`update_time`, 
+			`remark`
+		FROM sys_dict_type
+		<where>
+			<if test="dictName != null">
+			AND `dict_name` = #{dictName,jdbcType=VARCHAR}
+			</if>
+			<if test="dictType != null">
+			AND `dict_type` = #{dictType,jdbcType=VARCHAR}
+			</if>
+			<if test="status != null">
+			AND `status` = #{status,jdbcType=CHAR}
+			</if>
+			<if test="createBy != null">
+			AND `create_by` = #{createBy,jdbcType=VARCHAR}
+			</if>
+			<if test="createTime != null">
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="updateBy != null">
+			AND `update_by` = #{updateBy,jdbcType=VARCHAR}
+			</if>
+			<if test="updateTime != null">
+			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="remark != null">
+			AND `remark` = #{remark,jdbcType=VARCHAR}
+			</if>
+		</where>
+		LIMIT 1
+	</select>
+	
+	<select id="get" resultType="com.bittrade.pojo.model.SysDictType">
+		SELECT 
+			`dict_id`, 
+			`dict_name`, 
+			`dict_type`, 
+			`status`, 
+			`create_by`, 
+			`create_time`, 
+			`update_by`, 
+			`update_time`, 
+			`remark`
+		FROM sys_dict_type
+		LIMIT 1
+	</select>
+	
+	<select id="getsBy" resultType="com.bittrade.pojo.model.SysDictType">
+		SELECT 
+			<include refid="Base_Column_List"></include>
+		FROM sys_dict_type
+		<where>
+			<if test="dictName != null">
+			AND `dict_name` = #{dictName,jdbcType=VARCHAR}
+			</if>
+			<if test="dictType != null">
+			AND `dict_type` = #{dictType,jdbcType=VARCHAR}
+			</if>
+			<if test="status != null">
+			AND `status` = #{status,jdbcType=CHAR}
+			</if>
+			<if test="createBy != null">
+			AND `create_by` = #{createBy,jdbcType=VARCHAR}
+			</if>
+			<if test="createTime != null">
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="updateBy != null">
+			AND `update_by` = #{updateBy,jdbcType=VARCHAR}
+			</if>
+			<if test="updateTime != null">
+			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="remark != null">
+			AND `remark` = #{remark,jdbcType=VARCHAR}
+			</if>
+			<include refid="sql_WHERE_forProperty"></include>
+		</where>
+	</select>
+	
+	<select id="gets" resultType="com.bittrade.pojo.model.SysDictType">
+		SELECT 
+			<include refid="Base_Column_List"></include>
+		FROM sys_dict_type
+	</select>
+	
+	<select id="getCntBy" resultType="int">
+		SELECT COUNT(1)
+		FROM sys_dict_type
+		<where>
+		<if test="sysDictType != null">
+			<if test="sysDictType.dictName != null">
+			AND `dict_name` = #{sysDictType.dictName,jdbcType=VARCHAR}
+			</if>
+			<if test="sysDictType.dictType != null">
+			AND `dict_type` = #{sysDictType.dictType,jdbcType=VARCHAR}
+			</if>
+			<if test="sysDictType.status != null">
+			AND `status` = #{sysDictType.status,jdbcType=CHAR}
+			</if>
+			<if test="sysDictType.createBy != null">
+			AND `create_by` = #{sysDictType.createBy,jdbcType=VARCHAR}
+			</if>
+			<if test="sysDictType.createTime != null">
+			AND `create_time` = #{sysDictType.createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="sysDictType.updateBy != null">
+			AND `update_by` = #{sysDictType.updateBy,jdbcType=VARCHAR}
+			</if>
+			<if test="sysDictType.updateTime != null">
+			AND `update_time` = #{sysDictType.updateTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="sysDictType.remark != null">
+			AND `remark` = #{sysDictType.remark,jdbcType=VARCHAR}
+			</if>
+			<include refid="sql_WHERE_forObject"></include>
+		</if>
+		</where>
+	</select>
+	
+	<select id="getsByPage" resultType="com.bittrade.pojo.model.SysDictType">
+		SELECT 
+			`dict_id`, 
+			`dict_name`, 
+			`dict_type`, 
+			`status`, 
+			`create_by`, 
+			`create_time`, 
+			`update_by`, 
+			`update_time`, 
+			`remark`
+		FROM sys_dict_type
+		<where>
+		<if test="sysDictType != null">
+			<if test="sysDictType.dictName != null">
+			AND `dict_name` = #{sysDictType.dictName,jdbcType=VARCHAR}
+			</if>
+			<if test="sysDictType.dictType != null">
+			AND `dict_type` = #{sysDictType.dictType,jdbcType=VARCHAR}
+			</if>
+			<if test="sysDictType.status != null">
+			AND `status` = #{sysDictType.status,jdbcType=CHAR}
+			</if>
+			<if test="sysDictType.createBy != null">
+			AND `create_by` = #{sysDictType.createBy,jdbcType=VARCHAR}
+			</if>
+			<if test="sysDictType.createTime != null">
+			AND `create_time` = #{sysDictType.createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="sysDictType.updateBy != null">
+			AND `update_by` = #{sysDictType.updateBy,jdbcType=VARCHAR}
+			</if>
+			<if test="sysDictType.updateTime != null">
+			AND `update_time` = #{sysDictType.updateTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="sysDictType.remark != null">
+			AND `remark` = #{sysDictType.remark,jdbcType=VARCHAR}
+			</if>
+			<include refid="sql_WHERE_forObject"></include>
+		</if>
+		</where>
+		LIMIT #{page}, #{size}
+	</select>
+
+</mapper>

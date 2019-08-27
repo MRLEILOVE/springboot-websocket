@@ -114,7 +114,7 @@ public class TAdvertOrder extends BaseModel<TAdvertOrder> {
 		public static final String CHARGE = "charge";
 		
 		/**
-		 * 状态（1，已拍下；2，已付款；3，已收款；5，已完成；6，已取消，7，超时关闭）
+		 * 状态（0,未操作; 1，已拍下；2，已付款；3，已收款；5，已完成；6，已取消，7，超时关闭）
 		 */
 		public static final String STATUS = "status";
 		
@@ -247,7 +247,7 @@ public class TAdvertOrder extends BaseModel<TAdvertOrder> {
 	private java.math.BigDecimal charge;
 	
 	/**
-	 * 状态（1，已拍下；2，已付款；3，已收款；5，已完成；6，已取消，7，超时关闭）
+	 * 状态（0,未操作; 1，已拍下；2，已付款；3，已收款；5，已完成；6，已取消，7，超时关闭）
 	 */
 	private Byte status;
 	

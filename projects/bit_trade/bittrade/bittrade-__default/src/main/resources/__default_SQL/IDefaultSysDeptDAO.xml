@@ -1,0 +1,734 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+	This code is generated automatically. Please do not edit it.
+	现在字段也可以要彻底动态？
+-->
+<mapper namespace="com.bittrade.__default.DAO.IDefaultSysDeptDAO">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.bittrade.pojo.model.SysDept">
+		<id javaType="Integer" property="deptId" jdbcType="INTEGER" column="dept_id" />
+		<result javaType="Integer" property="parentId" jdbcType="INTEGER" column="parent_id" />
+		<result javaType="String" property="ancestors" jdbcType="VARCHAR" column="ancestors" />
+		<result javaType="String" property="deptName" jdbcType="VARCHAR" column="dept_name" />
+		<result javaType="Integer" property="orderNum" jdbcType="INTEGER" column="order_num" />
+		<result javaType="String" property="leader" jdbcType="VARCHAR" column="leader" />
+		<result javaType="String" property="phone" jdbcType="VARCHAR" column="phone" />
+		<result javaType="String" property="email" jdbcType="VARCHAR" column="email" />
+		<result javaType="String" property="status" jdbcType="CHAR" column="status" />
+		<result javaType="String" property="delFlag" jdbcType="CHAR" column="del_flag" />
+		<result javaType="String" property="createBy" jdbcType="VARCHAR" column="create_by" />
+		<result javaType="java.time.LocalDateTime" property="createTime" jdbcType="TIMESTAMP" column="create_time" />
+		<result javaType="String" property="updateBy" jdbcType="VARCHAR" column="update_by" />
+		<result javaType="java.time.LocalDateTime" property="updateTime" jdbcType="TIMESTAMP" column="update_time" />
+	</resultMap>
+
+	<!--
+		通用查询结果列
+		其他类似的类似，也可以公用（共用）引用。
+	-->
+	<sql id="Base_Column_List">
+		<choose>
+			<when test="strArr_field != null">
+		<foreach collection="strArr_field" index="index" item="item" open="" separator="," close="">
+			`${item}`
+		</foreach>
+			</when>
+			<otherwise>
+		`dept_id` AS `deptId`, 
+		`parent_id` AS `parentId`, 
+		`ancestors` AS `ancestors`, 
+		`dept_name` AS `deptName`, 
+		`order_num` AS `orderNum`, 
+		`leader` AS `leader`, 
+		`phone` AS `phone`, 
+		`email` AS `email`, 
+		`status` AS `status`, 
+		`del_flag` AS `delFlag`, 
+		`create_by` AS `createBy`, 
+		`create_time` AS `createTime`, 
+		`update_by` AS `updateBy`, 
+		`update_time` AS `updateTime`
+			</otherwise>
+		</choose>
+	</sql>
+	
+	<!-- 其他的也可以类似的加， yes， 类似蕾丝的。 -->
+	<sql id="sql_WHERE_forProperty">
+		<choose>
+			<when test="map_in != null">
+			
+		<foreach collection="map_in.entrySet()" index="map_index" item="map_item">
+		AND `${map_index}` IN 
+		<foreach collection="map_item" index="arr_index" item="arr_item" open="(" separator="," close=")">
+			#{arr_item}
+		</foreach>
+		</foreach>
+			
+			</when>
+			<!--
+			<when test="_parameter != null and _parameter.SysDept != null and SysDept.map_in != null">
+			</when>
+			<otherwise>
+			</otherwise>
+			-->
+		</choose>
+	</sql>
+	<sql id="sql_WHERE_forObject">
+		<choose>
+			<when test="sysDept.map_in != null">
+			
+		<foreach collection="sysDept.map_in.entrySet()" index="map_index" item="map_item">
+		AND `${map_index}` IN 
+		<foreach collection="map_item" index="arr_index" item="arr_item" open="(" separator="," close=")">
+			#{arr_item}
+		</foreach>
+		</foreach>
+			
+			</when>
+		</choose>
+	</sql>
+	
+	
+	<insert id="add" parameterType="com.bittrade.pojo.model.SysDept" useGeneratedKeys="true" keyProperty="deptId">
+		INSERT INTO sys_dept(`parent_id`, `ancestors`, `dept_name`, `order_num`, `leader`, `phone`, `email`, `status`, `del_flag`, `create_by`, `create_time`, `update_by`, `update_time`)
+		VALUES(#{parentId,jdbcType=INTEGER}, #{ancestors,jdbcType=VARCHAR}, #{deptName,jdbcType=VARCHAR}, #{orderNum,jdbcType=INTEGER}, #{leader,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{status,jdbcType=CHAR}, #{delFlag,jdbcType=CHAR}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP})
+	</insert>
+	
+	<insert id="addWithSelective" parameterType="com.bittrade.pojo.model.SysDept" useGeneratedKeys="true" keyProperty="deptId">
+		INSERT INTO sys_dept(
+			<if test="parentId != null">
+			`parent_id`, 
+			</if>
+			<if test="ancestors != null">
+			`ancestors`, 
+			</if>
+			<if test="deptName != null">
+			`dept_name`, 
+			</if>
+			<if test="orderNum != null">
+			`order_num`, 
+			</if>
+			<if test="leader != null">
+			`leader`, 
+			</if>
+			<if test="phone != null">
+			`phone`, 
+			</if>
+			<if test="email != null">
+			`email`, 
+			</if>
+			<if test="status != null">
+			`status`, 
+			</if>
+			<if test="delFlag != null">
+			`del_flag`, 
+			</if>
+			<if test="createBy != null">
+			`create_by`, 
+			</if>
+			<if test="createTime != null">
+			`create_time`, 
+			</if>
+			<if test="updateBy != null">
+			`update_by`, 
+			</if>
+			<if test="updateTime != null">
+			`update_time`
+			</if>
+		)
+		VALUES(
+			<if test="parentId != null">
+			#{parentId,jdbcType=INTEGER}, 
+			</if>
+			<if test="ancestors != null">
+			#{ancestors,jdbcType=VARCHAR}, 
+			</if>
+			<if test="deptName != null">
+			#{deptName,jdbcType=VARCHAR}, 
+			</if>
+			<if test="orderNum != null">
+			#{orderNum,jdbcType=INTEGER}, 
+			</if>
+			<if test="leader != null">
+			#{leader,jdbcType=VARCHAR}, 
+			</if>
+			<if test="phone != null">
+			#{phone,jdbcType=VARCHAR}, 
+			</if>
+			<if test="email != null">
+			#{email,jdbcType=VARCHAR}, 
+			</if>
+			<if test="status != null">
+			#{status,jdbcType=CHAR}, 
+			</if>
+			<if test="delFlag != null">
+			#{delFlag,jdbcType=CHAR}, 
+			</if>
+			<if test="createBy != null">
+			#{createBy,jdbcType=VARCHAR}, 
+			</if>
+			<if test="createTime != null">
+			#{createTime,jdbcType=TIMESTAMP}, 
+			</if>
+			<if test="updateBy != null">
+			#{updateBy,jdbcType=VARCHAR}, 
+			</if>
+			<if test="updateTime != null">
+			#{updateTime,jdbcType=TIMESTAMP}
+			</if>
+		)
+	</insert>
+	
+	<delete id="removeByPK">
+		DELETE FROM sys_dept
+		<where>
+			AND `dept_id` = #{deptId,jdbcType=INTEGER}
+		</where>
+	</delete>
+	
+	<delete id="removeBy" parameterType="com.bittrade.pojo.model.SysDept">
+		DELETE FROM sys_dept
+		<where>
+			<if test="parentId != null">
+			AND `parent_id` = #{parentId,jdbcType=INTEGER}
+			</if>
+			<if test="ancestors != null">
+			AND `ancestors` = #{ancestors,jdbcType=VARCHAR}
+			</if>
+			<if test="deptName != null">
+			AND `dept_name` = #{deptName,jdbcType=VARCHAR}
+			</if>
+			<if test="orderNum != null">
+			AND `order_num` = #{orderNum,jdbcType=INTEGER}
+			</if>
+			<if test="leader != null">
+			AND `leader` = #{leader,jdbcType=VARCHAR}
+			</if>
+			<if test="phone != null">
+			AND `phone` = #{phone,jdbcType=VARCHAR}
+			</if>
+			<if test="email != null">
+			AND `email` = #{email,jdbcType=VARCHAR}
+			</if>
+			<if test="status != null">
+			AND `status` = #{status,jdbcType=CHAR}
+			</if>
+			<if test="delFlag != null">
+			AND `del_flag` = #{delFlag,jdbcType=CHAR}
+			</if>
+			<if test="createBy != null">
+			AND `create_by` = #{createBy,jdbcType=VARCHAR}
+			</if>
+			<if test="createTime != null">
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="updateBy != null">
+			AND `update_by` = #{updateBy,jdbcType=VARCHAR}
+			</if>
+			<if test="updateTime != null">
+			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+		</where>
+	</delete>
+	
+	<update id="modifyByPK" parameterType="com.bittrade.pojo.model.SysDept">
+		UPDATE sys_dept
+		<set>
+			`parent_id` = #{parentId,jdbcType=INTEGER}, 
+			`ancestors` = #{ancestors,jdbcType=VARCHAR}, 
+			`dept_name` = #{deptName,jdbcType=VARCHAR}, 
+			`order_num` = #{orderNum,jdbcType=INTEGER}, 
+			`leader` = #{leader,jdbcType=VARCHAR}, 
+			`phone` = #{phone,jdbcType=VARCHAR}, 
+			`email` = #{email,jdbcType=VARCHAR}, 
+			`status` = #{status,jdbcType=CHAR}, 
+			`del_flag` = #{delFlag,jdbcType=CHAR}, 
+			`create_by` = #{createBy,jdbcType=VARCHAR}, 
+			`create_time` = #{createTime,jdbcType=TIMESTAMP}, 
+			`update_by` = #{updateBy,jdbcType=VARCHAR}, 
+			`update_time` = #{updateTime,jdbcType=TIMESTAMP}, 
+		</set>
+		<where>
+			AND `dept_id` = #{deptId,jdbcType=INTEGER}
+		</where>
+	</update>
+	
+	<update id="modifyWithSelectiveByPK" parameterType="com.bittrade.pojo.model.SysDept">
+		UPDATE sys_dept
+		<set>
+			<if test="parentId != null">
+			`parent_id` = #{parentId,jdbcType=INTEGER}, 
+			</if>
+			<if test="ancestors != null">
+			`ancestors` = #{ancestors,jdbcType=VARCHAR}, 
+			</if>
+			<if test="deptName != null">
+			`dept_name` = #{deptName,jdbcType=VARCHAR}, 
+			</if>
+			<if test="orderNum != null">
+			`order_num` = #{orderNum,jdbcType=INTEGER}, 
+			</if>
+			<if test="leader != null">
+			`leader` = #{leader,jdbcType=VARCHAR}, 
+			</if>
+			<if test="phone != null">
+			`phone` = #{phone,jdbcType=VARCHAR}, 
+			</if>
+			<if test="email != null">
+			`email` = #{email,jdbcType=VARCHAR}, 
+			</if>
+			<if test="status != null">
+			`status` = #{status,jdbcType=CHAR}, 
+			</if>
+			<if test="delFlag != null">
+			`del_flag` = #{delFlag,jdbcType=CHAR}, 
+			</if>
+			<if test="createBy != null">
+			`create_by` = #{createBy,jdbcType=VARCHAR}, 
+			</if>
+			<if test="createTime != null">
+			`create_time` = #{createTime,jdbcType=TIMESTAMP}, 
+			</if>
+			<if test="updateBy != null">
+			`update_by` = #{updateBy,jdbcType=VARCHAR}, 
+			</if>
+			<if test="updateTime != null">
+			`update_time` = #{updateTime,jdbcType=TIMESTAMP}, 
+			</if>
+		</set>
+		<where>
+			AND `dept_id` = #{deptId,jdbcType=INTEGER}
+		</where>
+	</update>
+	
+	<update id="modifyBy">
+		UPDATE sys_dept
+		<set>
+			`parent_id` = #{sysDept.parentId,jdbcType=INTEGER}, 
+			`ancestors` = #{sysDept.ancestors,jdbcType=VARCHAR}, 
+			`dept_name` = #{sysDept.deptName,jdbcType=VARCHAR}, 
+			`order_num` = #{sysDept.orderNum,jdbcType=INTEGER}, 
+			`leader` = #{sysDept.leader,jdbcType=VARCHAR}, 
+			`phone` = #{sysDept.phone,jdbcType=VARCHAR}, 
+			`email` = #{sysDept.email,jdbcType=VARCHAR}, 
+			`status` = #{sysDept.status,jdbcType=CHAR}, 
+			`del_flag` = #{sysDept.delFlag,jdbcType=CHAR}, 
+			`create_by` = #{sysDept.createBy,jdbcType=VARCHAR}, 
+			`create_time` = #{sysDept.createTime,jdbcType=TIMESTAMP}, 
+			`update_by` = #{sysDept.updateBy,jdbcType=VARCHAR}, 
+			`update_time` = #{sysDept.updateTime,jdbcType=TIMESTAMP}, 
+		</set>
+		<where>
+		<if test="condiSysDept != null">
+			<if test="condiSysDept.deptId != null">
+			AND `dept_id` = #{condiSysDept.deptId,jdbcType=INTEGER}
+			</if>
+			<if test="condiSysDept.parentId != null">
+			AND `parent_id` = #{condiSysDept.parentId,jdbcType=INTEGER}
+			</if>
+			<if test="condiSysDept.ancestors != null">
+			AND `ancestors` = #{condiSysDept.ancestors,jdbcType=VARCHAR}
+			</if>
+			<if test="condiSysDept.deptName != null">
+			AND `dept_name` = #{condiSysDept.deptName,jdbcType=VARCHAR}
+			</if>
+			<if test="condiSysDept.orderNum != null">
+			AND `order_num` = #{condiSysDept.orderNum,jdbcType=INTEGER}
+			</if>
+			<if test="condiSysDept.leader != null">
+			AND `leader` = #{condiSysDept.leader,jdbcType=VARCHAR}
+			</if>
+			<if test="condiSysDept.phone != null">
+			AND `phone` = #{condiSysDept.phone,jdbcType=VARCHAR}
+			</if>
+			<if test="condiSysDept.email != null">
+			AND `email` = #{condiSysDept.email,jdbcType=VARCHAR}
+			</if>
+			<if test="condiSysDept.status != null">
+			AND `status` = #{condiSysDept.status,jdbcType=CHAR}
+			</if>
+			<if test="condiSysDept.delFlag != null">
+			AND `del_flag` = #{condiSysDept.delFlag,jdbcType=CHAR}
+			</if>
+			<if test="condiSysDept.createBy != null">
+			AND `create_by` = #{condiSysDept.createBy,jdbcType=VARCHAR}
+			</if>
+			<if test="condiSysDept.createTime != null">
+			AND `create_time` = #{condiSysDept.createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="condiSysDept.updateBy != null">
+			AND `update_by` = #{condiSysDept.updateBy,jdbcType=VARCHAR}
+			</if>
+			<if test="condiSysDept.updateTime != null">
+			AND `update_time` = #{condiSysDept.updateTime,jdbcType=TIMESTAMP}
+			</if>
+		</if>
+		</where>
+	</update>
+	
+	<update id="modifyWithSelectiveBy">
+		UPDATE sys_dept
+		<set>
+		<if test="sysDept != null">
+			<if test="sysDept.parentId != null">
+			`parent_id` = #{sysDept.parentId,jdbcType=INTEGER}, 
+			</if>
+			<if test="sysDept.ancestors != null">
+			`ancestors` = #{sysDept.ancestors,jdbcType=VARCHAR}, 
+			</if>
+			<if test="sysDept.deptName != null">
+			`dept_name` = #{sysDept.deptName,jdbcType=VARCHAR}, 
+			</if>
+			<if test="sysDept.orderNum != null">
+			`order_num` = #{sysDept.orderNum,jdbcType=INTEGER}, 
+			</if>
+			<if test="sysDept.leader != null">
+			`leader` = #{sysDept.leader,jdbcType=VARCHAR}, 
+			</if>
+			<if test="sysDept.phone != null">
+			`phone` = #{sysDept.phone,jdbcType=VARCHAR}, 
+			</if>
+			<if test="sysDept.email != null">
+			`email` = #{sysDept.email,jdbcType=VARCHAR}, 
+			</if>
+			<if test="sysDept.status != null">
+			`status` = #{sysDept.status,jdbcType=CHAR}, 
+			</if>
+			<if test="sysDept.delFlag != null">
+			`del_flag` = #{sysDept.delFlag,jdbcType=CHAR}, 
+			</if>
+			<if test="sysDept.createBy != null">
+			`create_by` = #{sysDept.createBy,jdbcType=VARCHAR}, 
+			</if>
+			<if test="sysDept.createTime != null">
+			`create_time` = #{sysDept.createTime,jdbcType=TIMESTAMP}, 
+			</if>
+			<if test="sysDept.updateBy != null">
+			`update_by` = #{sysDept.updateBy,jdbcType=VARCHAR}, 
+			</if>
+			<if test="sysDept.updateTime != null">
+			`update_time` = #{sysDept.updateTime,jdbcType=TIMESTAMP}, 
+			</if>
+		</if>
+		</set>
+		<where>
+		<if test="condiSysDept != null">
+			<if test="condiSysDept.deptId != null">
+			AND `dept_id` = #{condiSysDept.deptId,jdbcType=INTEGER}
+			</if>
+			<if test="condiSysDept.parentId != null">
+			AND `parent_id` = #{condiSysDept.parentId,jdbcType=INTEGER}
+			</if>
+			<if test="condiSysDept.ancestors != null">
+			AND `ancestors` = #{condiSysDept.ancestors,jdbcType=VARCHAR}
+			</if>
+			<if test="condiSysDept.deptName != null">
+			AND `dept_name` = #{condiSysDept.deptName,jdbcType=VARCHAR}
+			</if>
+			<if test="condiSysDept.orderNum != null">
+			AND `order_num` = #{condiSysDept.orderNum,jdbcType=INTEGER}
+			</if>
+			<if test="condiSysDept.leader != null">
+			AND `leader` = #{condiSysDept.leader,jdbcType=VARCHAR}
+			</if>
+			<if test="condiSysDept.phone != null">
+			AND `phone` = #{condiSysDept.phone,jdbcType=VARCHAR}
+			</if>
+			<if test="condiSysDept.email != null">
+			AND `email` = #{condiSysDept.email,jdbcType=VARCHAR}
+			</if>
+			<if test="condiSysDept.status != null">
+			AND `status` = #{condiSysDept.status,jdbcType=CHAR}
+			</if>
+			<if test="condiSysDept.delFlag != null">
+			AND `del_flag` = #{condiSysDept.delFlag,jdbcType=CHAR}
+			</if>
+			<if test="condiSysDept.createBy != null">
+			AND `create_by` = #{condiSysDept.createBy,jdbcType=VARCHAR}
+			</if>
+			<if test="condiSysDept.createTime != null">
+			AND `create_time` = #{condiSysDept.createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="condiSysDept.updateBy != null">
+			AND `update_by` = #{condiSysDept.updateBy,jdbcType=VARCHAR}
+			</if>
+			<if test="condiSysDept.updateTime != null">
+			AND `update_time` = #{condiSysDept.updateTime,jdbcType=TIMESTAMP}
+			</if>
+		</if>
+		</where>
+	</update>
+	
+	<select id="getByPK" resultType="com.bittrade.pojo.model.SysDept">
+		SELECT 
+			`dept_id`, 
+			`parent_id`, 
+			`ancestors`, 
+			`dept_name`, 
+			`order_num`, 
+			`leader`, 
+			`phone`, 
+			`email`, 
+			`status`, 
+			`del_flag`, 
+			`create_by`, 
+			`create_time`, 
+			`update_by`, 
+			`update_time`
+		FROM sys_dept
+		<where>
+			AND `dept_id` = #{deptId,jdbcType=INTEGER}
+		</where>
+	</select>
+	
+	<select id="getBy" resultType="com.bittrade.pojo.model.SysDept">
+		SELECT 
+			`dept_id`, 
+			`parent_id`, 
+			`ancestors`, 
+			`dept_name`, 
+			`order_num`, 
+			`leader`, 
+			`phone`, 
+			`email`, 
+			`status`, 
+			`del_flag`, 
+			`create_by`, 
+			`create_time`, 
+			`update_by`, 
+			`update_time`
+		FROM sys_dept
+		<where>
+			<if test="parentId != null">
+			AND `parent_id` = #{parentId,jdbcType=INTEGER}
+			</if>
+			<if test="ancestors != null">
+			AND `ancestors` = #{ancestors,jdbcType=VARCHAR}
+			</if>
+			<if test="deptName != null">
+			AND `dept_name` = #{deptName,jdbcType=VARCHAR}
+			</if>
+			<if test="orderNum != null">
+			AND `order_num` = #{orderNum,jdbcType=INTEGER}
+			</if>
+			<if test="leader != null">
+			AND `leader` = #{leader,jdbcType=VARCHAR}
+			</if>
+			<if test="phone != null">
+			AND `phone` = #{phone,jdbcType=VARCHAR}
+			</if>
+			<if test="email != null">
+			AND `email` = #{email,jdbcType=VARCHAR}
+			</if>
+			<if test="status != null">
+			AND `status` = #{status,jdbcType=CHAR}
+			</if>
+			<if test="delFlag != null">
+			AND `del_flag` = #{delFlag,jdbcType=CHAR}
+			</if>
+			<if test="createBy != null">
+			AND `create_by` = #{createBy,jdbcType=VARCHAR}
+			</if>
+			<if test="createTime != null">
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="updateBy != null">
+			AND `update_by` = #{updateBy,jdbcType=VARCHAR}
+			</if>
+			<if test="updateTime != null">
+			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+		</where>
+		LIMIT 1
+	</select>
+	
+	<select id="get" resultType="com.bittrade.pojo.model.SysDept">
+		SELECT 
+			`dept_id`, 
+			`parent_id`, 
+			`ancestors`, 
+			`dept_name`, 
+			`order_num`, 
+			`leader`, 
+			`phone`, 
+			`email`, 
+			`status`, 
+			`del_flag`, 
+			`create_by`, 
+			`create_time`, 
+			`update_by`, 
+			`update_time`
+		FROM sys_dept
+		LIMIT 1
+	</select>
+	
+	<select id="getsBy" resultType="com.bittrade.pojo.model.SysDept">
+		SELECT 
+			<include refid="Base_Column_List"></include>
+		FROM sys_dept
+		<where>
+			<if test="parentId != null">
+			AND `parent_id` = #{parentId,jdbcType=INTEGER}
+			</if>
+			<if test="ancestors != null">
+			AND `ancestors` = #{ancestors,jdbcType=VARCHAR}
+			</if>
+			<if test="deptName != null">
+			AND `dept_name` = #{deptName,jdbcType=VARCHAR}
+			</if>
+			<if test="orderNum != null">
+			AND `order_num` = #{orderNum,jdbcType=INTEGER}
+			</if>
+			<if test="leader != null">
+			AND `leader` = #{leader,jdbcType=VARCHAR}
+			</if>
+			<if test="phone != null">
+			AND `phone` = #{phone,jdbcType=VARCHAR}
+			</if>
+			<if test="email != null">
+			AND `email` = #{email,jdbcType=VARCHAR}
+			</if>
+			<if test="status != null">
+			AND `status` = #{status,jdbcType=CHAR}
+			</if>
+			<if test="delFlag != null">
+			AND `del_flag` = #{delFlag,jdbcType=CHAR}
+			</if>
+			<if test="createBy != null">
+			AND `create_by` = #{createBy,jdbcType=VARCHAR}
+			</if>
+			<if test="createTime != null">
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="updateBy != null">
+			AND `update_by` = #{updateBy,jdbcType=VARCHAR}
+			</if>
+			<if test="updateTime != null">
+			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+			<include refid="sql_WHERE_forProperty"></include>
+		</where>
+	</select>
+	
+	<select id="gets" resultType="com.bittrade.pojo.model.SysDept">
+		SELECT 
+			<include refid="Base_Column_List"></include>
+		FROM sys_dept
+	</select>
+	
+	<select id="getCntBy" resultType="int">
+		SELECT COUNT(1)
+		FROM sys_dept
+		<where>
+		<if test="sysDept != null">
+			<if test="sysDept.parentId != null">
+			AND `parent_id` = #{sysDept.parentId,jdbcType=INTEGER}
+			</if>
+			<if test="sysDept.ancestors != null">
+			AND `ancestors` = #{sysDept.ancestors,jdbcType=VARCHAR}
+			</if>
+			<if test="sysDept.deptName != null">
+			AND `dept_name` = #{sysDept.deptName,jdbcType=VARCHAR}
+			</if>
+			<if test="sysDept.orderNum != null">
+			AND `order_num` = #{sysDept.orderNum,jdbcType=INTEGER}
+			</if>
+			<if test="sysDept.leader != null">
+			AND `leader` = #{sysDept.leader,jdbcType=VARCHAR}
+			</if>
+			<if test="sysDept.phone != null">
+			AND `phone` = #{sysDept.phone,jdbcType=VARCHAR}
+			</if>
+			<if test="sysDept.email != null">
+			AND `email` = #{sysDept.email,jdbcType=VARCHAR}
+			</if>
+			<if test="sysDept.status != null">
+			AND `status` = #{sysDept.status,jdbcType=CHAR}
+			</if>
+			<if test="sysDept.delFlag != null">
+			AND `del_flag` = #{sysDept.delFlag,jdbcType=CHAR}
+			</if>
+			<if test="sysDept.createBy != null">
+			AND `create_by` = #{sysDept.createBy,jdbcType=VARCHAR}
+			</if>
+			<if test="sysDept.createTime != null">
+			AND `create_time` = #{sysDept.createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="sysDept.updateBy != null">
+			AND `update_by` = #{sysDept.updateBy,jdbcType=VARCHAR}
+			</if>
+			<if test="sysDept.updateTime != null">
+			AND `update_time` = #{sysDept.updateTime,jdbcType=TIMESTAMP}
+			</if>
+			<include refid="sql_WHERE_forObject"></include>
+		</if>
+		</where>
+	</select>
+	
+	<select id="getsByPage" resultType="com.bittrade.pojo.model.SysDept">
+		SELECT 
+			`dept_id`, 
+			`parent_id`, 
+			`ancestors`, 
+			`dept_name`, 
+			`order_num`, 
+			`leader`, 
+			`phone`, 
+			`email`, 
+			`status`, 
+			`del_flag`, 
+			`create_by`, 
+			`create_time`, 
+			`update_by`, 
+			`update_time`
+		FROM sys_dept
+		<where>
+		<if test="sysDept != null">
+			<if test="sysDept.parentId != null">
+			AND `parent_id` = #{sysDept.parentId,jdbcType=INTEGER}
+			</if>
+			<if test="sysDept.ancestors != null">
+			AND `ancestors` = #{sysDept.ancestors,jdbcType=VARCHAR}
+			</if>
+			<if test="sysDept.deptName != null">
+			AND `dept_name` = #{sysDept.deptName,jdbcType=VARCHAR}
+			</if>
+			<if test="sysDept.orderNum != null">
+			AND `order_num` = #{sysDept.orderNum,jdbcType=INTEGER}
+			</if>
+			<if test="sysDept.leader != null">
+			AND `leader` = #{sysDept.leader,jdbcType=VARCHAR}
+			</if>
+			<if test="sysDept.phone != null">
+			AND `phone` = #{sysDept.phone,jdbcType=VARCHAR}
+			</if>
+			<if test="sysDept.email != null">
+			AND `email` = #{sysDept.email,jdbcType=VARCHAR}
+			</if>
+			<if test="sysDept.status != null">
+			AND `status` = #{sysDept.status,jdbcType=CHAR}
+			</if>
+			<if test="sysDept.delFlag != null">
+			AND `del_flag` = #{sysDept.delFlag,jdbcType=CHAR}
+			</if>
+			<if test="sysDept.createBy != null">
+			AND `create_by` = #{sysDept.createBy,jdbcType=VARCHAR}
+			</if>
+			<if test="sysDept.createTime != null">
+			AND `create_time` = #{sysDept.createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="sysDept.updateBy != null">
+			AND `update_by` = #{sysDept.updateBy,jdbcType=VARCHAR}
+			</if>
+			<if test="sysDept.updateTime != null">
+			AND `update_time` = #{sysDept.updateTime,jdbcType=TIMESTAMP}
+			</if>
+			<include refid="sql_WHERE_forObject"></include>
+		</if>
+		</where>
+		LIMIT #{page}, #{size}
+	</select>
+
+</mapper>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bittrade.currency.dao.ITUserDAO">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.bittrade.pojo.model.TUser">
+		<id javaType="int" property="id" jdbcType="INTEGER" column="id" />
+		<result javaType="String" property="loginName" jdbcType="VARCHAR" column="login_name" />
+		<result javaType="String" property="loginPassword" jdbcType="VARCHAR" column="login_password" />
+		<result javaType="String" property="nickName" jdbcType="VARCHAR" column="nick_name" />
+		<result javaType="String" property="realName" jdbcType="VARCHAR" column="real_name" />
+		<result javaType="String" property="telePhone" jdbcType="VARCHAR" column="tele_phone" />
+		<result javaType="String" property="recommendCode" jdbcType="VARCHAR" column="recommend_code" />
+		<result javaType="String" property="userEmail" jdbcType="VARCHAR" column="user_email" />
+		<result javaType="String" property="phoneAreaCode" jdbcType="VARCHAR" column="phone_area_code" />
+		<result javaType="Byte" property="isTelValidate" jdbcType="INTEGER" column="is_tel_validate" />
+		<result javaType="String" property="userAddress" jdbcType="VARCHAR" column="user_address" />
+		<result javaType="Byte" property="identityType" jdbcType="INTEGER" column="identity_type" />
+		<result javaType="String" property="identityNo" jdbcType="VARCHAR" column="identity_no" />
+		<result javaType="java.time.LocalDateTime" property="telValidateTime" jdbcType="TIMESTAMP" column="tel_validate_time" />
+		<result javaType="java.time.LocalDateTime" property="mailValidateTime" jdbcType="TIMESTAMP" column="mail_validate_time" />
+		<result javaType="Byte" property="type" jdbcType="INTEGER" column="type" />
+		<result javaType="Byte" property="status" jdbcType="INTEGER" column="status" />
+		<result javaType="String" property="userFirstIp" jdbcType="VARCHAR" column="user_first_ip" />
+		<result javaType="java.time.LocalDateTime" property="updateTime" jdbcType="TIMESTAMP" column="update_time" />
+		<result javaType="java.time.LocalDateTime" property="createTime" jdbcType="TIMESTAMP" column="create_time" />
+		<result javaType="String" property="extend1" jdbcType="VARCHAR" column="extend1" />
+		<result javaType="String" property="extend2" jdbcType="VARCHAR" column="extend2" />
+		<result javaType="String" property="extend3" jdbcType="VARCHAR" column="extend3" />
+	</resultMap>
+
+	<!-- 通用查询结果列 -->
+	<sql id="Base_Column_List">
+		`id` AS id, 
+		`is_identity_validate` AS isIdentityValidate, 
+		`is_mail_validate` AS isMailValidate, 
+		`login_name` AS loginName, 
+		`login_password` AS loginPassword, 
+		`nick_name` AS nickName, 
+		`real_name` AS realName, 
+		`tele_phone` AS telePhone, 
+		`recommend_code` AS recommendCode, 
+		`user_email` AS userEmail, 
+		`phone_area_code` AS phoneAreaCode, 
+		`is_tel_validate` AS isTelValidate, 
+		`user_address` AS userAddress, 
+		`identity_type` AS identityType, 
+		`identity_no` AS identityNo, 
+		`tel_validate_time` AS telValidateTime, 
+		`mail_validate_time` AS mailValidateTime, 
+		`type` AS type, 
+		`status` AS status, 
+		`user_first_ip` AS userFirstIp, 
+		`update_time` AS updateTime, 
+		`create_time` AS createTime, 
+		`extend1` AS extend1, 
+		`extend2` AS extend2, 
+		`extend3` AS extend3
+	</sql>
+
+</mapper>

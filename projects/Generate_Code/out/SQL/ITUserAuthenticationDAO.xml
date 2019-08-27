@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bittrade.currency.dao.ITUserAuthenticationDAO">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.bittrade.pojo.model.TUserAuthentication">
+		<id javaType="int" property="id" jdbcType="INTEGER" column="id" />
+		<result javaType="Long" property="userId" jdbcType="BIGINT" column="user_id" />
+		<result javaType="String" property="realName" jdbcType="VARCHAR" column="real_name" />
+		<result javaType="String" property="identityNo" jdbcType="VARCHAR" column="identity_no" />
+		<result javaType="Byte" property="identityType" jdbcType="INTEGER" column="identity_type" />
+		<result javaType="String" property="identityFrontUrl" jdbcType="VARCHAR" column="identity_front_url" />
+		<result javaType="String" property="identityFrontKey" jdbcType="VARCHAR" column="identity_front_key" />
+		<result javaType="String" property="identityFrontHash" jdbcType="VARCHAR" column="identity_front_hash" />
+		<result javaType="String" property="identityBackUrl" jdbcType="VARCHAR" column="identity_back_url" />
+		<result javaType="String" property="identityBackKey" jdbcType="VARCHAR" column="identity_back_key" />
+		<result javaType="String" property="identityBackHash" jdbcType="VARCHAR" column="identity_back_hash" />
+		<result javaType="Byte" property="postRealValidate" jdbcType="INTEGER" column="post_real_validate" />
+		<result javaType="Byte" property="fhasRealValidate" jdbcType="INTEGER" column="fhas_real_Validate" />
+		<result javaType="String" property="bankCardNo" jdbcType="VARCHAR" column="bank_card_no" />
+		<result javaType="String" property="bankAddress" jdbcType="VARCHAR" column="bank_address" />
+		<result javaType="String" property="bankCardUrl" jdbcType="VARCHAR" column="bank_card_url" />
+		<result javaType="String" property="bankCardKey" jdbcType="VARCHAR" column="bank_card_key" />
+		<result javaType="String" property="bankCardHash" jdbcType="VARCHAR" column="bank_card_hash" />
+		<result javaType="String" property="alipayNo" jdbcType="VARCHAR" column="alipay_no" />
+		<result javaType="Byte" property="status" jdbcType="INTEGER" column="status" />
+		<result javaType="java.time.LocalDateTime" property="submitTime" jdbcType="TIMESTAMP" column="submit_time" />
+		<result javaType="String" property="auditor" jdbcType="VARCHAR" column="auditor" />
+		<result javaType="java.time.LocalDateTime" property="auditTime" jdbcType="TIMESTAMP" column="audit_time" />
+		<result javaType="java.time.LocalDateTime" property="createTime" jdbcType="TIMESTAMP" column="create_time" />
+		<result javaType="java.time.LocalDateTime" property="updateTime" jdbcType="TIMESTAMP" column="update_time" />
+	</resultMap>
+
+	<!-- 通用查询结果列 -->
+	<sql id="Base_Column_List">
+		`id` AS id, 
+		`user_id` AS userId, 
+		`real_name` AS realName, 
+		`identity_no` AS identityNo, 
+		`identity_type` AS identityType, 
+		`identity_front_url` AS identityFrontUrl, 
+		`identity_front_key` AS identityFrontKey, 
+		`identity_front_hash` AS identityFrontHash, 
+		`identity_back_url` AS identityBackUrl, 
+		`identity_back_key` AS identityBackKey, 
+		`identity_back_hash` AS identityBackHash, 
+		`post_real_validate` AS postRealValidate, 
+		`fhas_real_Validate` AS fhasRealValidate, 
+		`bank_card_no` AS bankCardNo, 
+		`bank_address` AS bankAddress, 
+		`bank_card_url` AS bankCardUrl, 
+		`bank_card_key` AS bankCardKey, 
+		`bank_card_hash` AS bankCardHash, 
+		`alipay_no` AS alipayNo, 
+		`status` AS status, 
+		`submit_time` AS submitTime, 
+		`auditor` AS auditor, 
+		`audit_time` AS auditTime, 
+		`create_time` AS createTime, 
+		`update_time` AS updateTime
+	</sql>
+
+</mapper>

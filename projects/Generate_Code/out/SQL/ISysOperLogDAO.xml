@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bittrade.currency.dao.ISysOperLogDAO">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.bittrade.pojo.model.SysOperLog">
+		<id javaType="int" property="id" jdbcType="INTEGER" column="id" />
+		<result javaType="String" property="title" jdbcType="VARCHAR" column="title" />
+		<result javaType="Integer" property="businessType" jdbcType="INTEGER" column="business_type" />
+		<result javaType="String" property="method" jdbcType="VARCHAR" column="method" />
+		<result javaType="Integer" property="operatorType" jdbcType="INTEGER" column="operator_type" />
+		<result javaType="String" property="operName" jdbcType="VARCHAR" column="oper_name" />
+		<result javaType="String" property="deptName" jdbcType="VARCHAR" column="dept_name" />
+		<result javaType="String" property="operUrl" jdbcType="VARCHAR" column="oper_url" />
+		<result javaType="String" property="operIp" jdbcType="VARCHAR" column="oper_ip" />
+		<result javaType="String" property="operLocation" jdbcType="VARCHAR" column="oper_location" />
+		<result javaType="String" property="operParam" jdbcType="VARCHAR" column="oper_param" />
+		<result javaType="Integer" property="status" jdbcType="INTEGER" column="status" />
+		<result javaType="String" property="errorMsg" jdbcType="VARCHAR" column="error_msg" />
+		<result javaType="java.time.LocalDateTime" property="operTime" jdbcType="TIMESTAMP" column="oper_time" />
+	</resultMap>
+
+	<!-- 通用查询结果列 -->
+	<sql id="Base_Column_List">
+		`oper_id` AS operId, 
+		`title` AS title, 
+		`business_type` AS businessType, 
+		`method` AS method, 
+		`operator_type` AS operatorType, 
+		`oper_name` AS operName, 
+		`dept_name` AS deptName, 
+		`oper_url` AS operUrl, 
+		`oper_ip` AS operIp, 
+		`oper_location` AS operLocation, 
+		`oper_param` AS operParam, 
+		`status` AS status, 
+		`error_msg` AS errorMsg, 
+		`oper_time` AS operTime
+	</sql>
+
+</mapper>

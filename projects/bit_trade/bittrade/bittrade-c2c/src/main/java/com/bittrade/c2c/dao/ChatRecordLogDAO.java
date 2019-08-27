@@ -1,9 +1,10 @@
 package com.bittrade.c2c.dao;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.bittrade.pojo.model.ChatRecordLog;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.bittrade.pojo.model.TChatRecordLog;
 
 /**
  * @author xzc
@@ -12,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Repository
 @Transactional(rollbackFor = Exception.class)
-public interface ChatRecordLogDAO extends BaseMapper<ChatRecordLog> {
+public interface ChatRecordLogDAO extends BaseMapper<TChatRecordLog> {
 
 
 }
