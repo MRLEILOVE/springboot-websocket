@@ -7,7 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 /**
  * 业务异常.
  *
- * @author ourblue
+ * @author who ?
  */
 @Slf4j
 public class BusinessException extends RuntimeException {

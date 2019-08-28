@@ -8,7 +8,7 @@ import com.bittrade.admin.model.domain.SysRoleDept;
  * 角色和部门关联表 服务类
  * </p>
  *
- * @author ourblue
+ * @author who ?
  * @since 2018-11-03
  */
 public interface SysRoleDeptService extends IService<SysRoleDept> {

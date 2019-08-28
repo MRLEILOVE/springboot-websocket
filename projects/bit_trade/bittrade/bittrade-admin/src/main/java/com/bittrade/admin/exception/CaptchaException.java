@@ -5,7 +5,7 @@ import com.bittrade.admin.util.MessageUtil;
 /**
  * .验证码错误异常
  * 
- * @author ourblue
+ * @author who ?
  *
  */
 public class CaptchaException extends BusinessException {

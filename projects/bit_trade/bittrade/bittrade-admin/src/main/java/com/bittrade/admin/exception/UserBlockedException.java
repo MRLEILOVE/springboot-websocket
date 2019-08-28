@@ -5,7 +5,7 @@ import com.bittrade.admin.util.MessageUtil;
 /**
  * .用户锁定异常类
  * 
- * @author ourblue
+ * @author who ?
  *
  */
 public class UserBlockedException extends BusinessException {

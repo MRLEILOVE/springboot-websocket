@@ -14,8 +14,8 @@ import org.springframework.stereotype.Component;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.alibaba.fastjson.JSONObject;
 import com.bittrade.common.constant.IQueueConstants;
-import com.bittrade.currency.api.service.ITWalletService;
 import com.bittrade.pojo.model.TEntrustRecord;
+import com.common.bittrade.service.ITWalletService;
 import com.rabbitmq.client.Channel;
 
 /**

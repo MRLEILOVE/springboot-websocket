@@ -8,7 +8,7 @@ import com.bittrade.admin.model.domain.SysUserRole;
  * 用户和角色关联表 服务类
  * </p>
  *
- * @author ourblue
+ * @author who ?
  * @since 2018-11-03
  */
 public interface SysUserRoleService extends IService<SysUserRole> {

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bittrade.currency.dao.ISysDeptDAO">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.bittrade.pojo.model.SysDept">
+		<id javaType="int" property="id" jdbcType="INTEGER" column="id" />
+		<result javaType="Integer" property="parentId" jdbcType="INTEGER" column="parent_id" />
+		<result javaType="String" property="ancestors" jdbcType="VARCHAR" column="ancestors" />
+		<result javaType="String" property="deptName" jdbcType="VARCHAR" column="dept_name" />
+		<result javaType="Integer" property="orderNum" jdbcType="INTEGER" column="order_num" />
+		<result javaType="String" property="leader" jdbcType="VARCHAR" column="leader" />
+		<result javaType="String" property="phone" jdbcType="VARCHAR" column="phone" />
+		<result javaType="String" property="email" jdbcType="VARCHAR" column="email" />
+		<result javaType="String" property="status" jdbcType="CHAR" column="status" />
+		<result javaType="String" property="delFlag" jdbcType="CHAR" column="del_flag" />
+		<result javaType="String" property="createBy" jdbcType="VARCHAR" column="create_by" />
+		<result javaType="java.time.LocalDateTime" property="createTime" jdbcType="TIMESTAMP" column="create_time" />
+		<result javaType="String" property="updateBy" jdbcType="VARCHAR" column="update_by" />
+		<result javaType="java.time.LocalDateTime" property="updateTime" jdbcType="TIMESTAMP" column="update_time" />
+	</resultMap>
+
+	<!-- 通用查询结果列 -->
+	<sql id="Base_Column_List">
+		`dept_id` AS deptId, 
+		`parent_id` AS parentId, 
+		`ancestors` AS ancestors, 
+		`dept_name` AS deptName, 
+		`order_num` AS orderNum, 
+		`leader` AS leader, 
+		`phone` AS phone, 
+		`email` AS email, 
+		`status` AS status, 
+		`del_flag` AS delFlag, 
+		`create_by` AS createBy, 
+		`create_time` AS createTime, 
+		`update_by` AS updateBy, 
+		`update_time` AS updateTime
+	</sql>
+
+</mapper>

@@ -1,9 +1,9 @@
 package com.wallet.biz.api.service;
 
+import com.bittrade.pojo.vo.CoinTypeVO;
+import com.bittrade.pojo.vo.WalletAddressVO;
+import com.bittrade.pojo.vo.WithdrawBillParamVo;
 import com.core.common.DTO.ReturnDTO;
-import com.wallet.biz.pojo.vo.CoinTypeVO;
-import com.wallet.biz.pojo.vo.WalletAddressVO;
-import com.wallet.biz.pojo.vo.WithdrawBillParamVo;
 
 
 public interface IwalletCaseService {

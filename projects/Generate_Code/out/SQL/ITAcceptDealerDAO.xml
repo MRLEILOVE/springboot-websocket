@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bittrade.currency.dao.ITAcceptDealerDAO">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.bittrade.pojo.model.TAcceptDealer">
+		<id javaType="int" property="id" jdbcType="INTEGER" column="id" />
+		<result javaType="String" property="acceptName" jdbcType="VARCHAR" column="accept_name" />
+		<result javaType="String" property="acceptBusinessId" jdbcType="VARCHAR" column="accept_businessId" />
+		<result javaType="String" property="acceptKey" jdbcType="VARCHAR" column="accept_key" />
+		<result javaType="String" property="acceptRechargeUrl" jdbcType="VARCHAR" column="accept_recharge_url" />
+		<result javaType="String" property="iconUrl" jdbcType="VARCHAR" column="icon_url" />
+		<result javaType="Integer" property="sort" jdbcType="INTEGER" column="sort" />
+		<result javaType="Byte" property="status" jdbcType="INTEGER" column="status" />
+		<result javaType="Byte" property="type" jdbcType="INTEGER" column="type" />
+		<result javaType="String" property="remark" jdbcType="VARCHAR" column="remark" />
+		<result javaType="java.time.LocalDateTime" property="createTime" jdbcType="TIMESTAMP" column="create_time" />
+		<result javaType="String" property="creater" jdbcType="VARCHAR" column="creater" />
+		<result javaType="java.time.LocalDateTime" property="updateTime" jdbcType="TIMESTAMP" column="update_time" />
+		<result javaType="String" property="updater" jdbcType="VARCHAR" column="updater" />
+	</resultMap>
+
+	<!-- 通用查询结果列 -->
+	<sql id="Base_Column_List">
+		`id` AS id, 
+		`accept_name` AS acceptName, 
+		`accept_businessId` AS acceptBusinessId, 
+		`accept_key` AS acceptKey, 
+		`accept_recharge_url` AS acceptRechargeUrl, 
+		`icon_url` AS iconUrl, 
+		`sort` AS sort, 
+		`status` AS status, 
+		`type` AS type, 
+		`remark` AS remark, 
+		`create_time` AS createTime, 
+		`creater` AS creater, 
+		`update_time` AS updateTime, 
+		`updater` AS updater
+	</sql>
+
+</mapper>

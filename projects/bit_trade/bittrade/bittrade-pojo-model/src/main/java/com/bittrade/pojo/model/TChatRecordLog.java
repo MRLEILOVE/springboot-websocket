@@ -89,12 +89,12 @@ public class TChatRecordLog extends BaseModel<TChatRecordLog> {
 	/**
 	 * 发送的内容
 	 */
-	private Byte[] content;
+	private String content;
 	
 	/**
 	 * 发送的类型:0,文本,1,图片
 	 */
-	private Byte messageType;
+	private Integer messageType;
 	
 	/**
 	 * 创建时间

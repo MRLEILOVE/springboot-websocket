@@ -1,0 +1,961 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+	This code is generated automatically. Please do not edit it.
+	现在字段也可以要彻底动态？
+-->
+<mapper namespace="com.bittrade.__default.DAO.IDefaultSysUserDAO">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.bittrade.pojo.model.SysUser">
+		<id javaType="Integer" property="userId" jdbcType="INTEGER" column="user_id" />
+		<id javaType="String" property="avatar" jdbcType="VARCHAR" column="avatar" />
+		<result javaType="Integer" property="deptId" jdbcType="INTEGER" column="dept_id" />
+		<result javaType="String" property="loginName" jdbcType="VARCHAR" column="login_name" />
+		<result javaType="String" property="userName" jdbcType="VARCHAR" column="user_name" />
+		<result javaType="String" property="userType" jdbcType="VARCHAR" column="user_type" />
+		<result javaType="String" property="email" jdbcType="VARCHAR" column="email" />
+		<result javaType="String" property="phonenumber" jdbcType="VARCHAR" column="phonenumber" />
+		<result javaType="String" property="sex" jdbcType="CHAR" column="sex" />
+		<result javaType="String" property="password" jdbcType="VARCHAR" column="password" />
+		<result javaType="String" property="salt" jdbcType="VARCHAR" column="salt" />
+		<result javaType="String" property="status" jdbcType="CHAR" column="status" />
+		<result javaType="String" property="delFlag" jdbcType="CHAR" column="del_flag" />
+		<result javaType="String" property="loginIp" jdbcType="VARCHAR" column="login_ip" />
+		<result javaType="java.time.LocalDateTime" property="loginDate" jdbcType="TIMESTAMP" column="login_date" />
+		<result javaType="String" property="createBy" jdbcType="VARCHAR" column="create_by" />
+		<result javaType="java.time.LocalDateTime" property="createTime" jdbcType="TIMESTAMP" column="create_time" />
+		<result javaType="String" property="updateBy" jdbcType="VARCHAR" column="update_by" />
+		<result javaType="java.time.LocalDateTime" property="updateTime" jdbcType="TIMESTAMP" column="update_time" />
+		<result javaType="String" property="remark" jdbcType="VARCHAR" column="remark" />
+	</resultMap>
+
+	<!--
+		通用查询结果列
+		其他类似的类似，也可以公用（共用）引用。
+	-->
+	<sql id="Base_Column_List">
+		<choose>
+			<when test="strArr_field != null">
+		<foreach collection="strArr_field" index="index" item="item" open="" separator="," close="">
+			`${item}`
+		</foreach>
+			</when>
+			<otherwise>
+		`user_id` AS `userId`, 
+		`avatar` AS `avatar`, 
+		`dept_id` AS `deptId`, 
+		`login_name` AS `loginName`, 
+		`user_name` AS `userName`, 
+		`user_type` AS `userType`, 
+		`email` AS `email`, 
+		`phonenumber` AS `phonenumber`, 
+		`sex` AS `sex`, 
+		`password` AS `password`, 
+		`salt` AS `salt`, 
+		`status` AS `status`, 
+		`del_flag` AS `delFlag`, 
+		`login_ip` AS `loginIp`, 
+		`login_date` AS `loginDate`, 
+		`create_by` AS `createBy`, 
+		`create_time` AS `createTime`, 
+		`update_by` AS `updateBy`, 
+		`update_time` AS `updateTime`, 
+		`remark` AS `remark`
+			</otherwise>
+		</choose>
+	</sql>
+	
+	<!-- 其他的也可以类似的加， yes， 类似蕾丝的。 -->
+	<sql id="sql_WHERE_forProperty">
+		<choose>
+			<when test="map_in != null">
+			
+		<foreach collection="map_in.entrySet()" index="map_index" item="map_item">
+		AND `${map_index}` IN 
+		<foreach collection="map_item" index="arr_index" item="arr_item" open="(" separator="," close=")">
+			#{arr_item}
+		</foreach>
+		</foreach>
+			
+			</when>
+			<!--
+			<when test="_parameter != null and _parameter.SysUser != null and SysUser.map_in != null">
+			</when>
+			<otherwise>
+			</otherwise>
+			-->
+		</choose>
+	</sql>
+	<sql id="sql_WHERE_forObject">
+		<choose>
+			<when test="sysUser.map_in != null">
+			
+		<foreach collection="sysUser.map_in.entrySet()" index="map_index" item="map_item">
+		AND `${map_index}` IN 
+		<foreach collection="map_item" index="arr_index" item="arr_item" open="(" separator="," close=")">
+			#{arr_item}
+		</foreach>
+		</foreach>
+			
+			</when>
+		</choose>
+	</sql>
+	
+	
+	<insert id="add" parameterType="com.bittrade.pojo.model.SysUser" useGeneratedKeys="true" keyProperty="userId">
+		INSERT INTO sys_user(`avatar`, `dept_id`, `login_name`, `user_name`, `user_type`, `email`, `phonenumber`, `sex`, `password`, `salt`, `status`, `del_flag`, `login_ip`, `login_date`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`)
+		VALUES(#{avatar,jdbcType=VARCHAR}, #{deptId,jdbcType=INTEGER}, #{loginName,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, #{userType,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{phonenumber,jdbcType=VARCHAR}, #{sex,jdbcType=CHAR}, #{password,jdbcType=VARCHAR}, #{salt,jdbcType=VARCHAR}, #{status,jdbcType=CHAR}, #{delFlag,jdbcType=CHAR}, #{loginIp,jdbcType=VARCHAR}, #{loginDate,jdbcType=TIMESTAMP}, #{createBy,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{remark,jdbcType=VARCHAR})
+	</insert>
+	
+	<insert id="addWithSelective" parameterType="com.bittrade.pojo.model.SysUser" useGeneratedKeys="true" keyProperty="userId">
+		INSERT INTO sys_user(
+			<if test="avatar != null">
+			`avatar`, 
+			</if>
+			<if test="deptId != null">
+			`dept_id`, 
+			</if>
+			<if test="loginName != null">
+			`login_name`, 
+			</if>
+			<if test="userName != null">
+			`user_name`, 
+			</if>
+			<if test="userType != null">
+			`user_type`, 
+			</if>
+			<if test="email != null">
+			`email`, 
+			</if>
+			<if test="phonenumber != null">
+			`phonenumber`, 
+			</if>
+			<if test="sex != null">
+			`sex`, 
+			</if>
+			<if test="password != null">
+			`password`, 
+			</if>
+			<if test="salt != null">
+			`salt`, 
+			</if>
+			<if test="status != null">
+			`status`, 
+			</if>
+			<if test="delFlag != null">
+			`del_flag`, 
+			</if>
+			<if test="loginIp != null">
+			`login_ip`, 
+			</if>
+			<if test="loginDate != null">
+			`login_date`, 
+			</if>
+			<if test="createBy != null">
+			`create_by`, 
+			</if>
+			<if test="createTime != null">
+			`create_time`, 
+			</if>
+			<if test="updateBy != null">
+			`update_by`, 
+			</if>
+			<if test="updateTime != null">
+			`update_time`, 
+			</if>
+			<if test="remark != null">
+			`remark`
+			</if>
+		)
+		VALUES(
+			<if test="avatar != null">
+			#{avatar,jdbcType=VARCHAR}, 
+			</if>
+			<if test="deptId != null">
+			#{deptId,jdbcType=INTEGER}, 
+			</if>
+			<if test="loginName != null">
+			#{loginName,jdbcType=VARCHAR}, 
+			</if>
+			<if test="userName != null">
+			#{userName,jdbcType=VARCHAR}, 
+			</if>
+			<if test="userType != null">
+			#{userType,jdbcType=VARCHAR}, 
+			</if>
+			<if test="email != null">
+			#{email,jdbcType=VARCHAR}, 
+			</if>
+			<if test="phonenumber != null">
+			#{phonenumber,jdbcType=VARCHAR}, 
+			</if>
+			<if test="sex != null">
+			#{sex,jdbcType=CHAR}, 
+			</if>
+			<if test="password != null">
+			#{password,jdbcType=VARCHAR}, 
+			</if>
+			<if test="salt != null">
+			#{salt,jdbcType=VARCHAR}, 
+			</if>
+			<if test="status != null">
+			#{status,jdbcType=CHAR}, 
+			</if>
+			<if test="delFlag != null">
+			#{delFlag,jdbcType=CHAR}, 
+			</if>
+			<if test="loginIp != null">
+			#{loginIp,jdbcType=VARCHAR}, 
+			</if>
+			<if test="loginDate != null">
+			#{loginDate,jdbcType=TIMESTAMP}, 
+			</if>
+			<if test="createBy != null">
+			#{createBy,jdbcType=VARCHAR}, 
+			</if>
+			<if test="createTime != null">
+			#{createTime,jdbcType=TIMESTAMP}, 
+			</if>
+			<if test="updateBy != null">
+			#{updateBy,jdbcType=VARCHAR}, 
+			</if>
+			<if test="updateTime != null">
+			#{updateTime,jdbcType=TIMESTAMP}, 
+			</if>
+			<if test="remark != null">
+			#{remark,jdbcType=VARCHAR}
+			</if>
+		)
+	</insert>
+	
+	<delete id="removeByPK">
+		DELETE FROM sys_user
+		<where>
+			AND `user_id` = #{userId,jdbcType=INTEGER}
+			AND `avatar` = #{avatar,jdbcType=VARCHAR}
+		</where>
+	</delete>
+	
+	<delete id="removeBy" parameterType="com.bittrade.pojo.model.SysUser">
+		DELETE FROM sys_user
+		<where>
+			<if test="deptId != null">
+			AND `dept_id` = #{deptId,jdbcType=INTEGER}
+			</if>
+			<if test="loginName != null">
+			AND `login_name` = #{loginName,jdbcType=VARCHAR}
+			</if>
+			<if test="userName != null">
+			AND `user_name` = #{userName,jdbcType=VARCHAR}
+			</if>
+			<if test="userType != null">
+			AND `user_type` = #{userType,jdbcType=VARCHAR}
+			</if>
+			<if test="email != null">
+			AND `email` = #{email,jdbcType=VARCHAR}
+			</if>
+			<if test="phonenumber != null">
+			AND `phonenumber` = #{phonenumber,jdbcType=VARCHAR}
+			</if>
+			<if test="sex != null">
+			AND `sex` = #{sex,jdbcType=CHAR}
+			</if>
+			<if test="password != null">
+			AND `password` = #{password,jdbcType=VARCHAR}
+			</if>
+			<if test="salt != null">
+			AND `salt` = #{salt,jdbcType=VARCHAR}
+			</if>
+			<if test="status != null">
+			AND `status` = #{status,jdbcType=CHAR}
+			</if>
+			<if test="delFlag != null">
+			AND `del_flag` = #{delFlag,jdbcType=CHAR}
+			</if>
+			<if test="loginIp != null">
+			AND `login_ip` = #{loginIp,jdbcType=VARCHAR}
+			</if>
+			<if test="loginDate != null">
+			AND `login_date` = #{loginDate,jdbcType=TIMESTAMP}
+			</if>
+			<if test="createBy != null">
+			AND `create_by` = #{createBy,jdbcType=VARCHAR}
+			</if>
+			<if test="createTime != null">
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="updateBy != null">
+			AND `update_by` = #{updateBy,jdbcType=VARCHAR}
+			</if>
+			<if test="updateTime != null">
+			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="remark != null">
+			AND `remark` = #{remark,jdbcType=VARCHAR}
+			</if>
+		</where>
+	</delete>
+	
+	<update id="modifyByPK" parameterType="com.bittrade.pojo.model.SysUser">
+		UPDATE sys_user
+		<set>
+			`dept_id` = #{deptId,jdbcType=INTEGER}, 
+			`login_name` = #{loginName,jdbcType=VARCHAR}, 
+			`user_name` = #{userName,jdbcType=VARCHAR}, 
+			`user_type` = #{userType,jdbcType=VARCHAR}, 
+			`email` = #{email,jdbcType=VARCHAR}, 
+			`phonenumber` = #{phonenumber,jdbcType=VARCHAR}, 
+			`sex` = #{sex,jdbcType=CHAR}, 
+			`password` = #{password,jdbcType=VARCHAR}, 
+			`salt` = #{salt,jdbcType=VARCHAR}, 
+			`status` = #{status,jdbcType=CHAR}, 
+			`del_flag` = #{delFlag,jdbcType=CHAR}, 
+			`login_ip` = #{loginIp,jdbcType=VARCHAR}, 
+			`login_date` = #{loginDate,jdbcType=TIMESTAMP}, 
+			`create_by` = #{createBy,jdbcType=VARCHAR}, 
+			`create_time` = #{createTime,jdbcType=TIMESTAMP}, 
+			`update_by` = #{updateBy,jdbcType=VARCHAR}, 
+			`update_time` = #{updateTime,jdbcType=TIMESTAMP}, 
+			`remark` = #{remark,jdbcType=VARCHAR}, 
+		</set>
+		<where>
+			AND `user_id` = #{userId,jdbcType=INTEGER}
+			AND `avatar` = #{avatar,jdbcType=VARCHAR}
+		</where>
+	</update>
+	
+	<update id="modifyWithSelectiveByPK" parameterType="com.bittrade.pojo.model.SysUser">
+		UPDATE sys_user
+		<set>
+			<if test="deptId != null">
+			`dept_id` = #{deptId,jdbcType=INTEGER}, 
+			</if>
+			<if test="loginName != null">
+			`login_name` = #{loginName,jdbcType=VARCHAR}, 
+			</if>
+			<if test="userName != null">
+			`user_name` = #{userName,jdbcType=VARCHAR}, 
+			</if>
+			<if test="userType != null">
+			`user_type` = #{userType,jdbcType=VARCHAR}, 
+			</if>
+			<if test="email != null">
+			`email` = #{email,jdbcType=VARCHAR}, 
+			</if>
+			<if test="phonenumber != null">
+			`phonenumber` = #{phonenumber,jdbcType=VARCHAR}, 
+			</if>
+			<if test="sex != null">
+			`sex` = #{sex,jdbcType=CHAR}, 
+			</if>
+			<if test="password != null">
+			`password` = #{password,jdbcType=VARCHAR}, 
+			</if>
+			<if test="salt != null">
+			`salt` = #{salt,jdbcType=VARCHAR}, 
+			</if>
+			<if test="status != null">
+			`status` = #{status,jdbcType=CHAR}, 
+			</if>
+			<if test="delFlag != null">
+			`del_flag` = #{delFlag,jdbcType=CHAR}, 
+			</if>
+			<if test="loginIp != null">
+			`login_ip` = #{loginIp,jdbcType=VARCHAR}, 
+			</if>
+			<if test="loginDate != null">
+			`login_date` = #{loginDate,jdbcType=TIMESTAMP}, 
+			</if>
+			<if test="createBy != null">
+			`create_by` = #{createBy,jdbcType=VARCHAR}, 
+			</if>
+			<if test="createTime != null">
+			`create_time` = #{createTime,jdbcType=TIMESTAMP}, 
+			</if>
+			<if test="updateBy != null">
+			`update_by` = #{updateBy,jdbcType=VARCHAR}, 
+			</if>
+			<if test="updateTime != null">
+			`update_time` = #{updateTime,jdbcType=TIMESTAMP}, 
+			</if>
+			<if test="remark != null">
+			`remark` = #{remark,jdbcType=VARCHAR}, 
+			</if>
+		</set>
+		<where>
+			AND `user_id` = #{userId,jdbcType=INTEGER}
+			AND `avatar` = #{avatar,jdbcType=VARCHAR}
+		</where>
+	</update>
+	
+	<update id="modifyBy">
+		UPDATE sys_user
+		<set>
+			`dept_id` = #{sysUser.deptId,jdbcType=INTEGER}, 
+			`login_name` = #{sysUser.loginName,jdbcType=VARCHAR}, 
+			`user_name` = #{sysUser.userName,jdbcType=VARCHAR}, 
+			`user_type` = #{sysUser.userType,jdbcType=VARCHAR}, 
+			`email` = #{sysUser.email,jdbcType=VARCHAR}, 
+			`phonenumber` = #{sysUser.phonenumber,jdbcType=VARCHAR}, 
+			`sex` = #{sysUser.sex,jdbcType=CHAR}, 
+			`password` = #{sysUser.password,jdbcType=VARCHAR}, 
+			`salt` = #{sysUser.salt,jdbcType=VARCHAR}, 
+			`status` = #{sysUser.status,jdbcType=CHAR}, 
+			`del_flag` = #{sysUser.delFlag,jdbcType=CHAR}, 
+			`login_ip` = #{sysUser.loginIp,jdbcType=VARCHAR}, 
+			`login_date` = #{sysUser.loginDate,jdbcType=TIMESTAMP}, 
+			`create_by` = #{sysUser.createBy,jdbcType=VARCHAR}, 
+			`create_time` = #{sysUser.createTime,jdbcType=TIMESTAMP}, 
+			`update_by` = #{sysUser.updateBy,jdbcType=VARCHAR}, 
+			`update_time` = #{sysUser.updateTime,jdbcType=TIMESTAMP}, 
+			`remark` = #{sysUser.remark,jdbcType=VARCHAR}, 
+		</set>
+		<where>
+		<if test="condiSysUser != null">
+			<if test="condiSysUser.userId != null">
+			AND `user_id` = #{condiSysUser.userId,jdbcType=INTEGER}
+			</if>
+			<if test="condiSysUser.avatar != null">
+			AND `avatar` = #{condiSysUser.avatar,jdbcType=VARCHAR}
+			</if>
+			<if test="condiSysUser.deptId != null">
+			AND `dept_id` = #{condiSysUser.deptId,jdbcType=INTEGER}
+			</if>
+			<if test="condiSysUser.loginName != null">
+			AND `login_name` = #{condiSysUser.loginName,jdbcType=VARCHAR}
+			</if>
+			<if test="condiSysUser.userName != null">
+			AND `user_name` = #{condiSysUser.userName,jdbcType=VARCHAR}
+			</if>
+			<if test="condiSysUser.userType != null">
+			AND `user_type` = #{condiSysUser.userType,jdbcType=VARCHAR}
+			</if>
+			<if test="condiSysUser.email != null">
+			AND `email` = #{condiSysUser.email,jdbcType=VARCHAR}
+			</if>
+			<if test="condiSysUser.phonenumber != null">
+			AND `phonenumber` = #{condiSysUser.phonenumber,jdbcType=VARCHAR}
+			</if>
+			<if test="condiSysUser.sex != null">
+			AND `sex` = #{condiSysUser.sex,jdbcType=CHAR}
+			</if>
+			<if test="condiSysUser.password != null">
+			AND `password` = #{condiSysUser.password,jdbcType=VARCHAR}
+			</if>
+			<if test="condiSysUser.salt != null">
+			AND `salt` = #{condiSysUser.salt,jdbcType=VARCHAR}
+			</if>
+			<if test="condiSysUser.status != null">
+			AND `status` = #{condiSysUser.status,jdbcType=CHAR}
+			</if>
+			<if test="condiSysUser.delFlag != null">
+			AND `del_flag` = #{condiSysUser.delFlag,jdbcType=CHAR}
+			</if>
+			<if test="condiSysUser.loginIp != null">
+			AND `login_ip` = #{condiSysUser.loginIp,jdbcType=VARCHAR}
+			</if>
+			<if test="condiSysUser.loginDate != null">
+			AND `login_date` = #{condiSysUser.loginDate,jdbcType=TIMESTAMP}
+			</if>
+			<if test="condiSysUser.createBy != null">
+			AND `create_by` = #{condiSysUser.createBy,jdbcType=VARCHAR}
+			</if>
+			<if test="condiSysUser.createTime != null">
+			AND `create_time` = #{condiSysUser.createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="condiSysUser.updateBy != null">
+			AND `update_by` = #{condiSysUser.updateBy,jdbcType=VARCHAR}
+			</if>
+			<if test="condiSysUser.updateTime != null">
+			AND `update_time` = #{condiSysUser.updateTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="condiSysUser.remark != null">
+			AND `remark` = #{condiSysUser.remark,jdbcType=VARCHAR}
+			</if>
+		</if>
+		</where>
+	</update>
+	
+	<update id="modifyWithSelectiveBy">
+		UPDATE sys_user
+		<set>
+		<if test="sysUser != null">
+			<if test="sysUser.deptId != null">
+			`dept_id` = #{sysUser.deptId,jdbcType=INTEGER}, 
+			</if>
+			<if test="sysUser.loginName != null">
+			`login_name` = #{sysUser.loginName,jdbcType=VARCHAR}, 
+			</if>
+			<if test="sysUser.userName != null">
+			`user_name` = #{sysUser.userName,jdbcType=VARCHAR}, 
+			</if>
+			<if test="sysUser.userType != null">
+			`user_type` = #{sysUser.userType,jdbcType=VARCHAR}, 
+			</if>
+			<if test="sysUser.email != null">
+			`email` = #{sysUser.email,jdbcType=VARCHAR}, 
+			</if>
+			<if test="sysUser.phonenumber != null">
+			`phonenumber` = #{sysUser.phonenumber,jdbcType=VARCHAR}, 
+			</if>
+			<if test="sysUser.sex != null">
+			`sex` = #{sysUser.sex,jdbcType=CHAR}, 
+			</if>
+			<if test="sysUser.password != null">
+			`password` = #{sysUser.password,jdbcType=VARCHAR}, 
+			</if>
+			<if test="sysUser.salt != null">
+			`salt` = #{sysUser.salt,jdbcType=VARCHAR}, 
+			</if>
+			<if test="sysUser.status != null">
+			`status` = #{sysUser.status,jdbcType=CHAR}, 
+			</if>
+			<if test="sysUser.delFlag != null">
+			`del_flag` = #{sysUser.delFlag,jdbcType=CHAR}, 
+			</if>
+			<if test="sysUser.loginIp != null">
+			`login_ip` = #{sysUser.loginIp,jdbcType=VARCHAR}, 
+			</if>
+			<if test="sysUser.loginDate != null">
+			`login_date` = #{sysUser.loginDate,jdbcType=TIMESTAMP}, 
+			</if>
+			<if test="sysUser.createBy != null">
+			`create_by` = #{sysUser.createBy,jdbcType=VARCHAR}, 
+			</if>
+			<if test="sysUser.createTime != null">
+			`create_time` = #{sysUser.createTime,jdbcType=TIMESTAMP}, 
+			</if>
+			<if test="sysUser.updateBy != null">
+			`update_by` = #{sysUser.updateBy,jdbcType=VARCHAR}, 
+			</if>
+			<if test="sysUser.updateTime != null">
+			`update_time` = #{sysUser.updateTime,jdbcType=TIMESTAMP}, 
+			</if>
+			<if test="sysUser.remark != null">
+			`remark` = #{sysUser.remark,jdbcType=VARCHAR}, 
+			</if>
+		</if>
+		</set>
+		<where>
+		<if test="condiSysUser != null">
+			<if test="condiSysUser.userId != null">
+			AND `user_id` = #{condiSysUser.userId,jdbcType=INTEGER}
+			</if>
+			<if test="condiSysUser.avatar != null">
+			AND `avatar` = #{condiSysUser.avatar,jdbcType=VARCHAR}
+			</if>
+			<if test="condiSysUser.deptId != null">
+			AND `dept_id` = #{condiSysUser.deptId,jdbcType=INTEGER}
+			</if>
+			<if test="condiSysUser.loginName != null">
+			AND `login_name` = #{condiSysUser.loginName,jdbcType=VARCHAR}
+			</if>
+			<if test="condiSysUser.userName != null">
+			AND `user_name` = #{condiSysUser.userName,jdbcType=VARCHAR}
+			</if>
+			<if test="condiSysUser.userType != null">
+			AND `user_type` = #{condiSysUser.userType,jdbcType=VARCHAR}
+			</if>
+			<if test="condiSysUser.email != null">
+			AND `email` = #{condiSysUser.email,jdbcType=VARCHAR}
+			</if>
+			<if test="condiSysUser.phonenumber != null">
+			AND `phonenumber` = #{condiSysUser.phonenumber,jdbcType=VARCHAR}
+			</if>
+			<if test="condiSysUser.sex != null">
+			AND `sex` = #{condiSysUser.sex,jdbcType=CHAR}
+			</if>
+			<if test="condiSysUser.password != null">
+			AND `password` = #{condiSysUser.password,jdbcType=VARCHAR}
+			</if>
+			<if test="condiSysUser.salt != null">
+			AND `salt` = #{condiSysUser.salt,jdbcType=VARCHAR}
+			</if>
+			<if test="condiSysUser.status != null">
+			AND `status` = #{condiSysUser.status,jdbcType=CHAR}
+			</if>
+			<if test="condiSysUser.delFlag != null">
+			AND `del_flag` = #{condiSysUser.delFlag,jdbcType=CHAR}
+			</if>
+			<if test="condiSysUser.loginIp != null">
+			AND `login_ip` = #{condiSysUser.loginIp,jdbcType=VARCHAR}
+			</if>
+			<if test="condiSysUser.loginDate != null">
+			AND `login_date` = #{condiSysUser.loginDate,jdbcType=TIMESTAMP}
+			</if>
+			<if test="condiSysUser.createBy != null">
+			AND `create_by` = #{condiSysUser.createBy,jdbcType=VARCHAR}
+			</if>
+			<if test="condiSysUser.createTime != null">
+			AND `create_time` = #{condiSysUser.createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="condiSysUser.updateBy != null">
+			AND `update_by` = #{condiSysUser.updateBy,jdbcType=VARCHAR}
+			</if>
+			<if test="condiSysUser.updateTime != null">
+			AND `update_time` = #{condiSysUser.updateTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="condiSysUser.remark != null">
+			AND `remark` = #{condiSysUser.remark,jdbcType=VARCHAR}
+			</if>
+		</if>
+		</where>
+	</update>
+	
+	<select id="getByPK" resultType="com.bittrade.pojo.model.SysUser">
+		SELECT 
+			`user_id`, 
+			`avatar`, 
+			`dept_id`, 
+			`login_name`, 
+			`user_name`, 
+			`user_type`, 
+			`email`, 
+			`phonenumber`, 
+			`sex`, 
+			`password`, 
+			`salt`, 
+			`status`, 
+			`del_flag`, 
+			`login_ip`, 
+			`login_date`, 
+			`create_by`, 
+			`create_time`, 
+			`update_by`, 
+			`update_time`, 
+			`remark`
+		FROM sys_user
+		<where>
+			AND `user_id` = #{userId,jdbcType=INTEGER}
+			AND `avatar` = #{avatar,jdbcType=VARCHAR}
+		</where>
+	</select>
+	
+	<select id="getBy" resultType="com.bittrade.pojo.model.SysUser">
+		SELECT 
+			`user_id`, 
+			`avatar`, 
+			`dept_id`, 
+			`login_name`, 
+			`user_name`, 
+			`user_type`, 
+			`email`, 
+			`phonenumber`, 
+			`sex`, 
+			`password`, 
+			`salt`, 
+			`status`, 
+			`del_flag`, 
+			`login_ip`, 
+			`login_date`, 
+			`create_by`, 
+			`create_time`, 
+			`update_by`, 
+			`update_time`, 
+			`remark`
+		FROM sys_user
+		<where>
+			<if test="deptId != null">
+			AND `dept_id` = #{deptId,jdbcType=INTEGER}
+			</if>
+			<if test="loginName != null">
+			AND `login_name` = #{loginName,jdbcType=VARCHAR}
+			</if>
+			<if test="userName != null">
+			AND `user_name` = #{userName,jdbcType=VARCHAR}
+			</if>
+			<if test="userType != null">
+			AND `user_type` = #{userType,jdbcType=VARCHAR}
+			</if>
+			<if test="email != null">
+			AND `email` = #{email,jdbcType=VARCHAR}
+			</if>
+			<if test="phonenumber != null">
+			AND `phonenumber` = #{phonenumber,jdbcType=VARCHAR}
+			</if>
+			<if test="sex != null">
+			AND `sex` = #{sex,jdbcType=CHAR}
+			</if>
+			<if test="password != null">
+			AND `password` = #{password,jdbcType=VARCHAR}
+			</if>
+			<if test="salt != null">
+			AND `salt` = #{salt,jdbcType=VARCHAR}
+			</if>
+			<if test="status != null">
+			AND `status` = #{status,jdbcType=CHAR}
+			</if>
+			<if test="delFlag != null">
+			AND `del_flag` = #{delFlag,jdbcType=CHAR}
+			</if>
+			<if test="loginIp != null">
+			AND `login_ip` = #{loginIp,jdbcType=VARCHAR}
+			</if>
+			<if test="loginDate != null">
+			AND `login_date` = #{loginDate,jdbcType=TIMESTAMP}
+			</if>
+			<if test="createBy != null">
+			AND `create_by` = #{createBy,jdbcType=VARCHAR}
+			</if>
+			<if test="createTime != null">
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="updateBy != null">
+			AND `update_by` = #{updateBy,jdbcType=VARCHAR}
+			</if>
+			<if test="updateTime != null">
+			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="remark != null">
+			AND `remark` = #{remark,jdbcType=VARCHAR}
+			</if>
+		</where>
+		LIMIT 1
+	</select>
+	
+	<select id="get" resultType="com.bittrade.pojo.model.SysUser">
+		SELECT 
+			`user_id`, 
+			`avatar`, 
+			`dept_id`, 
+			`login_name`, 
+			`user_name`, 
+			`user_type`, 
+			`email`, 
+			`phonenumber`, 
+			`sex`, 
+			`password`, 
+			`salt`, 
+			`status`, 
+			`del_flag`, 
+			`login_ip`, 
+			`login_date`, 
+			`create_by`, 
+			`create_time`, 
+			`update_by`, 
+			`update_time`, 
+			`remark`
+		FROM sys_user
+		LIMIT 1
+	</select>
+	
+	<select id="getsBy" resultType="com.bittrade.pojo.model.SysUser">
+		SELECT 
+			<include refid="Base_Column_List"></include>
+		FROM sys_user
+		<where>
+			<if test="deptId != null">
+			AND `dept_id` = #{deptId,jdbcType=INTEGER}
+			</if>
+			<if test="loginName != null">
+			AND `login_name` = #{loginName,jdbcType=VARCHAR}
+			</if>
+			<if test="userName != null">
+			AND `user_name` = #{userName,jdbcType=VARCHAR}
+			</if>
+			<if test="userType != null">
+			AND `user_type` = #{userType,jdbcType=VARCHAR}
+			</if>
+			<if test="email != null">
+			AND `email` = #{email,jdbcType=VARCHAR}
+			</if>
+			<if test="phonenumber != null">
+			AND `phonenumber` = #{phonenumber,jdbcType=VARCHAR}
+			</if>
+			<if test="sex != null">
+			AND `sex` = #{sex,jdbcType=CHAR}
+			</if>
+			<if test="password != null">
+			AND `password` = #{password,jdbcType=VARCHAR}
+			</if>
+			<if test="salt != null">
+			AND `salt` = #{salt,jdbcType=VARCHAR}
+			</if>
+			<if test="status != null">
+			AND `status` = #{status,jdbcType=CHAR}
+			</if>
+			<if test="delFlag != null">
+			AND `del_flag` = #{delFlag,jdbcType=CHAR}
+			</if>
+			<if test="loginIp != null">
+			AND `login_ip` = #{loginIp,jdbcType=VARCHAR}
+			</if>
+			<if test="loginDate != null">
+			AND `login_date` = #{loginDate,jdbcType=TIMESTAMP}
+			</if>
+			<if test="createBy != null">
+			AND `create_by` = #{createBy,jdbcType=VARCHAR}
+			</if>
+			<if test="createTime != null">
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="updateBy != null">
+			AND `update_by` = #{updateBy,jdbcType=VARCHAR}
+			</if>
+			<if test="updateTime != null">
+			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="remark != null">
+			AND `remark` = #{remark,jdbcType=VARCHAR}
+			</if>
+			<include refid="sql_WHERE_forProperty"></include>
+		</where>
+	</select>
+	
+	<select id="gets" resultType="com.bittrade.pojo.model.SysUser">
+		SELECT 
+			<include refid="Base_Column_List"></include>
+		FROM sys_user
+	</select>
+	
+	<select id="getCntBy" resultType="int">
+		SELECT COUNT(1)
+		FROM sys_user
+		<where>
+		<if test="sysUser != null">
+			<if test="sysUser.deptId != null">
+			AND `dept_id` = #{sysUser.deptId,jdbcType=INTEGER}
+			</if>
+			<if test="sysUser.loginName != null">
+			AND `login_name` = #{sysUser.loginName,jdbcType=VARCHAR}
+			</if>
+			<if test="sysUser.userName != null">
+			AND `user_name` = #{sysUser.userName,jdbcType=VARCHAR}
+			</if>
+			<if test="sysUser.userType != null">
+			AND `user_type` = #{sysUser.userType,jdbcType=VARCHAR}
+			</if>
+			<if test="sysUser.email != null">
+			AND `email` = #{sysUser.email,jdbcType=VARCHAR}
+			</if>
+			<if test="sysUser.phonenumber != null">
+			AND `phonenumber` = #{sysUser.phonenumber,jdbcType=VARCHAR}
+			</if>
+			<if test="sysUser.sex != null">
+			AND `sex` = #{sysUser.sex,jdbcType=CHAR}
+			</if>
+			<if test="sysUser.password != null">
+			AND `password` = #{sysUser.password,jdbcType=VARCHAR}
+			</if>
+			<if test="sysUser.salt != null">
+			AND `salt` = #{sysUser.salt,jdbcType=VARCHAR}
+			</if>
+			<if test="sysUser.status != null">
+			AND `status` = #{sysUser.status,jdbcType=CHAR}
+			</if>
+			<if test="sysUser.delFlag != null">
+			AND `del_flag` = #{sysUser.delFlag,jdbcType=CHAR}
+			</if>
+			<if test="sysUser.loginIp != null">
+			AND `login_ip` = #{sysUser.loginIp,jdbcType=VARCHAR}
+			</if>
+			<if test="sysUser.loginDate != null">
+			AND `login_date` = #{sysUser.loginDate,jdbcType=TIMESTAMP}
+			</if>
+			<if test="sysUser.createBy != null">
+			AND `create_by` = #{sysUser.createBy,jdbcType=VARCHAR}
+			</if>
+			<if test="sysUser.createTime != null">
+			AND `create_time` = #{sysUser.createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="sysUser.updateBy != null">
+			AND `update_by` = #{sysUser.updateBy,jdbcType=VARCHAR}
+			</if>
+			<if test="sysUser.updateTime != null">
+			AND `update_time` = #{sysUser.updateTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="sysUser.remark != null">
+			AND `remark` = #{sysUser.remark,jdbcType=VARCHAR}
+			</if>
+			<include refid="sql_WHERE_forObject"></include>
+		</if>
+		</where>
+	</select>
+	
+	<select id="getsByPage" resultType="com.bittrade.pojo.model.SysUser">
+		SELECT 
+			`user_id`, 
+			`avatar`, 
+			`dept_id`, 
+			`login_name`, 
+			`user_name`, 
+			`user_type`, 
+			`email`, 
+			`phonenumber`, 
+			`sex`, 
+			`password`, 
+			`salt`, 
+			`status`, 
+			`del_flag`, 
+			`login_ip`, 
+			`login_date`, 
+			`create_by`, 
+			`create_time`, 
+			`update_by`, 
+			`update_time`, 
+			`remark`
+		FROM sys_user
+		<where>
+		<if test="sysUser != null">
+			<if test="sysUser.deptId != null">
+			AND `dept_id` = #{sysUser.deptId,jdbcType=INTEGER}
+			</if>
+			<if test="sysUser.loginName != null">
+			AND `login_name` = #{sysUser.loginName,jdbcType=VARCHAR}
+			</if>
+			<if test="sysUser.userName != null">
+			AND `user_name` = #{sysUser.userName,jdbcType=VARCHAR}
+			</if>
+			<if test="sysUser.userType != null">
+			AND `user_type` = #{sysUser.userType,jdbcType=VARCHAR}
+			</if>
+			<if test="sysUser.email != null">
+			AND `email` = #{sysUser.email,jdbcType=VARCHAR}
+			</if>
+			<if test="sysUser.phonenumber != null">
+			AND `phonenumber` = #{sysUser.phonenumber,jdbcType=VARCHAR}
+			</if>
+			<if test="sysUser.sex != null">
+			AND `sex` = #{sysUser.sex,jdbcType=CHAR}
+			</if>
+			<if test="sysUser.password != null">
+			AND `password` = #{sysUser.password,jdbcType=VARCHAR}
+			</if>
+			<if test="sysUser.salt != null">
+			AND `salt` = #{sysUser.salt,jdbcType=VARCHAR}
+			</if>
+			<if test="sysUser.status != null">
+			AND `status` = #{sysUser.status,jdbcType=CHAR}
+			</if>
+			<if test="sysUser.delFlag != null">
+			AND `del_flag` = #{sysUser.delFlag,jdbcType=CHAR}
+			</if>
+			<if test="sysUser.loginIp != null">
+			AND `login_ip` = #{sysUser.loginIp,jdbcType=VARCHAR}
+			</if>
+			<if test="sysUser.loginDate != null">
+			AND `login_date` = #{sysUser.loginDate,jdbcType=TIMESTAMP}
+			</if>
+			<if test="sysUser.createBy != null">
+			AND `create_by` = #{sysUser.createBy,jdbcType=VARCHAR}
+			</if>
+			<if test="sysUser.createTime != null">
+			AND `create_time` = #{sysUser.createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="sysUser.updateBy != null">
+			AND `update_by` = #{sysUser.updateBy,jdbcType=VARCHAR}
+			</if>
+			<if test="sysUser.updateTime != null">
+			AND `update_time` = #{sysUser.updateTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="sysUser.remark != null">
+			AND `remark` = #{sysUser.remark,jdbcType=VARCHAR}
+			</if>
+			<include refid="sql_WHERE_forObject"></include>
+		</if>
+		</where>
+		LIMIT #{page}, #{size}
+	</select>
+
+</mapper>

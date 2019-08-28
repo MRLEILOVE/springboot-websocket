@@ -5,7 +5,7 @@ import com.bittrade.admin.util.MessageUtil;
 /**
  * .用户账号已被删除
  * 
- * @author ourblue
+ * @author who ?
  *
  */
 public class UserDeleteException extends BusinessException {

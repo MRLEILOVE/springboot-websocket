@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.bittrade.admin.dao.sys.SysLogininforMapper;
+import com.bittrade.admin.dao.sys.ISysLogininforDAO;
 import com.bittrade.admin.model.domain.SysLogininfor;
 import com.bittrade.admin.service.sys.SysLogininforService;
 import com.bittrade.admin.util.ConvertUtil;
@@ -14,11 +14,11 @@ import com.bittrade.admin.util.ConvertUtil;
  * 系统访问记录 服务实现类
  * </p>
  *
- * @author ourblue
+ * @author who ?
  * @since 2018-11-03
  */
 @Service
-public class SysLogininforServiceImpl extends ServiceImpl<SysLogininforMapper, SysLogininfor> implements SysLogininforService {
+public class SysLogininforServiceImpl extends ServiceImpl<ISysLogininforDAO, SysLogininfor> implements SysLogininforService {
 
 	@Override
 	public void insertLogininfor(SysLogininfor logininfor) {

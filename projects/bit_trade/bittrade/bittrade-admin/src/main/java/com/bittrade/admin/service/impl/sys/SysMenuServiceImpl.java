@@ -19,8 +19,8 @@ import org.springframework.util.StringUtils;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.bittrade.admin.constant.GlobalConstant.Number;
 import com.bittrade.admin.constant.GlobalConstant.Sys;
-import com.bittrade.admin.dao.sys.SysMenuMapper;
-import com.bittrade.admin.dao.sys.SysRoleMenuMapper;
+import com.bittrade.admin.dao.sys.ISysMenuDAO;
+import com.bittrade.admin.dao.sys.ISysRoleMenuDAO;
 import com.bittrade.admin.enums.UserEnum;
 import com.bittrade.admin.model.domain.SysMenu;
 import com.bittrade.admin.model.domain.SysRole;
@@ -32,14 +32,14 @@ import com.bittrade.admin.service.sys.SysMenuService;
  * 菜单权限表 服务实现类
  * </p>
  *
- * @author ourblue
+ * @author who ?
  * @since 2018-11-03
  */
 @Service
-public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> implements SysMenuService {
+public class SysMenuServiceImpl extends ServiceImpl<ISysMenuDAO, SysMenu> implements SysMenuService {
 	
 	@Autowired
-    private SysRoleMenuMapper roleMenuMapper;
+    private ISysRoleMenuDAO roleMenuMapper;
 	
 	public static final String PREMISSION_STRING = "perms[\"{0}\"]";
 	

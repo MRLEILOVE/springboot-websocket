@@ -7,7 +7,7 @@ import org.springframework.util.StringUtils;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.bittrade.admin.constant.GlobalConstant.UserConstant;
-import com.bittrade.admin.dao.sys.SysConfigMapper;
+import com.bittrade.admin.dao.sys.ISysConfigDAO;
 import com.bittrade.admin.model.domain.SysConfig;
 import com.bittrade.admin.service.sys.SysConfigService;
 import com.bittrade.admin.util.ConvertUtil;
@@ -17,11 +17,11 @@ import com.bittrade.admin.util.ConvertUtil;
  * 参数配置表 服务实现类
  * </p>
  *
- * @author ourblue
+ * @author who ?
  * @since 2018-11-03
  */
 @Service
-public class SysConfigServiceImpl extends ServiceImpl<SysConfigMapper, SysConfig> implements SysConfigService {
+public class SysConfigServiceImpl extends ServiceImpl<ISysConfigDAO, SysConfig> implements SysConfigService {
 
 	@Override
 	public SysConfig selectConfigById(Integer configId) {

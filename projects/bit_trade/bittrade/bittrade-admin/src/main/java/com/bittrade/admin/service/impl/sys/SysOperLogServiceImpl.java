@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.bittrade.admin.dao.sys.SysOperLogMapper;
+import com.bittrade.admin.dao.sys.ISysOperLogDAO;
 import com.bittrade.admin.model.domain.SysOperLog;
 import com.bittrade.admin.service.sys.SysOperLogService;
 import com.bittrade.admin.util.ConvertUtil;
@@ -14,11 +14,11 @@ import com.bittrade.admin.util.ConvertUtil;
  * 操作日志记录 服务实现类
  * </p>
  *
- * @author ourblue
+ * @author who ?
  * @since 2018-11-03
  */
 @Service
-public class SysOperLogServiceImpl extends ServiceImpl<SysOperLogMapper, SysOperLog> implements SysOperLogService {
+public class SysOperLogServiceImpl extends ServiceImpl<ISysOperLogDAO, SysOperLog> implements SysOperLogService {
 
 	@Override
 	public Page<SysOperLog> selectOperLogList(Page<SysOperLog> page, SysOperLog operLog) {

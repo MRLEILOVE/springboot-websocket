@@ -3,7 +3,7 @@ package com.bittrade.admin.enums;
 /**
  * .注解bean
  * 
- * @author ourblue
+ * @author who ?
  *
  */
 public class AnnotationEnum {
@@ -11,7 +11,7 @@ public class AnnotationEnum {
 	/**
 	 * .业务操作类型
 	 * 
-	 * @author ourblue
+	 * @author who ?
 	 */
 	public enum BusinessType {
 

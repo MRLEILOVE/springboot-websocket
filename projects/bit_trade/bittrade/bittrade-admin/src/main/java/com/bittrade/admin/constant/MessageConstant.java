@@ -13,7 +13,7 @@ public class MessageConstant {
     /**
      * 聚合模板
      *
-     * @author ourblue
+     * @author who ?
      */
     public enum SmsTempletEnum {
 
@@ -74,7 +74,7 @@ public class MessageConstant {
     /**
      * 邮件模板
      *
-     * @author ourblue
+     * @author who ?
      */
     public enum EmailTemplateEnum {
 

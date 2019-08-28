@@ -18,7 +18,7 @@ import lombok.Setter;
  * 菜单权限表
  * </p>
  *
- * @author ourblue
+ * @author who ?
  * @since 2018-11-03
  */
 @TableName("sys_menu")

@@ -3,7 +3,7 @@ package com.bittrade.admin.shiro.constant;
 /**
  * shiro 通用常量
  * 
- * @author ourblue
+ * @author who ?
  *
  */
 public interface ShiroConstant {

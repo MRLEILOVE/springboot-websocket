@@ -1,0 +1,1185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+	This code is generated automatically. Please do not edit it.
+	现在字段也可以要彻底动态？
+-->
+<mapper namespace="com.bittrade.__default.DAO.IDefaultTUserAuthenticationDAO">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.bittrade.pojo.model.TUserAuthentication">
+		<id javaType="Long" property="id" jdbcType="BIGINT" column="id" />
+		<result javaType="Long" property="userId" jdbcType="BIGINT" column="user_id" />
+		<result javaType="String" property="realName" jdbcType="VARCHAR" column="real_name" />
+		<result javaType="String" property="identityNo" jdbcType="VARCHAR" column="identity_no" />
+		<result javaType="Byte" property="identityType" jdbcType="INTEGER" column="identity_type" />
+		<result javaType="String" property="identityFrontUrl" jdbcType="VARCHAR" column="identity_front_url" />
+		<result javaType="String" property="identityFrontKey" jdbcType="VARCHAR" column="identity_front_key" />
+		<result javaType="String" property="identityFrontHash" jdbcType="VARCHAR" column="identity_front_hash" />
+		<result javaType="String" property="identityBackUrl" jdbcType="VARCHAR" column="identity_back_url" />
+		<result javaType="String" property="identityBackKey" jdbcType="VARCHAR" column="identity_back_key" />
+		<result javaType="String" property="identityBackHash" jdbcType="VARCHAR" column="identity_back_hash" />
+		<result javaType="Byte" property="postRealValidate" jdbcType="INTEGER" column="post_real_validate" />
+		<result javaType="Byte" property="fhasRealValidate" jdbcType="INTEGER" column="fhas_real_Validate" />
+		<result javaType="String" property="bankCardNo" jdbcType="VARCHAR" column="bank_card_no" />
+		<result javaType="String" property="bankAddress" jdbcType="VARCHAR" column="bank_address" />
+		<result javaType="String" property="bankCardUrl" jdbcType="VARCHAR" column="bank_card_url" />
+		<result javaType="String" property="bankCardKey" jdbcType="VARCHAR" column="bank_card_key" />
+		<result javaType="String" property="bankCardHash" jdbcType="VARCHAR" column="bank_card_hash" />
+		<result javaType="String" property="alipayNo" jdbcType="VARCHAR" column="alipay_no" />
+		<result javaType="Byte" property="status" jdbcType="INTEGER" column="status" />
+		<result javaType="java.time.LocalDateTime" property="submitTime" jdbcType="TIMESTAMP" column="submit_time" />
+		<result javaType="String" property="auditor" jdbcType="VARCHAR" column="auditor" />
+		<result javaType="java.time.LocalDateTime" property="auditTime" jdbcType="TIMESTAMP" column="audit_time" />
+		<result javaType="java.time.LocalDateTime" property="createTime" jdbcType="TIMESTAMP" column="create_time" />
+		<result javaType="java.time.LocalDateTime" property="updateTime" jdbcType="TIMESTAMP" column="update_time" />
+	</resultMap>
+
+	<!--
+		通用查询结果列
+		其他类似的类似，也可以公用（共用）引用。
+	-->
+	<sql id="Base_Column_List">
+		<choose>
+			<when test="strArr_field != null">
+		<foreach collection="strArr_field" index="index" item="item" open="" separator="," close="">
+			`${item}`
+		</foreach>
+			</when>
+			<otherwise>
+		`id` AS `id`, 
+		`user_id` AS `userId`, 
+		`real_name` AS `realName`, 
+		`identity_no` AS `identityNo`, 
+		`identity_type` AS `identityType`, 
+		`identity_front_url` AS `identityFrontUrl`, 
+		`identity_front_key` AS `identityFrontKey`, 
+		`identity_front_hash` AS `identityFrontHash`, 
+		`identity_back_url` AS `identityBackUrl`, 
+		`identity_back_key` AS `identityBackKey`, 
+		`identity_back_hash` AS `identityBackHash`, 
+		`post_real_validate` AS `postRealValidate`, 
+		`fhas_real_Validate` AS `fhasRealValidate`, 
+		`bank_card_no` AS `bankCardNo`, 
+		`bank_address` AS `bankAddress`, 
+		`bank_card_url` AS `bankCardUrl`, 
+		`bank_card_key` AS `bankCardKey`, 
+		`bank_card_hash` AS `bankCardHash`, 
+		`alipay_no` AS `alipayNo`, 
+		`status` AS `status`, 
+		`submit_time` AS `submitTime`, 
+		`auditor` AS `auditor`, 
+		`audit_time` AS `auditTime`, 
+		`create_time` AS `createTime`, 
+		`update_time` AS `updateTime`
+			</otherwise>
+		</choose>
+	</sql>
+	
+	<!-- 其他的也可以类似的加， yes， 类似蕾丝的。 -->
+	<sql id="sql_WHERE_forProperty">
+		<choose>
+			<when test="map_in != null">
+			
+		<foreach collection="map_in.entrySet()" index="map_index" item="map_item">
+		AND `${map_index}` IN 
+		<foreach collection="map_item" index="arr_index" item="arr_item" open="(" separator="," close=")">
+			#{arr_item}
+		</foreach>
+		</foreach>
+			
+			</when>
+			<!--
+			<when test="_parameter != null and _parameter.TUserAuthentication != null and TUserAuthentication.map_in != null">
+			</when>
+			<otherwise>
+			</otherwise>
+			-->
+		</choose>
+	</sql>
+	<sql id="sql_WHERE_forObject">
+		<choose>
+			<when test="tUserAuthentication.map_in != null">
+			
+		<foreach collection="tUserAuthentication.map_in.entrySet()" index="map_index" item="map_item">
+		AND `${map_index}` IN 
+		<foreach collection="map_item" index="arr_index" item="arr_item" open="(" separator="," close=")">
+			#{arr_item}
+		</foreach>
+		</foreach>
+			
+			</when>
+		</choose>
+	</sql>
+	
+	
+	<insert id="add" parameterType="com.bittrade.pojo.model.TUserAuthentication" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO t_user_authentication(`user_id`, `real_name`, `identity_no`, `identity_type`, `identity_front_url`, `identity_front_key`, `identity_front_hash`, `identity_back_url`, `identity_back_key`, `identity_back_hash`, `post_real_validate`, `fhas_real_Validate`, `bank_card_no`, `bank_address`, `bank_card_url`, `bank_card_key`, `bank_card_hash`, `alipay_no`, `status`, `submit_time`, `auditor`, `audit_time`, `create_time`, `update_time`)
+		VALUES(#{userId,jdbcType=BIGINT}, #{realName,jdbcType=VARCHAR}, #{identityNo,jdbcType=VARCHAR}, #{identityType,jdbcType=INTEGER}, #{identityFrontUrl,jdbcType=VARCHAR}, #{identityFrontKey,jdbcType=VARCHAR}, #{identityFrontHash,jdbcType=VARCHAR}, #{identityBackUrl,jdbcType=VARCHAR}, #{identityBackKey,jdbcType=VARCHAR}, #{identityBackHash,jdbcType=VARCHAR}, #{postRealValidate,jdbcType=INTEGER}, #{fhasRealValidate,jdbcType=INTEGER}, #{bankCardNo,jdbcType=VARCHAR}, #{bankAddress,jdbcType=VARCHAR}, #{bankCardUrl,jdbcType=VARCHAR}, #{bankCardKey,jdbcType=VARCHAR}, #{bankCardHash,jdbcType=VARCHAR}, #{alipayNo,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{submitTime,jdbcType=TIMESTAMP}, #{auditor,jdbcType=VARCHAR}, #{auditTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+	</insert>
+	
+	<insert id="addWithSelective" parameterType="com.bittrade.pojo.model.TUserAuthentication" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO t_user_authentication(
+			<if test="userId != null">
+			`user_id`, 
+			</if>
+			<if test="realName != null">
+			`real_name`, 
+			</if>
+			<if test="identityNo != null">
+			`identity_no`, 
+			</if>
+			<if test="identityType != null">
+			`identity_type`, 
+			</if>
+			<if test="identityFrontUrl != null">
+			`identity_front_url`, 
+			</if>
+			<if test="identityFrontKey != null">
+			`identity_front_key`, 
+			</if>
+			<if test="identityFrontHash != null">
+			`identity_front_hash`, 
+			</if>
+			<if test="identityBackUrl != null">
+			`identity_back_url`, 
+			</if>
+			<if test="identityBackKey != null">
+			`identity_back_key`, 
+			</if>
+			<if test="identityBackHash != null">
+			`identity_back_hash`, 
+			</if>
+			<if test="postRealValidate != null">
+			`post_real_validate`, 
+			</if>
+			<if test="fhasRealValidate != null">
+			`fhas_real_Validate`, 
+			</if>
+			<if test="bankCardNo != null">
+			`bank_card_no`, 
+			</if>
+			<if test="bankAddress != null">
+			`bank_address`, 
+			</if>
+			<if test="bankCardUrl != null">
+			`bank_card_url`, 
+			</if>
+			<if test="bankCardKey != null">
+			`bank_card_key`, 
+			</if>
+			<if test="bankCardHash != null">
+			`bank_card_hash`, 
+			</if>
+			<if test="alipayNo != null">
+			`alipay_no`, 
+			</if>
+			<if test="status != null">
+			`status`, 
+			</if>
+			<if test="submitTime != null">
+			`submit_time`, 
+			</if>
+			<if test="auditor != null">
+			`auditor`, 
+			</if>
+			<if test="auditTime != null">
+			`audit_time`, 
+			</if>
+			<if test="createTime != null">
+			`create_time`, 
+			</if>
+			<if test="updateTime != null">
+			`update_time`
+			</if>
+		)
+		VALUES(
+			<if test="userId != null">
+			#{userId,jdbcType=BIGINT}, 
+			</if>
+			<if test="realName != null">
+			#{realName,jdbcType=VARCHAR}, 
+			</if>
+			<if test="identityNo != null">
+			#{identityNo,jdbcType=VARCHAR}, 
+			</if>
+			<if test="identityType != null">
+			#{identityType,jdbcType=INTEGER}, 
+			</if>
+			<if test="identityFrontUrl != null">
+			#{identityFrontUrl,jdbcType=VARCHAR}, 
+			</if>
+			<if test="identityFrontKey != null">
+			#{identityFrontKey,jdbcType=VARCHAR}, 
+			</if>
+			<if test="identityFrontHash != null">
+			#{identityFrontHash,jdbcType=VARCHAR}, 
+			</if>
+			<if test="identityBackUrl != null">
+			#{identityBackUrl,jdbcType=VARCHAR}, 
+			</if>
+			<if test="identityBackKey != null">
+			#{identityBackKey,jdbcType=VARCHAR}, 
+			</if>
+			<if test="identityBackHash != null">
+			#{identityBackHash,jdbcType=VARCHAR}, 
+			</if>
+			<if test="postRealValidate != null">
+			#{postRealValidate,jdbcType=INTEGER}, 
+			</if>
+			<if test="fhasRealValidate != null">
+			#{fhasRealValidate,jdbcType=INTEGER}, 
+			</if>
+			<if test="bankCardNo != null">
+			#{bankCardNo,jdbcType=VARCHAR}, 
+			</if>
+			<if test="bankAddress != null">
+			#{bankAddress,jdbcType=VARCHAR}, 
+			</if>
+			<if test="bankCardUrl != null">
+			#{bankCardUrl,jdbcType=VARCHAR}, 
+			</if>
+			<if test="bankCardKey != null">
+			#{bankCardKey,jdbcType=VARCHAR}, 
+			</if>
+			<if test="bankCardHash != null">
+			#{bankCardHash,jdbcType=VARCHAR}, 
+			</if>
+			<if test="alipayNo != null">
+			#{alipayNo,jdbcType=VARCHAR}, 
+			</if>
+			<if test="status != null">
+			#{status,jdbcType=INTEGER}, 
+			</if>
+			<if test="submitTime != null">
+			#{submitTime,jdbcType=TIMESTAMP}, 
+			</if>
+			<if test="auditor != null">
+			#{auditor,jdbcType=VARCHAR}, 
+			</if>
+			<if test="auditTime != null">
+			#{auditTime,jdbcType=TIMESTAMP}, 
+			</if>
+			<if test="createTime != null">
+			#{createTime,jdbcType=TIMESTAMP}, 
+			</if>
+			<if test="updateTime != null">
+			#{updateTime,jdbcType=TIMESTAMP}
+			</if>
+		)
+	</insert>
+	
+	<delete id="removeByPK">
+		DELETE FROM t_user_authentication
+		<where>
+			AND `id` = #{id,jdbcType=BIGINT}
+		</where>
+	</delete>
+	
+	<delete id="removeBy" parameterType="com.bittrade.pojo.model.TUserAuthentication">
+		DELETE FROM t_user_authentication
+		<where>
+			<if test="userId != null">
+			AND `user_id` = #{userId,jdbcType=BIGINT}
+			</if>
+			<if test="realName != null">
+			AND `real_name` = #{realName,jdbcType=VARCHAR}
+			</if>
+			<if test="identityNo != null">
+			AND `identity_no` = #{identityNo,jdbcType=VARCHAR}
+			</if>
+			<if test="identityType != null">
+			AND `identity_type` = #{identityType,jdbcType=INTEGER}
+			</if>
+			<if test="identityFrontUrl != null">
+			AND `identity_front_url` = #{identityFrontUrl,jdbcType=VARCHAR}
+			</if>
+			<if test="identityFrontKey != null">
+			AND `identity_front_key` = #{identityFrontKey,jdbcType=VARCHAR}
+			</if>
+			<if test="identityFrontHash != null">
+			AND `identity_front_hash` = #{identityFrontHash,jdbcType=VARCHAR}
+			</if>
+			<if test="identityBackUrl != null">
+			AND `identity_back_url` = #{identityBackUrl,jdbcType=VARCHAR}
+			</if>
+			<if test="identityBackKey != null">
+			AND `identity_back_key` = #{identityBackKey,jdbcType=VARCHAR}
+			</if>
+			<if test="identityBackHash != null">
+			AND `identity_back_hash` = #{identityBackHash,jdbcType=VARCHAR}
+			</if>
+			<if test="postRealValidate != null">
+			AND `post_real_validate` = #{postRealValidate,jdbcType=INTEGER}
+			</if>
+			<if test="fhasRealValidate != null">
+			AND `fhas_real_Validate` = #{fhasRealValidate,jdbcType=INTEGER}
+			</if>
+			<if test="bankCardNo != null">
+			AND `bank_card_no` = #{bankCardNo,jdbcType=VARCHAR}
+			</if>
+			<if test="bankAddress != null">
+			AND `bank_address` = #{bankAddress,jdbcType=VARCHAR}
+			</if>
+			<if test="bankCardUrl != null">
+			AND `bank_card_url` = #{bankCardUrl,jdbcType=VARCHAR}
+			</if>
+			<if test="bankCardKey != null">
+			AND `bank_card_key` = #{bankCardKey,jdbcType=VARCHAR}
+			</if>
+			<if test="bankCardHash != null">
+			AND `bank_card_hash` = #{bankCardHash,jdbcType=VARCHAR}
+			</if>
+			<if test="alipayNo != null">
+			AND `alipay_no` = #{alipayNo,jdbcType=VARCHAR}
+			</if>
+			<if test="status != null">
+			AND `status` = #{status,jdbcType=INTEGER}
+			</if>
+			<if test="submitTime != null">
+			AND `submit_time` = #{submitTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="auditor != null">
+			AND `auditor` = #{auditor,jdbcType=VARCHAR}
+			</if>
+			<if test="auditTime != null">
+			AND `audit_time` = #{auditTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="createTime != null">
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="updateTime != null">
+			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+		</where>
+	</delete>
+	
+	<update id="modifyByPK" parameterType="com.bittrade.pojo.model.TUserAuthentication">
+		UPDATE t_user_authentication
+		<set>
+			`user_id` = #{userId,jdbcType=BIGINT}, 
+			`real_name` = #{realName,jdbcType=VARCHAR}, 
+			`identity_no` = #{identityNo,jdbcType=VARCHAR}, 
+			`identity_type` = #{identityType,jdbcType=INTEGER}, 
+			`identity_front_url` = #{identityFrontUrl,jdbcType=VARCHAR}, 
+			`identity_front_key` = #{identityFrontKey,jdbcType=VARCHAR}, 
+			`identity_front_hash` = #{identityFrontHash,jdbcType=VARCHAR}, 
+			`identity_back_url` = #{identityBackUrl,jdbcType=VARCHAR}, 
+			`identity_back_key` = #{identityBackKey,jdbcType=VARCHAR}, 
+			`identity_back_hash` = #{identityBackHash,jdbcType=VARCHAR}, 
+			`post_real_validate` = #{postRealValidate,jdbcType=INTEGER}, 
+			`fhas_real_Validate` = #{fhasRealValidate,jdbcType=INTEGER}, 
+			`bank_card_no` = #{bankCardNo,jdbcType=VARCHAR}, 
+			`bank_address` = #{bankAddress,jdbcType=VARCHAR}, 
+			`bank_card_url` = #{bankCardUrl,jdbcType=VARCHAR}, 
+			`bank_card_key` = #{bankCardKey,jdbcType=VARCHAR}, 
+			`bank_card_hash` = #{bankCardHash,jdbcType=VARCHAR}, 
+			`alipay_no` = #{alipayNo,jdbcType=VARCHAR}, 
+			`status` = #{status,jdbcType=INTEGER}, 
+			`submit_time` = #{submitTime,jdbcType=TIMESTAMP}, 
+			`auditor` = #{auditor,jdbcType=VARCHAR}, 
+			`audit_time` = #{auditTime,jdbcType=TIMESTAMP}, 
+			`create_time` = #{createTime,jdbcType=TIMESTAMP}, 
+			`update_time` = #{updateTime,jdbcType=TIMESTAMP}, 
+		</set>
+		<where>
+			AND `id` = #{id,jdbcType=BIGINT}
+		</where>
+	</update>
+	
+	<update id="modifyWithSelectiveByPK" parameterType="com.bittrade.pojo.model.TUserAuthentication">
+		UPDATE t_user_authentication
+		<set>
+			<if test="userId != null">
+			`user_id` = #{userId,jdbcType=BIGINT}, 
+			</if>
+			<if test="realName != null">
+			`real_name` = #{realName,jdbcType=VARCHAR}, 
+			</if>
+			<if test="identityNo != null">
+			`identity_no` = #{identityNo,jdbcType=VARCHAR}, 
+			</if>
+			<if test="identityType != null">
+			`identity_type` = #{identityType,jdbcType=INTEGER}, 
+			</if>
+			<if test="identityFrontUrl != null">
+			`identity_front_url` = #{identityFrontUrl,jdbcType=VARCHAR}, 
+			</if>
+			<if test="identityFrontKey != null">
+			`identity_front_key` = #{identityFrontKey,jdbcType=VARCHAR}, 
+			</if>
+			<if test="identityFrontHash != null">
+			`identity_front_hash` = #{identityFrontHash,jdbcType=VARCHAR}, 
+			</if>
+			<if test="identityBackUrl != null">
+			`identity_back_url` = #{identityBackUrl,jdbcType=VARCHAR}, 
+			</if>
+			<if test="identityBackKey != null">
+			`identity_back_key` = #{identityBackKey,jdbcType=VARCHAR}, 
+			</if>
+			<if test="identityBackHash != null">
+			`identity_back_hash` = #{identityBackHash,jdbcType=VARCHAR}, 
+			</if>
+			<if test="postRealValidate != null">
+			`post_real_validate` = #{postRealValidate,jdbcType=INTEGER}, 
+			</if>
+			<if test="fhasRealValidate != null">
+			`fhas_real_Validate` = #{fhasRealValidate,jdbcType=INTEGER}, 
+			</if>
+			<if test="bankCardNo != null">
+			`bank_card_no` = #{bankCardNo,jdbcType=VARCHAR}, 
+			</if>
+			<if test="bankAddress != null">
+			`bank_address` = #{bankAddress,jdbcType=VARCHAR}, 
+			</if>
+			<if test="bankCardUrl != null">
+			`bank_card_url` = #{bankCardUrl,jdbcType=VARCHAR}, 
+			</if>
+			<if test="bankCardKey != null">
+			`bank_card_key` = #{bankCardKey,jdbcType=VARCHAR}, 
+			</if>
+			<if test="bankCardHash != null">
+			`bank_card_hash` = #{bankCardHash,jdbcType=VARCHAR}, 
+			</if>
+			<if test="alipayNo != null">
+			`alipay_no` = #{alipayNo,jdbcType=VARCHAR}, 
+			</if>
+			<if test="status != null">
+			`status` = #{status,jdbcType=INTEGER}, 
+			</if>
+			<if test="submitTime != null">
+			`submit_time` = #{submitTime,jdbcType=TIMESTAMP}, 
+			</if>
+			<if test="auditor != null">
+			`auditor` = #{auditor,jdbcType=VARCHAR}, 
+			</if>
+			<if test="auditTime != null">
+			`audit_time` = #{auditTime,jdbcType=TIMESTAMP}, 
+			</if>
+			<if test="createTime != null">
+			`create_time` = #{createTime,jdbcType=TIMESTAMP}, 
+			</if>
+			<if test="updateTime != null">
+			`update_time` = #{updateTime,jdbcType=TIMESTAMP}, 
+			</if>
+		</set>
+		<where>
+			AND `id` = #{id,jdbcType=BIGINT}
+		</where>
+	</update>
+	
+	<update id="modifyBy">
+		UPDATE t_user_authentication
+		<set>
+			`user_id` = #{tUserAuthentication.userId,jdbcType=BIGINT}, 
+			`real_name` = #{tUserAuthentication.realName,jdbcType=VARCHAR}, 
+			`identity_no` = #{tUserAuthentication.identityNo,jdbcType=VARCHAR}, 
+			`identity_type` = #{tUserAuthentication.identityType,jdbcType=INTEGER}, 
+			`identity_front_url` = #{tUserAuthentication.identityFrontUrl,jdbcType=VARCHAR}, 
+			`identity_front_key` = #{tUserAuthentication.identityFrontKey,jdbcType=VARCHAR}, 
+			`identity_front_hash` = #{tUserAuthentication.identityFrontHash,jdbcType=VARCHAR}, 
+			`identity_back_url` = #{tUserAuthentication.identityBackUrl,jdbcType=VARCHAR}, 
+			`identity_back_key` = #{tUserAuthentication.identityBackKey,jdbcType=VARCHAR}, 
+			`identity_back_hash` = #{tUserAuthentication.identityBackHash,jdbcType=VARCHAR}, 
+			`post_real_validate` = #{tUserAuthentication.postRealValidate,jdbcType=INTEGER}, 
+			`fhas_real_Validate` = #{tUserAuthentication.fhasRealValidate,jdbcType=INTEGER}, 
+			`bank_card_no` = #{tUserAuthentication.bankCardNo,jdbcType=VARCHAR}, 
+			`bank_address` = #{tUserAuthentication.bankAddress,jdbcType=VARCHAR}, 
+			`bank_card_url` = #{tUserAuthentication.bankCardUrl,jdbcType=VARCHAR}, 
+			`bank_card_key` = #{tUserAuthentication.bankCardKey,jdbcType=VARCHAR}, 
+			`bank_card_hash` = #{tUserAuthentication.bankCardHash,jdbcType=VARCHAR}, 
+			`alipay_no` = #{tUserAuthentication.alipayNo,jdbcType=VARCHAR}, 
+			`status` = #{tUserAuthentication.status,jdbcType=INTEGER}, 
+			`submit_time` = #{tUserAuthentication.submitTime,jdbcType=TIMESTAMP}, 
+			`auditor` = #{tUserAuthentication.auditor,jdbcType=VARCHAR}, 
+			`audit_time` = #{tUserAuthentication.auditTime,jdbcType=TIMESTAMP}, 
+			`create_time` = #{tUserAuthentication.createTime,jdbcType=TIMESTAMP}, 
+			`update_time` = #{tUserAuthentication.updateTime,jdbcType=TIMESTAMP}, 
+		</set>
+		<where>
+		<if test="condiTUserAuthentication != null">
+			<if test="condiTUserAuthentication.id != null">
+			AND `id` = #{condiTUserAuthentication.id,jdbcType=BIGINT}
+			</if>
+			<if test="condiTUserAuthentication.userId != null">
+			AND `user_id` = #{condiTUserAuthentication.userId,jdbcType=BIGINT}
+			</if>
+			<if test="condiTUserAuthentication.realName != null">
+			AND `real_name` = #{condiTUserAuthentication.realName,jdbcType=VARCHAR}
+			</if>
+			<if test="condiTUserAuthentication.identityNo != null">
+			AND `identity_no` = #{condiTUserAuthentication.identityNo,jdbcType=VARCHAR}
+			</if>
+			<if test="condiTUserAuthentication.identityType != null">
+			AND `identity_type` = #{condiTUserAuthentication.identityType,jdbcType=INTEGER}
+			</if>
+			<if test="condiTUserAuthentication.identityFrontUrl != null">
+			AND `identity_front_url` = #{condiTUserAuthentication.identityFrontUrl,jdbcType=VARCHAR}
+			</if>
+			<if test="condiTUserAuthentication.identityFrontKey != null">
+			AND `identity_front_key` = #{condiTUserAuthentication.identityFrontKey,jdbcType=VARCHAR}
+			</if>
+			<if test="condiTUserAuthentication.identityFrontHash != null">
+			AND `identity_front_hash` = #{condiTUserAuthentication.identityFrontHash,jdbcType=VARCHAR}
+			</if>
+			<if test="condiTUserAuthentication.identityBackUrl != null">
+			AND `identity_back_url` = #{condiTUserAuthentication.identityBackUrl,jdbcType=VARCHAR}
+			</if>
+			<if test="condiTUserAuthentication.identityBackKey != null">
+			AND `identity_back_key` = #{condiTUserAuthentication.identityBackKey,jdbcType=VARCHAR}
+			</if>
+			<if test="condiTUserAuthentication.identityBackHash != null">
+			AND `identity_back_hash` = #{condiTUserAuthentication.identityBackHash,jdbcType=VARCHAR}
+			</if>
+			<if test="condiTUserAuthentication.postRealValidate != null">
+			AND `post_real_validate` = #{condiTUserAuthentication.postRealValidate,jdbcType=INTEGER}
+			</if>
+			<if test="condiTUserAuthentication.fhasRealValidate != null">
+			AND `fhas_real_Validate` = #{condiTUserAuthentication.fhasRealValidate,jdbcType=INTEGER}
+			</if>
+			<if test="condiTUserAuthentication.bankCardNo != null">
+			AND `bank_card_no` = #{condiTUserAuthentication.bankCardNo,jdbcType=VARCHAR}
+			</if>
+			<if test="condiTUserAuthentication.bankAddress != null">
+			AND `bank_address` = #{condiTUserAuthentication.bankAddress,jdbcType=VARCHAR}
+			</if>
+			<if test="condiTUserAuthentication.bankCardUrl != null">
+			AND `bank_card_url` = #{condiTUserAuthentication.bankCardUrl,jdbcType=VARCHAR}
+			</if>
+			<if test="condiTUserAuthentication.bankCardKey != null">
+			AND `bank_card_key` = #{condiTUserAuthentication.bankCardKey,jdbcType=VARCHAR}
+			</if>
+			<if test="condiTUserAuthentication.bankCardHash != null">
+			AND `bank_card_hash` = #{condiTUserAuthentication.bankCardHash,jdbcType=VARCHAR}
+			</if>
+			<if test="condiTUserAuthentication.alipayNo != null">
+			AND `alipay_no` = #{condiTUserAuthentication.alipayNo,jdbcType=VARCHAR}
+			</if>
+			<if test="condiTUserAuthentication.status != null">
+			AND `status` = #{condiTUserAuthentication.status,jdbcType=INTEGER}
+			</if>
+			<if test="condiTUserAuthentication.submitTime != null">
+			AND `submit_time` = #{condiTUserAuthentication.submitTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="condiTUserAuthentication.auditor != null">
+			AND `auditor` = #{condiTUserAuthentication.auditor,jdbcType=VARCHAR}
+			</if>
+			<if test="condiTUserAuthentication.auditTime != null">
+			AND `audit_time` = #{condiTUserAuthentication.auditTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="condiTUserAuthentication.createTime != null">
+			AND `create_time` = #{condiTUserAuthentication.createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="condiTUserAuthentication.updateTime != null">
+			AND `update_time` = #{condiTUserAuthentication.updateTime,jdbcType=TIMESTAMP}
+			</if>
+		</if>
+		</where>
+	</update>
+	
+	<update id="modifyWithSelectiveBy">
+		UPDATE t_user_authentication
+		<set>
+		<if test="tUserAuthentication != null">
+			<if test="tUserAuthentication.userId != null">
+			`user_id` = #{tUserAuthentication.userId,jdbcType=BIGINT}, 
+			</if>
+			<if test="tUserAuthentication.realName != null">
+			`real_name` = #{tUserAuthentication.realName,jdbcType=VARCHAR}, 
+			</if>
+			<if test="tUserAuthentication.identityNo != null">
+			`identity_no` = #{tUserAuthentication.identityNo,jdbcType=VARCHAR}, 
+			</if>
+			<if test="tUserAuthentication.identityType != null">
+			`identity_type` = #{tUserAuthentication.identityType,jdbcType=INTEGER}, 
+			</if>
+			<if test="tUserAuthentication.identityFrontUrl != null">
+			`identity_front_url` = #{tUserAuthentication.identityFrontUrl,jdbcType=VARCHAR}, 
+			</if>
+			<if test="tUserAuthentication.identityFrontKey != null">
+			`identity_front_key` = #{tUserAuthentication.identityFrontKey,jdbcType=VARCHAR}, 
+			</if>
+			<if test="tUserAuthentication.identityFrontHash != null">
+			`identity_front_hash` = #{tUserAuthentication.identityFrontHash,jdbcType=VARCHAR}, 
+			</if>
+			<if test="tUserAuthentication.identityBackUrl != null">
+			`identity_back_url` = #{tUserAuthentication.identityBackUrl,jdbcType=VARCHAR}, 
+			</if>
+			<if test="tUserAuthentication.identityBackKey != null">
+			`identity_back_key` = #{tUserAuthentication.identityBackKey,jdbcType=VARCHAR}, 
+			</if>
+			<if test="tUserAuthentication.identityBackHash != null">
+			`identity_back_hash` = #{tUserAuthentication.identityBackHash,jdbcType=VARCHAR}, 
+			</if>
+			<if test="tUserAuthentication.postRealValidate != null">
+			`post_real_validate` = #{tUserAuthentication.postRealValidate,jdbcType=INTEGER}, 
+			</if>
+			<if test="tUserAuthentication.fhasRealValidate != null">
+			`fhas_real_Validate` = #{tUserAuthentication.fhasRealValidate,jdbcType=INTEGER}, 
+			</if>
+			<if test="tUserAuthentication.bankCardNo != null">
+			`bank_card_no` = #{tUserAuthentication.bankCardNo,jdbcType=VARCHAR}, 
+			</if>
+			<if test="tUserAuthentication.bankAddress != null">
+			`bank_address` = #{tUserAuthentication.bankAddress,jdbcType=VARCHAR}, 
+			</if>
+			<if test="tUserAuthentication.bankCardUrl != null">
+			`bank_card_url` = #{tUserAuthentication.bankCardUrl,jdbcType=VARCHAR}, 
+			</if>
+			<if test="tUserAuthentication.bankCardKey != null">
+			`bank_card_key` = #{tUserAuthentication.bankCardKey,jdbcType=VARCHAR}, 
+			</if>
+			<if test="tUserAuthentication.bankCardHash != null">
+			`bank_card_hash` = #{tUserAuthentication.bankCardHash,jdbcType=VARCHAR}, 
+			</if>
+			<if test="tUserAuthentication.alipayNo != null">
+			`alipay_no` = #{tUserAuthentication.alipayNo,jdbcType=VARCHAR}, 
+			</if>
+			<if test="tUserAuthentication.status != null">
+			`status` = #{tUserAuthentication.status,jdbcType=INTEGER}, 
+			</if>
+			<if test="tUserAuthentication.submitTime != null">
+			`submit_time` = #{tUserAuthentication.submitTime,jdbcType=TIMESTAMP}, 
+			</if>
+			<if test="tUserAuthentication.auditor != null">
+			`auditor` = #{tUserAuthentication.auditor,jdbcType=VARCHAR}, 
+			</if>
+			<if test="tUserAuthentication.auditTime != null">
+			`audit_time` = #{tUserAuthentication.auditTime,jdbcType=TIMESTAMP}, 
+			</if>
+			<if test="tUserAuthentication.createTime != null">
+			`create_time` = #{tUserAuthentication.createTime,jdbcType=TIMESTAMP}, 
+			</if>
+			<if test="tUserAuthentication.updateTime != null">
+			`update_time` = #{tUserAuthentication.updateTime,jdbcType=TIMESTAMP}, 
+			</if>
+		</if>
+		</set>
+		<where>
+		<if test="condiTUserAuthentication != null">
+			<if test="condiTUserAuthentication.id != null">
+			AND `id` = #{condiTUserAuthentication.id,jdbcType=BIGINT}
+			</if>
+			<if test="condiTUserAuthentication.userId != null">
+			AND `user_id` = #{condiTUserAuthentication.userId,jdbcType=BIGINT}
+			</if>
+			<if test="condiTUserAuthentication.realName != null">
+			AND `real_name` = #{condiTUserAuthentication.realName,jdbcType=VARCHAR}
+			</if>
+			<if test="condiTUserAuthentication.identityNo != null">
+			AND `identity_no` = #{condiTUserAuthentication.identityNo,jdbcType=VARCHAR}
+			</if>
+			<if test="condiTUserAuthentication.identityType != null">
+			AND `identity_type` = #{condiTUserAuthentication.identityType,jdbcType=INTEGER}
+			</if>
+			<if test="condiTUserAuthentication.identityFrontUrl != null">
+			AND `identity_front_url` = #{condiTUserAuthentication.identityFrontUrl,jdbcType=VARCHAR}
+			</if>
+			<if test="condiTUserAuthentication.identityFrontKey != null">
+			AND `identity_front_key` = #{condiTUserAuthentication.identityFrontKey,jdbcType=VARCHAR}
+			</if>
+			<if test="condiTUserAuthentication.identityFrontHash != null">
+			AND `identity_front_hash` = #{condiTUserAuthentication.identityFrontHash,jdbcType=VARCHAR}
+			</if>
+			<if test="condiTUserAuthentication.identityBackUrl != null">
+			AND `identity_back_url` = #{condiTUserAuthentication.identityBackUrl,jdbcType=VARCHAR}
+			</if>
+			<if test="condiTUserAuthentication.identityBackKey != null">
+			AND `identity_back_key` = #{condiTUserAuthentication.identityBackKey,jdbcType=VARCHAR}
+			</if>
+			<if test="condiTUserAuthentication.identityBackHash != null">
+			AND `identity_back_hash` = #{condiTUserAuthentication.identityBackHash,jdbcType=VARCHAR}
+			</if>
+			<if test="condiTUserAuthentication.postRealValidate != null">
+			AND `post_real_validate` = #{condiTUserAuthentication.postRealValidate,jdbcType=INTEGER}
+			</if>
+			<if test="condiTUserAuthentication.fhasRealValidate != null">
+			AND `fhas_real_Validate` = #{condiTUserAuthentication.fhasRealValidate,jdbcType=INTEGER}
+			</if>
+			<if test="condiTUserAuthentication.bankCardNo != null">
+			AND `bank_card_no` = #{condiTUserAuthentication.bankCardNo,jdbcType=VARCHAR}
+			</if>
+			<if test="condiTUserAuthentication.bankAddress != null">
+			AND `bank_address` = #{condiTUserAuthentication.bankAddress,jdbcType=VARCHAR}
+			</if>
+			<if test="condiTUserAuthentication.bankCardUrl != null">
+			AND `bank_card_url` = #{condiTUserAuthentication.bankCardUrl,jdbcType=VARCHAR}
+			</if>
+			<if test="condiTUserAuthentication.bankCardKey != null">
+			AND `bank_card_key` = #{condiTUserAuthentication.bankCardKey,jdbcType=VARCHAR}
+			</if>
+			<if test="condiTUserAuthentication.bankCardHash != null">
+			AND `bank_card_hash` = #{condiTUserAuthentication.bankCardHash,jdbcType=VARCHAR}
+			</if>
+			<if test="condiTUserAuthentication.alipayNo != null">
+			AND `alipay_no` = #{condiTUserAuthentication.alipayNo,jdbcType=VARCHAR}
+			</if>
+			<if test="condiTUserAuthentication.status != null">
+			AND `status` = #{condiTUserAuthentication.status,jdbcType=INTEGER}
+			</if>
+			<if test="condiTUserAuthentication.submitTime != null">
+			AND `submit_time` = #{condiTUserAuthentication.submitTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="condiTUserAuthentication.auditor != null">
+			AND `auditor` = #{condiTUserAuthentication.auditor,jdbcType=VARCHAR}
+			</if>
+			<if test="condiTUserAuthentication.auditTime != null">
+			AND `audit_time` = #{condiTUserAuthentication.auditTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="condiTUserAuthentication.createTime != null">
+			AND `create_time` = #{condiTUserAuthentication.createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="condiTUserAuthentication.updateTime != null">
+			AND `update_time` = #{condiTUserAuthentication.updateTime,jdbcType=TIMESTAMP}
+			</if>
+		</if>
+		</where>
+	</update>
+	
+	<select id="getByPK" resultType="com.bittrade.pojo.model.TUserAuthentication">
+		SELECT 
+			`id`, 
+			`user_id`, 
+			`real_name`, 
+			`identity_no`, 
+			`identity_type`, 
+			`identity_front_url`, 
+			`identity_front_key`, 
+			`identity_front_hash`, 
+			`identity_back_url`, 
+			`identity_back_key`, 
+			`identity_back_hash`, 
+			`post_real_validate`, 
+			`fhas_real_Validate`, 
+			`bank_card_no`, 
+			`bank_address`, 
+			`bank_card_url`, 
+			`bank_card_key`, 
+			`bank_card_hash`, 
+			`alipay_no`, 
+			`status`, 
+			`submit_time`, 
+			`auditor`, 
+			`audit_time`, 
+			`create_time`, 
+			`update_time`
+		FROM t_user_authentication
+		<where>
+			AND `id` = #{id,jdbcType=BIGINT}
+		</where>
+	</select>
+	
+	<select id="getBy" resultType="com.bittrade.pojo.model.TUserAuthentication">
+		SELECT 
+			`id`, 
+			`user_id`, 
+			`real_name`, 
+			`identity_no`, 
+			`identity_type`, 
+			`identity_front_url`, 
+			`identity_front_key`, 
+			`identity_front_hash`, 
+			`identity_back_url`, 
+			`identity_back_key`, 
+			`identity_back_hash`, 
+			`post_real_validate`, 
+			`fhas_real_Validate`, 
+			`bank_card_no`, 
+			`bank_address`, 
+			`bank_card_url`, 
+			`bank_card_key`, 
+			`bank_card_hash`, 
+			`alipay_no`, 
+			`status`, 
+			`submit_time`, 
+			`auditor`, 
+			`audit_time`, 
+			`create_time`, 
+			`update_time`
+		FROM t_user_authentication
+		<where>
+			<if test="userId != null">
+			AND `user_id` = #{userId,jdbcType=BIGINT}
+			</if>
+			<if test="realName != null">
+			AND `real_name` = #{realName,jdbcType=VARCHAR}
+			</if>
+			<if test="identityNo != null">
+			AND `identity_no` = #{identityNo,jdbcType=VARCHAR}
+			</if>
+			<if test="identityType != null">
+			AND `identity_type` = #{identityType,jdbcType=INTEGER}
+			</if>
+			<if test="identityFrontUrl != null">
+			AND `identity_front_url` = #{identityFrontUrl,jdbcType=VARCHAR}
+			</if>
+			<if test="identityFrontKey != null">
+			AND `identity_front_key` = #{identityFrontKey,jdbcType=VARCHAR}
+			</if>
+			<if test="identityFrontHash != null">
+			AND `identity_front_hash` = #{identityFrontHash,jdbcType=VARCHAR}
+			</if>
+			<if test="identityBackUrl != null">
+			AND `identity_back_url` = #{identityBackUrl,jdbcType=VARCHAR}
+			</if>
+			<if test="identityBackKey != null">
+			AND `identity_back_key` = #{identityBackKey,jdbcType=VARCHAR}
+			</if>
+			<if test="identityBackHash != null">
+			AND `identity_back_hash` = #{identityBackHash,jdbcType=VARCHAR}
+			</if>
+			<if test="postRealValidate != null">
+			AND `post_real_validate` = #{postRealValidate,jdbcType=INTEGER}
+			</if>
+			<if test="fhasRealValidate != null">
+			AND `fhas_real_Validate` = #{fhasRealValidate,jdbcType=INTEGER}
+			</if>
+			<if test="bankCardNo != null">
+			AND `bank_card_no` = #{bankCardNo,jdbcType=VARCHAR}
+			</if>
+			<if test="bankAddress != null">
+			AND `bank_address` = #{bankAddress,jdbcType=VARCHAR}
+			</if>
+			<if test="bankCardUrl != null">
+			AND `bank_card_url` = #{bankCardUrl,jdbcType=VARCHAR}
+			</if>
+			<if test="bankCardKey != null">
+			AND `bank_card_key` = #{bankCardKey,jdbcType=VARCHAR}
+			</if>
+			<if test="bankCardHash != null">
+			AND `bank_card_hash` = #{bankCardHash,jdbcType=VARCHAR}
+			</if>
+			<if test="alipayNo != null">
+			AND `alipay_no` = #{alipayNo,jdbcType=VARCHAR}
+			</if>
+			<if test="status != null">
+			AND `status` = #{status,jdbcType=INTEGER}
+			</if>
+			<if test="submitTime != null">
+			AND `submit_time` = #{submitTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="auditor != null">
+			AND `auditor` = #{auditor,jdbcType=VARCHAR}
+			</if>
+			<if test="auditTime != null">
+			AND `audit_time` = #{auditTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="createTime != null">
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="updateTime != null">
+			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+		</where>
+		LIMIT 1
+	</select>
+	
+	<select id="get" resultType="com.bittrade.pojo.model.TUserAuthentication">
+		SELECT 
+			`id`, 
+			`user_id`, 
+			`real_name`, 
+			`identity_no`, 
+			`identity_type`, 
+			`identity_front_url`, 
+			`identity_front_key`, 
+			`identity_front_hash`, 
+			`identity_back_url`, 
+			`identity_back_key`, 
+			`identity_back_hash`, 
+			`post_real_validate`, 
+			`fhas_real_Validate`, 
+			`bank_card_no`, 
+			`bank_address`, 
+			`bank_card_url`, 
+			`bank_card_key`, 
+			`bank_card_hash`, 
+			`alipay_no`, 
+			`status`, 
+			`submit_time`, 
+			`auditor`, 
+			`audit_time`, 
+			`create_time`, 
+			`update_time`
+		FROM t_user_authentication
+		LIMIT 1
+	</select>
+	
+	<select id="getsBy" resultType="com.bittrade.pojo.model.TUserAuthentication">
+		SELECT 
+			<include refid="Base_Column_List"></include>
+		FROM t_user_authentication
+		<where>
+			<if test="userId != null">
+			AND `user_id` = #{userId,jdbcType=BIGINT}
+			</if>
+			<if test="realName != null">
+			AND `real_name` = #{realName,jdbcType=VARCHAR}
+			</if>
+			<if test="identityNo != null">
+			AND `identity_no` = #{identityNo,jdbcType=VARCHAR}
+			</if>
+			<if test="identityType != null">
+			AND `identity_type` = #{identityType,jdbcType=INTEGER}
+			</if>
+			<if test="identityFrontUrl != null">
+			AND `identity_front_url` = #{identityFrontUrl,jdbcType=VARCHAR}
+			</if>
+			<if test="identityFrontKey != null">
+			AND `identity_front_key` = #{identityFrontKey,jdbcType=VARCHAR}
+			</if>
+			<if test="identityFrontHash != null">
+			AND `identity_front_hash` = #{identityFrontHash,jdbcType=VARCHAR}
+			</if>
+			<if test="identityBackUrl != null">
+			AND `identity_back_url` = #{identityBackUrl,jdbcType=VARCHAR}
+			</if>
+			<if test="identityBackKey != null">
+			AND `identity_back_key` = #{identityBackKey,jdbcType=VARCHAR}
+			</if>
+			<if test="identityBackHash != null">
+			AND `identity_back_hash` = #{identityBackHash,jdbcType=VARCHAR}
+			</if>
+			<if test="postRealValidate != null">
+			AND `post_real_validate` = #{postRealValidate,jdbcType=INTEGER}
+			</if>
+			<if test="fhasRealValidate != null">
+			AND `fhas_real_Validate` = #{fhasRealValidate,jdbcType=INTEGER}
+			</if>
+			<if test="bankCardNo != null">
+			AND `bank_card_no` = #{bankCardNo,jdbcType=VARCHAR}
+			</if>
+			<if test="bankAddress != null">
+			AND `bank_address` = #{bankAddress,jdbcType=VARCHAR}
+			</if>
+			<if test="bankCardUrl != null">
+			AND `bank_card_url` = #{bankCardUrl,jdbcType=VARCHAR}
+			</if>
+			<if test="bankCardKey != null">
+			AND `bank_card_key` = #{bankCardKey,jdbcType=VARCHAR}
+			</if>
+			<if test="bankCardHash != null">
+			AND `bank_card_hash` = #{bankCardHash,jdbcType=VARCHAR}
+			</if>
+			<if test="alipayNo != null">
+			AND `alipay_no` = #{alipayNo,jdbcType=VARCHAR}
+			</if>
+			<if test="status != null">
+			AND `status` = #{status,jdbcType=INTEGER}
+			</if>
+			<if test="submitTime != null">
+			AND `submit_time` = #{submitTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="auditor != null">
+			AND `auditor` = #{auditor,jdbcType=VARCHAR}
+			</if>
+			<if test="auditTime != null">
+			AND `audit_time` = #{auditTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="createTime != null">
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="updateTime != null">
+			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+			<include refid="sql_WHERE_forProperty"></include>
+		</where>
+	</select>
+	
+	<select id="gets" resultType="com.bittrade.pojo.model.TUserAuthentication">
+		SELECT 
+			<include refid="Base_Column_List"></include>
+		FROM t_user_authentication
+	</select>
+	
+	<select id="getCntBy" resultType="int">
+		SELECT COUNT(1)
+		FROM t_user_authentication
+		<where>
+		<if test="tUserAuthentication != null">
+			<if test="tUserAuthentication.userId != null">
+			AND `user_id` = #{tUserAuthentication.userId,jdbcType=BIGINT}
+			</if>
+			<if test="tUserAuthentication.realName != null">
+			AND `real_name` = #{tUserAuthentication.realName,jdbcType=VARCHAR}
+			</if>
+			<if test="tUserAuthentication.identityNo != null">
+			AND `identity_no` = #{tUserAuthentication.identityNo,jdbcType=VARCHAR}
+			</if>
+			<if test="tUserAuthentication.identityType != null">
+			AND `identity_type` = #{tUserAuthentication.identityType,jdbcType=INTEGER}
+			</if>
+			<if test="tUserAuthentication.identityFrontUrl != null">
+			AND `identity_front_url` = #{tUserAuthentication.identityFrontUrl,jdbcType=VARCHAR}
+			</if>
+			<if test="tUserAuthentication.identityFrontKey != null">
+			AND `identity_front_key` = #{tUserAuthentication.identityFrontKey,jdbcType=VARCHAR}
+			</if>
+			<if test="tUserAuthentication.identityFrontHash != null">
+			AND `identity_front_hash` = #{tUserAuthentication.identityFrontHash,jdbcType=VARCHAR}
+			</if>
+			<if test="tUserAuthentication.identityBackUrl != null">
+			AND `identity_back_url` = #{tUserAuthentication.identityBackUrl,jdbcType=VARCHAR}
+			</if>
+			<if test="tUserAuthentication.identityBackKey != null">
+			AND `identity_back_key` = #{tUserAuthentication.identityBackKey,jdbcType=VARCHAR}
+			</if>
+			<if test="tUserAuthentication.identityBackHash != null">
+			AND `identity_back_hash` = #{tUserAuthentication.identityBackHash,jdbcType=VARCHAR}
+			</if>
+			<if test="tUserAuthentication.postRealValidate != null">
+			AND `post_real_validate` = #{tUserAuthentication.postRealValidate,jdbcType=INTEGER}
+			</if>
+			<if test="tUserAuthentication.fhasRealValidate != null">
+			AND `fhas_real_Validate` = #{tUserAuthentication.fhasRealValidate,jdbcType=INTEGER}
+			</if>
+			<if test="tUserAuthentication.bankCardNo != null">
+			AND `bank_card_no` = #{tUserAuthentication.bankCardNo,jdbcType=VARCHAR}
+			</if>
+			<if test="tUserAuthentication.bankAddress != null">
+			AND `bank_address` = #{tUserAuthentication.bankAddress,jdbcType=VARCHAR}
+			</if>
+			<if test="tUserAuthentication.bankCardUrl != null">
+			AND `bank_card_url` = #{tUserAuthentication.bankCardUrl,jdbcType=VARCHAR}
+			</if>
+			<if test="tUserAuthentication.bankCardKey != null">
+			AND `bank_card_key` = #{tUserAuthentication.bankCardKey,jdbcType=VARCHAR}
+			</if>
+			<if test="tUserAuthentication.bankCardHash != null">
+			AND `bank_card_hash` = #{tUserAuthentication.bankCardHash,jdbcType=VARCHAR}
+			</if>
+			<if test="tUserAuthentication.alipayNo != null">
+			AND `alipay_no` = #{tUserAuthentication.alipayNo,jdbcType=VARCHAR}
+			</if>
+			<if test="tUserAuthentication.status != null">
+			AND `status` = #{tUserAuthentication.status,jdbcType=INTEGER}
+			</if>
+			<if test="tUserAuthentication.submitTime != null">
+			AND `submit_time` = #{tUserAuthentication.submitTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="tUserAuthentication.auditor != null">
+			AND `auditor` = #{tUserAuthentication.auditor,jdbcType=VARCHAR}
+			</if>
+			<if test="tUserAuthentication.auditTime != null">
+			AND `audit_time` = #{tUserAuthentication.auditTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="tUserAuthentication.createTime != null">
+			AND `create_time` = #{tUserAuthentication.createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="tUserAuthentication.updateTime != null">
+			AND `update_time` = #{tUserAuthentication.updateTime,jdbcType=TIMESTAMP}
+			</if>
+			<include refid="sql_WHERE_forObject"></include>
+		</if>
+		</where>
+	</select>
+	
+	<select id="getsByPage" resultType="com.bittrade.pojo.model.TUserAuthentication">
+		SELECT 
+			`id`, 
+			`user_id`, 
+			`real_name`, 
+			`identity_no`, 
+			`identity_type`, 
+			`identity_front_url`, 
+			`identity_front_key`, 
+			`identity_front_hash`, 
+			`identity_back_url`, 
+			`identity_back_key`, 
+			`identity_back_hash`, 
+			`post_real_validate`, 
+			`fhas_real_Validate`, 
+			`bank_card_no`, 
+			`bank_address`, 
+			`bank_card_url`, 
+			`bank_card_key`, 
+			`bank_card_hash`, 
+			`alipay_no`, 
+			`status`, 
+			`submit_time`, 
+			`auditor`, 
+			`audit_time`, 
+			`create_time`, 
+			`update_time`
+		FROM t_user_authentication
+		<where>
+		<if test="tUserAuthentication != null">
+			<if test="tUserAuthentication.userId != null">
+			AND `user_id` = #{tUserAuthentication.userId,jdbcType=BIGINT}
+			</if>
+			<if test="tUserAuthentication.realName != null">
+			AND `real_name` = #{tUserAuthentication.realName,jdbcType=VARCHAR}
+			</if>
+			<if test="tUserAuthentication.identityNo != null">
+			AND `identity_no` = #{tUserAuthentication.identityNo,jdbcType=VARCHAR}
+			</if>
+			<if test="tUserAuthentication.identityType != null">
+			AND `identity_type` = #{tUserAuthentication.identityType,jdbcType=INTEGER}
+			</if>
+			<if test="tUserAuthentication.identityFrontUrl != null">
+			AND `identity_front_url` = #{tUserAuthentication.identityFrontUrl,jdbcType=VARCHAR}
+			</if>
+			<if test="tUserAuthentication.identityFrontKey != null">
+			AND `identity_front_key` = #{tUserAuthentication.identityFrontKey,jdbcType=VARCHAR}
+			</if>
+			<if test="tUserAuthentication.identityFrontHash != null">
+			AND `identity_front_hash` = #{tUserAuthentication.identityFrontHash,jdbcType=VARCHAR}
+			</if>
+			<if test="tUserAuthentication.identityBackUrl != null">
+			AND `identity_back_url` = #{tUserAuthentication.identityBackUrl,jdbcType=VARCHAR}
+			</if>
+			<if test="tUserAuthentication.identityBackKey != null">
+			AND `identity_back_key` = #{tUserAuthentication.identityBackKey,jdbcType=VARCHAR}
+			</if>
+			<if test="tUserAuthentication.identityBackHash != null">
+			AND `identity_back_hash` = #{tUserAuthentication.identityBackHash,jdbcType=VARCHAR}
+			</if>
+			<if test="tUserAuthentication.postRealValidate != null">
+			AND `post_real_validate` = #{tUserAuthentication.postRealValidate,jdbcType=INTEGER}
+			</if>
+			<if test="tUserAuthentication.fhasRealValidate != null">
+			AND `fhas_real_Validate` = #{tUserAuthentication.fhasRealValidate,jdbcType=INTEGER}
+			</if>
+			<if test="tUserAuthentication.bankCardNo != null">
+			AND `bank_card_no` = #{tUserAuthentication.bankCardNo,jdbcType=VARCHAR}
+			</if>
+			<if test="tUserAuthentication.bankAddress != null">
+			AND `bank_address` = #{tUserAuthentication.bankAddress,jdbcType=VARCHAR}
+			</if>
+			<if test="tUserAuthentication.bankCardUrl != null">
+			AND `bank_card_url` = #{tUserAuthentication.bankCardUrl,jdbcType=VARCHAR}
+			</if>
+			<if test="tUserAuthentication.bankCardKey != null">
+			AND `bank_card_key` = #{tUserAuthentication.bankCardKey,jdbcType=VARCHAR}
+			</if>
+			<if test="tUserAuthentication.bankCardHash != null">
+			AND `bank_card_hash` = #{tUserAuthentication.bankCardHash,jdbcType=VARCHAR}
+			</if>
+			<if test="tUserAuthentication.alipayNo != null">
+			AND `alipay_no` = #{tUserAuthentication.alipayNo,jdbcType=VARCHAR}
+			</if>
+			<if test="tUserAuthentication.status != null">
+			AND `status` = #{tUserAuthentication.status,jdbcType=INTEGER}
+			</if>
+			<if test="tUserAuthentication.submitTime != null">
+			AND `submit_time` = #{tUserAuthentication.submitTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="tUserAuthentication.auditor != null">
+			AND `auditor` = #{tUserAuthentication.auditor,jdbcType=VARCHAR}
+			</if>
+			<if test="tUserAuthentication.auditTime != null">
+			AND `audit_time` = #{tUserAuthentication.auditTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="tUserAuthentication.createTime != null">
+			AND `create_time` = #{tUserAuthentication.createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="tUserAuthentication.updateTime != null">
+			AND `update_time` = #{tUserAuthentication.updateTime,jdbcType=TIMESTAMP}
+			</if>
+			<include refid="sql_WHERE_forObject"></include>
+		</if>
+		</where>
+		LIMIT #{page}, #{size}
+	</select>
+
+</mapper>

@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.bittrade.currency.api.service.ITWalletService;
 import com.bittrade.pojo.vo.ConversionVo;
+import com.common.bittrade.service.ITWalletService;
 import com.core.common.DTO.ReturnDTO;
 import com.core.common.annotation.ALoginUser;
 import com.core.web.constant.entity.LoginUser;

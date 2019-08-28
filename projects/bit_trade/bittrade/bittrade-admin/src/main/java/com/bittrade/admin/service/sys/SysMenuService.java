@@ -14,7 +14,7 @@ import com.bittrade.admin.model.domain.SysUser;
  * 菜单权限表 服务类
  * </p>
  *
- * @author ourblue
+ * @author who ?
  * @since 2018-11-03
  */
 public interface SysMenuService extends IService<SysMenu> {

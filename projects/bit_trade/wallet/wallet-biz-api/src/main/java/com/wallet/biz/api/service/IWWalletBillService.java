@@ -1,7 +1,7 @@
 package com.wallet.biz.api.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.wallet.biz.pojo.model.WWalletBill;
+import com.bittrade.pojo.model.WWalletBill;
 
 /**
  * 

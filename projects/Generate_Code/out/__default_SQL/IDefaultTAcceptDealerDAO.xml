@@ -1,0 +1,734 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+	This code is generated automatically. Please do not edit it.
+	现在字段也可以要彻底动态？
+-->
+<mapper namespace="com.bittrade.__default.DAO.IDefaultTAcceptDealerDAO">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.bittrade.pojo.model.TAcceptDealer">
+		<id javaType="Long" property="id" jdbcType="BIGINT" column="id" />
+		<result javaType="String" property="acceptName" jdbcType="VARCHAR" column="accept_name" />
+		<result javaType="String" property="acceptBusinessId" jdbcType="VARCHAR" column="accept_businessId" />
+		<result javaType="String" property="acceptKey" jdbcType="VARCHAR" column="accept_key" />
+		<result javaType="String" property="acceptRechargeUrl" jdbcType="VARCHAR" column="accept_recharge_url" />
+		<result javaType="String" property="iconUrl" jdbcType="VARCHAR" column="icon_url" />
+		<result javaType="Integer" property="sort" jdbcType="INTEGER" column="sort" />
+		<result javaType="Byte" property="status" jdbcType="INTEGER" column="status" />
+		<result javaType="Byte" property="type" jdbcType="INTEGER" column="type" />
+		<result javaType="String" property="remark" jdbcType="VARCHAR" column="remark" />
+		<result javaType="java.time.LocalDateTime" property="createTime" jdbcType="TIMESTAMP" column="create_time" />
+		<result javaType="String" property="creater" jdbcType="VARCHAR" column="creater" />
+		<result javaType="java.time.LocalDateTime" property="updateTime" jdbcType="TIMESTAMP" column="update_time" />
+		<result javaType="String" property="updater" jdbcType="VARCHAR" column="updater" />
+	</resultMap>
+
+	<!--
+		通用查询结果列
+		其他类似的类似，也可以公用（共用）引用。
+	-->
+	<sql id="Base_Column_List">
+		<choose>
+			<when test="strArr_field != null">
+		<foreach collection="strArr_field" index="index" item="item" open="" separator="," close="">
+			`${item}`
+		</foreach>
+			</when>
+			<otherwise>
+		`id` AS `id`, 
+		`accept_name` AS `acceptName`, 
+		`accept_businessId` AS `acceptBusinessId`, 
+		`accept_key` AS `acceptKey`, 
+		`accept_recharge_url` AS `acceptRechargeUrl`, 
+		`icon_url` AS `iconUrl`, 
+		`sort` AS `sort`, 
+		`status` AS `status`, 
+		`type` AS `type`, 
+		`remark` AS `remark`, 
+		`create_time` AS `createTime`, 
+		`creater` AS `creater`, 
+		`update_time` AS `updateTime`, 
+		`updater` AS `updater`
+			</otherwise>
+		</choose>
+	</sql>
+	
+	<!-- 其他的也可以类似的加， yes， 类似蕾丝的。 -->
+	<sql id="sql_WHERE_forProperty">
+		<choose>
+			<when test="map_in != null">
+			
+		<foreach collection="map_in.entrySet()" index="map_index" item="map_item">
+		AND `${map_index}` IN 
+		<foreach collection="map_item" index="arr_index" item="arr_item" open="(" separator="," close=")">
+			#{arr_item}
+		</foreach>
+		</foreach>
+			
+			</when>
+			<!--
+			<when test="_parameter != null and _parameter.TAcceptDealer != null and TAcceptDealer.map_in != null">
+			</when>
+			<otherwise>
+			</otherwise>
+			-->
+		</choose>
+	</sql>
+	<sql id="sql_WHERE_forObject">
+		<choose>
+			<when test="tAcceptDealer.map_in != null">
+			
+		<foreach collection="tAcceptDealer.map_in.entrySet()" index="map_index" item="map_item">
+		AND `${map_index}` IN 
+		<foreach collection="map_item" index="arr_index" item="arr_item" open="(" separator="," close=")">
+			#{arr_item}
+		</foreach>
+		</foreach>
+			
+			</when>
+		</choose>
+	</sql>
+	
+	
+	<insert id="add" parameterType="com.bittrade.pojo.model.TAcceptDealer" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO t_accept_dealer(`accept_name`, `accept_businessId`, `accept_key`, `accept_recharge_url`, `icon_url`, `sort`, `status`, `type`, `remark`, `create_time`, `creater`, `update_time`, `updater`)
+		VALUES(#{acceptName,jdbcType=VARCHAR}, #{acceptBusinessId,jdbcType=VARCHAR}, #{acceptKey,jdbcType=VARCHAR}, #{acceptRechargeUrl,jdbcType=VARCHAR}, #{iconUrl,jdbcType=VARCHAR}, #{sort,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{creater,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{updater,jdbcType=VARCHAR})
+	</insert>
+	
+	<insert id="addWithSelective" parameterType="com.bittrade.pojo.model.TAcceptDealer" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO t_accept_dealer(
+			<if test="acceptName != null">
+			`accept_name`, 
+			</if>
+			<if test="acceptBusinessId != null">
+			`accept_businessId`, 
+			</if>
+			<if test="acceptKey != null">
+			`accept_key`, 
+			</if>
+			<if test="acceptRechargeUrl != null">
+			`accept_recharge_url`, 
+			</if>
+			<if test="iconUrl != null">
+			`icon_url`, 
+			</if>
+			<if test="sort != null">
+			`sort`, 
+			</if>
+			<if test="status != null">
+			`status`, 
+			</if>
+			<if test="type != null">
+			`type`, 
+			</if>
+			<if test="remark != null">
+			`remark`, 
+			</if>
+			<if test="createTime != null">
+			`create_time`, 
+			</if>
+			<if test="creater != null">
+			`creater`, 
+			</if>
+			<if test="updateTime != null">
+			`update_time`, 
+			</if>
+			<if test="updater != null">
+			`updater`
+			</if>
+		)
+		VALUES(
+			<if test="acceptName != null">
+			#{acceptName,jdbcType=VARCHAR}, 
+			</if>
+			<if test="acceptBusinessId != null">
+			#{acceptBusinessId,jdbcType=VARCHAR}, 
+			</if>
+			<if test="acceptKey != null">
+			#{acceptKey,jdbcType=VARCHAR}, 
+			</if>
+			<if test="acceptRechargeUrl != null">
+			#{acceptRechargeUrl,jdbcType=VARCHAR}, 
+			</if>
+			<if test="iconUrl != null">
+			#{iconUrl,jdbcType=VARCHAR}, 
+			</if>
+			<if test="sort != null">
+			#{sort,jdbcType=INTEGER}, 
+			</if>
+			<if test="status != null">
+			#{status,jdbcType=INTEGER}, 
+			</if>
+			<if test="type != null">
+			#{type,jdbcType=INTEGER}, 
+			</if>
+			<if test="remark != null">
+			#{remark,jdbcType=VARCHAR}, 
+			</if>
+			<if test="createTime != null">
+			#{createTime,jdbcType=TIMESTAMP}, 
+			</if>
+			<if test="creater != null">
+			#{creater,jdbcType=VARCHAR}, 
+			</if>
+			<if test="updateTime != null">
+			#{updateTime,jdbcType=TIMESTAMP}, 
+			</if>
+			<if test="updater != null">
+			#{updater,jdbcType=VARCHAR}
+			</if>
+		)
+	</insert>
+	
+	<delete id="removeByPK">
+		DELETE FROM t_accept_dealer
+		<where>
+			AND `id` = #{id,jdbcType=BIGINT}
+		</where>
+	</delete>
+	
+	<delete id="removeBy" parameterType="com.bittrade.pojo.model.TAcceptDealer">
+		DELETE FROM t_accept_dealer
+		<where>
+			<if test="acceptName != null">
+			AND `accept_name` = #{acceptName,jdbcType=VARCHAR}
+			</if>
+			<if test="acceptBusinessId != null">
+			AND `accept_businessId` = #{acceptBusinessId,jdbcType=VARCHAR}
+			</if>
+			<if test="acceptKey != null">
+			AND `accept_key` = #{acceptKey,jdbcType=VARCHAR}
+			</if>
+			<if test="acceptRechargeUrl != null">
+			AND `accept_recharge_url` = #{acceptRechargeUrl,jdbcType=VARCHAR}
+			</if>
+			<if test="iconUrl != null">
+			AND `icon_url` = #{iconUrl,jdbcType=VARCHAR}
+			</if>
+			<if test="sort != null">
+			AND `sort` = #{sort,jdbcType=INTEGER}
+			</if>
+			<if test="status != null">
+			AND `status` = #{status,jdbcType=INTEGER}
+			</if>
+			<if test="type != null">
+			AND `type` = #{type,jdbcType=INTEGER}
+			</if>
+			<if test="remark != null">
+			AND `remark` = #{remark,jdbcType=VARCHAR}
+			</if>
+			<if test="createTime != null">
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="creater != null">
+			AND `creater` = #{creater,jdbcType=VARCHAR}
+			</if>
+			<if test="updateTime != null">
+			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="updater != null">
+			AND `updater` = #{updater,jdbcType=VARCHAR}
+			</if>
+		</where>
+	</delete>
+	
+	<update id="modifyByPK" parameterType="com.bittrade.pojo.model.TAcceptDealer">
+		UPDATE t_accept_dealer
+		<set>
+			`accept_name` = #{acceptName,jdbcType=VARCHAR}, 
+			`accept_businessId` = #{acceptBusinessId,jdbcType=VARCHAR}, 
+			`accept_key` = #{acceptKey,jdbcType=VARCHAR}, 
+			`accept_recharge_url` = #{acceptRechargeUrl,jdbcType=VARCHAR}, 
+			`icon_url` = #{iconUrl,jdbcType=VARCHAR}, 
+			`sort` = #{sort,jdbcType=INTEGER}, 
+			`status` = #{status,jdbcType=INTEGER}, 
+			`type` = #{type,jdbcType=INTEGER}, 
+			`remark` = #{remark,jdbcType=VARCHAR}, 
+			`create_time` = #{createTime,jdbcType=TIMESTAMP}, 
+			`creater` = #{creater,jdbcType=VARCHAR}, 
+			`update_time` = #{updateTime,jdbcType=TIMESTAMP}, 
+			`updater` = #{updater,jdbcType=VARCHAR}, 
+		</set>
+		<where>
+			AND `id` = #{id,jdbcType=BIGINT}
+		</where>
+	</update>
+	
+	<update id="modifyWithSelectiveByPK" parameterType="com.bittrade.pojo.model.TAcceptDealer">
+		UPDATE t_accept_dealer
+		<set>
+			<if test="acceptName != null">
+			`accept_name` = #{acceptName,jdbcType=VARCHAR}, 
+			</if>
+			<if test="acceptBusinessId != null">
+			`accept_businessId` = #{acceptBusinessId,jdbcType=VARCHAR}, 
+			</if>
+			<if test="acceptKey != null">
+			`accept_key` = #{acceptKey,jdbcType=VARCHAR}, 
+			</if>
+			<if test="acceptRechargeUrl != null">
+			`accept_recharge_url` = #{acceptRechargeUrl,jdbcType=VARCHAR}, 
+			</if>
+			<if test="iconUrl != null">
+			`icon_url` = #{iconUrl,jdbcType=VARCHAR}, 
+			</if>
+			<if test="sort != null">
+			`sort` = #{sort,jdbcType=INTEGER}, 
+			</if>
+			<if test="status != null">
+			`status` = #{status,jdbcType=INTEGER}, 
+			</if>
+			<if test="type != null">
+			`type` = #{type,jdbcType=INTEGER}, 
+			</if>
+			<if test="remark != null">
+			`remark` = #{remark,jdbcType=VARCHAR}, 
+			</if>
+			<if test="createTime != null">
+			`create_time` = #{createTime,jdbcType=TIMESTAMP}, 
+			</if>
+			<if test="creater != null">
+			`creater` = #{creater,jdbcType=VARCHAR}, 
+			</if>
+			<if test="updateTime != null">
+			`update_time` = #{updateTime,jdbcType=TIMESTAMP}, 
+			</if>
+			<if test="updater != null">
+			`updater` = #{updater,jdbcType=VARCHAR}, 
+			</if>
+		</set>
+		<where>
+			AND `id` = #{id,jdbcType=BIGINT}
+		</where>
+	</update>
+	
+	<update id="modifyBy">
+		UPDATE t_accept_dealer
+		<set>
+			`accept_name` = #{tAcceptDealer.acceptName,jdbcType=VARCHAR}, 
+			`accept_businessId` = #{tAcceptDealer.acceptBusinessId,jdbcType=VARCHAR}, 
+			`accept_key` = #{tAcceptDealer.acceptKey,jdbcType=VARCHAR}, 
+			`accept_recharge_url` = #{tAcceptDealer.acceptRechargeUrl,jdbcType=VARCHAR}, 
+			`icon_url` = #{tAcceptDealer.iconUrl,jdbcType=VARCHAR}, 
+			`sort` = #{tAcceptDealer.sort,jdbcType=INTEGER}, 
+			`status` = #{tAcceptDealer.status,jdbcType=INTEGER}, 
+			`type` = #{tAcceptDealer.type,jdbcType=INTEGER}, 
+			`remark` = #{tAcceptDealer.remark,jdbcType=VARCHAR}, 
+			`create_time` = #{tAcceptDealer.createTime,jdbcType=TIMESTAMP}, 
+			`creater` = #{tAcceptDealer.creater,jdbcType=VARCHAR}, 
+			`update_time` = #{tAcceptDealer.updateTime,jdbcType=TIMESTAMP}, 
+			`updater` = #{tAcceptDealer.updater,jdbcType=VARCHAR}, 
+		</set>
+		<where>
+		<if test="condiTAcceptDealer != null">
+			<if test="condiTAcceptDealer.id != null">
+			AND `id` = #{condiTAcceptDealer.id,jdbcType=BIGINT}
+			</if>
+			<if test="condiTAcceptDealer.acceptName != null">
+			AND `accept_name` = #{condiTAcceptDealer.acceptName,jdbcType=VARCHAR}
+			</if>
+			<if test="condiTAcceptDealer.acceptBusinessId != null">
+			AND `accept_businessId` = #{condiTAcceptDealer.acceptBusinessId,jdbcType=VARCHAR}
+			</if>
+			<if test="condiTAcceptDealer.acceptKey != null">
+			AND `accept_key` = #{condiTAcceptDealer.acceptKey,jdbcType=VARCHAR}
+			</if>
+			<if test="condiTAcceptDealer.acceptRechargeUrl != null">
+			AND `accept_recharge_url` = #{condiTAcceptDealer.acceptRechargeUrl,jdbcType=VARCHAR}
+			</if>
+			<if test="condiTAcceptDealer.iconUrl != null">
+			AND `icon_url` = #{condiTAcceptDealer.iconUrl,jdbcType=VARCHAR}
+			</if>
+			<if test="condiTAcceptDealer.sort != null">
+			AND `sort` = #{condiTAcceptDealer.sort,jdbcType=INTEGER}
+			</if>
+			<if test="condiTAcceptDealer.status != null">
+			AND `status` = #{condiTAcceptDealer.status,jdbcType=INTEGER}
+			</if>
+			<if test="condiTAcceptDealer.type != null">
+			AND `type` = #{condiTAcceptDealer.type,jdbcType=INTEGER}
+			</if>
+			<if test="condiTAcceptDealer.remark != null">
+			AND `remark` = #{condiTAcceptDealer.remark,jdbcType=VARCHAR}
+			</if>
+			<if test="condiTAcceptDealer.createTime != null">
+			AND `create_time` = #{condiTAcceptDealer.createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="condiTAcceptDealer.creater != null">
+			AND `creater` = #{condiTAcceptDealer.creater,jdbcType=VARCHAR}
+			</if>
+			<if test="condiTAcceptDealer.updateTime != null">
+			AND `update_time` = #{condiTAcceptDealer.updateTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="condiTAcceptDealer.updater != null">
+			AND `updater` = #{condiTAcceptDealer.updater,jdbcType=VARCHAR}
+			</if>
+		</if>
+		</where>
+	</update>
+	
+	<update id="modifyWithSelectiveBy">
+		UPDATE t_accept_dealer
+		<set>
+		<if test="tAcceptDealer != null">
+			<if test="tAcceptDealer.acceptName != null">
+			`accept_name` = #{tAcceptDealer.acceptName,jdbcType=VARCHAR}, 
+			</if>
+			<if test="tAcceptDealer.acceptBusinessId != null">
+			`accept_businessId` = #{tAcceptDealer.acceptBusinessId,jdbcType=VARCHAR}, 
+			</if>
+			<if test="tAcceptDealer.acceptKey != null">
+			`accept_key` = #{tAcceptDealer.acceptKey,jdbcType=VARCHAR}, 
+			</if>
+			<if test="tAcceptDealer.acceptRechargeUrl != null">
+			`accept_recharge_url` = #{tAcceptDealer.acceptRechargeUrl,jdbcType=VARCHAR}, 
+			</if>
+			<if test="tAcceptDealer.iconUrl != null">
+			`icon_url` = #{tAcceptDealer.iconUrl,jdbcType=VARCHAR}, 
+			</if>
+			<if test="tAcceptDealer.sort != null">
+			`sort` = #{tAcceptDealer.sort,jdbcType=INTEGER}, 
+			</if>
+			<if test="tAcceptDealer.status != null">
+			`status` = #{tAcceptDealer.status,jdbcType=INTEGER}, 
+			</if>
+			<if test="tAcceptDealer.type != null">
+			`type` = #{tAcceptDealer.type,jdbcType=INTEGER}, 
+			</if>
+			<if test="tAcceptDealer.remark != null">
+			`remark` = #{tAcceptDealer.remark,jdbcType=VARCHAR}, 
+			</if>
+			<if test="tAcceptDealer.createTime != null">
+			`create_time` = #{tAcceptDealer.createTime,jdbcType=TIMESTAMP}, 
+			</if>
+			<if test="tAcceptDealer.creater != null">
+			`creater` = #{tAcceptDealer.creater,jdbcType=VARCHAR}, 
+			</if>
+			<if test="tAcceptDealer.updateTime != null">
+			`update_time` = #{tAcceptDealer.updateTime,jdbcType=TIMESTAMP}, 
+			</if>
+			<if test="tAcceptDealer.updater != null">
+			`updater` = #{tAcceptDealer.updater,jdbcType=VARCHAR}, 
+			</if>
+		</if>
+		</set>
+		<where>
+		<if test="condiTAcceptDealer != null">
+			<if test="condiTAcceptDealer.id != null">
+			AND `id` = #{condiTAcceptDealer.id,jdbcType=BIGINT}
+			</if>
+			<if test="condiTAcceptDealer.acceptName != null">
+			AND `accept_name` = #{condiTAcceptDealer.acceptName,jdbcType=VARCHAR}
+			</if>
+			<if test="condiTAcceptDealer.acceptBusinessId != null">
+			AND `accept_businessId` = #{condiTAcceptDealer.acceptBusinessId,jdbcType=VARCHAR}
+			</if>
+			<if test="condiTAcceptDealer.acceptKey != null">
+			AND `accept_key` = #{condiTAcceptDealer.acceptKey,jdbcType=VARCHAR}
+			</if>
+			<if test="condiTAcceptDealer.acceptRechargeUrl != null">
+			AND `accept_recharge_url` = #{condiTAcceptDealer.acceptRechargeUrl,jdbcType=VARCHAR}
+			</if>
+			<if test="condiTAcceptDealer.iconUrl != null">
+			AND `icon_url` = #{condiTAcceptDealer.iconUrl,jdbcType=VARCHAR}
+			</if>
+			<if test="condiTAcceptDealer.sort != null">
+			AND `sort` = #{condiTAcceptDealer.sort,jdbcType=INTEGER}
+			</if>
+			<if test="condiTAcceptDealer.status != null">
+			AND `status` = #{condiTAcceptDealer.status,jdbcType=INTEGER}
+			</if>
+			<if test="condiTAcceptDealer.type != null">
+			AND `type` = #{condiTAcceptDealer.type,jdbcType=INTEGER}
+			</if>
+			<if test="condiTAcceptDealer.remark != null">
+			AND `remark` = #{condiTAcceptDealer.remark,jdbcType=VARCHAR}
+			</if>
+			<if test="condiTAcceptDealer.createTime != null">
+			AND `create_time` = #{condiTAcceptDealer.createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="condiTAcceptDealer.creater != null">
+			AND `creater` = #{condiTAcceptDealer.creater,jdbcType=VARCHAR}
+			</if>
+			<if test="condiTAcceptDealer.updateTime != null">
+			AND `update_time` = #{condiTAcceptDealer.updateTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="condiTAcceptDealer.updater != null">
+			AND `updater` = #{condiTAcceptDealer.updater,jdbcType=VARCHAR}
+			</if>
+		</if>
+		</where>
+	</update>
+	
+	<select id="getByPK" resultType="com.bittrade.pojo.model.TAcceptDealer">
+		SELECT 
+			`id`, 
+			`accept_name`, 
+			`accept_businessId`, 
+			`accept_key`, 
+			`accept_recharge_url`, 
+			`icon_url`, 
+			`sort`, 
+			`status`, 
+			`type`, 
+			`remark`, 
+			`create_time`, 
+			`creater`, 
+			`update_time`, 
+			`updater`
+		FROM t_accept_dealer
+		<where>
+			AND `id` = #{id,jdbcType=BIGINT}
+		</where>
+	</select>
+	
+	<select id="getBy" resultType="com.bittrade.pojo.model.TAcceptDealer">
+		SELECT 
+			`id`, 
+			`accept_name`, 
+			`accept_businessId`, 
+			`accept_key`, 
+			`accept_recharge_url`, 
+			`icon_url`, 
+			`sort`, 
+			`status`, 
+			`type`, 
+			`remark`, 
+			`create_time`, 
+			`creater`, 
+			`update_time`, 
+			`updater`
+		FROM t_accept_dealer
+		<where>
+			<if test="acceptName != null">
+			AND `accept_name` = #{acceptName,jdbcType=VARCHAR}
+			</if>
+			<if test="acceptBusinessId != null">
+			AND `accept_businessId` = #{acceptBusinessId,jdbcType=VARCHAR}
+			</if>
+			<if test="acceptKey != null">
+			AND `accept_key` = #{acceptKey,jdbcType=VARCHAR}
+			</if>
+			<if test="acceptRechargeUrl != null">
+			AND `accept_recharge_url` = #{acceptRechargeUrl,jdbcType=VARCHAR}
+			</if>
+			<if test="iconUrl != null">
+			AND `icon_url` = #{iconUrl,jdbcType=VARCHAR}
+			</if>
+			<if test="sort != null">
+			AND `sort` = #{sort,jdbcType=INTEGER}
+			</if>
+			<if test="status != null">
+			AND `status` = #{status,jdbcType=INTEGER}
+			</if>
+			<if test="type != null">
+			AND `type` = #{type,jdbcType=INTEGER}
+			</if>
+			<if test="remark != null">
+			AND `remark` = #{remark,jdbcType=VARCHAR}
+			</if>
+			<if test="createTime != null">
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="creater != null">
+			AND `creater` = #{creater,jdbcType=VARCHAR}
+			</if>
+			<if test="updateTime != null">
+			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="updater != null">
+			AND `updater` = #{updater,jdbcType=VARCHAR}
+			</if>
+		</where>
+		LIMIT 1
+	</select>
+	
+	<select id="get" resultType="com.bittrade.pojo.model.TAcceptDealer">
+		SELECT 
+			`id`, 
+			`accept_name`, 
+			`accept_businessId`, 
+			`accept_key`, 
+			`accept_recharge_url`, 
+			`icon_url`, 
+			`sort`, 
+			`status`, 
+			`type`, 
+			`remark`, 
+			`create_time`, 
+			`creater`, 
+			`update_time`, 
+			`updater`
+		FROM t_accept_dealer
+		LIMIT 1
+	</select>
+	
+	<select id="getsBy" resultType="com.bittrade.pojo.model.TAcceptDealer">
+		SELECT 
+			<include refid="Base_Column_List"></include>
+		FROM t_accept_dealer
+		<where>
+			<if test="acceptName != null">
+			AND `accept_name` = #{acceptName,jdbcType=VARCHAR}
+			</if>
+			<if test="acceptBusinessId != null">
+			AND `accept_businessId` = #{acceptBusinessId,jdbcType=VARCHAR}
+			</if>
+			<if test="acceptKey != null">
+			AND `accept_key` = #{acceptKey,jdbcType=VARCHAR}
+			</if>
+			<if test="acceptRechargeUrl != null">
+			AND `accept_recharge_url` = #{acceptRechargeUrl,jdbcType=VARCHAR}
+			</if>
+			<if test="iconUrl != null">
+			AND `icon_url` = #{iconUrl,jdbcType=VARCHAR}
+			</if>
+			<if test="sort != null">
+			AND `sort` = #{sort,jdbcType=INTEGER}
+			</if>
+			<if test="status != null">
+			AND `status` = #{status,jdbcType=INTEGER}
+			</if>
+			<if test="type != null">
+			AND `type` = #{type,jdbcType=INTEGER}
+			</if>
+			<if test="remark != null">
+			AND `remark` = #{remark,jdbcType=VARCHAR}
+			</if>
+			<if test="createTime != null">
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="creater != null">
+			AND `creater` = #{creater,jdbcType=VARCHAR}
+			</if>
+			<if test="updateTime != null">
+			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="updater != null">
+			AND `updater` = #{updater,jdbcType=VARCHAR}
+			</if>
+			<include refid="sql_WHERE_forProperty"></include>
+		</where>
+	</select>
+	
+	<select id="gets" resultType="com.bittrade.pojo.model.TAcceptDealer">
+		SELECT 
+			<include refid="Base_Column_List"></include>
+		FROM t_accept_dealer
+	</select>
+	
+	<select id="getCntBy" resultType="int">
+		SELECT COUNT(1)
+		FROM t_accept_dealer
+		<where>
+		<if test="tAcceptDealer != null">
+			<if test="tAcceptDealer.acceptName != null">
+			AND `accept_name` = #{tAcceptDealer.acceptName,jdbcType=VARCHAR}
+			</if>
+			<if test="tAcceptDealer.acceptBusinessId != null">
+			AND `accept_businessId` = #{tAcceptDealer.acceptBusinessId,jdbcType=VARCHAR}
+			</if>
+			<if test="tAcceptDealer.acceptKey != null">
+			AND `accept_key` = #{tAcceptDealer.acceptKey,jdbcType=VARCHAR}
+			</if>
+			<if test="tAcceptDealer.acceptRechargeUrl != null">
+			AND `accept_recharge_url` = #{tAcceptDealer.acceptRechargeUrl,jdbcType=VARCHAR}
+			</if>
+			<if test="tAcceptDealer.iconUrl != null">
+			AND `icon_url` = #{tAcceptDealer.iconUrl,jdbcType=VARCHAR}
+			</if>
+			<if test="tAcceptDealer.sort != null">
+			AND `sort` = #{tAcceptDealer.sort,jdbcType=INTEGER}
+			</if>
+			<if test="tAcceptDealer.status != null">
+			AND `status` = #{tAcceptDealer.status,jdbcType=INTEGER}
+			</if>
+			<if test="tAcceptDealer.type != null">
+			AND `type` = #{tAcceptDealer.type,jdbcType=INTEGER}
+			</if>
+			<if test="tAcceptDealer.remark != null">
+			AND `remark` = #{tAcceptDealer.remark,jdbcType=VARCHAR}
+			</if>
+			<if test="tAcceptDealer.createTime != null">
+			AND `create_time` = #{tAcceptDealer.createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="tAcceptDealer.creater != null">
+			AND `creater` = #{tAcceptDealer.creater,jdbcType=VARCHAR}
+			</if>
+			<if test="tAcceptDealer.updateTime != null">
+			AND `update_time` = #{tAcceptDealer.updateTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="tAcceptDealer.updater != null">
+			AND `updater` = #{tAcceptDealer.updater,jdbcType=VARCHAR}
+			</if>
+			<include refid="sql_WHERE_forObject"></include>
+		</if>
+		</where>
+	</select>
+	
+	<select id="getsByPage" resultType="com.bittrade.pojo.model.TAcceptDealer">
+		SELECT 
+			`id`, 
+			`accept_name`, 
+			`accept_businessId`, 
+			`accept_key`, 
+			`accept_recharge_url`, 
+			`icon_url`, 
+			`sort`, 
+			`status`, 
+			`type`, 
+			`remark`, 
+			`create_time`, 
+			`creater`, 
+			`update_time`, 
+			`updater`
+		FROM t_accept_dealer
+		<where>
+		<if test="tAcceptDealer != null">
+			<if test="tAcceptDealer.acceptName != null">
+			AND `accept_name` = #{tAcceptDealer.acceptName,jdbcType=VARCHAR}
+			</if>
+			<if test="tAcceptDealer.acceptBusinessId != null">
+			AND `accept_businessId` = #{tAcceptDealer.acceptBusinessId,jdbcType=VARCHAR}
+			</if>
+			<if test="tAcceptDealer.acceptKey != null">
+			AND `accept_key` = #{tAcceptDealer.acceptKey,jdbcType=VARCHAR}
+			</if>
+			<if test="tAcceptDealer.acceptRechargeUrl != null">
+			AND `accept_recharge_url` = #{tAcceptDealer.acceptRechargeUrl,jdbcType=VARCHAR}
+			</if>
+			<if test="tAcceptDealer.iconUrl != null">
+			AND `icon_url` = #{tAcceptDealer.iconUrl,jdbcType=VARCHAR}
+			</if>
+			<if test="tAcceptDealer.sort != null">
+			AND `sort` = #{tAcceptDealer.sort,jdbcType=INTEGER}
+			</if>
+			<if test="tAcceptDealer.status != null">
+			AND `status` = #{tAcceptDealer.status,jdbcType=INTEGER}
+			</if>
+			<if test="tAcceptDealer.type != null">
+			AND `type` = #{tAcceptDealer.type,jdbcType=INTEGER}
+			</if>
+			<if test="tAcceptDealer.remark != null">
+			AND `remark` = #{tAcceptDealer.remark,jdbcType=VARCHAR}
+			</if>
+			<if test="tAcceptDealer.createTime != null">
+			AND `create_time` = #{tAcceptDealer.createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="tAcceptDealer.creater != null">
+			AND `creater` = #{tAcceptDealer.creater,jdbcType=VARCHAR}
+			</if>
+			<if test="tAcceptDealer.updateTime != null">
+			AND `update_time` = #{tAcceptDealer.updateTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="tAcceptDealer.updater != null">
+			AND `updater` = #{tAcceptDealer.updater,jdbcType=VARCHAR}
+			</if>
+			<include refid="sql_WHERE_forObject"></include>
+		</if>
+		</where>
+		LIMIT #{page}, #{size}
+	</select>
+
+</mapper>

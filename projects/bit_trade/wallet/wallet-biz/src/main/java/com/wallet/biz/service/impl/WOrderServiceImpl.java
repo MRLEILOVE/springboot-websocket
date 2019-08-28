@@ -1,26 +1,26 @@
 package com.wallet.biz.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.core.common.DTO.ReturnDTO;
-import com.wallet.biz.api.service.IWCoinConfigService;
-import com.wallet.biz.api.service.IWCoinService;
-import com.wallet.biz.api.service.IWWalletAccountService;
-import com.wallet.biz.pojo.model.WCoin;
-import com.wallet.biz.pojo.model.WCoinConfig;
-import com.wallet.biz.pojo.model.WWalletAccount;
-import com.wallet.biz.tool.SnowFlake;
+import java.math.BigDecimal;
+import java.util.concurrent.TimeUnit;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
 import com.alibaba.dubbo.config.annotation.Service;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.bittrade.pojo.model.WCoin;
+import com.bittrade.pojo.model.WCoinConfig;
+import com.bittrade.pojo.model.WOrder;
+import com.bittrade.pojo.model.WWalletAccount;
+import com.common.bittrade.service.IWCoinService;
+import com.common.bittrade.service.IWWalletAccountService;
+import com.core.common.DTO.ReturnDTO;
+import com.wallet.biz.api.service.IWCoinConfigService;
 import com.wallet.biz.api.service.IWOrderService;
 import com.wallet.biz.dao.IWOrderDAO;
-import com.wallet.biz.pojo.model.WOrder;
-
-import java.math.BigDecimal;
-import java.util.concurrent.TimeUnit;
+import com.wallet.biz.tool.SnowFlake;
 
 /**
  * 

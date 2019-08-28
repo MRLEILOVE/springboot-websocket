@@ -35,7 +35,7 @@ import net.sf.ehcache.CacheManager;
 /**
  * shiro 配置
  * 
- * @author ourblue
+ * @author who ?
  *
  */
 @Configuration

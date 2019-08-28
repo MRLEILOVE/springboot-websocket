@@ -6,8 +6,8 @@ import com.bittrade.__default.service.impl.DefaultWConfigWalletServiceImpl;
 import com.bittrade.currency.api.service.IWConfigWalletService;
 import com.bittrade.currency.dao.IWConfigWalletDAO;
 import com.bittrade.pojo.dto.WConfigWalletDTO;
-import com.bittrade.pojo.vo.WConfigWalletVO;
 import com.bittrade.pojo.model.WConfigWallet;
+import com.bittrade.pojo.vo.WConfigWalletVO;
 
 /**
  * 

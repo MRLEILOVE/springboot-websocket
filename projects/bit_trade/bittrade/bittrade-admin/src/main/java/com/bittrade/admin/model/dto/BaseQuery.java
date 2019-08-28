@@ -11,7 +11,7 @@ import java.util.Map;
 /**
  * The class Base query.
  *
- * @author ourblue
+ * @author who ?
  */
 @Data
 public abstract class BaseQuery implements Serializable {

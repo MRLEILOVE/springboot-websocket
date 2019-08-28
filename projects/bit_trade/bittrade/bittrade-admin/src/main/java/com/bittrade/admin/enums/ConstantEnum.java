@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 /**
  * 常量枚举
  * 
- * @author ourblue
+ * @author who ?
  *
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)

@@ -20,7 +20,7 @@ import com.bittrade.admin.props.BitTradeProperties;
 /**
  * thread pool本地线程池组件
  * 
- * @author ourblue
+ * @author who ?
  * @date 2018-09-04
  */
 @Configuration

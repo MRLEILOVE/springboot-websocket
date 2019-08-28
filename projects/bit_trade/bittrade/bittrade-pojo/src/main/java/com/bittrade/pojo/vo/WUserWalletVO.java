@@ -22,6 +22,7 @@ public class WUserWalletVO extends BaseVO<WUserWalletVO> {
 	private String coinType;
 	private String address;
 	private String privateKey;
+	private String codeQr;
 	private Byte flag;
 	private String valid;
 	private java.time.LocalDateTime createTime;

@@ -1,5 +1,9 @@
 package com.bittrade.c2c.service.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.additional.query.impl.LambdaQueryChainWrapper;
@@ -19,6 +23,8 @@ import com.core.web.constant.exception.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import com.common.bittrade.service.ITLegalCurrencyCoinService;
+import com.core.tool.BeanUtil;
 
 import java.time.LocalDateTime;
 
@@ -70,11 +76,11 @@ public class TAdvertOrderServiceImpl extends DefaultTAdvertOrderServiceImpl<ITAd
 		Integer count = baseMapper.selectCount(new LambdaQueryWrapper<TAdvertOrder>()
 				.eq(TAdvertOrder::getAdvertId, advertId)
 				.and(advertOrder -> advertOrder
-						.eq(TAdvertOrder::getStatus, TAdvertOrder.StatusEnum.ALREADY_AUCTION.getCode())
+						.eq(TAdvertOrder::getStatus, TAdvertOrderDTO.StatusEnum.ALREADY_AUCTION.getCode())
 						.or()
-						.eq(TAdvertOrder::getStatus, TAdvertOrder.StatusEnum.ALREADY_PAID.getCode())
+						.eq(TAdvertOrder::getStatus, TAdvertOrderDTO.StatusEnum.ALREADY_PAID.getCode())
 						.or()
-						.eq(TAdvertOrder::getStatus, TAdvertOrder.StatusEnum.ALREADY_RECEIPT.getCode())
+						.eq(TAdvertOrder::getStatus, TAdvertOrderDTO.StatusEnum.ALREADY_RECEIPT.getCode())
 				)
 		);
 		return count > 0;
@@ -90,24 +96,28 @@ public class TAdvertOrderServiceImpl extends DefaultTAdvertOrderServiceImpl<ITAd
 	 * @return  {@link TAdvertOrder}
 	 */
 	@Override
-	public TAdvertOrder getAdvertOrderDetails(Long orderId) {
+	public TAdvertOrderDTO getAdvertOrderDetails(Long orderId) {
 		TAdvertOrder advertOrder = baseMapper.getByPK(orderId);
 		// 构建买家、卖家信息
-		if (advertOrder.getAdvertType().equals(TAdvertOrder.AdvertTypeEnum.SELL.getCode())) {
+		if (advertOrder.getAdvertType().equals(TAdvertOrderDTO.AdvertTypeEnum.SELL.getCode())) {
 			// 卖家信息
 			Long sellerId = advertOrder.getSellerId();
 			// TODO 构建用户信息，远程调 jd 项目
 		}
-		if (advertOrder.getAdvertType().equals(TAdvertOrder.AdvertTypeEnum.BUY.getCode())) {
+		if (advertOrder.getAdvertType().equals(TAdvertOrderDTO.AdvertTypeEnum.BUY.getCode())) {
 			// 买家信息
 			Long buyerId = advertOrder.getBuyerId();
 			// TODO 构建用户信息，远程调 jd 项目
 		}
+
+		TAdvertOrderDTO advertOrderDTO = new TAdvertOrderDTO();
+		BeanUtil.copyObj(advertOrder, advertOrderDTO);
+
 		// 币名称
-		advertOrder.setCoinName(itLegalCurrencyCoinService.getById(advertOrder.getCoinId()).getName());
+		advertOrderDTO.setCoinName(itLegalCurrencyCoinService.getById(advertOrder.getCoinId()).getName());
 		// 付款方式
-		advertOrder.setPaymentMethodId(itAdvertInfoService.getById(advertOrder.getAdvertId()).getPaymentMethodId());
-		return advertOrder;
+		advertOrderDTO.setPaymentMethodId(itAdvertInfoService.getById(advertOrder.getAdvertId()).getPaymentMethodId());
+		return advertOrderDTO;
 	}
 
 	/**

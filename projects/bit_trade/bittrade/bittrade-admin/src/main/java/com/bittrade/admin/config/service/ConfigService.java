@@ -8,7 +8,7 @@ import com.bittrade.admin.service.sys.SysConfigService;
 /**
  * config 管理
  * 
- * @author ourblue
+ * @author who ?
  *
  */
 @Service("config")

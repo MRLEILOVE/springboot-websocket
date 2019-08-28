@@ -9,9 +9,9 @@ import org.springframework.stereotype.Service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.bittrade.admin.dao.sys.SysRoleMapper;
-import com.bittrade.admin.dao.sys.SysUserMapper;
-import com.bittrade.admin.dao.sys.SysUserRoleMapper;
+import com.bittrade.admin.dao.sys.ISysRoleDAO;
+import com.bittrade.admin.dao.sys.ISysUserDAO;
+import com.bittrade.admin.dao.sys.ISysUserRoleDAO;
 import com.bittrade.admin.model.domain.SysRole;
 import com.bittrade.admin.model.domain.SysUser;
 import com.bittrade.admin.model.domain.SysUserRole;
@@ -23,16 +23,16 @@ import com.bittrade.admin.util.ConvertUtil;
  * 用户信息表 服务实现类
  * </p>
  *
- * @author ourblue
+ * @author who ?
  * @since 2018-11-03
  */
 @Service
-public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> implements SysUserService {
+public class SysUserServiceImpl extends ServiceImpl<ISysUserDAO, SysUser> implements SysUserService {
 
 	@Autowired
-	private SysRoleMapper sysRoleMapper;
+	private ISysRoleDAO sysRoleMapper;
 	@Autowired
-	private SysUserRoleMapper userRoleMapper;
+	private ISysUserRoleDAO userRoleMapper;
 
 	@Override
 	public String selectUserRoleGroup(Integer userId) {

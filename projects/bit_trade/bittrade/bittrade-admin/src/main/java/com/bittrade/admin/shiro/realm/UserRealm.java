@@ -34,7 +34,7 @@ import lombok.extern.slf4j.Slf4j;
 /**
  * realm shiro
  * 
- * @author ourblue
+ * @author who ?
  *
  */
 @Slf4j

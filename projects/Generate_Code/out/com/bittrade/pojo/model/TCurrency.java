@@ -59,16 +59,6 @@ public class TCurrency extends BaseModel<TCurrency> {
 		public static final String TYPE = "type";
 		
 		/**
-		 * 是否允许充值 0：禁止 1：允许
-		 */
-		public static final String IS_RECHARGE = "is_recharge";
-		
-		/**
-		 * 是否允许提现 0：禁止 1：允许
-		 */
-		public static final String IS_WITHDRAW = "is_withdraw";
-		
-		/**
 		 * 描述
 		 */
 		public static final String DESC = "desc";
@@ -105,16 +95,6 @@ public class TCurrency extends BaseModel<TCurrency> {
 	 * 法币:0否,1是
 	 */
 	private Byte type;
-	
-	/**
-	 * 是否允许充值 0：禁止 1：允许
-	 */
-	private Byte isRecharge;
-	
-	/**
-	 * 是否允许提现 0：禁止 1：允许
-	 */
-	private Byte isWithdraw;
 	
 	/**
 	 * 描述

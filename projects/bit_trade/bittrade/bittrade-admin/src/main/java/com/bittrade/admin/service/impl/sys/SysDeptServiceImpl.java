@@ -8,7 +8,7 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.bittrade.admin.dao.sys.SysDeptMapper;
+import com.bittrade.admin.dao.sys.ISysDeptDAO;
 import com.bittrade.admin.enums.UserEnum.UserState;
 import com.bittrade.admin.model.domain.SysDept;
 import com.bittrade.admin.model.domain.SysRole;
@@ -19,11 +19,11 @@ import com.bittrade.admin.service.sys.SysDeptService;
  * 部门表 服务实现类
  * </p>
  *
- * @author ourblue
+ * @author who ?
  * @since 2018-11-03
  */
 @Service
-public class SysDeptServiceImpl extends ServiceImpl<SysDeptMapper, SysDept> implements SysDeptService {
+public class SysDeptServiceImpl extends ServiceImpl<ISysDeptDAO, SysDept> implements SysDeptService {
 
 	@Override
 	public List<SysDept> selectDeptList(SysDept dept) {

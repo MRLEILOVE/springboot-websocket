@@ -5,7 +5,7 @@ import com.bittrade.admin.util.MessageUtil;
 /**
  * user 用户错误最大次数异常类
  * 
- * @author ourblue
+ * @author who ?
  *
  */
 public class UserPasswordRetryLimitCountException extends BusinessException {

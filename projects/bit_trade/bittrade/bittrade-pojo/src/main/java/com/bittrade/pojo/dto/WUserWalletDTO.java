@@ -22,6 +22,7 @@ public class WUserWalletDTO extends BaseDTO<WUserWalletDTO> {
 	private String coinType;
 	private String address;
 	private String privateKey;
+	private String codeQr;
 	private Byte flag;
 	private String valid;
 	private java.time.LocalDateTime createTime;

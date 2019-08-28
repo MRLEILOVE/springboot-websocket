@@ -9,8 +9,8 @@ import org.springframework.util.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.bittrade.admin.constant.GlobalConstant.UserConstant;
-import com.bittrade.admin.dao.sys.SysDictDataMapper;
-import com.bittrade.admin.dao.sys.SysDictTypeMapper;
+import com.bittrade.admin.dao.sys.ISysDictDataDAO;
+import com.bittrade.admin.dao.sys.ISysDictTypeDAO;
 import com.bittrade.admin.model.domain.SysDictType;
 import com.bittrade.admin.service.sys.SysDictTypeService;
 import com.bittrade.admin.util.ConvertUtil;
@@ -20,14 +20,14 @@ import com.bittrade.admin.util.ConvertUtil;
  * 字典类型表 服务实现类
  * </p>
  *
- * @author ourblue
+ * @author who ?
  * @since 2018-11-09
  */
 @Service
-public class SysDictTypeServiceImpl extends ServiceImpl<SysDictTypeMapper, SysDictType> implements SysDictTypeService {
+public class SysDictTypeServiceImpl extends ServiceImpl<ISysDictTypeDAO, SysDictType> implements SysDictTypeService {
 
 	@Autowired
-	private SysDictDataMapper dictDataMapper;
+	private ISysDictDataDAO dictDataMapper;
 
 	@Override
 	public Page<SysDictType> selectDictTypeList(SysDictType dictType, Page<SysDictType> page) {

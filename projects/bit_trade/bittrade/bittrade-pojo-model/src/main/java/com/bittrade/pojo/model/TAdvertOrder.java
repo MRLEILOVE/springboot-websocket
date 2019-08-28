@@ -1,12 +1,13 @@
 package com.bittrade.pojo.model;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.core.framework.base.model.BaseModel;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 import java.time.LocalDateTime;
@@ -93,7 +94,7 @@ public class TAdvertOrder extends BaseModel<TAdvertOrder> {
 		public static final String PUBLISHER_ID = "publisher_id";
 		
 		/**
-		 * 取消者ID（仅取消状态需填）
+		 * 取消者ID,系统超时取消填0（仅取消状态需填）
 		 */
 		public static final String CANCELLER_ID = "canceller_id";
 		
@@ -123,7 +124,7 @@ public class TAdvertOrder extends BaseModel<TAdvertOrder> {
 		public static final String CHARGE = "charge";
 		
 		/**
-		 * 状态（1，已拍下；2，已付款；3，已收款；5，已完成；6，已取消，7，超时关闭）
+		 * 状态（0,未操作; 1，已拍下；2，已付款；3，已收款；5，已完成；6，已取消，7，超时关闭）
 		 */
 		public static final String STATUS = "status";
 		
@@ -226,7 +227,7 @@ public class TAdvertOrder extends BaseModel<TAdvertOrder> {
 	private Long publisherId;
 	
 	/**
-	 * 取消者ID（仅取消状态需填）
+	 * 取消者ID,系统超时取消填0（仅取消状态需填）
 	 */
 	private Long cancellerId;
 	
@@ -256,7 +257,7 @@ public class TAdvertOrder extends BaseModel<TAdvertOrder> {
 	private java.math.BigDecimal charge;
 	
 	/**
-	 * 状态（1，已拍下；2，已付款；3，已收款；5，已完成；6，已取消，7，超时关闭）
+	 * 状态（0,未操作; 1，已拍下；2，已付款；3，已收款；5，已完成；6，已取消，7，超时关闭）
 	 */
 	private Integer status;
 	

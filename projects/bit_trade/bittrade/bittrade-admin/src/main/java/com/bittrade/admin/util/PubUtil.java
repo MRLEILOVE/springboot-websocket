@@ -9,7 +9,7 @@ import java.util.UUID;
 /**
  * The class Pub utils.
  *
- * @author ourblue
+ * @author who ?
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class PubUtil {
