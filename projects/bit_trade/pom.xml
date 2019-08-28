@@ -25,7 +25,8 @@
 		<module>test</module>
 		<module>bittrade</module>
 		<module>wallet</module>
-		<module>common-bittrade</module>
+		<module>common-bittrade-service</module>
+		<module>common-bittrade-web</module>
 	</modules>
 
 	<properties>
@@ -49,7 +50,12 @@
 			</dependency> -->
 			<dependency>
 				<groupId>com.bittrade</groupId>
-				<artifactId>common-bittrade</artifactId>
+				<artifactId>common-bittrade-service</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.bittrade</groupId>
+				<artifactId>common-bittrade-web</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			

@@ -10,7 +10,7 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	
-	<artifactId>common-bittrade</artifactId>
+	<artifactId>common-bittrade-web</artifactId>
 	
 	<dependencyManagement>
 		<dependencies>
@@ -31,29 +31,7 @@
 		</dependency>
 		<dependency>
 			<groupId>com.bittrade</groupId>
-			<artifactId>bittrade-pojo</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.bittrade</groupId>
-			<artifactId>bittrade-__default</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.bittrade</groupId>
-			<artifactId>bittrade-common</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.bittrade</groupId>
-			<artifactId>bittrade-currency-api</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.bittrade</groupId>
-			<artifactId>wallet-biz-api</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		
-		<dependency>
-			<groupId>com.alibaba.boot</groupId>
-			<artifactId>dubbo-spring-boot-starter</artifactId>
+			<artifactId>common-bittrade-service</artifactId>
 		</dependency>
 	</dependencies>
 
