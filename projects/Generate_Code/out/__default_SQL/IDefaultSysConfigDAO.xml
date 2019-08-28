@@ -566,5 +566,86 @@
 		</where>
 		LIMIT #{page}, #{size}
 	</select>
+	
+	<select id="getDTOBy" resultType="com.bittrade.pojo.dto.SysConfigDTO">
+		SELECT 
+			`config_id`, 
+			`config_name`, 
+			`config_key`, 
+			`config_value`, 
+			`config_type`, 
+			`create_by`, 
+			`create_time`, 
+			`update_by`, 
+			`update_time`, 
+			`remark`
+		FROM sys_config
+		<where>
+			<if test="configName != null">
+			AND `config_name` = #{configName,jdbcType=VARCHAR}
+			</if>
+			<if test="configKey != null">
+			AND `config_key` = #{configKey,jdbcType=VARCHAR}
+			</if>
+			<if test="configValue != null">
+			AND `config_value` = #{configValue,jdbcType=VARCHAR}
+			</if>
+			<if test="configType != null">
+			AND `config_type` = #{configType,jdbcType=CHAR}
+			</if>
+			<if test="createBy != null">
+			AND `create_by` = #{createBy,jdbcType=VARCHAR}
+			</if>
+			<if test="createTime != null">
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="updateBy != null">
+			AND `update_by` = #{updateBy,jdbcType=VARCHAR}
+			</if>
+			<if test="updateTime != null">
+			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="remark != null">
+			AND `remark` = #{remark,jdbcType=VARCHAR}
+			</if>
+		</where>
+		LIMIT 1
+	</select>
+	
+	<select id="getsDTOBy" resultType="com.bittrade.pojo.dto.SysConfigDTO">
+		SELECT 
+			<include refid="Base_Column_List"></include>
+		FROM sys_config
+		<where>
+			<if test="configName != null">
+			AND `config_name` = #{configName,jdbcType=VARCHAR}
+			</if>
+			<if test="configKey != null">
+			AND `config_key` = #{configKey,jdbcType=VARCHAR}
+			</if>
+			<if test="configValue != null">
+			AND `config_value` = #{configValue,jdbcType=VARCHAR}
+			</if>
+			<if test="configType != null">
+			AND `config_type` = #{configType,jdbcType=CHAR}
+			</if>
+			<if test="createBy != null">
+			AND `create_by` = #{createBy,jdbcType=VARCHAR}
+			</if>
+			<if test="createTime != null">
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="updateBy != null">
+			AND `update_by` = #{updateBy,jdbcType=VARCHAR}
+			</if>
+			<if test="updateTime != null">
+			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="remark != null">
+			AND `remark` = #{remark,jdbcType=VARCHAR}
+			</if>
+			<include refid="sql_WHERE_forProperty"></include>
+		</where>
+	</select>
 
 </mapper>

@@ -11,6 +11,7 @@ import org.apache.ibatis.annotations.Param;
 import com.bittrade.pojo.dto.WCoinDTO;
 import com.bittrade.pojo.vo.WCoinVO;
 import com.bittrade.pojo.model.WCoin;
+import com.core.common.DTO.PageDTO;
 import com.core.framework.base.DAO.IBaseDAO;
 //import com.core.framework.DTO.PageDTO;
 
@@ -127,5 +128,27 @@ public abstract interface IDefaultWCoinDAO extends IBaseDAO<WCoin, WCoinDTO, WCo
 	 * @return
 	 */
 	public List<WCoin> getsByPage(@Param(value="wCoin") WCoin wCoin, @Param(value="page") int page, @Param(value="size") int size);
+	
+	/**
+	 * 
+	 * @param wCoinDTO
+	 * @return
+	 */
+	public WCoinDTO getDTOBy(WCoinDTO wCoinDTO);
+	
+	/**
+	 * 
+	 * @param wCoinDTO
+	 * @return
+	 */
+	public List<WCoinDTO> getsDTOBy(WCoinDTO wCoinDTO);
+	
+	/**
+	 * 
+	 * @param wCoinDTO
+	 * @param pageDTO
+	 * @return
+	 */
+	public List<WCoinDTO> getsDTOBy(WCoinDTO wCoinDTO, PageDTO<WCoinDTO> pageDTO);
 	
 }

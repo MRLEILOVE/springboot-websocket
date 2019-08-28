@@ -11,6 +11,7 @@ import org.apache.ibatis.annotations.Param;
 import com.bittrade.pojo.dto.TPaymentDTO;
 import com.bittrade.pojo.vo.TPaymentVO;
 import com.bittrade.pojo.model.TPayment;
+import com.core.common.DTO.PageDTO;
 import com.core.framework.base.DAO.IBaseDAO;
 //import com.core.framework.DTO.PageDTO;
 
@@ -127,5 +128,27 @@ public abstract interface IDefaultTPaymentDAO extends IBaseDAO<TPayment, TPaymen
 	 * @return
 	 */
 	public List<TPayment> getsByPage(@Param(value="tPayment") TPayment tPayment, @Param(value="page") int page, @Param(value="size") int size);
+	
+	/**
+	 * 
+	 * @param tPaymentDTO
+	 * @return
+	 */
+	public TPaymentDTO getDTOBy(TPaymentDTO tPaymentDTO);
+	
+	/**
+	 * 
+	 * @param tPaymentDTO
+	 * @return
+	 */
+	public List<TPaymentDTO> getsDTOBy(TPaymentDTO tPaymentDTO);
+	
+	/**
+	 * 
+	 * @param tPaymentDTO
+	 * @param pageDTO
+	 * @return
+	 */
+	public List<TPaymentDTO> getsDTOBy(TPaymentDTO tPaymentDTO, PageDTO<TPaymentDTO> pageDTO);
 	
 }

@@ -11,6 +11,7 @@ import org.apache.ibatis.annotations.Param;
 import com.bittrade.pojo.dto.SysConfigDTO;
 import com.bittrade.pojo.vo.SysConfigVO;
 import com.bittrade.pojo.model.SysConfig;
+import com.core.common.DTO.PageDTO;
 import com.core.framework.base.DAO.IBaseDAO;
 //import com.core.framework.DTO.PageDTO;
 
@@ -127,5 +128,27 @@ public abstract interface IDefaultSysConfigDAO extends IBaseDAO<SysConfig, SysCo
 	 * @return
 	 */
 	public List<SysConfig> getsByPage(@Param(value="sysConfig") SysConfig sysConfig, @Param(value="page") int page, @Param(value="size") int size);
+	
+	/**
+	 * 
+	 * @param sysConfigDTO
+	 * @return
+	 */
+	public SysConfigDTO getDTOBy(SysConfigDTO sysConfigDTO);
+	
+	/**
+	 * 
+	 * @param sysConfigDTO
+	 * @return
+	 */
+	public List<SysConfigDTO> getsDTOBy(SysConfigDTO sysConfigDTO);
+	
+	/**
+	 * 
+	 * @param sysConfigDTO
+	 * @param pageDTO
+	 * @return
+	 */
+	public List<SysConfigDTO> getsDTOBy(SysConfigDTO sysConfigDTO, PageDTO<SysConfigDTO> pageDTO);
 	
 }

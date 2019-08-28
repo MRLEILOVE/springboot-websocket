@@ -1,0 +1,459 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+	This code is generated automatically. Please do not edit it.
+	现在字段也可以要彻底动态？
+-->
+<mapper namespace="com.bittrade.__default.DAO.IDefaultTRecordLogDAO">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.bittrade.pojo.model.TRecordLog">
+		<id javaType="Long" property="id" jdbcType="BIGINT" column="id" />
+		<result javaType="Byte" property="equipmentType" jdbcType="INTEGER" column="equipment_type" />
+		<result javaType="String" property="businessType" jdbcType="VARCHAR" column="business_type" />
+		<result javaType="String" property="equipmentMark" jdbcType="VARCHAR" column="equipment_mark" />
+		<result javaType="String" property="content" jdbcType="VARCHAR" column="content" />
+		<result javaType="java.time.LocalDateTime" property="createTime" jdbcType="TIMESTAMP" column="create_time" />
+	</resultMap>
+
+	<!--
+		通用查询结果列
+		其他类似的类似，也可以公用（共用）引用。
+	-->
+	<sql id="Base_Column_List">
+		<choose>
+			<when test="strArr_field != null">
+		<foreach collection="strArr_field" index="index" item="item" open="" separator="," close="">
+			`${item}`
+		</foreach>
+			</when>
+			<otherwise>
+		`id` AS `id`, 
+		`equipment_type` AS `equipmentType`, 
+		`business_type` AS `businessType`, 
+		`equipment_mark` AS `equipmentMark`, 
+		`content` AS `content`, 
+		`create_time` AS `createTime`
+			</otherwise>
+		</choose>
+	</sql>
+	
+	<!-- 其他的也可以类似的加， yes， 类似蕾丝的。 -->
+	<sql id="sql_WHERE_forProperty">
+		<choose>
+			<when test="map_in != null">
+			
+		<foreach collection="map_in.entrySet()" index="map_index" item="map_item">
+		AND `${map_index}` IN 
+		<foreach collection="map_item" index="arr_index" item="arr_item" open="(" separator="," close=")">
+			#{arr_item}
+		</foreach>
+		</foreach>
+			
+			</when>
+			<!--
+			<when test="_parameter != null and _parameter.TRecordLog != null and TRecordLog.map_in != null">
+			</when>
+			<otherwise>
+			</otherwise>
+			-->
+		</choose>
+	</sql>
+	<sql id="sql_WHERE_forObject">
+		<choose>
+			<when test="tRecordLog.map_in != null">
+			
+		<foreach collection="tRecordLog.map_in.entrySet()" index="map_index" item="map_item">
+		AND `${map_index}` IN 
+		<foreach collection="map_item" index="arr_index" item="arr_item" open="(" separator="," close=")">
+			#{arr_item}
+		</foreach>
+		</foreach>
+			
+			</when>
+		</choose>
+	</sql>
+	
+	
+	<insert id="add" parameterType="com.bittrade.pojo.model.TRecordLog" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO t_record_log(`equipment_type`, `business_type`, `equipment_mark`, `content`, `create_time`)
+		VALUES(#{equipmentType,jdbcType=INTEGER}, #{businessType,jdbcType=VARCHAR}, #{equipmentMark,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP})
+	</insert>
+	
+	<insert id="addWithSelective" parameterType="com.bittrade.pojo.model.TRecordLog" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO t_record_log(
+			<if test="equipmentType != null">
+			`equipment_type`, 
+			</if>
+			<if test="businessType != null">
+			`business_type`, 
+			</if>
+			<if test="equipmentMark != null">
+			`equipment_mark`, 
+			</if>
+			<if test="content != null">
+			`content`, 
+			</if>
+			<if test="createTime != null">
+			`create_time`
+			</if>
+		)
+		VALUES(
+			<if test="equipmentType != null">
+			#{equipmentType,jdbcType=INTEGER}, 
+			</if>
+			<if test="businessType != null">
+			#{businessType,jdbcType=VARCHAR}, 
+			</if>
+			<if test="equipmentMark != null">
+			#{equipmentMark,jdbcType=VARCHAR}, 
+			</if>
+			<if test="content != null">
+			#{content,jdbcType=VARCHAR}, 
+			</if>
+			<if test="createTime != null">
+			#{createTime,jdbcType=TIMESTAMP}
+			</if>
+		)
+	</insert>
+	
+	<delete id="removeByPK">
+		DELETE FROM t_record_log
+		<where>
+			AND `id` = #{id,jdbcType=BIGINT}
+		</where>
+	</delete>
+	
+	<delete id="removeBy" parameterType="com.bittrade.pojo.model.TRecordLog">
+		DELETE FROM t_record_log
+		<where>
+			<if test="equipmentType != null">
+			AND `equipment_type` = #{equipmentType,jdbcType=INTEGER}
+			</if>
+			<if test="businessType != null">
+			AND `business_type` = #{businessType,jdbcType=VARCHAR}
+			</if>
+			<if test="equipmentMark != null">
+			AND `equipment_mark` = #{equipmentMark,jdbcType=VARCHAR}
+			</if>
+			<if test="content != null">
+			AND `content` = #{content,jdbcType=VARCHAR}
+			</if>
+			<if test="createTime != null">
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+		</where>
+	</delete>
+	
+	<update id="modifyByPK" parameterType="com.bittrade.pojo.model.TRecordLog">
+		UPDATE t_record_log
+		<set>
+			`equipment_type` = #{equipmentType,jdbcType=INTEGER}, 
+			`business_type` = #{businessType,jdbcType=VARCHAR}, 
+			`equipment_mark` = #{equipmentMark,jdbcType=VARCHAR}, 
+			`content` = #{content,jdbcType=VARCHAR}, 
+			`create_time` = #{createTime,jdbcType=TIMESTAMP}, 
+		</set>
+		<where>
+			AND `id` = #{id,jdbcType=BIGINT}
+		</where>
+	</update>
+	
+	<update id="modifyWithSelectiveByPK" parameterType="com.bittrade.pojo.model.TRecordLog">
+		UPDATE t_record_log
+		<set>
+			<if test="equipmentType != null">
+			`equipment_type` = #{equipmentType,jdbcType=INTEGER}, 
+			</if>
+			<if test="businessType != null">
+			`business_type` = #{businessType,jdbcType=VARCHAR}, 
+			</if>
+			<if test="equipmentMark != null">
+			`equipment_mark` = #{equipmentMark,jdbcType=VARCHAR}, 
+			</if>
+			<if test="content != null">
+			`content` = #{content,jdbcType=VARCHAR}, 
+			</if>
+			<if test="createTime != null">
+			`create_time` = #{createTime,jdbcType=TIMESTAMP}, 
+			</if>
+		</set>
+		<where>
+			AND `id` = #{id,jdbcType=BIGINT}
+		</where>
+	</update>
+	
+	<update id="modifyBy">
+		UPDATE t_record_log
+		<set>
+			`equipment_type` = #{tRecordLog.equipmentType,jdbcType=INTEGER}, 
+			`business_type` = #{tRecordLog.businessType,jdbcType=VARCHAR}, 
+			`equipment_mark` = #{tRecordLog.equipmentMark,jdbcType=VARCHAR}, 
+			`content` = #{tRecordLog.content,jdbcType=VARCHAR}, 
+			`create_time` = #{tRecordLog.createTime,jdbcType=TIMESTAMP}, 
+		</set>
+		<where>
+		<if test="condiTRecordLog != null">
+			<if test="condiTRecordLog.id != null">
+			AND `id` = #{condiTRecordLog.id,jdbcType=BIGINT}
+			</if>
+			<if test="condiTRecordLog.equipmentType != null">
+			AND `equipment_type` = #{condiTRecordLog.equipmentType,jdbcType=INTEGER}
+			</if>
+			<if test="condiTRecordLog.businessType != null">
+			AND `business_type` = #{condiTRecordLog.businessType,jdbcType=VARCHAR}
+			</if>
+			<if test="condiTRecordLog.equipmentMark != null">
+			AND `equipment_mark` = #{condiTRecordLog.equipmentMark,jdbcType=VARCHAR}
+			</if>
+			<if test="condiTRecordLog.content != null">
+			AND `content` = #{condiTRecordLog.content,jdbcType=VARCHAR}
+			</if>
+			<if test="condiTRecordLog.createTime != null">
+			AND `create_time` = #{condiTRecordLog.createTime,jdbcType=TIMESTAMP}
+			</if>
+		</if>
+		</where>
+	</update>
+	
+	<update id="modifyWithSelectiveBy">
+		UPDATE t_record_log
+		<set>
+		<if test="tRecordLog != null">
+			<if test="tRecordLog.equipmentType != null">
+			`equipment_type` = #{tRecordLog.equipmentType,jdbcType=INTEGER}, 
+			</if>
+			<if test="tRecordLog.businessType != null">
+			`business_type` = #{tRecordLog.businessType,jdbcType=VARCHAR}, 
+			</if>
+			<if test="tRecordLog.equipmentMark != null">
+			`equipment_mark` = #{tRecordLog.equipmentMark,jdbcType=VARCHAR}, 
+			</if>
+			<if test="tRecordLog.content != null">
+			`content` = #{tRecordLog.content,jdbcType=VARCHAR}, 
+			</if>
+			<if test="tRecordLog.createTime != null">
+			`create_time` = #{tRecordLog.createTime,jdbcType=TIMESTAMP}, 
+			</if>
+		</if>
+		</set>
+		<where>
+		<if test="condiTRecordLog != null">
+			<if test="condiTRecordLog.id != null">
+			AND `id` = #{condiTRecordLog.id,jdbcType=BIGINT}
+			</if>
+			<if test="condiTRecordLog.equipmentType != null">
+			AND `equipment_type` = #{condiTRecordLog.equipmentType,jdbcType=INTEGER}
+			</if>
+			<if test="condiTRecordLog.businessType != null">
+			AND `business_type` = #{condiTRecordLog.businessType,jdbcType=VARCHAR}
+			</if>
+			<if test="condiTRecordLog.equipmentMark != null">
+			AND `equipment_mark` = #{condiTRecordLog.equipmentMark,jdbcType=VARCHAR}
+			</if>
+			<if test="condiTRecordLog.content != null">
+			AND `content` = #{condiTRecordLog.content,jdbcType=VARCHAR}
+			</if>
+			<if test="condiTRecordLog.createTime != null">
+			AND `create_time` = #{condiTRecordLog.createTime,jdbcType=TIMESTAMP}
+			</if>
+		</if>
+		</where>
+	</update>
+	
+	<select id="getByPK" resultType="com.bittrade.pojo.model.TRecordLog">
+		SELECT 
+			`id`, 
+			`equipment_type`, 
+			`business_type`, 
+			`equipment_mark`, 
+			`content`, 
+			`create_time`
+		FROM t_record_log
+		<where>
+			AND `id` = #{id,jdbcType=BIGINT}
+		</where>
+	</select>
+	
+	<select id="getBy" resultType="com.bittrade.pojo.model.TRecordLog">
+		SELECT 
+			`id`, 
+			`equipment_type`, 
+			`business_type`, 
+			`equipment_mark`, 
+			`content`, 
+			`create_time`
+		FROM t_record_log
+		<where>
+			<if test="equipmentType != null">
+			AND `equipment_type` = #{equipmentType,jdbcType=INTEGER}
+			</if>
+			<if test="businessType != null">
+			AND `business_type` = #{businessType,jdbcType=VARCHAR}
+			</if>
+			<if test="equipmentMark != null">
+			AND `equipment_mark` = #{equipmentMark,jdbcType=VARCHAR}
+			</if>
+			<if test="content != null">
+			AND `content` = #{content,jdbcType=VARCHAR}
+			</if>
+			<if test="createTime != null">
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+		</where>
+		LIMIT 1
+	</select>
+	
+	<select id="get" resultType="com.bittrade.pojo.model.TRecordLog">
+		SELECT 
+			`id`, 
+			`equipment_type`, 
+			`business_type`, 
+			`equipment_mark`, 
+			`content`, 
+			`create_time`
+		FROM t_record_log
+		LIMIT 1
+	</select>
+	
+	<select id="getsBy" resultType="com.bittrade.pojo.model.TRecordLog">
+		SELECT 
+			<include refid="Base_Column_List"></include>
+		FROM t_record_log
+		<where>
+			<if test="equipmentType != null">
+			AND `equipment_type` = #{equipmentType,jdbcType=INTEGER}
+			</if>
+			<if test="businessType != null">
+			AND `business_type` = #{businessType,jdbcType=VARCHAR}
+			</if>
+			<if test="equipmentMark != null">
+			AND `equipment_mark` = #{equipmentMark,jdbcType=VARCHAR}
+			</if>
+			<if test="content != null">
+			AND `content` = #{content,jdbcType=VARCHAR}
+			</if>
+			<if test="createTime != null">
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<include refid="sql_WHERE_forProperty"></include>
+		</where>
+	</select>
+	
+	<select id="gets" resultType="com.bittrade.pojo.model.TRecordLog">
+		SELECT 
+			<include refid="Base_Column_List"></include>
+		FROM t_record_log
+	</select>
+	
+	<select id="getCntBy" resultType="int">
+		SELECT COUNT(1)
+		FROM t_record_log
+		<where>
+		<if test="tRecordLog != null">
+			<if test="tRecordLog.equipmentType != null">
+			AND `equipment_type` = #{tRecordLog.equipmentType,jdbcType=INTEGER}
+			</if>
+			<if test="tRecordLog.businessType != null">
+			AND `business_type` = #{tRecordLog.businessType,jdbcType=VARCHAR}
+			</if>
+			<if test="tRecordLog.equipmentMark != null">
+			AND `equipment_mark` = #{tRecordLog.equipmentMark,jdbcType=VARCHAR}
+			</if>
+			<if test="tRecordLog.content != null">
+			AND `content` = #{tRecordLog.content,jdbcType=VARCHAR}
+			</if>
+			<if test="tRecordLog.createTime != null">
+			AND `create_time` = #{tRecordLog.createTime,jdbcType=TIMESTAMP}
+			</if>
+			<include refid="sql_WHERE_forObject"></include>
+		</if>
+		</where>
+	</select>
+	
+	<select id="getsByPage" resultType="com.bittrade.pojo.model.TRecordLog">
+		SELECT 
+			`id`, 
+			`equipment_type`, 
+			`business_type`, 
+			`equipment_mark`, 
+			`content`, 
+			`create_time`
+		FROM t_record_log
+		<where>
+		<if test="tRecordLog != null">
+			<if test="tRecordLog.equipmentType != null">
+			AND `equipment_type` = #{tRecordLog.equipmentType,jdbcType=INTEGER}
+			</if>
+			<if test="tRecordLog.businessType != null">
+			AND `business_type` = #{tRecordLog.businessType,jdbcType=VARCHAR}
+			</if>
+			<if test="tRecordLog.equipmentMark != null">
+			AND `equipment_mark` = #{tRecordLog.equipmentMark,jdbcType=VARCHAR}
+			</if>
+			<if test="tRecordLog.content != null">
+			AND `content` = #{tRecordLog.content,jdbcType=VARCHAR}
+			</if>
+			<if test="tRecordLog.createTime != null">
+			AND `create_time` = #{tRecordLog.createTime,jdbcType=TIMESTAMP}
+			</if>
+			<include refid="sql_WHERE_forObject"></include>
+		</if>
+		</where>
+		LIMIT #{page}, #{size}
+	</select>
+	
+	<select id="getDTOBy" resultType="com.bittrade.pojo.dto.TRecordLogDTO">
+		SELECT 
+			`id`, 
+			`equipment_type`, 
+			`business_type`, 
+			`equipment_mark`, 
+			`content`, 
+			`create_time`
+		FROM t_record_log
+		<where>
+			<if test="equipmentType != null">
+			AND `equipment_type` = #{equipmentType,jdbcType=INTEGER}
+			</if>
+			<if test="businessType != null">
+			AND `business_type` = #{businessType,jdbcType=VARCHAR}
+			</if>
+			<if test="equipmentMark != null">
+			AND `equipment_mark` = #{equipmentMark,jdbcType=VARCHAR}
+			</if>
+			<if test="content != null">
+			AND `content` = #{content,jdbcType=VARCHAR}
+			</if>
+			<if test="createTime != null">
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+		</where>
+		LIMIT 1
+	</select>
+	
+	<select id="getsDTOBy" resultType="com.bittrade.pojo.dto.TRecordLogDTO">
+		SELECT 
+			<include refid="Base_Column_List"></include>
+		FROM t_record_log
+		<where>
+			<if test="equipmentType != null">
+			AND `equipment_type` = #{equipmentType,jdbcType=INTEGER}
+			</if>
+			<if test="businessType != null">
+			AND `business_type` = #{businessType,jdbcType=VARCHAR}
+			</if>
+			<if test="equipmentMark != null">
+			AND `equipment_mark` = #{equipmentMark,jdbcType=VARCHAR}
+			</if>
+			<if test="content != null">
+			AND `content` = #{content,jdbcType=VARCHAR}
+			</if>
+			<if test="createTime != null">
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<include refid="sql_WHERE_forProperty"></include>
+		</where>
+	</select>
+
+</mapper>

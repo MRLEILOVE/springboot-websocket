@@ -11,6 +11,7 @@ import org.apache.ibatis.annotations.Param;
 import com.bittrade.pojo.dto.TTransferDirectionDTO;
 import com.bittrade.pojo.vo.TTransferDirectionVO;
 import com.bittrade.pojo.model.TTransferDirection;
+import com.core.common.DTO.PageDTO;
 import com.core.framework.base.DAO.IBaseDAO;
 //import com.core.framework.DTO.PageDTO;
 
@@ -127,5 +128,27 @@ public abstract interface IDefaultTTransferDirectionDAO extends IBaseDAO<TTransf
 	 * @return
 	 */
 	public List<TTransferDirection> getsByPage(@Param(value="tTransferDirection") TTransferDirection tTransferDirection, @Param(value="page") int page, @Param(value="size") int size);
+	
+	/**
+	 * 
+	 * @param tTransferDirectionDTO
+	 * @return
+	 */
+	public TTransferDirectionDTO getDTOBy(TTransferDirectionDTO tTransferDirectionDTO);
+	
+	/**
+	 * 
+	 * @param tTransferDirectionDTO
+	 * @return
+	 */
+	public List<TTransferDirectionDTO> getsDTOBy(TTransferDirectionDTO tTransferDirectionDTO);
+	
+	/**
+	 * 
+	 * @param tTransferDirectionDTO
+	 * @param pageDTO
+	 * @return
+	 */
+	public List<TTransferDirectionDTO> getsDTOBy(TTransferDirectionDTO tTransferDirectionDTO, PageDTO<TTransferDirectionDTO> pageDTO);
 	
 }

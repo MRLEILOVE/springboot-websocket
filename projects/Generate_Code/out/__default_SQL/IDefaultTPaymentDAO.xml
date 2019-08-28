@@ -386,5 +386,57 @@
 		</where>
 		LIMIT #{page}, #{size}
 	</select>
+	
+	<select id="getDTOBy" resultType="com.bittrade.pojo.dto.TPaymentDTO">
+		SELECT 
+			`id`, 
+			`pay_name_cn`, 
+			`pay_name_en`, 
+			`create_time`, 
+			`update_time`
+		FROM t_payment
+		<where>
+			<if test="id != null">
+			AND `id` = #{id,jdbcType=INTEGER}
+			</if>
+			<if test="payNameCn != null">
+			AND `pay_name_cn` = #{payNameCn,jdbcType=VARCHAR}
+			</if>
+			<if test="payNameEn != null">
+			AND `pay_name_en` = #{payNameEn,jdbcType=VARCHAR}
+			</if>
+			<if test="createTime != null">
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="updateTime != null">
+			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+		</where>
+		LIMIT 1
+	</select>
+	
+	<select id="getsDTOBy" resultType="com.bittrade.pojo.dto.TPaymentDTO">
+		SELECT 
+			<include refid="Base_Column_List"></include>
+		FROM t_payment
+		<where>
+			<if test="id != null">
+			AND `id` = #{id,jdbcType=INTEGER}
+			</if>
+			<if test="payNameCn != null">
+			AND `pay_name_cn` = #{payNameCn,jdbcType=VARCHAR}
+			</if>
+			<if test="payNameEn != null">
+			AND `pay_name_en` = #{payNameEn,jdbcType=VARCHAR}
+			</if>
+			<if test="createTime != null">
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="updateTime != null">
+			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+			<include refid="sql_WHERE_forProperty"></include>
+		</where>
+	</select>
 
 </mapper>

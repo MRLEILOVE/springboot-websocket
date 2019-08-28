@@ -443,5 +443,65 @@
 		</where>
 		LIMIT #{page}, #{size}
 	</select>
+	
+	<select id="getDTOBy" resultType="com.bittrade.pojo.dto.TCurrencyDTO">
+		SELECT 
+			`id`, 
+			`name`, 
+			`short_name`, 
+			`status`, 
+			`type`, 
+			`desc`, 
+			`create_time`
+		FROM t_currency
+		<where>
+			<if test="name != null">
+			AND `name` = #{name,jdbcType=VARCHAR}
+			</if>
+			<if test="shortName != null">
+			AND `short_name` = #{shortName,jdbcType=VARCHAR}
+			</if>
+			<if test="status != null">
+			AND `status` = #{status,jdbcType=INTEGER}
+			</if>
+			<if test="type != null">
+			AND `type` = #{type,jdbcType=INTEGER}
+			</if>
+			<if test="desc != null">
+			AND `desc` = #{desc,jdbcType=VARCHAR}
+			</if>
+			<if test="createTime != null">
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+		</where>
+		LIMIT 1
+	</select>
+	
+	<select id="getsDTOBy" resultType="com.bittrade.pojo.dto.TCurrencyDTO">
+		SELECT 
+			<include refid="Base_Column_List"></include>
+		FROM t_currency
+		<where>
+			<if test="name != null">
+			AND `name` = #{name,jdbcType=VARCHAR}
+			</if>
+			<if test="shortName != null">
+			AND `short_name` = #{shortName,jdbcType=VARCHAR}
+			</if>
+			<if test="status != null">
+			AND `status` = #{status,jdbcType=INTEGER}
+			</if>
+			<if test="type != null">
+			AND `type` = #{type,jdbcType=INTEGER}
+			</if>
+			<if test="desc != null">
+			AND `desc` = #{desc,jdbcType=VARCHAR}
+			</if>
+			<if test="createTime != null">
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<include refid="sql_WHERE_forProperty"></include>
+		</where>
+	</select>
 
 </mapper>

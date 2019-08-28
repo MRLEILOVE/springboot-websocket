@@ -11,6 +11,7 @@ import org.apache.ibatis.annotations.Param;
 import com.bittrade.pojo.dto.SysMenuDTO;
 import com.bittrade.pojo.vo.SysMenuVO;
 import com.bittrade.pojo.model.SysMenu;
+import com.core.common.DTO.PageDTO;
 import com.core.framework.base.DAO.IBaseDAO;
 //import com.core.framework.DTO.PageDTO;
 
@@ -127,5 +128,27 @@ public abstract interface IDefaultSysMenuDAO extends IBaseDAO<SysMenu, SysMenuDT
 	 * @return
 	 */
 	public List<SysMenu> getsByPage(@Param(value="sysMenu") SysMenu sysMenu, @Param(value="page") int page, @Param(value="size") int size);
+	
+	/**
+	 * 
+	 * @param sysMenuDTO
+	 * @return
+	 */
+	public SysMenuDTO getDTOBy(SysMenuDTO sysMenuDTO);
+	
+	/**
+	 * 
+	 * @param sysMenuDTO
+	 * @return
+	 */
+	public List<SysMenuDTO> getsDTOBy(SysMenuDTO sysMenuDTO);
+	
+	/**
+	 * 
+	 * @param sysMenuDTO
+	 * @param pageDTO
+	 * @return
+	 */
+	public List<SysMenuDTO> getsDTOBy(SysMenuDTO sysMenuDTO, PageDTO<SysMenuDTO> pageDTO);
 	
 }

@@ -4,10 +4,10 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
 
+import javax.annotation.Resource;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.util.CollectionUtils;
 import org.springframework.validation.annotation.Validated;
@@ -26,6 +26,7 @@ import com.bittrade.pojo.dto.TAdvertOrderDTO;
 import com.bittrade.pojo.model.TAdvertInfo;
 import com.bittrade.pojo.vo.AdvertUserVO;
 import com.bittrade.pojo.vo.QueryAdvertVO;
+//git.dev.tencent.com/ha_sir/git.git
 import com.bittrade.pojo.vo.TAdvertInfoVO;
 import com.core.common.DTO.PageDTO;
 import com.core.common.DTO.ReturnDTO;
@@ -46,7 +47,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping(value = { "/tAdvertInfo" }, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class TAdvertInfoController extends BaseController<TAdvertInfo, TAdvertInfoDTO, TAdvertInfoVO, ITAdvertInfoService> {
 
-	@Autowired
+	@Resource
 	private ITAdvertInfoService itAdvertInfoService;
 
 	/**
@@ -56,16 +57,16 @@ public class TAdvertInfoController extends BaseController<TAdvertInfo, TAdvertIn
 	 * <br/>
 	 * create time: 2019/8/19 14:43
 	 * @param user {@link LoginUser}
-	 * @param advertInfoDTO {@link TAdvertInfoDTO}
+	 * @param tAdvertInfoDTO {@link TAdvertInfoDTO}
 	 * @return result
 	 */
 	@PostMapping("/action/publish_advert")
-	public ReturnDTO<Object> publishAdvert(@ALoginUser LoginUser user, @Validated TAdvertInfoDTO advertInfoDTO) {
+	public ReturnDTO<Object> publishAdvert(@ALoginUser LoginUser user, @Validated TAdvertInfoDTO tAdvertInfoDTO) {
 		// 最大限额需大于最小限额
-		if (advertInfoDTO.getMaxLimit().compareTo(advertInfoDTO.getMinLimit()) < 0) {
+		if (tAdvertInfoDTO.getMaxLimit().compareTo(tAdvertInfoDTO.getMinLimit()) < 0) {
 			return ReturnDTO.error("單筆最大限額需大於最小限額");
 		}
-		boolean result = itAdvertInfoService.publishAdvert(user, advertInfoDTO);
+		boolean result = itAdvertInfoService.publishAdvert(user, tAdvertInfoDTO);
 		return result ? ReturnDTO.ok("發布成功") : ReturnDTO.error("發布失敗");
 	}
 

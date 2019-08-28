@@ -3,7 +3,7 @@
 <mapper namespace="com.wallet.biz.dao.IWConfigWalletDAO">
 
 	<!-- 通用查询映射结果 -->
-	<resultMap id="BaseResultMap" type="com.wallet.biz.pojo.model.WConfigWallet">
+	<resultMap id="BaseResultMap" type="com.bittrade.pojo.model.WConfigWallet">
 		<id javaType="int" property="id" jdbcType="INTEGER" column="id" />
 		<result javaType="String" property="coinType" jdbcType="VARCHAR" column="coin_type" />
 		<result javaType="String" property="walletType" jdbcType="VARCHAR" column="wallet_type" />

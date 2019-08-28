@@ -11,6 +11,7 @@ import org.apache.ibatis.annotations.Param;
 import com.bittrade.pojo.dto.TAdvertInfoDTO;
 import com.bittrade.pojo.vo.TAdvertInfoVO;
 import com.bittrade.pojo.model.TAdvertInfo;
+import com.core.common.DTO.PageDTO;
 import com.core.framework.base.DAO.IBaseDAO;
 //import com.core.framework.DTO.PageDTO;
 
@@ -127,5 +128,27 @@ public abstract interface IDefaultTAdvertInfoDAO extends IBaseDAO<TAdvertInfo, T
 	 * @return
 	 */
 	public List<TAdvertInfo> getsByPage(@Param(value="tAdvertInfo") TAdvertInfo tAdvertInfo, @Param(value="page") int page, @Param(value="size") int size);
+	
+	/**
+	 * 
+	 * @param tAdvertInfoDTO
+	 * @return
+	 */
+	public TAdvertInfoDTO getDTOBy(TAdvertInfoDTO tAdvertInfoDTO);
+	
+	/**
+	 * 
+	 * @param tAdvertInfoDTO
+	 * @return
+	 */
+	public List<TAdvertInfoDTO> getsDTOBy(TAdvertInfoDTO tAdvertInfoDTO);
+	
+	/**
+	 * 
+	 * @param tAdvertInfoDTO
+	 * @param pageDTO
+	 * @return
+	 */
+	public List<TAdvertInfoDTO> getsDTOBy(TAdvertInfoDTO tAdvertInfoDTO, PageDTO<TAdvertInfoDTO> pageDTO);
 	
 }

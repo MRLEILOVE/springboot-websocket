@@ -11,6 +11,7 @@ import org.apache.ibatis.annotations.Param;
 import com.bittrade.pojo.dto.SysUserDTO;
 import com.bittrade.pojo.vo.SysUserVO;
 import com.bittrade.pojo.model.SysUser;
+import com.core.common.DTO.PageDTO;
 import com.core.framework.base.DAO.IBaseDAO;
 //import com.core.framework.DTO.PageDTO;
 
@@ -127,5 +128,27 @@ public abstract interface IDefaultSysUserDAO extends IBaseDAO<SysUser, SysUserDT
 	 * @return
 	 */
 	public List<SysUser> getsByPage(@Param(value="sysUser") SysUser sysUser, @Param(value="page") int page, @Param(value="size") int size);
+	
+	/**
+	 * 
+	 * @param sysUserDTO
+	 * @return
+	 */
+	public SysUserDTO getDTOBy(SysUserDTO sysUserDTO);
+	
+	/**
+	 * 
+	 * @param sysUserDTO
+	 * @return
+	 */
+	public List<SysUserDTO> getsDTOBy(SysUserDTO sysUserDTO);
+	
+	/**
+	 * 
+	 * @param sysUserDTO
+	 * @param pageDTO
+	 * @return
+	 */
+	public List<SysUserDTO> getsDTOBy(SysUserDTO sysUserDTO, PageDTO<SysUserDTO> pageDTO);
 	
 }

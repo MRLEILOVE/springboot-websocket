@@ -692,5 +692,102 @@
 		</where>
 		LIMIT #{page}, #{size}
 	</select>
+	
+	<select id="getDTOBy" resultType="com.bittrade.pojo.dto.SysJobDTO">
+		SELECT 
+			`job_id`, 
+			`job_name`, 
+			`job_group`, 
+			`method_name`, 
+			`method_params`, 
+			`cron_expression`, 
+			`misfire_policy`, 
+			`concurrent`, 
+			`status`, 
+			`create_by`, 
+			`create_time`, 
+			`update_by`, 
+			`update_time`, 
+			`remark`
+		FROM sys_job
+		<where>
+			<if test="methodName != null">
+			AND `method_name` = #{methodName,jdbcType=VARCHAR}
+			</if>
+			<if test="methodParams != null">
+			AND `method_params` = #{methodParams,jdbcType=VARCHAR}
+			</if>
+			<if test="cronExpression != null">
+			AND `cron_expression` = #{cronExpression,jdbcType=VARCHAR}
+			</if>
+			<if test="misfirePolicy != null">
+			AND `misfire_policy` = #{misfirePolicy,jdbcType=VARCHAR}
+			</if>
+			<if test="concurrent != null">
+			AND `concurrent` = #{concurrent,jdbcType=CHAR}
+			</if>
+			<if test="status != null">
+			AND `status` = #{status,jdbcType=CHAR}
+			</if>
+			<if test="createBy != null">
+			AND `create_by` = #{createBy,jdbcType=VARCHAR}
+			</if>
+			<if test="createTime != null">
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="updateBy != null">
+			AND `update_by` = #{updateBy,jdbcType=VARCHAR}
+			</if>
+			<if test="updateTime != null">
+			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="remark != null">
+			AND `remark` = #{remark,jdbcType=VARCHAR}
+			</if>
+		</where>
+		LIMIT 1
+	</select>
+	
+	<select id="getsDTOBy" resultType="com.bittrade.pojo.dto.SysJobDTO">
+		SELECT 
+			<include refid="Base_Column_List"></include>
+		FROM sys_job
+		<where>
+			<if test="methodName != null">
+			AND `method_name` = #{methodName,jdbcType=VARCHAR}
+			</if>
+			<if test="methodParams != null">
+			AND `method_params` = #{methodParams,jdbcType=VARCHAR}
+			</if>
+			<if test="cronExpression != null">
+			AND `cron_expression` = #{cronExpression,jdbcType=VARCHAR}
+			</if>
+			<if test="misfirePolicy != null">
+			AND `misfire_policy` = #{misfirePolicy,jdbcType=VARCHAR}
+			</if>
+			<if test="concurrent != null">
+			AND `concurrent` = #{concurrent,jdbcType=CHAR}
+			</if>
+			<if test="status != null">
+			AND `status` = #{status,jdbcType=CHAR}
+			</if>
+			<if test="createBy != null">
+			AND `create_by` = #{createBy,jdbcType=VARCHAR}
+			</if>
+			<if test="createTime != null">
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="updateBy != null">
+			AND `update_by` = #{updateBy,jdbcType=VARCHAR}
+			</if>
+			<if test="updateTime != null">
+			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="remark != null">
+			AND `remark` = #{remark,jdbcType=VARCHAR}
+			</if>
+			<include refid="sql_WHERE_forProperty"></include>
+		</where>
+	</select>
 
 </mapper>

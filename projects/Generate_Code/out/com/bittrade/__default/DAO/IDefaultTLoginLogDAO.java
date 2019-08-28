@@ -11,6 +11,7 @@ import org.apache.ibatis.annotations.Param;
 import com.bittrade.pojo.dto.TLoginLogDTO;
 import com.bittrade.pojo.vo.TLoginLogVO;
 import com.bittrade.pojo.model.TLoginLog;
+import com.core.common.DTO.PageDTO;
 import com.core.framework.base.DAO.IBaseDAO;
 //import com.core.framework.DTO.PageDTO;
 
@@ -127,5 +128,27 @@ public abstract interface IDefaultTLoginLogDAO extends IBaseDAO<TLoginLog, TLogi
 	 * @return
 	 */
 	public List<TLoginLog> getsByPage(@Param(value="tLoginLog") TLoginLog tLoginLog, @Param(value="page") int page, @Param(value="size") int size);
+	
+	/**
+	 * 
+	 * @param tLoginLogDTO
+	 * @return
+	 */
+	public TLoginLogDTO getDTOBy(TLoginLogDTO tLoginLogDTO);
+	
+	/**
+	 * 
+	 * @param tLoginLogDTO
+	 * @return
+	 */
+	public List<TLoginLogDTO> getsDTOBy(TLoginLogDTO tLoginLogDTO);
+	
+	/**
+	 * 
+	 * @param tLoginLogDTO
+	 * @param pageDTO
+	 * @return
+	 */
+	public List<TLoginLogDTO> getsDTOBy(TLoginLogDTO tLoginLogDTO, PageDTO<TLoginLogDTO> pageDTO);
 	
 }

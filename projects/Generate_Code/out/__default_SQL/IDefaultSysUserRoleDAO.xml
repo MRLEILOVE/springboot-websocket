@@ -225,5 +225,24 @@
 		</where>
 		LIMIT #{page}, #{size}
 	</select>
+	
+	<select id="getDTOBy" resultType="com.bittrade.pojo.dto.SysUserRoleDTO">
+		SELECT 
+			`user_id`, 
+			`role_id`, 
+		FROM sys_user_role
+		<where>
+		</where>
+		LIMIT 1
+	</select>
+	
+	<select id="getsDTOBy" resultType="com.bittrade.pojo.dto.SysUserRoleDTO">
+		SELECT 
+			<include refid="Base_Column_List"></include>
+		FROM sys_user_role
+		<where>
+			<include refid="sql_WHERE_forProperty"></include>
+		</where>
+	</select>
 
 </mapper>

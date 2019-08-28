@@ -11,6 +11,7 @@ import org.apache.ibatis.annotations.Param;
 import com.bittrade.pojo.dto.TAccountManageDTO;
 import com.bittrade.pojo.vo.TAccountManageVO;
 import com.bittrade.pojo.model.TAccountManage;
+import com.core.common.DTO.PageDTO;
 import com.core.framework.base.DAO.IBaseDAO;
 //import com.core.framework.DTO.PageDTO;
 
@@ -127,5 +128,27 @@ public abstract interface IDefaultTAccountManageDAO extends IBaseDAO<TAccountMan
 	 * @return
 	 */
 	public List<TAccountManage> getsByPage(@Param(value="tAccountManage") TAccountManage tAccountManage, @Param(value="page") int page, @Param(value="size") int size);
+	
+	/**
+	 * 
+	 * @param tAccountManageDTO
+	 * @return
+	 */
+	public TAccountManageDTO getDTOBy(TAccountManageDTO tAccountManageDTO);
+	
+	/**
+	 * 
+	 * @param tAccountManageDTO
+	 * @return
+	 */
+	public List<TAccountManageDTO> getsDTOBy(TAccountManageDTO tAccountManageDTO);
+	
+	/**
+	 * 
+	 * @param tAccountManageDTO
+	 * @param pageDTO
+	 * @return
+	 */
+	public List<TAccountManageDTO> getsDTOBy(TAccountManageDTO tAccountManageDTO, PageDTO<TAccountManageDTO> pageDTO);
 	
 }

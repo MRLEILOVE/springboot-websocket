@@ -11,6 +11,7 @@ import org.apache.ibatis.annotations.Param;
 import com.bittrade.pojo.dto.SysLogininforDTO;
 import com.bittrade.pojo.vo.SysLogininforVO;
 import com.bittrade.pojo.model.SysLogininfor;
+import com.core.common.DTO.PageDTO;
 import com.core.framework.base.DAO.IBaseDAO;
 //import com.core.framework.DTO.PageDTO;
 
@@ -127,5 +128,27 @@ public abstract interface IDefaultSysLogininforDAO extends IBaseDAO<SysLogininfo
 	 * @return
 	 */
 	public List<SysLogininfor> getsByPage(@Param(value="sysLogininfor") SysLogininfor sysLogininfor, @Param(value="page") int page, @Param(value="size") int size);
+	
+	/**
+	 * 
+	 * @param sysLogininforDTO
+	 * @return
+	 */
+	public SysLogininforDTO getDTOBy(SysLogininforDTO sysLogininforDTO);
+	
+	/**
+	 * 
+	 * @param sysLogininforDTO
+	 * @return
+	 */
+	public List<SysLogininforDTO> getsDTOBy(SysLogininforDTO sysLogininforDTO);
+	
+	/**
+	 * 
+	 * @param sysLogininforDTO
+	 * @param pageDTO
+	 * @return
+	 */
+	public List<SysLogininforDTO> getsDTOBy(SysLogininforDTO sysLogininforDTO, PageDTO<SysLogininforDTO> pageDTO);
 	
 }

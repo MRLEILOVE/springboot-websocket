@@ -1,7 +1,10 @@
 package com.bittrade.c2c.dao;
 
-import com.bittrade.__default.DAO.IDefaultTAdvertOrderDAO;
 import org.apache.ibatis.annotations.Param;
+
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.bittrade.__default.DAO.IDefaultTAdvertOrderDAO;
+import com.bittrade.pojo.model.TAdvertOrder;
 
 /**
  * @author Administrator
@@ -9,4 +12,6 @@ import org.apache.ibatis.annotations.Param;
 public interface ITAdvertOrderDAO extends IDefaultTAdvertOrderDAO {
 
 	Long getPaymentOrPutCoinAging(@Param("userId") Long userId, @Param("type") Byte type, @Param("status") Byte status);
+
+    Page<TAdvertOrder> listAdvertOrders(@Param("page") Page<TAdvertOrder> page, @Param("userId") Long userId, @Param("status") Byte status);
 }

@@ -894,5 +894,142 @@
 		</where>
 		LIMIT #{page}, #{size}
 	</select>
+	
+	<select id="getDTOBy" resultType="com.bittrade.pojo.dto.TUserAccountDTO">
+		SELECT 
+			`id`, 
+			`user_id`, 
+			`login_name`, 
+			`real_name`, 
+			`fhas_real_Validate`, 
+			`balance`, 
+			`balance_token`, 
+			`frozen_amount`, 
+			`total_deposits`, 
+			`total_recharge_token`, 
+			`total_withdrawals`, 
+			`used_margin`, 
+			`used_token`, 
+			`token_number`, 
+			`internal_account`, 
+			`version`, 
+			`create_time`, 
+			`update_time`
+		FROM t_user_account
+		<where>
+			<if test="userId != null">
+			AND `user_id` = #{userId,jdbcType=BIGINT}
+			</if>
+			<if test="loginName != null">
+			AND `login_name` = #{loginName,jdbcType=VARCHAR}
+			</if>
+			<if test="realName != null">
+			AND `real_name` = #{realName,jdbcType=VARCHAR}
+			</if>
+			<if test="fhasRealValidate != null">
+			AND `fhas_real_Validate` = #{fhasRealValidate,jdbcType=INTEGER}
+			</if>
+			<if test="balance != null">
+			AND `balance` = #{balance,jdbcType=DECIMAL}
+			</if>
+			<if test="balanceToken != null">
+			AND `balance_token` = #{balanceToken,jdbcType=DECIMAL}
+			</if>
+			<if test="frozenAmount != null">
+			AND `frozen_amount` = #{frozenAmount,jdbcType=DECIMAL}
+			</if>
+			<if test="totalDeposits != null">
+			AND `total_deposits` = #{totalDeposits,jdbcType=DECIMAL}
+			</if>
+			<if test="totalRechargeToken != null">
+			AND `total_recharge_token` = #{totalRechargeToken,jdbcType=DECIMAL}
+			</if>
+			<if test="totalWithdrawals != null">
+			AND `total_withdrawals` = #{totalWithdrawals,jdbcType=DECIMAL}
+			</if>
+			<if test="usedMargin != null">
+			AND `used_margin` = #{usedMargin,jdbcType=DECIMAL}
+			</if>
+			<if test="usedToken != null">
+			AND `used_token` = #{usedToken,jdbcType=DECIMAL}
+			</if>
+			<if test="tokenNumber != null">
+			AND `token_number` = #{tokenNumber,jdbcType=INTEGER}
+			</if>
+			<if test="internalAccount != null">
+			AND `internal_account` = #{internalAccount,jdbcType=INTEGER}
+			</if>
+			<if test="version != null">
+			AND `version` = #{version,jdbcType=INTEGER}
+			</if>
+			<if test="createTime != null">
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="updateTime != null">
+			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+		</where>
+		LIMIT 1
+	</select>
+	
+	<select id="getsDTOBy" resultType="com.bittrade.pojo.dto.TUserAccountDTO">
+		SELECT 
+			<include refid="Base_Column_List"></include>
+		FROM t_user_account
+		<where>
+			<if test="userId != null">
+			AND `user_id` = #{userId,jdbcType=BIGINT}
+			</if>
+			<if test="loginName != null">
+			AND `login_name` = #{loginName,jdbcType=VARCHAR}
+			</if>
+			<if test="realName != null">
+			AND `real_name` = #{realName,jdbcType=VARCHAR}
+			</if>
+			<if test="fhasRealValidate != null">
+			AND `fhas_real_Validate` = #{fhasRealValidate,jdbcType=INTEGER}
+			</if>
+			<if test="balance != null">
+			AND `balance` = #{balance,jdbcType=DECIMAL}
+			</if>
+			<if test="balanceToken != null">
+			AND `balance_token` = #{balanceToken,jdbcType=DECIMAL}
+			</if>
+			<if test="frozenAmount != null">
+			AND `frozen_amount` = #{frozenAmount,jdbcType=DECIMAL}
+			</if>
+			<if test="totalDeposits != null">
+			AND `total_deposits` = #{totalDeposits,jdbcType=DECIMAL}
+			</if>
+			<if test="totalRechargeToken != null">
+			AND `total_recharge_token` = #{totalRechargeToken,jdbcType=DECIMAL}
+			</if>
+			<if test="totalWithdrawals != null">
+			AND `total_withdrawals` = #{totalWithdrawals,jdbcType=DECIMAL}
+			</if>
+			<if test="usedMargin != null">
+			AND `used_margin` = #{usedMargin,jdbcType=DECIMAL}
+			</if>
+			<if test="usedToken != null">
+			AND `used_token` = #{usedToken,jdbcType=DECIMAL}
+			</if>
+			<if test="tokenNumber != null">
+			AND `token_number` = #{tokenNumber,jdbcType=INTEGER}
+			</if>
+			<if test="internalAccount != null">
+			AND `internal_account` = #{internalAccount,jdbcType=INTEGER}
+			</if>
+			<if test="version != null">
+			AND `version` = #{version,jdbcType=INTEGER}
+			</if>
+			<if test="createTime != null">
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="updateTime != null">
+			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+			<include refid="sql_WHERE_forProperty"></include>
+		</where>
+	</select>
 
 </mapper>

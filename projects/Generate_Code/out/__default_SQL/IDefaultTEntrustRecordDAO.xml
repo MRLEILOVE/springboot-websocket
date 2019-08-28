@@ -736,5 +736,114 @@
 		</where>
 		LIMIT #{page}, #{size}
 	</select>
+	
+	<select id="getDTOBy" resultType="com.bittrade.pojo.dto.TEntrustRecordDTO">
+		SELECT 
+			`id`, 
+			`user_id`, 
+			`rival_user_id`, 
+			`entrust_id`, 
+			`rival_entrust_id`, 
+			`amount`, 
+			`price`, 
+			`count`, 
+			`rate`, 
+			`fees`, 
+			`currency_trade_id`, 
+			`is_active`, 
+			`entrust_direction`, 
+			`create_time`
+		FROM t_entrust_record
+		<where>
+			<if test="userId != null">
+			AND `user_id` = #{userId,jdbcType=BIGINT}
+			</if>
+			<if test="rivalUserId != null">
+			AND `rival_user_id` = #{rivalUserId,jdbcType=BIGINT}
+			</if>
+			<if test="entrustId != null">
+			AND `entrust_id` = #{entrustId,jdbcType=BIGINT}
+			</if>
+			<if test="rivalEntrustId != null">
+			AND `rival_entrust_id` = #{rivalEntrustId,jdbcType=BIGINT}
+			</if>
+			<if test="amount != null">
+			AND `amount` = #{amount,jdbcType=DECIMAL}
+			</if>
+			<if test="price != null">
+			AND `price` = #{price,jdbcType=DECIMAL}
+			</if>
+			<if test="count != null">
+			AND `count` = #{count,jdbcType=DECIMAL}
+			</if>
+			<if test="rate != null">
+			AND `rate` = #{rate,jdbcType=DECIMAL}
+			</if>
+			<if test="fees != null">
+			AND `fees` = #{fees,jdbcType=DECIMAL}
+			</if>
+			<if test="currencyTradeId != null">
+			AND `currency_trade_id` = #{currencyTradeId,jdbcType=INTEGER}
+			</if>
+			<if test="isActive != null">
+			AND `is_active` = #{isActive,jdbcType=INTEGER}
+			</if>
+			<if test="entrustDirection != null">
+			AND `entrust_direction` = #{entrustDirection,jdbcType=INTEGER}
+			</if>
+			<if test="createTime != null">
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+		</where>
+		LIMIT 1
+	</select>
+	
+	<select id="getsDTOBy" resultType="com.bittrade.pojo.dto.TEntrustRecordDTO">
+		SELECT 
+			<include refid="Base_Column_List"></include>
+		FROM t_entrust_record
+		<where>
+			<if test="userId != null">
+			AND `user_id` = #{userId,jdbcType=BIGINT}
+			</if>
+			<if test="rivalUserId != null">
+			AND `rival_user_id` = #{rivalUserId,jdbcType=BIGINT}
+			</if>
+			<if test="entrustId != null">
+			AND `entrust_id` = #{entrustId,jdbcType=BIGINT}
+			</if>
+			<if test="rivalEntrustId != null">
+			AND `rival_entrust_id` = #{rivalEntrustId,jdbcType=BIGINT}
+			</if>
+			<if test="amount != null">
+			AND `amount` = #{amount,jdbcType=DECIMAL}
+			</if>
+			<if test="price != null">
+			AND `price` = #{price,jdbcType=DECIMAL}
+			</if>
+			<if test="count != null">
+			AND `count` = #{count,jdbcType=DECIMAL}
+			</if>
+			<if test="rate != null">
+			AND `rate` = #{rate,jdbcType=DECIMAL}
+			</if>
+			<if test="fees != null">
+			AND `fees` = #{fees,jdbcType=DECIMAL}
+			</if>
+			<if test="currencyTradeId != null">
+			AND `currency_trade_id` = #{currencyTradeId,jdbcType=INTEGER}
+			</if>
+			<if test="isActive != null">
+			AND `is_active` = #{isActive,jdbcType=INTEGER}
+			</if>
+			<if test="entrustDirection != null">
+			AND `entrust_direction` = #{entrustDirection,jdbcType=INTEGER}
+			</if>
+			<if test="createTime != null">
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<include refid="sql_WHERE_forProperty"></include>
+		</where>
+	</select>
 
 </mapper>

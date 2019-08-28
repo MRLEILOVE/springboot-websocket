@@ -11,6 +11,7 @@ import org.apache.ibatis.annotations.Param;
 import com.bittrade.pojo.dto.TAcceptDealerDTO;
 import com.bittrade.pojo.vo.TAcceptDealerVO;
 import com.bittrade.pojo.model.TAcceptDealer;
+import com.core.common.DTO.PageDTO;
 import com.core.framework.base.DAO.IBaseDAO;
 //import com.core.framework.DTO.PageDTO;
 
@@ -127,5 +128,27 @@ public abstract interface IDefaultTAcceptDealerDAO extends IBaseDAO<TAcceptDeale
 	 * @return
 	 */
 	public List<TAcceptDealer> getsByPage(@Param(value="tAcceptDealer") TAcceptDealer tAcceptDealer, @Param(value="page") int page, @Param(value="size") int size);
+	
+	/**
+	 * 
+	 * @param tAcceptDealerDTO
+	 * @return
+	 */
+	public TAcceptDealerDTO getDTOBy(TAcceptDealerDTO tAcceptDealerDTO);
+	
+	/**
+	 * 
+	 * @param tAcceptDealerDTO
+	 * @return
+	 */
+	public List<TAcceptDealerDTO> getsDTOBy(TAcceptDealerDTO tAcceptDealerDTO);
+	
+	/**
+	 * 
+	 * @param tAcceptDealerDTO
+	 * @param pageDTO
+	 * @return
+	 */
+	public List<TAcceptDealerDTO> getsDTOBy(TAcceptDealerDTO tAcceptDealerDTO, PageDTO<TAcceptDealerDTO> pageDTO);
 	
 }

@@ -31,7 +31,40 @@ import lombok.Getter;
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class TAdvertInfoDTO extends BaseDTO<TAdvertInfoDTO> {
-	
+
+	private static final long serialVersionUID = 8964978986850395893L;
+
+	/**
+	 * 用户id
+	 */
+	private Long userId;
+
+	/**
+	 * 币名称
+	 */
+	private String coinName;
+
+	/**
+	 * c2c已成交数量
+	 */
+	private Integer c2cAlreadyDealCount;
+
+	/**
+	 * c2c总成交数量
+	 */
+	private Integer c2cTotalCount;
+
+	/**
+	 * c2c成交率
+	 */
+	private BigDecimal c2cTurnoverRate;
+
+	/**
+	 * 付款失效或放币时效
+	 */
+	private Long paymentOrPutCoinAging;
+
+
 	/**
 	 * 广告类型
 	 * <br/>
@@ -198,7 +231,7 @@ public class TAdvertInfoDTO extends BaseDTO<TAdvertInfoDTO> {
 	 */
 	@NotNull(message = "type cannot be null")
 	@CheckEnumValue(enumClass = AdvertTypeEnum.class, enumMethod = "isValidAdvertType")
-	private Byte type;
+	private Byte advertType;
 
 	/**
 	 * 定价方式 1：固定价格 2：浮动价格
@@ -308,7 +341,7 @@ public class TAdvertInfoDTO extends BaseDTO<TAdvertInfoDTO> {
 	 * create time: 2019/8/20 13:01
 	 */
 	public Boolean isBuyType() {
-		return Objects.equals(TAdvertInfoDTO.AdvertTypeEnum.BUY.getCode(), this.type);
+		return Objects.equals(TAdvertInfoDTO.AdvertTypeEnum.BUY.getCode(), this.advertType);
 	}
 
 	/**
@@ -319,7 +352,7 @@ public class TAdvertInfoDTO extends BaseDTO<TAdvertInfoDTO> {
 	 * create time: 2019/8/20 13:01
 	 */
 	public Boolean isSellType() {
-		return Objects.equals(TAdvertInfoDTO.AdvertTypeEnum.SELL.getCode(), this.type);
+		return Objects.equals(TAdvertInfoDTO.AdvertTypeEnum.SELL.getCode(), this.advertType);
 	}
 
 	/**
@@ -332,36 +365,9 @@ public class TAdvertInfoDTO extends BaseDTO<TAdvertInfoDTO> {
 	public Boolean isFloatingPrice() {
 		return Objects.equals(PricingModeEnum.FLOAT.getCode(), this.pricingMode);
 	}
-	
-	/**
-	 * 币名称
-	 */
-	private String coinName;
-
-	/**
-	 * c2c已成交数量
-	 */
-	private Integer c2cAlreadyDealCount;
-
-	/**
-	 * c2c总成交数量
-	 */
-	private Integer c2cTotalCount;
-
-	/**
-	 * c2c成交率
-	 */
-	private BigDecimal c2cTurnoverRate;
-
-	/**
-	 * 付款失效或放币时效
-	 */
-	private Long paymentOrPutCoinAging;
-
-	private static final long serialVersionUID = 1L;
 
 //	private Long id;
-	private Long userId;
+//	private Long userId;
 //	private Long coinId;
 //	private Integer type;
 //	private Integer pricingMode;

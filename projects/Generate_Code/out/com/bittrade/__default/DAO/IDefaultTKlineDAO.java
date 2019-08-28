@@ -11,6 +11,7 @@ import org.apache.ibatis.annotations.Param;
 import com.bittrade.pojo.dto.TKlineDTO;
 import com.bittrade.pojo.vo.TKlineVO;
 import com.bittrade.pojo.model.TKline;
+import com.core.common.DTO.PageDTO;
 import com.core.framework.base.DAO.IBaseDAO;
 //import com.core.framework.DTO.PageDTO;
 
@@ -127,5 +128,27 @@ public abstract interface IDefaultTKlineDAO extends IBaseDAO<TKline, TKlineDTO, 
 	 * @return
 	 */
 	public List<TKline> getsByPage(@Param(value="tKline") TKline tKline, @Param(value="page") int page, @Param(value="size") int size);
+	
+	/**
+	 * 
+	 * @param tKlineDTO
+	 * @return
+	 */
+	public TKlineDTO getDTOBy(TKlineDTO tKlineDTO);
+	
+	/**
+	 * 
+	 * @param tKlineDTO
+	 * @return
+	 */
+	public List<TKlineDTO> getsDTOBy(TKlineDTO tKlineDTO);
+	
+	/**
+	 * 
+	 * @param tKlineDTO
+	 * @param pageDTO
+	 * @return
+	 */
+	public List<TKlineDTO> getsDTOBy(TKlineDTO tKlineDTO, PageDTO<TKlineDTO> pageDTO);
 	
 }

@@ -11,6 +11,7 @@ import org.apache.ibatis.annotations.Param;
 import com.bittrade.pojo.dto.TUserCapitalAccountRecordDTO;
 import com.bittrade.pojo.vo.TUserCapitalAccountRecordVO;
 import com.bittrade.pojo.model.TUserCapitalAccountRecord;
+import com.core.common.DTO.PageDTO;
 import com.core.framework.base.DAO.IBaseDAO;
 //import com.core.framework.DTO.PageDTO;
 
@@ -127,5 +128,27 @@ public abstract interface IDefaultTUserCapitalAccountRecordDAO extends IBaseDAO<
 	 * @return
 	 */
 	public List<TUserCapitalAccountRecord> getsByPage(@Param(value="tUserCapitalAccountRecord") TUserCapitalAccountRecord tUserCapitalAccountRecord, @Param(value="page") int page, @Param(value="size") int size);
+	
+	/**
+	 * 
+	 * @param tUserCapitalAccountRecordDTO
+	 * @return
+	 */
+	public TUserCapitalAccountRecordDTO getDTOBy(TUserCapitalAccountRecordDTO tUserCapitalAccountRecordDTO);
+	
+	/**
+	 * 
+	 * @param tUserCapitalAccountRecordDTO
+	 * @return
+	 */
+	public List<TUserCapitalAccountRecordDTO> getsDTOBy(TUserCapitalAccountRecordDTO tUserCapitalAccountRecordDTO);
+	
+	/**
+	 * 
+	 * @param tUserCapitalAccountRecordDTO
+	 * @param pageDTO
+	 * @return
+	 */
+	public List<TUserCapitalAccountRecordDTO> getsDTOBy(TUserCapitalAccountRecordDTO tUserCapitalAccountRecordDTO, PageDTO<TUserCapitalAccountRecordDTO> pageDTO);
 	
 }

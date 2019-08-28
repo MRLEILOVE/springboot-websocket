@@ -730,5 +730,114 @@
 		</where>
 		LIMIT #{page}, #{size}
 	</select>
+	
+	<select id="getDTOBy" resultType="com.bittrade.pojo.dto.SysDictDataDTO">
+		SELECT 
+			`dict_code`, 
+			`dict_sort`, 
+			`dict_label`, 
+			`dict_value`, 
+			`dict_type`, 
+			`css_class`, 
+			`list_class`, 
+			`is_default`, 
+			`status`, 
+			`create_by`, 
+			`create_time`, 
+			`update_by`, 
+			`update_time`, 
+			`remark`
+		FROM sys_dict_data
+		<where>
+			<if test="dictSort != null">
+			AND `dict_sort` = #{dictSort,jdbcType=INTEGER}
+			</if>
+			<if test="dictLabel != null">
+			AND `dict_label` = #{dictLabel,jdbcType=VARCHAR}
+			</if>
+			<if test="dictValue != null">
+			AND `dict_value` = #{dictValue,jdbcType=VARCHAR}
+			</if>
+			<if test="dictType != null">
+			AND `dict_type` = #{dictType,jdbcType=VARCHAR}
+			</if>
+			<if test="cssClass != null">
+			AND `css_class` = #{cssClass,jdbcType=VARCHAR}
+			</if>
+			<if test="listClass != null">
+			AND `list_class` = #{listClass,jdbcType=VARCHAR}
+			</if>
+			<if test="isDefault != null">
+			AND `is_default` = #{isDefault,jdbcType=CHAR}
+			</if>
+			<if test="status != null">
+			AND `status` = #{status,jdbcType=CHAR}
+			</if>
+			<if test="createBy != null">
+			AND `create_by` = #{createBy,jdbcType=VARCHAR}
+			</if>
+			<if test="createTime != null">
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="updateBy != null">
+			AND `update_by` = #{updateBy,jdbcType=VARCHAR}
+			</if>
+			<if test="updateTime != null">
+			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="remark != null">
+			AND `remark` = #{remark,jdbcType=VARCHAR}
+			</if>
+		</where>
+		LIMIT 1
+	</select>
+	
+	<select id="getsDTOBy" resultType="com.bittrade.pojo.dto.SysDictDataDTO">
+		SELECT 
+			<include refid="Base_Column_List"></include>
+		FROM sys_dict_data
+		<where>
+			<if test="dictSort != null">
+			AND `dict_sort` = #{dictSort,jdbcType=INTEGER}
+			</if>
+			<if test="dictLabel != null">
+			AND `dict_label` = #{dictLabel,jdbcType=VARCHAR}
+			</if>
+			<if test="dictValue != null">
+			AND `dict_value` = #{dictValue,jdbcType=VARCHAR}
+			</if>
+			<if test="dictType != null">
+			AND `dict_type` = #{dictType,jdbcType=VARCHAR}
+			</if>
+			<if test="cssClass != null">
+			AND `css_class` = #{cssClass,jdbcType=VARCHAR}
+			</if>
+			<if test="listClass != null">
+			AND `list_class` = #{listClass,jdbcType=VARCHAR}
+			</if>
+			<if test="isDefault != null">
+			AND `is_default` = #{isDefault,jdbcType=CHAR}
+			</if>
+			<if test="status != null">
+			AND `status` = #{status,jdbcType=CHAR}
+			</if>
+			<if test="createBy != null">
+			AND `create_by` = #{createBy,jdbcType=VARCHAR}
+			</if>
+			<if test="createTime != null">
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="updateBy != null">
+			AND `update_by` = #{updateBy,jdbcType=VARCHAR}
+			</if>
+			<if test="updateTime != null">
+			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="remark != null">
+			AND `remark` = #{remark,jdbcType=VARCHAR}
+			</if>
+			<include refid="sql_WHERE_forProperty"></include>
+		</where>
+	</select>
 
 </mapper>

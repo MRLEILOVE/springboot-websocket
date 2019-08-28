@@ -11,6 +11,7 @@ import org.apache.ibatis.annotations.Param;
 import com.bittrade.pojo.dto.TTickerDTO;
 import com.bittrade.pojo.vo.TTickerVO;
 import com.bittrade.pojo.model.TTicker;
+import com.core.common.DTO.PageDTO;
 import com.core.framework.base.DAO.IBaseDAO;
 //import com.core.framework.DTO.PageDTO;
 
@@ -127,5 +128,27 @@ public abstract interface IDefaultTTickerDAO extends IBaseDAO<TTicker, TTickerDT
 	 * @return
 	 */
 	public List<TTicker> getsByPage(@Param(value="tTicker") TTicker tTicker, @Param(value="page") int page, @Param(value="size") int size);
+	
+	/**
+	 * 
+	 * @param tTickerDTO
+	 * @return
+	 */
+	public TTickerDTO getDTOBy(TTickerDTO tTickerDTO);
+	
+	/**
+	 * 
+	 * @param tTickerDTO
+	 * @return
+	 */
+	public List<TTickerDTO> getsDTOBy(TTickerDTO tTickerDTO);
+	
+	/**
+	 * 
+	 * @param tTickerDTO
+	 * @param pageDTO
+	 * @return
+	 */
+	public List<TTickerDTO> getsDTOBy(TTickerDTO tTickerDTO, PageDTO<TTickerDTO> pageDTO);
 	
 }

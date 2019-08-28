@@ -484,5 +484,72 @@
 		</where>
 		LIMIT #{page}, #{size}
 	</select>
+	
+	<select id="getDTOBy" resultType="com.bittrade.pojo.dto.TLegalCurrencyCoinDTO">
+		SELECT 
+			`id`, 
+			`name`, 
+			`title`, 
+			`img`, 
+			`status`, 
+			`min_quota`, 
+			`create_time`, 
+			`update_time`
+		FROM t_legal_currency_coin
+		<where>
+			<if test="name != null">
+			AND `name` = #{name,jdbcType=VARCHAR}
+			</if>
+			<if test="title != null">
+			AND `title` = #{title,jdbcType=VARCHAR}
+			</if>
+			<if test="img != null">
+			AND `img` = #{img,jdbcType=VARCHAR}
+			</if>
+			<if test="status != null">
+			AND `status` = #{status,jdbcType=INTEGER}
+			</if>
+			<if test="minQuota != null">
+			AND `min_quota` = #{minQuota,jdbcType=DECIMAL}
+			</if>
+			<if test="createTime != null">
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="updateTime != null">
+			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+		</where>
+		LIMIT 1
+	</select>
+	
+	<select id="getsDTOBy" resultType="com.bittrade.pojo.dto.TLegalCurrencyCoinDTO">
+		SELECT 
+			<include refid="Base_Column_List"></include>
+		FROM t_legal_currency_coin
+		<where>
+			<if test="name != null">
+			AND `name` = #{name,jdbcType=VARCHAR}
+			</if>
+			<if test="title != null">
+			AND `title` = #{title,jdbcType=VARCHAR}
+			</if>
+			<if test="img != null">
+			AND `img` = #{img,jdbcType=VARCHAR}
+			</if>
+			<if test="status != null">
+			AND `status` = #{status,jdbcType=INTEGER}
+			</if>
+			<if test="minQuota != null">
+			AND `min_quota` = #{minQuota,jdbcType=DECIMAL}
+			</if>
+			<if test="createTime != null">
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="updateTime != null">
+			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+			<include refid="sql_WHERE_forProperty"></include>
+		</where>
+	</select>
 
 </mapper>

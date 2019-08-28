@@ -11,6 +11,7 @@ import org.apache.ibatis.annotations.Param;
 import com.bittrade.pojo.dto.TUserDTO;
 import com.bittrade.pojo.vo.TUserVO;
 import com.bittrade.pojo.model.TUser;
+import com.core.common.DTO.PageDTO;
 import com.core.framework.base.DAO.IBaseDAO;
 //import com.core.framework.DTO.PageDTO;
 
@@ -127,5 +128,27 @@ public abstract interface IDefaultTUserDAO extends IBaseDAO<TUser, TUserDTO, TUs
 	 * @return
 	 */
 	public List<TUser> getsByPage(@Param(value="tUser") TUser tUser, @Param(value="page") int page, @Param(value="size") int size);
+	
+	/**
+	 * 
+	 * @param tUserDTO
+	 * @return
+	 */
+	public TUserDTO getDTOBy(TUserDTO tUserDTO);
+	
+	/**
+	 * 
+	 * @param tUserDTO
+	 * @return
+	 */
+	public List<TUserDTO> getsDTOBy(TUserDTO tUserDTO);
+	
+	/**
+	 * 
+	 * @param tUserDTO
+	 * @param pageDTO
+	 * @return
+	 */
+	public List<TUserDTO> getsDTOBy(TUserDTO tUserDTO, PageDTO<TUserDTO> pageDTO);
 	
 }

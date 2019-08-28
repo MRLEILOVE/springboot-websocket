@@ -607,5 +607,93 @@
 		</where>
 		LIMIT #{page}, #{size}
 	</select>
+	
+	<select id="getDTOBy" resultType="com.bittrade.pojo.dto.TKlineDTO">
+		SELECT 
+			`id`, 
+			`symbol`, 
+			`low`, 
+			`high`, 
+			`open`, 
+			`close`, 
+			`volume`, 
+			`granularity`, 
+			`time`, 
+			`create_time`, 
+			`update_time`
+		FROM t_kline
+		<where>
+			<if test="symbol != null">
+			AND `symbol` = #{symbol,jdbcType=VARCHAR}
+			</if>
+			<if test="low != null">
+			AND `low` = #{low,jdbcType=DECIMAL}
+			</if>
+			<if test="high != null">
+			AND `high` = #{high,jdbcType=DECIMAL}
+			</if>
+			<if test="open != null">
+			AND `open` = #{open,jdbcType=DECIMAL}
+			</if>
+			<if test="close != null">
+			AND `close` = #{close,jdbcType=DECIMAL}
+			</if>
+			<if test="volume != null">
+			AND `volume` = #{volume,jdbcType=DECIMAL}
+			</if>
+			<if test="granularity != null">
+			AND `granularity` = #{granularity,jdbcType=INTEGER}
+			</if>
+			<if test="time != null">
+			AND `time` = #{time,jdbcType=TIMESTAMP}
+			</if>
+			<if test="createTime != null">
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="updateTime != null">
+			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+		</where>
+		LIMIT 1
+	</select>
+	
+	<select id="getsDTOBy" resultType="com.bittrade.pojo.dto.TKlineDTO">
+		SELECT 
+			<include refid="Base_Column_List"></include>
+		FROM t_kline
+		<where>
+			<if test="symbol != null">
+			AND `symbol` = #{symbol,jdbcType=VARCHAR}
+			</if>
+			<if test="low != null">
+			AND `low` = #{low,jdbcType=DECIMAL}
+			</if>
+			<if test="high != null">
+			AND `high` = #{high,jdbcType=DECIMAL}
+			</if>
+			<if test="open != null">
+			AND `open` = #{open,jdbcType=DECIMAL}
+			</if>
+			<if test="close != null">
+			AND `close` = #{close,jdbcType=DECIMAL}
+			</if>
+			<if test="volume != null">
+			AND `volume` = #{volume,jdbcType=DECIMAL}
+			</if>
+			<if test="granularity != null">
+			AND `granularity` = #{granularity,jdbcType=INTEGER}
+			</if>
+			<if test="time != null">
+			AND `time` = #{time,jdbcType=TIMESTAMP}
+			</if>
+			<if test="createTime != null">
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="updateTime != null">
+			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+			<include refid="sql_WHERE_forProperty"></include>
+		</where>
+	</select>
 
 </mapper>

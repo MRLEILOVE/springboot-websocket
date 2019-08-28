@@ -6,7 +6,7 @@ import java.util.Objects;
 
 import javax.validation.constraints.NotNull;
 
-import com.bittrade.pojo.dto.TAdvertInfoDTO.AdvertTypeEnum;
+import com.bittrade.pojo.dto.TAdvertInfoDTO;
 import com.core.common.annotation.CheckEnumValue;
 
 import lombok.Data;
@@ -41,8 +41,8 @@ public class QueryAdvertVO implements Serializable {
 	 * 广告类型 类型 1:出售 2:购买
 	 */
 	@NotNull(message = "AdvertType cannot be null")
-	@CheckEnumValue(enumClass = AdvertTypeEnum.class, enumMethod = "isValidAdvertType")
-	private Integer AdvertType;
+	@CheckEnumValue(enumClass = TAdvertInfoDTO.AdvertTypeEnum.class, enumMethod = "isValidAdvertType")
+	private Byte AdvertType;
 
 	/**
 	 * 仅展示可交易
@@ -67,7 +67,7 @@ public class QueryAdvertVO implements Serializable {
 	 * create time: 2019/8/20 13:01
 	 */
 	public Boolean isBuyType() {
-		return Objects.equals(AdvertTypeEnum.BUY.getCode(), this.AdvertType);
+		return Objects.equals(TAdvertInfoDTO.AdvertTypeEnum.BUY.getCode(), this.AdvertType);
 	}
 
 	/**
@@ -78,7 +78,7 @@ public class QueryAdvertVO implements Serializable {
 	 * create time: 2019/8/20 13:01
 	 */
 	public Boolean isSellType() {
-		return Objects.equals(AdvertTypeEnum.SELL.getCode(), this.AdvertType);
+		return Objects.equals(TAdvertInfoDTO.AdvertTypeEnum.SELL.getCode(), this.AdvertType);
 	}
 
 }
