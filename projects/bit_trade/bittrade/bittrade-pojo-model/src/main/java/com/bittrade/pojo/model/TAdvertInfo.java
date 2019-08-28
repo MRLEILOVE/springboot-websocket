@@ -257,7 +257,7 @@ public class TAdvertInfo extends BaseModel<TAdvertInfo> {
 	 */
 	@NotNull(message = "付款方式必填")
 	@Size(min = 1, message = "付款方式必需選擇一種")
-	private List<Long> paymentMethodId;
+	private Long paymentMethodId;
 
 	/**
 	 * 支付密码
