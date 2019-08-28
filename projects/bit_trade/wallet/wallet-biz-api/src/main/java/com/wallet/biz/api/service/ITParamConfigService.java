@@ -9,5 +9,8 @@ import com.bittrade.pojo.model.TParamConfig;
  *
  */
 public interface ITParamConfigService extends IService<TParamConfig> {
+    String getValueByKey(String key);
+
+    String getEnableValueByKey(String key);
 	
 }

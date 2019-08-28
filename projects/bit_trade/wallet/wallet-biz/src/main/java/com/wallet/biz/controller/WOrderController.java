@@ -1,5 +1,10 @@
 package com.wallet.biz.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.bittrade.pojo.model.WCoin;
+import com.bittrade.pojo.vo.MaxMinVo;
+import com.common.bittrade.service.IWCoinService;
+import com.wallet.biz.api.service.ITParamConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -21,6 +26,9 @@ import com.wallet.biz.api.service.IwalletCaseService;
 
 import io.swagger.annotations.ApiOperation;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 
  * @author Administrator
@@ -37,22 +45,55 @@ public class WOrderController {
     private IWCoinConfigService WCoinConfigService;
     @Autowired
     IWOrderService orderService;
+    @Autowired
+    ITParamConfigService tParamConfigService;
 
+    @Autowired
+    IWCoinService wCoinService;
+
+    @GetMapping("/rechargecoinlist")
+    @ApiOperation(value = "可充币种列表", notes = "可充币种列表")
+    public ReturnDTO rechargecoinlist(){
+        List<WCoin> Rechargecoinlist = wCoinService.list(new QueryWrapper<>(WCoin.builder()
+                .isRecharge("E").build()));
+        if (null == Rechargecoinlist){
+            return ReturnDTO.error("");
+        }
+        return getReturnDTO(Rechargecoinlist);
+    }
+
+    @GetMapping("/Withdrawcoinlist")
+    @ApiOperation(value = "可提币种列表", notes = "可提币种列表")
+    public ReturnDTO withdrawcoinlist(){
+        List<WCoin> Withdrawcoinlist = wCoinService.list(new QueryWrapper<>(WCoin.builder()
+                .isWithdraw("E").build()));
+        return getReturnDTO(Withdrawcoinlist);
+    }
+
+    private ReturnDTO getReturnDTO(List<WCoin> WCoinlist) {
+        List<CoinTypeVO> coinlist = new ArrayList<>();
+        for (WCoin list : WCoinlist){
+            CoinTypeVO coin = new CoinTypeVO();
+            coin.setCoinType(list.getCoinType());
+            coin.setToken(list.getToken());
+            coinlist.add(coin);
+        }
+        return ReturnDTO.ok(coinlist);
+    }
 
     @PostMapping("confirmTibi")
     @ApiOperation(value = "确定提币", notes = "确定提币")
-    public ReturnDTO confirmTibi(@RequestBody @Validated WithdrawBillParamVo withdrawBillParamVo,@ALoginUser LoginUser user) {
+    public ReturnDTO confirmTibi(@RequestBody @Validated WithdrawBillParamVo withdrawBillParamVo, @ALoginUser LoginUser user) {
         //用户判断
         Long userId = user == null ? null : user.getUser_id();
-        if(userId == null){
+        if (userId == null) {
             return ReturnDTO.error("用户未登录");
         }
-        if(user.checkPayPassWord(withdrawBillParamVo.getPassword())){
+        if (user.checkPayPassWord(withdrawBillParamVo.getPassword())) {
             return ReturnDTO.error("密码错误");
         }
-        return caseService.confirmTibi(withdrawBillParamVo,userId);
-        }
-
+        return caseService.confirmTibi(withdrawBillParamVo, userId);
+    }
 
 
     @GetMapping("rechargerecord")
@@ -76,101 +117,31 @@ public class WOrderController {
 //        Page<OrderVO> page = orderService.queryFundwithdrawRecord(userId,addressParamDto);
         return caseService.withdrawRecord(userId, coinTypeVO);
     }
-//
-//        EntityWrapper<WUserWalletBill> chong = new EntityWrapper<>();
-//        chong.eq("user_id", user_id).eq("flag",2).orderBy("create_time", false);
-//        EntityWrapper<WWithdrawWalletBill> ti = new EntityWrapper<>();
-//        ti.eq("user_id", user_id).eq("flag",2).orderBy("create_time", false);
-//        if (null != walletDto.getToken() && !"".equals(walletDto.getToken())) {
-//            ti.eq("token", walletDto.getToken());
-//            chong.eq("token", walletDto.getToken());
-//        }
-//        List<CoinRecordVo> voList = new ArrayList<>();
-//        long pages = 0L;//page1.getPages() + page2.getPages();
-//        long totals = 0L;//page1.getTotal() + page2.getTotal();
-//
-//        if ("recharge".equals(walletDto.getType())) {
-//            Page<WUserWalletBill> chongPage = new Page<>(walletDto.getCurrent(), walletDto.getSize() / 2);
-//            Page<WUserWalletBill> page1 = userWalletBillService.selectPage(chongPage, chong);
-//            List<WUserWalletBill> chongList = page1.getRecords();
-//            for (WUserWalletBill userWalletBill : chongList) {
-//                CoinRecordVo coinRecordVo = new CoinRecordVo();
-//                coinRecordVo.setToken(userWalletBill.getToken());
-//                coinRecordVo.setAmount(userWalletBill.getAmount().toPlainString());
-//                coinRecordVo.setReceiverAddress(userWalletBill.getReceiverAddress());
-//                coinRecordVo.setCreateTime(userWalletBill.getCreateTime());
-//                coinRecordVo.setDirection(userWalletBill.getDirection());
-//                voList.add(coinRecordVo);
-//            }
-//            pages += page1.getPages();
-//            totals += page1.getTotal();
-//        }
-//
-//        if ("withdraw".equals(walletDto.getType())) {
-//            Page<WWithdrawWalletBill> tiPage = new Page<>(walletDto.getCurrent(), walletDto.getSize() / 2);
-//            Page<WWithdrawWalletBill> page2 = withdrawWalletBillService.selectPage(tiPage, ti);
-//            List<WWithdrawWalletBill> tiList = page2.getRecords();
-//            for (WWithdrawWalletBill wWithdrawWalletBill : tiList) {
-//                CoinRecordVo coinRecordVo = new CoinRecordVo();
-//                coinRecordVo.setToken(wWithdrawWalletBill.getToken());
-//                coinRecordVo.setAmount(wWithdrawWalletBill.getAmount().toPlainString());
-//                coinRecordVo.setReceiverAddress(wWithdrawWalletBill.getReceiverAddress());
-//                coinRecordVo.setCreateTime(wWithdrawWalletBill.getCreateTime());
-//                coinRecordVo.setDirection(wWithdrawWalletBill.getDirection());
-//                voList.add(coinRecordVo);
-//            }
-//            pages += page2.getPages();
-//            totals += page2.getTotal();
-//        }
-//
-//        Collections.sort(voList, new Comparator<CoinRecordVo>() {
-//            @Override
-//            public int compare(CoinRecordVo o1, CoinRecordVo o2) {
-//                return o2.getCreateTime().compareTo(o1.getCreateTime());
-//            }
-//        });
-//
-//        PageVo<CoinRecordVo> page = new PageVo<>();
-//        page.setRecords(voList);
-//        page.setCurrent(walletDto.getCurrent());
-//        page.setSize(walletDto.getSize());
-//        page.setTotal(totals);
-//        page.setPages(pages);
-//        return WrapMapper.ok(page);
- //   }
-}
-
-/*
-    @PostMapping("auditStatus")
-    @ApiOperation(value = "审核记录", notes = "审核记录")
-    public Wrapper auditStatus(@RequestBody PageDto pageDto) throws FlowException {
-        Long user_id = RequestUtil.getCurrentUser().getUser_id();
-        if (user_id == null) {
-            throw new FlowException("用户未登录");
-        }
-        EntityWrapper<TOrder> entityWrapper = new EntityWrapper<>();
-        entityWrapper.eq("user_id", user_id).orderBy("create_time", false);
-        List<Integer> list = new ArrayList<>();
-        list.add(1);
-        list.add(2);
-        list.add(3);
-        list.add(4);
-        list.add(-1);
-        entityWrapper.in("type", list);//审核通过的记录不显示，只显示审核中、被拒绝的记录
-        Page<TOrder> page = new Page<>(pageDto.getCurrent(), pageDto.getSize());
-        Page<TOrder> page1 = orderService.selectPage(page, entityWrapper);
-        return WrapMapper.ok(page1);
+    @GetMapping("feeMaxMin")
+    @ApiOperation(value = "最大最小提币费率", notes = "最大最小提币费率")
+    public ReturnDTO feeMaxMin(@RequestBody @Validated CoinTypeVO coinTypeVO) {
+        MaxMinVo fee = new MaxMinVo();
+        fee.setMax(tParamConfigService.getEnableValueByKey(coinTypeVO.getToken().toLowerCase()+"MaxFee"));
+        fee.setMin(tParamConfigService.getEnableValueByKey(coinTypeVO.getToken().toLowerCase()+"MinFee"));
+        return ReturnDTO.ok(fee);
     }
 
-    @PostMapping("tibiMaxMin")
+    @GetMapping("quotaMaxMin")
     @ApiOperation(value = "最大最小提币数量", notes = "最大最小提币数量")
-    public ReturnDTO maxMinTibi() {
-        return caseService.showmaxMin();
+    public ReturnDTO quotaMaxMin(@RequestBody @Validated CoinTypeVO coinTypeVO) {
+        MaxMinVo quota = new MaxMinVo();
+        quota.setMax(tParamConfigService.getEnableValueByKey(coinTypeVO.getToken().toLowerCase()+"Max"));
+        quota.setMin(tParamConfigService.getEnableValueByKey(coinTypeVO.getToken().toLowerCase()+"Min"));
+        return ReturnDTO.ok(quota);
     }
 
-    @PostMapping("jugment")
+    @GetMapping("jugmentQuota")
     @ApiOperation(value = "额度判断", notes = "额度判断")
-    public ReturnDTO judgment(/*@RequestBody @Validated JudgmentDto withDrawParamVo*//*) {
-        return caseService.checkparam(/*withDrawParamVo*//*);
-    }*/
-//}
+    public ReturnDTO jugmentQuota(@RequestBody @Validated CoinTypeVO coinTypeVO, @ALoginUser LoginUser user) {
+        Long userId = user == null ? null : user.getUser_id();
+        if (userId == null) {
+            return ReturnDTO.error("用户未登录");
+        }
+        return caseService.checkparam(coinTypeVO,userId);
+    }
+}
