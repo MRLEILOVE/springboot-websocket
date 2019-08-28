@@ -10,7 +10,7 @@
 <configuration>
 
 	<property name="project_name" value="${svc_name}" />
-	<property name="logdir" value="opt/logs/${project_name}" />
+	<property name="logdir" value="opt/logs/${project_name}" /><!-- / -->
 	
 	<appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
 		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
