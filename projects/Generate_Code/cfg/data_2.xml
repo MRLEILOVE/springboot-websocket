@@ -12,6 +12,7 @@
 	
 	<!-- <entry key="base_path">D:\work\git\temp\console_Prj\src\main\java\com\out\</entry> -->
 	<entry key="base_out_path">out\</entry>
+	<entry key="common_package">com.core.common</entry>
 	<entry key="framework_package">com.core.framework</entry>
 	<!--
 		test.

@@ -171,12 +171,12 @@ public class TAdvertInfo extends BaseModel<TAdvertInfo> {
 	/**
 	 * 类型(1:出售 2:购买)
 	 */
-	private Integer type;
+	private Byte type;
 	
 	/**
 	 * 定价方式 1：固定价格 2：浮动价格
 	 */
-	private Integer pricingMode;
+	private Byte pricingMode;
 	
 	/**
 	 * 浮动比例 (小数 0.01 = 1%)
@@ -226,7 +226,7 @@ public class TAdvertInfo extends BaseModel<TAdvertInfo> {
 	/**
 	 * 状态：1，进行中；2，已下架(暂停)；3，已撤销；
 	 */
-	private Integer status;
+	private Byte status;
 	
 	/**
 	 * 是否开启对手限制 (0 禁用 1 启用)

@@ -12,6 +12,7 @@ import com.bittrade.pojo.model.TAdvertInfo;
 import com.bittrade.pojo.vo.AdvertUserVO;
 import com.bittrade.pojo.vo.QueryAdvertVO;
 import com.bittrade.pojo.vo.TAdvertInfoVO;
+import com.core.common.DTO.PageDTO;
 import com.core.web.constant.entity.LoginUser;
 
 /**
@@ -39,12 +40,12 @@ public interface ITAdvertInfoService extends IDefaultTAdvertInfoService<TAdvertI
 	 * <br/>
 	 * create time: 2019/8/20 19:52
 	 *
-	 * @param page             : {@link Page}
+	 * @param pageDTO             : {@link PageDTO}
 	 * @param queryAdvertVO : {@link QueryAdvertVO}
 	 * @param loginUser        : {@link LoginUser}
 	 * @return result
 	 */
-	IPage<TAdvertInfo> listAdverts(Page<TAdvertInfo> page, QueryAdvertVO queryAdvertVO, LoginUser loginUser);
+	PageDTO<TAdvertInfoDTO> listAdverts(PageDTO<TAdvertInfoDTO> pageDTO, QueryAdvertVO queryAdvertVO, LoginUser loginUser);
 
 	/**
 	 * 获取登录用户广告列表

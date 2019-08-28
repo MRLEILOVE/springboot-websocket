@@ -11,6 +11,7 @@ import org.apache.ibatis.annotations.Param;
 import com.bittrade.pojo.dto.TParamConfigDTO;
 import com.bittrade.pojo.vo.TParamConfigVO;
 import com.bittrade.pojo.model.TParamConfig;
+import com.core.common.DTO.PageDTO;
 import com.core.framework.base.DAO.IBaseDAO;
 //import com.core.framework.DTO.PageDTO;
 
@@ -127,5 +128,27 @@ public abstract interface IDefaultTParamConfigDAO extends IBaseDAO<TParamConfig,
 	 * @return
 	 */
 	public List<TParamConfig> getsByPage(@Param(value="tParamConfig") TParamConfig tParamConfig, @Param(value="page") int page, @Param(value="size") int size);
+	
+	/**
+	 * 
+	 * @param tParamConfigDTO
+	 * @return
+	 */
+	public TParamConfigDTO getDTOBy(TParamConfigDTO tParamConfigDTO);
+	
+	/**
+	 * 
+	 * @param tParamConfigDTO
+	 * @return
+	 */
+	public List<TParamConfigDTO> getsDTOBy(TParamConfigDTO tParamConfigDTO);
+	
+	/**
+	 * 
+	 * @param tParamConfigDTO
+	 * @param pageDTO
+	 * @return
+	 */
+	public List<TParamConfigDTO> getsDTOBy(TParamConfigDTO tParamConfigDTO, PageDTO<TParamConfigDTO> pageDTO);
 	
 }

@@ -11,6 +11,7 @@ import org.apache.ibatis.annotations.Param;
 import com.bittrade.pojo.dto.WConfigWalletDTO;
 import com.bittrade.pojo.vo.WConfigWalletVO;
 import com.bittrade.pojo.model.WConfigWallet;
+import com.core.common.DTO.PageDTO;
 import com.core.framework.base.DAO.IBaseDAO;
 //import com.core.framework.DTO.PageDTO;
 
@@ -127,5 +128,27 @@ public abstract interface IDefaultWConfigWalletDAO extends IBaseDAO<WConfigWalle
 	 * @return
 	 */
 	public List<WConfigWallet> getsByPage(@Param(value="wConfigWallet") WConfigWallet wConfigWallet, @Param(value="page") int page, @Param(value="size") int size);
+	
+	/**
+	 * 
+	 * @param wConfigWalletDTO
+	 * @return
+	 */
+	public WConfigWalletDTO getDTOBy(WConfigWalletDTO wConfigWalletDTO);
+	
+	/**
+	 * 
+	 * @param wConfigWalletDTO
+	 * @return
+	 */
+	public List<WConfigWalletDTO> getsDTOBy(WConfigWalletDTO wConfigWalletDTO);
+	
+	/**
+	 * 
+	 * @param wConfigWalletDTO
+	 * @param pageDTO
+	 * @return
+	 */
+	public List<WConfigWalletDTO> getsDTOBy(WConfigWalletDTO wConfigWalletDTO, PageDTO<WConfigWalletDTO> pageDTO);
 	
 }

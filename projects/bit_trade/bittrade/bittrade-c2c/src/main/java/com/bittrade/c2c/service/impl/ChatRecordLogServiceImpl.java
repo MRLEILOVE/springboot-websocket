@@ -110,7 +110,7 @@ public class ChatRecordLogServiceImpl
         Long receiverId = sendVo.getReceiverId();
         String receiverName = sendVo.getReceiverName();
         String content = sendVo.getContent();
-        Integer sendType = sendVo.getSendType();
+        Byte sendType = sendVo.getSendType();
         //转换成消息实体
         MessageVo messageVo = new MessageVo();
         messageVo.setSenderName(senderName);
@@ -127,7 +127,7 @@ public class ChatRecordLogServiceImpl
         Long senderId = messageVo.getSenderId();
         Long receiverId = messageVo.getReceiverId();
         String content = messageVo.getContent();
-        Integer messageType = messageVo.getMessageType();
+        Byte messageType = messageVo.getMessageType();
         TChatRecordLog chatRecordLog = new TChatRecordLog();
         chatRecordLog.setSenderId(senderId);
         chatRecordLog.setReceiverId(receiverId);

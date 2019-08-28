@@ -196,7 +196,7 @@ public class TAdvertOrder extends BaseModel<TAdvertOrder> {
 	/**
 	 * 广告类别 1出售 2购买
 	 */
-	private Integer advertType;
+	private Byte advertType;
 	
 	/**
 	 * 广告留言
@@ -251,7 +251,7 @@ public class TAdvertOrder extends BaseModel<TAdvertOrder> {
 	/**
 	 * 状态（0,未操作; 1，已拍下；2，已付款；3，已收款；5，已完成；6，已取消，7，超时关闭）
 	 */
-	private Integer status;
+	private Byte status;
 	
 	/**
 	 * 取消订单截止时间（默认为 点击 购买/出售 后 3 分钟）
@@ -261,7 +261,7 @@ public class TAdvertOrder extends BaseModel<TAdvertOrder> {
 	/**
 	 * 仲裁状态：0，未仲裁；1，已仲裁；
 	 */
-	private Integer arbitStatus;
+	private Byte arbitStatus;
 	
 	/**
 	 * 仲裁结果

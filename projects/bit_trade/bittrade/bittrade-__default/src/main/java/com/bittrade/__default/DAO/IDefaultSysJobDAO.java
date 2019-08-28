@@ -11,6 +11,7 @@ import org.apache.ibatis.annotations.Param;
 import com.bittrade.pojo.dto.SysJobDTO;
 import com.bittrade.pojo.vo.SysJobVO;
 import com.bittrade.pojo.model.SysJob;
+import com.core.common.DTO.PageDTO;
 import com.core.framework.base.DAO.IBaseDAO;
 //import com.core.framework.DTO.PageDTO;
 
@@ -127,5 +128,27 @@ public abstract interface IDefaultSysJobDAO extends IBaseDAO<SysJob, SysJobDTO, 
 	 * @return
 	 */
 	public List<SysJob> getsByPage(@Param(value="sysJob") SysJob sysJob, @Param(value="page") int page, @Param(value="size") int size);
+	
+	/**
+	 * 
+	 * @param sysJobDTO
+	 * @return
+	 */
+	public SysJobDTO getDTOBy(SysJobDTO sysJobDTO);
+	
+	/**
+	 * 
+	 * @param sysJobDTO
+	 * @return
+	 */
+	public List<SysJobDTO> getsDTOBy(SysJobDTO sysJobDTO);
+	
+	/**
+	 * 
+	 * @param sysJobDTO
+	 * @param pageDTO
+	 * @return
+	 */
+	public List<SysJobDTO> getsDTOBy(SysJobDTO sysJobDTO, PageDTO<SysJobDTO> pageDTO);
 	
 }

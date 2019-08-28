@@ -607,5 +607,93 @@
 		</where>
 		LIMIT #{page}, #{size}
 	</select>
+	
+	<select id="getDTOBy" resultType="com.bittrade.pojo.dto.TOrderDTO">
+		SELECT 
+			`id`, 
+			`userId`, 
+			`order_id`, 
+			`fee`, 
+			`token`, 
+			`amount`, 
+			`receiver_address`, 
+			`type`, 
+			`operator`, 
+			`create_time`, 
+			`update_time`
+		FROM t_order
+		<where>
+			<if test="userId != null">
+			AND `userId` = #{userId,jdbcType=INTEGER}
+			</if>
+			<if test="orderId != null">
+			AND `order_id` = #{orderId,jdbcType=VARCHAR}
+			</if>
+			<if test="fee != null">
+			AND `fee` = #{fee,jdbcType=DECIMAL}
+			</if>
+			<if test="token != null">
+			AND `token` = #{token,jdbcType=VARCHAR}
+			</if>
+			<if test="amount != null">
+			AND `amount` = #{amount,jdbcType=DECIMAL}
+			</if>
+			<if test="receiverAddress != null">
+			AND `receiver_address` = #{receiverAddress,jdbcType=VARCHAR}
+			</if>
+			<if test="type != null">
+			AND `type` = #{type,jdbcType=VARCHAR}
+			</if>
+			<if test="operator != null">
+			AND `operator` = #{operator,jdbcType=VARCHAR}
+			</if>
+			<if test="createTime != null">
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="updateTime != null">
+			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+		</where>
+		LIMIT 1
+	</select>
+	
+	<select id="getsDTOBy" resultType="com.bittrade.pojo.dto.TOrderDTO">
+		SELECT 
+			<include refid="Base_Column_List"></include>
+		FROM t_order
+		<where>
+			<if test="userId != null">
+			AND `userId` = #{userId,jdbcType=INTEGER}
+			</if>
+			<if test="orderId != null">
+			AND `order_id` = #{orderId,jdbcType=VARCHAR}
+			</if>
+			<if test="fee != null">
+			AND `fee` = #{fee,jdbcType=DECIMAL}
+			</if>
+			<if test="token != null">
+			AND `token` = #{token,jdbcType=VARCHAR}
+			</if>
+			<if test="amount != null">
+			AND `amount` = #{amount,jdbcType=DECIMAL}
+			</if>
+			<if test="receiverAddress != null">
+			AND `receiver_address` = #{receiverAddress,jdbcType=VARCHAR}
+			</if>
+			<if test="type != null">
+			AND `type` = #{type,jdbcType=VARCHAR}
+			</if>
+			<if test="operator != null">
+			AND `operator` = #{operator,jdbcType=VARCHAR}
+			</if>
+			<if test="createTime != null">
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="updateTime != null">
+			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+			<include refid="sql_WHERE_forProperty"></include>
+		</where>
+	</select>
 
 </mapper>

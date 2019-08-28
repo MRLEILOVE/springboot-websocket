@@ -525,5 +525,79 @@
 		</where>
 		LIMIT #{page}, #{size}
 	</select>
+	
+	<select id="getDTOBy" resultType="com.bittrade.pojo.dto.SysLogininforDTO">
+		SELECT 
+			`info_id`, 
+			`login_name`, 
+			`ipaddr`, 
+			`login_location`, 
+			`browser`, 
+			`os`, 
+			`status`, 
+			`msg`, 
+			`login_time`
+		FROM sys_logininfor
+		<where>
+			<if test="loginName != null">
+			AND `login_name` = #{loginName,jdbcType=VARCHAR}
+			</if>
+			<if test="ipaddr != null">
+			AND `ipaddr` = #{ipaddr,jdbcType=VARCHAR}
+			</if>
+			<if test="loginLocation != null">
+			AND `login_location` = #{loginLocation,jdbcType=VARCHAR}
+			</if>
+			<if test="browser != null">
+			AND `browser` = #{browser,jdbcType=VARCHAR}
+			</if>
+			<if test="os != null">
+			AND `os` = #{os,jdbcType=VARCHAR}
+			</if>
+			<if test="status != null">
+			AND `status` = #{status,jdbcType=CHAR}
+			</if>
+			<if test="msg != null">
+			AND `msg` = #{msg,jdbcType=VARCHAR}
+			</if>
+			<if test="loginTime != null">
+			AND `login_time` = #{loginTime,jdbcType=TIMESTAMP}
+			</if>
+		</where>
+		LIMIT 1
+	</select>
+	
+	<select id="getsDTOBy" resultType="com.bittrade.pojo.dto.SysLogininforDTO">
+		SELECT 
+			<include refid="Base_Column_List"></include>
+		FROM sys_logininfor
+		<where>
+			<if test="loginName != null">
+			AND `login_name` = #{loginName,jdbcType=VARCHAR}
+			</if>
+			<if test="ipaddr != null">
+			AND `ipaddr` = #{ipaddr,jdbcType=VARCHAR}
+			</if>
+			<if test="loginLocation != null">
+			AND `login_location` = #{loginLocation,jdbcType=VARCHAR}
+			</if>
+			<if test="browser != null">
+			AND `browser` = #{browser,jdbcType=VARCHAR}
+			</if>
+			<if test="os != null">
+			AND `os` = #{os,jdbcType=VARCHAR}
+			</if>
+			<if test="status != null">
+			AND `status` = #{status,jdbcType=CHAR}
+			</if>
+			<if test="msg != null">
+			AND `msg` = #{msg,jdbcType=VARCHAR}
+			</if>
+			<if test="loginTime != null">
+			AND `login_time` = #{loginTime,jdbcType=TIMESTAMP}
+			</if>
+			<include refid="sql_WHERE_forProperty"></include>
+		</where>
+	</select>
 
 </mapper>

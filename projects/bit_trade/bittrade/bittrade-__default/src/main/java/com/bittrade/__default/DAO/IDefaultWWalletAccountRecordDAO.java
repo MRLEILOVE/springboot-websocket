@@ -11,6 +11,7 @@ import org.apache.ibatis.annotations.Param;
 import com.bittrade.pojo.dto.WWalletAccountRecordDTO;
 import com.bittrade.pojo.vo.WWalletAccountRecordVO;
 import com.bittrade.pojo.model.WWalletAccountRecord;
+import com.core.common.DTO.PageDTO;
 import com.core.framework.base.DAO.IBaseDAO;
 //import com.core.framework.DTO.PageDTO;
 
@@ -127,5 +128,27 @@ public abstract interface IDefaultWWalletAccountRecordDAO extends IBaseDAO<WWall
 	 * @return
 	 */
 	public List<WWalletAccountRecord> getsByPage(@Param(value="wWalletAccountRecord") WWalletAccountRecord wWalletAccountRecord, @Param(value="page") int page, @Param(value="size") int size);
+	
+	/**
+	 * 
+	 * @param wWalletAccountRecordDTO
+	 * @return
+	 */
+	public WWalletAccountRecordDTO getDTOBy(WWalletAccountRecordDTO wWalletAccountRecordDTO);
+	
+	/**
+	 * 
+	 * @param wWalletAccountRecordDTO
+	 * @return
+	 */
+	public List<WWalletAccountRecordDTO> getsDTOBy(WWalletAccountRecordDTO wWalletAccountRecordDTO);
+	
+	/**
+	 * 
+	 * @param wWalletAccountRecordDTO
+	 * @param pageDTO
+	 * @return
+	 */
+	public List<WWalletAccountRecordDTO> getsDTOBy(WWalletAccountRecordDTO wWalletAccountRecordDTO, PageDTO<WWalletAccountRecordDTO> pageDTO);
 	
 }

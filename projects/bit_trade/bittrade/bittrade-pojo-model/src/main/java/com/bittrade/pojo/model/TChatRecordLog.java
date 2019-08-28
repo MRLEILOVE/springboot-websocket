@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 
 /**
  * 
@@ -19,6 +20,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Accessors(chain = true)
 @EqualsAndHashCode(callSuper = false)
 @TableName(value="t_chat_record_log")
 public class TChatRecordLog extends BaseModel<TChatRecordLog> {
@@ -94,7 +96,7 @@ public class TChatRecordLog extends BaseModel<TChatRecordLog> {
 	/**
 	 * 发送的类型:0,文本,1,图片
 	 */
-	private Integer messageType;
+	private Byte messageType;
 	
 	/**
 	 * 创建时间

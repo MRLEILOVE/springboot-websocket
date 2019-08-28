@@ -42,7 +42,7 @@ public class TAdvertOrderServiceImpl extends DefaultTAdvertOrderServiceImpl<ITAd
 	 * @return
 	 */
 	@Override
-	public Long getPaymentOrPutCoinAging(Long userId, Integer type, Integer status) {
+	public Long getPaymentOrPutCoinAging(Long userId, Byte type, Byte status) {
 		return baseDAO.getPaymentOrPutCoinAging(userId, type, status);
 	}
 

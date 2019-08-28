@@ -49,6 +49,7 @@ public class Generate_Code {
 	private static /* final */String jdbc_password = "jdbc.password";
 	private static /* final */String DB_NAME = "DB_name";
 	private static /* final */String BASE_OUT_PATH = "base_out_path";
+	private static /* final */String COMMON_PACKAGE = "common_package";
 	private static /* final */String FRAMEWORK_PACKAGE = "framework_package";
 	private static /* final */String POJO_BASE_PACKAGE = "POJO_base_package";
 	private static /* final */String DEFAULT_BASE_PACKAGE = "default_base_package";
@@ -155,6 +156,7 @@ public class Generate_Code {
 			jdbc_password = props.getProperty(jdbc_password);
 			DB_NAME = props.getProperty(DB_NAME);
 			BASE_OUT_PATH = props.getProperty(BASE_OUT_PATH);
+			COMMON_PACKAGE = props.getProperty(COMMON_PACKAGE);
 			FRAMEWORK_PACKAGE = props.getProperty(FRAMEWORK_PACKAGE);
 			POJO_BASE_PACKAGE = props.getProperty(POJO_BASE_PACKAGE);
 			DEFAULT_BASE_PACKAGE = props.getProperty(DEFAULT_BASE_PACKAGE);
@@ -696,6 +698,7 @@ public class Generate_Code {
 	}
 
 	private static final void setBase(Map<String, Object> map) {
+		map.put("COMMON_PACKAGE", COMMON_PACKAGE);
 		map.put("FRAMEWORK_PACKAGE", FRAMEWORK_PACKAGE);
 		map.put("POJO_BASE_PKG", POJO_BASE_PACKAGE);
 		map.put("DEFAULT_BASE_PKG", DEFAULT_BASE_PACKAGE);

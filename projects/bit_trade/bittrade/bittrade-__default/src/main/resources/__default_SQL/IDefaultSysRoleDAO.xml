@@ -648,5 +648,100 @@
 		</where>
 		LIMIT #{page}, #{size}
 	</select>
+	
+	<select id="getDTOBy" resultType="com.bittrade.pojo.dto.SysRoleDTO">
+		SELECT 
+			`role_id`, 
+			`role_name`, 
+			`role_key`, 
+			`role_sort`, 
+			`data_scope`, 
+			`status`, 
+			`del_flag`, 
+			`create_by`, 
+			`create_time`, 
+			`update_by`, 
+			`update_time`, 
+			`remark`
+		FROM sys_role
+		<where>
+			<if test="roleName != null">
+			AND `role_name` = #{roleName,jdbcType=VARCHAR}
+			</if>
+			<if test="roleKey != null">
+			AND `role_key` = #{roleKey,jdbcType=VARCHAR}
+			</if>
+			<if test="roleSort != null">
+			AND `role_sort` = #{roleSort,jdbcType=INTEGER}
+			</if>
+			<if test="dataScope != null">
+			AND `data_scope` = #{dataScope,jdbcType=INTEGER}
+			</if>
+			<if test="status != null">
+			AND `status` = #{status,jdbcType=INTEGER}
+			</if>
+			<if test="delFlag != null">
+			AND `del_flag` = #{delFlag,jdbcType=INTEGER}
+			</if>
+			<if test="createBy != null">
+			AND `create_by` = #{createBy,jdbcType=VARCHAR}
+			</if>
+			<if test="createTime != null">
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="updateBy != null">
+			AND `update_by` = #{updateBy,jdbcType=VARCHAR}
+			</if>
+			<if test="updateTime != null">
+			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="remark != null">
+			AND `remark` = #{remark,jdbcType=VARCHAR}
+			</if>
+		</where>
+		LIMIT 1
+	</select>
+	
+	<select id="getsDTOBy" resultType="com.bittrade.pojo.dto.SysRoleDTO">
+		SELECT 
+			<include refid="Base_Column_List"></include>
+		FROM sys_role
+		<where>
+			<if test="roleName != null">
+			AND `role_name` = #{roleName,jdbcType=VARCHAR}
+			</if>
+			<if test="roleKey != null">
+			AND `role_key` = #{roleKey,jdbcType=VARCHAR}
+			</if>
+			<if test="roleSort != null">
+			AND `role_sort` = #{roleSort,jdbcType=INTEGER}
+			</if>
+			<if test="dataScope != null">
+			AND `data_scope` = #{dataScope,jdbcType=INTEGER}
+			</if>
+			<if test="status != null">
+			AND `status` = #{status,jdbcType=INTEGER}
+			</if>
+			<if test="delFlag != null">
+			AND `del_flag` = #{delFlag,jdbcType=INTEGER}
+			</if>
+			<if test="createBy != null">
+			AND `create_by` = #{createBy,jdbcType=VARCHAR}
+			</if>
+			<if test="createTime != null">
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="updateBy != null">
+			AND `update_by` = #{updateBy,jdbcType=VARCHAR}
+			</if>
+			<if test="updateTime != null">
+			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="remark != null">
+			AND `remark` = #{remark,jdbcType=VARCHAR}
+			</if>
+			<include refid="sql_WHERE_forProperty"></include>
+		</where>
+	</select>
 
 </mapper>

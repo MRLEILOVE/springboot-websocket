@@ -343,5 +343,46 @@ WHERE是使用的 prefixOverrides（前缀）， SET是使用的 suffixOverrides
 		</where>
 		LIMIT ${r'#{'}page${r'}'}, ${r'#{'}size${r'}'}
 	</select>
+	
+	<select id="getDTOBy" resultType="${POJO_BASE_PKG}.${DTO}${module_name}.${struct.className}DTO">
+		SELECT 
+			<#list struct.list_itemPK as itemPK>
+			`${itemPK.columnName}`, 
+			</#list>
+			<#list struct.list_item as item>
+			`${item.columnName}`<#if item_has_next>, </#if>
+			</#list>
+		FROM ${struct.tableName}
+		<where>
+			<#list struct.list_item as item>
+			<if test="${item.name} != null">
+			AND `${item.columnName}` = ${r'#{'}${item.name},jdbcType=${item.jdbcType}${r'}'}
+			</if>
+			</#list>
+		</where>
+		LIMIT 1
+	</select>
+	
+	<select id="getsDTOBy" resultType="${POJO_BASE_PKG}.${DTO}${module_name}.${struct.className}DTO">
+		SELECT 
+			<#--
+			<#list struct.list_itemPK as itemPK>
+			`${itemPK.columnName}`, 
+			</#list>
+			<#list struct.list_item as item>
+			`${item.columnName}`<#if item_has_next>, </#if>
+			</#list>
+			-->
+			<include refid="Base_Column_List"></include>
+		FROM ${struct.tableName}
+		<where>
+			<#list struct.list_item as item>
+			<if test="${item.name} != null">
+			AND `${item.columnName}` = ${r'#{'}${item.name},jdbcType=${item.jdbcType}${r'}'}
+			</if>
+			</#list>
+			<include refid="sql_WHERE_forProperty"></include>
+		</where>
+	</select>
 
 </mapper>

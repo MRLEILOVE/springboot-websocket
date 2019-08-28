@@ -8,5 +8,5 @@ import org.apache.ibatis.annotations.Param;
  */
 public interface ITAdvertOrderDAO extends IDefaultTAdvertOrderDAO {
 
-	Long getPaymentOrPutCoinAging(@Param("userId") Long userId, @Param("type") Integer type, @Param("status") Integer status);
+	Long getPaymentOrPutCoinAging(@Param("userId") Long userId, @Param("type") Byte type, @Param("status") Byte status);
 }

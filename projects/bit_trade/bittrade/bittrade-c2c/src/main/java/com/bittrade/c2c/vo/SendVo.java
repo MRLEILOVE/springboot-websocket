@@ -34,7 +34,7 @@ public class SendVo {
     /**
      * 消息类型 1，系统消息 2，text消息 3，图片
      */
-    private Integer sendType;
+    private Byte sendType;
 
     /**
      * 发送时间

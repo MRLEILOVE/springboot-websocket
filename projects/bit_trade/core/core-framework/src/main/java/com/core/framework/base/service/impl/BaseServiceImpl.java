@@ -155,4 +155,21 @@ public abstract class BaseServiceImpl<Model extends BaseModel<Model>, DTO extend
 		return getsByPage(model, model.getCurrent(), model.getSize());
 	}
 
+	@Override
+	public DTO getDTOBy(DTO _DTO) {
+		return baseDAO.getDTOBy(_DTO);
+	}
+
+	@Override
+	public List<DTO> getsDTOBy(DTO _DTO) {
+		return baseDAO.getsDTOBy(_DTO);
+	}
+
+	@Override
+	public PageDTO<DTO> getsDTOByPage(DTO _DTO, PageDTO<DTO> pageDTO) {
+		List<DTO> list_DTO = baseDAO.getsDTOBy(_DTO);
+		pageDTO.setData(list_DTO);
+		return pageDTO;
+	}
+
 }

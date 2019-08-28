@@ -11,6 +11,7 @@ import org.apache.ibatis.annotations.Param;
 import ${POJO_BASE_PKG}.${DTO}${module_name}.${struct.className}DTO;
 import ${POJO_BASE_PKG}.${VO}${module_name}.${struct.className}VO;
 import ${POJO_BASE_PKG}.model${module_name}.${struct.className};
+import ${COMMON_PACKAGE}.DTO.PageDTO;
 import ${FRAMEWORK_PACKAGE}.base.DAO.IBaseDAO;
 //import ${FRAMEWORK_PACKAGE}.DTO.PageDTO;
 
@@ -127,5 +128,27 @@ public abstract interface IDefault${struct.className}DAO extends IBaseDAO<${stru
 	 * @return
 	 */
 	public List<${struct.className}> getsByPage(@Param(value="${struct.variableName}") ${struct.className} ${struct.variableName}, @Param(value="page") int page, @Param(value="size") int size);
+	
+	/**
+	 * 
+	 * @param ${struct.variableName}DTO
+	 * @return
+	 */
+	public ${struct.className}DTO getDTOBy(${struct.className}DTO ${struct.variableName}DTO);
+	
+	/**
+	 * 
+	 * @param ${struct.variableName}DTO
+	 * @return
+	 */
+	public List<${struct.className}DTO> getsDTOBy(${struct.className}DTO ${struct.variableName}DTO);
+	
+	/**
+	 * 
+	 * @param ${struct.variableName}DTO
+	 * @param pageDTO
+	 * @return
+	 */
+	public List<${struct.className}DTO> getsDTOBy(${struct.className}DTO ${struct.variableName}DTO, PageDTO<${struct.className}DTO> pageDTO);
 	
 }

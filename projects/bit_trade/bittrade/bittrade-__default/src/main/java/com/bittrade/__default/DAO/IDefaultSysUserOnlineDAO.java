@@ -11,6 +11,7 @@ import org.apache.ibatis.annotations.Param;
 import com.bittrade.pojo.dto.SysUserOnlineDTO;
 import com.bittrade.pojo.vo.SysUserOnlineVO;
 import com.bittrade.pojo.model.SysUserOnline;
+import com.core.common.DTO.PageDTO;
 import com.core.framework.base.DAO.IBaseDAO;
 //import com.core.framework.DTO.PageDTO;
 
@@ -127,5 +128,27 @@ public abstract interface IDefaultSysUserOnlineDAO extends IBaseDAO<SysUserOnlin
 	 * @return
 	 */
 	public List<SysUserOnline> getsByPage(@Param(value="sysUserOnline") SysUserOnline sysUserOnline, @Param(value="page") int page, @Param(value="size") int size);
+	
+	/**
+	 * 
+	 * @param sysUserOnlineDTO
+	 * @return
+	 */
+	public SysUserOnlineDTO getDTOBy(SysUserOnlineDTO sysUserOnlineDTO);
+	
+	/**
+	 * 
+	 * @param sysUserOnlineDTO
+	 * @return
+	 */
+	public List<SysUserOnlineDTO> getsDTOBy(SysUserOnlineDTO sysUserOnlineDTO);
+	
+	/**
+	 * 
+	 * @param sysUserOnlineDTO
+	 * @param pageDTO
+	 * @return
+	 */
+	public List<SysUserOnlineDTO> getsDTOBy(SysUserOnlineDTO sysUserOnlineDTO, PageDTO<SysUserOnlineDTO> pageDTO);
 	
 }

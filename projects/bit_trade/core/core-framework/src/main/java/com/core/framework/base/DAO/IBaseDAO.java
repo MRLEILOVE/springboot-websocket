@@ -3,8 +3,10 @@ package com.core.framework.base.DAO;
 import java.io.Serializable;
 import java.util.List;
 
+import com.core.common.DTO.PageDTO;
+
 /**
- * 
+ * 菜不够可以加。
  * @author Administrator
  *
  * @param <Model>
@@ -120,5 +122,27 @@ public abstract interface IBaseDAO<Model, DTO, VO> extends com.baomidou.mybatisp
 	 * @return
 	 */
 	public List<Model> getsByPage(Model model, int page, int size);
+
+	/**
+	 * 查询一个根据实体（默认取第一个）
+	 * @param _DTO
+	 * @return
+	 */
+	public DTO getDTOBy(DTO _DTO);
+
+	/**
+	 * 查询多个根据实体
+	 * @param _DTO
+	 * @return
+	 */
+	public List<DTO> getsDTOBy(DTO _DTO);
+
+	/**
+	 * 查询多个根据实体和分页
+	 * @param _DTO
+	 * @param pageDTO
+	 * @return
+	 */
+	public List<DTO> getsDTOBy(DTO _DTO, PageDTO<DTO> pageDTO);
 
 }

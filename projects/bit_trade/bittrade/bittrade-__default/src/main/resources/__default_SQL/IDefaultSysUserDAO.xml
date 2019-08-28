@@ -957,5 +957,150 @@
 		</where>
 		LIMIT #{page}, #{size}
 	</select>
+	
+	<select id="getDTOBy" resultType="com.bittrade.pojo.dto.SysUserDTO">
+		SELECT 
+			`user_id`, 
+			`avatar`, 
+			`dept_id`, 
+			`login_name`, 
+			`user_name`, 
+			`user_type`, 
+			`email`, 
+			`phonenumber`, 
+			`sex`, 
+			`password`, 
+			`salt`, 
+			`status`, 
+			`del_flag`, 
+			`login_ip`, 
+			`login_date`, 
+			`create_by`, 
+			`create_time`, 
+			`update_by`, 
+			`update_time`, 
+			`remark`
+		FROM sys_user
+		<where>
+			<if test="deptId != null">
+			AND `dept_id` = #{deptId,jdbcType=INTEGER}
+			</if>
+			<if test="loginName != null">
+			AND `login_name` = #{loginName,jdbcType=VARCHAR}
+			</if>
+			<if test="userName != null">
+			AND `user_name` = #{userName,jdbcType=VARCHAR}
+			</if>
+			<if test="userType != null">
+			AND `user_type` = #{userType,jdbcType=VARCHAR}
+			</if>
+			<if test="email != null">
+			AND `email` = #{email,jdbcType=VARCHAR}
+			</if>
+			<if test="phonenumber != null">
+			AND `phonenumber` = #{phonenumber,jdbcType=VARCHAR}
+			</if>
+			<if test="sex != null">
+			AND `sex` = #{sex,jdbcType=CHAR}
+			</if>
+			<if test="password != null">
+			AND `password` = #{password,jdbcType=VARCHAR}
+			</if>
+			<if test="salt != null">
+			AND `salt` = #{salt,jdbcType=VARCHAR}
+			</if>
+			<if test="status != null">
+			AND `status` = #{status,jdbcType=CHAR}
+			</if>
+			<if test="delFlag != null">
+			AND `del_flag` = #{delFlag,jdbcType=CHAR}
+			</if>
+			<if test="loginIp != null">
+			AND `login_ip` = #{loginIp,jdbcType=VARCHAR}
+			</if>
+			<if test="loginDate != null">
+			AND `login_date` = #{loginDate,jdbcType=TIMESTAMP}
+			</if>
+			<if test="createBy != null">
+			AND `create_by` = #{createBy,jdbcType=VARCHAR}
+			</if>
+			<if test="createTime != null">
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="updateBy != null">
+			AND `update_by` = #{updateBy,jdbcType=VARCHAR}
+			</if>
+			<if test="updateTime != null">
+			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="remark != null">
+			AND `remark` = #{remark,jdbcType=VARCHAR}
+			</if>
+		</where>
+		LIMIT 1
+	</select>
+	
+	<select id="getsDTOBy" resultType="com.bittrade.pojo.dto.SysUserDTO">
+		SELECT 
+			<include refid="Base_Column_List"></include>
+		FROM sys_user
+		<where>
+			<if test="deptId != null">
+			AND `dept_id` = #{deptId,jdbcType=INTEGER}
+			</if>
+			<if test="loginName != null">
+			AND `login_name` = #{loginName,jdbcType=VARCHAR}
+			</if>
+			<if test="userName != null">
+			AND `user_name` = #{userName,jdbcType=VARCHAR}
+			</if>
+			<if test="userType != null">
+			AND `user_type` = #{userType,jdbcType=VARCHAR}
+			</if>
+			<if test="email != null">
+			AND `email` = #{email,jdbcType=VARCHAR}
+			</if>
+			<if test="phonenumber != null">
+			AND `phonenumber` = #{phonenumber,jdbcType=VARCHAR}
+			</if>
+			<if test="sex != null">
+			AND `sex` = #{sex,jdbcType=CHAR}
+			</if>
+			<if test="password != null">
+			AND `password` = #{password,jdbcType=VARCHAR}
+			</if>
+			<if test="salt != null">
+			AND `salt` = #{salt,jdbcType=VARCHAR}
+			</if>
+			<if test="status != null">
+			AND `status` = #{status,jdbcType=CHAR}
+			</if>
+			<if test="delFlag != null">
+			AND `del_flag` = #{delFlag,jdbcType=CHAR}
+			</if>
+			<if test="loginIp != null">
+			AND `login_ip` = #{loginIp,jdbcType=VARCHAR}
+			</if>
+			<if test="loginDate != null">
+			AND `login_date` = #{loginDate,jdbcType=TIMESTAMP}
+			</if>
+			<if test="createBy != null">
+			AND `create_by` = #{createBy,jdbcType=VARCHAR}
+			</if>
+			<if test="createTime != null">
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="updateBy != null">
+			AND `update_by` = #{updateBy,jdbcType=VARCHAR}
+			</if>
+			<if test="updateTime != null">
+			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="remark != null">
+			AND `remark` = #{remark,jdbcType=VARCHAR}
+			</if>
+			<include refid="sql_WHERE_forProperty"></include>
+		</where>
+	</select>
 
 </mapper>

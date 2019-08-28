@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -37,6 +38,7 @@ import com.bittrade.pojo.vo.QueryAdvertVO;
 import com.bittrade.pojo.vo.TAdvertInfoVO;
 import com.common.bittrade.service.ITLegalCurrencyAccountService;
 import com.common.bittrade.service.ITLegalCurrencyCoinService;
+import com.core.common.DTO.PageDTO;
 import com.core.tool.BeanUtil;
 import com.core.tool.SnowFlake;
 import com.core.web.constant.entity.LoginUser;
@@ -147,35 +149,42 @@ public class TAdvertInfoServiceImpl extends DefaultTAdvertInfoServiceImpl<ITAdve
 	 * <br/>
 	 * create time: 2019/8/20 19:52
 	 *
-	 * @param page             : {@link Page}
+	 * @param pageDTO          : {@link PageDTO}
 	 * @param queryAdvertVO : {@link QueryAdvertVO}
 	 * @param loginUser        : {@link LoginUser}
 	 * @return result
 	 */
 	@Override
-	public IPage<TAdvertInfo> listAdverts(Page<TAdvertInfo> page, QueryAdvertVO queryAdvertVO, LoginUser loginUser) {
-		LambdaQueryWrapper<TAdvertInfo> lambdaQueryWrapper = new LambdaQueryWrapper<TAdvertInfo>().eq(TAdvertInfo::getCoinId, queryAdvertVO.getCoinId());
-		lambdaQueryWrapper.eq(TAdvertInfo::getStatus, TAdvertInfoDTO.StatusEnum.PROCESSING.getCode());
+	public PageDTO<TAdvertInfoDTO> listAdverts(PageDTO<TAdvertInfoDTO> pageDTO, QueryAdvertVO queryAdvertVO, LoginUser loginUser) {
+		/*
+		 * 这种语句属于DAO层的， 这样就相当于放在业务逻辑层了。
+		 */
+		TAdvertInfoDTO queryAdvertInfoDTO = new TAdvertInfoDTO();
+		queryAdvertInfoDTO.eq(TAdvertInfo.FieldNames.COIN_ID, queryAdvertVO.getCoinId());
+		queryAdvertInfoDTO.eq(TAdvertInfo.FieldNames.STATUS, TAdvertInfoDTO.StatusEnum.PROCESSING.getCode());
 		if (queryAdvertVO.isBuyType()) {
-			lambdaQueryWrapper.le(TAdvertInfo::getType, TAdvertInfoDTO.AdvertTypeEnum.SELL.getCode());
+			queryAdvertInfoDTO.le(TAdvertInfo.FieldNames.TYPE, TAdvertInfoDTO.AdvertTypeEnum.SELL.getCode());
 		}
 		if (queryAdvertVO.isSellType()) {
-			lambdaQueryWrapper.le(TAdvertInfo::getType, TAdvertInfoDTO.AdvertTypeEnum.BUY.getCode());
+			queryAdvertInfoDTO.le(TAdvertInfo.FieldNames.TYPE, TAdvertInfoDTO.AdvertTypeEnum.BUY.getCode());
 		}
 		if (queryAdvertVO.getOnlyShowCanTransaction()) {
 			// 认证等级 <= 登录用户 TODO 暂时只有一级
-			lambdaQueryWrapper.le(TAdvertInfo::getCertificationLevel, loginUser.getCertificationLevel());
+			queryAdvertInfoDTO.le(TAdvertInfo.FieldNames.CERTIFICATION_LEVEL, loginUser.getCertificationLevel());
 			// 注册时间 >= 用户注册时间 TODO 用户注册时间待获取
-			lambdaQueryWrapper.ge(TAdvertInfo::getRegisteredTime, LocalDateTime.now().minusYears(10));
+			queryAdvertInfoDTO.ge(TAdvertInfo.FieldNames.REGISTERED_TIME, LocalDateTime.now().minusYears(10));
 		}
 		// 最小目标金额
-		BigDecimal minTargetAmount = queryAdvertVO.getMinTargetAmount();
-		lambdaQueryWrapper.le(Objects.nonNull(minTargetAmount), TAdvertInfo::getMinLimit, minTargetAmount);
+		if (Objects.nonNull(queryAdvertVO.getMinTargetAmount())) {
+			queryAdvertInfoDTO.le(TAdvertInfo.FieldNames.MIN_LIMIT, queryAdvertVO.getMinTargetAmount());
+		}
 		// 收款方式
-		Long receiptWay = queryAdvertVO.getReceiptWay();
-		lambdaQueryWrapper.eq(Objects.nonNull(receiptWay), TAdvertInfo::getPaymentMethodId, receiptWay);
-
-		IPage<TAdvertInfo> advertInfoIPage = baseMapper.selectPage(page.setSearchCount(false), lambdaQueryWrapper);
+		if (Objects.nonNull(queryAdvertVO.getReceiptWay())) {
+			queryAdvertInfoDTO.eq(TAdvertInfo.FieldNames.PAYMENT_METHOD_ID, queryAdvertVO.getReceiptWay());
+		}
+		
+		List<TAdvertInfoDTO> list_advertInfoDTO = baseMapper.getsDTOBy(queryAdvertInfoDTO, pageDTO);
+//		IPage<TAdvertInfo> advertInfoIPage = baseMapper.selectPage(page.setSearchCount(false), lambdaQueryWrapper);
 		// 广告列表
 		List<TAdvertInfo> advertInfos = advertInfoIPage.getRecords();
 		if (!CollectionUtils.isEmpty(advertInfos)) {
@@ -458,14 +467,14 @@ public class TAdvertInfoServiceImpl extends DefaultTAdvertInfoServiceImpl<ITAdve
 	 * create by: leigq
 	 * <br/>
 	 * create time: 2019/8/22 16:34
-	 * @param advertInfo : {@link TAdvertInfo}
+	 * @param advertInfoDTO : {@link TAdvertInfoDTO}
 	 * @return
 	 */
-	private void buildVolumeAndRate(TAdvertInfoDTO advertInfo) {
-		TLegalCurrencyAccount account = itLegalCurrencyAccountService.getByUserIdAndCoinId(advertInfo.getUserId(), advertInfo.getCoinId());
-		advertInfo.setC2cAlreadyDealCount(account.getC2cAlreadyDealCount());
+	private void buildVolumeAndRate(TAdvertInfoDTO advertInfoDTO) {
+		TLegalCurrencyAccount account = itLegalCurrencyAccountService.getByUserIdAndCoinId(advertInfoDTO.getUserId(), advertInfoDTO.getCoinId());
+		advertInfoDTO.setC2cAlreadyDealCount(account.getC2cAlreadyDealCount());
 		int c2cTotalCount = account.getC2cTotalCount();
 		c2cTotalCount = c2cTotalCount == 0 ? 1 : c2cTotalCount;
-		advertInfo.setC2cTurnoverRate(BigDecimal.valueOf(account.getC2cAlreadyDealCount()).divide(BigDecimal.valueOf(c2cTotalCount), 2, RoundingMode.DOWN));
+		advertInfoDTO.setC2cTurnoverRate(BigDecimal.valueOf(account.getC2cAlreadyDealCount()).divide(BigDecimal.valueOf(c2cTotalCount), 2, RoundingMode.DOWN));
 	}
 }

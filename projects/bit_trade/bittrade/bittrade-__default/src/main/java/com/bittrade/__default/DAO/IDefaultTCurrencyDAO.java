@@ -11,6 +11,7 @@ import org.apache.ibatis.annotations.Param;
 import com.bittrade.pojo.dto.TCurrencyDTO;
 import com.bittrade.pojo.vo.TCurrencyVO;
 import com.bittrade.pojo.model.TCurrency;
+import com.core.common.DTO.PageDTO;
 import com.core.framework.base.DAO.IBaseDAO;
 //import com.core.framework.DTO.PageDTO;
 
@@ -127,5 +128,27 @@ public abstract interface IDefaultTCurrencyDAO extends IBaseDAO<TCurrency, TCurr
 	 * @return
 	 */
 	public List<TCurrency> getsByPage(@Param(value="tCurrency") TCurrency tCurrency, @Param(value="page") int page, @Param(value="size") int size);
+	
+	/**
+	 * 
+	 * @param tCurrencyDTO
+	 * @return
+	 */
+	public TCurrencyDTO getDTOBy(TCurrencyDTO tCurrencyDTO);
+	
+	/**
+	 * 
+	 * @param tCurrencyDTO
+	 * @return
+	 */
+	public List<TCurrencyDTO> getsDTOBy(TCurrencyDTO tCurrencyDTO);
+	
+	/**
+	 * 
+	 * @param tCurrencyDTO
+	 * @param pageDTO
+	 * @return
+	 */
+	public List<TCurrencyDTO> getsDTOBy(TCurrencyDTO tCurrencyDTO, PageDTO<TCurrencyDTO> pageDTO);
 	
 }

@@ -812,5 +812,128 @@
 		</where>
 		LIMIT #{page}, #{size}
 	</select>
+	
+	<select id="getDTOBy" resultType="com.bittrade.pojo.dto.TCurrencyTradeDTO">
+		SELECT 
+			`id`, 
+			`symbol`, 
+			`currency_id1`, 
+			`currency_id2`, 
+			`price_decimal_digits`, 
+			`count_decimal_digits`, 
+			`min_price`, 
+			`min_count`, 
+			`min_amount`, 
+			`max_price`, 
+			`max_count`, 
+			`max_amount`, 
+			`status`, 
+			`sort`, 
+			`create_time`, 
+			`update_time`
+		FROM t_currency_trade
+		<where>
+			<if test="symbol != null">
+			AND `symbol` = #{symbol,jdbcType=VARCHAR}
+			</if>
+			<if test="currencyId1 != null">
+			AND `currency_id1` = #{currencyId1,jdbcType=INTEGER}
+			</if>
+			<if test="currencyId2 != null">
+			AND `currency_id2` = #{currencyId2,jdbcType=INTEGER}
+			</if>
+			<if test="priceDecimalDigits != null">
+			AND `price_decimal_digits` = #{priceDecimalDigits,jdbcType=INTEGER}
+			</if>
+			<if test="countDecimalDigits != null">
+			AND `count_decimal_digits` = #{countDecimalDigits,jdbcType=INTEGER}
+			</if>
+			<if test="minPrice != null">
+			AND `min_price` = #{minPrice,jdbcType=DECIMAL}
+			</if>
+			<if test="minCount != null">
+			AND `min_count` = #{minCount,jdbcType=DECIMAL}
+			</if>
+			<if test="minAmount != null">
+			AND `min_amount` = #{minAmount,jdbcType=DECIMAL}
+			</if>
+			<if test="maxPrice != null">
+			AND `max_price` = #{maxPrice,jdbcType=DECIMAL}
+			</if>
+			<if test="maxCount != null">
+			AND `max_count` = #{maxCount,jdbcType=DECIMAL}
+			</if>
+			<if test="maxAmount != null">
+			AND `max_amount` = #{maxAmount,jdbcType=DECIMAL}
+			</if>
+			<if test="status != null">
+			AND `status` = #{status,jdbcType=INTEGER}
+			</if>
+			<if test="sort != null">
+			AND `sort` = #{sort,jdbcType=INTEGER}
+			</if>
+			<if test="createTime != null">
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="updateTime != null">
+			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+		</where>
+		LIMIT 1
+	</select>
+	
+	<select id="getsDTOBy" resultType="com.bittrade.pojo.dto.TCurrencyTradeDTO">
+		SELECT 
+			<include refid="Base_Column_List"></include>
+		FROM t_currency_trade
+		<where>
+			<if test="symbol != null">
+			AND `symbol` = #{symbol,jdbcType=VARCHAR}
+			</if>
+			<if test="currencyId1 != null">
+			AND `currency_id1` = #{currencyId1,jdbcType=INTEGER}
+			</if>
+			<if test="currencyId2 != null">
+			AND `currency_id2` = #{currencyId2,jdbcType=INTEGER}
+			</if>
+			<if test="priceDecimalDigits != null">
+			AND `price_decimal_digits` = #{priceDecimalDigits,jdbcType=INTEGER}
+			</if>
+			<if test="countDecimalDigits != null">
+			AND `count_decimal_digits` = #{countDecimalDigits,jdbcType=INTEGER}
+			</if>
+			<if test="minPrice != null">
+			AND `min_price` = #{minPrice,jdbcType=DECIMAL}
+			</if>
+			<if test="minCount != null">
+			AND `min_count` = #{minCount,jdbcType=DECIMAL}
+			</if>
+			<if test="minAmount != null">
+			AND `min_amount` = #{minAmount,jdbcType=DECIMAL}
+			</if>
+			<if test="maxPrice != null">
+			AND `max_price` = #{maxPrice,jdbcType=DECIMAL}
+			</if>
+			<if test="maxCount != null">
+			AND `max_count` = #{maxCount,jdbcType=DECIMAL}
+			</if>
+			<if test="maxAmount != null">
+			AND `max_amount` = #{maxAmount,jdbcType=DECIMAL}
+			</if>
+			<if test="status != null">
+			AND `status` = #{status,jdbcType=INTEGER}
+			</if>
+			<if test="sort != null">
+			AND `sort` = #{sort,jdbcType=INTEGER}
+			</if>
+			<if test="createTime != null">
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="updateTime != null">
+			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+			<include refid="sql_WHERE_forProperty"></include>
+		</where>
+	</select>
 
 </mapper>

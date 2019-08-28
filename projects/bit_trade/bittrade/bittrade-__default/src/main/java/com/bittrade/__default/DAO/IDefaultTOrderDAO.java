@@ -11,6 +11,7 @@ import org.apache.ibatis.annotations.Param;
 import com.bittrade.pojo.dto.TOrderDTO;
 import com.bittrade.pojo.vo.TOrderVO;
 import com.bittrade.pojo.model.TOrder;
+import com.core.common.DTO.PageDTO;
 import com.core.framework.base.DAO.IBaseDAO;
 //import com.core.framework.DTO.PageDTO;
 
@@ -127,5 +128,27 @@ public abstract interface IDefaultTOrderDAO extends IBaseDAO<TOrder, TOrderDTO, 
 	 * @return
 	 */
 	public List<TOrder> getsByPage(@Param(value="tOrder") TOrder tOrder, @Param(value="page") int page, @Param(value="size") int size);
+	
+	/**
+	 * 
+	 * @param tOrderDTO
+	 * @return
+	 */
+	public TOrderDTO getDTOBy(TOrderDTO tOrderDTO);
+	
+	/**
+	 * 
+	 * @param tOrderDTO
+	 * @return
+	 */
+	public List<TOrderDTO> getsDTOBy(TOrderDTO tOrderDTO);
+	
+	/**
+	 * 
+	 * @param tOrderDTO
+	 * @param pageDTO
+	 * @return
+	 */
+	public List<TOrderDTO> getsDTOBy(TOrderDTO tOrderDTO, PageDTO<TOrderDTO> pageDTO);
 	
 }

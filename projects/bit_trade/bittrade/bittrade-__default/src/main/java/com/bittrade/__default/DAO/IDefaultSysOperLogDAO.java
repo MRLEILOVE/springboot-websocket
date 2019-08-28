@@ -11,6 +11,7 @@ import org.apache.ibatis.annotations.Param;
 import com.bittrade.pojo.dto.SysOperLogDTO;
 import com.bittrade.pojo.vo.SysOperLogVO;
 import com.bittrade.pojo.model.SysOperLog;
+import com.core.common.DTO.PageDTO;
 import com.core.framework.base.DAO.IBaseDAO;
 //import com.core.framework.DTO.PageDTO;
 
@@ -127,5 +128,27 @@ public abstract interface IDefaultSysOperLogDAO extends IBaseDAO<SysOperLog, Sys
 	 * @return
 	 */
 	public List<SysOperLog> getsByPage(@Param(value="sysOperLog") SysOperLog sysOperLog, @Param(value="page") int page, @Param(value="size") int size);
+	
+	/**
+	 * 
+	 * @param sysOperLogDTO
+	 * @return
+	 */
+	public SysOperLogDTO getDTOBy(SysOperLogDTO sysOperLogDTO);
+	
+	/**
+	 * 
+	 * @param sysOperLogDTO
+	 * @return
+	 */
+	public List<SysOperLogDTO> getsDTOBy(SysOperLogDTO sysOperLogDTO);
+	
+	/**
+	 * 
+	 * @param sysOperLogDTO
+	 * @param pageDTO
+	 * @return
+	 */
+	public List<SysOperLogDTO> getsDTOBy(SysOperLogDTO sysOperLogDTO, PageDTO<SysOperLogDTO> pageDTO);
 	
 }

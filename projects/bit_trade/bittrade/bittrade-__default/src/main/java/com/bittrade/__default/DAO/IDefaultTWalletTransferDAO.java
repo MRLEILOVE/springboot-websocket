@@ -11,6 +11,7 @@ import org.apache.ibatis.annotations.Param;
 import com.bittrade.pojo.dto.TWalletTransferDTO;
 import com.bittrade.pojo.vo.TWalletTransferVO;
 import com.bittrade.pojo.model.TWalletTransfer;
+import com.core.common.DTO.PageDTO;
 import com.core.framework.base.DAO.IBaseDAO;
 //import com.core.framework.DTO.PageDTO;
 
@@ -127,5 +128,27 @@ public abstract interface IDefaultTWalletTransferDAO extends IBaseDAO<TWalletTra
 	 * @return
 	 */
 	public List<TWalletTransfer> getsByPage(@Param(value="tWalletTransfer") TWalletTransfer tWalletTransfer, @Param(value="page") int page, @Param(value="size") int size);
+	
+	/**
+	 * 
+	 * @param tWalletTransferDTO
+	 * @return
+	 */
+	public TWalletTransferDTO getDTOBy(TWalletTransferDTO tWalletTransferDTO);
+	
+	/**
+	 * 
+	 * @param tWalletTransferDTO
+	 * @return
+	 */
+	public List<TWalletTransferDTO> getsDTOBy(TWalletTransferDTO tWalletTransferDTO);
+	
+	/**
+	 * 
+	 * @param tWalletTransferDTO
+	 * @param pageDTO
+	 * @return
+	 */
+	public List<TWalletTransferDTO> getsDTOBy(TWalletTransferDTO tWalletTransferDTO, PageDTO<TWalletTransferDTO> pageDTO);
 	
 }

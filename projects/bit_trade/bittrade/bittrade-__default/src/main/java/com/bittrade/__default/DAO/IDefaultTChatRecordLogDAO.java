@@ -11,6 +11,7 @@ import org.apache.ibatis.annotations.Param;
 import com.bittrade.pojo.dto.TChatRecordLogDTO;
 import com.bittrade.pojo.vo.TChatRecordLogVO;
 import com.bittrade.pojo.model.TChatRecordLog;
+import com.core.common.DTO.PageDTO;
 import com.core.framework.base.DAO.IBaseDAO;
 //import com.core.framework.DTO.PageDTO;
 
@@ -127,5 +128,27 @@ public abstract interface IDefaultTChatRecordLogDAO extends IBaseDAO<TChatRecord
 	 * @return
 	 */
 	public List<TChatRecordLog> getsByPage(@Param(value="tChatRecordLog") TChatRecordLog tChatRecordLog, @Param(value="page") int page, @Param(value="size") int size);
+	
+	/**
+	 * 
+	 * @param tChatRecordLogDTO
+	 * @return
+	 */
+	public TChatRecordLogDTO getDTOBy(TChatRecordLogDTO tChatRecordLogDTO);
+	
+	/**
+	 * 
+	 * @param tChatRecordLogDTO
+	 * @return
+	 */
+	public List<TChatRecordLogDTO> getsDTOBy(TChatRecordLogDTO tChatRecordLogDTO);
+	
+	/**
+	 * 
+	 * @param tChatRecordLogDTO
+	 * @param pageDTO
+	 * @return
+	 */
+	public List<TChatRecordLogDTO> getsDTOBy(TChatRecordLogDTO tChatRecordLogDTO, PageDTO<TChatRecordLogDTO> pageDTO);
 	
 }

@@ -730,5 +730,114 @@
 		</where>
 		LIMIT #{page}, #{size}
 	</select>
+	
+	<select id="getDTOBy" resultType="com.bittrade.pojo.dto.WOrderDTO">
+		SELECT 
+			`id`, 
+			`user_id`, 
+			`order_id`, 
+			`order_type`, 
+			`fee`, 
+			`coin_type`, 
+			`token`, 
+			`contract`, 
+			`amount`, 
+			`receiver_address`, 
+			`type`, 
+			`operator`, 
+			`create_time`, 
+			`update_time`
+		FROM w_order
+		<where>
+			<if test="userId != null">
+			AND `user_id` = #{userId,jdbcType=BIGINT}
+			</if>
+			<if test="orderId != null">
+			AND `order_id` = #{orderId,jdbcType=VARCHAR}
+			</if>
+			<if test="orderType != null">
+			AND `order_type` = #{orderType,jdbcType=INTEGER}
+			</if>
+			<if test="fee != null">
+			AND `fee` = #{fee,jdbcType=DECIMAL}
+			</if>
+			<if test="coinType != null">
+			AND `coin_type` = #{coinType,jdbcType=VARCHAR}
+			</if>
+			<if test="token != null">
+			AND `token` = #{token,jdbcType=VARCHAR}
+			</if>
+			<if test="contract != null">
+			AND `contract` = #{contract,jdbcType=VARCHAR}
+			</if>
+			<if test="amount != null">
+			AND `amount` = #{amount,jdbcType=DECIMAL}
+			</if>
+			<if test="receiverAddress != null">
+			AND `receiver_address` = #{receiverAddress,jdbcType=VARCHAR}
+			</if>
+			<if test="type != null">
+			AND `type` = #{type,jdbcType=INTEGER}
+			</if>
+			<if test="operator != null">
+			AND `operator` = #{operator,jdbcType=VARCHAR}
+			</if>
+			<if test="createTime != null">
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="updateTime != null">
+			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+		</where>
+		LIMIT 1
+	</select>
+	
+	<select id="getsDTOBy" resultType="com.bittrade.pojo.dto.WOrderDTO">
+		SELECT 
+			<include refid="Base_Column_List"></include>
+		FROM w_order
+		<where>
+			<if test="userId != null">
+			AND `user_id` = #{userId,jdbcType=BIGINT}
+			</if>
+			<if test="orderId != null">
+			AND `order_id` = #{orderId,jdbcType=VARCHAR}
+			</if>
+			<if test="orderType != null">
+			AND `order_type` = #{orderType,jdbcType=INTEGER}
+			</if>
+			<if test="fee != null">
+			AND `fee` = #{fee,jdbcType=DECIMAL}
+			</if>
+			<if test="coinType != null">
+			AND `coin_type` = #{coinType,jdbcType=VARCHAR}
+			</if>
+			<if test="token != null">
+			AND `token` = #{token,jdbcType=VARCHAR}
+			</if>
+			<if test="contract != null">
+			AND `contract` = #{contract,jdbcType=VARCHAR}
+			</if>
+			<if test="amount != null">
+			AND `amount` = #{amount,jdbcType=DECIMAL}
+			</if>
+			<if test="receiverAddress != null">
+			AND `receiver_address` = #{receiverAddress,jdbcType=VARCHAR}
+			</if>
+			<if test="type != null">
+			AND `type` = #{type,jdbcType=INTEGER}
+			</if>
+			<if test="operator != null">
+			AND `operator` = #{operator,jdbcType=VARCHAR}
+			</if>
+			<if test="createTime != null">
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="updateTime != null">
+			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+			<include refid="sql_WHERE_forProperty"></include>
+		</where>
+	</select>
 
 </mapper>

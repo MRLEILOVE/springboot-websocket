@@ -41,12 +41,12 @@ public class TAdvertInfoDTO extends BaseDTO<TAdvertInfoDTO> {
 	 */
 	@AllArgsConstructor
 	public enum AdvertTypeEnum {
-		SELL(1, "出售"),
-		BUY(2, "购买"),
+		SELL((byte) 1, "出售"),
+		BUY((byte) 2, "购买"),
 		;
 
 		@Getter
-		private Integer code;
+		private Byte code;
 
 		@Getter
 		private String describe;
@@ -58,7 +58,7 @@ public class TAdvertInfoDTO extends BaseDTO<TAdvertInfoDTO> {
 		 * <br/>
 		 * create time: 2019/8/19 17:24
 		 */
-		public static boolean isValidAdvertType(Integer advertType) {
+		public static boolean isValidAdvertType(Byte advertType) {
 			for (AdvertTypeEnum advertTypeEnum : AdvertTypeEnum.values()) {
 				if (advertTypeEnum.code.equals(advertType)) {
 					return true;
@@ -76,12 +76,12 @@ public class TAdvertInfoDTO extends BaseDTO<TAdvertInfoDTO> {
 	 */
 	@AllArgsConstructor
 	public enum PricingModeEnum {
-		FIXED(1, "固定价格"),
-		FLOAT(2, "浮动价格"),
+		FIXED((byte) 1, "固定价格"),
+		FLOAT((byte) 2, "浮动价格"),
 		;
 
 		@Getter
-		private Integer code;
+		private Byte code;
 
 		@Getter
 		private String describe;
@@ -93,7 +93,7 @@ public class TAdvertInfoDTO extends BaseDTO<TAdvertInfoDTO> {
 		 * <br/>
 		 * create time: 2019/8/19 17:24
 		 */
-		public static boolean isValidPricingMode(Integer pricingMode) {
+		public static boolean isValidPricingMode(Byte pricingMode) {
 			for (PricingModeEnum pricingModeEnum : PricingModeEnum.values()) {
 				if (pricingModeEnum.code.equals(pricingMode)) {
 					return true;
@@ -111,17 +111,17 @@ public class TAdvertInfoDTO extends BaseDTO<TAdvertInfoDTO> {
 	 */
 	@AllArgsConstructor
 	public enum StatusEnum {
-		PROCESSING(1, "进行中"),
-		PAUSE(2, "已下架(暂停)"),
-		revoked(3, "已撤销"),
+		PROCESSING((byte) 1, "进行中"),
+		PAUSE((byte) 2, "已下架(暂停)"),
+		revoked((byte) 3, "已撤销"),
 		;
 
 		@Getter
-		private Integer code;
+		private Byte code;
 		@Getter
 		private String describe;
 
-		public static boolean isValidStatus(Integer status) {
+		public static boolean isValidStatus(Byte status) {
 			for (StatusEnum statusEnum : StatusEnum.values()) {
 				if (statusEnum.code.equals(status)) {
 					return true;
@@ -198,14 +198,14 @@ public class TAdvertInfoDTO extends BaseDTO<TAdvertInfoDTO> {
 	 */
 	@NotNull(message = "type cannot be null")
 	@CheckEnumValue(enumClass = AdvertTypeEnum.class, enumMethod = "isValidAdvertType")
-	private Integer type;
+	private Byte type;
 
 	/**
 	 * 定价方式 1：固定价格 2：浮动价格
 	 */
 	@NotNull(message = "pricingMode cannot be null")
 	@CheckEnumValue(enumClass = PricingModeEnum.class, enumMethod = "isValidPricingMode")
-	private Integer pricingMode;
+	private Byte pricingMode;
 
 	/**
 	 * 浮动比例

@@ -525,5 +525,79 @@
 		</where>
 		LIMIT #{page}, #{size}
 	</select>
+	
+	<select id="getDTOBy" resultType="com.bittrade.pojo.dto.SysJobLogDTO">
+		SELECT 
+			`job_log_id`, 
+			`job_name`, 
+			`job_group`, 
+			`method_name`, 
+			`method_params`, 
+			`job_message`, 
+			`status`, 
+			`exception_info`, 
+			`create_time`
+		FROM sys_job_log
+		<where>
+			<if test="jobName != null">
+			AND `job_name` = #{jobName,jdbcType=VARCHAR}
+			</if>
+			<if test="jobGroup != null">
+			AND `job_group` = #{jobGroup,jdbcType=VARCHAR}
+			</if>
+			<if test="methodName != null">
+			AND `method_name` = #{methodName,jdbcType=VARCHAR}
+			</if>
+			<if test="methodParams != null">
+			AND `method_params` = #{methodParams,jdbcType=VARCHAR}
+			</if>
+			<if test="jobMessage != null">
+			AND `job_message` = #{jobMessage,jdbcType=VARCHAR}
+			</if>
+			<if test="status != null">
+			AND `status` = #{status,jdbcType=CHAR}
+			</if>
+			<if test="exceptionInfo != null">
+			AND `exception_info` = #{exceptionInfo,jdbcType=VARCHAR}
+			</if>
+			<if test="createTime != null">
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+		</where>
+		LIMIT 1
+	</select>
+	
+	<select id="getsDTOBy" resultType="com.bittrade.pojo.dto.SysJobLogDTO">
+		SELECT 
+			<include refid="Base_Column_List"></include>
+		FROM sys_job_log
+		<where>
+			<if test="jobName != null">
+			AND `job_name` = #{jobName,jdbcType=VARCHAR}
+			</if>
+			<if test="jobGroup != null">
+			AND `job_group` = #{jobGroup,jdbcType=VARCHAR}
+			</if>
+			<if test="methodName != null">
+			AND `method_name` = #{methodName,jdbcType=VARCHAR}
+			</if>
+			<if test="methodParams != null">
+			AND `method_params` = #{methodParams,jdbcType=VARCHAR}
+			</if>
+			<if test="jobMessage != null">
+			AND `job_message` = #{jobMessage,jdbcType=VARCHAR}
+			</if>
+			<if test="status != null">
+			AND `status` = #{status,jdbcType=CHAR}
+			</if>
+			<if test="exceptionInfo != null">
+			AND `exception_info` = #{exceptionInfo,jdbcType=VARCHAR}
+			</if>
+			<if test="createTime != null">
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<include refid="sql_WHERE_forProperty"></include>
+		</where>
+	</select>
 
 </mapper>

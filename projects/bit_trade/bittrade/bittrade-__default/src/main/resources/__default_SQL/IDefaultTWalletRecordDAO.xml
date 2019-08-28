@@ -531,5 +531,79 @@
 		</where>
 		LIMIT #{page}, #{size}
 	</select>
+	
+	<select id="getDTOBy" resultType="com.bittrade.pojo.dto.TWalletRecordDTO">
+		SELECT 
+			`id`, 
+			`user_id`, 
+			`currency_id`, 
+			`before_amount`, 
+			`after_amount`, 
+			`change_amount`, 
+			`type`, 
+			`entrust_record_id`, 
+			`create_time`
+		FROM t_wallet_record
+		<where>
+			<if test="userId != null">
+			AND `user_id` = #{userId,jdbcType=BIGINT}
+			</if>
+			<if test="currencyId != null">
+			AND `currency_id` = #{currencyId,jdbcType=INTEGER}
+			</if>
+			<if test="beforeAmount != null">
+			AND `before_amount` = #{beforeAmount,jdbcType=DECIMAL}
+			</if>
+			<if test="afterAmount != null">
+			AND `after_amount` = #{afterAmount,jdbcType=DECIMAL}
+			</if>
+			<if test="changeAmount != null">
+			AND `change_amount` = #{changeAmount,jdbcType=DECIMAL}
+			</if>
+			<if test="type != null">
+			AND `type` = #{type,jdbcType=INTEGER}
+			</if>
+			<if test="entrustRecordId != null">
+			AND `entrust_record_id` = #{entrustRecordId,jdbcType=BIGINT}
+			</if>
+			<if test="createTime != null">
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+		</where>
+		LIMIT 1
+	</select>
+	
+	<select id="getsDTOBy" resultType="com.bittrade.pojo.dto.TWalletRecordDTO">
+		SELECT 
+			<include refid="Base_Column_List"></include>
+		FROM t_wallet_record
+		<where>
+			<if test="userId != null">
+			AND `user_id` = #{userId,jdbcType=BIGINT}
+			</if>
+			<if test="currencyId != null">
+			AND `currency_id` = #{currencyId,jdbcType=INTEGER}
+			</if>
+			<if test="beforeAmount != null">
+			AND `before_amount` = #{beforeAmount,jdbcType=DECIMAL}
+			</if>
+			<if test="afterAmount != null">
+			AND `after_amount` = #{afterAmount,jdbcType=DECIMAL}
+			</if>
+			<if test="changeAmount != null">
+			AND `change_amount` = #{changeAmount,jdbcType=DECIMAL}
+			</if>
+			<if test="type != null">
+			AND `type` = #{type,jdbcType=INTEGER}
+			</if>
+			<if test="entrustRecordId != null">
+			AND `entrust_record_id` = #{entrustRecordId,jdbcType=BIGINT}
+			</if>
+			<if test="createTime != null">
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<include refid="sql_WHERE_forProperty"></include>
+		</where>
+	</select>
 
 </mapper>

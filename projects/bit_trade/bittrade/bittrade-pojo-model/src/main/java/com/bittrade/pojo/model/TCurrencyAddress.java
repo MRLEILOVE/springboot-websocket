@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 
 /**
  * 
@@ -19,6 +20,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Accessors(chain = true)
 @EqualsAndHashCode(callSuper = false)
 @TableName(value="t_currency_address")
 public class TCurrencyAddress extends BaseModel<TCurrencyAddress> {

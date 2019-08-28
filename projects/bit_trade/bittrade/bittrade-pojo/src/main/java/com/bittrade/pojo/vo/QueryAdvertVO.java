@@ -6,8 +6,7 @@ import java.util.Objects;
 
 import javax.validation.constraints.NotNull;
 
-import com.bittrade.pojo.model.TAdvertInfo;
-import com.bittrade.pojo.vo.AdvertInfoVO.AdvertTypeEnum;
+import com.bittrade.pojo.dto.TAdvertInfoDTO.AdvertTypeEnum;
 import com.core.common.annotation.CheckEnumValue;
 
 import lombok.Data;

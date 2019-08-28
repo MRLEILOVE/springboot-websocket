@@ -36,7 +36,7 @@ public class AdvertUserVO implements Serializable {
 	/**
 	 * 定价方式 1：固定价格 2：浮动价格
 	 */
-	private Integer pricingMode;
+	private Byte pricingMode;
 
 	/**
 	 * 浮动比例 (小数 0.01 = 1%)

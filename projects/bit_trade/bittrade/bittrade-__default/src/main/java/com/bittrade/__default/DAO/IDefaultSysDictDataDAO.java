@@ -11,6 +11,7 @@ import org.apache.ibatis.annotations.Param;
 import com.bittrade.pojo.dto.SysDictDataDTO;
 import com.bittrade.pojo.vo.SysDictDataVO;
 import com.bittrade.pojo.model.SysDictData;
+import com.core.common.DTO.PageDTO;
 import com.core.framework.base.DAO.IBaseDAO;
 //import com.core.framework.DTO.PageDTO;
 
@@ -127,5 +128,27 @@ public abstract interface IDefaultSysDictDataDAO extends IBaseDAO<SysDictData, S
 	 * @return
 	 */
 	public List<SysDictData> getsByPage(@Param(value="sysDictData") SysDictData sysDictData, @Param(value="page") int page, @Param(value="size") int size);
+	
+	/**
+	 * 
+	 * @param sysDictDataDTO
+	 * @return
+	 */
+	public SysDictDataDTO getDTOBy(SysDictDataDTO sysDictDataDTO);
+	
+	/**
+	 * 
+	 * @param sysDictDataDTO
+	 * @return
+	 */
+	public List<SysDictDataDTO> getsDTOBy(SysDictDataDTO sysDictDataDTO);
+	
+	/**
+	 * 
+	 * @param sysDictDataDTO
+	 * @param pageDTO
+	 * @return
+	 */
+	public List<SysDictDataDTO> getsDTOBy(SysDictDataDTO sysDictDataDTO, PageDTO<SysDictDataDTO> pageDTO);
 	
 }

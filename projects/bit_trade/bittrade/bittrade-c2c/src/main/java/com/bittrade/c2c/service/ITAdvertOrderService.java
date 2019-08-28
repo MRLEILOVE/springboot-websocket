@@ -12,7 +12,7 @@ import com.bittrade.pojo.model.TAdvertOrder;
  */
 public interface ITAdvertOrderService extends IDefaultTAdvertOrderService<TAdvertOrder, TAdvertOrderDTO, TAdvertOrderVO> {
 
-	Long getPaymentOrPutCoinAging(Long userId, Integer type, Integer status);
+	Long getPaymentOrPutCoinAging(Long userId, Byte type, Byte status);
 
 	boolean existenceNoCompleteOrders(Long advertId);
 

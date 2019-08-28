@@ -46,7 +46,7 @@ public class MessageVo implements Serializable {
     /**
      * 消息类型 1，系统消息 2，text消息 3，图片
      */
-    private Integer messageType;
+    private Byte messageType;
 
 
 }

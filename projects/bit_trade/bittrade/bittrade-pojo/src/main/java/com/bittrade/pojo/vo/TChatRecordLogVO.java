@@ -19,7 +19,7 @@ public class TChatRecordLogVO extends BaseVO<TChatRecordLogVO> {
 	private Long id;
 	private Long senderId;
 	private Long receiverId;
-	private Byte[] content;
+	private String content;
 	private Byte messageType;
 	private java.time.LocalDateTime createTime;
 	private java.time.LocalDateTime updateTime;

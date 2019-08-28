@@ -1,33 +1,39 @@
 package com.bittrade.c2c.controller;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.bittrade.pojo.model.TAdvertOrder;
-import com.bittrade.pojo.vo.AdvertUserVO;
-import com.bittrade.pojo.vo.QueryAdvertVO;
-import lombok.extern.slf4j.Slf4j;
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.Objects;
+
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotNull;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.util.CollectionUtils;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.bittrade.c2c.service.ITAdvertInfoService;
 import com.bittrade.pojo.dto.TAdvertInfoDTO;
+import com.bittrade.pojo.dto.TAdvertOrderDTO;
 import com.bittrade.pojo.model.TAdvertInfo;
-import com.bittrade.pojo.vo.AdvertInfoVO;
+import com.bittrade.pojo.vo.AdvertUserVO;
+import com.bittrade.pojo.vo.QueryAdvertVO;
 import com.bittrade.pojo.vo.TAdvertInfoVO;
+import com.core.common.DTO.PageDTO;
 import com.core.common.DTO.ReturnDTO;
 import com.core.common.annotation.ALoginUser;
 import com.core.framework.base.controller.BaseController;
 import com.core.web.constant.entity.LoginUser;
 
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import java.math.BigDecimal;
-import java.util.List;
-import java.util.Objects;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  *
@@ -50,16 +56,16 @@ public class TAdvertInfoController extends BaseController<TAdvertInfo, TAdvertIn
 	 * <br/>
 	 * create time: 2019/8/19 14:43
 	 * @param user {@link LoginUser}
-	 * @param advertInfoVO {@link AdvertInfoVO}
+	 * @param advertInfoDTO {@link TAdvertInfoDTO}
 	 * @return result
 	 */
 	@PostMapping("/action/publish_advert")
-	public ReturnDTO<Object> publishAdvert(@ALoginUser LoginUser user, @Validated AdvertInfoVO advertInfoVO) {
+	public ReturnDTO<Object> publishAdvert(@ALoginUser LoginUser user, @Validated TAdvertInfoDTO advertInfoDTO) {
 		// 最大限额需大于最小限额
-		if (advertInfoVO.getMaxLimit().compareTo(advertInfoVO.getMinLimit()) < 0) {
+		if (advertInfoDTO.getMaxLimit().compareTo(advertInfoDTO.getMinLimit()) < 0) {
 			return ReturnDTO.error("單筆最大限額需大於最小限額");
 		}
-		boolean result = itAdvertInfoService.publishAdvert(user, advertInfoVO);
+		boolean result = itAdvertInfoService.publishAdvert(user, advertInfoDTO);
 		return result ? ReturnDTO.ok("發布成功") : ReturnDTO.error("發布失敗");
 	}
 
@@ -69,14 +75,14 @@ public class TAdvertInfoController extends BaseController<TAdvertInfo, TAdvertIn
 	 * create by: leigq
 	 * <br/>
 	 * create time: 2019/8/20 19:52
-	 * @param page : {@link Page}
+	 * @param pageDTO : {@link PageDTO}
 	 * @param queryAdvertVO : {@link QueryAdvertVO}
 	 * @param loginUser : {@link LoginUser}
 	 * @return  result
 	 */
 	@GetMapping("/adverts")
-	public ReturnDTO<Object> listAdverts(Page<TAdvertInfo> page, @Validated QueryAdvertVO queryAdvertVO, @ALoginUser LoginUser loginUser) {
-		IPage<TAdvertInfo> adverts = itAdvertInfoService.listAdverts(page, queryAdvertVO, loginUser);
+	public ReturnDTO<Object> listAdverts(PageDTO<TAdvertInfoDTO> pageDTO, @Validated QueryAdvertVO queryAdvertVO, @ALoginUser LoginUser loginUser) {
+		PageDTO<TAdvertInfoDTO> adverts = itAdvertInfoService.listAdverts(pageDTO, queryAdvertVO, loginUser);
 		return ReturnDTO.ok(adverts);
 	}
 
@@ -145,7 +151,7 @@ public class TAdvertInfoController extends BaseController<TAdvertInfo, TAdvertIn
 	 */
 	@GetMapping("/adverts/details/{advert_id}")
 	public ReturnDTO<Object> getAdvertDetails(@PathVariable("advert_id") Long advertId) {
-		TAdvertInfo info = itAdvertInfoService.getAdvertDetails(advertId);
+		TAdvertInfoDTO info = itAdvertInfoService.getAdvertDetails(advertId);
 		return ReturnDTO.ok(info);
 	}
 
@@ -166,7 +172,7 @@ public class TAdvertInfoController extends BaseController<TAdvertInfo, TAdvertIn
 	                                          @NotNull(message = "數量必填") @DecimalMin(value = "0", message = "數量需大於0", inclusive = false) BigDecimal amount,
 	                                          String payPassWord,
 	                                          @ALoginUser LoginUser loginUser) {
-		TAdvertOrder advertOrder = itAdvertInfoService.placeAdvertOrder(advertId, amount, payPassWord, loginUser);
+		TAdvertOrderDTO advertOrder = itAdvertInfoService.placeAdvertOrder(advertId, amount, payPassWord, loginUser);
 		return Objects.nonNull(advertOrder) ? ReturnDTO.ok(advertOrder) : ReturnDTO.error("下單失敗");
 	}
 

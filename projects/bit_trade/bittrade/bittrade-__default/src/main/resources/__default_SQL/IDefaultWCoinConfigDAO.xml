@@ -689,5 +689,107 @@
 		</where>
 		LIMIT #{page}, #{size}
 	</select>
+	
+	<select id="getDTOBy" resultType="com.bittrade.pojo.dto.WCoinConfigDTO">
+		SELECT 
+			`id`, 
+			`coin_type`, 
+			`token`, 
+			`contract`, 
+			`scan_block`, 
+			`base_multiple`, 
+			`min_confirm`, 
+			`boss_address`, 
+			`min_collection_amount`, 
+			`valid`, 
+			`remark`, 
+			`create_time`, 
+			`update_time`
+		FROM w_coin_config
+		<where>
+			<if test="coinType != null">
+			AND `coin_type` = #{coinType,jdbcType=VARCHAR}
+			</if>
+			<if test="token != null">
+			AND `token` = #{token,jdbcType=VARCHAR}
+			</if>
+			<if test="contract != null">
+			AND `contract` = #{contract,jdbcType=VARCHAR}
+			</if>
+			<if test="scanBlock != null">
+			AND `scan_block` = #{scanBlock,jdbcType=BIGINT}
+			</if>
+			<if test="baseMultiple != null">
+			AND `base_multiple` = #{baseMultiple,jdbcType=INTEGER}
+			</if>
+			<if test="minConfirm != null">
+			AND `min_confirm` = #{minConfirm,jdbcType=INTEGER}
+			</if>
+			<if test="bossAddress != null">
+			AND `boss_address` = #{bossAddress,jdbcType=VARCHAR}
+			</if>
+			<if test="minCollectionAmount != null">
+			AND `min_collection_amount` = #{minCollectionAmount,jdbcType=DECIMAL}
+			</if>
+			<if test="valid != null">
+			AND `valid` = #{valid,jdbcType=CHAR}
+			</if>
+			<if test="remark != null">
+			AND `remark` = #{remark,jdbcType=VARCHAR}
+			</if>
+			<if test="createTime != null">
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="updateTime != null">
+			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+		</where>
+		LIMIT 1
+	</select>
+	
+	<select id="getsDTOBy" resultType="com.bittrade.pojo.dto.WCoinConfigDTO">
+		SELECT 
+			<include refid="Base_Column_List"></include>
+		FROM w_coin_config
+		<where>
+			<if test="coinType != null">
+			AND `coin_type` = #{coinType,jdbcType=VARCHAR}
+			</if>
+			<if test="token != null">
+			AND `token` = #{token,jdbcType=VARCHAR}
+			</if>
+			<if test="contract != null">
+			AND `contract` = #{contract,jdbcType=VARCHAR}
+			</if>
+			<if test="scanBlock != null">
+			AND `scan_block` = #{scanBlock,jdbcType=BIGINT}
+			</if>
+			<if test="baseMultiple != null">
+			AND `base_multiple` = #{baseMultiple,jdbcType=INTEGER}
+			</if>
+			<if test="minConfirm != null">
+			AND `min_confirm` = #{minConfirm,jdbcType=INTEGER}
+			</if>
+			<if test="bossAddress != null">
+			AND `boss_address` = #{bossAddress,jdbcType=VARCHAR}
+			</if>
+			<if test="minCollectionAmount != null">
+			AND `min_collection_amount` = #{minCollectionAmount,jdbcType=DECIMAL}
+			</if>
+			<if test="valid != null">
+			AND `valid` = #{valid,jdbcType=CHAR}
+			</if>
+			<if test="remark != null">
+			AND `remark` = #{remark,jdbcType=VARCHAR}
+			</if>
+			<if test="createTime != null">
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="updateTime != null">
+			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+			<include refid="sql_WHERE_forProperty"></include>
+		</where>
+	</select>
 
 </mapper>

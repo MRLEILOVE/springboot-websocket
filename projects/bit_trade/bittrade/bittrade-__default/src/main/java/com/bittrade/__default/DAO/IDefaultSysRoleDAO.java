@@ -11,6 +11,7 @@ import org.apache.ibatis.annotations.Param;
 import com.bittrade.pojo.dto.SysRoleDTO;
 import com.bittrade.pojo.vo.SysRoleVO;
 import com.bittrade.pojo.model.SysRole;
+import com.core.common.DTO.PageDTO;
 import com.core.framework.base.DAO.IBaseDAO;
 //import com.core.framework.DTO.PageDTO;
 
@@ -127,5 +128,27 @@ public abstract interface IDefaultSysRoleDAO extends IBaseDAO<SysRole, SysRoleDT
 	 * @return
 	 */
 	public List<SysRole> getsByPage(@Param(value="sysRole") SysRole sysRole, @Param(value="page") int page, @Param(value="size") int size);
+	
+	/**
+	 * 
+	 * @param sysRoleDTO
+	 * @return
+	 */
+	public SysRoleDTO getDTOBy(SysRoleDTO sysRoleDTO);
+	
+	/**
+	 * 
+	 * @param sysRoleDTO
+	 * @return
+	 */
+	public List<SysRoleDTO> getsDTOBy(SysRoleDTO sysRoleDTO);
+	
+	/**
+	 * 
+	 * @param sysRoleDTO
+	 * @param pageDTO
+	 * @return
+	 */
+	public List<SysRoleDTO> getsDTOBy(SysRoleDTO sysRoleDTO, PageDTO<SysRoleDTO> pageDTO);
 	
 }

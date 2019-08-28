@@ -11,6 +11,7 @@ import org.apache.ibatis.annotations.Param;
 import com.bittrade.pojo.dto.TEntrustRecordDTO;
 import com.bittrade.pojo.vo.TEntrustRecordVO;
 import com.bittrade.pojo.model.TEntrustRecord;
+import com.core.common.DTO.PageDTO;
 import com.core.framework.base.DAO.IBaseDAO;
 //import com.core.framework.DTO.PageDTO;
 
@@ -127,5 +128,27 @@ public abstract interface IDefaultTEntrustRecordDAO extends IBaseDAO<TEntrustRec
 	 * @return
 	 */
 	public List<TEntrustRecord> getsByPage(@Param(value="tEntrustRecord") TEntrustRecord tEntrustRecord, @Param(value="page") int page, @Param(value="size") int size);
+	
+	/**
+	 * 
+	 * @param tEntrustRecordDTO
+	 * @return
+	 */
+	public TEntrustRecordDTO getDTOBy(TEntrustRecordDTO tEntrustRecordDTO);
+	
+	/**
+	 * 
+	 * @param tEntrustRecordDTO
+	 * @return
+	 */
+	public List<TEntrustRecordDTO> getsDTOBy(TEntrustRecordDTO tEntrustRecordDTO);
+	
+	/**
+	 * 
+	 * @param tEntrustRecordDTO
+	 * @param pageDTO
+	 * @return
+	 */
+	public List<TEntrustRecordDTO> getsDTOBy(TEntrustRecordDTO tEntrustRecordDTO, PageDTO<TEntrustRecordDTO> pageDTO);
 	
 }

@@ -11,6 +11,7 @@ import org.apache.ibatis.annotations.Param;
 import com.bittrade.pojo.dto.TLegalCurrencyAccountDTO;
 import com.bittrade.pojo.vo.TLegalCurrencyAccountVO;
 import com.bittrade.pojo.model.TLegalCurrencyAccount;
+import com.core.common.DTO.PageDTO;
 import com.core.framework.base.DAO.IBaseDAO;
 //import com.core.framework.DTO.PageDTO;
 
@@ -127,5 +128,27 @@ public abstract interface IDefaultTLegalCurrencyAccountDAO extends IBaseDAO<TLeg
 	 * @return
 	 */
 	public List<TLegalCurrencyAccount> getsByPage(@Param(value="tLegalCurrencyAccount") TLegalCurrencyAccount tLegalCurrencyAccount, @Param(value="page") int page, @Param(value="size") int size);
+	
+	/**
+	 * 
+	 * @param tLegalCurrencyAccountDTO
+	 * @return
+	 */
+	public TLegalCurrencyAccountDTO getDTOBy(TLegalCurrencyAccountDTO tLegalCurrencyAccountDTO);
+	
+	/**
+	 * 
+	 * @param tLegalCurrencyAccountDTO
+	 * @return
+	 */
+	public List<TLegalCurrencyAccountDTO> getsDTOBy(TLegalCurrencyAccountDTO tLegalCurrencyAccountDTO);
+	
+	/**
+	 * 
+	 * @param tLegalCurrencyAccountDTO
+	 * @param pageDTO
+	 * @return
+	 */
+	public List<TLegalCurrencyAccountDTO> getsDTOBy(TLegalCurrencyAccountDTO tLegalCurrencyAccountDTO, PageDTO<TLegalCurrencyAccountDTO> pageDTO);
 	
 }
