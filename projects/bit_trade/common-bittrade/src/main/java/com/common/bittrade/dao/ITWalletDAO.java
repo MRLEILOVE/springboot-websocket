@@ -3,13 +3,10 @@ package com.common.bittrade.dao;
 import java.math.BigDecimal;
 import java.util.List;
 
-import com.bittrade.pojo.dto.TransferDto;
-import com.bittrade.pojo.model.TWallet;
-import com.bittrade.pojo.vo.AccountVO;
-import com.bittrade.pojo.vo.AssetsVO;
 import org.apache.ibatis.annotations.Param;
 
 import com.bittrade.__default.DAO.IDefaultTWalletDAO;
+import com.bittrade.pojo.vo.AssetsVO;
 import com.bittrade.pojo.vo.QueryWalletVO;
 import com.bittrade.pojo.vo.UserWalletVO;
 

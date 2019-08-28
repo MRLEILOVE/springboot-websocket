@@ -149,6 +149,6 @@ public abstract interface IDefaultSysLogininforDAO extends IBaseDAO<SysLogininfo
 	 * @param pageDTO
 	 * @return
 	 */
-	public List<SysLogininforDTO> getsDTOBy(SysLogininforDTO sysLogininforDTO, PageDTO<SysLogininforDTO> pageDTO);
+	public List<SysLogininforDTO> getsDTOBy(@Param(value="sysLogininfor") SysLogininforDTO sysLogininforDTO, PageDTO<SysLogininforDTO> pageDTO);
 	
 }

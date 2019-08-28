@@ -149,6 +149,6 @@ public abstract interface IDefaultTLegalCurrencyAccountDAO extends IBaseDAO<TLeg
 	 * @param pageDTO
 	 * @return
 	 */
-	public List<TLegalCurrencyAccountDTO> getsDTOBy(TLegalCurrencyAccountDTO tLegalCurrencyAccountDTO, PageDTO<TLegalCurrencyAccountDTO> pageDTO);
+	public List<TLegalCurrencyAccountDTO> getsDTOBy(@Param(value="tLegalCurrencyAccount") TLegalCurrencyAccountDTO tLegalCurrencyAccountDTO, PageDTO<TLegalCurrencyAccountDTO> pageDTO);
 	
 }

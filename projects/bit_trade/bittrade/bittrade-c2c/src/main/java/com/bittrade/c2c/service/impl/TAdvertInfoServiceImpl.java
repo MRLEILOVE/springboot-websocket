@@ -160,7 +160,9 @@ public class TAdvertInfoServiceImpl extends DefaultTAdvertInfoServiceImpl<ITAdve
 		 * 这种语句属于DAO层的， 这样就相当于放在业务逻辑层了。
 		 */
 		TAdvertInfoDTO queryAdvertInfoDTO = new TAdvertInfoDTO();
-		queryAdvertInfoDTO.eq(TAdvertInfo.FieldNames.COIN_ID, queryAdvertVO.getCoinId());
+		if (Objects.nonNull(queryAdvertVO.getCoinId())) {
+			queryAdvertInfoDTO.eq(TAdvertInfo.FieldNames.COIN_ID, queryAdvertVO.getCoinId());
+		}
 		queryAdvertInfoDTO.eq(TAdvertInfo.FieldNames.STATUS, TAdvertInfoDTO.StatusEnum.PROCESSING.getCode());
 		if (queryAdvertVO.isBuyType()) {
 			queryAdvertInfoDTO.le(TAdvertInfo.FieldNames.TYPE, TAdvertInfoDTO.AdvertTypeEnum.SELL.getCode());

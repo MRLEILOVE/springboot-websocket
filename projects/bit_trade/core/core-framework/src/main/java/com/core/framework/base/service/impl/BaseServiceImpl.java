@@ -167,7 +167,7 @@ public abstract class BaseServiceImpl<Model extends BaseModel<Model>, DTO extend
 
 	@Override
 	public PageDTO<DTO> getsDTOByPage(DTO _DTO, PageDTO<DTO> pageDTO) {
-		List<DTO> list_DTO = baseDAO.getsDTOBy(_DTO);
+		List<DTO> list_DTO = baseDAO.getsDTOBy(_DTO, pageDTO);
 		pageDTO.setData(list_DTO);
 		return pageDTO;
 	}

@@ -29,13 +29,6 @@
 		其他类似的类似，也可以公用（共用）引用。
 	-->
 	<sql id="Base_Column_List">
-		<choose>
-			<when test="strArr_field != null">
-		<foreach collection="strArr_field" index="index" item="item" open="" separator="," close="">
-			`${item}`
-		</foreach>
-			</when>
-			<otherwise>
 		`id` AS `id`, 
 		`user_id` AS `userId`, 
 		`order_id` AS `orderId`, 
@@ -50,6 +43,18 @@
 		`operator` AS `operator`, 
 		`create_time` AS `createTime`, 
 		`update_time` AS `updateTime`
+	</sql>
+	
+	<!-- 其他的也可以类似的加， yes， 类似蕾丝的。 -->
+	<sql id="sql_Column_forObject">
+		<choose>
+			<when test="wOrder.strArr_field != null">
+		<foreach collection="wOrder.strArr_field" index="index" item="item" open="" separator="," close="">
+			`${item}`
+		</foreach>
+			</when>
+			<otherwise>
+		<include refid="Base_Column_List"></include>
 			</otherwise>
 		</choose>
 	</sql>
@@ -76,18 +81,29 @@
 		</choose>
 	</sql>
 	<sql id="sql_WHERE_forObject">
-		<choose>
-			<when test="wOrder.map_in != null">
-			
+		<if test="wOrder.map_in != null">
 		<foreach collection="wOrder.map_in.entrySet()" index="map_index" item="map_item">
 		AND `${map_index}` IN 
 		<foreach collection="map_item" index="arr_index" item="arr_item" open="(" separator="," close=")">
 			#{arr_item}
 		</foreach>
 		</foreach>
-			
-			</when>
-		</choose>
+		</if>
+		<if test="wOrder.map_eq != null">
+		<foreach collection="wOrder.map_eq.entrySet()" index="map_index" item="map_item">
+		AND `${map_index}` = #{map_item}
+		</foreach>
+		</if>
+		<if test="wOrder.map_le != null">
+		<foreach collection="wOrder.map_le.entrySet()" index="map_index" item="map_item">
+		AND `${map_index}` &lt;= #{map_item}
+		</foreach>
+		</if>
+		<if test="wOrder.map_ge != null">
+		<foreach collection="wOrder.map_ge.entrySet()" index="map_index" item="map_item">
+		AND `${map_index}` &gt;= #{map_item}
+		</foreach>
+		</if>
 	</sql>
 	
 	
@@ -794,49 +810,10 @@
 	
 	<select id="getsDTOBy" resultType="com.bittrade.pojo.dto.WOrderDTO">
 		SELECT 
-			<include refid="Base_Column_List"></include>
+			<include refid="sql_Column_forObject"></include>
 		FROM w_order
 		<where>
-			<if test="userId != null">
-			AND `user_id` = #{userId,jdbcType=BIGINT}
-			</if>
-			<if test="orderId != null">
-			AND `order_id` = #{orderId,jdbcType=VARCHAR}
-			</if>
-			<if test="orderType != null">
-			AND `order_type` = #{orderType,jdbcType=INTEGER}
-			</if>
-			<if test="fee != null">
-			AND `fee` = #{fee,jdbcType=DECIMAL}
-			</if>
-			<if test="coinType != null">
-			AND `coin_type` = #{coinType,jdbcType=VARCHAR}
-			</if>
-			<if test="token != null">
-			AND `token` = #{token,jdbcType=VARCHAR}
-			</if>
-			<if test="contract != null">
-			AND `contract` = #{contract,jdbcType=VARCHAR}
-			</if>
-			<if test="amount != null">
-			AND `amount` = #{amount,jdbcType=DECIMAL}
-			</if>
-			<if test="receiverAddress != null">
-			AND `receiver_address` = #{receiverAddress,jdbcType=VARCHAR}
-			</if>
-			<if test="type != null">
-			AND `type` = #{type,jdbcType=INTEGER}
-			</if>
-			<if test="operator != null">
-			AND `operator` = #{operator,jdbcType=VARCHAR}
-			</if>
-			<if test="createTime != null">
-			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
-			</if>
-			<if test="updateTime != null">
-			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
-			</if>
-			<include refid="sql_WHERE_forProperty"></include>
+			<include refid="sql_WHERE_forObject"></include>
 		</where>
 	</select>
 

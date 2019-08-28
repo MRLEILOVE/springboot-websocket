@@ -149,6 +149,6 @@ public abstract interface IDefaultSysJobDAO extends IBaseDAO<SysJob, SysJobDTO, 
 	 * @param pageDTO
 	 * @return
 	 */
-	public List<SysJobDTO> getsDTOBy(SysJobDTO sysJobDTO, PageDTO<SysJobDTO> pageDTO);
+	public List<SysJobDTO> getsDTOBy(@Param(value="sysJob") SysJobDTO sysJobDTO, PageDTO<SysJobDTO> pageDTO);
 	
 }

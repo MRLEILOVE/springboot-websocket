@@ -22,13 +22,6 @@
 		其他类似的类似，也可以公用（共用）引用。
 	-->
 	<sql id="Base_Column_List">
-		<choose>
-			<when test="strArr_field != null">
-		<foreach collection="strArr_field" index="index" item="item" open="" separator="," close="">
-			`${item}`
-		</foreach>
-			</when>
-			<otherwise>
 		`id` AS `id`, 
 		`name` AS `name`, 
 		`short_name` AS `shortName`, 
@@ -36,6 +29,18 @@
 		`type` AS `type`, 
 		`desc` AS `desc`, 
 		`create_time` AS `createTime`
+	</sql>
+	
+	<!-- 其他的也可以类似的加， yes， 类似蕾丝的。 -->
+	<sql id="sql_Column_forObject">
+		<choose>
+			<when test="tCurrency.strArr_field != null">
+		<foreach collection="tCurrency.strArr_field" index="index" item="item" open="" separator="," close="">
+			`${item}`
+		</foreach>
+			</when>
+			<otherwise>
+		<include refid="Base_Column_List"></include>
 			</otherwise>
 		</choose>
 	</sql>
@@ -62,18 +67,29 @@
 		</choose>
 	</sql>
 	<sql id="sql_WHERE_forObject">
-		<choose>
-			<when test="tCurrency.map_in != null">
-			
+		<if test="tCurrency.map_in != null">
 		<foreach collection="tCurrency.map_in.entrySet()" index="map_index" item="map_item">
 		AND `${map_index}` IN 
 		<foreach collection="map_item" index="arr_index" item="arr_item" open="(" separator="," close=")">
 			#{arr_item}
 		</foreach>
 		</foreach>
-			
-			</when>
-		</choose>
+		</if>
+		<if test="tCurrency.map_eq != null">
+		<foreach collection="tCurrency.map_eq.entrySet()" index="map_index" item="map_item">
+		AND `${map_index}` = #{map_item}
+		</foreach>
+		</if>
+		<if test="tCurrency.map_le != null">
+		<foreach collection="tCurrency.map_le.entrySet()" index="map_index" item="map_item">
+		AND `${map_index}` &lt;= #{map_item}
+		</foreach>
+		</if>
+		<if test="tCurrency.map_ge != null">
+		<foreach collection="tCurrency.map_ge.entrySet()" index="map_index" item="map_item">
+		AND `${map_index}` &gt;= #{map_item}
+		</foreach>
+		</if>
 	</sql>
 	
 	
@@ -479,28 +495,10 @@
 	
 	<select id="getsDTOBy" resultType="com.bittrade.pojo.dto.TCurrencyDTO">
 		SELECT 
-			<include refid="Base_Column_List"></include>
+			<include refid="sql_Column_forObject"></include>
 		FROM t_currency
 		<where>
-			<if test="name != null">
-			AND `name` = #{name,jdbcType=VARCHAR}
-			</if>
-			<if test="shortName != null">
-			AND `short_name` = #{shortName,jdbcType=VARCHAR}
-			</if>
-			<if test="status != null">
-			AND `status` = #{status,jdbcType=INTEGER}
-			</if>
-			<if test="type != null">
-			AND `type` = #{type,jdbcType=INTEGER}
-			</if>
-			<if test="desc != null">
-			AND `desc` = #{desc,jdbcType=VARCHAR}
-			</if>
-			<if test="createTime != null">
-			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
-			</if>
-			<include refid="sql_WHERE_forProperty"></include>
+			<include refid="sql_WHERE_forObject"></include>
 		</where>
 	</select>
 

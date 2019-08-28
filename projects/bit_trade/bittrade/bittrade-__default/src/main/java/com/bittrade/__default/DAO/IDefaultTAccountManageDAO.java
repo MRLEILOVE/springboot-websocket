@@ -149,6 +149,6 @@ public abstract interface IDefaultTAccountManageDAO extends IBaseDAO<TAccountMan
 	 * @param pageDTO
 	 * @return
 	 */
-	public List<TAccountManageDTO> getsDTOBy(TAccountManageDTO tAccountManageDTO, PageDTO<TAccountManageDTO> pageDTO);
+	public List<TAccountManageDTO> getsDTOBy(@Param(value="tAccountManage") TAccountManageDTO tAccountManageDTO, PageDTO<TAccountManageDTO> pageDTO);
 	
 }
