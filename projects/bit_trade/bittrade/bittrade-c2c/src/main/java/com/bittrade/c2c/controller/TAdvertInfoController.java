@@ -2,6 +2,7 @@ package com.bittrade.c2c.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.bittrade.pojo.dto.TAdvertOrderDTO;
 import com.bittrade.pojo.model.TAdvertOrder;
 import com.bittrade.pojo.vo.AdvertUserVO;
 import com.bittrade.pojo.vo.QueryAdvertVO;
@@ -15,13 +16,13 @@ import org.springframework.web.bind.annotation.*;
 import com.bittrade.c2c.service.ITAdvertInfoService;
 import com.bittrade.pojo.dto.TAdvertInfoDTO;
 import com.bittrade.pojo.model.TAdvertInfo;
-import com.bittrade.pojo.vo.AdvertInfoVO;
 import com.bittrade.pojo.vo.TAdvertInfoVO;
 import com.core.common.DTO.ReturnDTO;
 import com.core.common.annotation.ALoginUser;
 import com.core.framework.base.controller.BaseController;
 import com.core.web.constant.entity.LoginUser;
 
+import javax.annotation.Resource;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -40,7 +41,7 @@ import java.util.Objects;
 @RequestMapping(value = { "/tAdvertInfo" }, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class TAdvertInfoController extends BaseController<TAdvertInfo, TAdvertInfoDTO, TAdvertInfoVO, ITAdvertInfoService> {
 
-	@Autowired
+	@Resource
 	private ITAdvertInfoService itAdvertInfoService;
 
 	/**
@@ -50,16 +51,16 @@ public class TAdvertInfoController extends BaseController<TAdvertInfo, TAdvertIn
 	 * <br/>
 	 * create time: 2019/8/19 14:43
 	 * @param user {@link LoginUser}
-	 * @param advertInfoVO {@link AdvertInfoVO}
+	 * @param tAdvertInfoDTO {@link TAdvertInfoDTO}
 	 * @return result
 	 */
 	@PostMapping("/action/publish_advert")
-	public ReturnDTO<Object> publishAdvert(@ALoginUser LoginUser user, @Validated AdvertInfoVO advertInfoVO) {
+	public ReturnDTO<Object> publishAdvert(@ALoginUser LoginUser user, @Validated TAdvertInfoDTO tAdvertInfoDTO) {
 		// 最大限额需大于最小限额
-		if (advertInfoVO.getMaxLimit().compareTo(advertInfoVO.getMinLimit()) < 0) {
+		if (tAdvertInfoDTO.getMaxLimit().compareTo(tAdvertInfoDTO.getMinLimit()) < 0) {
 			return ReturnDTO.error("單筆最大限額需大於最小限額");
 		}
-		boolean result = itAdvertInfoService.publishAdvert(user, advertInfoVO);
+		boolean result = itAdvertInfoService.publishAdvert(user, tAdvertInfoDTO);
 		return result ? ReturnDTO.ok("發布成功") : ReturnDTO.error("發布失敗");
 	}
 
@@ -145,7 +146,7 @@ public class TAdvertInfoController extends BaseController<TAdvertInfo, TAdvertIn
 	 */
 	@GetMapping("/adverts/details/{advert_id}")
 	public ReturnDTO<Object> getAdvertDetails(@PathVariable("advert_id") Long advertId) {
-		TAdvertInfo info = itAdvertInfoService.getAdvertDetails(advertId);
+		TAdvertInfoDTO info = itAdvertInfoService.getAdvertDetails(advertId);
 		return ReturnDTO.ok(info);
 	}
 
@@ -166,7 +167,7 @@ public class TAdvertInfoController extends BaseController<TAdvertInfo, TAdvertIn
 	                                          @NotNull(message = "數量必填") @DecimalMin(value = "0", message = "數量需大於0", inclusive = false) BigDecimal amount,
 	                                          String payPassWord,
 	                                          @ALoginUser LoginUser loginUser) {
-		TAdvertOrder advertOrder = itAdvertInfoService.placeAdvertOrder(advertId, amount, payPassWord, loginUser);
+		TAdvertOrderDTO advertOrder = itAdvertInfoService.placeAdvertOrder(advertId, amount, payPassWord, loginUser);
 		return Objects.nonNull(advertOrder) ? ReturnDTO.ok(advertOrder) : ReturnDTO.error("下單失敗");
 	}
 

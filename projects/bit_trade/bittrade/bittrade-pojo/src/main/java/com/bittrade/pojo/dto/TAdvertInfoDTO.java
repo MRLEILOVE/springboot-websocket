@@ -31,7 +31,142 @@ import lombok.Getter;
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class TAdvertInfoDTO extends BaseDTO<TAdvertInfoDTO> {
-	
+
+	private static final long serialVersionUID = 8964978986850395893L;
+
+	/**
+	 * 用户id
+	 */
+	private Long userId;
+
+	/**
+	 * 币种id
+	 */
+	@NotNull(message = "coinId cannot be null")
+	private Long coinId;
+
+	/**
+	 * 类型 1:出售 2:购买
+	 */
+	@NotNull(message = "type cannot be null")
+	@CheckEnumValue(enumClass = AdvertTypeEnum.class, enumMethod = "isValidAdvertType")
+	private Integer advertType;
+
+	/**
+	 * 定价方式 1：固定价格 2：浮动价格
+	 */
+	@NotNull(message = "pricingMode cannot be null")
+	@CheckEnumValue(enumClass = PricingModeEnum.class, enumMethod = "isValidPricingMode")
+	private Integer pricingMode;
+
+	/**
+	 * 浮动比例
+	 */
+	@Min(value = 80, message = "浮動比例最小80")
+	@Max(value = 120, message = "浮動比例最大120")
+	private BigDecimal floatingRatio;
+
+	/**
+	 * 交易价格
+	 */
+	@DecimalMin(value = "0", inclusive = false, message = "交易價格需大於0")
+	private BigDecimal price;
+
+	/**
+	 * 交易数量
+	 */
+	@NotNull(message = "交易數量必填")
+	@DecimalMin(value = "0", inclusive = false, message = "交易數量需大於0")
+	private BigDecimal amount;
+
+	/**
+	 * 单笔最小限额
+	 */
+	@NotNull(message = "單筆最小限額必填")
+	@DecimalMin(value = "0", inclusive = false, message = "單筆最小限額需大於0")
+	private BigDecimal minLimit;
+
+	/**
+	 * 单笔最大限额
+	 */
+	@NotNull(message = "單筆最大限額必填")
+	@DecimalMin(value = "0", inclusive = false, message = "單筆最大限額需大於0")
+	private BigDecimal maxLimit;
+
+	/**
+	 * 隐藏价格
+	 */
+	@DecimalMin(value = "0", inclusive = false, message = "隱藏價格需大於0")
+	private BigDecimal hidePrice;
+
+	/**
+	 * 对手限制-付款时间
+	 */
+	@CheckEnumValue(enumClass = PaymentTime.class, enumMethod = "isValidPaymentTime")
+	private Integer paymentTime;
+
+	/**
+	 * 对手限制-认证等级
+	 */
+	@NotNull(message = "認證等級必填")
+	@CheckEnumValue(enumClass = CertificationLevel.class, enumMethod = "isValidCertificationLevel")
+	private Integer certificationLevel;
+
+	/**
+	 * 对手限制-注册时间
+	 */
+	@NotNull(message = "註冊時間必填")
+	@Past(message = "註冊時間需小於當前時間")
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	private Date registeredTime;
+
+	/**
+	 * 交易说明
+	 */
+	@Length(max = 140, message = "交易說明最多{max}字")
+	private String message;
+
+	/**
+	 * 购买为付款方式，出售为收款方式
+	 * <br/>
+	 * 目前付款方式是每个用户一条记录，为了以后改为每种付款方式都对应一条记录，这里用集合接收
+	 */
+	@NotNull(message = "付款方式必填")
+	@Size(min = 1, message = "付款方式必需選擇一種")
+	private List<Long> paymentMethodId;
+
+	/**
+	 * 支付密码
+	 */
+	@NotNull(message = "支付密碼必填")
+	private String payPassword;
+
+	/**
+	 * 币名称
+	 */
+	private String coinName;
+
+	/**
+	 * c2c已成交数量
+	 */
+	private Integer c2cAlreadyDealCount;
+
+	/**
+	 * c2c总成交数量
+	 */
+	private Integer c2cTotalCount;
+
+	/**
+	 * c2c成交率
+	 */
+	private BigDecimal c2cTurnoverRate;
+
+	/**
+	 * 付款失效或放币时效
+	 */
+	private Long paymentOrPutCoinAging;
+
+
 	/**
 	 * 广告类型
 	 * <br/>
@@ -186,108 +321,6 @@ public class TAdvertInfoDTO extends BaseDTO<TAdvertInfoDTO> {
 			return false;
 		}
 	}
-	
-	/**
-	 * 币种id
-	 */
-	@NotNull(message = "coinId cannot be null")
-	private Long coinId;
-
-	/**
-	 * 类型 1:出售 2:购买
-	 */
-	@NotNull(message = "type cannot be null")
-	@CheckEnumValue(enumClass = AdvertTypeEnum.class, enumMethod = "isValidAdvertType")
-	private Integer type;
-
-	/**
-	 * 定价方式 1：固定价格 2：浮动价格
-	 */
-	@NotNull(message = "pricingMode cannot be null")
-	@CheckEnumValue(enumClass = PricingModeEnum.class, enumMethod = "isValidPricingMode")
-	private Integer pricingMode;
-
-	/**
-	 * 浮动比例
-	 */
-	@Min(value = 80, message = "浮動比例最小80")
-	@Max(value = 120, message = "浮動比例最大120")
-	private BigDecimal floatingRatio;
-
-	/**
-	 * 交易价格
-	 */
-	@DecimalMin(value = "0", inclusive = false, message = "交易價格需大於0")
-	private BigDecimal price;
-
-	/**
-	 * 交易数量
-	 */
-	@NotNull(message = "交易數量必填")
-	@DecimalMin(value = "0", inclusive = false, message = "交易數量需大於0")
-	private BigDecimal amount;
-
-	/**
-	 * 单笔最小限额
-	 */
-	@NotNull(message = "單筆最小限額必填")
-	@DecimalMin(value = "0", inclusive = false, message = "單筆最小限額需大於0")
-	private BigDecimal minLimit;
-
-	/**
-	 * 单笔最大限额
-	 */
-	@NotNull(message = "單筆最大限額必填")
-	@DecimalMin(value = "0", inclusive = false, message = "單筆最大限額需大於0")
-	private BigDecimal maxLimit;
-
-	/**
-	 * 隐藏价格
-	 */
-	@DecimalMin(value = "0", inclusive = false, message = "隱藏價格需大於0")
-	private BigDecimal hidePrice;
-
-	/**
-	 * 对手限制-付款时间
-	 */
-	@CheckEnumValue(enumClass = PaymentTime.class, enumMethod = "isValidPaymentTime")
-	private Integer paymentTime;
-
-	/**
-	 * 对手限制-认证等级
-	 */
-	@NotNull(message = "認證等級必填")
-	@CheckEnumValue(enumClass = CertificationLevel.class, enumMethod = "isValidCertificationLevel")
-	private Integer certificationLevel;
-
-	/**
-	 * 对手限制-注册时间
-	 */
-	@NotNull(message = "註冊時間必填")
-	@Past(message = "註冊時間需小於當前時間")
-	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-	private Date registeredTime;
-
-	/**
-	 * 交易说明
-	 */
-	@Length(max = 140, message = "交易說明最多{max}字")
-	private String message;
-
-	/**
-	 * 购买为付款方式，出售为收款方式
-	 * <br/>
-	 * 目前付款方式是每个用户一条记录，为了以后改为每种付款方式都对应一条记录，这里用集合接收
-	 */
-	@NotNull(message = "付款方式必填")
-	@Size(min = 1, message = "付款方式必需選擇一種")
-	private List<Long> paymentMethodId;
-
-	/**
-	 * 支付密码
-	 */
-	@NotNull(message = "支付密碼必填")
-	private String payPassword;
 
 	/**
 	 * 定价方式是否为浮动价格
@@ -308,7 +341,7 @@ public class TAdvertInfoDTO extends BaseDTO<TAdvertInfoDTO> {
 	 * create time: 2019/8/20 13:01
 	 */
 	public Boolean isBuyType() {
-		return Objects.equals(TAdvertInfoDTO.AdvertTypeEnum.BUY.getCode(), this.type);
+		return Objects.equals(TAdvertInfoDTO.AdvertTypeEnum.BUY.getCode(), this.advertType);
 	}
 
 	/**
@@ -319,7 +352,7 @@ public class TAdvertInfoDTO extends BaseDTO<TAdvertInfoDTO> {
 	 * create time: 2019/8/20 13:01
 	 */
 	public Boolean isSellType() {
-		return Objects.equals(TAdvertInfoDTO.AdvertTypeEnum.SELL.getCode(), this.type);
+		return Objects.equals(TAdvertInfoDTO.AdvertTypeEnum.SELL.getCode(), this.advertType);
 	}
 
 	/**
@@ -332,36 +365,9 @@ public class TAdvertInfoDTO extends BaseDTO<TAdvertInfoDTO> {
 	public Boolean isFloatingPrice() {
 		return Objects.equals(PricingModeEnum.FLOAT.getCode(), this.pricingMode);
 	}
-	
-	/**
-	 * 币名称
-	 */
-	private String coinName;
-
-	/**
-	 * c2c已成交数量
-	 */
-	private Integer c2cAlreadyDealCount;
-
-	/**
-	 * c2c总成交数量
-	 */
-	private Integer c2cTotalCount;
-
-	/**
-	 * c2c成交率
-	 */
-	private BigDecimal c2cTurnoverRate;
-
-	/**
-	 * 付款失效或放币时效
-	 */
-	private Long paymentOrPutCoinAging;
-
-	private static final long serialVersionUID = 1L;
 
 //	private Long id;
-	private Long userId;
+//	private Long userId;
 //	private Long coinId;
 //	private Integer type;
 //	private Integer pricingMode;

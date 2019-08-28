@@ -1,6 +1,7 @@
 package com.bittrade.pojo.model;
 
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.Version;
 import com.core.framework.base.model.BaseModel;
 
 import lombok.AllArgsConstructor;

@@ -1,5 +1,6 @@
 package com.bittrade.c2c.service.impl;
 
+import com.common.bittrade.service.ITLegalCurrencyAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,8 +12,6 @@ import com.bittrade.__default.service.impl.DefaultTAdvertOrderServiceImpl;
 import com.bittrade.c2c.dao.ITAdvertOrderDAO;
 import com.bittrade.c2c.service.ITAdvertInfoService;
 import com.bittrade.c2c.service.ITAdvertOrderService;
-import com.bittrade.c2c.service.ITLegalCurrencyAccountService;
-import com.bittrade.c2c.service.ITLegalCurrencyCoinService;
 import com.bittrade.pojo.dto.TAdvertOrderDTO;
 import com.bittrade.pojo.model.TAdvertInfo;
 import com.bittrade.pojo.model.TAdvertOrder;
@@ -26,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.common.bittrade.service.ITLegalCurrencyCoinService;
 import com.core.tool.BeanUtil;
 
+import javax.annotation.Resource;
 import java.time.LocalDateTime;
 
 /**
@@ -40,10 +40,10 @@ public class TAdvertOrderServiceImpl extends DefaultTAdvertOrderServiceImpl<ITAd
 	@Autowired
 	private ITAdvertInfoService itAdvertInfoService;
 
-	@Autowired
+	@Resource
 	private ITLegalCurrencyCoinService itLegalCurrencyCoinService;
 
-	@Autowired
+	@Resource
 	private ITLegalCurrencyAccountService itLegalCurrencyAccountService;
 
 	/**
@@ -116,7 +116,7 @@ public class TAdvertOrderServiceImpl extends DefaultTAdvertOrderServiceImpl<ITAd
 		// 币名称
 		advertOrderDTO.setCoinName(itLegalCurrencyCoinService.getById(advertOrder.getCoinId()).getName());
 		// 付款方式
-		advertOrderDTO.setPaymentMethodId(itAdvertInfoService.getById(advertOrder.getAdvertId()).getPaymentMethodId());
+//		advertOrderDTO.setPaymentMethodId(itAdvertInfoService.getById(advertOrder.getAdvertId()).getPaymentMethodId());
 		return advertOrderDTO;
 	}
 

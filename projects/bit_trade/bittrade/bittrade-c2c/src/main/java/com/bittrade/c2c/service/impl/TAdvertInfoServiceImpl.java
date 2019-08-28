@@ -42,6 +42,8 @@ import com.core.tool.SnowFlake;
 import com.core.web.constant.entity.LoginUser;
 import com.core.web.constant.exception.BusinessException;
 
+import javax.annotation.Resource;
+
 /**
  * @author Administrator
  */
@@ -49,13 +51,13 @@ import com.core.web.constant.exception.BusinessException;
 @Transactional(rollbackFor = Exception.class)
 public class TAdvertInfoServiceImpl extends DefaultTAdvertInfoServiceImpl<ITAdvertInfoDAO, TAdvertInfo, TAdvertInfoDTO, TAdvertInfoVO> implements ITAdvertInfoService {
 
-	@Autowired
+	@Resource
 	private ITLegalCurrencyAccountService itLegalCurrencyAccountService;
 
-	@Autowired
+	@Resource
 	private ITLegalCurrencyCoinService itLegalCurrencyCoinService;
 
-	@Autowired
+	@Resource
 	private ITAdvertOrderService itAdvertOrderService;
 
 	/**
@@ -66,7 +68,7 @@ public class TAdvertInfoServiceImpl extends DefaultTAdvertInfoServiceImpl<ITAdve
 	 * create time: 2019/8/19 14:43
 	 *
 	 * @param user         {@link LoginUser}
-	 * @param advertInfoVO {@link AdvertInfoVO}
+	 * @param advertInfoDTO {@link TAdvertInfoDTO}
 	 * @return result
 	 */
 	@Override
@@ -129,7 +131,7 @@ public class TAdvertInfoServiceImpl extends DefaultTAdvertInfoServiceImpl<ITAdve
 					.setFloatingRatio(Objects.nonNull(advertInfoDTO.getFloatingRatio()) ? advertInfoDTO.getFloatingRatio().divide(BigDecimal.valueOf(100), 2, RoundingMode.DOWN) : null)
 					.setBalanceAmount(amount)
 					// TODO 支付方式待改
-					.setPaymentMethodId(advertInfoDTO.getPaymentMethodId().stream().findFirst().get())
+//					.setPaymentMethodId(advertInfoDTO.getPaymentMethodId().stream().findFirst().get())
 					.setStatus(TAdvertInfoDTO.StatusEnum.PROCESSING.getCode())
 					.setPaymentTime(Objects.nonNull(advertInfoDTO.getPaymentTime()) ? advertInfoDTO.getPaymentTime() : null)
 					.setRegisteredTime(advertInfoDTO.getRegisteredTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
@@ -187,13 +189,13 @@ public class TAdvertInfoServiceImpl extends DefaultTAdvertInfoServiceImpl<ITAdve
 				if (TAdvertInfoDTO.PricingModeEnum.FLOAT.getCode().equals(advertInfo.getPricingMode())) {
 					// 浮动交易价格 = 盘口价格 * 浮动比例
 					advertInfo.setPrice(currentHandicapPrice.multiply(advertInfo.getFloatingRatio()));
-					if (advertInfo.getType() == TAdvertInfoDTO.AdvertTypeEnum.BUY.getCode()) {
+					if (TAdvertInfoDTO.AdvertTypeEnum.BUY.getCode().equals(advertInfo.getType())) {
 						if (advertInfo.getPrice().compareTo(advertInfo.getHidePrice()) <= 0) {
 							// 剔除 浮动交易价格 <= 隐藏价格 的广告
 							iterator.remove();
 						}
 					}
-					if (advertInfo.getType() == TAdvertInfoDTO.AdvertTypeEnum.SELL.getCode()) {
+					if (TAdvertInfoDTO.AdvertTypeEnum.SELL.getCode().equals(advertInfo.getType())) {
 						if (advertInfo.getPrice().compareTo(advertInfo.getHidePrice()) >= 0) {
 							// 剔除 浮动交易价格 >= 隐藏价格 的广告
 							iterator.remove();
@@ -303,7 +305,7 @@ public class TAdvertInfoServiceImpl extends DefaultTAdvertInfoServiceImpl<ITAdve
 				.eq(TAdvertInfo::getId, advertId)
 		);
 		// 出售需退还广告余额
-		if (advertInfo.getType() == TAdvertInfoDTO.AdvertTypeEnum.SELL.getCode()) {
+		if (TAdvertInfoDTO.AdvertTypeEnum.SELL.getCode().equals(advertInfo.getType())) {
 			// 广告余额
 			BigDecimal balanceAmount = advertInfo.getBalanceAmount();
 			// 用户账户可用 + balanceAmount，冻结 - balanceAmount
@@ -345,11 +347,11 @@ public class TAdvertInfoServiceImpl extends DefaultTAdvertInfoServiceImpl<ITAdve
 		}
 		// TODO 构建用户信息，远程调 jd 项目
 		// 构建成交量、成交率
-		buildVolumeAndRate(advertInfoDTO);
+//		buildVolumeAndRate(advertInfoDTO);
 		advertInfoDTO.setCoinName(itLegalCurrencyCoinService.getById(advertInfoDTO.getCoinId()).getName());
 		// 付款时效，放币时效
 		// 卖单：放币时效  买单：付款时效， 单位：秒，前端处理格式
-		Long paymentOrPutCoinAging = itAdvertOrderService.getPaymentOrPutCoinAging(advertInfoDTO.getUserId(), advertInfoDTO.getType(), TAdvertOrderDTO.StatusEnum.ALREADY_COMPLETE.getCode());
+		Long paymentOrPutCoinAging = itAdvertOrderService.getPaymentOrPutCoinAging(advertInfoDTO.getUserId(), advertInfoDTO.getAdvertType(), TAdvertOrderDTO.StatusEnum.ALREADY_COMPLETE.getCode());
 		advertInfoDTO.setPaymentOrPutCoinAging(paymentOrPutCoinAging);
 		return advertInfoDTO;
 	}
@@ -405,10 +407,10 @@ public class TAdvertInfoServiceImpl extends DefaultTAdvertInfoServiceImpl<ITAdve
 				.advertType(advert.getType())
 				.publisherId(advert.getUserId())
 				.build();
-		if (TAdvertInfoDTO.AdvertTypeEnum.BUY.getCode() == advert.getType()) {
+		if (TAdvertInfoDTO.AdvertTypeEnum.BUY.getCode().equals(advert.getType())) {
 			order.setBuyerId(advert.getUserId()).setSellerId(loginUser.getUser_id());
 		}
-		if (advert.getType() == AdvertTypeEnum.SELL.getCode()) {
+		if (AdvertTypeEnum.SELL.getCode().equals(advert.getType())) {
 			order.setBuyerId(loginUser.getUser_id()).setSellerId(advert.getUserId());
 		}
 		order.setTransactionAmout(amount.multiply(advert.getPrice()))
@@ -461,7 +463,7 @@ public class TAdvertInfoServiceImpl extends DefaultTAdvertInfoServiceImpl<ITAdve
 	 * @param advertInfo : {@link TAdvertInfo}
 	 * @return
 	 */
-	private void buildVolumeAndRate(TAdvertInfoDTO advertInfo) {
+	private void buildVolumeAndRate(TAdvertInfo advertInfo) {
 		TLegalCurrencyAccount account = itLegalCurrencyAccountService.getByUserIdAndCoinId(advertInfo.getUserId(), advertInfo.getCoinId());
 		advertInfo.setC2cAlreadyDealCount(account.getC2cAlreadyDealCount());
 		int c2cTotalCount = account.getC2cTotalCount();
