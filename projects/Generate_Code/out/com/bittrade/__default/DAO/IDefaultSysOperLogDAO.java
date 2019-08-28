@@ -149,6 +149,6 @@ public abstract interface IDefaultSysOperLogDAO extends IBaseDAO<SysOperLog, Sys
 	 * @param pageDTO
 	 * @return
 	 */
-	public List<SysOperLogDTO> getsDTOBy(SysOperLogDTO sysOperLogDTO, PageDTO<SysOperLogDTO> pageDTO);
+	public List<SysOperLogDTO> getsDTOBy(@Param(value="sysOperLog") SysOperLogDTO sysOperLogDTO, PageDTO<SysOperLogDTO> pageDTO);
 	
 }

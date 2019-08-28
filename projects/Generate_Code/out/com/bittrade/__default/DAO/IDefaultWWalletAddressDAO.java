@@ -149,6 +149,6 @@ public abstract interface IDefaultWWalletAddressDAO extends IBaseDAO<WWalletAddr
 	 * @param pageDTO
 	 * @return
 	 */
-	public List<WWalletAddressDTO> getsDTOBy(WWalletAddressDTO wWalletAddressDTO, PageDTO<WWalletAddressDTO> pageDTO);
+	public List<WWalletAddressDTO> getsDTOBy(@Param(value="wWalletAddress") WWalletAddressDTO wWalletAddressDTO, PageDTO<WWalletAddressDTO> pageDTO);
 	
 }

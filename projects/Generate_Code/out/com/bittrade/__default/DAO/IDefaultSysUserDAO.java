@@ -149,6 +149,6 @@ public abstract interface IDefaultSysUserDAO extends IBaseDAO<SysUser, SysUserDT
 	 * @param pageDTO
 	 * @return
 	 */
-	public List<SysUserDTO> getsDTOBy(SysUserDTO sysUserDTO, PageDTO<SysUserDTO> pageDTO);
+	public List<SysUserDTO> getsDTOBy(@Param(value="sysUser") SysUserDTO sysUserDTO, PageDTO<SysUserDTO> pageDTO);
 	
 }

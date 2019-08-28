@@ -149,6 +149,6 @@ public abstract interface IDefaultWConfigWalletDAO extends IBaseDAO<WConfigWalle
 	 * @param pageDTO
 	 * @return
 	 */
-	public List<WConfigWalletDTO> getsDTOBy(WConfigWalletDTO wConfigWalletDTO, PageDTO<WConfigWalletDTO> pageDTO);
+	public List<WConfigWalletDTO> getsDTOBy(@Param(value="wConfigWallet") WConfigWalletDTO wConfigWalletDTO, PageDTO<WConfigWalletDTO> pageDTO);
 	
 }

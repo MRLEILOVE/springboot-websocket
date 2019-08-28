@@ -149,6 +149,6 @@ public abstract interface IDefaultSysUserRoleDAO extends IBaseDAO<SysUserRole, S
 	 * @param pageDTO
 	 * @return
 	 */
-	public List<SysUserRoleDTO> getsDTOBy(SysUserRoleDTO sysUserRoleDTO, PageDTO<SysUserRoleDTO> pageDTO);
+	public List<SysUserRoleDTO> getsDTOBy(@Param(value="sysUserRole") SysUserRoleDTO sysUserRoleDTO, PageDTO<SysUserRoleDTO> pageDTO);
 	
 }

@@ -149,6 +149,6 @@ public abstract interface IDefaultTOrderDAO extends IBaseDAO<TOrder, TOrderDTO, 
 	 * @param pageDTO
 	 * @return
 	 */
-	public List<TOrderDTO> getsDTOBy(TOrderDTO tOrderDTO, PageDTO<TOrderDTO> pageDTO);
+	public List<TOrderDTO> getsDTOBy(@Param(value="tOrder") TOrderDTO tOrderDTO, PageDTO<TOrderDTO> pageDTO);
 	
 }
