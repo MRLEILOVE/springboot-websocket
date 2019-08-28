@@ -45,7 +45,7 @@ public class WWalletAddressController {
     @GetMapping("/firstaddress")
     @ApiOperation(value = "第一提币地址", notes = "第一提币地址")
     public ReturnDTO firstaddress(@RequestBody @Validated CoinTypeVO coinTypeVO, @ALoginUser LoginUser user) {
-        Long userId = user == null ? null : user.getUser_id();
+        Long userId = 10086L;//user == null ? null : user.getUser_id();
         if (userId == null) {
             return ReturnDTO.error("用户未登录");
         }
@@ -59,7 +59,7 @@ public class WWalletAddressController {
     @GetMapping("/addresslist")
     @ApiOperation(value = "提币地址列表", notes = "提币地址列表")
     public ReturnDTO addresslist(@RequestBody @Validated CoinTypeVO coinTypeVO, @ALoginUser LoginUser user) {
-        Long userId = user == null ? null : user.getUser_id();
+        Long userId = 10086L;//user == null ? null : user.getUser_id();
         if (userId == null) {
             return ReturnDTO.error("用户未登录");
         }
@@ -73,7 +73,7 @@ public class WWalletAddressController {
     @PostMapping("/addaddress")
     @ApiOperation(value = "添加提币地址", notes = "添加提币地址")
     public ReturnDTO addaddress(@RequestBody @Validated WalletAddressVO walletAddressVO, @ALoginUser LoginUser user) {
-        Long userId = user == null ? null : user.getUser_id();
+        Long userId = 10086L;//user == null ? null : user.getUser_id();
         if (userId == null) {
             return ReturnDTO.error("用户未登录");
         }

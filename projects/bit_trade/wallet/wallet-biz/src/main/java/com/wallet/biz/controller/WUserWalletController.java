@@ -33,7 +33,7 @@ public class WUserWalletController {
     @PostMapping("chongbi")
     @ApiOperation(value = "充币")
     public ReturnDTO chongbi(@RequestBody @Validated CoinTypeVO coinTypeVO, @ALoginUser LoginUser user){
-        Long userId = user == null ? null : user.getUser_id();
+        Long userId = 10086L;//user == null ? null : user.getUser_id();
         if(userId == null){
             return ReturnDTO.error("用户未登录");
         }
@@ -43,7 +43,7 @@ public class WUserWalletController {
     @PostMapping("qrCode")
     @ApiOperation(value = "二维码", notes = "二维码")
     public ReturnDTO qrCode(@RequestBody @Validated CoinTypeVO coinTypeVO, @ALoginUser LoginUser user) {
-        Long userId = user == null ? null : user.getUser_id();
+        Long userId = 10086L;//user == null ? null : user.getUser_id();
         if (userId == null) {
             return ReturnDTO.error("用户未登录");
         }
