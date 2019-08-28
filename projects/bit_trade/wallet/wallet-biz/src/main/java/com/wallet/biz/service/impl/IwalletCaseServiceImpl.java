@@ -6,6 +6,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.bittrade.pojo.model.*;
+import com.common.bittrade.service.IWWalletAccountRecordService;
+import com.wallet.biz.api.service.*;
+import com.wallet.biz.constant.FlagConstant;
+import com.wallet.biz.tool.SnowFlake;
 import org.bitcoinj.core.ECKey;
 import org.bitcoinj.core.NetworkParameters;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,10 +18,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.bittrade.pojo.model.WCoin;
-import com.bittrade.pojo.model.WOrder;
-import com.bittrade.pojo.model.WUserWallet;
-import com.bittrade.pojo.model.WWalletAddress;
 import com.bittrade.pojo.vo.AddressResultDto;
 import com.bittrade.pojo.vo.CoinTypeVO;
 import com.bittrade.pojo.vo.WalletAddressVO;
@@ -24,11 +25,6 @@ import com.bittrade.pojo.vo.WithdrawBillParamVo;
 import com.common.bittrade.service.IWCoinService;
 import com.common.bittrade.service.IWWalletAccountService;
 import com.core.common.DTO.ReturnDTO;
-import com.wallet.biz.api.service.IWOrderService;
-import com.wallet.biz.api.service.IWUserWalletService;
-import com.wallet.biz.api.service.IWWalletAddressService;
-import com.wallet.biz.api.service.IWWalletBillService;
-import com.wallet.biz.api.service.IwalletCaseService;
 import com.wallet.biz.utils.AesUtils;
 
 
@@ -39,12 +35,18 @@ public class IwalletCaseServiceImpl implements IwalletCaseService {
     @Autowired
     private IJsonRpcService jsonRpcService;
 */
+private static final SnowFlake SNOW_FLAKE__ENTRUST	= new SnowFlake( 2, 2);
+
     @Autowired
     IWWalletAccountService wWalletAccountService;
     @Autowired
-    IWWalletAddressService wWalletAddressService;
+    IWWalletAccountRecordService walletAccountRecordService;
     @Autowired
     IWCoinService wCoinService;
+    @Autowired
+    IWWalletAddressService wWalletAddressService;
+    @Autowired
+    ITParamConfigService tParamConfigService;
     @Autowired
     IWWalletBillService walletBillService;
     @Autowired
@@ -185,144 +187,103 @@ public class IwalletCaseServiceImpl implements IwalletCaseService {
 
 
     @Override
-    public ReturnDTO showfee(){
-        Map<String, Object> map = new HashMap<>();
-      /*  MaxMinFeeVo maxMinFeeVo1 = new MaxMinFeeVo();
-        MaxMinFeeVo maxMinFeeVo3 = new MaxMinFeeVo();
-        EntityWrapper<ParameterConfig> btcMaxWrapper = new EntityWrapper<>();
-        EntityWrapper<ParameterConfig> btcMinWrapper = new EntityWrapper<>();
-        EntityWrapper<ParameterConfig> usdtMaxWrapper = new EntityWrapper<>();
-        EntityWrapper<ParameterConfig> usdtMinWrapper = new EntityWrapper<>();
+    public void BillToAccount() {
+        List<WWalletBill> walletBillList = walletBillService.list(new QueryWrapper<>(WWalletBill.builder()
+                .flag((byte) FlagConstant.UN_PROCESS).build()));
+        walletBillList.forEach(walletBill -> {
+            WOrder billorder = orderService.getOne(new QueryWrapper<>(WOrder.builder()
+                    .orderId(walletBill.getOrderId())
+                    .userId(walletBill.getUserId()).build()));
+            if(null == billorder){
+                billorder = WOrder.builder()
+                        .userId(walletBill.getUserId())
+                        .orderId(walletBill.getOrderId())
+                        .orderType(walletBill.getDirection())
+                        .coinType(walletBill.getCoinType())
+                        .token(walletBill.getToken())
+//                    .fee(new BigDecimal(withdrawBillParamVo.getFree()))
+                        .amount(walletBill.getAmount())
+                        .receiverAddress(walletBill.getReceiverAddress())
+                        .type(5)
+                        .build();
+            }
+            billorder.setType(5);
+            WCoin orderWCoin = wCoinService.getOne(new QueryWrapper<>(WCoin.builder()
+                    .token(walletBill.getToken())
+                    .status((byte)1).build()));
+            WWalletAccount orderAccount = wWalletAccountService.getAccount(walletBill.getUserId(),orderWCoin.getId().intValue());
 
-        btcMaxWrapper.eq("dictionary_key", "btcMaxFee");
-        btcMinWrapper.eq("dictionary_key", "btcMinFee");
-        usdtMaxWrapper.eq("dictionary_key", "usdtMaxFee");
-        usdtMinWrapper.eq("dictionary_key", "usdtMinFee");
-
-        ParameterConfig btcMax = parameterConfigService.selectOne(btcMaxWrapper);
-        ParameterConfig btcMin = parameterConfigService.selectOne(btcMinWrapper);
-        ParameterConfig usdtMax = parameterConfigService.selectOne(usdtMaxWrapper);
-        ParameterConfig usdtMinFee = parameterConfigService.selectOne(usdtMinWrapper);
-
-        maxMinFeeVo1.setMax(btcMax.getDictionaryValue());
-        maxMinFeeVo1.setMin(btcMin.getDictionaryValue());
-        maxMinFeeVo3.setMax(usdtMax.getDictionaryValue());
-        maxMinFeeVo3.setMin(usdtMinFee.getDictionaryValue());
-
-        map.put(CoinType.BTC.toString(), maxMinFeeVo1);
-        map.put(CoinType.USDT.toString(), maxMinFeeVo3);
-*/
-        return ReturnDTO.ok(map);
+            BigDecimal ch = (walletBill.getAmount().add(billorder.getFee())).multiply(new BigDecimal(walletBill.getDirection()));
+            WWalletAccountRecord record = WWalletAccountRecord.builder()
+                    .id(SNOW_FLAKE__ENTRUST.nextId())
+                    .userId(orderAccount.getUserId())
+                    .currencyId(orderAccount.getCurrencyId())
+                    .beforeAmount(orderAccount.getTotal().subtract(orderAccount.getTransferFrozen()))
+                    .changeAmount(ch)
+                    .afterAmount(orderAccount.getTotal().subtract(orderAccount.getTransferFrozen()).add(ch))
+                    .createTime(LocalDateTime.now())
+                    .build();
+            if(walletBill.getDirection()==1){
+                record.setType((byte)1);
+                orderAccount.setTotal(record.getAfterAmount());
+            }else{
+                record.setType((byte)2);
+                orderAccount.setTransferFrozen(orderAccount.getTransferFrozen().add(walletBill.getAmount()).add(billorder.getFee()));
+            }
+            wWalletAccountService.updateById(orderAccount);
+            walletAccountRecordService.save(record);
+            orderService.saveOrUpdate(billorder);
+            walletBillService.update(WWalletBill.builder().flag((byte)FlagConstant.PROCESSED).build(),
+                    new QueryWrapper<>(WWalletBill.builder()
+                            .id(walletBill.getId())
+                            .flag((byte)FlagConstant.UN_PROCESS)
+                            .build()));
+        });
     }
 
     @Override
-    public ReturnDTO showmaxMin() {
-        Map<String, Object> map = new HashMap<>();
-      /*  MaxMinFeeVo maxMin = new MaxMinFeeVo();
-        MaxMinFeeVo maxMinFeeVo3 = new MaxMinFeeVo();
-        EntityWrapper<ParameterConfig> btcMinWrapper = new EntityWrapper<>();
-        EntityWrapper<ParameterConfig> btcMaxWrapper = new EntityWrapper<>();
-        EntityWrapper<ParameterConfig> usdtMinWrapper = new EntityWrapper<>();
-        EntityWrapper<ParameterConfig> usdtMaxWrapper = new EntityWrapper<>();
+    public void OrderToBill() {
+        List<WOrder> wOrderList = orderService.list(new QueryWrapper<>(WOrder.builder()
+                .type(3).build()));
+        for (WOrder wOrder:wOrderList){
 
-        btcMinWrapper.eq("dictionary_key", "btcMin");
-        btcMaxWrapper.eq("dictionary_key", "btcMax");
-        usdtMinWrapper.eq("dictionary_key", "usdtMin");
-        usdtMaxWrapper.eq("dictionary_key", "usdtMax");
-
-        ParameterConfig btcMin = parameterConfigService.selectOne(btcMinWrapper);
-        ParameterConfig btcMax = parameterConfigService.selectOne(btcMaxWrapper);
-        ParameterConfig usdtMin = parameterConfigService.selectOne(usdtMinWrapper);
-        ParameterConfig usdtMax = parameterConfigService.selectOne(usdtMaxWrapper);
-
-        maxMin.setMin(btcMin.getDictionaryValue());
-        maxMin.setMax(btcMax.getDictionaryValue());
-        maxMinFeeVo3.setMin(usdtMin.getDictionaryValue());
-        maxMinFeeVo3.setMax(usdtMax.getDictionaryValue());
-
-        map.put(CoinType.BTC.toString(), maxMin);
-        map.put(CoinType.USDT.toString(), maxMinFeeVo3);*/
-        return ReturnDTO.ok(map);
+            WWalletBill checke = walletBillService.getOne(new QueryWrapper<>(WWalletBill.builder().orderId(wOrder.getOrderId()).build()));
+            if(checke == null){
+                WWalletBill Bill = WWalletBill.builder()
+                        .userId(wOrder.getUserId())
+                        .orderId(wOrder.getOrderId())
+                        .direction(wOrder.getOrderType())
+                        .coinType(wOrder.getCoinType())
+                        .token(wOrder.getToken())
+                        .contract(wOrder.getContract())
+                        .receiverAddress(wOrder.getReceiverAddress())
+                        .transferFlag((byte)FlagConstant.SKIP)
+                        .amount(wOrder.getAmount().multiply(new BigDecimal(-1)))
+                        .tx(wOrder.getOrderId())
+                        .tradeStep("10")
+                        .build();
+                walletBillService.save(Bill);
+            }
+            wOrder.setType(6);
+            orderService.saveOrUpdate(wOrder);
+        }
     }
 
     @Override
-    public ReturnDTO checkparam(/*JudgmentDto withDrawParamVo*/) {
- /*       if (null != withDrawParamVo.getAmount() && (withDrawParamVo.getAmount().compareTo(new BigDecimal(0)) > 0)) {
-            EntityWrapper<ParameterConfig> maxWrapper = new EntityWrapper<>();
-            EntityWrapper<ParameterConfig> minWrapper = new EntityWrapper<>();
-            if (CoinType.BTC.toString().equals(withDrawParamVo.getToken())) {
-                maxWrapper.eq("dictionary_key", "btcMax");
-                ParameterConfig parameterMax = parameterConfigService.selectOne(maxWrapper);
-                minWrapper.eq("dictionary_key", "btcMin");
-                ParameterConfig parameterMin = parameterConfigService.selectOne(minWrapper);
-                BigDecimal min = new BigDecimal(parameterMin.getDictionaryValue());
-                BigDecimal max = new BigDecimal(parameterMax.getDictionaryValue());
-                int i1 = min.compareTo(withDrawParamVo.getAmount());
-                int i2 = max.compareTo(withDrawParamVo.getAmount());
-                //min>fee||max<fee
-                if (i1 > 0 || i2 < 0) {
-                    return WrapMapper.error("btc超出提币限额");
-                }
-            } else if (CoinType.USDT.toString().equals(withDrawParamVo.getToken())) {
-                maxWrapper.eq("dictionary_key", "usdtMax");
-                ParameterConfig parameterMax = parameterConfigService.selectOne(maxWrapper);
-                minWrapper.eq("dictionary_key", "usdtMin");
-                ParameterConfig parameterMin = parameterConfigService.selectOne(minWrapper);
-                BigDecimal min = new BigDecimal(parameterMin.getDictionaryValue());
-                BigDecimal max = new BigDecimal(parameterMax.getDictionaryValue());
-                int i1 = min.compareTo(withDrawParamVo.getAmount());
-                int i2 = max.compareTo(withDrawParamVo.getAmount());
-                if (i1 > 0 || i2 < 0) {
-                    return WrapMapper.error("usdt超出提币限额");
-                }
-            }
+    public ReturnDTO checkparam(CoinTypeVO coinTypeVO, Long userID) {
+        WCoin orderWCoin = wCoinService.getOne(new QueryWrapper<>(WCoin.builder()
+                .token(coinTypeVO.getToken())
+                .isWithdraw("E")
+                .status((byte)1).build()));
+        WWalletAccount orderAccount = wWalletAccountService.getAccount(userID,orderWCoin.getId().intValue());
+        BigDecimal minfee = new BigDecimal(tParamConfigService.getEnableValueByKey(coinTypeVO.getToken().toLowerCase()+"MinFee"));
+        BigDecimal minquota = new BigDecimal(tParamConfigService.getEnableValueByKey(coinTypeVO.getToken().toLowerCase()+"Min"));
+
+        int i1 = orderAccount.getTotal().compareTo(minquota.add(minfee));
+        if (i1 < 0 ) {
+            return ReturnDTO.ok(BigDecimal.ZERO);
         }
-
-
-        if (null != withDrawParamVo.getFree() && (withDrawParamVo.getFree().compareTo(new BigDecimal(0)) > 0)) {
-            EntityWrapper<ParameterConfig> maxWrapper = new EntityWrapper<>();
-            EntityWrapper<ParameterConfig> minWrapper = new EntityWrapper<>();
-            if (CoinType.BTC.toString().equals(withDrawParamVo.getToken())) {
-                maxWrapper.eq("dictionary_key", "btcMaxFee");
-                ParameterConfig parameterMax = parameterConfigService.selectOne(maxWrapper);
-                minWrapper.eq("dictionary_key", "btcMinFee");
-                ParameterConfig parameterMin = parameterConfigService.selectOne(minWrapper);
-                BigDecimal min = new BigDecimal(parameterMin.getDictionaryValue());
-                BigDecimal max = new BigDecimal(parameterMax.getDictionaryValue());
-                System.out.println(min);//0.0005
-                System.out.println(withDrawParamVo.getFree());//0.000015
-                int i1 = min.compareTo(withDrawParamVo.getFree());
-                int i2 = max.compareTo(withDrawParamVo.getFree());
-                //min>fee||max<fee
-                if (i1 > 0 || i2 < 0) {
-                    return WrapMapper.error("手续费超出限额");
-                }
-            } else if (CoinType.USDT.toString().equals(withDrawParamVo.getToken())) {
-                maxWrapper.eq("dictionary_key", "usdtMaxFee");
-                ParameterConfig parameterMax = parameterConfigService.selectOne(maxWrapper);
-                System.out.println(parameterMax);
-                minWrapper.eq("dictionary_key", "usdtMinFee");
-                ParameterConfig parameterMin = parameterConfigService.selectOne(minWrapper);
-                System.out.println(parameterMin);
-                BigDecimal min = new BigDecimal(parameterMin.getDictionaryValue());
-                BigDecimal max = new BigDecimal(parameterMax.getDictionaryValue());
-                int i1 = min.compareTo(withDrawParamVo.getFree());
-                int i2 = max.compareTo(withDrawParamVo.getFree());
-                if (i1 > 0 || i2 < 0) {
-                    return WrapMapper.error("手续费超出限额");
-                }
-            }
-        }
-
-        if (null != withDrawParamVo.getReceiverAddress() && !"".equals(withDrawParamVo.getReceiverAddress())) {
-            boolean b = jsonRpcService.validateAddress(withDrawParamVo.getReceiverAddress());
-            if (!b) {
-                return WrapMapper.error("收币地址不正确");
-            }
-        }
-
-*/
-        return ReturnDTO.ok("success");
+        return ReturnDTO.ok(orderAccount.getTotal().subtract(minfee));
     }
 
 }
