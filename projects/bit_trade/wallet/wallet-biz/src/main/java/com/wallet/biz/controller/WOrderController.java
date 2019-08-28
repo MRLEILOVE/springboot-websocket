@@ -76,11 +76,7 @@ public class WOrderController {
             CoinTypeVO coin = new CoinTypeVO();
             coin.setCoinType(list.getCoinType());
             coin.setToken(list.getToken());
-            if(list.getToken().equals("BTC")){
-                coin.setName("比特币");
-            }else{
-                coin.setName("泰达币");
-            }
+            coin.setName(list.getNameCN());
             coinlist.add(coin);
         }
         return ReturnDTO.ok(coinlist);

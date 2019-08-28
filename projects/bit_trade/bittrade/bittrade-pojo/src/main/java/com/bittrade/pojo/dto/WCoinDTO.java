@@ -1,11 +1,12 @@
 package com.bittrade.pojo.dto;
 
 import com.core.framework.base.DTO.BaseDTO;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * 
+ *
  * @author Administrator
  *
  */
@@ -25,5 +26,6 @@ public class WCoinDTO extends BaseDTO<WCoinDTO> {
 	private String remark;
 	private java.time.LocalDateTime createTime;
 	private java.time.LocalDateTime updateTime;
+	private String nameCN;
 
 }

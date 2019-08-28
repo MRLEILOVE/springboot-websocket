@@ -26,5 +26,6 @@ public class WCoinDTO extends BaseDTO<WCoinDTO> {
 	private String remark;
 	private java.time.LocalDateTime createTime;
 	private java.time.LocalDateTime updateTime;
+	private String nameCN;
 
 }

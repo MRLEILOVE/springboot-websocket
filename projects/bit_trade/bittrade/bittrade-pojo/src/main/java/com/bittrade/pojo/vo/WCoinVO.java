@@ -1,11 +1,12 @@
 package com.bittrade.pojo.vo;
 
 import com.core.framework.base.VO.BaseVO;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * 
+ *
  * @author Administrator
  *
  */
@@ -25,5 +26,6 @@ public class WCoinVO extends BaseVO<WCoinVO> {
 	private String remark;
 	private java.time.LocalDateTime createTime;
 	private java.time.LocalDateTime updateTime;
+	private String nameCN;
 
 }

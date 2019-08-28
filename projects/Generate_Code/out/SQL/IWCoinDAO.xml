@@ -14,6 +14,7 @@
 		<result javaType="String" property="remark" jdbcType="VARCHAR" column="remark" />
 		<result javaType="java.time.LocalDateTime" property="createTime" jdbcType="TIMESTAMP" column="create_time" />
 		<result javaType="java.time.LocalDateTime" property="updateTime" jdbcType="TIMESTAMP" column="update_time" />
+		<result javaType="String" property="nameCN" jdbcType="VARCHAR" column="name_CN" />
 	</resultMap>
 
 	<!-- 通用查询结果列 -->
@@ -27,7 +28,8 @@
 		`status` AS status, 
 		`remark` AS remark, 
 		`create_time` AS createTime, 
-		`update_time` AS updateTime
+		`update_time` AS updateTime, 
+		`name_CN` AS nameCN
 	</sql>
 
 </mapper>

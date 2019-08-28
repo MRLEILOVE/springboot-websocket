@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.wallet.biz.dao.IWCoinDAO">
+<mapper namespace="com.bittrade.currency.dao.IWCoinDAO">
 
 	<!-- 通用查询映射结果 -->
 	<resultMap id="BaseResultMap" type="com.bittrade.pojo.model.WCoin">
@@ -14,6 +14,7 @@
 		<result javaType="String" property="remark" jdbcType="VARCHAR" column="remark" />
 		<result javaType="java.time.LocalDateTime" property="createTime" jdbcType="TIMESTAMP" column="create_time" />
 		<result javaType="java.time.LocalDateTime" property="updateTime" jdbcType="TIMESTAMP" column="update_time" />
+		<result javaType="String" property="nameCN" jdbcType="VARCHAR" column="name_CN" />
 	</resultMap>
 
 	<!-- 通用查询结果列 -->
@@ -21,19 +22,14 @@
 		`id` AS id, 
 		`coin_type` AS coinType, 
 		`token` AS token, 
-		`contract` AS contract,
-		`is_recharge` AS isRecharge,
-		`is_withdraw` AS isWithdraw,
-		`status` AS status,
+		`contract` AS contract, 
+		`is_recharge` AS isRecharge, 
+		`is_withdraw` AS isWithdraw, 
+		`status` AS status, 
 		`remark` AS remark, 
 		`create_time` AS createTime, 
-		`update_time` AS updateTime
+		`update_time` AS updateTime, 
+		`name_CN` AS nameCN
 	</sql>
-
-    <select id="getCoins" resultType="com.bittrade.pojo.vo.CoinVo">
-		SELECT w.token as name
-		FROM w_coin w
-		WHERE w.`status` = 1
-	</select>
 
 </mapper>
