@@ -1,4 +1,10 @@
-package com.bittrade.admin.util;
+package com.core.tool;
+
+import java.math.BigInteger;
+
+import javax.crypto.Cipher;
+import javax.crypto.KeyGenerator;
+import javax.crypto.spec.SecretKeySpec;
 
 /**
  * function encrypt(word){
@@ -16,12 +22,6 @@ package com.bittrade.admin.util;
  */
 
 import org.apache.tomcat.util.codec.binary.Base64;
-import org.springframework.util.StringUtils;
-
-import javax.crypto.Cipher;
-import javax.crypto.KeyGenerator;
-import javax.crypto.spec.SecretKeySpec;
-import java.math.BigInteger;
 
 /**
  * AES的加密和解密
@@ -124,7 +124,7 @@ public class AesUtil {
      */
     public static String aesDecrypt(String encryptStr, String decryptKey) {
         try {
-            return StringUtils.isEmpty(encryptStr) ? null : aesDecryptByBytes(base64Decode(encryptStr), decryptKey);
+            return StringUtil.isEmpty(encryptStr) ? null : aesDecryptByBytes(base64Decode(encryptStr), decryptKey);
         } catch (Exception e) {
          e.printStackTrace();
         }

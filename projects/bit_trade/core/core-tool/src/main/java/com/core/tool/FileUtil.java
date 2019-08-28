@@ -1,4 +1,4 @@
-package com.bittrade.admin.util;
+package com.core.tool;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -9,7 +9,7 @@ import java.io.OutputStream;
 /**
  * 文件处理工具类
  * 
- * @author ruoyi
+ * @author who ?
  */
 public class FileUtil {
 	/**

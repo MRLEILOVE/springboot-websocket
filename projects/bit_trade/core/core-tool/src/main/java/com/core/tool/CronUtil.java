@@ -1,4 +1,4 @@
-package com.bittrade.admin.util;
+package com.core.tool;
 
 import org.quartz.CronExpression;
 
@@ -8,7 +8,7 @@ import java.util.Date;
 /**
  * cron表达式工具类
  * 
- * @author ruoyi
+ * @author who ?
  *
  */
 public class CronUtil

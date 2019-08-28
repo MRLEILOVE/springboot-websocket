@@ -12,8 +12,8 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.bittrade.admin.dao.sys.ISysDictDataDAO;
 import com.bittrade.admin.model.domain.SysDictData;
 import com.bittrade.admin.service.sys.SysDictDataService;
-import com.bittrade.admin.util.ConvertUtil;
 import com.bittrade.admin.util.RedisKeyUtil;
+import com.core.tool.ConvertUtil;
 import com.google.common.collect.Lists;
 
 /**

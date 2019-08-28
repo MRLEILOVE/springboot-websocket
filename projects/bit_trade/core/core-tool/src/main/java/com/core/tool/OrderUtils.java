@@ -1,4 +1,4 @@
-package com.bittrade.admin.util;
+package com.core.tool;
 
 /**
  * 分布式ID生成，雪花算法。

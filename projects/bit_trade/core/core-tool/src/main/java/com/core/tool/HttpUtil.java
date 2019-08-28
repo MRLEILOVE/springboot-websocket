@@ -1,4 +1,4 @@
-package com.bittrade.admin.util;
+package com.core.tool;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -28,7 +28,7 @@ import org.slf4j.LoggerFactory;
 /**
  * 通用http发送方法
  * 
- * @author ruoyi
+ * @author who ?
  */
 public class HttpUtil {
 	private static final Logger log = LoggerFactory.getLogger( HttpUtil.class );

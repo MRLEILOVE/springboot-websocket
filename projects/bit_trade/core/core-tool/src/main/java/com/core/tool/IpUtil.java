@@ -1,11 +1,11 @@
-package com.bittrade.admin.util;
+package com.core.tool;
 
 import javax.servlet.http.HttpServletRequest;
 
 /**
  * 获取IP方法
  * 
- * @author ruoyi
+ * @author who ?
  */
 public class IpUtil {
 	public static String getIpAddr(HttpServletRequest request) {

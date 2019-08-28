@@ -16,7 +16,7 @@ import com.bittrade.admin.model.domain.SysRole;
 import com.bittrade.admin.model.domain.SysUser;
 import com.bittrade.admin.model.domain.SysUserRole;
 import com.bittrade.admin.service.sys.SysUserService;
-import com.bittrade.admin.util.ConvertUtil;
+import com.core.tool.ConvertUtil;
 
 /**
  * <p>

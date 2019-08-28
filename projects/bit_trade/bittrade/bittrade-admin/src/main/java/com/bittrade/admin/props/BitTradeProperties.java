@@ -3,7 +3,7 @@ package com.bittrade.admin.props;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
-import com.bittrade.admin.constant.GlobalConstant;
+import com.core.common.constant.GlobalConstant;
 
 import lombok.Data;
 

@@ -17,8 +17,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.bittrade.admin.constant.GlobalConstant.Number;
-import com.bittrade.admin.constant.GlobalConstant.Sys;
 import com.bittrade.admin.dao.sys.ISysMenuDAO;
 import com.bittrade.admin.dao.sys.ISysRoleMenuDAO;
 import com.bittrade.admin.enums.UserEnum;
@@ -26,6 +24,8 @@ import com.bittrade.admin.model.domain.SysMenu;
 import com.bittrade.admin.model.domain.SysRole;
 import com.bittrade.admin.model.domain.SysUser;
 import com.bittrade.admin.service.sys.SysMenuService;
+import com.core.common.constant.GlobalConstant.Number;
+import com.core.common.constant.GlobalConstant.Sys;
 
 /**
  * <p>

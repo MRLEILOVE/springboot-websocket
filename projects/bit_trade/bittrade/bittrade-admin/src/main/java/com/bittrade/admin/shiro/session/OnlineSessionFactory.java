@@ -8,8 +8,8 @@ import org.apache.shiro.session.mgt.SessionFactory;
 import org.apache.shiro.web.session.mgt.WebSessionContext;
 import org.springframework.stereotype.Component;
 
-import com.bittrade.admin.util.IpUtil;
 import com.bittrade.admin.util.ServletUtil;
+import com.core.tool.IpUtil;
 
 import eu.bitwalker.useragentutils.UserAgent;
 

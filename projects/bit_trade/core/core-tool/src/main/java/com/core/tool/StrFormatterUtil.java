@@ -1,9 +1,9 @@
-package com.bittrade.admin.util;
+package com.core.tool;
 
 /**
  * 字符串格式化
  * 
- * @author ruoyi
+ * @author who ?
  */
 public class StrFormatterUtil
 {

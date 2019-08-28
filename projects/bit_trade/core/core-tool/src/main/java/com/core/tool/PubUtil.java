@@ -1,4 +1,4 @@
-package com.bittrade.admin.util;
+package com.core.tool;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

@@ -1,10 +1,10 @@
-package com.bittrade.admin.constant;
+package com.core.common.constant;
 
 import java.math.BigDecimal;
 
 /**
  * @title 全局常量
- * @author oublue
+ * @author 
  *
  */
 public class GlobalConstant {

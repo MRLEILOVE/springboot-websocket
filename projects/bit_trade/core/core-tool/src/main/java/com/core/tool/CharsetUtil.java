@@ -1,4 +1,4 @@
-package com.bittrade.admin.util;
+package com.core.tool;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -6,7 +6,7 @@ import java.nio.charset.StandardCharsets;
 /**
  * 字符集工具类
  * 
- * @author ruoyi
+ * @author who ?
  */
 public class CharsetUtil
 {

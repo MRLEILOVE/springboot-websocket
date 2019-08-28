@@ -1,4 +1,4 @@
-package com.bittrade.admin.util;
+package com.core.tool;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -12,7 +12,7 @@ import org.apache.commons.lang3.StringUtils;
 /**
  * 类型转换器
  *
- * @author ruoyi
+ * @author who ?
  */
 public class ConvertUtil {
     /**

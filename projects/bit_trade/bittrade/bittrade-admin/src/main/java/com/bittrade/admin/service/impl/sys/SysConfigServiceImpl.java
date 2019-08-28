@@ -6,11 +6,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.bittrade.admin.constant.GlobalConstant.UserConstant;
 import com.bittrade.admin.dao.sys.ISysConfigDAO;
 import com.bittrade.admin.model.domain.SysConfig;
 import com.bittrade.admin.service.sys.SysConfigService;
-import com.bittrade.admin.util.ConvertUtil;
+import com.core.common.constant.GlobalConstant.UserConstant;
+import com.core.tool.ConvertUtil;
 
 /**
  * <p>

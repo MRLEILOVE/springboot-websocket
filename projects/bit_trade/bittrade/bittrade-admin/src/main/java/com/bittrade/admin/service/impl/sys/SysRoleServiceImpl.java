@@ -13,8 +13,8 @@ import org.springframework.util.StringUtils;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.bittrade.admin.dao.sys.ISysRoleDeptDAO;
 import com.bittrade.admin.dao.sys.ISysRoleDAO;
+import com.bittrade.admin.dao.sys.ISysRoleDeptDAO;
 import com.bittrade.admin.dao.sys.ISysRoleMenuDAO;
 import com.bittrade.admin.dao.sys.ISysUserRoleDAO;
 import com.bittrade.admin.enums.UserEnum.UserState;
@@ -22,7 +22,7 @@ import com.bittrade.admin.model.domain.SysRole;
 import com.bittrade.admin.model.domain.SysRoleDept;
 import com.bittrade.admin.model.domain.SysRoleMenu;
 import com.bittrade.admin.service.sys.SysRoleService;
-import com.bittrade.admin.util.ConvertUtil;
+import com.core.tool.ConvertUtil;
 
 /**
  * <p>

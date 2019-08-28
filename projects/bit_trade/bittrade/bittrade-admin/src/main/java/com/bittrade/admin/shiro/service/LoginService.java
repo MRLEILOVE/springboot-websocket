@@ -7,8 +7,6 @@ import org.springframework.core.task.TaskExecutor;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
-import com.bittrade.admin.constant.GlobalConstant;
-import com.bittrade.admin.constant.GlobalConstant.Sys;
 import com.bittrade.admin.enums.UserEnum.UserState;
 import com.bittrade.admin.exception.CaptchaException;
 import com.bittrade.admin.exception.UserBlockedException;
@@ -21,6 +19,8 @@ import com.bittrade.admin.shiro.constant.ShiroConstant;
 import com.bittrade.admin.util.MessageUtil;
 import com.bittrade.admin.util.ServletUtil;
 import com.bittrade.admin.util.ShiroUtil;
+import com.core.common.constant.GlobalConstant;
+import com.core.common.constant.GlobalConstant.Sys;
 
 import eu.bitwalker.useragentutils.UserAgent;
 

@@ -1,4 +1,4 @@
-package com.bittrade.admin.util;
+package com.core.tool;
 
 import java.sql.Timestamp;
 import java.text.DateFormat;
@@ -20,9 +20,9 @@ import org.slf4j.LoggerFactory;
  * @version
  * @since JDK 1.7
  */
-public class DateTimeUtil {
+public class DateTimeUtils {
 
-	private static Logger logger = LoggerFactory.getLogger( DateTimeUtil.class );
+	private static Logger logger = LoggerFactory.getLogger( DateTimeUtils.class );
 
 	public static String formatDate(Date date, String format) {
 		SimpleDateFormat formatter = new SimpleDateFormat( format ); // yyyyMMddHHmmss
@@ -729,7 +729,7 @@ public class DateTimeUtil {
 //		Date now=new Date();
 //		System.out.println(now.getTime());
 //		System.out.println(getTimeSecondOperationSec(now,-12*3600).getTime());
-		Date utcTime = DateTimeUtil.stringToDate( "2019-05-25 00:00:00", "yyyy-MM-dd HH:mm:ss" );// utc时间
+		Date utcTime = DateTimeUtils.stringToDate( "2019-05-25 00:00:00", "yyyy-MM-dd HH:mm:ss" );// utc时间
 		System.out.println(utcTime.getTime());
 
 
