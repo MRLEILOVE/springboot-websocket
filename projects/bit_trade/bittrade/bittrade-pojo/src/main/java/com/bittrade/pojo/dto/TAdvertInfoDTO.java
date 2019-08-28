@@ -231,7 +231,7 @@ public class TAdvertInfoDTO extends BaseDTO<TAdvertInfoDTO> {
 	 */
 	@NotNull(message = "type cannot be null")
 	@CheckEnumValue(enumClass = AdvertTypeEnum.class, enumMethod = "isValidAdvertType")
-	private Byte advertType;
+	private Byte type;
 
 	/**
 	 * 定价方式 1：固定价格 2：浮动价格
@@ -341,7 +341,7 @@ public class TAdvertInfoDTO extends BaseDTO<TAdvertInfoDTO> {
 	 * create time: 2019/8/20 13:01
 	 */
 	public Boolean isBuyType() {
-		return Objects.equals(TAdvertInfoDTO.AdvertTypeEnum.BUY.getCode(), this.advertType);
+		return Objects.equals(TAdvertInfoDTO.AdvertTypeEnum.BUY.getCode(), this.type);
 	}
 
 	/**
@@ -352,7 +352,7 @@ public class TAdvertInfoDTO extends BaseDTO<TAdvertInfoDTO> {
 	 * create time: 2019/8/20 13:01
 	 */
 	public Boolean isSellType() {
-		return Objects.equals(TAdvertInfoDTO.AdvertTypeEnum.SELL.getCode(), this.advertType);
+		return Objects.equals(TAdvertInfoDTO.AdvertTypeEnum.SELL.getCode(), this.type);
 	}
 
 	/**

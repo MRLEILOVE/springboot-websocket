@@ -6,12 +6,12 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import javax.annotation.Resource;
+
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -43,8 +43,6 @@ import com.core.tool.BeanUtil;
 import com.core.tool.SnowFlake;
 import com.core.web.constant.entity.LoginUser;
 import com.core.web.constant.exception.BusinessException;
-
-import javax.annotation.Resource;
 
 /**
  * @author Administrator
@@ -185,27 +183,28 @@ public class TAdvertInfoServiceImpl extends DefaultTAdvertInfoServiceImpl<ITAdve
 			queryAdvertInfoDTO.eq(TAdvertInfo.FieldNames.PAYMENT_METHOD_ID, queryAdvertVO.getReceiptWay());
 		}
 		
-		List<TAdvertInfoDTO> list_advertInfoDTO = baseMapper.getsDTOBy(queryAdvertInfoDTO, pageDTO);
+		PageDTO<TAdvertInfoDTO> page_advertInfoDTO = super.getsDTOByPage(queryAdvertInfoDTO, pageDTO);
 //		IPage<TAdvertInfo> advertInfoIPage = baseMapper.selectPage(page.setSearchCount(false), lambdaQueryWrapper);
 		// 广告列表
-		List<TAdvertInfo> advertInfos = advertInfoIPage.getRecords();
-		if (!CollectionUtils.isEmpty(advertInfos)) {
+//		List<TAdvertInfo> advertInfos = advertInfoIPage.getRecords();
+		List<TAdvertInfoDTO> advertInfoDTOs = page_advertInfoDTO.getData();
+		if (!CollectionUtils.isEmpty(advertInfoDTOs)) {
 			// TODO 获取当前盘口价格
 			BigDecimal currentHandicapPrice = BigDecimal.valueOf(10.1);
-			Iterator<TAdvertInfo> iterator = advertInfos.iterator();
+			Iterator<TAdvertInfoDTO> iterator = advertInfoDTOs.iterator();
 			while (iterator.hasNext()) {
-				TAdvertInfo advertInfo = iterator.next();
-				if (TAdvertInfoDTO.PricingModeEnum.FLOAT.getCode().equals(advertInfo.getPricingMode())) {
+				TAdvertInfoDTO advertInfoDTO = iterator.next();
+				if (TAdvertInfoDTO.PricingModeEnum.FLOAT.getCode().equals(advertInfoDTO.getPricingMode())) {
 					// 浮动交易价格 = 盘口价格 * 浮动比例
-					advertInfo.setPrice(currentHandicapPrice.multiply(advertInfo.getFloatingRatio()));
-					if (TAdvertInfoDTO.AdvertTypeEnum.BUY.getCode().equals(advertInfo.getType())) {
-						if (advertInfo.getPrice().compareTo(advertInfo.getHidePrice()) <= 0) {
+					advertInfoDTO.setPrice(currentHandicapPrice.multiply(advertInfoDTO.getFloatingRatio()));
+					if (TAdvertInfoDTO.AdvertTypeEnum.BUY.getCode().equals(advertInfoDTO.getType())) {
+						if (advertInfoDTO.getPrice().compareTo(advertInfoDTO.getHidePrice()) <= 0) {
 							// 剔除 浮动交易价格 <= 隐藏价格 的广告
 							iterator.remove();
 						}
 					}
-					if (TAdvertInfoDTO.AdvertTypeEnum.SELL.getCode().equals(advertInfo.getType())) {
-						if (advertInfo.getPrice().compareTo(advertInfo.getHidePrice()) >= 0) {
+					if (TAdvertInfoDTO.AdvertTypeEnum.SELL.getCode().equals(advertInfoDTO.getType())) {
+						if (advertInfoDTO.getPrice().compareTo(advertInfoDTO.getHidePrice()) >= 0) {
 							// 剔除 浮动交易价格 >= 隐藏价格 的广告
 							iterator.remove();
 						}
@@ -214,13 +213,13 @@ public class TAdvertInfoServiceImpl extends DefaultTAdvertInfoServiceImpl<ITAdve
 			}
 			// TODO 构建用户信息，远程调 jd 项目
 
-			advertInfos.forEach(advertInfo -> {
+			advertInfoDTOs.forEach(advertInfo -> {
 				// 构建成交量、成交率
 				buildVolumeAndRate(advertInfo);
 				advertInfo.setCoinName(itLegalCurrencyCoinService.getById(advertInfo.getCoinId()).getName());
 			});
 		}
-		return advertInfoIPage;
+		return page_advertInfoDTO;
 	}
 
 	/**
@@ -360,7 +359,7 @@ public class TAdvertInfoServiceImpl extends DefaultTAdvertInfoServiceImpl<ITAdve
 		advertInfoDTO.setCoinName(itLegalCurrencyCoinService.getById(advertInfoDTO.getCoinId()).getName());
 		// 付款时效，放币时效
 		// 卖单：放币时效  买单：付款时效， 单位：秒，前端处理格式
-		Long paymentOrPutCoinAging = itAdvertOrderService.getPaymentOrPutCoinAging(advertInfoDTO.getUserId(), advertInfoDTO.getAdvertType(), TAdvertOrderDTO.StatusEnum.ALREADY_COMPLETE.getCode());
+		Long paymentOrPutCoinAging = itAdvertOrderService.getPaymentOrPutCoinAging(advertInfoDTO.getUserId(), advertInfoDTO.getType(), TAdvertOrderDTO.StatusEnum.ALREADY_COMPLETE.getCode());
 		advertInfoDTO.setPaymentOrPutCoinAging(paymentOrPutCoinAging);
 		return advertInfoDTO;
 	}
