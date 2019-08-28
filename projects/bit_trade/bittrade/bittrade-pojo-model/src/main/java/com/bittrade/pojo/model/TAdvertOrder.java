@@ -9,6 +9,9 @@ import com.core.framework.base.model.BaseModel;
 import lombok.*;
 import lombok.experimental.Accessors;
 
+import java.time.LocalDateTime;
+import java.util.Objects;
+
 /**
  * 
  * 
@@ -430,4 +433,36 @@ public class TAdvertOrder extends BaseModel<TAdvertOrder> {
 		}
 	}
 
+	/**
+	 * 驗證是否已付款
+	 * <br/>
+	 * create by: leigq
+	 * <br/>
+	 * create time: 2019/8/19 17:24
+	 */
+	public boolean isAlreadyPaid(Integer status) {
+		return Objects.equals(StatusEnum.ALREADY_PAID.getCode(), status);
+	}
+
+	/**
+	 * 驗證是否已完成
+	 * <br/>
+	 * create by: leigq
+	 * <br/>
+	 * create time: 2019/8/19 17:24
+	 */
+	public boolean isAlreadyComplete(Integer status) {
+		return Objects.equals(StatusEnum.ALREADY_COMPLETE.getCode(), status);
+	}
+
+	/**
+	 * 驗證是否已取消
+	 * <br/>
+	 * create by: leigq
+	 * <br/>
+	 * create time: 2019/8/19 17:24
+	 */
+	public boolean isAlreadyCancel(Integer status) {
+		return Objects.equals(StatusEnum.ALREADY_CANCEL.getCode(), status);
+	}
 }

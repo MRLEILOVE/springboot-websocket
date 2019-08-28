@@ -1,14 +1,16 @@
 package com.bittrade.c2c.controller;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.bittrade.c2c.service.ITAdvertOrderService;
 import com.bittrade.pojo.dto.TAdvertOrderDTO;
 import com.bittrade.pojo.model.TAdvertOrder;
 import com.bittrade.pojo.vo.TAdvertOrderVO;
 import com.core.common.DTO.ReturnDTO;
+import com.core.common.annotation.ALoginUser;
 import com.core.framework.base.controller.BaseController;
+import com.core.web.constant.entity.LoginUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -39,12 +41,13 @@ public class TAdvertOrderController extends BaseController<TAdvertOrder, TAdvert
 
 	/**
 	 * 取消订单
+     * TODO 待測試
 	 * <br/>
 	 * create by: leigq
 	 * <br/>
 	 * create time: 2019/8/22 22:15
 	 * @param orderId : 广告订单id
-	 * @return
+	 * @return result
 	 */
 	@PostMapping("/action/cancel/{order_id}")
 	public ReturnDTO<Object> cancelAdvertOrder(@PathVariable("order_id") Long orderId) {
@@ -52,6 +55,89 @@ public class TAdvertOrderController extends BaseController<TAdvertOrder, TAdvert
 		return cancelResult ? ReturnDTO.ok("取消成功") : ReturnDTO.error("取消失敗");
 	}
 
+    /**
+     * 點擊已付款
+     * TODO 待測試
+     * <br/>
+     * create by: leigq
+     * <br/>
+     * create time: 2019/8/22 22:15
+     * @param orderId : 广告订单id
+     * @return result
+     */
+	@PostMapping("/action/click_already_paid/{order_id}")
+    public ReturnDTO<Object> clickAlreadyPaid(@PathVariable("order_id") Long orderId) {
+        boolean result = itAdvertOrderService.clickAlreadyPaid(orderId);
+		return result ? ReturnDTO.ok("付款成功") : ReturnDTO.error("付款失敗，請稍後重試");
+    }
 
+    /**
+     * 點擊確認收款
+     * TODO 待測試
+     * <br/>
+     * create by: leigq
+     * <br/>
+     * create time: 2019/8/22 22:15
+     * @param orderId : 广告订单id
+     * @return result
+     */
+    @PostMapping("/action/click_already_receipt/{order_id}")
+    public ReturnDTO<Object> clickAlreadyReceipt(@PathVariable("order_id") Long orderId) {
+        boolean result = itAdvertOrderService.clickAlreadyReceipt(orderId);
+		return result ? ReturnDTO.ok("收款成功") : ReturnDTO.error("收款失敗，請稍後重試");
+    }
+
+	/**
+	 * 未完成订单列表
+	 * TODO 待測試
+	 * <br/>
+	 * create by: leigq
+	 * <br/>
+	 * create time: 2019/8/22 22:15
+	 * @param page : {@link Page}
+	 * @param loginUser : {@link LoginUser}
+	 * @return result
+	 */
+	@GetMapping("/advert_orders/no_complete")
+	public ReturnDTO<Object> noCompleteAdvertOrders(Page<TAdvertOrder> page, @ALoginUser LoginUser loginUser) {
+		Page<TAdvertOrder> advertOrderPage = itAdvertOrderService.listAdvertOrders(page, loginUser, TAdvertOrder.StatusEnum.ALREADY_AUCTION.getCode());
+		return ReturnDTO.ok(advertOrderPage);
+	}
+
+
+	/**
+	 * 已完成订单列表
+	 * TODO 待測試
+	 * <br/>
+	 * create by: leigq
+	 * <br/>
+	 * create time: 2019/8/22 22:15
+	 * @param page : {@link Page}
+	 * @param loginUser : {@link LoginUser}
+	 * @return result
+	 */
+	@GetMapping("/advert_orders/already_complete")
+	public ReturnDTO<Object> alreadyCompleteAdvertOrders(Page<TAdvertOrder> page, @ALoginUser LoginUser loginUser) {
+		Page<TAdvertOrder> advertOrderPage = itAdvertOrderService.listAdvertOrders(page, loginUser, TAdvertOrder.StatusEnum.ALREADY_COMPLETE.getCode());
+		return ReturnDTO.ok(advertOrderPage);
+	}
+
+
+	/**
+	 * 已取消订单列表
+	 * TODO 待測試
+	 * <br/>
+	 * create by: leigq
+	 * <br/>
+	 * create time: 2019/8/22 22:15
+	 * @param page : {@link Page}
+	 * @param loginUser : {@link LoginUser}
+	 * @return result
+	 */
+	@GetMapping("/advert_orders/already_cancel")
+	public ReturnDTO<Object> alreadyCancelAdvertOrders(Page<TAdvertOrder> page, @ALoginUser LoginUser loginUser) {
+		Page<TAdvertOrder> advertOrderPage = itAdvertOrderService.listAdvertOrders(page, loginUser, TAdvertOrder.StatusEnum.ALREADY_CANCEL.getCode());
+		return ReturnDTO.ok(advertOrderPage);
+	}
 
 }

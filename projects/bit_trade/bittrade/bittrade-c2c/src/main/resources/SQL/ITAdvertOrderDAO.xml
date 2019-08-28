@@ -96,4 +96,19 @@
 		  </where>
 	</select>
 
+    <select id="listAdvertOrders" resultType="com.bittrade.pojo.model.TAdvertOrder">
+		select
+		  ao.*,
+		  lcc.`name` as coinName
+		from
+		  `t_advert_order` as ao
+		  inner join `t_legal_currency_coin` as lcc
+			on ao.`coin_id` = lcc.`id`
+		where (
+			ao.`buyer_id` = #{userId}
+			or ao.`seller_id` = #{userId}
+		  )
+		  and ao.`status` = #{status}
+	</select>
+
 </mapper>
