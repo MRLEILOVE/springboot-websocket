@@ -1,6 +1,8 @@
-package com.core.tool;
+package com.bittrade.admin.util;
 
 import javax.servlet.http.HttpServletRequest;
+
+import com.core.tool.StringUtil;
 
 /**
  * 获取IP方法

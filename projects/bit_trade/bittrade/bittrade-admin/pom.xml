@@ -31,6 +31,10 @@
 			<artifactId>HikariCP</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>org.apache.tomcat.embed</groupId>
+			<artifactId>tomcat-embed-core</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
 		</dependency>
@@ -135,6 +139,18 @@
 			<groupId>cn.hutool</groupId>
 			<artifactId>hutool-all</artifactId>
 			<version>4.5.11</version>
+		</dependency>
+		
+		<!-- 定时任务 -->
+		<dependency>
+			<groupId>org.quartz-scheduler</groupId>
+			<artifactId>quartz</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>com.mchange</groupId>
+					<artifactId>c3p0</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		
 	</dependencies>

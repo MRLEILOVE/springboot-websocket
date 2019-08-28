@@ -1,10 +1,11 @@
-package com.core.tool;
+package com.bittrade.admin.util;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.core.common.constant.GlobalConstant;
+import com.core.tool.HttpUtil;
 
 /**
  * 获取地址类

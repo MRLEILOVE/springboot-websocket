@@ -1,6 +1,7 @@
 package com.core.tool;
 
 import java.math.BigInteger;
+import java.util.Base64;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
@@ -20,8 +21,6 @@ import javax.crypto.spec.SecretKeySpec;
  * return CryptoJS.enc.Utf8.stringify(decrypt).toString();
  * }
  */
-
-import org.apache.tomcat.util.codec.binary.Base64;
 
 /**
  * AES的加密和解密
@@ -50,7 +49,7 @@ public class AesUtil {
      * @return 编码后的base 64 code
      */
     private static String base64Encode(byte[] bytes) {
-        return Base64.encodeBase64String(bytes);
+        return Base64.getEncoder().encodeToString(bytes);
     }
 
     /**
@@ -61,7 +60,7 @@ public class AesUtil {
      * @throws Exception
      */
     private static byte[] base64Decode(String base64Code) throws Exception {
-        return Base64.decodeBase64(base64Code);
+        return Base64.getDecoder().decode(base64Code);
     }
 
 

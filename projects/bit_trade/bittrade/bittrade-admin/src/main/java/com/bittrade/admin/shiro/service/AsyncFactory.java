@@ -10,9 +10,9 @@ import com.bittrade.admin.service.impl.sys.SysLogininforServiceImpl;
 import com.bittrade.admin.service.impl.sys.SysUserOnlineServiceImpl;
 import com.bittrade.admin.service.sys.SysOperLogService;
 import com.bittrade.admin.shiro.session.OnlineSession;
+import com.bittrade.admin.util.AddressUtil;
 import com.bittrade.admin.util.SpringUtil;
 import com.core.common.constant.GlobalConstant.Sys;
-import com.core.tool.AddressUtil;
 import com.core.tool.ConvertUtil;
 
 import eu.bitwalker.useragentutils.UserAgent;
