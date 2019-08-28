@@ -3,7 +3,7 @@
 <mapper namespace="com.wallet.biz.dao.IWWalletAccountDAO">
 
 	<!-- 通用查询映射结果 -->
-	<resultMap id="BaseResultMap" type="com.wallet.biz.pojo.model.WWalletAccount">
+	<resultMap id="BaseResultMap" type="com.bittrade.pojo.model.WWalletAccount">
 		<id javaType="int" property="id" jdbcType="INTEGER" column="id" />
 		<result javaType="Long" property="userId" jdbcType="BIGINT" column="user_id" />
 		<result javaType="Integer" property="currencyId" jdbcType="INTEGER" column="currency_id" />

@@ -3,7 +3,7 @@
 <mapper namespace="com.wallet.biz.dao.ITParamConfigDAO">
 
 	<!-- 通用查询映射结果 -->
-	<resultMap id="BaseResultMap" type="com.wallet.biz.pojo.model.TParamConfig">
+	<resultMap id="BaseResultMap" type="com.bittrade.pojo.model.TParamConfig">
 		<id javaType="int" property="id" jdbcType="INTEGER" column="id" />
 		<result javaType="String" property="paramKey" jdbcType="VARCHAR" column="param_key" />
 		<result javaType="String" property="paramValue" jdbcType="VARCHAR" column="param_value" />
