@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.bittrade.uac.mapper.UserAuthenticationMapper;
+import com.bittrade.uac.model.dto.CurrentUserDto;
+import com.bittrade.uac.model.dto.ReturnDTO;
 import com.bittrade.uac.model.enums.ConstantEnum;
 import com.bittrade.uac.model.enums.UserEnum;
 import com.bittrade.uac.service.UacAuthenticationService;
@@ -14,9 +16,7 @@ import com.bittrade.uac.model.pojo.User;
 import com.bittrade.uac.model.pojo.UserAuthentication;
 import com.bittrade.uac.service.UserAccountService;
 import com.bittrade.uac.utils.PubUtils;
-import com.core.common.DTO.ReturnDTO;
-import com.core.web.constant.entity.LoginUser;
-import com.core.web.tool.WebUtil;
+import com.bittrade.uac.utils.WebUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -53,8 +53,8 @@ public class UacAuthenticationServiceImpl extends ServiceImpl<UserAuthentication
     public ReturnDTO saveInfo(UserAuthenticationDto userAuthenticationDto) {
         long begin = System.currentTimeMillis();
         System.out.println(begin);
-        LoginUser loginUser = WebUtil.getLoginUser();
-        Long userId = loginUser.getUser_id();
+        CurrentUserDto currentUser = WebUtil.getCurrentUser();
+        Long userId = currentUser.getUserId();
         // 参数校验
         if (UserEnum.UserIdentityType.IDENTIFICAT.getCode().equals(userAuthenticationDto.getIdentityType())) {
             if (!PubUtils.isIDNumber(userAuthenticationDto.getIdentityNo())) {

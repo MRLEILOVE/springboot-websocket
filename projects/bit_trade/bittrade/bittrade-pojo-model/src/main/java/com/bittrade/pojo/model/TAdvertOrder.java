@@ -9,6 +9,8 @@ import com.core.framework.base.model.BaseModel;
 import lombok.*;
 import lombok.experimental.Accessors;
 
+import java.util.Objects;
+
 /**
  * 
  * 
@@ -172,7 +174,7 @@ public class TAdvertOrder extends BaseModel<TAdvertOrder> {
 	 * 收款方式id，出售单为收款方式, 购买单为付款方式
 	 */
 	@TableField(exist = false)
-	private Long paymentMethodId;
+	private String paymentMethodId;
 
 
 	/**
@@ -428,5 +430,16 @@ public class TAdvertOrder extends BaseModel<TAdvertOrder> {
 			return false;
 		}
 	}
-	
+
+
+	/**
+	 * 广告类型是否为出售
+	 * <br/>
+	 * create by: leigq
+	 * <br/>
+	 * create time: 2019/8/20 13:01
+	 */
+	public Boolean isSellType() {
+		return Objects.equals(AdvertTypeEnum.SELL.getCode(), this.advertType);
+	}
 }

@@ -1,6 +1,6 @@
 package com.bittrade.uac.web;
 
-import com.core.common.DTO.ReturnDTO;
+import com.bittrade.uac.model.dto.ReturnDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;

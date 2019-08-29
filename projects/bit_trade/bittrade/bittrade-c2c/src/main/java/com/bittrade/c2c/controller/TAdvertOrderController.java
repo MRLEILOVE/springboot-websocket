@@ -1,5 +1,6 @@
 package com.bittrade.c2c.controller;
 
+import com.bittrade.pojo.dto.TAdvertOrderDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.bittrade.c2c.service.ITAdvertOrderService;
-import com.bittrade.pojo.dto.TAdvertOrderDTO;
 import com.bittrade.pojo.model.TAdvertOrder;
 import com.bittrade.pojo.vo.TAdvertOrderVO;
 import com.core.common.DTO.ReturnDTO;
@@ -46,7 +46,6 @@ public class TAdvertOrderController extends BaseController<TAdvertOrder, TAdvert
 
 	/**
 	 * 取消订单
-     * TODO 待測試
 	 * <br/>
 	 * create by: leigq
 	 * <br/>
@@ -55,14 +54,13 @@ public class TAdvertOrderController extends BaseController<TAdvertOrder, TAdvert
 	 * @return result
 	 */
 	@PostMapping("/action/cancel/{order_id}")
-	public ReturnDTO<Object> cancelAdvertOrder(@PathVariable("order_id") Long orderId) {
-		boolean cancelResult = itAdvertOrderService.cancelAdvertOrder(orderId);
+	public ReturnDTO<Object> cancelAdvertOrder(@PathVariable("order_id") Long orderId, @ALoginUser LoginUser loginUser) {
+		boolean cancelResult = itAdvertOrderService.cancelAdvertOrder(orderId, loginUser);
 		return cancelResult ? ReturnDTO.ok("取消成功") : ReturnDTO.error("取消失敗");
 	}
 
     /**
      * 點擊已付款
-     * TODO 待測試
      * <br/>
      * create by: leigq
      * <br/>
@@ -78,7 +76,6 @@ public class TAdvertOrderController extends BaseController<TAdvertOrder, TAdvert
 
     /**
      * 點擊確認收款
-     * TODO 待測試
      * <br/>
      * create by: leigq
      * <br/>
@@ -94,7 +91,6 @@ public class TAdvertOrderController extends BaseController<TAdvertOrder, TAdvert
 
 	/**
 	 * 未完成订单列表
-	 * TODO 待測試
 	 * <br/>
 	 * create by: leigq
 	 * <br/>
@@ -105,14 +101,13 @@ public class TAdvertOrderController extends BaseController<TAdvertOrder, TAdvert
 	 */
 	@GetMapping("/advert_orders/no_complete")
 	public ReturnDTO<Object> noCompleteAdvertOrders(Page<TAdvertOrder> page, @ALoginUser LoginUser loginUser) {
-		Page<TAdvertOrder> advertOrderPage = itAdvertOrderService.listAdvertOrders(page, loginUser, TAdvertOrderDTO.StatusEnum.ALREADY_AUCTION.getCode());
+		Page<TAdvertOrder> advertOrderPage = itAdvertOrderService.listAdvertOrders(page, loginUser, TAdvertOrder.StatusEnum.ALREADY_AUCTION.getCode());
 		return ReturnDTO.ok(advertOrderPage);
 	}
 
 
 	/**
 	 * 已完成订单列表
-	 * TODO 待測試
 	 * <br/>
 	 * create by: leigq
 	 * <br/>
@@ -123,14 +118,13 @@ public class TAdvertOrderController extends BaseController<TAdvertOrder, TAdvert
 	 */
 	@GetMapping("/advert_orders/already_complete")
 	public ReturnDTO<Object> alreadyCompleteAdvertOrders(Page<TAdvertOrder> page, @ALoginUser LoginUser loginUser) {
-		Page<TAdvertOrder> advertOrderPage = itAdvertOrderService.listAdvertOrders(page, loginUser, TAdvertOrderDTO.StatusEnum.ALREADY_COMPLETE.getCode());
+		Page<TAdvertOrder> advertOrderPage = itAdvertOrderService.listAdvertOrders(page, loginUser, TAdvertOrder.StatusEnum.ALREADY_COMPLETE.getCode());
 		return ReturnDTO.ok(advertOrderPage);
 	}
 
 
 	/**
 	 * 已取消订单列表
-	 * TODO 待測試
 	 * <br/>
 	 * create by: leigq
 	 * <br/>
@@ -141,7 +135,7 @@ public class TAdvertOrderController extends BaseController<TAdvertOrder, TAdvert
 	 */
 	@GetMapping("/advert_orders/already_cancel")
 	public ReturnDTO<Object> alreadyCancelAdvertOrders(Page<TAdvertOrder> page, @ALoginUser LoginUser loginUser) {
-		Page<TAdvertOrder> advertOrderPage = itAdvertOrderService.listAdvertOrders(page, loginUser, TAdvertOrderDTO.StatusEnum.ALREADY_CANCEL.getCode());
+		Page<TAdvertOrder> advertOrderPage = itAdvertOrderService.listAdvertOrders(page, loginUser, TAdvertOrder.StatusEnum.ALREADY_CANCEL.getCode());
 		return ReturnDTO.ok(advertOrderPage);
 	}
 

@@ -1,9 +1,11 @@
 package com.bittrade.pojo.vo;
 
+import com.bittrade.pojo.model.TAdvertInfo;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * 登录用户广告 VO
@@ -36,7 +38,7 @@ public class AdvertUserVO implements Serializable {
 	/**
 	 * 定价方式 1：固定价格 2：浮动价格
 	 */
-	private Byte pricingMode;
+	private Integer pricingMode;
 
 	/**
 	 * 浮动比例 (小数 0.01 = 1%)
@@ -88,5 +90,14 @@ public class AdvertUserVO implements Serializable {
 	 */
 	private Integer status;
 
-
+	/**
+	 * 定价方式是否为浮动价格
+	 * <br/>
+	 * create by: leigq
+	 * <br/>
+	 * create time: 2019/8/20 13:01
+	 */
+	public Boolean isFloatingPrice() {
+		return Objects.equals(TAdvertInfo.PricingModeEnum.FLOAT.getCode(), this.pricingMode);
+	}
 }

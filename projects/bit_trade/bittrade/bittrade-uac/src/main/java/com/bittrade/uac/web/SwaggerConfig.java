@@ -1,6 +1,5 @@
 package com.bittrade.uac.web;
 
-import com.core.framework.BaseApplication;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -36,7 +35,7 @@ public class SwaggerConfig {
 	public Docket api() {
 		return new Docket(DocumentationType.SWAGGER_2)
 				.apiInfo(apiInfo())
-				.select().apis(RequestHandlerSelectors.basePackage("com.bittrade." + BaseApplication.NAME + ".web")) // .any()  不可以用通配符？
+				.select().apis(RequestHandlerSelectors.basePackage("com.bittrade.uac.web")) // .any()  不可以用通配符？
 				.apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class))
 				// .apis(RequestHandlerSelectors.withClassAnnotation(Api.class)) // 只显示添加@Api注解的类
 				.paths(PathSelectors.any()).build()

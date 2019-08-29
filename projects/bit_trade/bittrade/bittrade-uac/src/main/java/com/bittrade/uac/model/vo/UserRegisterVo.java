@@ -44,14 +44,4 @@ public class UserRegisterVo implements Serializable {
      */
     private String code;
 
-    /**
-     * 用户昵称
-     */
-    private String nickName;
-
-    /**
-     * 推荐码
-     */
-    private String recommendCode;
-
 }
