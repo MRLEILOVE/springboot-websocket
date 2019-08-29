@@ -3,6 +3,7 @@ package com.bittrade.uac.service.impl;
 import com.bittrade.uac.model.dto.RequestC5Dto;
 import com.bittrade.uac.model.dto.SendSmsDto;
 import com.bittrade.uac.web.feign.client.SmsFeignClient;
+import com.google.common.collect.Maps;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -11,6 +12,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+
+import java.util.Map;
 
 
 /**
@@ -71,6 +74,12 @@ public class C5SmsService {
         requestC5Dto.setMobile(areaCode + phoneNumber);
         requestC5Dto.setApiKey(c5SmsConfig.getApiKey());
         requestC5Dto.setContent(content);
-        smsFeignClient.send(requestC5Dto);
+
+        smsFeignClient.send(c5SmsConfig.getUserName(),
+                c5SmsConfig.getPassword(),
+                areaCode + phoneNumber,
+                c5SmsConfig.getApiKey(),
+                content,
+                "UTF_8");
     }
 }

@@ -1,10 +1,8 @@
 package com.bittrade.uac.web.feign.client;
 
-import com.bittrade.uac.model.dto.RequestC5Dto;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
+
 
 /**
  * @author: xzc
@@ -17,9 +15,19 @@ public interface SmsFeignClient {
     /**
      * 请求接口发送短信
      *
-     * @param requestC5Dto
+     * @param username
+     * @param password
+     * @param mobile
+     * @param apiKey
+     * @param content
+     * @param encode
      * @return
      */
     @RequestMapping(value = "/api/send/index.php", method = RequestMethod.GET)
-    String send(@RequestBody RequestC5Dto requestC5Dto);
+    String send(@RequestParam("username") String username,
+                @RequestParam("password_md5") String password,
+                @RequestParam("mobile") String mobile,
+                @RequestParam("apikey") String apiKey,
+                @RequestParam("content") String content,
+                @RequestParam("encode") String encode);
 }
