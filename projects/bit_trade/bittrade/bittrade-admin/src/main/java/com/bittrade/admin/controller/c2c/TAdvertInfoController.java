@@ -1,5 +1,6 @@
 package com.bittrade.admin.controller.c2c;
 
+import com.bittrade.pojo.dto.TAdvertInfoDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -11,7 +12,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.bittrade.admin.model.vo.c2c.AdvertInfoScreeningParameterVo;
 import com.bittrade.admin.service.c2c.ITAdvertInfoService;
-import com.bittrade.pojo.dto.TAdvertInfoDTO;
 import com.bittrade.pojo.model.TAdvertInfo;
 import com.bittrade.pojo.vo.TAdvertInfoVO;
 import com.core.common.DTO.PageDTO;

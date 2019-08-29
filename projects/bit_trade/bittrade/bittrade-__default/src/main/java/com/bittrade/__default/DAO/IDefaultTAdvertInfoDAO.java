@@ -6,9 +6,9 @@ package com.bittrade.__default.DAO;
 import java.io.Serializable;
 import java.util.List;
 
+import com.bittrade.pojo.dto.TAdvertInfoDTO;
 import org.apache.ibatis.annotations.Param;
 
-import com.bittrade.pojo.dto.TAdvertInfoDTO;
 import com.bittrade.pojo.vo.TAdvertInfoVO;
 import com.bittrade.pojo.model.TAdvertInfo;
 import com.core.common.DTO.PageDTO;
