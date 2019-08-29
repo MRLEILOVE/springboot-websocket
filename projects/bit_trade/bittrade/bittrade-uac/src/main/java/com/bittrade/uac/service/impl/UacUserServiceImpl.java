@@ -185,7 +185,7 @@ public class UacUserServiceImpl extends ServiceImpl<UserMapper, User> implements
         String redisKey = sendTypeEnum.getValue() + ":" + email;
 
         // 间隔时间之内不允许发送多次
-        Preconditions.checkArgument(redisTemplate.hasKey(redisKey + "_interval"), "获取验证码过于频繁，请稍后再试！");
+        Preconditions.checkArgument(!redisTemplate.hasKey(redisKey + "_interval"), "获取验证码过于频繁，请稍后再试！");
 
         String code = (String) redisTemplate.opsForValue().get(redisKey);
         if (StringUtils.isEmpty(code)) {
