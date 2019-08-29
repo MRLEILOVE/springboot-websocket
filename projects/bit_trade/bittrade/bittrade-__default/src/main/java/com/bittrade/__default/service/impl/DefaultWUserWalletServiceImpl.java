@@ -3,11 +3,11 @@
  */
 package com.bittrade.__default.service.impl;
 
+import com.bittrade.pojo.model.WUserWallet;
+import com.bittrade.pojo.dto.WUserWalletDTO;
+import com.bittrade.pojo.vo.WUserWalletVO;
 import com.bittrade.__default.service.IDefaultWUserWalletService;
 import com.core.framework.base.DAO.IBaseDAO;
-import com.core.framework.base.DTO.BaseDTO;
-import com.core.framework.base.VO.BaseVO;
-import com.core.framework.base.model.BaseModel;
 import com.core.framework.base.service.impl.BaseServiceImpl;
 
 /**
@@ -16,6 +16,6 @@ import com.core.framework.base.service.impl.BaseServiceImpl;
  *
  */
 //public abstract class DefaultWUserWalletServiceImpl extends BaseServiceImpl<WUserWallet, WUserWalletDTO, WUserWalletVO, IWUserWalletDAO> implements IDefaultWUserWalletService {
-public abstract class DefaultWUserWalletServiceImpl<DAO extends IBaseDAO<Model, DTO, VO>, Model extends BaseModel<Model>, DTO extends BaseDTO<DTO>, VO extends BaseVO<VO>> extends BaseServiceImpl<Model, DTO, VO, DAO> implements IDefaultWUserWalletService<Model, DTO, VO> {
+public abstract class DefaultWUserWalletServiceImpl<DAO extends IBaseDAO<WUserWallet, WUserWalletDTO, WUserWalletVO>> extends BaseServiceImpl<WUserWallet, WUserWalletDTO, WUserWalletVO, DAO> implements IDefaultWUserWalletService {
 	
 }

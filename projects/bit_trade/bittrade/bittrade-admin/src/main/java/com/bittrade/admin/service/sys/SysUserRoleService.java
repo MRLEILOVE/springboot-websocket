@@ -1,7 +1,7 @@
 package com.bittrade.admin.service.sys;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.bittrade.admin.model.domain.SysUserRole;
+import com.bittrade.pojo.model.SysUserRole;
 
 /**
  * <p>

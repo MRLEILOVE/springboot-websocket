@@ -4,8 +4,9 @@ import java.util.List;
 import java.util.Map;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.bittrade.admin.model.domain.SysDept;
-import com.bittrade.admin.model.domain.SysRole;
+import com.bittrade.pojo.dto.SysDeptDTO;
+import com.bittrade.pojo.model.SysDept;
+import com.bittrade.pojo.model.SysRole;
 
 /**
  * <p>
@@ -31,7 +32,7 @@ public interface SysDeptService extends IService<SysDept> {
 	 * @param deptId
 	 * @return 部门信息
 	 */
-	public SysDept selectDeptById(Integer deptId);
+	public SysDeptDTO selectDeptById(Integer deptId);
 
 	/**
 	 * .查询部门管理树

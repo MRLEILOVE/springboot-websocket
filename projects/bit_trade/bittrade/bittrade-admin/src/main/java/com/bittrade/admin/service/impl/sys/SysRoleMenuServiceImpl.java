@@ -4,8 +4,8 @@ import org.springframework.stereotype.Service;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.bittrade.admin.dao.sys.ISysRoleMenuDAO;
-import com.bittrade.admin.model.domain.SysRoleMenu;
 import com.bittrade.admin.service.sys.SysRoleMenuService;
+import com.bittrade.pojo.model.SysRoleMenu;
 
 /**
  * <p>

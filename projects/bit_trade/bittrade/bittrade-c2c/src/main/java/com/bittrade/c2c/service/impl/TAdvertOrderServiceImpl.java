@@ -18,7 +18,6 @@ import com.bittrade.pojo.dto.TAdvertOrderDTO;
 import com.bittrade.pojo.model.TAdvertInfo;
 import com.bittrade.pojo.model.TAdvertOrder;
 import com.bittrade.pojo.model.TLegalCurrencyAccount;
-import com.bittrade.pojo.vo.TAdvertOrderVO;
 import com.common.bittrade.service.ITLegalCurrencyAccountService;
 import com.common.bittrade.service.ITLegalCurrencyCoinService;
 import com.core.tool.BeanUtil;
@@ -32,7 +31,7 @@ import com.core.web.constant.exception.BusinessException;
  */
 @Service
 @Transactional(rollbackFor = Exception.class)
-public class TAdvertOrderServiceImpl extends DefaultTAdvertOrderServiceImpl<ITAdvertOrderDAO, TAdvertOrder, TAdvertOrderDTO, TAdvertOrderVO> implements ITAdvertOrderService {
+public class TAdvertOrderServiceImpl extends DefaultTAdvertOrderServiceImpl<ITAdvertOrderDAO> implements ITAdvertOrderService {
 
 	@Autowired
 	private ITAdvertInfoService itAdvertInfoService;

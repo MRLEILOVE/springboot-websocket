@@ -5,9 +5,10 @@ import java.util.Map;
 import java.util.Set;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.bittrade.admin.model.domain.SysMenu;
-import com.bittrade.admin.model.domain.SysRole;
-import com.bittrade.admin.model.domain.SysUser;
+import com.bittrade.pojo.dto.SysMenuDTO;
+import com.bittrade.pojo.model.SysMenu;
+import com.bittrade.pojo.model.SysRole;
+import com.bittrade.pojo.model.SysUser;
 
 /**
  * <p>
@@ -25,7 +26,7 @@ public interface SysMenuService extends IService<SysMenu> {
 	 * @param user 用户信息
 	 * @return 菜单列表
 	 */
-	public List<SysMenu> selectMenusByUser(SysUser user);
+	public List<SysMenuDTO> selectMenusByUser(SysUser user);
 
 	/**
 	 * .根据用户ID查询权限

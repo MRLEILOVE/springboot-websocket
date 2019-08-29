@@ -8,17 +8,15 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.bittrade.__default.service.IDefaultTAdvertInfoService;
 import com.bittrade.pojo.dto.TAdvertInfoDTO;
 import com.bittrade.pojo.dto.TAdvertOrderDTO;
-import com.bittrade.pojo.model.TAdvertInfo;
 import com.bittrade.pojo.vo.AdvertUserVO;
 import com.bittrade.pojo.vo.QueryAdvertVO;
-import com.bittrade.pojo.vo.TAdvertInfoVO;
 import com.core.common.DTO.PageDTO;
 import com.core.web.constant.entity.LoginUser;
 
 /**
  * @author Administrator
  */
-public interface ITAdvertInfoService extends IDefaultTAdvertInfoService<TAdvertInfo, TAdvertInfoDTO, TAdvertInfoVO> {
+public interface ITAdvertInfoService extends IDefaultTAdvertInfoService {
 
 	/**
 	 * 发布广告

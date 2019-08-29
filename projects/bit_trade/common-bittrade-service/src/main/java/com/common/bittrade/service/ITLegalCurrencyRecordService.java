@@ -1,22 +1,19 @@
 package com.common.bittrade.service;
 
+import java.math.BigDecimal;
+
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.bittrade.__default.service.IDefaultTLegalCurrencyRecordService;
 import com.bittrade.pojo.dto.AccountTypeDto;
-import com.bittrade.pojo.dto.TLegalCurrencyRecordDTO;
 import com.bittrade.pojo.model.TLegalCurrencyCoin;
 import com.bittrade.pojo.vo.RecordVO;
-import com.bittrade.pojo.vo.TLegalCurrencyRecordVO;
-import com.bittrade.pojo.model.TLegalCurrencyRecord;
-
-import java.math.BigDecimal;
 
 /**
  * 
  * @author Administrator
  *
  */
-public interface ITLegalCurrencyRecordService extends IDefaultTLegalCurrencyRecordService<TLegalCurrencyRecord, TLegalCurrencyRecordDTO, TLegalCurrencyRecordVO> {
+public interface ITLegalCurrencyRecordService extends IDefaultTLegalCurrencyRecordService {
 
     /**
      * c2c钱包流水（划入）

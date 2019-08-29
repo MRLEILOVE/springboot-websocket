@@ -7,8 +7,8 @@ import org.springframework.util.StringUtils;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.bittrade.admin.dao.sys.ISysConfigDAO;
-import com.bittrade.admin.model.domain.SysConfig;
 import com.bittrade.admin.service.sys.SysConfigService;
+import com.bittrade.pojo.model.SysConfig;
 import com.core.common.constant.GlobalConstant.UserConstant;
 import com.core.tool.ConvertUtil;
 

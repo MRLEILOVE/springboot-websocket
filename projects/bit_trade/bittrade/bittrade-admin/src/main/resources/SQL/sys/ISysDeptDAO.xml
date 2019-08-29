@@ -3,7 +3,7 @@
 <mapper namespace="com.bittrade.admin.dao.sys.ISysDeptDAO">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.bittrade.admin.model.domain.SysDept">
+    <resultMap id="BaseResultMap" type="com.bittrade.pojo.model.SysDept">
         <id column="dept_id" property="deptId" />
         <result column="parent_id" property="parentId" />
         <result column="ancestors" property="ancestors" />
@@ -30,7 +30,7 @@
         from sys_dept d
     </sql>
     
-    <select id="selectDeptList" parameterType="com.bittrade.admin.model.domain.SysDept" resultMap="BaseResultMap">
+    <select id="selectDeptList" parameterType="com.bittrade.pojo.model.SysDept" resultMap="BaseResultMap">
         <include refid="selectDeptVo"/>
         where d.del_flag = '1'
         <if test="parentId != null and parentId != 0">
@@ -44,7 +44,7 @@
 		</if>
     </select>
     
-    <select id="selectDeptById" parameterType="Integer" resultMap="BaseResultMap">
+    <select id="selectDeptById" parameterType="Integer" resultType="com.bittrade.pojo.dto.SysDeptDTO">
 		select d.dept_id, d.parent_id, d.ancestors, d.dept_name, d.order_num, d.leader, d.phone, d.email, d.status,
 			(select dept_name from sys_dept where dept_id = d.parent_id) parent_name
 		from sys_dept d
@@ -59,7 +59,7 @@
 		order by d.parent_id, d.order_num
 	</select>
 	
-	<select id="selectDeptCount" parameterType="com.bittrade.admin.model.domain.SysDept" resultType="int">
+	<select id="selectDeptCount" parameterType="com.bittrade.pojo.model.SysDept" resultType="int">
 		select count(1) from sys_dept
 		where del_flag = '1'
 		<if test="deptId != null and deptId != 0"> and dept_id = #{deptId} </if>

@@ -3,7 +3,7 @@ package com.bittrade.admin.service.sys;
 import java.util.List;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.bittrade.admin.model.domain.SysConfig;
+import com.bittrade.pojo.model.SysConfig;
 
 /**
  * <p>

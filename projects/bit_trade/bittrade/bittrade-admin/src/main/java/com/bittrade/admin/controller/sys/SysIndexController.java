@@ -6,8 +6,8 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import com.bittrade.admin.controller.base.BaseController;
-import com.bittrade.admin.model.domain.SysUser;
 import com.bittrade.admin.service.sys.SysMenuService;
+import com.bittrade.pojo.model.SysUser;
 import com.core.common.constant.GlobalConstant;
 
 /**

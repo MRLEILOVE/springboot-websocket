@@ -3,11 +3,11 @@
  */
 package com.bittrade.__default.service.impl;
 
+import com.bittrade.pojo.model.SysUserOnline;
+import com.bittrade.pojo.dto.SysUserOnlineDTO;
+import com.bittrade.pojo.vo.SysUserOnlineVO;
 import com.bittrade.__default.service.IDefaultSysUserOnlineService;
 import com.core.framework.base.DAO.IBaseDAO;
-import com.core.framework.base.DTO.BaseDTO;
-import com.core.framework.base.VO.BaseVO;
-import com.core.framework.base.model.BaseModel;
 import com.core.framework.base.service.impl.BaseServiceImpl;
 
 /**
@@ -16,6 +16,6 @@ import com.core.framework.base.service.impl.BaseServiceImpl;
  *
  */
 //public abstract class DefaultSysUserOnlineServiceImpl extends BaseServiceImpl<SysUserOnline, SysUserOnlineDTO, SysUserOnlineVO, ISysUserOnlineDAO> implements IDefaultSysUserOnlineService {
-public abstract class DefaultSysUserOnlineServiceImpl<DAO extends IBaseDAO<Model, DTO, VO>, Model extends BaseModel<Model>, DTO extends BaseDTO<DTO>, VO extends BaseVO<VO>> extends BaseServiceImpl<Model, DTO, VO, DAO> implements IDefaultSysUserOnlineService<Model, DTO, VO> {
+public abstract class DefaultSysUserOnlineServiceImpl<DAO extends IBaseDAO<SysUserOnline, SysUserOnlineDTO, SysUserOnlineVO>> extends BaseServiceImpl<SysUserOnline, SysUserOnlineDTO, SysUserOnlineVO, DAO> implements IDefaultSysUserOnlineService {
 	
 }

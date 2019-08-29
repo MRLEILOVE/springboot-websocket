@@ -22,11 +22,11 @@ import com.bittrade.admin.exception.UserBlockedException;
 import com.bittrade.admin.exception.UserNotExistsException;
 import com.bittrade.admin.exception.UserPasswordNotMatchException;
 import com.bittrade.admin.exception.UserPasswordRetryLimitExceedException;
-import com.bittrade.admin.model.domain.SysUser;
 import com.bittrade.admin.service.sys.SysMenuService;
 import com.bittrade.admin.service.sys.SysRoleService;
 import com.bittrade.admin.shiro.service.LoginService;
 import com.bittrade.admin.util.ShiroUtil;
+import com.bittrade.pojo.model.SysUser;
 import com.core.common.constant.GlobalConstant.Sys;
 
 import lombok.extern.slf4j.Slf4j;

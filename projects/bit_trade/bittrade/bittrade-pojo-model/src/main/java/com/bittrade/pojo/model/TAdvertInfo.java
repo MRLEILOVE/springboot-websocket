@@ -24,9 +24,9 @@ import lombok.experimental.Accessors;
 @EqualsAndHashCode(callSuper = false)
 @TableName(value="t_advert_info")
 public class TAdvertInfo extends BaseModel<TAdvertInfo> {
-
-	private static final long serialVersionUID = 2252880516378768941L;
-
+	
+	private static final long serialVersionUID = 1L;
+	
 	/**
 	 * 
 	 * @author Administrator
@@ -101,7 +101,7 @@ public class TAdvertInfo extends BaseModel<TAdvertInfo> {
 		public static final String FREEZE_AMOUNT = "freeze_amount";
 		
 		/**
-		 * 收款方式id，出售单为收款方式, 购买单为付款方式
+		 * 收款方式id，出售单为收款方式, 购买单为付款方式,多个以逗号分隔
 		 */
 		public static final String PAYMENT_METHOD_ID = "payment_method_id";
 		
@@ -171,12 +171,12 @@ public class TAdvertInfo extends BaseModel<TAdvertInfo> {
 	/**
 	 * 类型(1:出售 2:购买)
 	 */
-	private Integer type;
+	private Byte type;
 	
 	/**
 	 * 定价方式 1：固定价格 2：浮动价格
 	 */
-	private Integer pricingMode;
+	private Byte pricingMode;
 	
 	/**
 	 * 浮动比例 (小数 0.01 = 1%)
@@ -219,7 +219,7 @@ public class TAdvertInfo extends BaseModel<TAdvertInfo> {
 	private java.math.BigDecimal freezeAmount;
 	
 	/**
-	 * 收款方式id，出售单为收款方式, 购买单为付款方式
+	 * 收款方式id，出售单为收款方式, 购买单为付款方式,多个以逗号分隔
 	 */
 	private String paymentMethodId;
 	
@@ -231,12 +231,12 @@ public class TAdvertInfo extends BaseModel<TAdvertInfo> {
 	/**
 	 * 是否开启对手限制 (0 禁用 1 启用)
 	 */
-	private Integer openOpponentLimit;
+	private Byte openOpponentLimit;
 	
 	/**
 	 * 对手限制-认证等级
 	 */
-	private Integer certificationLevel;
+	private Byte certificationLevel;
 	
 	/**
 	 * 对手限制-注册时间

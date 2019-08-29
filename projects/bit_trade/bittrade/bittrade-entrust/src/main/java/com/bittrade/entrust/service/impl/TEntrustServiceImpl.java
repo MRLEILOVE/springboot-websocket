@@ -26,7 +26,6 @@ import com.bittrade.pojo.model.TCurrencyTrade;
 import com.bittrade.pojo.model.TEntrust;
 import com.bittrade.pojo.model.TWallet;
 import com.bittrade.pojo.vo.TEntrustInfoVO;
-import com.bittrade.pojo.vo.TEntrustVO;
 import com.common.bittrade.service.ITWalletService;
 import com.core.common.DTO.PageDTO;
 import com.core.common.DTO.ReturnDTO;
@@ -39,7 +38,7 @@ import com.core.tool.SnowFlake;
  */
 @Service
 @Component
-public class TEntrustServiceImpl extends DefaultTEntrustServiceImpl<ITEntrustDAO, TEntrust, TEntrustDTO, TEntrustVO> implements ITEntrustService {
+public class TEntrustServiceImpl extends DefaultTEntrustServiceImpl<ITEntrustDAO> implements ITEntrustService {
 
 	@Autowired
 	private ITEntrustDAO					entrustDAO;

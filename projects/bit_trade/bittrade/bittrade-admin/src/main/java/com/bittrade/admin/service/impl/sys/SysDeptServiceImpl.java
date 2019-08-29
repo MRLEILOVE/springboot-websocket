@@ -10,9 +10,10 @@ import org.springframework.stereotype.Service;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.bittrade.admin.dao.sys.ISysDeptDAO;
 import com.bittrade.admin.enums.UserEnum.UserState;
-import com.bittrade.admin.model.domain.SysDept;
-import com.bittrade.admin.model.domain.SysRole;
 import com.bittrade.admin.service.sys.SysDeptService;
+import com.bittrade.pojo.dto.SysDeptDTO;
+import com.bittrade.pojo.model.SysDept;
+import com.bittrade.pojo.model.SysRole;
 
 /**
  * <p>
@@ -31,7 +32,7 @@ public class SysDeptServiceImpl extends ServiceImpl<ISysDeptDAO, SysDept> implem
 	}
 
 	@Override
-	public SysDept selectDeptById(Integer deptId) {
+	public SysDeptDTO selectDeptById(Integer deptId) {
 		return baseMapper.selectDeptById( deptId );
 	}
 

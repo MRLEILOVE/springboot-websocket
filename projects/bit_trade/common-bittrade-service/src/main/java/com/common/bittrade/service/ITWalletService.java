@@ -4,11 +4,12 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import com.bittrade.__default.service.IDefaultTWalletService;
-import com.bittrade.pojo.dto.TWalletDTO;
-import com.bittrade.pojo.dto.TransferDto;
 import com.bittrade.pojo.model.TEntrustRecord;
 import com.bittrade.pojo.model.TWallet;
-import com.bittrade.pojo.vo.*;
+import com.bittrade.pojo.vo.AssetsVO;
+import com.bittrade.pojo.vo.CoinAccountVO;
+import com.bittrade.pojo.vo.ConversionVo;
+import com.bittrade.pojo.vo.UserWalletVO;
 import com.core.common.DTO.ReturnDTO;
 
 /**
@@ -19,7 +20,7 @@ import com.core.common.DTO.ReturnDTO;
  * @author jobob
  * @since 2019-07-05
  */
-public interface ITWalletService extends IDefaultTWalletService<TWallet, TWalletDTO, TWalletVO> {
+public interface ITWalletService extends IDefaultTWalletService {
 
 	/**
 	 * 查询用户的币币账户

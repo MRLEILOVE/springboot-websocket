@@ -10,8 +10,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.bittrade.admin.dao.sys.ISysDictDataDAO;
 import com.bittrade.admin.dao.sys.ISysDictTypeDAO;
-import com.bittrade.admin.model.domain.SysDictType;
 import com.bittrade.admin.service.sys.SysDictTypeService;
+import com.bittrade.pojo.model.SysDictType;
 import com.core.common.constant.GlobalConstant.UserConstant;
 import com.core.tool.ConvertUtil;
 

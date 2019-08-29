@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
@@ -27,6 +26,7 @@ import com.bittrade.c2c.dao.ITAdvertInfoDAO;
 import com.bittrade.c2c.service.ITAdvertInfoService;
 import com.bittrade.c2c.service.ITAdvertOrderService;
 import com.bittrade.common.constant.ILegalCurrencyCoinConstants;
+import com.bittrade.common.enums.StatusEnumer;
 import com.bittrade.pojo.dto.TAdvertInfoDTO;
 import com.bittrade.pojo.dto.TAdvertInfoDTO.AdvertTypeEnum;
 import com.bittrade.pojo.dto.TAdvertInfoDTO.PricingModeEnum;
@@ -37,7 +37,6 @@ import com.bittrade.pojo.model.TLegalCurrencyAccount;
 import com.bittrade.pojo.model.TLegalCurrencyCoin;
 import com.bittrade.pojo.vo.AdvertUserVO;
 import com.bittrade.pojo.vo.QueryAdvertVO;
-import com.bittrade.pojo.vo.TAdvertInfoVO;
 import com.common.bittrade.service.ITLegalCurrencyAccountService;
 import com.common.bittrade.service.ITLegalCurrencyCoinService;
 import com.core.common.DTO.PageDTO;
@@ -51,7 +50,7 @@ import com.core.web.constant.exception.BusinessException;
  */
 @Service
 @Transactional(rollbackFor = Exception.class)
-public class TAdvertInfoServiceImpl extends DefaultTAdvertInfoServiceImpl<ITAdvertInfoDAO, TAdvertInfo, TAdvertInfoDTO, TAdvertInfoVO> implements ITAdvertInfoService {
+public class TAdvertInfoServiceImpl extends DefaultTAdvertInfoServiceImpl<ITAdvertInfoDAO> implements ITAdvertInfoService {
 
 	@Resource
 	private ITLegalCurrencyAccountService itLegalCurrencyAccountService;
@@ -92,7 +91,7 @@ public class TAdvertInfoServiceImpl extends DefaultTAdvertInfoServiceImpl<ITAdve
 
 		// 获取对应虚拟币
 		TLegalCurrencyCoin coin = itLegalCurrencyCoinService.getById(advertInfoDTO.getCoinId());
-		if (coin.isDisable(coin.getStatus().intValue())) {
+		if (StatusEnumer.DISABLE.getCode() == coin.getStatus()) {
 			throw new BusinessException(String.format("%s 已禁用，無法發布廣告", coin.getName()));
 		}
 		// 广告交易数量

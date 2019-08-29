@@ -1,7 +1,7 @@
 package com.bittrade.admin.aspectj;
 
 import java.lang.reflect.Method;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
@@ -18,11 +18,11 @@ import org.springframework.stereotype.Component;
 
 import com.bittrade.admin.annotation.Log;
 import com.bittrade.admin.enums.UserEnum;
-import com.bittrade.admin.model.domain.SysOperLog;
-import com.bittrade.admin.model.domain.SysUser;
 import com.bittrade.admin.service.sys.SysOperLogService;
 import com.bittrade.admin.util.ServletUtil;
 import com.bittrade.admin.util.ShiroUtil;
+import com.bittrade.pojo.model.SysOperLog;
+import com.bittrade.pojo.model.SysUser;
 import com.core.tool.JSONUtil;
 
 import lombok.extern.slf4j.Slf4j;
@@ -74,13 +74,13 @@ public class LogAspect {
 			operLog.setStatus( UserEnum.UserState.NORMAL_USER.getCode() );
 			String ip = ShiroUtil.getIp();
 			operLog.setOperIp( ip );
-			operLog.setOperTime( new Date() );
+			operLog.setOperTime( LocalDateTime.now() );
 			operLog.setOperUrl( ServletUtil.getRequest().getRequestURI() );
 			if (currentUser != null) {
 				operLog.setOperName( currentUser.getLoginName() );
-				if (null != currentUser.getDept() && StringUtils.isNotEmpty( currentUser.getDept().getDeptName() )) {
-					operLog.setDeptName( currentUser.getDept().getDeptName() );
-				}
+//				if (null != currentUser.getDept() && StringUtils.isNotEmpty( currentUser.getDept().getDeptName() )) {
+//					operLog.setDeptName( currentUser.getDept().getDeptName() );
+//				}
 			}
 			if (e != null) {
 				operLog.setStatus( UserEnum.UserState.LOCK_USER.getCode() );

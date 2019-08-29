@@ -5,7 +5,8 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.bittrade.admin.model.domain.SysMenu;
+import com.bittrade.pojo.dto.SysMenuDTO;
+import com.bittrade.pojo.model.SysMenu;
 
 /**
  * <p>
@@ -31,7 +32,7 @@ public interface ISysMenuDAO extends BaseMapper<SysMenu> {
 	 * 
 	 * @return 菜单列表
 	 */
-	public List<SysMenu> selectMenuNormalAll();
+	public List<SysMenuDTO> selectMenuNormalAll();
 
 	/**
 	 * .根据用户ID查询菜单
@@ -39,7 +40,7 @@ public interface ISysMenuDAO extends BaseMapper<SysMenu> {
 	 * @param userId 用户ID
 	 * @return 菜单列表
 	 */
-	public List<SysMenu> selectMenusByUserId(Integer userId);
+	public List<SysMenuDTO> selectMenusByUserId(Integer userId);
 	
 	/**
      * 查询系统所有菜单（含按钮）

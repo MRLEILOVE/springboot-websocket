@@ -31,6 +31,31 @@ public class BeanUtil {
 		}
 	}
 	
+	/**
+	 * 
+	 * @param <T>
+	 * @param src
+	 * @param destCls
+	 * @return
+	 */
+	public static final <T> T copyObj(Object src, Class<T> destCls) {
+		T dest = null;
+		
+		try {
+			dest = destCls.newInstance();
+			
+			BeanUtils.copyProperties(dest, src);
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			e.printStackTrace();
+		}
+		
+		return dest;
+	}
+	
 	/** Bean方法名中属性名开始的下标 */
 	private static final int		BEAN_METHOD_PROP_INDEX	= 3;
 
