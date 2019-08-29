@@ -14,7 +14,7 @@ import com.core.web.constant.entity.LoginUser;
  */
 public interface ITAdvertOrderService extends IDefaultTAdvertOrderService<TAdvertOrder, TAdvertOrderDTO, TAdvertOrderVO> {
 
-	Long getPaymentOrPutCoinAging(Long userId, Byte type, Byte status);
+	Long getPaymentOrPutCoinAging(Long userId, Integer type, Integer status);
 
 	boolean existenceNoCompleteOrders(Long advertId);
 
@@ -26,5 +26,5 @@ public interface ITAdvertOrderService extends IDefaultTAdvertOrderService<TAdver
 
 	boolean clickAlreadyReceipt(Long orderId);
 
-	Page<TAdvertOrder> listAdvertOrders(Page<TAdvertOrder> page, LoginUser loginUser, Byte status);
+	Page<TAdvertOrder> listAdvertOrders(Page<TAdvertOrder> page, LoginUser loginUser, Integer status);
 }

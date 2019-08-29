@@ -13,7 +13,7 @@ import lombok.Data;
 @Data
 public class LoginUser {
 
-	private Long user_id;
+	private Long user_id = 1L;
 	private String user_name;
 	// 其他的可以加。
 	// TODO 需添加支付密码

@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
@@ -11,6 +12,7 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -90,7 +92,9 @@ public class TAdvertInfoServiceImpl extends DefaultTAdvertInfoServiceImpl<ITAdve
 
 		// 获取对应虚拟币
 		TLegalCurrencyCoin coin = itLegalCurrencyCoinService.getById(advertInfoDTO.getCoinId());
-
+		if (coin.isDisable(coin.getStatus().intValue())) {
+			throw new BusinessException(String.format("%s 已禁用，無法發布廣告", coin.getName()));
+		}
 		// 广告交易数量
 		BigDecimal amount = advertInfoDTO.getAmount();
 		// 发布广告最小数量
@@ -130,8 +134,7 @@ public class TAdvertInfoServiceImpl extends DefaultTAdvertInfoServiceImpl<ITAdve
 			advertInfo.setUserId(user.getUser_id())
 					.setFloatingRatio(Objects.nonNull(advertInfoDTO.getFloatingRatio()) ? advertInfoDTO.getFloatingRatio().divide(BigDecimal.valueOf(100), 2, RoundingMode.DOWN) : null)
 					.setBalanceAmount(amount)
-					// TODO 支付方式待改
-//					.setPaymentMethodId(advertInfoDTO.getPaymentMethodId().stream().findFirst().get())
+					.setPaymentMethodId(StringUtils.join(advertInfoDTO.getPaymentMethodId().toArray(), ","))
 					.setStatus(TAdvertInfoDTO.StatusEnum.PROCESSING.getCode())
 					.setPaymentTime(Objects.nonNull(advertInfoDTO.getPaymentTime()) ? advertInfoDTO.getPaymentTime() : null)
 					.setRegisteredTime(advertInfoDTO.getRegisteredTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
