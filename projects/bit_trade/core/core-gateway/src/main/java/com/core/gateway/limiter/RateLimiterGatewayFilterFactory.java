@@ -27,10 +27,10 @@ extends AbstractGatewayFilterFactory<RateLimiterGatewayFilterFactory.Config> {
 
 	public static final String KEY_RESOLVER_KEY = "keyResolver";
 
-	private final RateLimiter defaultRateLimiter;
+	private final RateLimiter<CustomRedisRateLimiter.Config> defaultRateLimiter;
 	private final KeyResolver defaultKeyResolver;
 
-	public RateLimiterGatewayFilterFactory(RateLimiter defaultRateLimiter, KeyResolver defaultKeyResolver) {
+	public RateLimiterGatewayFilterFactory(RateLimiter<CustomRedisRateLimiter.Config> defaultRateLimiter, KeyResolver defaultKeyResolver) {
 		super(Config.class);
 		this.defaultRateLimiter = defaultRateLimiter;
 		this.defaultKeyResolver = defaultKeyResolver;
@@ -40,15 +40,14 @@ extends AbstractGatewayFilterFactory<RateLimiterGatewayFilterFactory.Config> {
 		return defaultKeyResolver;
 	}
 
-	public RateLimiter getDefaultRateLimiter() {
+	public RateLimiter<CustomRedisRateLimiter.Config> getDefaultRateLimiter() {
 		return defaultRateLimiter;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public GatewayFilter apply(Config config) {
 		KeyResolver resolver = (config.keyResolver == null) ? defaultKeyResolver : config.keyResolver;
-		RateLimiter<Object> limiter = (config.rateLimiter == null) ? defaultRateLimiter : config.rateLimiter;
+		RateLimiter<CustomRedisRateLimiter.Config> limiter = (config.rateLimiter == null) ? defaultRateLimiter : config.rateLimiter;
 
 		return (exchange, chain) -> {
 			Route route = exchange.getAttribute(ServerWebExchangeUtils.GATEWAY_ROUTE_ATTR);
@@ -77,7 +76,7 @@ extends AbstractGatewayFilterFactory<RateLimiterGatewayFilterFactory.Config> {
 
 	public static class Config {
 		private KeyResolver keyResolver;
-		private RateLimiter rateLimiter;
+		private RateLimiter<CustomRedisRateLimiter.Config> rateLimiter;
 		private HttpStatus statusCode = HttpStatus.TOO_MANY_REQUESTS;
 
 		public KeyResolver getKeyResolver() {
@@ -89,11 +88,11 @@ extends AbstractGatewayFilterFactory<RateLimiterGatewayFilterFactory.Config> {
 			return this;
 		}
 
-		public RateLimiter getRateLimiter() {
+		public RateLimiter<CustomRedisRateLimiter.Config> getRateLimiter() {
 			return rateLimiter;
 		}
 
-		public Config setRateLimiter(RateLimiter rateLimiter) {
+		public Config setRateLimiter(RateLimiter<CustomRedisRateLimiter.Config> rateLimiter) {
 			this.rateLimiter = rateLimiter;
 			return this;
 		}

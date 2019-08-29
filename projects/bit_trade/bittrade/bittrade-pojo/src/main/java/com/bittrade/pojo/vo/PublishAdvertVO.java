@@ -1,19 +1,27 @@
 package com.bittrade.pojo.vo;
 
 
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.bittrade.pojo.model.TAdvertInfo;
-import com.core.common.annotation.CheckEnumValue;
-import lombok.Data;
-import org.hibernate.validator.constraints.Length;
-import org.springframework.format.annotation.DateTimeFormat;
-
-import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.Length;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.bittrade.pojo.dto.TAdvertInfoDTO;
+import com.core.common.annotation.CheckEnumValue;
+
+import lombok.Data;
 
 @Data
 public class PublishAdvertVO implements Serializable {
@@ -30,14 +38,14 @@ public class PublishAdvertVO implements Serializable {
 	 * 类型 1:出售 2:购买
 	 */
 	@NotNull(message = "type cannot be null")
-	@CheckEnumValue(enumClass = TAdvertInfo.AdvertTypeEnum.class, enumMethod = "isValidAdvertType")
+	@CheckEnumValue(enumClass = TAdvertInfoDTO.AdvertTypeEnum.class, enumMethod = "isValidAdvertType")
 	private Integer type;
 
 	/**
 	 * 定价方式 1：固定价格 2：浮动价格，一期不做浮动价格
 	 */
 	@NotNull(message = "pricingMode cannot be null")
-	@CheckEnumValue(enumClass = TAdvertInfo.PricingModeEnum.class, enumMethod = "isValidPricingMode")
+	@CheckEnumValue(enumClass = TAdvertInfoDTO.PricingModeEnum.class, enumMethod = "isValidPricingMode")
 	@Deprecated
 	private Integer pricingMode;
 
@@ -87,14 +95,14 @@ public class PublishAdvertVO implements Serializable {
 	/**
 	 * 对手限制-付款时间，仅出售有
 	 */
-	@CheckEnumValue(enumClass = TAdvertInfo.PaymentTime.class, enumMethod = "isValidPaymentTime")
+	@CheckEnumValue(enumClass = TAdvertInfoDTO.PaymentTime.class, enumMethod = "isValidPaymentTime")
 	private Integer paymentTime;
 
 	/**
 	 * 对手限制-认证等级
 	 */
 	@NotNull(message = "認證等級必填")
-	@CheckEnumValue(enumClass = TAdvertInfo.CertificationLevel.class, enumMethod = "isValidCertificationLevel")
+	@CheckEnumValue(enumClass = TAdvertInfoDTO.CertificationLevel.class, enumMethod = "isValidCertificationLevel")
 	private Integer certificationLevel;
 
 	/**
@@ -134,7 +142,7 @@ public class PublishAdvertVO implements Serializable {
 	 * create time: 2019/8/20 13:01
 	 */
 	public Boolean isFloatPricing() {
-		return Objects.equals(TAdvertInfo.PricingModeEnum.FLOAT.getCode(), this.pricingMode);
+		return Objects.equals(TAdvertInfoDTO.PricingModeEnum.FLOAT.getCode(), this.pricingMode);
 	}
 
 	/**
@@ -145,7 +153,7 @@ public class PublishAdvertVO implements Serializable {
 	 * create time: 2019/8/20 13:01
 	 */
 	public Boolean isBuyType() {
-		return Objects.equals(TAdvertInfo.AdvertTypeEnum.BUY.getCode(), this.type);
+		return Objects.equals(TAdvertInfoDTO.AdvertTypeEnum.BUY.getCode(), this.type);
 	}
 
 }

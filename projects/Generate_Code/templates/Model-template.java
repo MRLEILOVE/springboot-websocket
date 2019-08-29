@@ -1,3 +1,6 @@
+/**
+ * This code is generated automatically. Please do not edit it.
+ */
 package ${POJO_BASE_PKG}.model${module_name};
 
 import com.baomidou.mybatisplus.annotation.TableName;
