@@ -35,7 +35,7 @@ public class UacAuthController {
      * @param phoneNumber
      * @return
      */
-    @PostMapping(value = "/checkPhoneActive/{phoneNumber}")
+    @GetMapping(value = "/checkPhoneActive/{phoneNumber}")
     @ApiOperation(value = "手机号是否已存在", notes = "手机号是否已存在")
     @ApiImplicitParam(name = "手机号码", value = "phoneNumber", required = true, dataType = "String", paramType = "path")
     public ReturnDTO<Boolean> checkPhoneActive(@PathVariable String phoneNumber) {
@@ -52,7 +52,7 @@ public class UacAuthController {
      * @param email
      * @return
      */
-    @PostMapping(value = "/checkEmailActive/{email}")
+    @GetMapping(value = "/checkEmailActive/{email}")
     @ApiOperation(value = "邮箱地址是否已存在", notes = "邮箱地址是否已存在")
     @ApiImplicitParam(name = "邮箱地址", value = "email", required = true, dataType = "String", paramType = "path")
     public ReturnDTO<Boolean> checkEmailActive(@PathVariable String email) {
@@ -116,9 +116,7 @@ public class UacAuthController {
             @ApiImplicitParam(name = "手机号", value = "mobile", required = false, dataType = "String", paramType = "query"),
             @ApiImplicitParam(name = "邮箱", value = "email", required = false, dataType = "String", paramType = "query"),
             @ApiImplicitParam(name = "密码", value = "password", required = true, dataType = "String", paramType = "query"),
-            @ApiImplicitParam(name = "验证码", value = "code", required = true, dataType = "String", paramType = "query"),
-            @ApiImplicitParam(name = "昵称", value = "nickName", required = true, dataType = "String", paramType = "query"),
-            @ApiImplicitParam(name = "推荐码", value = "recommendCode", required = false, dataType = "String", paramType = "query")
+            @ApiImplicitParam(name = "验证码", value = "code", required = true, dataType = "String", paramType = "query")
     })
     public ReturnDTO<String> register(@RequestBody UserRegisterVo registerVo) {
         log.info("com.jdcloud.provider.web.fronted.UacAuthController.registerPhone:" + registerVo.toString());

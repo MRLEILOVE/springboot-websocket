@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * @create: 2019/8/27 下午3:17
  * @description:
  **/
-@FeignClient("http://hk.5c.com.cn/api/send")
+@FeignClient(url = "http://hk.5c.com.cn")
 public interface SmsFeignAPI {
 
     /**
@@ -19,6 +19,6 @@ public interface SmsFeignAPI {
      * @param requestC5Dto
      * @return
      */
-    @RequestMapping(value = "/index.php", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/send/index.php", method = RequestMethod.GET)
     String send(RequestC5Dto requestC5Dto);
 }
