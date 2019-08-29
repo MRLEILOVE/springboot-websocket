@@ -2,7 +2,8 @@ package com.bittrade.admin.service.sys;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.bittrade.admin.model.domain.SysUser;
+import com.bittrade.pojo.dto.SysUserDTO;
+import com.bittrade.pojo.model.SysUser;
 
 /**
  * <p>
@@ -75,17 +76,17 @@ public interface SysUserService extends IService<SysUser> {
 	/**
 	 * 保存用户信息
 	 * 
-	 * @param user
+	 * @param userDTO
 	 * @return 结果
 	 */
-	public int updateUser(SysUser user);
+	public int updateUser(SysUserDTO userDTO);
 	
 	/**
      * 保存用户信息
      * 
-     * @param user 用户信息
+     * @param userDTO 用户信息
      * @return 结果
      */
-    public int insertUser(SysUser user);
+    public int insertUser(SysUserDTO userDTO);
 
 }

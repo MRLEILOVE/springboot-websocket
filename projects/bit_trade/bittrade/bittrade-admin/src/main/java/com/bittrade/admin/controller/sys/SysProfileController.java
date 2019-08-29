@@ -14,12 +14,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.bittrade.admin.controller.base.BaseController;
-import com.bittrade.admin.model.domain.SysUser;
 import com.bittrade.admin.service.sys.SysUserService;
 import com.bittrade.admin.shiro.service.PasswordService;
 import com.bittrade.admin.util.FileUploadUtil;
 import com.bittrade.admin.util.ShiroUtil;
 import com.bittrade.admin.wrapper.Wrapper;
+import com.bittrade.pojo.model.SysUser;
 
 import lombok.extern.slf4j.Slf4j;
 

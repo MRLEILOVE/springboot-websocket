@@ -3,11 +3,11 @@
  */
 package com.bittrade.__default.service.impl;
 
+import com.bittrade.pojo.model.WCoinConfig;
+import com.bittrade.pojo.dto.WCoinConfigDTO;
+import com.bittrade.pojo.vo.WCoinConfigVO;
 import com.bittrade.__default.service.IDefaultWCoinConfigService;
 import com.core.framework.base.DAO.IBaseDAO;
-import com.core.framework.base.DTO.BaseDTO;
-import com.core.framework.base.VO.BaseVO;
-import com.core.framework.base.model.BaseModel;
 import com.core.framework.base.service.impl.BaseServiceImpl;
 
 /**
@@ -16,6 +16,6 @@ import com.core.framework.base.service.impl.BaseServiceImpl;
  *
  */
 //public abstract class DefaultWCoinConfigServiceImpl extends BaseServiceImpl<WCoinConfig, WCoinConfigDTO, WCoinConfigVO, IWCoinConfigDAO> implements IDefaultWCoinConfigService {
-public abstract class DefaultWCoinConfigServiceImpl<DAO extends IBaseDAO<Model, DTO, VO>, Model extends BaseModel<Model>, DTO extends BaseDTO<DTO>, VO extends BaseVO<VO>> extends BaseServiceImpl<Model, DTO, VO, DAO> implements IDefaultWCoinConfigService<Model, DTO, VO> {
+public abstract class DefaultWCoinConfigServiceImpl<DAO extends IBaseDAO<WCoinConfig, WCoinConfigDTO, WCoinConfigVO>> extends BaseServiceImpl<WCoinConfig, WCoinConfigDTO, WCoinConfigVO, DAO> implements IDefaultWCoinConfigService {
 	
 }

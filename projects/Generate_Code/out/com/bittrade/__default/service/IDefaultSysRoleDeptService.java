@@ -3,9 +3,9 @@
  */
 package com.bittrade.__default.service;
 
-import com.core.framework.base.DTO.BaseDTO;
-import com.core.framework.base.VO.BaseVO;
-import com.core.framework.base.model.BaseModel;
+import com.bittrade.pojo.model.SysRoleDept;
+import com.bittrade.pojo.dto.SysRoleDeptDTO;
+import com.bittrade.pojo.vo.SysRoleDeptVO;
 import com.core.framework.base.service.IBaseService;
 
 /**
@@ -13,6 +13,6 @@ import com.core.framework.base.service.IBaseService;
  * @author Administrator
  *
  */
-public abstract interface IDefaultSysRoleDeptService<Model extends BaseModel<Model>, DTO extends BaseDTO<DTO>, VO extends BaseVO<VO>> extends IBaseService<Model, DTO, VO> {
+public abstract interface IDefaultSysRoleDeptService extends IBaseService<SysRoleDept, SysRoleDeptDTO, SysRoleDeptVO> {
 	
 }

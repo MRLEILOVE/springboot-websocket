@@ -3,17 +3,15 @@ package com.common.bittrade.service;
 import java.util.List;
 
 import com.bittrade.__default.service.IDefaultTLegalCurrencyCoinService;
-import com.bittrade.pojo.dto.TLegalCurrencyCoinDTO;
 import com.bittrade.pojo.model.TLegalCurrencyCoin;
 import com.bittrade.pojo.vo.LegalCurrencyCoinVO;
-import com.bittrade.pojo.vo.TLegalCurrencyCoinVO;
 
 /**
  * 
  * @author Administrator
  *
  */
-public interface ITLegalCurrencyCoinService extends IDefaultTLegalCurrencyCoinService<TLegalCurrencyCoin, TLegalCurrencyCoinDTO, TLegalCurrencyCoinVO> {
+public interface ITLegalCurrencyCoinService extends IDefaultTLegalCurrencyCoinService {
 
 	/**
 	 * 获取法币虚拟币列表

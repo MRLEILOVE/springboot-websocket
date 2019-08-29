@@ -3,9 +3,9 @@
  */
 package com.bittrade.__default.service;
 
-import com.core.framework.base.DTO.BaseDTO;
-import com.core.framework.base.VO.BaseVO;
-import com.core.framework.base.model.BaseModel;
+import com.bittrade.pojo.model.TTicker;
+import com.bittrade.pojo.dto.TTickerDTO;
+import com.bittrade.pojo.vo.TTickerVO;
 import com.core.framework.base.service.IBaseService;
 
 /**
@@ -13,6 +13,6 @@ import com.core.framework.base.service.IBaseService;
  * @author Administrator
  *
  */
-public abstract interface IDefaultTTickerService<Model extends BaseModel<Model>, DTO extends BaseDTO<DTO>, VO extends BaseVO<VO>> extends IBaseService<Model, DTO, VO> {
+public abstract interface IDefaultTTickerService extends IBaseService<TTicker, TTickerDTO, TTickerVO> {
 	
 }

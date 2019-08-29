@@ -1,18 +1,23 @@
 package com.bittrade.pojo.model;
 
-import com.baomidou.mybatisplus.annotation.*;
-import com.core.common.annotation.CheckEnumValue;
-import com.core.framework.base.model.BaseModel;
-import lombok.*;
-import lombok.experimental.Accessors;
-import org.hibernate.validator.constraints.Length;
-import org.springframework.format.annotation.DateTimeFormat;
-
-import javax.validation.constraints.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.Objects;
+
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.Version;
+import com.core.framework.base.model.BaseModel;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 
 /**
  * 
@@ -28,9 +33,134 @@ import java.util.Objects;
 @EqualsAndHashCode(callSuper = false)
 @TableName(value="t_advert_info")
 public class TAdvertInfo extends BaseModel<TAdvertInfo> {
-
-	private static final long serialVersionUID = 2252880516378768941L;
-
+	
+	private static final long serialVersionUID = 1L;
+	
+	/**
+	 * 
+	 * @author Administrator
+	 * @datetime Jul 4, 2019 4:40:32 PM
+	 *
+	 */
+	public static final class FieldNames {
+		
+		/**
+		 * 主键
+		 */
+		public static final String ID = "id";
+		
+		/**
+		 * 用户id
+		 */
+		public static final String USER_ID = "user_id";
+		
+		/**
+		 * 法币id
+		 */
+		public static final String COIN_ID = "coin_id";
+		
+		/**
+		 * 类型(1:出售 2:购买)
+		 */
+		public static final String TYPE = "type";
+		
+		/**
+		 * 定价方式 1：固定价格 2：浮动价格
+		 */
+		public static final String PRICING_MODE = "pricing_mode";
+		
+		/**
+		 * 浮动比例 (小数 0.01 = 1%)
+		 */
+		public static final String FLOATING_RATIO = "floating_ratio";
+		
+		/**
+		 * 单价（CNY）
+		 */
+		public static final String PRICE = "price";
+		
+		/**
+		 * 隐藏价格
+		 */
+		public static final String HIDE_PRICE = "hide_price";
+		
+		/**
+		 * 最小限额（CNY）
+		 */
+		public static final String MIN_LIMIT = "min_limit";
+		
+		/**
+		 * 最大限额（CNY）
+		 */
+		public static final String MAX_LIMIT = "max_limit";
+		
+		/**
+		 * 广告已交易数量
+		 */
+		public static final String ALREADY_TRANSACTION_AMOUNT = "already_transaction_amount";
+		
+		/**
+		 * 广告剩余数量
+		 */
+		public static final String BALANCE_AMOUNT = "balance_amount";
+		
+		/**
+		 * 广告进行中冻结数量
+		 */
+		public static final String FREEZE_AMOUNT = "freeze_amount";
+		
+		/**
+		 * 收款方式id，出售单为收款方式, 购买单为付款方式,多个以逗号分隔
+		 */
+		public static final String PAYMENT_METHOD_ID = "payment_method_id";
+		
+		/**
+		 * 状态：1，进行中；2，已下架(暂停)；3，已撤销；
+		 */
+		public static final String STATUS = "status";
+		
+		/**
+		 * 是否开启对手限制 (0 禁用 1 启用)
+		 */
+		public static final String OPEN_OPPONENT_LIMIT = "open_opponent_limit";
+		
+		/**
+		 * 对手限制-认证等级
+		 */
+		public static final String CERTIFICATION_LEVEL = "certification_level";
+		
+		/**
+		 * 对手限制-注册时间
+		 */
+		public static final String REGISTERED_TIME = "registered_time";
+		
+		/**
+		 * 对手限制-付款时间
+		 */
+		public static final String PAYMENT_TIME = "payment_time";
+		
+		/**
+		 * 交易说明（留言）
+		 */
+		public static final String MESSAGE = "message";
+		
+		/**
+		 * 版本号
+		 */
+		public static final String VERSION = "version";
+		
+		/**
+		 * 创建时间
+		 */
+		public static final String CREATE_TIME = "create_time";
+		
+		/**
+		 * 修改时间
+		 */
+		public static final String UPDATE_TIME = "update_time";
+		
+	};
+	
 	/**
 	 * 主键
 	 */

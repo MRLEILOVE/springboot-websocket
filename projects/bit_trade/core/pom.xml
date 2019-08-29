@@ -17,6 +17,7 @@
 		<module>core-common</module>
 		<module>core-eureka</module>
 		<module>core-framework</module>
+		<module>core-gateway</module>
 		<module>core-tool</module>
 		<module>core-web</module>
 	</modules>

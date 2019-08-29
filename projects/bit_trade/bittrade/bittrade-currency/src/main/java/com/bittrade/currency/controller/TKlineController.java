@@ -2,12 +2,15 @@ package com.bittrade.currency.controller;
 
 import java.util.List;
 
-import com.bittrade.common.utils.RedisKeyUtil;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.bittrade.entrust.api.service.ITKlineService;
@@ -20,7 +23,6 @@ import com.core.common.DTO.ReturnDTO;
 import com.core.framework.base.controller.BaseController;
 
 import io.swagger.annotations.ApiOperation;
-import redis.clients.jedis.JedisCluster;
 
 /**
  * 

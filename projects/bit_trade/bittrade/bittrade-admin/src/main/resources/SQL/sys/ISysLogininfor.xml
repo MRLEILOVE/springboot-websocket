@@ -3,7 +3,7 @@
 <mapper namespace="com.bittrade.admin.dao.sys.ISysLogininforDAO">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.bittrade.admin.model.domain.SysLogininfor">
+    <resultMap id="BaseResultMap" type="com.bittrade.pojo.model.SysLogininfor">
         <id column="info_id" property="infoId" />
         <result column="login_name" property="loginName" />
         <result column="ipaddr" property="ipaddr" />
@@ -21,7 +21,7 @@
         info_id AS infoId, login_name AS loginName, ipaddr, login_location AS loginLocation, browser, os, status, msg, login_time AS loginTime
     </sql>
     
-    <insert id="insertLogininfor" parameterType="com.bittrade.admin.model.domain.SysLogininfor">
+    <insert id="insertLogininfor" parameterType="com.bittrade.pojo.model.SysLogininfor">
 		insert into sys_logininfor (login_name, status, ipaddr, login_location, browser, os, msg, login_time)
 		values (#{loginName}, #{status}, #{ipaddr}, #{loginLocation}, #{browser}, #{os}, #{msg}, sysdate())
 	</insert>

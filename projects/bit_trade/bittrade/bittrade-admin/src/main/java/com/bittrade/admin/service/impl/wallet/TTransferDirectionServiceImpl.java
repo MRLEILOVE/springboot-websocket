@@ -1,17 +1,14 @@
 package com.bittrade.admin.service.impl.wallet;
 
-import com.bittrade.admin.model.vo.wallet.DirectionVo;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.bittrade.__default.service.impl.DefaultTTransferDirectionServiceImpl;
-import com.bittrade.pojo.dto.TTransferDirectionDTO;
-import com.bittrade.pojo.vo.TTransferDirectionVO;
-import com.bittrade.pojo.model.TTransferDirection;
 import com.bittrade.admin.dao.wallet.ITTransferDirectionDAO;
+import com.bittrade.admin.model.vo.wallet.DirectionVo;
 import com.bittrade.admin.service.wallet.ITTransferDirectionService;
-
-import java.util.List;
 
 /**
  * 
@@ -19,7 +16,7 @@ import java.util.List;
  *
  */
 @Service
-public class TTransferDirectionServiceImpl extends DefaultTTransferDirectionServiceImpl<ITTransferDirectionDAO, TTransferDirection, TTransferDirectionDTO, TTransferDirectionVO> implements ITTransferDirectionService {
+public class TTransferDirectionServiceImpl extends DefaultTTransferDirectionServiceImpl<ITTransferDirectionDAO> implements ITTransferDirectionService {
 
     @Autowired
     private ITTransferDirectionDAO directionDAO;

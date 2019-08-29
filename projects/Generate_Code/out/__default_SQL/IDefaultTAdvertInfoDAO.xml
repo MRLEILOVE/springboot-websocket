@@ -21,7 +21,7 @@
 		<result javaType="java.math.BigDecimal" property="alreadyTransactionAmount" jdbcType="DECIMAL" column="already_transaction_amount" />
 		<result javaType="java.math.BigDecimal" property="balanceAmount" jdbcType="DECIMAL" column="balance_amount" />
 		<result javaType="java.math.BigDecimal" property="freezeAmount" jdbcType="DECIMAL" column="freeze_amount" />
-		<result javaType="Long" property="paymentMethodId" jdbcType="BIGINT" column="payment_method_id" />
+		<result javaType="String" property="paymentMethodId" jdbcType="VARCHAR" column="payment_method_id" />
 		<result javaType="Byte" property="status" jdbcType="INTEGER" column="status" />
 		<result javaType="Byte" property="openOpponentLimit" jdbcType="INTEGER" column="open_opponent_limit" />
 		<result javaType="Byte" property="certificationLevel" jdbcType="INTEGER" column="certification_level" />
@@ -127,7 +127,7 @@
 	
 	<insert id="add" parameterType="com.bittrade.pojo.model.TAdvertInfo" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO t_advert_info(`user_id`, `coin_id`, `type`, `pricing_mode`, `floating_ratio`, `price`, `hide_price`, `min_limit`, `max_limit`, `already_transaction_amount`, `balance_amount`, `freeze_amount`, `payment_method_id`, `status`, `open_opponent_limit`, `certification_level`, `registered_time`, `payment_time`, `message`, `version`, `create_time`, `update_time`)
-		VALUES(#{userId,jdbcType=BIGINT}, #{coinId,jdbcType=BIGINT}, #{type,jdbcType=INTEGER}, #{pricingMode,jdbcType=INTEGER}, #{floatingRatio,jdbcType=DECIMAL}, #{price,jdbcType=DECIMAL}, #{hidePrice,jdbcType=DECIMAL}, #{minLimit,jdbcType=DECIMAL}, #{maxLimit,jdbcType=DECIMAL}, #{alreadyTransactionAmount,jdbcType=DECIMAL}, #{balanceAmount,jdbcType=DECIMAL}, #{freezeAmount,jdbcType=DECIMAL}, #{paymentMethodId,jdbcType=BIGINT}, #{status,jdbcType=INTEGER}, #{openOpponentLimit,jdbcType=INTEGER}, #{certificationLevel,jdbcType=INTEGER}, #{registeredTime,jdbcType=TIMESTAMP}, #{paymentTime,jdbcType=INTEGER}, #{message,jdbcType=VARCHAR}, #{version,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+		VALUES(#{userId,jdbcType=BIGINT}, #{coinId,jdbcType=BIGINT}, #{type,jdbcType=INTEGER}, #{pricingMode,jdbcType=INTEGER}, #{floatingRatio,jdbcType=DECIMAL}, #{price,jdbcType=DECIMAL}, #{hidePrice,jdbcType=DECIMAL}, #{minLimit,jdbcType=DECIMAL}, #{maxLimit,jdbcType=DECIMAL}, #{alreadyTransactionAmount,jdbcType=DECIMAL}, #{balanceAmount,jdbcType=DECIMAL}, #{freezeAmount,jdbcType=DECIMAL}, #{paymentMethodId,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{openOpponentLimit,jdbcType=INTEGER}, #{certificationLevel,jdbcType=INTEGER}, #{registeredTime,jdbcType=TIMESTAMP}, #{paymentTime,jdbcType=INTEGER}, #{message,jdbcType=VARCHAR}, #{version,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
 	</insert>
 	
 	<insert id="addWithSelective" parameterType="com.bittrade.pojo.model.TAdvertInfo" useGeneratedKeys="true" keyProperty="id">
@@ -237,7 +237,7 @@
 			#{freezeAmount,jdbcType=DECIMAL}, 
 			</if>
 			<if test="paymentMethodId != null">
-			#{paymentMethodId,jdbcType=BIGINT}, 
+			#{paymentMethodId,jdbcType=VARCHAR}, 
 			</if>
 			<if test="status != null">
 			#{status,jdbcType=INTEGER}, 
@@ -316,7 +316,7 @@
 			AND `freeze_amount` = #{freezeAmount,jdbcType=DECIMAL}
 			</if>
 			<if test="paymentMethodId != null">
-			AND `payment_method_id` = #{paymentMethodId,jdbcType=BIGINT}
+			AND `payment_method_id` = #{paymentMethodId,jdbcType=VARCHAR}
 			</if>
 			<if test="status != null">
 			AND `status` = #{status,jdbcType=INTEGER}
@@ -363,7 +363,7 @@
 			`already_transaction_amount` = #{alreadyTransactionAmount,jdbcType=DECIMAL}, 
 			`balance_amount` = #{balanceAmount,jdbcType=DECIMAL}, 
 			`freeze_amount` = #{freezeAmount,jdbcType=DECIMAL}, 
-			`payment_method_id` = #{paymentMethodId,jdbcType=BIGINT}, 
+			`payment_method_id` = #{paymentMethodId,jdbcType=VARCHAR}, 
 			`status` = #{status,jdbcType=INTEGER}, 
 			`open_opponent_limit` = #{openOpponentLimit,jdbcType=INTEGER}, 
 			`certification_level` = #{certificationLevel,jdbcType=INTEGER}, 
@@ -419,7 +419,7 @@
 			`freeze_amount` = #{freezeAmount,jdbcType=DECIMAL}, 
 			</if>
 			<if test="paymentMethodId != null">
-			`payment_method_id` = #{paymentMethodId,jdbcType=BIGINT}, 
+			`payment_method_id` = #{paymentMethodId,jdbcType=VARCHAR}, 
 			</if>
 			<if test="status != null">
 			`status` = #{status,jdbcType=INTEGER}, 
@@ -469,7 +469,7 @@
 			`already_transaction_amount` = #{tAdvertInfo.alreadyTransactionAmount,jdbcType=DECIMAL}, 
 			`balance_amount` = #{tAdvertInfo.balanceAmount,jdbcType=DECIMAL}, 
 			`freeze_amount` = #{tAdvertInfo.freezeAmount,jdbcType=DECIMAL}, 
-			`payment_method_id` = #{tAdvertInfo.paymentMethodId,jdbcType=BIGINT}, 
+			`payment_method_id` = #{tAdvertInfo.paymentMethodId,jdbcType=VARCHAR}, 
 			`status` = #{tAdvertInfo.status,jdbcType=INTEGER}, 
 			`open_opponent_limit` = #{tAdvertInfo.openOpponentLimit,jdbcType=INTEGER}, 
 			`certification_level` = #{tAdvertInfo.certificationLevel,jdbcType=INTEGER}, 
@@ -522,7 +522,7 @@
 			AND `freeze_amount` = #{condiTAdvertInfo.freezeAmount,jdbcType=DECIMAL}
 			</if>
 			<if test="condiTAdvertInfo.paymentMethodId != null">
-			AND `payment_method_id` = #{condiTAdvertInfo.paymentMethodId,jdbcType=BIGINT}
+			AND `payment_method_id` = #{condiTAdvertInfo.paymentMethodId,jdbcType=VARCHAR}
 			</if>
 			<if test="condiTAdvertInfo.status != null">
 			AND `status` = #{condiTAdvertInfo.status,jdbcType=INTEGER}
@@ -596,7 +596,7 @@
 			`freeze_amount` = #{tAdvertInfo.freezeAmount,jdbcType=DECIMAL}, 
 			</if>
 			<if test="tAdvertInfo.paymentMethodId != null">
-			`payment_method_id` = #{tAdvertInfo.paymentMethodId,jdbcType=BIGINT}, 
+			`payment_method_id` = #{tAdvertInfo.paymentMethodId,jdbcType=VARCHAR}, 
 			</if>
 			<if test="tAdvertInfo.status != null">
 			`status` = #{tAdvertInfo.status,jdbcType=INTEGER}, 
@@ -669,7 +669,7 @@
 			AND `freeze_amount` = #{condiTAdvertInfo.freezeAmount,jdbcType=DECIMAL}
 			</if>
 			<if test="condiTAdvertInfo.paymentMethodId != null">
-			AND `payment_method_id` = #{condiTAdvertInfo.paymentMethodId,jdbcType=BIGINT}
+			AND `payment_method_id` = #{condiTAdvertInfo.paymentMethodId,jdbcType=VARCHAR}
 			</if>
 			<if test="condiTAdvertInfo.status != null">
 			AND `status` = #{condiTAdvertInfo.status,jdbcType=INTEGER}
@@ -797,7 +797,7 @@
 			AND `freeze_amount` = #{freezeAmount,jdbcType=DECIMAL}
 			</if>
 			<if test="paymentMethodId != null">
-			AND `payment_method_id` = #{paymentMethodId,jdbcType=BIGINT}
+			AND `payment_method_id` = #{paymentMethodId,jdbcType=VARCHAR}
 			</if>
 			<if test="status != null">
 			AND `status` = #{status,jdbcType=INTEGER}
@@ -901,7 +901,7 @@
 			AND `freeze_amount` = #{freezeAmount,jdbcType=DECIMAL}
 			</if>
 			<if test="paymentMethodId != null">
-			AND `payment_method_id` = #{paymentMethodId,jdbcType=BIGINT}
+			AND `payment_method_id` = #{paymentMethodId,jdbcType=VARCHAR}
 			</if>
 			<if test="status != null">
 			AND `status` = #{status,jdbcType=INTEGER}
@@ -982,7 +982,7 @@
 			AND `freeze_amount` = #{tAdvertInfo.freezeAmount,jdbcType=DECIMAL}
 			</if>
 			<if test="tAdvertInfo.paymentMethodId != null">
-			AND `payment_method_id` = #{tAdvertInfo.paymentMethodId,jdbcType=BIGINT}
+			AND `payment_method_id` = #{tAdvertInfo.paymentMethodId,jdbcType=VARCHAR}
 			</if>
 			<if test="tAdvertInfo.status != null">
 			AND `status` = #{tAdvertInfo.status,jdbcType=INTEGER}
@@ -1081,7 +1081,7 @@
 			AND `freeze_amount` = #{tAdvertInfo.freezeAmount,jdbcType=DECIMAL}
 			</if>
 			<if test="tAdvertInfo.paymentMethodId != null">
-			AND `payment_method_id` = #{tAdvertInfo.paymentMethodId,jdbcType=BIGINT}
+			AND `payment_method_id` = #{tAdvertInfo.paymentMethodId,jdbcType=VARCHAR}
 			</if>
 			<if test="tAdvertInfo.status != null">
 			AND `status` = #{tAdvertInfo.status,jdbcType=INTEGER}
@@ -1180,7 +1180,7 @@
 			AND `freeze_amount` = #{freezeAmount,jdbcType=DECIMAL}
 			</if>
 			<if test="paymentMethodId != null">
-			AND `payment_method_id` = #{paymentMethodId,jdbcType=BIGINT}
+			AND `payment_method_id` = #{paymentMethodId,jdbcType=VARCHAR}
 			</if>
 			<if test="status != null">
 			AND `status` = #{status,jdbcType=INTEGER}

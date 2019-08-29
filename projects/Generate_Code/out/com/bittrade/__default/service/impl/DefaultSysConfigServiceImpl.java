@@ -3,11 +3,11 @@
  */
 package com.bittrade.__default.service.impl;
 
+import com.bittrade.pojo.model.SysConfig;
+import com.bittrade.pojo.dto.SysConfigDTO;
+import com.bittrade.pojo.vo.SysConfigVO;
 import com.bittrade.__default.service.IDefaultSysConfigService;
 import com.core.framework.base.DAO.IBaseDAO;
-import com.core.framework.base.DTO.BaseDTO;
-import com.core.framework.base.VO.BaseVO;
-import com.core.framework.base.model.BaseModel;
 import com.core.framework.base.service.impl.BaseServiceImpl;
 
 /**
@@ -16,6 +16,6 @@ import com.core.framework.base.service.impl.BaseServiceImpl;
  *
  */
 //public abstract class DefaultSysConfigServiceImpl extends BaseServiceImpl<SysConfig, SysConfigDTO, SysConfigVO, ISysConfigDAO> implements IDefaultSysConfigService {
-public abstract class DefaultSysConfigServiceImpl<DAO extends IBaseDAO<Model, DTO, VO>, Model extends BaseModel<Model>, DTO extends BaseDTO<DTO>, VO extends BaseVO<VO>> extends BaseServiceImpl<Model, DTO, VO, DAO> implements IDefaultSysConfigService<Model, DTO, VO> {
+public abstract class DefaultSysConfigServiceImpl<DAO extends IBaseDAO<SysConfig, SysConfigDTO, SysConfigVO>> extends BaseServiceImpl<SysConfig, SysConfigDTO, SysConfigVO, DAO> implements IDefaultSysConfigService {
 	
 }

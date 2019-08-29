@@ -15,12 +15,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.bittrade.admin.controller.base.BaseController;
-import com.bittrade.admin.model.domain.SysDictData;
 import com.bittrade.admin.service.sys.SysDictDataService;
 import com.bittrade.admin.util.ExcelUtil;
 import com.bittrade.admin.util.ShiroUtil;
 import com.bittrade.admin.wrapper.TableDataInfo;
 import com.bittrade.admin.wrapper.Wrapper;
+import com.bittrade.pojo.model.SysDictData;
 
 /**
  * 数据字典信息

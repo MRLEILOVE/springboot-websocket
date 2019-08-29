@@ -8,8 +8,8 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.SimplePrincipalCollection;
 import org.apache.shiro.subject.Subject;
 
-import com.bittrade.admin.model.domain.SysUser;
 import com.bittrade.admin.shiro.realm.UserRealm;
+import com.bittrade.pojo.model.SysUser;
 import com.core.tool.BeanUtil;
 
 /**

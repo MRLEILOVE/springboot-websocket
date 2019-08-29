@@ -2,15 +2,10 @@ package com.bittrade.entrust.api.service;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.List;
 
 import com.bittrade.__default.service.IDefaultTEntrustService;
 import com.bittrade.pojo.dto.DealDTO;
-import com.bittrade.pojo.dto.TEntrustDTO;
-import com.bittrade.pojo.model.TEntrust;
 import com.bittrade.pojo.vo.TEntrustInfoVO;
-import com.bittrade.pojo.vo.TEntrustVO;
-import com.core.common.DTO.PageDTO;
 import com.core.common.DTO.ReturnDTO;
 
 /**
@@ -18,7 +13,7 @@ import com.core.common.DTO.ReturnDTO;
  * @author Administrator
  *
  */
-public interface ITEntrustService extends IDefaultTEntrustService<TEntrust, TEntrustDTO, TEntrustVO> {
+public interface ITEntrustService extends IDefaultTEntrustService {
     /**
      * 买/卖交易对
      */

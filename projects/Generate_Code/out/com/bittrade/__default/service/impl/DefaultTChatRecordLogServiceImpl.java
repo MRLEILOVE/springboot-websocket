@@ -3,11 +3,11 @@
  */
 package com.bittrade.__default.service.impl;
 
+import com.bittrade.pojo.model.TChatRecordLog;
+import com.bittrade.pojo.dto.TChatRecordLogDTO;
+import com.bittrade.pojo.vo.TChatRecordLogVO;
 import com.bittrade.__default.service.IDefaultTChatRecordLogService;
 import com.core.framework.base.DAO.IBaseDAO;
-import com.core.framework.base.DTO.BaseDTO;
-import com.core.framework.base.VO.BaseVO;
-import com.core.framework.base.model.BaseModel;
 import com.core.framework.base.service.impl.BaseServiceImpl;
 
 /**
@@ -16,6 +16,6 @@ import com.core.framework.base.service.impl.BaseServiceImpl;
  *
  */
 //public abstract class DefaultTChatRecordLogServiceImpl extends BaseServiceImpl<TChatRecordLog, TChatRecordLogDTO, TChatRecordLogVO, ITChatRecordLogDAO> implements IDefaultTChatRecordLogService {
-public abstract class DefaultTChatRecordLogServiceImpl<DAO extends IBaseDAO<Model, DTO, VO>, Model extends BaseModel<Model>, DTO extends BaseDTO<DTO>, VO extends BaseVO<VO>> extends BaseServiceImpl<Model, DTO, VO, DAO> implements IDefaultTChatRecordLogService<Model, DTO, VO> {
+public abstract class DefaultTChatRecordLogServiceImpl<DAO extends IBaseDAO<TChatRecordLog, TChatRecordLogDTO, TChatRecordLogVO>> extends BaseServiceImpl<TChatRecordLog, TChatRecordLogDTO, TChatRecordLogVO, DAO> implements IDefaultTChatRecordLogService {
 	
 }

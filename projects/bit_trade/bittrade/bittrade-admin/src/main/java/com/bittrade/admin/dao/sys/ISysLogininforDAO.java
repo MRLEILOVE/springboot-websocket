@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.Param;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.bittrade.admin.model.domain.SysLogininfor;
+import com.bittrade.pojo.model.SysLogininfor;
 
 /**
  * <p>

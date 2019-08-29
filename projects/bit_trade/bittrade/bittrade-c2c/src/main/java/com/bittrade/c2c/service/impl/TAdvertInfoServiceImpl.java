@@ -4,13 +4,12 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+//git.dev.tencent.com/ha_sir/git.git
 import java.util.List;
 import java.util.Objects;
 
 import javax.annotation.Resource;
 
-import com.bittrade.pojo.dto.TAdvertInfoDTO;
-import com.bittrade.pojo.vo.PublishAdvertVO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -26,13 +25,16 @@ import com.bittrade.c2c.dao.ITAdvertInfoDAO;
 import com.bittrade.c2c.service.ITAdvertInfoService;
 import com.bittrade.c2c.service.ITAdvertOrderService;
 import com.bittrade.common.constant.ILegalCurrencyCoinConstants;
+import com.bittrade.common.enums.StatusEnumer;
+import com.bittrade.pojo.dto.TAdvertOrderDTO;
+//git.dev.tencent.com/ha_sir/git.git
 import com.bittrade.pojo.model.TAdvertInfo;
 import com.bittrade.pojo.model.TAdvertOrder;
 import com.bittrade.pojo.model.TLegalCurrencyAccount;
 import com.bittrade.pojo.model.TLegalCurrencyCoin;
 import com.bittrade.pojo.vo.AdvertUserVO;
+import com.bittrade.pojo.vo.PublishAdvertVO;
 import com.bittrade.pojo.vo.QueryAdvertVO;
-import com.bittrade.pojo.vo.TAdvertInfoVO;
 import com.common.bittrade.service.ITLegalCurrencyAccountService;
 import com.common.bittrade.service.ITLegalCurrencyCoinService;
 import com.core.tool.SnowFlake;
@@ -44,7 +46,7 @@ import com.core.web.constant.exception.BusinessException;
  */
 @Service
 @Transactional(rollbackFor = Exception.class)
-public class TAdvertInfoServiceImpl extends DefaultTAdvertInfoServiceImpl<ITAdvertInfoDAO, TAdvertInfo, TAdvertInfoDTO, TAdvertInfoVO> implements ITAdvertInfoService {
+public class TAdvertInfoServiceImpl extends DefaultTAdvertInfoServiceImpl<ITAdvertInfoDAO> implements ITAdvertInfoService {
 
 	@Resource
 	private ITLegalCurrencyAccountService itLegalCurrencyAccountService;
@@ -86,7 +88,7 @@ public class TAdvertInfoServiceImpl extends DefaultTAdvertInfoServiceImpl<ITAdve
 
 		// 获取对应虚拟币
 		TLegalCurrencyCoin coin = itLegalCurrencyCoinService.getById(publishAdvertVO.getCoinId());
-		if (coin.isDisable(coin.getStatus().intValue())) {
+		if (StatusEnumer.DISABLE.getCode() == coin.getStatus()) {
 			throw new BusinessException(String.format("%s 已禁用，無法發布廣告", coin.getName()));
 		}
 		// 广告交易数量
@@ -340,7 +342,7 @@ public class TAdvertInfoServiceImpl extends DefaultTAdvertInfoServiceImpl<ITAdve
 		advertInfo.setCoinName(itLegalCurrencyCoinService.getById(advertInfo.getCoinId()).getName());
 		// 付款时效，放币时效
 		// 卖单：放币时效  买单：付款时效， 单位：秒，前端处理格式
-		Long paymentOrPutCoinAging = itAdvertOrderService.getPaymentOrPutCoinAging(advertInfo.getUserId(), advertInfo.getType(), TAdvertOrder.StatusEnum.ALREADY_COMPLETE.getCode());
+		Long paymentOrPutCoinAging = itAdvertOrderService.getPaymentOrPutCoinAging(advertInfo.getUserId(), advertInfo.getType(), TAdvertOrderDTO.StatusEnum.ALREADY_COMPLETE.getCode());
 		advertInfo.setPaymentOrPutCoinAging(paymentOrPutCoinAging);
 		return advertInfo;
 	}
@@ -411,9 +413,9 @@ public class TAdvertInfoServiceImpl extends DefaultTAdvertInfoServiceImpl<ITAdve
 				.setTransactionNum(amount)
 				.setTransactionPrice(advert.getPrice())
 				.setRate(BigDecimal.ZERO)
-				.setStatus(TAdvertOrder.StatusEnum.ALREADY_AUCTION.getCode())
-				.setCancelOrderDeadline(LocalDateTime.now().plusMinutes(TAdvertOrder.CANCEL_ORDER_DURATION))
-				.setArbitStatus(TAdvertOrder.ArbitStatusEnum.NO_ARBITRATION.getCode())
+				.setStatus(TAdvertOrderDTO.StatusEnum.ALREADY_AUCTION.getCode())
+				.setCancelOrderDeadline(LocalDateTime.now().plusMinutes(TAdvertOrderDTO.CANCEL_ORDER_DURATION))
+				.setArbitStatus(TAdvertOrderDTO.ArbitStatusEnum.NO_ARBITRATION.getCode())
 				.setOverdueTime(Objects.nonNull(advert.getPaymentTime()) ? LocalDateTime.now().plusMinutes(advert.getPaymentTime()) : null);
 		// 保存订单
 		boolean saveAdvertOrderResult = itAdvertOrderService.save(order);

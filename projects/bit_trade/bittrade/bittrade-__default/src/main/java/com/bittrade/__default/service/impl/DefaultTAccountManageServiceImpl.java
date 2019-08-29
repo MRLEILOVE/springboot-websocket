@@ -3,11 +3,11 @@
  */
 package com.bittrade.__default.service.impl;
 
+import com.bittrade.pojo.model.TAccountManage;
+import com.bittrade.pojo.dto.TAccountManageDTO;
+import com.bittrade.pojo.vo.TAccountManageVO;
 import com.bittrade.__default.service.IDefaultTAccountManageService;
 import com.core.framework.base.DAO.IBaseDAO;
-import com.core.framework.base.DTO.BaseDTO;
-import com.core.framework.base.VO.BaseVO;
-import com.core.framework.base.model.BaseModel;
 import com.core.framework.base.service.impl.BaseServiceImpl;
 
 /**
@@ -16,6 +16,6 @@ import com.core.framework.base.service.impl.BaseServiceImpl;
  *
  */
 //public abstract class DefaultTAccountManageServiceImpl extends BaseServiceImpl<TAccountManage, TAccountManageDTO, TAccountManageVO, ITAccountManageDAO> implements IDefaultTAccountManageService {
-public abstract class DefaultTAccountManageServiceImpl<DAO extends IBaseDAO<Model, DTO, VO>, Model extends BaseModel<Model>, DTO extends BaseDTO<DTO>, VO extends BaseVO<VO>> extends BaseServiceImpl<Model, DTO, VO, DAO> implements IDefaultTAccountManageService<Model, DTO, VO> {
+public abstract class DefaultTAccountManageServiceImpl<DAO extends IBaseDAO<TAccountManage, TAccountManageDTO, TAccountManageVO>> extends BaseServiceImpl<TAccountManage, TAccountManageDTO, TAccountManageVO, DAO> implements IDefaultTAccountManageService {
 	
 }

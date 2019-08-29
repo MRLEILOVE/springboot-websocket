@@ -12,11 +12,9 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.bittrade.__default.service.impl.DefaultTLegalCurrencyRecordServiceImpl;
 import com.bittrade.common.enums.LegalRecordStatusEnumer;
 import com.bittrade.pojo.dto.AccountTypeDto;
-import com.bittrade.pojo.dto.TLegalCurrencyRecordDTO;
 import com.bittrade.pojo.model.TLegalCurrencyCoin;
 import com.bittrade.pojo.model.TLegalCurrencyRecord;
 import com.bittrade.pojo.vo.RecordVO;
-import com.bittrade.pojo.vo.TLegalCurrencyRecordVO;
 import com.common.bittrade.dao.ITLegalCurrencyRecordDAO;
 import com.common.bittrade.service.ITLegalCurrencyRecordService;
 import com.core.tool.SnowFlake;
@@ -28,7 +26,7 @@ import com.core.tool.SnowFlake;
  */
 @Service
 @com.alibaba.dubbo.config.annotation.Service
-public class TLegalCurrencyRecordServiceImpl extends DefaultTLegalCurrencyRecordServiceImpl<ITLegalCurrencyRecordDAO, TLegalCurrencyRecord, TLegalCurrencyRecordDTO, TLegalCurrencyRecordVO> implements ITLegalCurrencyRecordService {
+public class TLegalCurrencyRecordServiceImpl extends DefaultTLegalCurrencyRecordServiceImpl<ITLegalCurrencyRecordDAO> implements ITLegalCurrencyRecordService {
     private static final SnowFlake SNOW_FLAKE__ENTRUST	= new SnowFlake( 2, 2);
     @Autowired
     private ITLegalCurrencyRecordDAO legalCurrencyRecordDAO;

@@ -101,7 +101,7 @@ public class TAdvertInfo extends BaseModel<TAdvertInfo> {
 		public static final String FREEZE_AMOUNT = "freeze_amount";
 		
 		/**
-		 * 收款方式id，出售单为收款方式, 购买单为付款方式
+		 * 收款方式id，出售单为收款方式, 购买单为付款方式,多个以逗号分隔
 		 */
 		public static final String PAYMENT_METHOD_ID = "payment_method_id";
 		
@@ -219,9 +219,9 @@ public class TAdvertInfo extends BaseModel<TAdvertInfo> {
 	private java.math.BigDecimal freezeAmount;
 	
 	/**
-	 * 收款方式id，出售单为收款方式, 购买单为付款方式
+	 * 收款方式id，出售单为收款方式, 购买单为付款方式,多个以逗号分隔
 	 */
-	private Long paymentMethodId;
+	private String paymentMethodId;
 	
 	/**
 	 * 状态：1，进行中；2，已下架(暂停)；3，已撤销；
