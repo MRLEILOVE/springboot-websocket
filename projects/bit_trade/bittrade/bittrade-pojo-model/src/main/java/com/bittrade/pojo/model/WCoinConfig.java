@@ -23,7 +23,7 @@ import lombok.experimental.Accessors;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Accessors(chain = true)
+@Accessors(chain = false) // true, because BeanUtil.copyObj .
 @EqualsAndHashCode(callSuper = false)
 @TableName(value="w_coin_config")
 public class WCoinConfig extends BaseModel<WCoinConfig> {

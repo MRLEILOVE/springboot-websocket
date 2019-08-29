@@ -23,7 +23,7 @@ import lombok.experimental.Accessors;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Accessors(chain = true)
+@Accessors(chain = false) // true, because BeanUtil.copyObj .
 @EqualsAndHashCode(callSuper = false)
 @TableName(value="${struct.tableName}")
 public class ${struct.className} extends BaseModel<${struct.className}> {

@@ -30,7 +30,7 @@ public interface SysUserService extends IService<SysUser> {
 	 * @param userId
 	 * @return 用户对象信息
 	 */
-	public SysUser selectUserById(Integer userId);
+	public SysUserDTO selectUserById(Integer userId);
 
 	/**
 	 * .通过用户名查询用户

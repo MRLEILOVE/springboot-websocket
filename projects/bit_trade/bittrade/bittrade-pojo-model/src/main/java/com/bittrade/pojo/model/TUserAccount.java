@@ -23,7 +23,7 @@ import lombok.experimental.Accessors;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Accessors(chain = true)
+@Accessors(chain = false) // true, because BeanUtil.copyObj .
 @EqualsAndHashCode(callSuper = false)
 @TableName(value="t_user_account")
 public class TUserAccount extends BaseModel<TUserAccount> {

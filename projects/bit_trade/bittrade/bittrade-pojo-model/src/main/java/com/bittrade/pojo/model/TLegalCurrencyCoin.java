@@ -23,7 +23,7 @@ import lombok.experimental.Accessors;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Accessors(chain = true)
+@Accessors(chain = false) // true, because BeanUtil.copyObj .
 @EqualsAndHashCode(callSuper = false)
 @TableName(value="t_legal_currency_coin")
 public class TLegalCurrencyCoin extends BaseModel<TLegalCurrencyCoin> {

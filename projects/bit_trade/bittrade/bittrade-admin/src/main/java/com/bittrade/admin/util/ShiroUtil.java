@@ -10,7 +10,6 @@ import org.apache.shiro.subject.Subject;
 
 import com.bittrade.admin.shiro.realm.UserRealm;
 import com.bittrade.pojo.dto.SysUserDTO;
-import com.bittrade.pojo.model.SysUser;
 import com.core.tool.BeanUtil;
 
 /**
@@ -41,11 +40,11 @@ public class ShiroUtil {
 		return userDTO;
 	}
 
-	public static void setUser(SysUser user) {
+	public static void setUser(SysUserDTO userDTO) {
 		Subject subject = getSubjct();
 		PrincipalCollection principalCollection = subject.getPrincipals();
 		String realmName = principalCollection.getRealmNames().iterator().next();
-		PrincipalCollection newPrincipalCollection = new SimplePrincipalCollection( user, realmName );
+		PrincipalCollection newPrincipalCollection = new SimplePrincipalCollection( userDTO, realmName );
 		// 重新加载Principal
 		subject.runAs( newPrincipalCollection );
 	}

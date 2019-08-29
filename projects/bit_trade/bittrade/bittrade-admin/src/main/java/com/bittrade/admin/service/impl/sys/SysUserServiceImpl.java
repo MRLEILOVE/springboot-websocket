@@ -50,7 +50,7 @@ public class SysUserServiceImpl extends ServiceImpl<ISysUserDAO, SysUser> implem
 	}
 
 	@Override
-	public SysUser selectUserById(Integer userId) {
+	public SysUserDTO selectUserById(Integer userId) {
 		return baseMapper.selectUserById( userId );
 	}
 
