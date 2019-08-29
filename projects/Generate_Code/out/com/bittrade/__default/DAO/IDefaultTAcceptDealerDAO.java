@@ -149,6 +149,6 @@ public abstract interface IDefaultTAcceptDealerDAO extends IBaseDAO<TAcceptDeale
 	 * @param pageDTO
 	 * @return
 	 */
-	public List<TAcceptDealerDTO> getsDTOBy(TAcceptDealerDTO tAcceptDealerDTO, PageDTO<TAcceptDealerDTO> pageDTO);
+	public List<TAcceptDealerDTO> getsDTOBy(@Param(value="tAcceptDealer") TAcceptDealerDTO tAcceptDealerDTO, PageDTO<TAcceptDealerDTO> pageDTO);
 	
 }

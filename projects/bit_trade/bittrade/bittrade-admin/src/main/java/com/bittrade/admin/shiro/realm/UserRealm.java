@@ -16,7 +16,6 @@ import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.bittrade.admin.constant.GlobalConstant.Sys;
 import com.bittrade.admin.exception.CaptchaException;
 import com.bittrade.admin.exception.RoleBlockedException;
 import com.bittrade.admin.exception.UserBlockedException;
@@ -28,6 +27,7 @@ import com.bittrade.admin.service.sys.SysMenuService;
 import com.bittrade.admin.service.sys.SysRoleService;
 import com.bittrade.admin.shiro.service.LoginService;
 import com.bittrade.admin.util.ShiroUtil;
+import com.core.common.constant.GlobalConstant.Sys;
 
 import lombok.extern.slf4j.Slf4j;
 

@@ -55,7 +55,7 @@ public class TAdvertOrderServiceImpl extends DefaultTAdvertOrderServiceImpl<ITAd
 	 * @return
 	 */
 	@Override
-	public Long getPaymentOrPutCoinAging(Long userId, Byte type, Byte status) {
+	public Long getPaymentOrPutCoinAging(Long userId, Integer type, Integer status) {
 		return baseDAO.getPaymentOrPutCoinAging(userId, type, status);
 	}
 
@@ -132,13 +132,13 @@ public class TAdvertOrderServiceImpl extends DefaultTAdvertOrderServiceImpl<ITAd
 		if (LocalDateTime.now().isAfter(advertOrder.getCancelOrderDeadline())) {
 			throw new BusinessException("下單時間超過3分鐘，不可取消");
 		}
-		if (advertOrder.getStatus() == TAdvertOrderDTO.StatusEnum.ALREADY_PAID.getCode()) {
+		if (TAdvertOrderDTO.StatusEnum.ALREADY_PAID.getCode().equals(advertOrder.getStatus())) {
 			throw new BusinessException("訂單已付款，無法取消");
 		}
-		if (advertOrder.getStatus() == TAdvertOrderDTO.StatusEnum.ALREADY_COMPLETE.getCode()) {
+		if (TAdvertOrderDTO.StatusEnum.ALREADY_COMPLETE.getCode().equals(advertOrder.getStatus())) {
 			throw new BusinessException("訂單已完成，無法取消");
 		}
-		if (advertOrder.getStatus() == TAdvertOrderDTO.StatusEnum.ALREADY_CANCEL.getCode()) {
+		if (TAdvertOrderDTO.StatusEnum.ALREADY_CANCEL.getCode().equals(advertOrder.getStatus())) {
 			throw new BusinessException("訂單已取消，請勿重複取消");
 		}
 		if (LocalDateTime.now().isAfter(advertOrder.getOverdueTime())) {
@@ -164,7 +164,7 @@ public class TAdvertOrderServiceImpl extends DefaultTAdvertOrderServiceImpl<ITAd
 	@Override
 	public boolean clickAlreadyPaid(Long orderId) {
 		TAdvertOrder advertOrder = baseMapper.getByPK(orderId);
-		if (advertOrder.getStatus() == TAdvertOrderDTO.StatusEnum.ALREADY_CANCEL.getCode()) {
+		if (TAdvertOrderDTO.StatusEnum.ALREADY_CANCEL.getCode().equals(advertOrder.getStatus())) {
 			throw new BusinessException("訂單已取消，無法確認付款");
 		}
 		if (LocalDateTime.now().isAfter(advertOrder.getOverdueTime())) {
@@ -186,13 +186,13 @@ public class TAdvertOrderServiceImpl extends DefaultTAdvertOrderServiceImpl<ITAd
 	@Override
 	public boolean clickAlreadyReceipt(Long orderId) {
 		TAdvertOrder advertOrder = baseMapper.getByPK(orderId);
-		if (advertOrder.getStatus() == TAdvertOrderDTO.StatusEnum.ALREADY_CANCEL.getCode()) {
+		if (TAdvertOrderDTO.StatusEnum.ALREADY_CANCEL.getCode().equals(advertOrder.getStatus())) {
 			throw new BusinessException("訂單已取消，無法確認收款");
 		}
 		if (LocalDateTime.now().isAfter(advertOrder.getOverdueTime())) {
 			throw new BusinessException("訂單已超時自動取消，無法確認收款");
 		}
-		if (advertOrder.getStatus() == TAdvertOrderDTO.StatusEnum.ALREADY_COMPLETE.getCode()) {
+		if (TAdvertOrderDTO.StatusEnum.ALREADY_COMPLETE.getCode().equals(advertOrder.getStatus())) {
 			throw new BusinessException("訂單已完成，無法確認收款");
 		}
 		try {
@@ -235,7 +235,7 @@ public class TAdvertOrderServiceImpl extends DefaultTAdvertOrderServiceImpl<ITAd
 	 * @return result
 	 */
 	@Override
-	public Page<TAdvertOrder> listAdvertOrders(Page<TAdvertOrder> page, LoginUser loginUser, Byte status) {
+	public Page<TAdvertOrder> listAdvertOrders(Page<TAdvertOrder> page, LoginUser loginUser, Integer status) {
 		return baseDAO.listAdvertOrders(page, loginUser.getUser_id(), status);
 	}
 }

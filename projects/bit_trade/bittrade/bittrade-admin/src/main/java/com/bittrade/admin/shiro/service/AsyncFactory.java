@@ -2,7 +2,6 @@ package com.bittrade.admin.shiro.service;
 
 import java.util.Date;
 
-import com.bittrade.admin.constant.GlobalConstant.Sys;
 import com.bittrade.admin.enums.UserEnum.UserState;
 import com.bittrade.admin.model.domain.SysLogininfor;
 import com.bittrade.admin.model.domain.SysOperLog;
@@ -12,8 +11,9 @@ import com.bittrade.admin.service.impl.sys.SysUserOnlineServiceImpl;
 import com.bittrade.admin.service.sys.SysOperLogService;
 import com.bittrade.admin.shiro.session.OnlineSession;
 import com.bittrade.admin.util.AddressUtil;
-import com.bittrade.admin.util.ConvertUtil;
 import com.bittrade.admin.util.SpringUtil;
+import com.core.common.constant.GlobalConstant.Sys;
+import com.core.tool.ConvertUtil;
 
 import eu.bitwalker.useragentutils.UserAgent;
 

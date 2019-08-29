@@ -149,6 +149,6 @@ public abstract interface IDefaultWOrderDAO extends IBaseDAO<WOrder, WOrderDTO, 
 	 * @param pageDTO
 	 * @return
 	 */
-	public List<WOrderDTO> getsDTOBy(WOrderDTO wOrderDTO, PageDTO<WOrderDTO> pageDTO);
+	public List<WOrderDTO> getsDTOBy(@Param(value="wOrder") WOrderDTO wOrderDTO, PageDTO<WOrderDTO> pageDTO);
 	
 }

@@ -17,15 +17,20 @@
 		其他类似的类似，也可以公用（共用）引用。
 	-->
 	<sql id="Base_Column_List">
+		`role_id` AS `roleId`, 
+		`dept_id` AS `deptId`, 
+	</sql>
+	
+	<!-- 其他的也可以类似的加， yes， 类似蕾丝的。 -->
+	<sql id="sql_Column_forObject">
 		<choose>
-			<when test="strArr_field != null">
-		<foreach collection="strArr_field" index="index" item="item" open="" separator="," close="">
+			<when test="sysRoleDept.strArr_field != null">
+		<foreach collection="sysRoleDept.strArr_field" index="index" item="item" open="" separator="," close="">
 			`${item}`
 		</foreach>
 			</when>
 			<otherwise>
-		`role_id` AS `roleId`, 
-		`dept_id` AS `deptId`, 
+		<include refid="Base_Column_List"></include>
 			</otherwise>
 		</choose>
 	</sql>
@@ -52,18 +57,29 @@
 		</choose>
 	</sql>
 	<sql id="sql_WHERE_forObject">
-		<choose>
-			<when test="sysRoleDept.map_in != null">
-			
+		<if test="sysRoleDept.map_in != null">
 		<foreach collection="sysRoleDept.map_in.entrySet()" index="map_index" item="map_item">
 		AND `${map_index}` IN 
 		<foreach collection="map_item" index="arr_index" item="arr_item" open="(" separator="," close=")">
 			#{arr_item}
 		</foreach>
 		</foreach>
-			
-			</when>
-		</choose>
+		</if>
+		<if test="sysRoleDept.map_eq != null">
+		<foreach collection="sysRoleDept.map_eq.entrySet()" index="map_index" item="map_item">
+		AND `${map_index}` = #{map_item}
+		</foreach>
+		</if>
+		<if test="sysRoleDept.map_le != null">
+		<foreach collection="sysRoleDept.map_le.entrySet()" index="map_index" item="map_item">
+		AND `${map_index}` &lt;= #{map_item}
+		</foreach>
+		</if>
+		<if test="sysRoleDept.map_ge != null">
+		<foreach collection="sysRoleDept.map_ge.entrySet()" index="map_index" item="map_item">
+		AND `${map_index}` &gt;= #{map_item}
+		</foreach>
+		</if>
 	</sql>
 	
 	
@@ -238,10 +254,10 @@
 	
 	<select id="getsDTOBy" resultType="com.bittrade.pojo.dto.SysRoleDeptDTO">
 		SELECT 
-			<include refid="Base_Column_List"></include>
+			<include refid="sql_Column_forObject"></include>
 		FROM sys_role_dept
 		<where>
-			<include refid="sql_WHERE_forProperty"></include>
+			<include refid="sql_WHERE_forObject"></include>
 		</where>
 	</select>
 

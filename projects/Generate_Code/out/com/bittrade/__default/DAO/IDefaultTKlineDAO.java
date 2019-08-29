@@ -149,6 +149,6 @@ public abstract interface IDefaultTKlineDAO extends IBaseDAO<TKline, TKlineDTO, 
 	 * @param pageDTO
 	 * @return
 	 */
-	public List<TKlineDTO> getsDTOBy(TKlineDTO tKlineDTO, PageDTO<TKlineDTO> pageDTO);
+	public List<TKlineDTO> getsDTOBy(@Param(value="tKline") TKlineDTO tKlineDTO, PageDTO<TKlineDTO> pageDTO);
 	
 }

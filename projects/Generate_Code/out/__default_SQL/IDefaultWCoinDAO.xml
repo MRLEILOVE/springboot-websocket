@@ -18,7 +18,6 @@
 		<result javaType="String" property="remark" jdbcType="VARCHAR" column="remark" />
 		<result javaType="java.time.LocalDateTime" property="createTime" jdbcType="TIMESTAMP" column="create_time" />
 		<result javaType="java.time.LocalDateTime" property="updateTime" jdbcType="TIMESTAMP" column="update_time" />
-		<result javaType="String" property="nameCN" jdbcType="VARCHAR" column="name_CN" />
 	</resultMap>
 
 	<!--
@@ -26,13 +25,6 @@
 		其他类似的类似，也可以公用（共用）引用。
 	-->
 	<sql id="Base_Column_List">
-		<choose>
-			<when test="strArr_field != null">
-		<foreach collection="strArr_field" index="index" item="item" open="" separator="," close="">
-			`${item}`
-		</foreach>
-			</when>
-			<otherwise>
 		`id` AS `id`, 
 		`coin_type` AS `coinType`, 
 		`token` AS `token`, 
@@ -42,8 +34,19 @@
 		`status` AS `status`, 
 		`remark` AS `remark`, 
 		`create_time` AS `createTime`, 
-		`update_time` AS `updateTime`, 
-		`name_CN` AS `nameCN`
+		`update_time` AS `updateTime`
+	</sql>
+	
+	<!-- 其他的也可以类似的加， yes， 类似蕾丝的。 -->
+	<sql id="sql_Column_forObject">
+		<choose>
+			<when test="wCoin.strArr_field != null">
+		<foreach collection="wCoin.strArr_field" index="index" item="item" open="" separator="," close="">
+			`${item}`
+		</foreach>
+			</when>
+			<otherwise>
+		<include refid="Base_Column_List"></include>
 			</otherwise>
 		</choose>
 	</sql>
@@ -70,24 +73,35 @@
 		</choose>
 	</sql>
 	<sql id="sql_WHERE_forObject">
-		<choose>
-			<when test="wCoin.map_in != null">
-			
+		<if test="wCoin.map_in != null">
 		<foreach collection="wCoin.map_in.entrySet()" index="map_index" item="map_item">
 		AND `${map_index}` IN 
 		<foreach collection="map_item" index="arr_index" item="arr_item" open="(" separator="," close=")">
 			#{arr_item}
 		</foreach>
 		</foreach>
-			
-			</when>
-		</choose>
+		</if>
+		<if test="wCoin.map_eq != null">
+		<foreach collection="wCoin.map_eq.entrySet()" index="map_index" item="map_item">
+		AND `${map_index}` = #{map_item}
+		</foreach>
+		</if>
+		<if test="wCoin.map_le != null">
+		<foreach collection="wCoin.map_le.entrySet()" index="map_index" item="map_item">
+		AND `${map_index}` &lt;= #{map_item}
+		</foreach>
+		</if>
+		<if test="wCoin.map_ge != null">
+		<foreach collection="wCoin.map_ge.entrySet()" index="map_index" item="map_item">
+		AND `${map_index}` &gt;= #{map_item}
+		</foreach>
+		</if>
 	</sql>
 	
 	
 	<insert id="add" parameterType="com.bittrade.pojo.model.WCoin" useGeneratedKeys="true" keyProperty="id">
-		INSERT INTO w_coin(`coin_type`, `token`, `contract`, `is_recharge`, `is_withdraw`, `status`, `remark`, `create_time`, `update_time`, `name_CN`)
-		VALUES(#{coinType,jdbcType=VARCHAR}, #{token,jdbcType=VARCHAR}, #{contract,jdbcType=VARCHAR}, #{isRecharge,jdbcType=CHAR}, #{isWithdraw,jdbcType=CHAR}, #{status,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{nameCN,jdbcType=VARCHAR})
+		INSERT INTO w_coin(`coin_type`, `token`, `contract`, `is_recharge`, `is_withdraw`, `status`, `remark`, `create_time`, `update_time`)
+		VALUES(#{coinType,jdbcType=VARCHAR}, #{token,jdbcType=VARCHAR}, #{contract,jdbcType=VARCHAR}, #{isRecharge,jdbcType=CHAR}, #{isWithdraw,jdbcType=CHAR}, #{status,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
 	</insert>
 	
 	<insert id="addWithSelective" parameterType="com.bittrade.pojo.model.WCoin" useGeneratedKeys="true" keyProperty="id">
@@ -117,10 +131,7 @@
 			`create_time`, 
 			</if>
 			<if test="updateTime != null">
-			`update_time`, 
-			</if>
-			<if test="nameCN != null">
-			`name_CN`
+			`update_time`
 			</if>
 		)
 		VALUES(
@@ -149,10 +160,7 @@
 			#{createTime,jdbcType=TIMESTAMP}, 
 			</if>
 			<if test="updateTime != null">
-			#{updateTime,jdbcType=TIMESTAMP}, 
-			</if>
-			<if test="nameCN != null">
-			#{nameCN,jdbcType=VARCHAR}
+			#{updateTime,jdbcType=TIMESTAMP}
 			</if>
 		)
 	</insert>
@@ -194,9 +202,6 @@
 			<if test="updateTime != null">
 			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
 			</if>
-			<if test="nameCN != null">
-			AND `name_CN` = #{nameCN,jdbcType=VARCHAR}
-			</if>
 		</where>
 	</delete>
 	
@@ -212,7 +217,6 @@
 			`remark` = #{remark,jdbcType=VARCHAR}, 
 			`create_time` = #{createTime,jdbcType=TIMESTAMP}, 
 			`update_time` = #{updateTime,jdbcType=TIMESTAMP}, 
-			`name_CN` = #{nameCN,jdbcType=VARCHAR}, 
 		</set>
 		<where>
 			AND `id` = #{id,jdbcType=BIGINT}
@@ -249,9 +253,6 @@
 			<if test="updateTime != null">
 			`update_time` = #{updateTime,jdbcType=TIMESTAMP}, 
 			</if>
-			<if test="nameCN != null">
-			`name_CN` = #{nameCN,jdbcType=VARCHAR}, 
-			</if>
 		</set>
 		<where>
 			AND `id` = #{id,jdbcType=BIGINT}
@@ -270,7 +271,6 @@
 			`remark` = #{wCoin.remark,jdbcType=VARCHAR}, 
 			`create_time` = #{wCoin.createTime,jdbcType=TIMESTAMP}, 
 			`update_time` = #{wCoin.updateTime,jdbcType=TIMESTAMP}, 
-			`name_CN` = #{wCoin.nameCN,jdbcType=VARCHAR}, 
 		</set>
 		<where>
 		<if test="condiWCoin != null">
@@ -303,9 +303,6 @@
 			</if>
 			<if test="condiWCoin.updateTime != null">
 			AND `update_time` = #{condiWCoin.updateTime,jdbcType=TIMESTAMP}
-			</if>
-			<if test="condiWCoin.nameCN != null">
-			AND `name_CN` = #{condiWCoin.nameCN,jdbcType=VARCHAR}
 			</if>
 		</if>
 		</where>
@@ -342,9 +339,6 @@
 			<if test="wCoin.updateTime != null">
 			`update_time` = #{wCoin.updateTime,jdbcType=TIMESTAMP}, 
 			</if>
-			<if test="wCoin.nameCN != null">
-			`name_CN` = #{wCoin.nameCN,jdbcType=VARCHAR}, 
-			</if>
 		</if>
 		</set>
 		<where>
@@ -379,9 +373,6 @@
 			<if test="condiWCoin.updateTime != null">
 			AND `update_time` = #{condiWCoin.updateTime,jdbcType=TIMESTAMP}
 			</if>
-			<if test="condiWCoin.nameCN != null">
-			AND `name_CN` = #{condiWCoin.nameCN,jdbcType=VARCHAR}
-			</if>
 		</if>
 		</where>
 	</update>
@@ -397,8 +388,7 @@
 			`status`, 
 			`remark`, 
 			`create_time`, 
-			`update_time`, 
-			`name_CN`
+			`update_time`
 		FROM w_coin
 		<where>
 			AND `id` = #{id,jdbcType=BIGINT}
@@ -416,8 +406,7 @@
 			`status`, 
 			`remark`, 
 			`create_time`, 
-			`update_time`, 
-			`name_CN`
+			`update_time`
 		FROM w_coin
 		<where>
 			<if test="coinType != null">
@@ -447,9 +436,6 @@
 			<if test="updateTime != null">
 			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
 			</if>
-			<if test="nameCN != null">
-			AND `name_CN` = #{nameCN,jdbcType=VARCHAR}
-			</if>
 		</where>
 		LIMIT 1
 	</select>
@@ -465,8 +451,7 @@
 			`status`, 
 			`remark`, 
 			`create_time`, 
-			`update_time`, 
-			`name_CN`
+			`update_time`
 		FROM w_coin
 		LIMIT 1
 	</select>
@@ -502,9 +487,6 @@
 			</if>
 			<if test="updateTime != null">
 			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
-			</if>
-			<if test="nameCN != null">
-			AND `name_CN` = #{nameCN,jdbcType=VARCHAR}
 			</if>
 			<include refid="sql_WHERE_forProperty"></include>
 		</where>
@@ -548,9 +530,6 @@
 			<if test="wCoin.updateTime != null">
 			AND `update_time` = #{wCoin.updateTime,jdbcType=TIMESTAMP}
 			</if>
-			<if test="wCoin.nameCN != null">
-			AND `name_CN` = #{wCoin.nameCN,jdbcType=VARCHAR}
-			</if>
 			<include refid="sql_WHERE_forObject"></include>
 		</if>
 		</where>
@@ -567,8 +546,7 @@
 			`status`, 
 			`remark`, 
 			`create_time`, 
-			`update_time`, 
-			`name_CN`
+			`update_time`
 		FROM w_coin
 		<where>
 		<if test="wCoin != null">
@@ -599,9 +577,6 @@
 			<if test="wCoin.updateTime != null">
 			AND `update_time` = #{wCoin.updateTime,jdbcType=TIMESTAMP}
 			</if>
-			<if test="wCoin.nameCN != null">
-			AND `name_CN` = #{wCoin.nameCN,jdbcType=VARCHAR}
-			</if>
 			<include refid="sql_WHERE_forObject"></include>
 		</if>
 		</where>
@@ -619,8 +594,7 @@
 			`status`, 
 			`remark`, 
 			`create_time`, 
-			`update_time`, 
-			`name_CN`
+			`update_time`
 		FROM w_coin
 		<where>
 			<if test="coinType != null">
@@ -649,9 +623,6 @@
 			</if>
 			<if test="updateTime != null">
 			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
-			</if>
-			<if test="nameCN != null">
-			AND `name_CN` = #{nameCN,jdbcType=VARCHAR}
 			</if>
 		</where>
 		LIMIT 1
@@ -659,40 +630,10 @@
 	
 	<select id="getsDTOBy" resultType="com.bittrade.pojo.dto.WCoinDTO">
 		SELECT 
-			<include refid="Base_Column_List"></include>
+			<include refid="sql_Column_forObject"></include>
 		FROM w_coin
 		<where>
-			<if test="coinType != null">
-			AND `coin_type` = #{coinType,jdbcType=VARCHAR}
-			</if>
-			<if test="token != null">
-			AND `token` = #{token,jdbcType=VARCHAR}
-			</if>
-			<if test="contract != null">
-			AND `contract` = #{contract,jdbcType=VARCHAR}
-			</if>
-			<if test="isRecharge != null">
-			AND `is_recharge` = #{isRecharge,jdbcType=CHAR}
-			</if>
-			<if test="isWithdraw != null">
-			AND `is_withdraw` = #{isWithdraw,jdbcType=CHAR}
-			</if>
-			<if test="status != null">
-			AND `status` = #{status,jdbcType=INTEGER}
-			</if>
-			<if test="remark != null">
-			AND `remark` = #{remark,jdbcType=VARCHAR}
-			</if>
-			<if test="createTime != null">
-			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
-			</if>
-			<if test="updateTime != null">
-			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
-			</if>
-			<if test="nameCN != null">
-			AND `name_CN` = #{nameCN,jdbcType=VARCHAR}
-			</if>
-			<include refid="sql_WHERE_forProperty"></include>
+			<include refid="sql_WHERE_forObject"></include>
 		</where>
 	</select>
 

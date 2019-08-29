@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bittrade.currency.dao.ITPaymentModeDAO">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.bittrade.pojo.model.TPaymentMode">
+		<id javaType="int" property="id" jdbcType="INTEGER" column="id" />
+		<result javaType="Long" property="userId" jdbcType="BIGINT" column="user_id" />
+		<result javaType="Byte" property="type" jdbcType="INTEGER" column="type" />
+		<result javaType="String" property="trueName" jdbcType="VARCHAR" column="true_name" />
+		<result javaType="String" property="card" jdbcType="VARCHAR" column="card" />
+		<result javaType="String" property="bankName" jdbcType="VARCHAR" column="bank_name" />
+		<result javaType="String" property="bankBranch" jdbcType="VARCHAR" column="bank_branch" />
+		<result javaType="String" property="qrCode" jdbcType="VARCHAR" column="qr_code" />
+		<result javaType="Byte" property="status" jdbcType="INTEGER" column="status" />
+		<result javaType="Byte" property="displaySetting" jdbcType="INTEGER" column="display_setting" />
+		<result javaType="String" property="belongCurrency" jdbcType="VARCHAR" column="belong_currency" />
+		<result javaType="java.time.LocalDateTime" property="createTime" jdbcType="TIMESTAMP" column="create_time" />
+		<result javaType="java.time.LocalDateTime" property="updateTime" jdbcType="TIMESTAMP" column="update_time" />
+	</resultMap>
+
+	<!-- 通用查询结果列 -->
+	<sql id="Base_Column_List">
+		`id` AS id, 
+		`user_id` AS userId, 
+		`type` AS type, 
+		`true_name` AS trueName, 
+		`card` AS card, 
+		`bank_name` AS bankName, 
+		`bank_branch` AS bankBranch, 
+		`qr_code` AS qrCode, 
+		`status` AS status, 
+		`display_setting` AS displaySetting, 
+		`belong_currency` AS belongCurrency, 
+		`create_time` AS createTime, 
+		`update_time` AS updateTime
+	</sql>
+
+</mapper>

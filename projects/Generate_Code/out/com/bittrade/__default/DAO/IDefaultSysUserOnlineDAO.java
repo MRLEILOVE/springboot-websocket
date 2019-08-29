@@ -149,6 +149,6 @@ public abstract interface IDefaultSysUserOnlineDAO extends IBaseDAO<SysUserOnlin
 	 * @param pageDTO
 	 * @return
 	 */
-	public List<SysUserOnlineDTO> getsDTOBy(SysUserOnlineDTO sysUserOnlineDTO, PageDTO<SysUserOnlineDTO> pageDTO);
+	public List<SysUserOnlineDTO> getsDTOBy(@Param(value="sysUserOnline") SysUserOnlineDTO sysUserOnlineDTO, PageDTO<SysUserOnlineDTO> pageDTO);
 	
 }

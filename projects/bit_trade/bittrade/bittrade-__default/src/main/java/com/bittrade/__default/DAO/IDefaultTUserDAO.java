@@ -149,6 +149,6 @@ public abstract interface IDefaultTUserDAO extends IBaseDAO<TUser, TUserDTO, TUs
 	 * @param pageDTO
 	 * @return
 	 */
-	public List<TUserDTO> getsDTOBy(TUserDTO tUserDTO, PageDTO<TUserDTO> pageDTO);
+	public List<TUserDTO> getsDTOBy(@Param(value="tUser") TUserDTO tUserDTO, PageDTO<TUserDTO> pageDTO);
 	
 }

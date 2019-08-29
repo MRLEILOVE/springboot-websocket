@@ -35,13 +35,6 @@
 		其他类似的类似，也可以公用（共用）引用。
 	-->
 	<sql id="Base_Column_List">
-		<choose>
-			<when test="strArr_field != null">
-		<foreach collection="strArr_field" index="index" item="item" open="" separator="," close="">
-			`${item}`
-		</foreach>
-			</when>
-			<otherwise>
 		`id` AS `id`, 
 		`user_id` AS `userId`, 
 		`platform` AS `platform`, 
@@ -62,6 +55,18 @@
 		`remark` AS `remark`, 
 		`create_time` AS `createTime`, 
 		`update_time` AS `updateTime`
+	</sql>
+	
+	<!-- 其他的也可以类似的加， yes， 类似蕾丝的。 -->
+	<sql id="sql_Column_forObject">
+		<choose>
+			<when test="wWalletBill.strArr_field != null">
+		<foreach collection="wWalletBill.strArr_field" index="index" item="item" open="" separator="," close="">
+			`${item}`
+		</foreach>
+			</when>
+			<otherwise>
+		<include refid="Base_Column_List"></include>
 			</otherwise>
 		</choose>
 	</sql>
@@ -88,18 +93,29 @@
 		</choose>
 	</sql>
 	<sql id="sql_WHERE_forObject">
-		<choose>
-			<when test="wWalletBill.map_in != null">
-			
+		<if test="wWalletBill.map_in != null">
 		<foreach collection="wWalletBill.map_in.entrySet()" index="map_index" item="map_item">
 		AND `${map_index}` IN 
 		<foreach collection="map_item" index="arr_index" item="arr_item" open="(" separator="," close=")">
 			#{arr_item}
 		</foreach>
 		</foreach>
-			
-			</when>
-		</choose>
+		</if>
+		<if test="wWalletBill.map_eq != null">
+		<foreach collection="wWalletBill.map_eq.entrySet()" index="map_index" item="map_item">
+		AND `${map_index}` = #{map_item}
+		</foreach>
+		</if>
+		<if test="wWalletBill.map_le != null">
+		<foreach collection="wWalletBill.map_le.entrySet()" index="map_index" item="map_item">
+		AND `${map_index}` &lt;= #{map_item}
+		</foreach>
+		</if>
+		<if test="wWalletBill.map_ge != null">
+		<foreach collection="wWalletBill.map_ge.entrySet()" index="map_index" item="map_item">
+		AND `${map_index}` &gt;= #{map_item}
+		</foreach>
+		</if>
 	</sql>
 	
 	
@@ -1064,67 +1080,10 @@
 	
 	<select id="getsDTOBy" resultType="com.bittrade.pojo.dto.WWalletBillDTO">
 		SELECT 
-			<include refid="Base_Column_List"></include>
+			<include refid="sql_Column_forObject"></include>
 		FROM w_wallet_bill
 		<where>
-			<if test="userId != null">
-			AND `user_id` = #{userId,jdbcType=BIGINT}
-			</if>
-			<if test="platform != null">
-			AND `platform` = #{platform,jdbcType=VARCHAR}
-			</if>
-			<if test="orderId != null">
-			AND `order_id` = #{orderId,jdbcType=VARCHAR}
-			</if>
-			<if test="direction != null">
-			AND `direction` = #{direction,jdbcType=INTEGER}
-			</if>
-			<if test="coinType != null">
-			AND `coin_type` = #{coinType,jdbcType=VARCHAR}
-			</if>
-			<if test="token != null">
-			AND `token` = #{token,jdbcType=VARCHAR}
-			</if>
-			<if test="contract != null">
-			AND `contract` = #{contract,jdbcType=VARCHAR}
-			</if>
-			<if test="senderAddress != null">
-			AND `sender_address` = #{senderAddress,jdbcType=VARCHAR}
-			</if>
-			<if test="receiverAddress != null">
-			AND `receiver_address` = #{receiverAddress,jdbcType=VARCHAR}
-			</if>
-			<if test="amount != null">
-			AND `amount` = #{amount,jdbcType=DECIMAL}
-			</if>
-			<if test="block != null">
-			AND `block` = #{block,jdbcType=BIGINT}
-			</if>
-			<if test="tx != null">
-			AND `tx` = #{tx,jdbcType=VARCHAR}
-			</if>
-			<if test="tradeStep != null">
-			AND `trade_step` = #{tradeStep,jdbcType=CHAR}
-			</if>
-			<if test="operationType != null">
-			AND `operation_type` = #{operationType,jdbcType=VARCHAR}
-			</if>
-			<if test="transferFlag != null">
-			AND `transfer_flag` = #{transferFlag,jdbcType=INTEGER}
-			</if>
-			<if test="flag != null">
-			AND `flag` = #{flag,jdbcType=INTEGER}
-			</if>
-			<if test="remark != null">
-			AND `remark` = #{remark,jdbcType=VARCHAR}
-			</if>
-			<if test="createTime != null">
-			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
-			</if>
-			<if test="updateTime != null">
-			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
-			</if>
-			<include refid="sql_WHERE_forProperty"></include>
+			<include refid="sql_WHERE_forObject"></include>
 		</where>
 	</select>
 

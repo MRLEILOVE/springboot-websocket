@@ -42,7 +42,7 @@ public class QueryAdvertVO implements Serializable {
 	 */
 	@NotNull(message = "AdvertType cannot be null")
 	@CheckEnumValue(enumClass = TAdvertInfoDTO.AdvertTypeEnum.class, enumMethod = "isValidAdvertType")
-	private Byte AdvertType;
+	private Integer AdvertType;
 
 	/**
 	 * 仅展示可交易

@@ -5,10 +5,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import com.bittrade.admin.constant.GlobalConstant;
 import com.bittrade.admin.controller.base.BaseController;
 import com.bittrade.admin.model.domain.SysUser;
 import com.bittrade.admin.service.sys.SysMenuService;
+import com.core.common.constant.GlobalConstant;
 
 /**
  * .首页

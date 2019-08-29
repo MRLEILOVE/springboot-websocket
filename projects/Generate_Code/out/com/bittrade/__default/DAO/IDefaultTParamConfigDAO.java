@@ -149,6 +149,6 @@ public abstract interface IDefaultTParamConfigDAO extends IBaseDAO<TParamConfig,
 	 * @param pageDTO
 	 * @return
 	 */
-	public List<TParamConfigDTO> getsDTOBy(TParamConfigDTO tParamConfigDTO, PageDTO<TParamConfigDTO> pageDTO);
+	public List<TParamConfigDTO> getsDTOBy(@Param(value="tParamConfig") TParamConfigDTO tParamConfigDTO, PageDTO<TParamConfigDTO> pageDTO);
 	
 }

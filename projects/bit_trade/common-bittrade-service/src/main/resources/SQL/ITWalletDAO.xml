@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.common.bittrade.dao.ITWalletDAO">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.bittrade.pojo.model.TWallet">
+		<id javaType="int" property="id" jdbcType="INTEGER" column="id" />
+		<result javaType="long" property="userId" jdbcType="BIGINT" column="user_id" />
+		<result javaType="int" property="currencyId" jdbcType="INTEGER" column="currency_id" />
+		<result javaType="java.math.BigDecimal" property="total" jdbcType="DECIMAL" column="total" />
+		<result javaType="java.math.BigDecimal" property="tradeFrozen" jdbcType="DECIMAL" column="trade_frozen" />
+		<result javaType="java.math.BigDecimal" property="transferFrozen" jdbcType="DECIMAL" column="transfer_frozen" />
+		<result javaType="int" property="version" jdbcType="INTEGER" column="version" />
+		<result javaType="java.time.LocalDateTime" property="createTime" jdbcType="TIMESTAMP" column="create_time" />
+		<result javaType="java.time.LocalDateTime" property="updateTime" jdbcType="TIMESTAMP" column="update_time" />
+	</resultMap>
+
+	<!-- 通用查询结果列 -->
+	<sql id="Base_Column_List">
+		`user_id` AS userId, 
+		`currency_id` AS currencyId, 
+		`total` AS total, 
+		`trade_frozen` AS tradeFrozen, 
+		`transfer_frozen` AS transferFrozen, 
+		`version` AS version, 
+		`create_time` AS createTime, 
+		`update_time` AS updateTime
+	</sql>
+
+	<select id="queryByUserId" parameterType="java.lang.Integer" resultType="com.bittrade.pojo.vo.QueryWalletVO">
+		SELECT w.id,w.user_id as userId,w.total,w.trade_frozen as tradeFrozen,w.transfer_frozen as transferFrozen,c.name as currencyName
+		FROM t_wallet w
+		INNER JOIN t_currency c on c.id = w.currency_id
+		WHERE w.user_id = #{userId}
+	</select>
+
+	<select id="queryUserWallet" parameterType="java.lang.Integer" resultType="com.bittrade.pojo.vo.UserWalletVO">
+		SELECT w1.total AS currencyCount,w2.total AS legalCurrencyCount
+		FROM t_currency_trade t
+		LEFT JOIN t_wallet w1 ON w1.currency_id = t.currency_id1 AND w1.user_id = #{userId}
+		LEFT JOIN t_wallet w2 ON w2.currency_id = t.currency_id2 AND w2.user_id = #{userId}
+		WHERE t.id = #{currencyTradeId}
+	</select>
+	
+	<update id="modifyTradeFrozen">
+		UPDATE t_wallet
+		SET 
+			total = total - #{tradeFrozen}, 
+			trade_frozen = trade_frozen + #{tradeFrozen}, 
+			version = version + 1
+		WHERE id = #{id} AND version = #{version}
+	</update>
+
+	<update id="modifyTransferFrozen">
+		UPDATE t_wallet
+		SET
+			total = total - #{transferFrozen},
+			transfer_frozen = transfer_frozen + #{transferFrozen},
+			version = version + 1
+		WHERE id = #{id} AND version = #{version}
+	</update>
+
+	<update id="decreaseTransferFreeze">
+		UPDATE t_wallet
+		SET
+			transfer_frozen = transfer_frozen - #{transferFrozen},
+			version = version + 1
+		WHERE id = #{id} AND version = #{version}
+	</update>
+
+	<update id="biBiAccountOut">
+		UPDATE t_wallet
+		SET
+			total = total - #{num},
+			update_time = now(),
+			version = version + 1
+		WHERE id = #{id} AND version = #{version}
+	</update>
+
+	<update id="biBiAccountIn">
+		UPDATE t_wallet
+		SET
+			total = total + #{num},
+			update_time = now(),
+			version = version + 1
+		WHERE id = #{id} AND version = #{version}
+	</update>
+
+	<select id="getAssets" resultType="com.bittrade.pojo.vo.AssetsVO">
+		SELECT w.currency_id as  currencyId,c.`name` AS currencyName,
+		w.total,w.trade_frozen AS tradeFrozen,w.transfer_frozen AS transferFrozen,(w.transfer_frozen + w.trade_frozen) AS totalFrozen
+		FROM t_wallet w
+		INNER JOIN t_currency c ON c.id = w.currency_id
+		WHERE w.user_id = #{userId}
+	</select>
+</mapper>

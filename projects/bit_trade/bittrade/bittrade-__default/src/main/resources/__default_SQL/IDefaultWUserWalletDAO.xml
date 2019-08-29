@@ -26,13 +26,6 @@
 		其他类似的类似，也可以公用（共用）引用。
 	-->
 	<sql id="Base_Column_List">
-		<choose>
-			<when test="strArr_field != null">
-		<foreach collection="strArr_field" index="index" item="item" open="" separator="," close="">
-			`${item}`
-		</foreach>
-			</when>
-			<otherwise>
 		`id` AS `id`, 
 		`platform` AS `platform`, 
 		`user_id` AS `userId`, 
@@ -44,6 +37,18 @@
 		`valid` AS `valid`, 
 		`create_time` AS `createTime`, 
 		`update_time` AS `updateTime`
+	</sql>
+	
+	<!-- 其他的也可以类似的加， yes， 类似蕾丝的。 -->
+	<sql id="sql_Column_forObject">
+		<choose>
+			<when test="wUserWallet.strArr_field != null">
+		<foreach collection="wUserWallet.strArr_field" index="index" item="item" open="" separator="," close="">
+			`${item}`
+		</foreach>
+			</when>
+			<otherwise>
+		<include refid="Base_Column_List"></include>
 			</otherwise>
 		</choose>
 	</sql>
@@ -70,18 +75,29 @@
 		</choose>
 	</sql>
 	<sql id="sql_WHERE_forObject">
-		<choose>
-			<when test="wUserWallet.map_in != null">
-			
+		<if test="wUserWallet.map_in != null">
 		<foreach collection="wUserWallet.map_in.entrySet()" index="map_index" item="map_item">
 		AND `${map_index}` IN 
 		<foreach collection="map_item" index="arr_index" item="arr_item" open="(" separator="," close=")">
 			#{arr_item}
 		</foreach>
 		</foreach>
-			
-			</when>
-		</choose>
+		</if>
+		<if test="wUserWallet.map_eq != null">
+		<foreach collection="wUserWallet.map_eq.entrySet()" index="map_index" item="map_item">
+		AND `${map_index}` = #{map_item}
+		</foreach>
+		</if>
+		<if test="wUserWallet.map_le != null">
+		<foreach collection="wUserWallet.map_le.entrySet()" index="map_index" item="map_item">
+		AND `${map_index}` &lt;= #{map_item}
+		</foreach>
+		</if>
+		<if test="wUserWallet.map_ge != null">
+		<foreach collection="wUserWallet.map_ge.entrySet()" index="map_index" item="map_item">
+		AND `${map_index}` &gt;= #{map_item}
+		</foreach>
+		</if>
 	</sql>
 	
 	
@@ -659,40 +675,10 @@
 	
 	<select id="getsDTOBy" resultType="com.bittrade.pojo.dto.WUserWalletDTO">
 		SELECT 
-			<include refid="Base_Column_List"></include>
+			<include refid="sql_Column_forObject"></include>
 		FROM w_user_wallet
 		<where>
-			<if test="platform != null">
-			AND `platform` = #{platform,jdbcType=VARCHAR}
-			</if>
-			<if test="userId != null">
-			AND `user_id` = #{userId,jdbcType=BIGINT}
-			</if>
-			<if test="coinType != null">
-			AND `coin_type` = #{coinType,jdbcType=VARCHAR}
-			</if>
-			<if test="address != null">
-			AND `address` = #{address,jdbcType=VARCHAR}
-			</if>
-			<if test="privateKey != null">
-			AND `private_key` = #{privateKey,jdbcType=VARCHAR}
-			</if>
-			<if test="codeQr != null">
-			AND `code_qr` = #{codeQr,jdbcType=VARCHAR}
-			</if>
-			<if test="flag != null">
-			AND `flag` = #{flag,jdbcType=INTEGER}
-			</if>
-			<if test="valid != null">
-			AND `valid` = #{valid,jdbcType=CHAR}
-			</if>
-			<if test="createTime != null">
-			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
-			</if>
-			<if test="updateTime != null">
-			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
-			</if>
-			<include refid="sql_WHERE_forProperty"></include>
+			<include refid="sql_WHERE_forObject"></include>
 		</where>
 	</select>
 

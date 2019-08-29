@@ -24,13 +24,6 @@
 		其他类似的类似，也可以公用（共用）引用。
 	-->
 	<sql id="Base_Column_List">
-		<choose>
-			<when test="strArr_field != null">
-		<foreach collection="strArr_field" index="index" item="item" open="" separator="," close="">
-			`${item}`
-		</foreach>
-			</when>
-			<otherwise>
 		`id` AS `id`, 
 		`user_id` AS `userId`, 
 		`currency_id` AS `currencyId`, 
@@ -40,6 +33,18 @@
 		`version` AS `version`, 
 		`create_time` AS `createTime`, 
 		`update_time` AS `updateTime`
+	</sql>
+	
+	<!-- 其他的也可以类似的加， yes， 类似蕾丝的。 -->
+	<sql id="sql_Column_forObject">
+		<choose>
+			<when test="wWalletAccount.strArr_field != null">
+		<foreach collection="wWalletAccount.strArr_field" index="index" item="item" open="" separator="," close="">
+			`${item}`
+		</foreach>
+			</when>
+			<otherwise>
+		<include refid="Base_Column_List"></include>
 			</otherwise>
 		</choose>
 	</sql>
@@ -66,18 +71,29 @@
 		</choose>
 	</sql>
 	<sql id="sql_WHERE_forObject">
-		<choose>
-			<when test="wWalletAccount.map_in != null">
-			
+		<if test="wWalletAccount.map_in != null">
 		<foreach collection="wWalletAccount.map_in.entrySet()" index="map_index" item="map_item">
 		AND `${map_index}` IN 
 		<foreach collection="map_item" index="arr_index" item="arr_item" open="(" separator="," close=")">
 			#{arr_item}
 		</foreach>
 		</foreach>
-			
-			</when>
-		</choose>
+		</if>
+		<if test="wWalletAccount.map_eq != null">
+		<foreach collection="wWalletAccount.map_eq.entrySet()" index="map_index" item="map_item">
+		AND `${map_index}` = #{map_item}
+		</foreach>
+		</if>
+		<if test="wWalletAccount.map_le != null">
+		<foreach collection="wWalletAccount.map_le.entrySet()" index="map_index" item="map_item">
+		AND `${map_index}` &lt;= #{map_item}
+		</foreach>
+		</if>
+		<if test="wWalletAccount.map_ge != null">
+		<foreach collection="wWalletAccount.map_ge.entrySet()" index="map_index" item="map_item">
+		AND `${map_index}` &gt;= #{map_item}
+		</foreach>
+		</if>
 	</sql>
 	
 	
@@ -575,34 +591,10 @@
 	
 	<select id="getsDTOBy" resultType="com.bittrade.pojo.dto.WWalletAccountDTO">
 		SELECT 
-			<include refid="Base_Column_List"></include>
+			<include refid="sql_Column_forObject"></include>
 		FROM w_wallet_account
 		<where>
-			<if test="userId != null">
-			AND `user_id` = #{userId,jdbcType=BIGINT}
-			</if>
-			<if test="currencyId != null">
-			AND `currency_id` = #{currencyId,jdbcType=INTEGER}
-			</if>
-			<if test="total != null">
-			AND `total` = #{total,jdbcType=DECIMAL}
-			</if>
-			<if test="tradeFrozen != null">
-			AND `trade_frozen` = #{tradeFrozen,jdbcType=DECIMAL}
-			</if>
-			<if test="transferFrozen != null">
-			AND `transfer_frozen` = #{transferFrozen,jdbcType=DECIMAL}
-			</if>
-			<if test="version != null">
-			AND `version` = #{version,jdbcType=INTEGER}
-			</if>
-			<if test="createTime != null">
-			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
-			</if>
-			<if test="updateTime != null">
-			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
-			</if>
-			<include refid="sql_WHERE_forProperty"></include>
+			<include refid="sql_WHERE_forObject"></include>
 		</where>
 	</select>
 

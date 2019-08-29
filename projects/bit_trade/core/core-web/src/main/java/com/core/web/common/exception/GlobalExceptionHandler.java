@@ -52,6 +52,7 @@ public class GlobalExceptionHandler {
 	@ResponseStatus(value = HttpStatus.OK)
 	public Object exceptionHandle(HttpServletRequest request, HttpServletResponse response, Exception e) {
 		// e.printStackTrace();
+		LOG.error("业务异常：", e);
 		LOG.error( e.toString() );
 
 //		if (com.core.tool.WebUtil.isAJAX( request )) { // with AJAX .

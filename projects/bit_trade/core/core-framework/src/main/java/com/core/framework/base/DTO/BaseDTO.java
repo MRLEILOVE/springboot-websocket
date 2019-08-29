@@ -24,8 +24,17 @@ public abstract class BaseDTO<DTO extends BaseDTO<DTO>> implements Serializable 
 //	@TableField(exist = false)
 	protected Integer				current, size;
 	
+	private String[]				strArr_field;
+	
 //	@TableField(exist = false)
-	private Map<String, Object[]>	map_in, map_eq, map_le, map_ge;
+	private Map<String, Object[]>	map_in;
+	private Map<String, Object>		map_eq, map_le, map_ge;
+
+	public BaseDTO<DTO> field(String/*[]*/... fields) {
+		strArr_field = fields;
+
+		return this;
+	}
 	
 	/**
 	 * in 存在于
@@ -48,11 +57,11 @@ public abstract class BaseDTO<DTO extends BaseDTO<DTO>> implements Serializable 
 	 * @param values
 	 * @return
 	 */
-	public BaseDTO<DTO> eq(String name, Object... values) {
+	public BaseDTO<DTO> eq(String name, Object value) {
 		if (map_eq == null) {
 			map_eq = new java.util./* concurrent.Concurrent */HashMap<>();
 		}
-		map_eq.put( name, values );
+		map_eq.put( name, value );
 
 		return this;
 	}
@@ -63,11 +72,11 @@ public abstract class BaseDTO<DTO extends BaseDTO<DTO>> implements Serializable 
 	 * @param values
 	 * @return
 	 */
-	public BaseDTO<DTO> le(String name, Object... values) {
+	public BaseDTO<DTO> le(String name, Object value) {
 		if (map_le == null) {
 			map_le = new java.util./* concurrent.Concurrent */HashMap<>();
 		}
-		map_le.put( name, values );
+		map_le.put( name, value );
 
 		return this;
 	}
@@ -78,11 +87,11 @@ public abstract class BaseDTO<DTO extends BaseDTO<DTO>> implements Serializable 
 	 * @param values
 	 * @return
 	 */
-	public BaseDTO<DTO> ge(String name, Object... values) {
+	public BaseDTO<DTO> ge(String name, Object value) {
 		if (map_ge == null) {
 			map_ge = new java.util./* concurrent.Concurrent */HashMap<>();
 		}
-		map_ge.put( name, values );
+		map_ge.put( name, value );
 
 		return this;
 	}

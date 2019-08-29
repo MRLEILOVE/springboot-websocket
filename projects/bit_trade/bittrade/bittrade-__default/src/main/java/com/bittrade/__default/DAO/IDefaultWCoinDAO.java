@@ -149,6 +149,6 @@ public abstract interface IDefaultWCoinDAO extends IBaseDAO<WCoin, WCoinDTO, WCo
 	 * @param pageDTO
 	 * @return
 	 */
-	public List<WCoinDTO> getsDTOBy(WCoinDTO wCoinDTO, PageDTO<WCoinDTO> pageDTO);
+	public List<WCoinDTO> getsDTOBy(@Param(value="wCoin") WCoinDTO wCoinDTO, PageDTO<WCoinDTO> pageDTO);
 	
 }

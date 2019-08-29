@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.bittrade.admin.dao.sys.ISysUserOnlineDAO;
 import com.bittrade.admin.model.domain.SysUserOnline;
-import com.bittrade.admin.util.DateUtils;
+import com.core.tool.DateUtil;
 
 /**
  * <p>
@@ -97,7 +97,7 @@ public class SysUserOnlineServiceImpl {
 	 * @param online
 	 */
 	public List<SysUserOnline> selectOnlineByExpired(Date expiredDate) {
-		String lastAccessTime = DateUtils.parseDateToStr( DateUtils.YYYY_MM_DD_HH_MM_SS, expiredDate );
+		String lastAccessTime = DateUtil.parseDateToStr( DateUtil.YYYY_MM_DD_HH_MM_SS, expiredDate );
 		return userOnlineDao.selectOnlineByExpired( lastAccessTime );
 	}
 

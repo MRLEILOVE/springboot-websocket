@@ -149,6 +149,6 @@ public abstract interface IDefaultSysJobLogDAO extends IBaseDAO<SysJobLog, SysJo
 	 * @param pageDTO
 	 * @return
 	 */
-	public List<SysJobLogDTO> getsDTOBy(SysJobLogDTO sysJobLogDTO, PageDTO<SysJobLogDTO> pageDTO);
+	public List<SysJobLogDTO> getsDTOBy(@Param(value="sysJobLog") SysJobLogDTO sysJobLogDTO, PageDTO<SysJobLogDTO> pageDTO);
 	
 }

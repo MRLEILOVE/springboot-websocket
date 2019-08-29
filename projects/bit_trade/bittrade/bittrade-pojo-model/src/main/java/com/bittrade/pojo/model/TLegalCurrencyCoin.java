@@ -3,12 +3,10 @@ package com.bittrade.pojo.model;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.core.framework.base.model.BaseModel;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.Accessors;
+
+import java.util.Objects;
 
 /**
  * 
@@ -117,5 +115,23 @@ public class TLegalCurrencyCoin extends BaseModel<TLegalCurrencyCoin> {
 	 * 修改时间
 	 */
 	private java.time.LocalDateTime updateTime;
+
+	@AllArgsConstructor
+	public enum Status{
+
+		DISABLE(0, "禁用"),
+		ENABLE(1, "启用"),
+		;
+
+		@Getter
+		private Integer code;
+		@Getter
+		private String describe;
+
+	}
+
+	public boolean isDisable(Integer status) {
+		return Objects.equals(Status.DISABLE.getCode(), status);
+	}
 	
 }

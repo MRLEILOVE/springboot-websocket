@@ -45,6 +45,11 @@ public abstract class BaseModel<Model extends com.baomidou.mybatisplus.extension
 	@TableField(exist = false)
 	// @com.alibaba.fastjson.annotation.JSONField(serialize = false, deserialize = false)
 	// @com.fasterxml.jackson.annotation.JsonIgnore
+	/* transient */private Map<String, Object>		map_eq, map_le, map_ge;		// 其他的也可以类似的加，yes，类似蕾丝的。
+	
+	@TableField(exist = false)
+	// @com.alibaba.fastjson.annotation.JSONField(serialize = false, deserialize = false)
+	// @com.fasterxml.jackson.annotation.JsonIgnore
 	/* transient */private Map<String, Object[]>	map_orderBy;				// 其他的也可以类似的加，yes，类似蕾丝的。
 
 	public BaseModel<Model> field(String/*[]*/... fields) {
@@ -57,7 +62,7 @@ public abstract class BaseModel<Model extends com.baomidou.mybatisplus.extension
 		return field( fields.toArray( new String[ fields.size() ] ) );
 	}
 
-	public BaseModel<Model> in(String name, Object[] values) {
+	public BaseModel<Model> in(String name, Object... values) { // []
 		if (map_in == null) {
 			map_in = new java.util./* concurrent.Concurrent */HashMap<>();
 		}
@@ -70,7 +75,7 @@ public abstract class BaseModel<Model extends com.baomidou.mybatisplus.extension
 		return in( name, values.toArray( /* new Object[values.size()] */ ) );
 	}
 
-	public BaseModel<Model> like(String name, Object[] values) {
+	public BaseModel<Model> like(String name, Object... values) { // []
 		if (map_like == null) {
 			map_like = new java.util./* concurrent.Concurrent */HashMap<>();
 		}
@@ -81,6 +86,33 @@ public abstract class BaseModel<Model extends com.baomidou.mybatisplus.extension
 
 	public BaseModel<Model> like(String name, List<Object> values) {
 		return like( name, values.toArray( /* new Object[values.size()] */ ) );
+	}
+
+	public BaseModel<Model> eq(String name, Object value) { // []
+		if (map_eq == null) {
+			map_eq = new java.util./* concurrent.Concurrent */HashMap<>();
+		}
+		map_eq.put( name, value );
+
+		return this;
+	}
+
+	public BaseModel<Model> le(String name, Object value) { // []
+		if (map_le == null) {
+			map_le = new java.util./* concurrent.Concurrent */HashMap<>();
+		}
+		map_le.put( name, value );
+
+		return this;
+	}
+
+	public BaseModel<Model> ge(String name, Object value) { // []
+		if (map_ge == null) {
+			map_ge = new java.util./* concurrent.Concurrent */HashMap<>();
+		}
+		map_ge.put( name, value );
+
+		return this;
 	}
 
 	public BaseModel<Model> orderBy(String name, Object[] values) {

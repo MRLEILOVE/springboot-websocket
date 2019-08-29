@@ -10,6 +10,7 @@ import org.apache.shiro.subject.Subject;
 
 import com.bittrade.admin.model.domain.SysUser;
 import com.bittrade.admin.shiro.realm.UserRealm;
+import com.core.tool.BeanUtil;
 
 /**
  * shiro 工具类
@@ -34,7 +35,7 @@ public class ShiroUtil {
 		Object obj = getSubjct().getPrincipal();
 		if (null != obj ) {
 			user = new SysUser();
-			BeanUtils.copyBeanProp( user, obj );
+			BeanUtil.copyBeanProp( user, obj );
 		}
 		return user;
 	}

@@ -149,6 +149,6 @@ public abstract interface IDefaultTTransferDirectionDAO extends IBaseDAO<TTransf
 	 * @param pageDTO
 	 * @return
 	 */
-	public List<TTransferDirectionDTO> getsDTOBy(TTransferDirectionDTO tTransferDirectionDTO, PageDTO<TTransferDirectionDTO> pageDTO);
+	public List<TTransferDirectionDTO> getsDTOBy(@Param(value="tTransferDirection") TTransferDirectionDTO tTransferDirectionDTO, PageDTO<TTransferDirectionDTO> pageDTO);
 	
 }
