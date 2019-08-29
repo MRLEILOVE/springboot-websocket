@@ -3,11 +3,11 @@
  */
 package com.bittrade.__default.service.impl;
 
+import com.bittrade.pojo.model.SysOperLog;
+import com.bittrade.pojo.dto.SysOperLogDTO;
+import com.bittrade.pojo.vo.SysOperLogVO;
 import com.bittrade.__default.service.IDefaultSysOperLogService;
 import com.core.framework.base.DAO.IBaseDAO;
-import com.core.framework.base.DTO.BaseDTO;
-import com.core.framework.base.VO.BaseVO;
-import com.core.framework.base.model.BaseModel;
 import com.core.framework.base.service.impl.BaseServiceImpl;
 
 /**
@@ -16,6 +16,6 @@ import com.core.framework.base.service.impl.BaseServiceImpl;
  *
  */
 //public abstract class DefaultSysOperLogServiceImpl extends BaseServiceImpl<SysOperLog, SysOperLogDTO, SysOperLogVO, ISysOperLogDAO> implements IDefaultSysOperLogService {
-public abstract class DefaultSysOperLogServiceImpl<DAO extends IBaseDAO<Model, DTO, VO>, Model extends BaseModel<Model>, DTO extends BaseDTO<DTO>, VO extends BaseVO<VO>> extends BaseServiceImpl<Model, DTO, VO, DAO> implements IDefaultSysOperLogService<Model, DTO, VO> {
+public abstract class DefaultSysOperLogServiceImpl<DAO extends IBaseDAO<SysOperLog, SysOperLogDTO, SysOperLogVO>> extends BaseServiceImpl<SysOperLog, SysOperLogDTO, SysOperLogVO, DAO> implements IDefaultSysOperLogService {
 	
 }

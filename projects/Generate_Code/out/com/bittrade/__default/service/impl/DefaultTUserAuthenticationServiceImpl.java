@@ -3,11 +3,11 @@
  */
 package com.bittrade.__default.service.impl;
 
+import com.bittrade.pojo.model.TUserAuthentication;
+import com.bittrade.pojo.dto.TUserAuthenticationDTO;
+import com.bittrade.pojo.vo.TUserAuthenticationVO;
 import com.bittrade.__default.service.IDefaultTUserAuthenticationService;
 import com.core.framework.base.DAO.IBaseDAO;
-import com.core.framework.base.DTO.BaseDTO;
-import com.core.framework.base.VO.BaseVO;
-import com.core.framework.base.model.BaseModel;
 import com.core.framework.base.service.impl.BaseServiceImpl;
 
 /**
@@ -16,6 +16,6 @@ import com.core.framework.base.service.impl.BaseServiceImpl;
  *
  */
 //public abstract class DefaultTUserAuthenticationServiceImpl extends BaseServiceImpl<TUserAuthentication, TUserAuthenticationDTO, TUserAuthenticationVO, ITUserAuthenticationDAO> implements IDefaultTUserAuthenticationService {
-public abstract class DefaultTUserAuthenticationServiceImpl<DAO extends IBaseDAO<Model, DTO, VO>, Model extends BaseModel<Model>, DTO extends BaseDTO<DTO>, VO extends BaseVO<VO>> extends BaseServiceImpl<Model, DTO, VO, DAO> implements IDefaultTUserAuthenticationService<Model, DTO, VO> {
+public abstract class DefaultTUserAuthenticationServiceImpl<DAO extends IBaseDAO<TUserAuthentication, TUserAuthenticationDTO, TUserAuthenticationVO>> extends BaseServiceImpl<TUserAuthentication, TUserAuthenticationDTO, TUserAuthenticationVO, DAO> implements IDefaultTUserAuthenticationService {
 	
 }

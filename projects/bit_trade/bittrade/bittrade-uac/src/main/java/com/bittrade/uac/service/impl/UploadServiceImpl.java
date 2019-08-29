@@ -1,12 +1,12 @@
 package com.bittrade.uac.service.impl;
 
+import com.bittrade.uac.model.dto.CurrentUserDto;
 import com.bittrade.uac.model.enums.ConstantEnum;
 import com.bittrade.uac.service.UploadService;
 import com.bittrade.uac.mapper.UserAuthenticationMapper;
 import com.bittrade.uac.model.dto.UserAuthenticationDto;
 import com.bittrade.uac.model.pojo.UserAuthentication;
-import com.core.web.constant.entity.LoginUser;
-import com.core.web.tool.WebUtil;
+import com.bittrade.uac.utils.WebUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
@@ -44,8 +44,8 @@ public class UploadServiceImpl implements UploadService {
     public void upload(UserAuthenticationDto userAuthenticationDto) {
         LocalDateTime localDateTime = LocalDateTime.now();
         String nowTime = localDateTime.format(DateTimeFormatter.ofPattern("yyMMddHHmmss"));
-        LoginUser loginUser = WebUtil.getLoginUser();
-        Long userId = loginUser.getUser_id();
+        CurrentUserDto currentUser = WebUtil.getCurrentUser();
+        Long userId = currentUser.getUserId();
         // 上传图片
         String path = profile + ConstantEnum.AliyunConstant.AUTHENTICATION_PATH.getCode();
         String identityFrontUrl = aliYunFileService.upload(userAuthenticationDto.getIdentityFrontKey(),

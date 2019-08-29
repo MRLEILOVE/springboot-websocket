@@ -2,7 +2,7 @@ package com.bittrade.uac.service.impl;
 
 import com.bittrade.uac.model.dto.RequestC5Dto;
 import com.bittrade.uac.model.dto.SendSmsDto;
-import com.bittrade.uac.web.feign.client.SmsFeignAPI;
+import com.bittrade.uac.web.feign.client.SmsFeignClient;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -32,7 +32,7 @@ public class C5SmsService {
     private C5SmsConfig c5SmsConfig;
 
     @Autowired
-    private SmsFeignAPI smsFeignAPI;
+    private SmsFeignClient smsFeignClient;
 
     @Getter
     @Setter
@@ -71,6 +71,6 @@ public class C5SmsService {
         requestC5Dto.setMobile(areaCode + phoneNumber);
         requestC5Dto.setApiKey(c5SmsConfig.getApiKey());
         requestC5Dto.setContent(content);
-        smsFeignAPI.send(requestC5Dto);
+        smsFeignClient.send(requestC5Dto);
     }
 }

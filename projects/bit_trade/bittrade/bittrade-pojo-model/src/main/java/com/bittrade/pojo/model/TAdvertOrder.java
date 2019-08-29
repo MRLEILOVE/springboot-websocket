@@ -196,7 +196,7 @@ public class TAdvertOrder extends BaseModel<TAdvertOrder> {
 	/**
 	 * 广告类别 1出售 2购买
 	 */
-	private Byte advertType;
+	private Integer advertType;
 	
 	/**
 	 * 广告留言

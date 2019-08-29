@@ -1,12 +1,21 @@
 package com.bittrade.pojo.model;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.Objects;
+
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.Version;
 import com.core.framework.base.model.BaseModel;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
@@ -155,117 +164,350 @@ public class TAdvertInfo extends BaseModel<TAdvertInfo> {
 	/**
 	 * 主键
 	 */
-	@com.baomidou.mybatisplus.annotation.TableId(value = "id", type = com.baomidou.mybatisplus.annotation.IdType.AUTO)
+	@TableId(value = "id", type = IdType.AUTO)
 	private Long id;
-	
+
 	/**
 	 * 用户id
 	 */
 	private Long userId;
-	
+
 	/**
 	 * 法币id
 	 */
 	private Long coinId;
-	
+
 	/**
-	 * 类型(1:出售 2:购买)
+	 * 类型 1:出售 2:购买
 	 */
-	private Byte type;
-	
+	private Integer type;
+
 	/**
 	 * 定价方式 1：固定价格 2：浮动价格
 	 */
-	private Byte pricingMode;
-	
+	private Integer pricingMode;
+
 	/**
-	 * 浮动比例 (小数 0.01 = 1%)
+	 * 浮动比例
 	 */
-	private java.math.BigDecimal floatingRatio;
-	
+	private BigDecimal floatingRatio;
+
 	/**
-	 * 单价（CNY）
+	 * 交易价格
 	 */
-	private java.math.BigDecimal price;
-	
+	private BigDecimal price;
+
 	/**
 	 * 隐藏价格
 	 */
-	private java.math.BigDecimal hidePrice;
-	
+	private BigDecimal hidePrice;
+
 	/**
-	 * 最小限额（CNY）
+	 * 单笔最小限额
 	 */
-	private java.math.BigDecimal minLimit;
-	
+	private BigDecimal minLimit;
+
 	/**
-	 * 最大限额（CNY）
+	 * 单笔最大限额
 	 */
-	private java.math.BigDecimal maxLimit;
-	
+	private BigDecimal maxLimit;
+
 	/**
 	 * 广告已交易数量
 	 */
-	private java.math.BigDecimal alreadyTransactionAmount;
-	
+	private BigDecimal alreadyTransactionAmount;
+
 	/**
 	 * 广告剩余数量
 	 */
-	private java.math.BigDecimal balanceAmount;
-	
+	private BigDecimal balanceAmount;
+
 	/**
 	 * 广告进行中冻结数量
 	 */
-	private java.math.BigDecimal freezeAmount;
-	
+	private BigDecimal freezeAmount;
+
 	/**
 	 * 收款方式id，出售单为收款方式, 购买单为付款方式,多个以逗号分隔
+	 * <br/>
 	 */
 	private String paymentMethodId;
-	
+
 	/**
 	 * 状态：1，进行中；2，已下架(暂停)；3，已撤销；
 	 */
 	private Integer status;
-	
+
 	/**
 	 * 是否开启对手限制 (0 禁用 1 启用)
 	 */
-	private Byte openOpponentLimit;
-	
+	private Integer openOpponentLimit;
+
 	/**
 	 * 对手限制-认证等级
 	 */
-	private Byte certificationLevel;
-	
+	private Integer certificationLevel;
+
 	/**
 	 * 对手限制-注册时间
 	 */
-	private java.time.LocalDateTime registeredTime;
-	
+	private LocalDateTime registeredTime;
+
 	/**
 	 * 对手限制-付款时间
 	 */
 	private Integer paymentTime;
-	
+
 	/**
-	 * 交易说明（留言）
+	 * 交易说明
 	 */
 	private String message;
-	
+
 	/**
 	 * 版本号
 	 */
+	@Version
 	private Long version;
-	
+
 	/**
 	 * 创建时间
 	 */
-	private java.time.LocalDateTime createTime;
-	
+	private LocalDateTime createTime;
+
 	/**
 	 * 修改时间
 	 */
-	private java.time.LocalDateTime updateTime;
+	private LocalDateTime updateTime;
+
+	/*↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓额外字段，不属于数据库↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓*/
+
+	/**
+	 * 币名称
+	 */
+	@TableField(exist = false)
+	private String coinName;
+
+	/**
+	 * c2c已成交数量
+	 */
+	@TableField(exist = false)
+	private Integer c2cAlreadyDealCount;
+
+	/**
+	 * c2c总成交数量
+	 */
+	@TableField(exist = false)
+	private Integer c2cTotalCount;
+
+	/**
+	 * c2c成交率
+	 */
+	@TableField(exist = false)
+	private BigDecimal c2cTurnoverRate;
+
+	/**
+	 * 付款失效或放币时效
+	 */
+	@TableField(exist = false)
+	private Long paymentOrPutCoinAging;
+
+	/**
+	 * 广告类型
+	 * <br/>
+	 *
+	 * @author ：leigq
+	 * @date ：2019/8/19 17:58
+	 */
+	@AllArgsConstructor
+	public enum AdvertTypeEnum {
+		SELL(1, "出售"),
+		BUY(2, "购买"),
+		;
+
+		@Getter
+		private Integer code;
+
+		@Getter
+		private String describe;
+
+		/**
+		 * 验证广告类型
+		 * <br/>
+		 * create by: leigq
+		 * <br/>
+		 * create time: 2019/8/19 17:24
+		 */
+		public static boolean isValidAdvertType(Integer advertType) {
+			for (AdvertTypeEnum advertTypeEnum : AdvertTypeEnum.values()) {
+				if (advertTypeEnum.code.equals(advertType)) {
+					return true;
+				}
+			}
+			return false;
+		}
+	}
+
+	/**
+	 * 定价方式
+	 * <br/>
+	 * @author     ：leigq
+	 * @date       ：2019/8/19 20:24
+	 */
+	@AllArgsConstructor
+	public enum PricingModeEnum {
+		FIXED(1, "固定价格"),
+		FLOAT(2, "浮动价格"),
+		;
+
+		@Getter
+		private Integer code;
+
+		@Getter
+		private String describe;
+
+		/**
+		 * 验证广告类型
+		 * <br/>
+		 * create by: leigq
+		 * <br/>
+		 * create time: 2019/8/19 17:24
+		 */
+		public static boolean isValidPricingMode(Integer pricingMode) {
+			for (PricingModeEnum pricingModeEnum : PricingModeEnum.values()) {
+				if (pricingModeEnum.code.equals(pricingMode)) {
+					return true;
+				}
+			}
+			return false;
+		}
+	}
+
+	/**
+	 * 状态
+	 * <br/>
+	 * @author     ：leigq
+	 * @date       ：2019/8/19 20:24
+	 */
+	@AllArgsConstructor
+	public enum StatusEnum {
+		PROCESSING(1, "进行中"),
+		PAUSE(2, "已下架(暂停)"),
+		revoked( 3, "已撤销"),
+		;
+
+		@Getter
+		private Integer code;
+		@Getter
+		private String describe;
+
+		public static boolean isValidStatus(Integer status) {
+			for (StatusEnum statusEnum : StatusEnum.values()) {
+				if (statusEnum.code.equals(status)) {
+					return true;
+				}
+			}
+			return false;
+		}
+	}
+
+	/**
+	 * 认证等级
+	 * <br/>
+	 * @author     ：leigq
+	 * @date       ：2019/8/19 20:24
+	 */
+	@AllArgsConstructor
+	public enum CertificationLevel {
+		FIRST_LEVEL(1, "一级"),
+		SECONDARY(2, "二级"),
+		THIRD_LEVEL(3, "三级"),
+		;
+
+		@Getter
+		private Integer code;
+		@Getter
+		private String describe;
+
+		public static boolean isValidCertificationLevel(Integer level) {
+			for (CertificationLevel certificationLevel : CertificationLevel.values()) {
+				if (certificationLevel.code.equals(level)) {
+					return true;
+				}
+			}
+			return false;
+		}
+	}
+
+	/**
+	 * 付款时间
+	 * <br/>
+	 * @author     ：leigq
+	 * @date       ：2019/8/19 20:24
+	 */
+	@AllArgsConstructor
+	public enum PaymentTime {
+		TEN_MINUTES(10, "十分钟"),
+		FIFTEEN_MINUTES(15, "十五分钟"),
+		TWENTY_MINUTES(20, "二十分钟"),
+		;
+
+		@Getter
+		private Integer code;
+		@Getter
+		private String describe;
+
+		public static boolean isValidPaymentTime(Integer time) {
+			for (PaymentTime paymentTime : PaymentTime.values()) {
+				if (paymentTime.code.equals(time)) {
+					return true;
+				}
+			}
+			return false;
+		}
+	}
+
+	/**
+	 * 定价方式是否为浮动价格
+	 * <br/>
+	 * create by: leigq
+	 * <br/>
+	 * create time: 2019/8/20 13:01
+	 */
+	public Boolean isFloatPricing() {
+		return Objects.equals(PricingModeEnum.FLOAT.getCode(), this.pricingMode);
+	}
+
+	/**
+	 * 广告类型是否为购买
+	 * <br/>
+	 * create by: leigq
+	 * <br/>
+	 * create time: 2019/8/20 13:01
+	 */
+	public Boolean isBuyType() {
+		return Objects.equals(AdvertTypeEnum.BUY.getCode(), this.type);
+	}
+
+	/**
+	 * 广告类型是否为出售
+	 * <br/>
+	 * create by: leigq
+	 * <br/>
+	 * create time: 2019/8/20 13:01
+	 */
+	public Boolean isSellType() {
+		return Objects.equals(AdvertTypeEnum.SELL.getCode(), this.type);
+	}
+
+	/**
+	 * 定价方式是否为浮动价格
+	 * <br/>
+	 * create by: leigq
+	 * <br/>
+	 * create time: 2019/8/20 13:01
+	 */
+	public Boolean isFloatingPrice() {
+		return Objects.equals(PricingModeEnum.FLOAT.getCode(), this.pricingMode);
+	}
 	
 }

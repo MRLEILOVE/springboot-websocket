@@ -10,14 +10,13 @@ import com.bittrade.uac.model.vo.*;
 import com.bittrade.uac.service.PersonalAccountService;
 import com.bittrade.uac.service.RecordLogService;
 import com.bittrade.uac.service.UacUserService;
-import com.core.web.constant.entity.LoginUser;
-import com.core.web.tool.WebUtil;
+import com.bittrade.uac.utils.WebUtil;
 import com.google.common.base.Preconditions;
 import com.bittrade.uac.mapper.UserMapper;
 import com.bittrade.uac.model.pojo.User;
-import org.apache.commons.lang.math.NumberUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -26,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
 import static com.bittrade.uac.model.enums.SendTypeEnum.FIND_PWD;
@@ -112,7 +112,7 @@ public class UacUserServiceImpl extends ServiceImpl<UserMapper, User> implements
         String redisKey = sendTypeEnum.getValue() + ":" + phoneNumber;
 
         // 间隔时间之内不允许发送多次
-        Preconditions.checkArgument(redisTemplate.hasKey(redisKey + "_interval"), "获取验证码过于频繁，请稍后再试！");
+        Preconditions.checkArgument(!redisTemplate.hasKey(redisKey + "_interval"), "获取验证码过于频繁，请稍后再试！");
 
         String code = (String) redisTemplate.opsForValue().get(redisKey);
         if (StringUtils.isEmpty(code)) {
@@ -120,9 +120,9 @@ public class UacUserServiceImpl extends ServiceImpl<UserMapper, User> implements
         }
 
         // 记录两次发短信的间接
-        redisTemplate.opsForValue().set(redisKey + "_interval", code, 120);
+        redisTemplate.opsForValue().set(redisKey + "_interval", code, 5, TimeUnit.MINUTES);
         // 记录KEY
-        redisTemplate.opsForValue().set(redisKey, code, 600);
+        redisTemplate.opsForValue().set(redisKey, code, 10, TimeUnit.MINUTES);
         //删除验证 验证码错误次数
         redisTemplate.delete(redisKey + "_error_count");
 
@@ -185,7 +185,7 @@ public class UacUserServiceImpl extends ServiceImpl<UserMapper, User> implements
         String redisKey = sendTypeEnum.getValue() + ":" + email;
 
         // 间隔时间之内不允许发送多次
-        Preconditions.checkArgument(redisTemplate.hasKey(redisKey + "_interval"), "获取验证码过于频繁，请稍后再试！");
+        Preconditions.checkArgument(!redisTemplate.hasKey(redisKey + "_interval"), "获取验证码过于频繁，请稍后再试！");
 
         String code = (String) redisTemplate.opsForValue().get(redisKey);
         if (StringUtils.isEmpty(code)) {
@@ -193,9 +193,9 @@ public class UacUserServiceImpl extends ServiceImpl<UserMapper, User> implements
         }
 
         // 记录两次发短信的间接
-        redisTemplate.opsForValue().set(redisKey + "_interval", code, 120);
+        redisTemplate.opsForValue().set(redisKey + "_interval", code, 5,TimeUnit.MINUTES);
         // 记录KEY
-        redisTemplate.opsForValue().set(redisKey, code, 600);
+        redisTemplate.opsForValue().set(redisKey, code, 10,TimeUnit.MINUTES);
         //删除验证 验证码错误次数
         redisTemplate.delete(redisKey + "_error_count");
 
@@ -257,7 +257,6 @@ public class UacUserServiceImpl extends ServiceImpl<UserMapper, User> implements
         String areaCode = registerVo.getAreaCode();
         String email = registerVo.getEmail();
         String mobile = registerVo.getMobile();
-        String nickName = registerVo.getNickName();
         Integer registerType = registerVo.getRegisterType();
         Date now = new Date();
         String loginName = 0 == registerType.intValue() ? mobile : email;
@@ -265,7 +264,6 @@ public class UacUserServiceImpl extends ServiceImpl<UserMapper, User> implements
         User user = new User();
         user.setLoginName(loginName);
         user.setLoginPassword(be.encode(password));
-        user.setNickName(nickName);
         if (0 == registerType.intValue()) {
             user.setPhoneAreaCode(areaCode);
             user.setTelePhone(mobile);
@@ -300,10 +298,8 @@ public class UacUserServiceImpl extends ServiceImpl<UserMapper, User> implements
         //注册类型
         Integer registerType = registerVo.getRegisterType();
         String password = registerVo.getPassword();
-        String nickName = registerVo.getNickName();
         Preconditions.checkArgument(Objects.nonNull(registerType), "注册类型无效！");
         Preconditions.checkArgument(Objects.nonNull(password), "密码无效！");
-        Preconditions.checkArgument(Objects.nonNull(nickName), "昵称无效！");
         String code = registerVo.getCode();
         String equipmentCode = "";
         if (0 == registerType.intValue()) {
@@ -366,8 +362,8 @@ public class UacUserServiceImpl extends ServiceImpl<UserMapper, User> implements
 
     @Override
     public void updatePassword(ChangePasswordDto changePasswordDto) {
-        LoginUser loginUser = WebUtil.getLoginUser();
-        Long userId = loginUser.getUser_id();
+        CurrentUserDto currentUser = WebUtil.getCurrentUser();
+        Long userId = currentUser.getUserId();
         User user = uacUserService.getById(userId);
         BCryptPasswordEncoder be = new BCryptPasswordEncoder();
         if (be.matches(changePasswordDto.getOldPass(), user.getLoginPassword())) {

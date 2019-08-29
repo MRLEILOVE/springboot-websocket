@@ -6,11 +6,13 @@ import java.util.List;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.bittrade.__default.service.IDefaultTAdvertInfoService;
-import com.bittrade.pojo.dto.TAdvertInfoDTO;
-import com.bittrade.pojo.dto.TAdvertOrderDTO;
+import com.bittrade.pojo.model.TAdvertInfo;
+import com.bittrade.pojo.model.TAdvertOrder;
+//git.dev.tencent.com/ha_sir/git.git
 import com.bittrade.pojo.vo.AdvertUserVO;
+import com.bittrade.pojo.vo.PublishAdvertVO;
 import com.bittrade.pojo.vo.QueryAdvertVO;
-import com.core.common.DTO.PageDTO;
+//git.dev.tencent.com/ha_sir/git.git
 import com.core.web.constant.entity.LoginUser;
 
 /**
@@ -26,10 +28,10 @@ public interface ITAdvertInfoService extends IDefaultTAdvertInfoService {
 	 * create time: 2019/8/19 14:43
 	 *
 	 * @param user         {@link LoginUser}
-	 * @param advertInfoDTO {@link AdvertInfoVO}
+	 * @param publishAdvertVO {@link PublishAdvertVO}
 	 * @return result
 	 */
-	Boolean publishAdvert(LoginUser user, TAdvertInfoDTO advertInfoDTO);
+	Boolean publishAdvert(LoginUser user, PublishAdvertVO publishAdvertVO);
 
 	/**
 	 * 获取广告列表
@@ -38,12 +40,12 @@ public interface ITAdvertInfoService extends IDefaultTAdvertInfoService {
 	 * <br/>
 	 * create time: 2019/8/20 19:52
 	 *
-	 * @param pageDTO             : {@link PageDTO}
+	 * @param page             : {@link Page}
 	 * @param queryAdvertVO : {@link QueryAdvertVO}
 	 * @param loginUser        : {@link LoginUser}
 	 * @return result
 	 */
-	PageDTO<TAdvertInfoDTO> listAdverts(PageDTO<TAdvertInfoDTO> pageDTO, QueryAdvertVO queryAdvertVO, LoginUser loginUser);
+	IPage<TAdvertInfo> listAdverts(Page<TAdvertInfo> page, QueryAdvertVO queryAdvertVO, LoginUser loginUser);
 
 	/**
 	 * 获取登录用户广告列表
@@ -91,7 +93,7 @@ public interface ITAdvertInfoService extends IDefaultTAdvertInfoService {
 	 * @param advertId : 广告 id
 	 * @return  result
 	 */
-	TAdvertInfoDTO getAdvertDetails(Long advertId);
+	TAdvertInfo getAdvertDetails(Long advertId);
 
-	TAdvertOrderDTO placeAdvertOrder(Long advertId, BigDecimal amount, String payPassWord, LoginUser loginUser);
+	TAdvertOrder placeAdvertOrder(Long advertId, BigDecimal amount, String payPassWord, LoginUser loginUser);
 }

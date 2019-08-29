@@ -10,6 +10,7 @@ import com.bittrade.admin.model.domain.AdvertInfoPageDo;
 import com.bittrade.admin.model.vo.PageParamVo;
 import com.bittrade.admin.model.vo.c2c.AdvertInfoScreeningParameterVo;
 import com.bittrade.admin.service.c2c.ITAdvertInfoService;
+//git.dev.tencent.com/ha_sir/git.git
 import com.core.common.DTO.PageDTO;
 
 /**

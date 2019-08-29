@@ -3,11 +3,11 @@
  */
 package com.bittrade.__default.service.impl;
 
+import com.bittrade.pojo.model.TLegalCurrencyAccount;
+import com.bittrade.pojo.dto.TLegalCurrencyAccountDTO;
+import com.bittrade.pojo.vo.TLegalCurrencyAccountVO;
 import com.bittrade.__default.service.IDefaultTLegalCurrencyAccountService;
 import com.core.framework.base.DAO.IBaseDAO;
-import com.core.framework.base.DTO.BaseDTO;
-import com.core.framework.base.VO.BaseVO;
-import com.core.framework.base.model.BaseModel;
 import com.core.framework.base.service.impl.BaseServiceImpl;
 
 /**
@@ -16,6 +16,6 @@ import com.core.framework.base.service.impl.BaseServiceImpl;
  *
  */
 //public abstract class DefaultTLegalCurrencyAccountServiceImpl extends BaseServiceImpl<TLegalCurrencyAccount, TLegalCurrencyAccountDTO, TLegalCurrencyAccountVO, ITLegalCurrencyAccountDAO> implements IDefaultTLegalCurrencyAccountService {
-public abstract class DefaultTLegalCurrencyAccountServiceImpl<DAO extends IBaseDAO<Model, DTO, VO>, Model extends BaseModel<Model>, DTO extends BaseDTO<DTO>, VO extends BaseVO<VO>> extends BaseServiceImpl<Model, DTO, VO, DAO> implements IDefaultTLegalCurrencyAccountService<Model, DTO, VO> {
+public abstract class DefaultTLegalCurrencyAccountServiceImpl<DAO extends IBaseDAO<TLegalCurrencyAccount, TLegalCurrencyAccountDTO, TLegalCurrencyAccountVO>> extends BaseServiceImpl<TLegalCurrencyAccount, TLegalCurrencyAccountDTO, TLegalCurrencyAccountVO, DAO> implements IDefaultTLegalCurrencyAccountService {
 	
 }

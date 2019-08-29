@@ -3,6 +3,8 @@ package com.bittrade.uac.web.fronted;
 import javax.validation.Valid;
 
 import com.bittrade.uac.model.dto.ChangePasswordDto;
+import com.bittrade.uac.model.dto.CurrentUserDto;
+import com.bittrade.uac.model.dto.ReturnDTO;
 import com.bittrade.uac.model.dto.UserAuthenticationDto;
 import com.bittrade.uac.model.enums.ConstantEnum;
 import com.bittrade.uac.model.pojo.AuditRecord;
@@ -12,9 +14,7 @@ import com.bittrade.uac.model.vo.UserAuthenticationVo;
 import com.bittrade.uac.service.AuditRecordService;
 import com.bittrade.uac.service.UacAuthenticationService;
 import com.bittrade.uac.service.UacUserService;
-import com.core.common.DTO.ReturnDTO;
-import com.core.web.constant.entity.LoginUser;
-import com.core.web.tool.WebUtil;
+import com.bittrade.uac.utils.WebUtil;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -54,8 +54,8 @@ public class UacUserController {
     @PostMapping(value = "/information")
     @ApiOperation(value = "当前登入用户信息", notes = "当前登入用户信息")
     public ReturnDTO<UserVo> queryUserInfo() {
-        LoginUser loginUser = WebUtil.getLoginUser();
-        User user = uacUserService.getById(loginUser.getUser_id());
+        CurrentUserDto currentUser = WebUtil.getCurrentUser();
+        User user = uacUserService.getById(currentUser.getUserId());
         UserVo userVo = new UserVo();
         BeanUtils.copyProperties(user, userVo);
         return ReturnDTO.ok(userVo);
@@ -70,10 +70,9 @@ public class UacUserController {
     @PostMapping(value = "/updatePassword")
     @ApiOperation(value = "修改用户密码", notes = "修改用户密码")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "新密码", value = "newPass", required = true, dataType = "string"),
-            @ApiImplicitParam(name = "旧密码", value = "oldPass", required = true, dataType = "string")
+            @ApiImplicitParam(name = "新密码", value = "newPass", required = true, dataType = "String", paramType = "query"),
+            @ApiImplicitParam(name = "旧密码", value = "oldPass", required = true, dataType = "String", paramType = "query")
     })
-    @ApiImplicitParam(name = "accountDto", value = "accountDto", required = true, dataType = "AccountDto")
     public ReturnDTO<String> updatePassword(@RequestBody ChangePasswordDto changePasswordDto) {
         log.info("修改用户密码请求参数" + changePasswordDto.toString());
         uacUserService.updatePassword(changePasswordDto);
@@ -100,8 +99,8 @@ public class UacUserController {
     @GetMapping(value = "/authenticationInformation ")
     @ApiOperation(value = "查询认证信息 ", notes = "查询认证信息 ")
     public ReturnDTO<UserAuthenticationVo> authenticationInformation() {
-        LoginUser loginUser = WebUtil.getLoginUser();
-        Long userId = loginUser.getUser_id();
+        CurrentUserDto currentUser = WebUtil.getCurrentUser();
+        Long userId = currentUser.getUserId();
         UserAuthentication authentication = authenticationService.getById(userId);
         UserAuthenticationVo authenticationVo = new UserAuthenticationVo();
         if (authentication == null) {
