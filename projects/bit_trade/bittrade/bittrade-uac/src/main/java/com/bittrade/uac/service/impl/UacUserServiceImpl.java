@@ -112,7 +112,7 @@ public class UacUserServiceImpl extends ServiceImpl<UserMapper, User> implements
         String redisKey = sendTypeEnum.getValue() + ":" + phoneNumber;
 
         // 间隔时间之内不允许发送多次
-        Preconditions.checkArgument(redisTemplate.hasKey(redisKey + "_interval"), "获取验证码过于频繁，请稍后再试！");
+        Preconditions.checkArgument(!redisTemplate.hasKey(redisKey + "_interval"), "获取验证码过于频繁，请稍后再试！");
 
         String code = (String) redisTemplate.opsForValue().get(redisKey);
         if (StringUtils.isEmpty(code)) {
@@ -257,7 +257,6 @@ public class UacUserServiceImpl extends ServiceImpl<UserMapper, User> implements
         String areaCode = registerVo.getAreaCode();
         String email = registerVo.getEmail();
         String mobile = registerVo.getMobile();
-        String nickName = registerVo.getNickName();
         Integer registerType = registerVo.getRegisterType();
         Date now = new Date();
         String loginName = 0 == registerType.intValue() ? mobile : email;
@@ -265,7 +264,6 @@ public class UacUserServiceImpl extends ServiceImpl<UserMapper, User> implements
         User user = new User();
         user.setLoginName(loginName);
         user.setLoginPassword(be.encode(password));
-        user.setNickName(nickName);
         if (0 == registerType.intValue()) {
             user.setPhoneAreaCode(areaCode);
             user.setTelePhone(mobile);
@@ -300,10 +298,8 @@ public class UacUserServiceImpl extends ServiceImpl<UserMapper, User> implements
         //注册类型
         Integer registerType = registerVo.getRegisterType();
         String password = registerVo.getPassword();
-        String nickName = registerVo.getNickName();
         Preconditions.checkArgument(Objects.nonNull(registerType), "注册类型无效！");
         Preconditions.checkArgument(Objects.nonNull(password), "密码无效！");
-        Preconditions.checkArgument(Objects.nonNull(nickName), "昵称无效！");
         String code = registerVo.getCode();
         String equipmentCode = "";
         if (0 == registerType.intValue()) {
