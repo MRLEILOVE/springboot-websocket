@@ -70,10 +70,9 @@ public class UacUserController {
     @PostMapping(value = "/updatePassword")
     @ApiOperation(value = "修改用户密码", notes = "修改用户密码")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "新密码", value = "newPass", required = true, dataType = "string"),
-            @ApiImplicitParam(name = "旧密码", value = "oldPass", required = true, dataType = "string")
+            @ApiImplicitParam(name = "新密码", value = "newPass", required = true, dataType = "String", paramType = "query"),
+            @ApiImplicitParam(name = "旧密码", value = "oldPass", required = true, dataType = "String", paramType = "query")
     })
-    @ApiImplicitParam(name = "accountDto", value = "accountDto", required = true, dataType = "AccountDto")
     public ReturnDTO<String> updatePassword(@RequestBody ChangePasswordDto changePasswordDto) {
         log.info("修改用户密码请求参数" + changePasswordDto.toString());
         uacUserService.updatePassword(changePasswordDto);

@@ -39,7 +39,7 @@ public class UacAuthController {
      */
     @PostMapping(value = "/checkPhoneActive/{phoneNumber}")
     @ApiOperation(value = "手机号是否已存在", notes = "手机号是否已存在")
-    @ApiImplicitParam(name = "手机号码", value = "phoneNumber", required = true, dataType = "String")
+    @ApiImplicitParam(name = "手机号码", value = "phoneNumber", required = true, dataType = "String", paramType = "path")
     public ReturnDTO<Boolean> checkPhoneActive(@PathVariable String phoneNumber) {
         log.info("com.jdcloud.provider.web.fronted.UacAuthController.checkPhoneActive:" + phoneNumber);
         User user = new User();
@@ -57,9 +57,9 @@ public class UacAuthController {
     @PostMapping(value = "/send/sms")
     @ApiOperation(value = "发送短信", notes = "发送短信")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "区域号码", value = "areaCode", required = true, dataType = "String"),
-            @ApiImplicitParam(name = "手机号码", value = "phoneNumber", required = true, dataType = "String"),
-            @ApiImplicitParam(name = "短信发送类型", value = "sendType", required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "区域号码", value = "areaCode", required = true, dataType = "String", paramType = "query"),
+            @ApiImplicitParam(name = "手机号码", value = "phoneNumber", required = true, dataType = "String", paramType = "query"),
+            @ApiImplicitParam(name = "短信发送类型", value = "sendType", required = true, dataType = "Integer", paramType = "query"),
     })
     public ReturnDTO<String> sendSms(@RequestBody SendSmsVo sendSmsVo) {
         log.info("com.jdcloud.provider.web.fronted.UacAuthController.sendSms:" + JSON.toJSONString(sendSmsVo));
@@ -78,8 +78,8 @@ public class UacAuthController {
     @PostMapping(value = "/send/email")
     @ApiOperation(value = "发送邮件", notes = "发送邮件")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "邮箱地址", value = "email", required = true, dataType = "String"),
-            @ApiImplicitParam(name = "发送类型", value = "sendType", required = true, dataType = "Integer")
+            @ApiImplicitParam(name = "邮箱地址", value = "email", required = true, dataType = "String", paramType = "query"),
+            @ApiImplicitParam(name = "发送类型", value = "sendType", required = true, dataType = "Integer", paramType = "query")
     })
     public ReturnDTO<String> sendEmail(@RequestBody SendEmailVo sendMailVo) {
         log.info("com.jdcloud.provider.web.fronted.UacAuthController.sendEmail:" + sendMailVo.toString());
@@ -96,14 +96,14 @@ public class UacAuthController {
     @PostMapping(value = "/register")
     @ApiOperation(value = "bit_trade注册", notes = "bit_trade注册")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "注册类型", value = "registerType", required = true, dataType = "Integer"),
-            @ApiImplicitParam(name = "手机号区域码", value = "areaCode", required = false, dataType = "String"),
-            @ApiImplicitParam(name = "手机号", value = "mobile", required = false, dataType = "String"),
-            @ApiImplicitParam(name = "邮箱", value = "email", required = false, dataType = "String"),
-            @ApiImplicitParam(name = "密码", value = "password", required = true, dataType = "String"),
-            @ApiImplicitParam(name = "验证码", value = "code", required = true, dataType = "String"),
-            @ApiImplicitParam(name = "昵称", value = "nickName", required = true, dataType = "String"),
-            @ApiImplicitParam(name = "推荐码", value = "recommendCode", required = false, dataType = "String")
+            @ApiImplicitParam(name = "注册类型", value = "registerType", required = true, dataType = "Integer", paramType = "query"),
+            @ApiImplicitParam(name = "手机号区域码", value = "areaCode", required = false, dataType = "String", paramType = "query"),
+            @ApiImplicitParam(name = "手机号", value = "mobile", required = false, dataType = "String", paramType = "query"),
+            @ApiImplicitParam(name = "邮箱", value = "email", required = false, dataType = "String", paramType = "query"),
+            @ApiImplicitParam(name = "密码", value = "password", required = true, dataType = "String", paramType = "query"),
+            @ApiImplicitParam(name = "验证码", value = "code", required = true, dataType = "String", paramType = "query"),
+            @ApiImplicitParam(name = "昵称", value = "nickName", required = true, dataType = "String", paramType = "query"),
+            @ApiImplicitParam(name = "推荐码", value = "recommendCode", required = false, dataType = "String", paramType = "query")
     })
     public ReturnDTO<String> register(@RequestBody UserRegisterVo registerVo) {
         log.info("com.jdcloud.provider.web.fronted.UacAuthController.registerPhone:" + registerVo.toString());
@@ -120,9 +120,9 @@ public class UacAuthController {
     @PostMapping(value = "/password/retrieve")
     @ApiOperation(value = "找回密码", notes = "找回密码")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "登陆名", value = "loginName", required = true, dataType = "String"),
-            @ApiImplicitParam(name = "密码", value = "password", required = true, dataType = "String"),
-            @ApiImplicitParam(name = "验证码", value = "code", required = true, dataType = "String"),
+            @ApiImplicitParam(name = "登陆名", value = "loginName", required = true, dataType = "String", paramType = "query"),
+            @ApiImplicitParam(name = "密码", value = "password", required = true, dataType = "String", paramType = "query"),
+            @ApiImplicitParam(name = "验证码", value = "code", required = true, dataType = "String", paramType = "query"),
     })
     public ReturnDTO<String> findPwd(@RequestBody UserFindPwdVo findPwdVo) {
         log.info("com.jdcloud.provider.web.fronted.UacAuthController.findPass:" + findPwdVo.toString());
@@ -139,7 +139,7 @@ public class UacAuthController {
      */
     @GetMapping(value = "/send/retrieve/{loginName}")
     @ApiOperation(value = "发送找回密码验证码", notes = "发送找回密码验证码")
-    @ApiImplicitParam(name = "登入名", value = "loginName", required = true, dataType = "String")
+    @ApiImplicitParam(name = "登入名", value = "loginName", required = true, dataType = "String", paramType = "path")
     public ReturnDTO<String> sendRetrieve(@PathVariable String loginName) {
         log.info("com.jdcloud.provider.web.fronted.UacAuthController.sendRetrieve:" + loginName);
         uacUserService.sendRetrieve(loginName);
@@ -149,9 +149,9 @@ public class UacAuthController {
     @PostMapping(value = "/checkCode")
     @ApiOperation(value = "校验验证码", notes = "校验验证码")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "设备码", value = "equipmentCode", required = true, dataType = "String"),
-            @ApiImplicitParam(name = "验证码", value = "code", required = true, dataType = "String"),
-            @ApiImplicitParam(name = "验证类型", value = "checkType", required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "设备码", value = "equipmentCode", required = true, dataType = "String", paramType = "query"),
+            @ApiImplicitParam(name = "验证码", value = "code", required = true, dataType = "String", paramType = "query"),
+            @ApiImplicitParam(name = "验证类型", value = "checkType", required = true, dataType = "Integer", paramType = "query"),
     })
     public ReturnDTO<String> checkCode(@RequestBody CheckCodeVo checkCodeVo) {
         log.info("com.jdcloud.provider.web.fronted.UacAuthController.checkCode:" + checkCodeVo.toString());
