@@ -50,8 +50,8 @@ public class MailService {
         String email = mailDto.getEmail();
         String content = mailDto.getContent();
         SimpleMailMessage mailMessage = new SimpleMailMessage();
-        mailMessage.setFrom(email);
-        mailMessage.setTo(mailProperty.getUsername());
+        mailMessage.setFrom(mailProperty.getUsername());
+        mailMessage.setTo(email);
         mailMessage.setSubject(mailProperty.getUsername());
         mailMessage.setText(content);
         mailSender.send(mailMessage);

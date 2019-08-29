@@ -65,6 +65,7 @@ public class UacUserServiceImpl extends ServiceImpl<UserMapper, User> implements
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void sendSms(SendSmsVo sendSmsVo) {
         Integer sendType = sendSmsVo.getSendType();
         String phoneNumber = sendSmsVo.getPhoneNumber();
@@ -139,12 +140,13 @@ public class UacUserServiceImpl extends ServiceImpl<UserMapper, User> implements
 
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void sendEmail(SendEmailVo emailVo) {
         String email = emailVo.getEmail();
         Integer sendType = emailVo.getSendType();
 
         SendTypeEnum sendTypeEnum = SendTypeEnum.getEnumByCode(sendType);
-        Preconditions.checkArgument(Objects.nonNull(email), "邮箱有误！phone:" + email);
+        Preconditions.checkArgument(Objects.nonNull(email), "邮箱有误！email:" + email);
         Preconditions.checkArgument(Objects.nonNull(sendTypeEnum), "不允许发送此类型的短信,type:" + sendType);
 
         MessageTemplateEnum msTemplate = null;
