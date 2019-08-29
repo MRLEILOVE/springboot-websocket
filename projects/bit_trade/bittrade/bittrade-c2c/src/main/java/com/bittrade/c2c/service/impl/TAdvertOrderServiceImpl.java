@@ -1,9 +1,13 @@
 package com.bittrade.c2c.service.impl;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 import javax.annotation.Resource;
 
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.bittrade.pojo.dto.TAdvertOrderDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -124,11 +128,8 @@ public class TAdvertOrderServiceImpl extends DefaultTAdvertOrderServiceImpl<ITAd
 	 * @return result
 	 */
 	@Override
-	public boolean cancelAdvertOrder(Long orderId) {
+	public boolean cancelAdvertOrder(Long orderId, LoginUser loginUser) {
 		TAdvertOrder advertOrder = baseMapper.getByPK(orderId);
-		if (LocalDateTime.now().isAfter(advertOrder.getCancelOrderDeadline())) {
-			throw new BusinessException("下單時間超過3分鐘，不可取消");
-		}
 		if (TAdvertOrder.StatusEnum.ALREADY_PAID.getCode().equals(advertOrder.getStatus())) {
 			throw new BusinessException("訂單已付款，無法取消");
 		}
@@ -138,14 +139,36 @@ public class TAdvertOrderServiceImpl extends DefaultTAdvertOrderServiceImpl<ITAd
 		if (TAdvertOrder.StatusEnum.ALREADY_CANCEL.getCode().equals(advertOrder.getStatus())) {
 			throw new BusinessException("訂單已取消，請勿重複取消");
 		}
-		if (LocalDateTime.now().isAfter(advertOrder.getOverdueTime())) {
+		if (Objects.nonNull(advertOrder.getOverdueTime()) && LocalDateTime.now().isAfter(advertOrder.getOverdueTime())) {
 			throw new BusinessException("訂單已超時自動取消，無法取消");
 		}
-		// 解冻广告余额， 剩余加，冻结减
-		TAdvertInfo advertInfo = itAdvertInfoService.getByPK(advertOrder.getAdvertId());
-		advertInfo.setBalanceAmount(advertInfo.getBalanceAmount().add(advertOrder.getTransactionNum()));
-		advertInfo.setFreezeAmount(advertInfo.getFreezeAmount().subtract(advertOrder.getTransactionNum()));
-		return itAdvertInfoService.updateById(advertInfo);
+		if (LocalDateTime.now().isAfter(advertOrder.getCancelOrderDeadline())) {
+			throw new BusinessException("下單時間超過3分鐘，不可取消");
+		}
+		// 修改订单状态、取消者id
+		boolean updateAdvertOrderStatusResult = this.update(new LambdaUpdateWrapper<TAdvertOrder>()
+				.set(TAdvertOrder::getStatus, TAdvertOrder.StatusEnum.ALREADY_CANCEL.getCode())
+				.set(TAdvertOrder::getCancellerId, loginUser.getUser_id())
+				.eq(TAdvertOrder::getId, advertOrder.getId())
+		);
+		// 订单交易数量
+		BigDecimal transactionNum = advertOrder.getTransactionNum();
+
+		/*解冻广告余额， 剩余加，冻结减*/
+		TAdvertInfo advertInfo = itAdvertInfoService.getOne(new LambdaQueryWrapper<TAdvertInfo>()
+				.select(TAdvertInfo::getBalanceAmount, TAdvertInfo::getFreezeAmount)
+				.eq(TAdvertInfo::getId, advertOrder.getAdvertId())
+		);
+		boolean updateAdvertInfoResult = itAdvertInfoService.update(new LambdaUpdateWrapper<TAdvertInfo>()
+				.set(TAdvertInfo::getBalanceAmount, advertInfo.getBalanceAmount().add(transactionNum))
+				.set(TAdvertInfo::getFreezeAmount, advertInfo.getFreezeAmount().subtract(transactionNum))
+				.eq(TAdvertInfo::getId, advertOrder.getAdvertId())
+		);
+		// 出售订单需解冻卖方用户可用余额
+		if (advertOrder.isSellType()) {
+			itLegalCurrencyAccountService.unFreezeAmount(advertOrder.getSellerId(), advertOrder.getCoinId(), transactionNum);
+		}
+		return updateAdvertOrderStatusResult && updateAdvertInfoResult;
 	}
 
 
@@ -167,7 +190,13 @@ public class TAdvertOrderServiceImpl extends DefaultTAdvertOrderServiceImpl<ITAd
 		if (LocalDateTime.now().isAfter(advertOrder.getOverdueTime())) {
 			throw new BusinessException("訂單已超時自動取消，無法確認付款");
 		}
-		TAdvertOrder order = TAdvertOrder.builder().id(orderId).status(TAdvertOrder.StatusEnum.ALREADY_PAID.getCode()).build();
+		if (TAdvertOrder.StatusEnum.ALREADY_PAID.getCode().equals(advertOrder.getStatus())) {
+			throw new BusinessException("已點擊付款，請勿重複操作");
+		}
+		TAdvertOrder order = TAdvertOrder.builder()
+				.id(orderId)
+				.status(TAdvertOrder.StatusEnum.ALREADY_PAID.getCode()).build()
+				.setPaymentTime(LocalDateTime.now());
 		return updateById(order);
 	}
 
@@ -211,7 +240,9 @@ public class TAdvertOrderServiceImpl extends DefaultTAdvertOrderServiceImpl<ITAd
 						.setAlreadyTransactionAmount(advertInfo.getAlreadyTransactionAmount().add(advertOrder.getTransactionNum()))
 						.updateById();
 			// 修改订单状态为已完成
-			advertOrder.setStatus(TAdvertOrder.StatusEnum.ALREADY_COMPLETE.getCode()).updateById();
+			advertOrder.setStatus(TAdvertOrder.StatusEnum.ALREADY_COMPLETE.getCode())
+					.setGrantCoinTime(LocalDateTime.now())
+					.updateById();
 			// TODO 广告内余额为 0 怎么处理？？？
 			return true;
 		} catch (Exception e) {

@@ -122,7 +122,7 @@ public class TAdvertInfoServiceImpl extends DefaultTAdvertInfoServiceImpl<ITAdve
 
 		try {
 			TAdvertInfo advertInfo = TAdvertInfo.builder().build();
-			BeanUtils.copyProperties(advertInfo, advertInfo);
+			BeanUtils.copyProperties(publishAdvertVO, advertInfo);
 			// 填充其余参数
 			advertInfo.setUserId(user.getUser_id())
 					.setFloatingRatio(Objects.nonNull(publishAdvertVO.getFloatingRatio()) ? publishAdvertVO.getFloatingRatio().divide(BigDecimal.valueOf(100), 2, RoundingMode.DOWN) : null)
@@ -131,7 +131,7 @@ public class TAdvertInfoServiceImpl extends DefaultTAdvertInfoServiceImpl<ITAdve
 					.setStatus(TAdvertInfo.StatusEnum.PROCESSING.getCode())
 					.setPaymentTime(Objects.nonNull(publishAdvertVO.getPaymentTime()) ? publishAdvertVO.getPaymentTime() : null)
 					.setRegisteredTime(publishAdvertVO.getRegisteredTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime());
-			return baseMapper.insert(advertInfo) > 0;
+			return advertInfo.insert();
 		} catch (Exception e) {
 			log.error("发布广告异常：", e);
 			throw new BusinessException("發布廣告失敗");
@@ -152,7 +152,6 @@ public class TAdvertInfoServiceImpl extends DefaultTAdvertInfoServiceImpl<ITAdve
 	 */
 	@Override
 	public IPage<TAdvertInfo> listAdverts(Page<TAdvertInfo> page, QueryAdvertVO queryAdvertVO, LoginUser loginUser) {
-
 		LambdaQueryWrapper<TAdvertInfo> lambdaQueryWrapper = new LambdaQueryWrapper<TAdvertInfo>()
 				.eq(TAdvertInfo::getCoinId, queryAdvertVO.getCoinId())
 				.eq(TAdvertInfo::getStatus, TAdvertInfo.StatusEnum.PROCESSING.getCode())
@@ -166,7 +165,6 @@ public class TAdvertInfoServiceImpl extends DefaultTAdvertInfoServiceImpl<ITAdve
 				.le(Objects.nonNull(queryAdvertVO.getMinTargetAmount()), TAdvertInfo::getMinLimit, queryAdvertVO.getMinTargetAmount())
 				// 收款方式
 				.eq(Objects.nonNull(queryAdvertVO.getReceiptWay()), TAdvertInfo::getPaymentMethodId, queryAdvertVO.getReceiptWay());
-
 		IPage<TAdvertInfo> advertInfoPage = baseMapper.selectPage(page.setSearchCount(false), lambdaQueryWrapper);
 		// 广告列表
 		List<TAdvertInfo> advertInfos = advertInfoPage.getRecords();
@@ -385,9 +383,14 @@ public class TAdvertInfoServiceImpl extends DefaultTAdvertInfoServiceImpl<ITAdve
 			if (amount.multiply(advert.getPrice()).compareTo(advert.getMaxLimit()) > 0) {
 				throw new BusinessException(String.format("廣告最大限額：%f", advert.getMaxLimit()));
 			}
+			if (StringUtils.isBlank(payPassWord)) {
+				throw new BusinessException("資金密碼必填");
+			}
 			if (!loginUser.checkPayPassWord(payPassWord)) {
 				throw new BusinessException("資金密碼錯誤");
 			}
+			// 冻结用户账户可用余额
+			itLegalCurrencyAccountService.freezeAmount(loginUser.getUser_id(), advert.getCoinId(), amount);
 		}
 		SnowFlake snowFlake = new SnowFlake(1, 1);
 		TAdvertOrder order = TAdvertOrder.builder()
@@ -412,14 +415,17 @@ public class TAdvertInfoServiceImpl extends DefaultTAdvertInfoServiceImpl<ITAdve
 				.setCancelOrderDeadline(LocalDateTime.now().plusMinutes(TAdvertOrder.CANCEL_ORDER_DURATION))
 				.setArbitStatus(TAdvertOrder.ArbitStatusEnum.NO_ARBITRATION.getCode())
 				.setOverdueTime(Objects.nonNull(advert.getPaymentTime()) ? LocalDateTime.now().plusMinutes(advert.getPaymentTime()) : null);
+		// 保存订单
 		boolean saveAdvertOrderResult = itAdvertOrderService.save(order);
 		// 冻结广告余额， 剩余减，冻结加
-		advert.setBalanceAmount(advert.getBalanceAmount().subtract(amount));
-		advert.setFreezeAmount(advert.getFreezeAmount().add(amount));
-		boolean updateResult = updateById(advert);
+		boolean updateAdvertInfoResult = this.update(new LambdaUpdateWrapper<TAdvertInfo>()
+				.set(TAdvertInfo::getBalanceAmount, advert.getBalanceAmount().subtract(amount))
+				.set(TAdvertInfo::getFreezeAmount, advert.getFreezeAmount().add(amount))
+				.eq(TAdvertInfo::getId, advert.getId())
+		);
 		// TODO 发短信通知买家、卖家
-
-		if (saveAdvertOrderResult && updateResult) {
+		if (saveAdvertOrderResult && updateAdvertInfoResult) {
+			// 返回订单详情，给前端展示
 			return itAdvertOrderService.getAdvertOrderDetails(order.getId());
 		}
 		return null;

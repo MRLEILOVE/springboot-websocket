@@ -20,7 +20,7 @@ public interface ITAdvertOrderService extends IDefaultTAdvertOrderService<TAdver
 
 	TAdvertOrder getAdvertOrderDetails(Long orderId);
 
-	boolean cancelAdvertOrder(Long orderId);
+	boolean cancelAdvertOrder(Long orderId, LoginUser loginUser);
 
     boolean clickAlreadyPaid(Long orderId);
 
