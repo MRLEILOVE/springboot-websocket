@@ -360,9 +360,9 @@ public class TAdvertInfoServiceImpl extends DefaultTAdvertInfoServiceImpl<ITAdve
 	@Override
 	public TAdvertOrder placeAdvertOrder(Long advertId, BigDecimal amount, String payPassWord, LoginUser loginUser) {
 		TAdvertInfo advert = getProcessingAdvert(advertId);
-//		if (loginUser.getUser_id().equals(advert.getUserId())) {
-//			throw new BusinessException("不允許操作自己發布的廣告");
-//		}
+		if (loginUser.getUser_id().equals(advert.getUserId())) {
+			throw new BusinessException("不允許操作自己發布的廣告");
+		}
 		if (amount.compareTo(advert.getBalanceAmount()) > 0) {
 			throw new BusinessException("數量超出廣告餘額");
 		}
