@@ -10,7 +10,7 @@
 <configuration>
 
 	<property name="project_name" value="${svc_name}" />
-	<property name="logdir" value="opt/logs/${project_name}" /><!-- / -->
+	<property name="logdir" value="/opt/logs/${project_name}" /><!-- / 虽然可以把日志目录添加到忽略项，但是还是每个项目路径下都要去找日志目录然后删除，所以还是放在一个地方了。 -->
 	
 	<appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
 		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
