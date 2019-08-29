@@ -62,8 +62,18 @@ public class TAdvertInfoController extends BaseController<TAdvertInfo, TAdvertIn
 	 */
 	@PostMapping("/action/publish_advert")
 	public ReturnDTO<Object> publishAdvert(@ALoginUser LoginUser user, @Validated PublishAdvertVO publishAdvertVO) {
+		// 交易数量
+		BigDecimal amount = publishAdvertVO.getAmount();
+		// 交易金额
+		BigDecimal money = amount.multiply(publishAdvertVO.getPrice());
+		if (money.compareTo(publishAdvertVO.getMinLimit()) < 0) {
+			return ReturnDTO.error("交易金額需大於最小限額");
+		}
+		if (money.compareTo(publishAdvertVO.getMaxLimit()) > 0) {
+			return ReturnDTO.error("交易金額需小於最大限額");
+		}
 		if (publishAdvertVO.getMaxLimit().compareTo(publishAdvertVO.getMinLimit()) < 0) {
-			return ReturnDTO.error("單筆最大限額需大於最小限額");
+			return ReturnDTO.error("單筆最大限額需大於單筆最小限額");
 		}
 		boolean result = itAdvertInfoService.publishAdvert(user, publishAdvertVO);
 		return result ? ReturnDTO.ok("發布成功") : ReturnDTO.error("發布失敗");
