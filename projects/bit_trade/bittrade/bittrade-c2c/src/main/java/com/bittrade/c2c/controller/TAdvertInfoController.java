@@ -8,6 +8,9 @@ import javax.annotation.Resource;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
 
+import com.bittrade.pojo.dto.TAdvertInfoDTO;
+import com.bittrade.pojo.model.TAdvertOrder;
+import com.bittrade.pojo.vo.PublishAdvertVO;
 import org.springframework.http.MediaType;
 import org.springframework.util.CollectionUtils;
 import org.springframework.validation.annotation.Validated;
@@ -21,14 +24,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.bittrade.c2c.service.ITAdvertInfoService;
-import com.bittrade.pojo.dto.TAdvertInfoDTO;
-import com.bittrade.pojo.dto.TAdvertOrderDTO;
 import com.bittrade.pojo.model.TAdvertInfo;
 import com.bittrade.pojo.vo.AdvertUserVO;
 import com.bittrade.pojo.vo.QueryAdvertVO;
 //git.dev.tencent.com/ha_sir/git.git
 import com.bittrade.pojo.vo.TAdvertInfoVO;
-import com.core.common.DTO.PageDTO;
 import com.core.common.DTO.ReturnDTO;
 import com.core.common.annotation.ALoginUser;
 import com.core.framework.base.controller.BaseController;
@@ -57,16 +57,15 @@ public class TAdvertInfoController extends BaseController<TAdvertInfo, TAdvertIn
 	 * <br/>
 	 * create time: 2019/8/19 14:43
 	 * @param user {@link LoginUser}
-	 * @param tAdvertInfoDTO {@link TAdvertInfoDTO}
+	 * @param publishAdvertVO {@link PublishAdvertVO}
 	 * @return result
 	 */
 	@PostMapping("/action/publish_advert")
-	public ReturnDTO<Object> publishAdvert(@ALoginUser LoginUser user, @Validated TAdvertInfoDTO tAdvertInfoDTO) {
-		// 最大限额需大于最小限额
-		if (tAdvertInfoDTO.getMaxLimit().compareTo(tAdvertInfoDTO.getMinLimit()) < 0) {
+	public ReturnDTO<Object> publishAdvert(@ALoginUser LoginUser user, @Validated PublishAdvertVO publishAdvertVO) {
+		if (publishAdvertVO.getMaxLimit().compareTo(publishAdvertVO.getMinLimit()) < 0) {
 			return ReturnDTO.error("單筆最大限額需大於最小限額");
 		}
-		boolean result = itAdvertInfoService.publishAdvert(user, tAdvertInfoDTO);
+		boolean result = itAdvertInfoService.publishAdvert(user, publishAdvertVO);
 		return result ? ReturnDTO.ok("發布成功") : ReturnDTO.error("發布失敗");
 	}
 
@@ -76,14 +75,14 @@ public class TAdvertInfoController extends BaseController<TAdvertInfo, TAdvertIn
 	 * create by: leigq
 	 * <br/>
 	 * create time: 2019/8/20 19:52
-	 * @param pageDTO : {@link PageDTO}
+	 * @param page : {@link Page}
 	 * @param queryAdvertVO : {@link QueryAdvertVO}
 	 * @param loginUser : {@link LoginUser}
 	 * @return  result
 	 */
 	@GetMapping("/adverts")
-	public ReturnDTO<Object> listAdverts(PageDTO<TAdvertInfoDTO> pageDTO, @Validated QueryAdvertVO queryAdvertVO, @ALoginUser LoginUser loginUser) {
-		PageDTO<TAdvertInfoDTO> adverts = itAdvertInfoService.listAdverts(pageDTO, queryAdvertVO, loginUser);
+	public ReturnDTO<Object> listAdverts(Page<TAdvertInfo> page, @Validated QueryAdvertVO queryAdvertVO, @ALoginUser LoginUser loginUser) {
+		IPage<TAdvertInfo> adverts = itAdvertInfoService.listAdverts(page, queryAdvertVO, loginUser);
 		return ReturnDTO.ok(adverts);
 	}
 
@@ -152,7 +151,7 @@ public class TAdvertInfoController extends BaseController<TAdvertInfo, TAdvertIn
 	 */
 	@GetMapping("/adverts/details/{advert_id}")
 	public ReturnDTO<Object> getAdvertDetails(@PathVariable("advert_id") Long advertId) {
-		TAdvertInfoDTO info = itAdvertInfoService.getAdvertDetails(advertId);
+		TAdvertInfo info = itAdvertInfoService.getAdvertDetails(advertId);
 		return ReturnDTO.ok(info);
 	}
 
@@ -173,7 +172,7 @@ public class TAdvertInfoController extends BaseController<TAdvertInfo, TAdvertIn
 	                                          @NotNull(message = "數量必填") @DecimalMin(value = "0", message = "數量需大於0", inclusive = false) BigDecimal amount,
 	                                          String payPassWord,
 	                                          @ALoginUser LoginUser loginUser) {
-		TAdvertOrderDTO advertOrder = itAdvertInfoService.placeAdvertOrder(advertId, amount, payPassWord, loginUser);
+		TAdvertOrder advertOrder = itAdvertInfoService.placeAdvertOrder(advertId, amount, payPassWord, loginUser);
 		return Objects.nonNull(advertOrder) ? ReturnDTO.ok(advertOrder) : ReturnDTO.error("下單失敗");
 	}
 

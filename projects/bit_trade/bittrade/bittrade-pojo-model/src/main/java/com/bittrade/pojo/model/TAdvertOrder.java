@@ -172,7 +172,7 @@ public class TAdvertOrder extends BaseModel<TAdvertOrder> {
 	 * 收款方式id，出售单为收款方式, 购买单为付款方式
 	 */
 	@TableField(exist = false)
-	private Long paymentMethodId;
+	private String paymentMethodId;
 
 
 	/**
