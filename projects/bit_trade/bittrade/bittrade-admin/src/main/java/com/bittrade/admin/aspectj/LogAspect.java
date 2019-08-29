@@ -21,8 +21,8 @@ import com.bittrade.admin.enums.UserEnum;
 import com.bittrade.admin.service.sys.SysOperLogService;
 import com.bittrade.admin.util.ServletUtil;
 import com.bittrade.admin.util.ShiroUtil;
+import com.bittrade.pojo.dto.SysUserDTO;
 import com.bittrade.pojo.model.SysOperLog;
-import com.bittrade.pojo.model.SysUser;
 import com.core.tool.JSONUtil;
 
 import lombok.extern.slf4j.Slf4j;
@@ -69,7 +69,7 @@ public class LogAspect {
 				return;
 			}
 			// 获取当前的用户
-			SysUser currentUser = ShiroUtil.getUser();
+			SysUserDTO currentUser = ShiroUtil.getUser();
 			SysOperLog operLog = new SysOperLog();
 			operLog.setStatus( UserEnum.UserState.NORMAL_USER.getCode() );
 			String ip = ShiroUtil.getIp();

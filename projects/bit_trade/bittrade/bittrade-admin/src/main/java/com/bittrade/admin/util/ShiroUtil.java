@@ -9,6 +9,7 @@ import org.apache.shiro.subject.SimplePrincipalCollection;
 import org.apache.shiro.subject.Subject;
 
 import com.bittrade.admin.shiro.realm.UserRealm;
+import com.bittrade.pojo.dto.SysUserDTO;
 import com.bittrade.pojo.model.SysUser;
 import com.core.tool.BeanUtil;
 
@@ -30,14 +31,14 @@ public class ShiroUtil {
 		getSubjct().logout();
 	}
 
-	public static SysUser getUser() {
-		SysUser user = null;
+	public static SysUserDTO getUser() {
+		SysUserDTO userDTO = null;
 		Object obj = getSubjct().getPrincipal();
 		if (null != obj ) {
-			user = new SysUser();
-			BeanUtil.copyBeanProp( user, obj );
+			userDTO = new SysUserDTO();
+			BeanUtil.copyBeanProp( userDTO, obj );
 		}
-		return user;
+		return userDTO;
 	}
 
 	public static void setUser(SysUser user) {

@@ -20,6 +20,7 @@ import com.bittrade.admin.util.ServletUtil;
 import com.bittrade.admin.util.ShiroUtil;
 import com.bittrade.admin.wrapper.WrapMapper;
 import com.bittrade.admin.wrapper.Wrapper;
+import com.bittrade.pojo.dto.SysUserDTO;
 import com.bittrade.pojo.model.SysUser;
 import com.core.common.constant.GlobalConstant.PageAug;
 import com.core.tool.DateTimeUtils;
@@ -146,7 +147,7 @@ public class BaseController {
 		return WrapMapper.wrap( code, message );
 	}
 
-	public SysUser getUser() {
+	public SysUserDTO getUser() {
 		return ShiroUtil.getUser();
 	}
 

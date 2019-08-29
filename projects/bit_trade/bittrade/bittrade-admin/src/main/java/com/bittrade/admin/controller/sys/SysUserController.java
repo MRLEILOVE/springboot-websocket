@@ -148,8 +148,8 @@ public class SysUserController extends BaseController {
 	@PostMapping("/checkLoginNameUnique")
 	@ResponseBody
 	public String checkLoginNameUnique(SysUser user) {
-		SysUser sysUser = getUser();
-		if (sysUser.getLoginName().equals(user.getLoginName())) {
+		SysUserDTO sysUserDTO = getUser();
+		if (sysUserDTO.getLoginName().equals(user.getLoginName())) {
 			return "0";
 		}
 		return sysUserService.count( new QueryWrapper<SysUser>( user ) ) > 0 ? "1" : "0";
@@ -158,8 +158,8 @@ public class SysUserController extends BaseController {
 	@PostMapping("/checkPhoneUnique")
 	@ResponseBody
 	public String checkPhoneUnique(SysUser user) {
-		SysUser sysUser = getUser();
-		if (sysUser.getPhonenumber().equals(user.getPhonenumber())) {
+		SysUserDTO sysUserDTO = getUser();
+		if (sysUserDTO.getPhonenumber().equals(user.getPhonenumber())) {
 			return "0";
 		}
 		return sysUserService.count( new QueryWrapper<SysUser>( user ) ) > 0 ? "1" : "0";
@@ -168,8 +168,8 @@ public class SysUserController extends BaseController {
 	@PostMapping("/checkEmailUnique")
 	@ResponseBody
 	public String checkEmailUnique(SysUser user) {
-		SysUser sysUser = getUser();
-		if (sysUser.getEmail().equals(user.getEmail())) {
+		SysUserDTO sysUserDTO = getUser();
+		if (sysUserDTO.getEmail().equals(user.getEmail())) {
 			return "0";
 		}
 		return sysUserService.count( new QueryWrapper<SysUser>( user ) ) > 0 ? "1" : "0";

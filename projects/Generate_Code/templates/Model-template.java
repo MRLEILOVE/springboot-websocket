@@ -62,7 +62,7 @@ public class ${struct.className} extends BaseModel<${struct.className}> {
 	 * ${itemPK.comment}
 	 */
 	<#if itemPK.autoIncrement>
-	@com.baomidou.mybatisplus.annotation.TableId(value = "${itemPK.name}", type = com.baomidou.mybatisplus.annotation.IdType.AUTO)
+	@com.baomidou.mybatisplus.annotation.TableId(value = "${itemPK.columnName}", type = com.baomidou.mybatisplus.annotation.IdType.AUTO)
 	</#if>
 	private ${itemPK.javaType} ${itemPK.name};
 	

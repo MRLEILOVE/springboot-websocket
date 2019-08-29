@@ -22,9 +22,9 @@ import com.bittrade.admin.dao.sys.ISysRoleMenuDAO;
 import com.bittrade.admin.enums.UserEnum;
 import com.bittrade.admin.service.sys.SysMenuService;
 import com.bittrade.pojo.dto.SysMenuDTO;
+import com.bittrade.pojo.dto.SysUserDTO;
 import com.bittrade.pojo.model.SysMenu;
 import com.bittrade.pojo.model.SysRole;
-import com.bittrade.pojo.model.SysUser;
 import com.core.common.constant.GlobalConstant.Number;
 import com.core.common.constant.GlobalConstant.Sys;
 
@@ -57,12 +57,12 @@ public class SysMenuServiceImpl extends ServiceImpl<ISysMenuDAO, SysMenu> implem
 	}
 
 	@Override
-	public List<SysMenuDTO> selectMenusByUser(SysUser user) {
+	public List<SysMenuDTO> selectMenusByUser(SysUserDTO userDTO) {
 		List<SysMenuDTO> meus = new LinkedList<SysMenuDTO>();
-		if (user.getLoginName().equals( Sys.ADMIN )) {
+		if (userDTO.getLoginName().equals( Sys.ADMIN )) {
 			meus = baseMapper.selectMenuNormalAll();
 		} else {
-			meus = baseMapper.selectMenusByUserId( user.getUserId() );
+			meus = baseMapper.selectMenusByUserId( userDTO.getUserId() );
 		}
 		return getChildPerms(meus, Number.ZERO_0);
 	}

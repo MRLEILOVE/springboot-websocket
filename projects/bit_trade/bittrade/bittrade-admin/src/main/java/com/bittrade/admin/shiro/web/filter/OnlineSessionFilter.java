@@ -17,7 +17,7 @@ import com.bittrade.admin.shiro.constant.ShiroConstant;
 import com.bittrade.admin.shiro.session.OnlineSession;
 import com.bittrade.admin.shiro.session.OnlineSessionDAO;
 import com.bittrade.admin.util.ShiroUtil;
-import com.bittrade.pojo.model.SysUser;
+import com.bittrade.pojo.dto.SysUserDTO;
 
 /**
  * 自定义访问控制
@@ -50,10 +50,10 @@ public class OnlineSessionFilter extends AccessControlFilter {
 			// 把user对象设置进去
 			boolean isGuest = onlineSession.getUserId() == null || onlineSession.getUserId() == 0L;
 			if (isGuest == true) {
-				SysUser user = ShiroUtil.getUser();
-				if (user != null) {
-					onlineSession.setUserId( user.getUserId() );
-					onlineSession.setLoginName( user.getLoginName() );
+				SysUserDTO userDTO = ShiroUtil.getUser();
+				if (userDTO != null) {
+					onlineSession.setUserId( userDTO.getUserId() );
+					onlineSession.setLoginName( userDTO.getLoginName() );
 //					onlineSession.setDeptName( user.getDept().getDeptName() );
 					onlineSession.markAttributeChanged();
 				}
