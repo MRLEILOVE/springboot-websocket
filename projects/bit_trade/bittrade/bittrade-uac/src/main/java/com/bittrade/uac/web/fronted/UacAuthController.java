@@ -12,11 +12,9 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 
 /**
  * @author: xzc
@@ -44,6 +42,23 @@ public class UacAuthController {
         log.info("com.jdcloud.provider.web.fronted.UacAuthController.checkPhoneActive:" + phoneNumber);
         User user = new User();
         user.setTelePhone(phoneNumber);
+        int count = uacUserService.count(Wrappers.lambdaQuery(user));
+        return ReturnDTO.ok(count > 0);
+    }
+
+    /**
+     * 邮箱是否在系统
+     *
+     * @param email
+     * @return
+     */
+    @PostMapping(value = "/checkEmailActive/{email}")
+    @ApiOperation(value = "邮箱地址是否已存在", notes = "邮箱地址是否已存在")
+    @ApiImplicitParam(name = "邮箱地址", value = "email", required = true, dataType = "String", paramType = "path")
+    public ReturnDTO<Boolean> checkEmailActive(@PathVariable String email) {
+        log.info("com.jdcloud.provider.web.fronted.UacAuthController.checkEmailActive:" + email);
+        User user = new User();
+        user.setUserEmail(email);
         int count = uacUserService.count(Wrappers.lambdaQuery(user));
         return ReturnDTO.ok(count > 0);
     }
