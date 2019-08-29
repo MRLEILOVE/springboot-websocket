@@ -28,6 +28,7 @@ public class UacExceptionHandler {
     @ResponseBody
     public ReturnDTO illegalArgumentException(Exception e) {
         log.info("异常={}", e.getMessage(), e);
+        log.error("", e);
         return ReturnDTO.error(e.getMessage());
     }
 }

@@ -7,6 +7,7 @@ import com.google.common.collect.Maps;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -75,11 +76,14 @@ public class C5SmsService {
         requestC5Dto.setApiKey(c5SmsConfig.getApiKey());
         requestC5Dto.setContent(content);
 
-        smsFeignClient.send(c5SmsConfig.getUserName(),
+        String result = smsFeignClient.send(c5SmsConfig.getUserName(),
                 c5SmsConfig.getPassword(),
                 areaCode + phoneNumber,
                 c5SmsConfig.getApiKey(),
                 content,
                 "UTF_8");
+        if (!StringUtils.containsIgnoreCase(result, "success")) {
+            throw new RuntimeException("短信发送失败");
+        }
     }
 }
