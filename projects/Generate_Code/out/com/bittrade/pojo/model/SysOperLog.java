@@ -113,7 +113,7 @@ public class SysOperLog extends BaseModel<SysOperLog> {
 	/**
 	 * 日志主键
 	 */
-	@com.baomidou.mybatisplus.annotation.TableId(value = "operId", type = com.baomidou.mybatisplus.annotation.IdType.AUTO)
+	@com.baomidou.mybatisplus.annotation.TableId(value = "oper_id", type = com.baomidou.mybatisplus.annotation.IdType.AUTO)
 	private Integer operId;
 	
 	/**

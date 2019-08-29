@@ -88,7 +88,7 @@ public class SysJobLog extends BaseModel<SysJobLog> {
 	/**
 	 * 任务日志ID
 	 */
-	@com.baomidou.mybatisplus.annotation.TableId(value = "jobLogId", type = com.baomidou.mybatisplus.annotation.IdType.AUTO)
+	@com.baomidou.mybatisplus.annotation.TableId(value = "job_log_id", type = com.baomidou.mybatisplus.annotation.IdType.AUTO)
 	private Long jobLogId;
 	
 	/**

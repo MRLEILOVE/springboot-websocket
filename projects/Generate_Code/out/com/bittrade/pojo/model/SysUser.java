@@ -143,7 +143,7 @@ public class SysUser extends BaseModel<SysUser> {
 	/**
 	 * 用户ID
 	 */
-	@com.baomidou.mybatisplus.annotation.TableId(value = "userId", type = com.baomidou.mybatisplus.annotation.IdType.AUTO)
+	@com.baomidou.mybatisplus.annotation.TableId(value = "user_id", type = com.baomidou.mybatisplus.annotation.IdType.AUTO)
 	private Integer userId;
 	
 	/**

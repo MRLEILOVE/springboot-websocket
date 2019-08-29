@@ -88,7 +88,7 @@ public class SysDictType extends BaseModel<SysDictType> {
 	/**
 	 * 字典主键
 	 */
-	@com.baomidou.mybatisplus.annotation.TableId(value = "dictId", type = com.baomidou.mybatisplus.annotation.IdType.AUTO)
+	@com.baomidou.mybatisplus.annotation.TableId(value = "dict_id", type = com.baomidou.mybatisplus.annotation.IdType.AUTO)
 	private Integer dictId;
 	
 	/**

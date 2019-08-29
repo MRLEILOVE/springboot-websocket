@@ -93,7 +93,7 @@ public class SysConfig extends BaseModel<SysConfig> {
 	/**
 	 * 参数主键
 	 */
-	@com.baomidou.mybatisplus.annotation.TableId(value = "configId", type = com.baomidou.mybatisplus.annotation.IdType.AUTO)
+	@com.baomidou.mybatisplus.annotation.TableId(value = "config_id", type = com.baomidou.mybatisplus.annotation.IdType.AUTO)
 	private Integer configId;
 	
 	/**

@@ -113,7 +113,7 @@ public class SysDept extends BaseModel<SysDept> {
 	/**
 	 * 部门id
 	 */
-	@com.baomidou.mybatisplus.annotation.TableId(value = "deptId", type = com.baomidou.mybatisplus.annotation.IdType.AUTO)
+	@com.baomidou.mybatisplus.annotation.TableId(value = "dept_id", type = com.baomidou.mybatisplus.annotation.IdType.AUTO)
 	private Integer deptId;
 	
 	/**

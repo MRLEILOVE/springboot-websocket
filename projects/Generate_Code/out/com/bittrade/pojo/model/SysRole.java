@@ -103,7 +103,7 @@ public class SysRole extends BaseModel<SysRole> {
 	/**
 	 * 角色ID
 	 */
-	@com.baomidou.mybatisplus.annotation.TableId(value = "roleId", type = com.baomidou.mybatisplus.annotation.IdType.AUTO)
+	@com.baomidou.mybatisplus.annotation.TableId(value = "role_id", type = com.baomidou.mybatisplus.annotation.IdType.AUTO)
 	private Integer roleId;
 	
 	/**

@@ -88,7 +88,7 @@ public class SysLogininfor extends BaseModel<SysLogininfor> {
 	/**
 	 * 访问ID
 	 */
-	@com.baomidou.mybatisplus.annotation.TableId(value = "infoId", type = com.baomidou.mybatisplus.annotation.IdType.AUTO)
+	@com.baomidou.mybatisplus.annotation.TableId(value = "info_id", type = com.baomidou.mybatisplus.annotation.IdType.AUTO)
 	private Integer infoId;
 	
 	/**

@@ -113,7 +113,7 @@ public class SysDictData extends BaseModel<SysDictData> {
 	/**
 	 * 字典编码
 	 */
-	@com.baomidou.mybatisplus.annotation.TableId(value = "dictCode", type = com.baomidou.mybatisplus.annotation.IdType.AUTO)
+	@com.baomidou.mybatisplus.annotation.TableId(value = "dict_code", type = com.baomidou.mybatisplus.annotation.IdType.AUTO)
 	private Integer dictCode;
 	
 	/**

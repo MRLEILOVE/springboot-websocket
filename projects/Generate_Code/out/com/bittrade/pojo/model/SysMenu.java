@@ -113,7 +113,7 @@ public class SysMenu extends BaseModel<SysMenu> {
 	/**
 	 * 菜单ID
 	 */
-	@com.baomidou.mybatisplus.annotation.TableId(value = "menuId", type = com.baomidou.mybatisplus.annotation.IdType.AUTO)
+	@com.baomidou.mybatisplus.annotation.TableId(value = "menu_id", type = com.baomidou.mybatisplus.annotation.IdType.AUTO)
 	private Integer menuId;
 	
 	/**
