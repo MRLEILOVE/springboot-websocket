@@ -40,205 +40,29 @@ public class TAdvertInfoDTO extends BaseDTO<TAdvertInfoDTO> {
 	private Long userId;
 
 	/**
-	 * 币名称
-	 */
-	private String coinName;
-
-	/**
-	 * c2c已成交数量
-	 */
-	private Integer c2cAlreadyDealCount;
-
-	/**
-	 * c2c总成交数量
-	 */
-	private Integer c2cTotalCount;
-
-	/**
-	 * c2c成交率
-	 */
-	private BigDecimal c2cTurnoverRate;
-
-	/**
-	 * 付款失效或放币时效
-	 */
-	private Long paymentOrPutCoinAging;
-
-
-	/**
-	 * 广告类型
-	 * <br/>
-	 *
-	 * @author ：leigq
-	 * @date ：2019/8/19 17:58
-	 */
-	@AllArgsConstructor
-	public enum AdvertTypeEnum {
-		SELL((byte) 1, "出售"),
-		BUY((byte) 2, "购买"),
-		;
-
-		@Getter
-		private Byte code;
-
-		@Getter
-		private String describe;
-
-		/**
-		 * 验证广告类型
-		 * <br/>
-		 * create by: leigq
-		 * <br/>
-		 * create time: 2019/8/19 17:24
-		 */
-		public static boolean isValidAdvertType(Byte advertType) {
-			for (AdvertTypeEnum advertTypeEnum : AdvertTypeEnum.values()) {
-				if (advertTypeEnum.code.equals(advertType)) {
-					return true;
-				}
-			}
-			return false;
-		}
-	}
-
-	/**
-	 * 定价方式
-	 * <br/>
-	 * @author     ：leigq
-	 * @date       ：2019/8/19 20:24
-	 */
-	@AllArgsConstructor
-	public enum PricingModeEnum {
-		FIXED((byte) 1, "固定价格"),
-		FLOAT((byte) 2, "浮动价格"),
-		;
-
-		@Getter
-		private Byte code;
-
-		@Getter
-		private String describe;
-
-		/**
-		 * 验证广告类型
-		 * <br/>
-		 * create by: leigq
-		 * <br/>
-		 * create time: 2019/8/19 17:24
-		 */
-		public static boolean isValidPricingMode(Byte pricingMode) {
-			for (PricingModeEnum pricingModeEnum : PricingModeEnum.values()) {
-				if (pricingModeEnum.code.equals(pricingMode)) {
-					return true;
-				}
-			}
-			return false;
-		}
-	}
-
-	/**
-	 * 状态
-	 * <br/>
-	 * @author     ：leigq
-	 * @date       ：2019/8/19 20:24
-	 */
-	@AllArgsConstructor
-	public enum StatusEnum {
-		PROCESSING((byte) 1, "进行中"),
-		PAUSE((byte) 2, "已下架(暂停)"),
-		revoked((byte) 3, "已撤销"),
-		;
-
-		@Getter
-		private Byte code;
-		@Getter
-		private String describe;
-
-		public static boolean isValidStatus(Byte status) {
-			for (StatusEnum statusEnum : StatusEnum.values()) {
-				if (statusEnum.code.equals(status)) {
-					return true;
-				}
-			}
-			return false;
-		}
-	}
-
-	/**
-	 * 认证等级
-	 * <br/>
-	 * @author     ：leigq
-	 * @date       ：2019/8/19 20:24
-	 */
-	@AllArgsConstructor
-	public enum CertificationLevel {
-		FIRST_LEVEL(1, "一级"),
-		SECONDARY(2, "二级"),
-		THIRD_LEVEL(3, "三级"),
-		;
-
-		@Getter
-		private Integer code;
-		@Getter
-		private String describe;
-
-		public static boolean isValidCertificationLevel(Integer level) {
-			for (CertificationLevel certificationLevel : CertificationLevel.values()) {
-				if (certificationLevel.code.equals(level)) {
-					return true;
-				}
-			}
-			return false;
-		}
-	}
-
-	/**
-	 * 付款时间
-	 * <br/>
-	 * @author     ：leigq
-	 * @date       ：2019/8/19 20:24
-	 */
-	@AllArgsConstructor
-	public enum PaymentTime {
-		TEN_MINUTES(10, "十分钟"),
-		FIFTEEN_MINUTES(15, "十五分钟"),
-		TWENTY_MINUTES(20, "二十分钟"),
-		;
-
-		@Getter
-		private Integer code;
-		@Getter
-		private String describe;
-
-		public static boolean isValidPaymentTime(Integer time) {
-			for (PaymentTime paymentTime : PaymentTime.values()) {
-				if (paymentTime.code.equals(time)) {
-					return true;
-				}
-			}
-			return false;
-		}
-	}
-	
-	/**
 	 * 币种id
 	 */
 	@NotNull(message = "coinId cannot be null")
 	private Long coinId;
 
 	/**
+	 * 币名称
+	 */
+	private String coinName;
+
+	/**
 	 * 类型 1:出售 2:购买
 	 */
 	@NotNull(message = "type cannot be null")
 	@CheckEnumValue(enumClass = AdvertTypeEnum.class, enumMethod = "isValidAdvertType")
-	private Byte type;
+	private Integer type;
 
 	/**
 	 * 定价方式 1：固定价格 2：浮动价格
 	 */
 	@NotNull(message = "pricingMode cannot be null")
 	@CheckEnumValue(enumClass = PricingModeEnum.class, enumMethod = "isValidPricingMode")
-	private Byte pricingMode;
+	private Integer pricingMode;
 
 	/**
 	 * 浮动比例
@@ -323,6 +147,181 @@ public class TAdvertInfoDTO extends BaseDTO<TAdvertInfoDTO> {
 	private String payPassword;
 
 	/**
+	 * c2c已成交数量
+	 */
+	private Integer c2cAlreadyDealCount;
+
+	/**
+	 * c2c总成交数量
+	 */
+	private Integer c2cTotalCount;
+
+	/**
+	 * c2c成交率
+	 */
+	private BigDecimal c2cTurnoverRate;
+
+	/**
+	 * 付款失效或放币时效
+	 */
+	private Long paymentOrPutCoinAging;
+
+	/**
+	 * 广告类型
+	 * <br/>
+	 *
+	 * @author ：leigq
+	 * @date ：2019/8/19 17:58
+	 */
+	@AllArgsConstructor
+	public enum AdvertTypeEnum {
+		SELL(1, "出售"),
+		BUY(2, "购买"),
+		;
+
+		@Getter
+		private Integer code;
+
+		@Getter
+		private String describe;
+
+		/**
+		 * 验证广告类型
+		 * <br/>
+		 * create by: leigq
+		 * <br/>
+		 * create time: 2019/8/19 17:24
+		 */
+		public static boolean isValidAdvertType(Integer advertType) {
+			for (AdvertTypeEnum advertTypeEnum : AdvertTypeEnum.values()) {
+				if (advertTypeEnum.code.equals(advertType)) {
+					return true;
+				}
+			}
+			return false;
+		}
+	}
+
+	/**
+	 * 定价方式
+	 * <br/>
+	 * @author     ：leigq
+	 * @date       ：2019/8/19 20:24
+	 */
+	@AllArgsConstructor
+	public enum PricingModeEnum {
+		FIXED(1, "固定价格"),
+		FLOAT(2, "浮动价格"),
+		;
+
+		@Getter
+		private Integer code;
+
+		@Getter
+		private String describe;
+
+		/**
+		 * 验证广告类型
+		 * <br/>
+		 * create by: leigq
+		 * <br/>
+		 * create time: 2019/8/19 17:24
+		 */
+		public static boolean isValidPricingMode(Integer pricingMode) {
+			for (PricingModeEnum pricingModeEnum : PricingModeEnum.values()) {
+				if (pricingModeEnum.code.equals(pricingMode)) {
+					return true;
+				}
+			}
+			return false;
+		}
+	}
+
+	/**
+	 * 状态
+	 * <br/>
+	 * @author     ：leigq
+	 * @date       ：2019/8/19 20:24
+	 */
+	@AllArgsConstructor
+	public enum StatusEnum {
+		PROCESSING(1, "进行中"),
+		PAUSE(2, "已下架(暂停)"),
+		revoked( 3, "已撤销"),
+		;
+
+		@Getter
+		private Integer code;
+		@Getter
+		private String describe;
+
+		public static boolean isValidStatus(Integer status) {
+			for (StatusEnum statusEnum : StatusEnum.values()) {
+				if (statusEnum.code.equals(status)) {
+					return true;
+				}
+			}
+			return false;
+		}
+	}
+
+	/**
+	 * 认证等级
+	 * <br/>
+	 * @author     ：leigq
+	 * @date       ：2019/8/19 20:24
+	 */
+	@AllArgsConstructor
+	public enum CertificationLevel {
+		FIRST_LEVEL(1, "一级"),
+		SECONDARY(2, "二级"),
+		THIRD_LEVEL(3, "三级"),
+		;
+
+		@Getter
+		private Integer code;
+		@Getter
+		private String describe;
+
+		public static boolean isValidCertificationLevel(Integer level) {
+			for (CertificationLevel certificationLevel : CertificationLevel.values()) {
+				if (certificationLevel.code.equals(level)) {
+					return true;
+				}
+			}
+			return false;
+		}
+	}
+
+	/**
+	 * 付款时间
+	 * <br/>
+	 * @author     ：leigq
+	 * @date       ：2019/8/19 20:24
+	 */
+	@AllArgsConstructor
+	public enum PaymentTime {
+		TEN_MINUTES(10, "十分钟"),
+		FIFTEEN_MINUTES(15, "十五分钟"),
+		TWENTY_MINUTES(20, "二十分钟"),
+		;
+
+		@Getter
+		private Integer code;
+		@Getter
+		private String describe;
+
+		public static boolean isValidPaymentTime(Integer time) {
+			for (PaymentTime paymentTime : PaymentTime.values()) {
+				if (paymentTime.code.equals(time)) {
+					return true;
+				}
+			}
+			return false;
+		}
+	}
+
+	/**
 	 * 定价方式是否为浮动价格
 	 * <br/>
 	 * create by: leigq
@@ -365,28 +364,4 @@ public class TAdvertInfoDTO extends BaseDTO<TAdvertInfoDTO> {
 	public Boolean isFloatingPrice() {
 		return Objects.equals(PricingModeEnum.FLOAT.getCode(), this.pricingMode);
 	}
-
-//	private Long id;
-//	private Long userId;
-//	private Long coinId;
-//	private Integer type;
-//	private Integer pricingMode;
-//	private java.math.BigDecimal floatingRatio;
-//	private java.math.BigDecimal price;
-//	private java.math.BigDecimal hidePrice;
-//	private java.math.BigDecimal minLimit;
-//	private java.math.BigDecimal maxLimit;
-//	private java.math.BigDecimal alreadyTransactionAmount;
-//	private java.math.BigDecimal balanceAmount;
-//	private java.math.BigDecimal freezeAmount;
-//	private Long paymentMethodId;
-//	private Byte status;
-//	private Byte openOpponentLimit;
-//	private Byte certificationLevel;
-//	private java.time.LocalDateTime registeredTime;
-//	private String message;
-//	private Long version;
-//	private java.time.LocalDateTime createTime;
-//	private java.time.LocalDateTime updateTime;
-
 }

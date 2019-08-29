@@ -24,9 +24,9 @@ import lombok.experimental.Accessors;
 @EqualsAndHashCode(callSuper = false)
 @TableName(value="t_advert_info")
 public class TAdvertInfo extends BaseModel<TAdvertInfo> {
-	
-	private static final long serialVersionUID = 1L;
-	
+
+	private static final long serialVersionUID = 2252880516378768941L;
+
 	/**
 	 * 
 	 * @author Administrator
@@ -171,12 +171,12 @@ public class TAdvertInfo extends BaseModel<TAdvertInfo> {
 	/**
 	 * 类型(1:出售 2:购买)
 	 */
-	private Byte type;
+	private Integer type;
 	
 	/**
 	 * 定价方式 1：固定价格 2：浮动价格
 	 */
-	private Byte pricingMode;
+	private Integer pricingMode;
 	
 	/**
 	 * 浮动比例 (小数 0.01 = 1%)
@@ -221,22 +221,22 @@ public class TAdvertInfo extends BaseModel<TAdvertInfo> {
 	/**
 	 * 收款方式id，出售单为收款方式, 购买单为付款方式
 	 */
-	private Long paymentMethodId;
+	private String paymentMethodId;
 	
 	/**
 	 * 状态：1，进行中；2，已下架(暂停)；3，已撤销；
 	 */
-	private Byte status;
+	private Integer status;
 	
 	/**
 	 * 是否开启对手限制 (0 禁用 1 启用)
 	 */
-	private Byte openOpponentLimit;
+	private Integer openOpponentLimit;
 	
 	/**
 	 * 对手限制-认证等级
 	 */
-	private Byte certificationLevel;
+	private Integer certificationLevel;
 	
 	/**
 	 * 对手限制-注册时间
