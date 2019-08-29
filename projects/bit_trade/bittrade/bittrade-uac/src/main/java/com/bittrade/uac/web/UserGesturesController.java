@@ -1,10 +1,10 @@
 package com.bittrade.uac.web;
 
+import com.bittrade.uac.model.dto.ReturnDTO;
 import com.bittrade.uac.model.pojo.UserGesture;
 import com.bittrade.uac.model.vo.CheckGestureVo;
 import com.bittrade.uac.model.vo.GestureVo;
 import com.bittrade.uac.service.UserGestureService;
-import com.core.common.DTO.ReturnDTO;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
