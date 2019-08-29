@@ -1,3 +1,6 @@
+/**
+ * This code is generated automatically. Please do not edit it.
+ */
 package com.bittrade.pojo.model;
 
 import com.baomidou.mybatisplus.annotation.TableName;
