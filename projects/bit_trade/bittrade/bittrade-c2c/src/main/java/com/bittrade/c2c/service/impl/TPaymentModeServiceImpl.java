@@ -7,7 +7,7 @@ import com.bittrade.c2c.dao.ITPaymentModeDAO;
 import com.bittrade.c2c.service.ITPaymentModeService;
 
 /**
- * 
+ * 收款方式
  * @author Administrator
  *
  */

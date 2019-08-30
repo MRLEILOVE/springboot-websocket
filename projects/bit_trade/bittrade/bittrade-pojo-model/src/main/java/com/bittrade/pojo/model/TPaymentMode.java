@@ -3,14 +3,11 @@
  */
 package com.bittrade.pojo.model;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.core.framework.base.model.BaseModel;
-
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.Accessors;
 
 /**
@@ -108,7 +105,7 @@ public class TPaymentMode extends BaseModel<TPaymentMode> {
 	/**
 	 * 主键
 	 */
-	@com.baomidou.mybatisplus.annotation.TableId(value = "id", type = com.baomidou.mybatisplus.annotation.IdType.AUTO)
+	@TableId(value = "id", type = IdType.AUTO)
 	private Long id;
 	
 	/**
@@ -119,7 +116,7 @@ public class TPaymentMode extends BaseModel<TPaymentMode> {
 	/**
 	 * 类型 1；银行卡 2：支付宝 3：微信
 	 */
-	private Byte type;
+	private Integer type;
 	
 	/**
 	 * 真实姓名或昵称
@@ -149,12 +146,12 @@ public class TPaymentMode extends BaseModel<TPaymentMode> {
 	/**
 	 * 状态：0，禁用；1，启用；
 	 */
-	private Byte status;
+	private Integer status;
 	
 	/**
 	 * 展示设置 1：用于收款 2:用于付款 3：用于收付款
 	 */
-	private Byte displaySetting;
+	private Integer displaySetting;
 	
 	/**
 	 * 所属币种 如：人民币CNY
@@ -170,5 +167,29 @@ public class TPaymentMode extends BaseModel<TPaymentMode> {
 	 * 修改时间
 	 */
 	private java.time.LocalDateTime updateTime;
+
+
+	@AllArgsConstructor
+	public enum DisplaySettingEnum{
+		//1：用于收款 2:用于付款 3：用于收付款
+		RECEIPT(1, "用于收款"),
+		PAYMENT(2, "用于付款"),
+		RECEIPT_AND_PAYMENT(3, "用于收付款"),
+		;
+
+		@Getter
+		private Integer code;
+		@Getter
+		private String describe;
+
+		public static boolean isValidDisplaySetting(Integer displaySetting) {
+			for (DisplaySettingEnum displaySettingEnum : DisplaySettingEnum.values()) {
+				if (displaySettingEnum.code.equals(displaySetting)) {
+					return true;
+				}
+			}
+			return false;
+		}
+	}
 	
 }
