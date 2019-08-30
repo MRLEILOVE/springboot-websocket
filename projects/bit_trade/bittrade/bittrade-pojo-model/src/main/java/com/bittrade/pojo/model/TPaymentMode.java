@@ -5,6 +5,7 @@ package com.bittrade.pojo.model;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.core.framework.base.model.BaseModel;
 import lombok.*;
@@ -157,7 +158,13 @@ public class TPaymentMode extends BaseModel<TPaymentMode> {
 	 * 所属币种 如：人民币CNY
 	 */
 	private String belongCurrency;
-	
+
+	/**
+	 * 逻辑删除,未删除0 已删除1
+	 */
+	@TableLogic
+	private Integer deleted;
+
 	/**
 	 * 创建时间
 	 */
@@ -237,6 +244,19 @@ public class TPaymentMode extends BaseModel<TPaymentMode> {
 			}
 			return false;
 		}
+	}
+
+	@AllArgsConstructor
+	public enum DeletedEnum{
+		// 逻辑删除,未删除0 已删除1
+		NO_DELETED(0, "未删除"),
+		DELETED(1, "已删除"),
+		;
+
+		@Getter
+		private Integer code;
+		@Getter
+		private String describe;
 	}
 	
 }

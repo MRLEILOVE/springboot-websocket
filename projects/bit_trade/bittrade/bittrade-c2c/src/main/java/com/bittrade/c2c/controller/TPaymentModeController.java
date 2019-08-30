@@ -15,9 +15,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.List;
 
 /**
  * 收款方式
@@ -36,6 +39,7 @@ public class TPaymentModeController extends BaseController<TPaymentMode, TPaymen
 	 * 绑定银行卡
 	 *
 	 * @param bindingBankCardVO {@link BindingBankCardVO}
+	 * @param loginUser         {@link LoginUser}
 	 * @return result
 	 */
 	@PostMapping("/action/binding_bank_card")
@@ -48,6 +52,7 @@ public class TPaymentModeController extends BaseController<TPaymentMode, TPaymen
 	 * 绑定微信支付
 	 *
 	 * @param bindingWeChartVO {@link BindingWeChartVO}
+	 * @param loginUser        {@link LoginUser}
 	 * @return result
 	 */
 	@PostMapping("/action/binding_we_chart")
@@ -60,12 +65,25 @@ public class TPaymentModeController extends BaseController<TPaymentMode, TPaymen
 	 * 绑定支付宝
 	 *
 	 * @param bindingAliPayVO {@link BindingAliPayVO}
+	 * @param loginUser       {@link LoginUser}
 	 * @return result
 	 */
 	@PostMapping("/action/binding_ali_pay")
 	public ReturnDTO<Object> bindingAliPay(@Validated BindingAliPayVO bindingAliPayVO, @ALoginUser LoginUser loginUser) {
 		boolean result = itPaymentModeService.bindingAliPay(bindingAliPayVO, loginUser);
 		return result ? ReturnDTO.ok("綁定成功") : ReturnDTO.error("綁定失敗");
+	}
+
+	/**
+	 * 获取用户已绑定付款方式
+	 *
+	 * @param loginUser {@link LoginUser}
+	 * @return result
+	 */
+	@GetMapping("/payments/already_binding")
+	public ReturnDTO<Object> listAlreadyBindingPayment(@ALoginUser LoginUser loginUser) {
+		List<TPaymentMode> listAlreadyBindingPayments = itPaymentModeService.listAlreadyBindingPayment(loginUser);
+		return ReturnDTO.ok(listAlreadyBindingPayments);
 	}
 
 

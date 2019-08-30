@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * 收款方式
@@ -109,6 +110,19 @@ public class TPaymentModeServiceImpl extends DefaultTPaymentModeServiceImpl<ITPa
 		if (count > 0) {
 			throw new BusinessException("收款方式已存在，請勿重複綁定");
 		}
+	}
+
+	/**
+	 * 获取用户已绑定付款方式
+	 *
+	 * @param loginUser {@link LoginUser}
+	 * @return result
+	 */
+	@Override
+	public List<TPaymentMode> listAlreadyBindingPayment(LoginUser loginUser) {
+		return baseMapper.selectList(Wrappers.<TPaymentMode>lambdaQuery()
+				.eq(TPaymentMode::getUserId, loginUser.getUser_id())
+		);
 	}
 
 }
