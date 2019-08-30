@@ -23,4 +23,6 @@ public interface ITPaymentModeService extends IDefaultTPaymentModeService {
 	boolean bindingAliPay(BindingAliPayVO bindingAliPayVO, LoginUser loginUser);
 
 	List<TPaymentMode> listAlreadyBindingPayment(LoginUser loginUser);
+
+	TPaymentMode getBindingPaymentDetails(Integer type, LoginUser loginUser);
 }

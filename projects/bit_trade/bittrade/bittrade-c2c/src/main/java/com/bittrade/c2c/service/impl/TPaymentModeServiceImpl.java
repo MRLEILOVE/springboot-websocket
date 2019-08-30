@@ -125,4 +125,19 @@ public class TPaymentModeServiceImpl extends DefaultTPaymentModeServiceImpl<ITPa
 		);
 	}
 
+	/**
+	 * 获取付款方式详情
+	 *
+	 * @param type {@link TPaymentMode.PaymentTypeEnum}
+	 * @param loginUser {@link LoginUser}
+	 * @return result
+	 */
+	@Override
+	public TPaymentMode getBindingPaymentDetails(Integer type, LoginUser loginUser) {
+		return baseMapper.selectOne(Wrappers.<TPaymentMode>lambdaQuery()
+				.eq(TPaymentMode::getUserId, loginUser.getUser_id())
+				.eq(TPaymentMode::getType, type)
+		);
+	}
+
 }
