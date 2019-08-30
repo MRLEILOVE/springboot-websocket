@@ -29,8 +29,8 @@ class BindingVO implements Serializable {
 	private String belongCurrency;
 
 	/**
-	 * 短信验证码
+	 * 短信验证码，6位, 前端自己做验证
 	 */
-	@NotNull(message = "短信验证码必填")
-	private String smsValidatedCode;
+//	@NotNull(message = "短信验证码必填")
+//	private String smsValidatedCode;
 }
