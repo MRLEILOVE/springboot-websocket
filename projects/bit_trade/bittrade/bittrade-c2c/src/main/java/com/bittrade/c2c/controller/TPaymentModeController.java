@@ -15,10 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -86,5 +83,17 @@ public class TPaymentModeController extends BaseController<TPaymentMode, TPaymen
 		return ReturnDTO.ok(listAlreadyBindingPayments);
 	}
 
+	/**
+	 * 获取付款方式详情
+	 *
+	 * @param type {@link TPaymentMode.PaymentTypeEnum}
+	 * @param loginUser {@link LoginUser}
+	 * @return result
+	 */
+	@GetMapping("/payments/details/{type}")
+	public ReturnDTO<Object> getBindingPaymentDetails(@PathVariable("type") Integer type, @ALoginUser LoginUser loginUser) {
+		TPaymentMode bindingPaymentDetails = itPaymentModeService.getBindingPaymentDetails(type, loginUser);
+		return ReturnDTO.ok(bindingPaymentDetails);
+	}
 
 }
