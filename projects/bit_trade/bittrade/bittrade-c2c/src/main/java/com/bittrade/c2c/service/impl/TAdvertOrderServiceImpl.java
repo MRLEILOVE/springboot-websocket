@@ -6,26 +6,23 @@ import java.util.Objects;
 
 import javax.annotation.Resource;
 
-import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.bittrade.pojo.dto.TAdvertOrderDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.bittrade.__default.service.impl.DefaultTAdvertOrderServiceImpl;
 import com.bittrade.c2c.dao.ITAdvertOrderDAO;
 import com.bittrade.c2c.service.ITAdvertInfoService;
 import com.bittrade.c2c.service.ITAdvertOrderService;
+import com.bittrade.pojo.dto.TAdvertOrderDTO;
 import com.bittrade.pojo.model.TAdvertInfo;
 import com.bittrade.pojo.model.TAdvertOrder;
 import com.bittrade.pojo.model.TLegalCurrencyAccount;
-import com.bittrade.pojo.vo.TAdvertOrderVO;
 import com.common.bittrade.service.ITLegalCurrencyAccountService;
 import com.common.bittrade.service.ITLegalCurrencyCoinService;
-import com.core.tool.BeanUtil;
 import com.core.web.constant.entity.LoginUser;
 import com.core.web.constant.exception.BusinessException;
 
@@ -36,7 +33,7 @@ import com.core.web.constant.exception.BusinessException;
  */
 @Service
 @Transactional(rollbackFor = Exception.class)
-public class TAdvertOrderServiceImpl extends DefaultTAdvertOrderServiceImpl<ITAdvertOrderDAO, TAdvertOrder, TAdvertOrderDTO, TAdvertOrderVO> implements ITAdvertOrderService {
+public class TAdvertOrderServiceImpl extends DefaultTAdvertOrderServiceImpl<ITAdvertOrderDAO> implements ITAdvertOrderService {
 
 	@Autowired
 	private ITAdvertInfoService itAdvertInfoService;
@@ -55,7 +52,7 @@ public class TAdvertOrderServiceImpl extends DefaultTAdvertOrderServiceImpl<ITAd
 	 * create time: 2019/8/22 09:49
 	 * @param userId : 用户id
 	 * @param type : {@link TAdvertOrder.AdvertTypeEnum}
-	 * @param status : {@link TAdvertOrder.StatusEnum}
+	 * @param status : {@link TAdvertOrderDTO.StatusEnum}
 	 * @return
 	 */
 	@Override
@@ -77,11 +74,11 @@ public class TAdvertOrderServiceImpl extends DefaultTAdvertOrderServiceImpl<ITAd
 		Integer count = baseMapper.selectCount(new LambdaQueryWrapper<TAdvertOrder>()
 				.eq(TAdvertOrder::getAdvertId, advertId)
 				.and(advertOrder -> advertOrder
-						.eq(TAdvertOrder::getStatus, TAdvertOrder.StatusEnum.ALREADY_AUCTION.getCode())
+						.eq(TAdvertOrder::getStatus, TAdvertOrderDTO.StatusEnum.ALREADY_AUCTION.getCode())
 						.or()
-						.eq(TAdvertOrder::getStatus, TAdvertOrder.StatusEnum.ALREADY_PAID.getCode())
+						.eq(TAdvertOrder::getStatus, TAdvertOrderDTO.StatusEnum.ALREADY_PAID.getCode())
 						.or()
-						.eq(TAdvertOrder::getStatus, TAdvertOrder.StatusEnum.ALREADY_RECEIPT.getCode())
+						.eq(TAdvertOrder::getStatus, TAdvertOrderDTO.StatusEnum.ALREADY_RECEIPT.getCode())
 				)
 		);
 		return count > 0;
@@ -100,12 +97,12 @@ public class TAdvertOrderServiceImpl extends DefaultTAdvertOrderServiceImpl<ITAd
 	public TAdvertOrder getAdvertOrderDetails(Long orderId) {
 		TAdvertOrder advertOrder = baseMapper.getByPK(orderId);
 		// 构建买家、卖家信息
-		if (advertOrder.getAdvertType().equals(TAdvertOrder.AdvertTypeEnum.SELL.getCode())) {
+		if (advertOrder.getAdvertType().equals(TAdvertOrderDTO.AdvertTypeEnum.SELL.getCode())) {
 			// 卖家信息
 			Long sellerId = advertOrder.getSellerId();
 			// TODO 构建用户信息，远程调 jd 项目
 		}
-		if (advertOrder.getAdvertType().equals(TAdvertOrder.AdvertTypeEnum.BUY.getCode())) {
+		if (advertOrder.getAdvertType().equals(TAdvertOrderDTO.AdvertTypeEnum.BUY.getCode())) {
 			// 买家信息
 			Long buyerId = advertOrder.getBuyerId();
 			// TODO 构建用户信息，远程调 jd 项目
@@ -130,13 +127,13 @@ public class TAdvertOrderServiceImpl extends DefaultTAdvertOrderServiceImpl<ITAd
 	@Override
 	public boolean cancelAdvertOrder(Long orderId, LoginUser loginUser) {
 		TAdvertOrder advertOrder = baseMapper.getByPK(orderId);
-		if (TAdvertOrder.StatusEnum.ALREADY_PAID.getCode().equals(advertOrder.getStatus())) {
+		if (TAdvertOrderDTO.StatusEnum.ALREADY_PAID.getCode().equals(advertOrder.getStatus())) {
 			throw new BusinessException("訂單已付款，無法取消");
 		}
-		if (TAdvertOrder.StatusEnum.ALREADY_COMPLETE.getCode().equals(advertOrder.getStatus())) {
+		if (TAdvertOrderDTO.StatusEnum.ALREADY_COMPLETE.getCode().equals(advertOrder.getStatus())) {
 			throw new BusinessException("訂單已完成，無法取消");
 		}
-		if (TAdvertOrder.StatusEnum.ALREADY_CANCEL.getCode().equals(advertOrder.getStatus())) {
+		if (TAdvertOrderDTO.StatusEnum.ALREADY_CANCEL.getCode().equals(advertOrder.getStatus())) {
 			throw new BusinessException("訂單已取消，請勿重複取消");
 		}
 		if (Objects.nonNull(advertOrder.getOverdueTime()) && LocalDateTime.now().isAfter(advertOrder.getOverdueTime())) {
@@ -147,7 +144,7 @@ public class TAdvertOrderServiceImpl extends DefaultTAdvertOrderServiceImpl<ITAd
 		}
 		// 修改订单状态、取消者id
 		boolean updateAdvertOrderStatusResult = this.update(new LambdaUpdateWrapper<TAdvertOrder>()
-				.set(TAdvertOrder::getStatus, TAdvertOrder.StatusEnum.ALREADY_CANCEL.getCode())
+				.set(TAdvertOrder::getStatus, TAdvertOrderDTO.StatusEnum.ALREADY_CANCEL.getCode())
 				.set(TAdvertOrder::getCancellerId, loginUser.getUser_id())
 				.eq(TAdvertOrder::getId, advertOrder.getId())
 		);
@@ -184,18 +181,18 @@ public class TAdvertOrderServiceImpl extends DefaultTAdvertOrderServiceImpl<ITAd
 	@Override
 	public boolean clickAlreadyPaid(Long orderId) {
 		TAdvertOrder advertOrder = baseMapper.getByPK(orderId);
-		if (TAdvertOrder.StatusEnum.ALREADY_CANCEL.getCode().equals(advertOrder.getStatus())) {
+		if (TAdvertOrderDTO.StatusEnum.ALREADY_CANCEL.getCode().equals(advertOrder.getStatus())) {
 			throw new BusinessException("訂單已取消，無法確認付款");
 		}
 		if (LocalDateTime.now().isAfter(advertOrder.getOverdueTime())) {
 			throw new BusinessException("訂單已超時自動取消，無法確認付款");
 		}
-		if (TAdvertOrder.StatusEnum.ALREADY_PAID.getCode().equals(advertOrder.getStatus())) {
+		if (TAdvertOrderDTO.StatusEnum.ALREADY_PAID.getCode().equals(advertOrder.getStatus())) {
 			throw new BusinessException("已點擊付款，請勿重複操作");
 		}
 		TAdvertOrder order = TAdvertOrder.builder()
 				.id(orderId)
-				.status(TAdvertOrder.StatusEnum.ALREADY_PAID.getCode()).build()
+				.status(TAdvertOrderDTO.StatusEnum.ALREADY_PAID.getCode()).build()
 				.setPaymentTime(LocalDateTime.now());
 		return updateById(order);
 	}
@@ -212,13 +209,13 @@ public class TAdvertOrderServiceImpl extends DefaultTAdvertOrderServiceImpl<ITAd
 	@Override
 	public boolean clickAlreadyReceipt(Long orderId) {
 		TAdvertOrder advertOrder = baseMapper.getByPK(orderId);
-		if (TAdvertOrder.StatusEnum.ALREADY_CANCEL.getCode().equals(advertOrder.getStatus())) {
+		if (TAdvertOrderDTO.StatusEnum.ALREADY_CANCEL.getCode().equals(advertOrder.getStatus())) {
 			throw new BusinessException("訂單已取消，無法確認收款");
 		}
 		if (LocalDateTime.now().isAfter(advertOrder.getOverdueTime())) {
 			throw new BusinessException("訂單已超時自動取消，無法確認收款");
 		}
-		if (TAdvertOrder.StatusEnum.ALREADY_COMPLETE.getCode().equals(advertOrder.getStatus())) {
+		if (TAdvertOrderDTO.StatusEnum.ALREADY_COMPLETE.getCode().equals(advertOrder.getStatus())) {
 			throw new BusinessException("訂單已完成，無法確認收款");
 		}
 		try {
@@ -240,7 +237,7 @@ public class TAdvertOrderServiceImpl extends DefaultTAdvertOrderServiceImpl<ITAd
 						.setAlreadyTransactionAmount(advertInfo.getAlreadyTransactionAmount().add(advertOrder.getTransactionNum()))
 						.updateById();
 			// 修改订单状态为已完成
-			advertOrder.setStatus(TAdvertOrder.StatusEnum.ALREADY_COMPLETE.getCode())
+			advertOrder.setStatus(TAdvertOrderDTO.StatusEnum.ALREADY_COMPLETE.getCode())
 					.setGrantCoinTime(LocalDateTime.now())
 					.updateById();
 			// TODO 广告内余额为 0 怎么处理？？？
@@ -259,7 +256,7 @@ public class TAdvertOrderServiceImpl extends DefaultTAdvertOrderServiceImpl<ITAd
 	 * create time: 2019/8/22 22:15
 	 * @param page : {@link Page}
 	 * @param loginUser : {@link LoginUser}
-	 * @param status : {@link TAdvertOrder.StatusEnum}
+	 * @param status : {@link TAdvertOrderDTO.StatusEnum}
 	 * @return result
 	 */
 	@Override

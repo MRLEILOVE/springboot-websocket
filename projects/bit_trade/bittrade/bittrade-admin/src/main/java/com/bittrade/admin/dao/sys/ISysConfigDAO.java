@@ -3,7 +3,7 @@ package com.bittrade.admin.dao.sys;
 import java.util.List;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.bittrade.admin.model.domain.SysConfig;
+import com.bittrade.pojo.model.SysConfig;
 
 /**
  * <p>

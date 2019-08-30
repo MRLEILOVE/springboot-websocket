@@ -29,7 +29,7 @@ public class TAdvertInfoVO extends BaseVO<TAdvertInfoVO> {
 	private java.math.BigDecimal alreadyTransactionAmount;
 	private java.math.BigDecimal balanceAmount;
 	private java.math.BigDecimal freezeAmount;
-	private Long paymentMethodId;
+	private String paymentMethodId;
 	private Byte status;
 	private Byte openOpponentLimit;
 	private Byte certificationLevel;

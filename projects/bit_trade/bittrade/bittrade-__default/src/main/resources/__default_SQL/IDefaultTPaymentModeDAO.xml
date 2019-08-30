@@ -46,7 +46,7 @@
 	<!-- 其他的也可以类似的加， yes， 类似蕾丝的。 -->
 	<sql id="sql_Column_forObject">
 		<choose>
-			<when test="tPaymentMode.strArr_field != null">
+			<when test="tPaymentMode != null and tPaymentMode.strArr_field != null">
 		<foreach collection="tPaymentMode.strArr_field" index="index" item="item" open="" separator="," close="">
 			`${item}`
 		</foreach>
@@ -79,7 +79,7 @@
 		</choose>
 	</sql>
 	<sql id="sql_WHERE_forObject">
-		<if test="tPaymentMode.map_in != null">
+		<if test="tPaymentMode != null and tPaymentMode.map_in != null">
 		<foreach collection="tPaymentMode.map_in.entrySet()" index="map_index" item="map_item">
 		AND `${map_index}` IN 
 		<foreach collection="map_item" index="arr_index" item="arr_item" open="(" separator="," close=")">
@@ -87,17 +87,17 @@
 		</foreach>
 		</foreach>
 		</if>
-		<if test="tPaymentMode.map_eq != null">
+		<if test="tPaymentMode != null and tPaymentMode.map_eq != null">
 		<foreach collection="tPaymentMode.map_eq.entrySet()" index="map_index" item="map_item">
 		AND `${map_index}` = #{map_item}
 		</foreach>
 		</if>
-		<if test="tPaymentMode.map_le != null">
+		<if test="tPaymentMode != null and tPaymentMode.map_le != null">
 		<foreach collection="tPaymentMode.map_le.entrySet()" index="map_index" item="map_item">
 		AND `${map_index}` &lt;= #{map_item}
 		</foreach>
 		</if>
-		<if test="tPaymentMode.map_ge != null">
+		<if test="tPaymentMode != null and tPaymentMode.map_ge != null">
 		<foreach collection="tPaymentMode.map_ge.entrySet()" index="map_index" item="map_item">
 		AND `${map_index}` &gt;= #{map_item}
 		</foreach>

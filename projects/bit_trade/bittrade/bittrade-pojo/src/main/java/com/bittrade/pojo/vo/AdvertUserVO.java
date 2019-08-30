@@ -1,11 +1,12 @@
 package com.bittrade.pojo.vo;
 
-import com.bittrade.pojo.model.TAdvertInfo;
-import lombok.Data;
-import lombok.experimental.Accessors;
-
 import java.io.Serializable;
 import java.util.Objects;
+
+import com.bittrade.pojo.dto.TAdvertInfoDTO;
+
+import lombok.Data;
+import lombok.experimental.Accessors;
 
 /**
  * 登录用户广告 VO
@@ -98,6 +99,6 @@ public class AdvertUserVO implements Serializable {
 	 * create time: 2019/8/20 13:01
 	 */
 	public Boolean isFloatingPrice() {
-		return Objects.equals(TAdvertInfo.PricingModeEnum.FLOAT.getCode(), this.pricingMode);
+		return Objects.equals(TAdvertInfoDTO.PricingModeEnum.FLOAT.getCode(), this.pricingMode);
 	}
 }

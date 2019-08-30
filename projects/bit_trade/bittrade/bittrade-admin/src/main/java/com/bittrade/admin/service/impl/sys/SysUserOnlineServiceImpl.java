@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.bittrade.admin.dao.sys.ISysUserOnlineDAO;
-import com.bittrade.admin.model.domain.SysUserOnline;
+import com.bittrade.pojo.model.SysUserOnline;
 import com.core.tool.DateUtil;
 
 /**

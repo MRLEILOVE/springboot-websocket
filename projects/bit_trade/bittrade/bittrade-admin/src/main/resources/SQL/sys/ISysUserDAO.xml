@@ -3,7 +3,7 @@
 <mapper namespace="com.bittrade.admin.dao.sys.ISysUserDAO">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.bittrade.admin.model.domain.SysUser">
+    <resultMap id="BaseResultMap" type="com.bittrade.pojo.model.SysUser">
         <id column="user_id" property="userId" />
         <result column="dept_id" property="deptId" />
         <result column="login_name" property="loginName" />
@@ -24,11 +24,40 @@
         <result column="update_by" property="updateBy" />
         <result column="update_time" property="updateTime" />
         <result column="remark" property="remark" />
-        <association property="dept"    column="dept_id" javaType="com.bittrade.admin.model.domain.SysDept" resultMap="deptResult" />
+        <!--
+        <association property="dept"    column="dept_id" javaType="com.bittrade.pojo.model.SysDept" resultMap="DeptResult" />
 		<collection  property="roles"   javaType="java.util.List"        resultMap="RoleResult" />
+		-->
     </resultMap>
     
-    <resultMap id="deptResult" type="com.bittrade.admin.model.domain.SysDept">
+    <resultMap id="BaseResultDTOMap" type="com.bittrade.pojo.dto.SysUserDTO">
+        <id column="user_id" property="userId" />
+        <result column="dept_id" property="deptId" />
+        <result column="login_name" property="loginName" />
+        <result column="user_name" property="userName" />
+        <result column="user_type" property="userType" />
+        <result column="email" property="email" />
+        <result column="phonenumber" property="phonenumber" />
+        <result column="sex" property="sex" />
+        <result column="avatar" property="avatar" />
+        <result column="password" property="password" />
+        <result column="salt" property="salt" />
+        <result column="status" property="status" />
+        <result column="del_flag" property="delFlag" />
+        <result column="login_ip" property="loginIp" />
+        <result column="login_date" property="loginDate" />
+        <result column="create_by" property="createBy" />
+        <result column="create_time" property="createTime" />
+        <result column="update_by" property="updateBy" />
+        <result column="update_time" property="updateTime" />
+        <result column="remark" property="remark" />
+        
+        <association property="dept"    column="dept_id" javaType="com.bittrade.pojo.model.SysDept" resultMap="DeptResult" />
+		<collection  property="roles"   javaType="java.util.List"        resultMap="RoleResult" />
+		
+    </resultMap>
+    
+    <resultMap id="DeptResult" type="com.bittrade.pojo.dto.SysDeptDTO">
 		<id     property="deptId"   column="dept_id"     />
 		<result property="parentId" column="parent_id"   />
 		<result property="deptName" column="dept_name"   />
@@ -36,7 +65,7 @@
 		<result property="status"   column="dept_status" />
 	</resultMap>
 	
-	<resultMap id="RoleResult" type="com.bittrade.admin.model.domain.SysRole">
+	<resultMap id="RoleResult" type="com.bittrade.pojo.dto.SysRoleDTO">
 		<id     property="roleId"       column="role_id"        />
 		<result property="roleName"     column="role_name"      />
 		<result property="roleKey"      column="role_key"       />
@@ -75,7 +104,7 @@
 		where u.email = #{email}
 	</select>
 	
-	<select id="selectUserById" parameterType="Integer" resultMap="BaseResultMap">
+	<select id="selectUserById" parameterType="Integer" resultMap="BaseResultDTOMap">
 		<include refid="selectUserVo"/>
 		where u.user_id = #{userId}
 	</select>
@@ -111,7 +140,7 @@
 		</if>
 	</select>
 	
-	<update id="updateUser" parameterType="com.bittrade.admin.model.domain.SysUser">
+	<update id="updateUser" parameterType="com.bittrade.pojo.model.SysUser">
  		update sys_user
  		<set>
  			<if test="deptId != null and deptId != 0">dept_id = #{deptId},</if>
@@ -132,7 +161,7 @@
  		</set>
  		where user_id = #{userId}
 	</update>
-	<insert id="insertUser" parameterType="com.bittrade.admin.model.domain.SysUser" useGeneratedKeys="true" keyProperty="userId">
+	<insert id="insertUser" parameterType="com.bittrade.pojo.model.SysUser" useGeneratedKeys="true" keyProperty="userId">
  		insert into sys_user(
  			<if test="userId != null and userId != 0">user_id,</if>
  			<if test="deptId != null and deptId != 0">dept_id,</if>

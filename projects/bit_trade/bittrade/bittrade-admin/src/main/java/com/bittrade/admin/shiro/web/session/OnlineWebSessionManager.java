@@ -15,11 +15,11 @@ import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.bittrade.admin.model.domain.SysUserOnline;
 import com.bittrade.admin.service.impl.sys.SysUserOnlineServiceImpl;
 import com.bittrade.admin.shiro.constant.ShiroConstant;
 import com.bittrade.admin.shiro.session.OnlineSession;
 import com.bittrade.admin.util.SpringUtil;
+import com.bittrade.pojo.model.SysUserOnline;
 
 /**
  * 主要是在此如果会话的属性修改了 就标识下其修改了 然后方便 OnlineSessionDao同步

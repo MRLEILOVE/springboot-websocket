@@ -40,7 +40,7 @@
 	<!-- 其他的也可以类似的加， yes， 类似蕾丝的。 -->
 	<sql id="sql_Column_forObject">
 		<choose>
-			<when test="tLegalCurrencyAccount.strArr_field != null">
+			<when test="tLegalCurrencyAccount != null and tLegalCurrencyAccount.strArr_field != null">
 		<foreach collection="tLegalCurrencyAccount.strArr_field" index="index" item="item" open="" separator="," close="">
 			`${item}`
 		</foreach>
@@ -73,7 +73,7 @@
 		</choose>
 	</sql>
 	<sql id="sql_WHERE_forObject">
-		<if test="tLegalCurrencyAccount.map_in != null">
+		<if test="tLegalCurrencyAccount != null and tLegalCurrencyAccount.map_in != null">
 		<foreach collection="tLegalCurrencyAccount.map_in.entrySet()" index="map_index" item="map_item">
 		AND `${map_index}` IN 
 		<foreach collection="map_item" index="arr_index" item="arr_item" open="(" separator="," close=")">
@@ -81,17 +81,17 @@
 		</foreach>
 		</foreach>
 		</if>
-		<if test="tLegalCurrencyAccount.map_eq != null">
+		<if test="tLegalCurrencyAccount != null and tLegalCurrencyAccount.map_eq != null">
 		<foreach collection="tLegalCurrencyAccount.map_eq.entrySet()" index="map_index" item="map_item">
 		AND `${map_index}` = #{map_item}
 		</foreach>
 		</if>
-		<if test="tLegalCurrencyAccount.map_le != null">
+		<if test="tLegalCurrencyAccount != null and tLegalCurrencyAccount.map_le != null">
 		<foreach collection="tLegalCurrencyAccount.map_le.entrySet()" index="map_index" item="map_item">
 		AND `${map_index}` &lt;= #{map_item}
 		</foreach>
 		</if>
-		<if test="tLegalCurrencyAccount.map_ge != null">
+		<if test="tLegalCurrencyAccount != null and tLegalCurrencyAccount.map_ge != null">
 		<foreach collection="tLegalCurrencyAccount.map_ge.entrySet()" index="map_index" item="map_item">
 		AND `${map_index}` &gt;= #{map_item}
 		</foreach>

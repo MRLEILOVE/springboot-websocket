@@ -6,7 +6,8 @@ import org.apache.ibatis.annotations.Param;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.bittrade.admin.model.domain.SysUser;
+import com.bittrade.pojo.dto.SysUserDTO;
+import com.bittrade.pojo.model.SysUser;
 
 /**
  * <p>
@@ -24,7 +25,7 @@ public interface ISysUserDAO extends BaseMapper<SysUser> {
 	 * @param userId
 	 * @return 用户对象信息
 	 */
-	public SysUser selectUserById(Integer userId);
+	public SysUserDTO selectUserById(Integer userId);
 
 	/**
 	 * .通过邮箱查询用户

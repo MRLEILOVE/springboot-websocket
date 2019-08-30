@@ -12,16 +12,18 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.bittrade.__default.service.impl.DefaultSysRoleServiceImpl;
 import com.bittrade.admin.dao.sys.ISysRoleDAO;
 import com.bittrade.admin.dao.sys.ISysRoleDeptDAO;
 import com.bittrade.admin.dao.sys.ISysRoleMenuDAO;
 import com.bittrade.admin.dao.sys.ISysUserRoleDAO;
 import com.bittrade.admin.enums.UserEnum.UserState;
-import com.bittrade.admin.model.domain.SysRole;
-import com.bittrade.admin.model.domain.SysRoleDept;
-import com.bittrade.admin.model.domain.SysRoleMenu;
 import com.bittrade.admin.service.sys.SysRoleService;
+import com.bittrade.pojo.dto.SysRoleDTO;
+import com.bittrade.pojo.model.SysRole;
+import com.bittrade.pojo.model.SysRoleDept;
+import com.bittrade.pojo.model.SysRoleMenu;
+import com.core.tool.BeanUtil;
 import com.core.tool.ConvertUtil;
 
 /**
@@ -33,7 +35,8 @@ import com.core.tool.ConvertUtil;
  * @since 2018-11-03
  */
 @Service
-public class SysRoleServiceImpl extends ServiceImpl<ISysRoleDAO, SysRole> implements SysRoleService {
+public class SysRoleServiceImpl 
+	extends DefaultSysRoleServiceImpl<ISysRoleDAO> implements SysRoleService {
 
 	@Autowired
 	private ISysRoleMenuDAO roleMenuMapper;
@@ -55,13 +58,13 @@ public class SysRoleServiceImpl extends ServiceImpl<ISysRoleDAO, SysRole> implem
 	}
 
 	@Override
-	public List<SysRole> selectRolesByUserId(Integer userId) {
+	public List<SysRoleDTO> selectRolesByUserId(Integer userId) {
 		List<SysRole> userRoles = baseMapper.selectRolesByUserId( userId );
-		List<SysRole> roles = baseMapper.selectList( null );
-		for (SysRole role : roles) {
+		List<SysRoleDTO> roles = baseMapper.getsDTOBy( null );
+		for (SysRoleDTO roleDTO : roles) {
 			for (SysRole userRole : userRoles) {
-				if (role.getRoleId().longValue() == userRole.getRoleId().longValue()) {
-					role.setFlag( true );
+				if (roleDTO.getRoleId().longValue() == userRole.getRoleId().longValue()) {
+					roleDTO.setFlag( true );
 					break;
 				}
 			}
@@ -76,11 +79,13 @@ public class SysRoleServiceImpl extends ServiceImpl<ISysRoleDAO, SysRole> implem
 	}
 
 	@Override
-	public int insertRole(SysRole role) {
+	public int insertRole(SysRoleDTO roleDTO) {
 		// 新增角色信息
-		role.setRoleKey( UUID.randomUUID().toString() );
+		roleDTO.setRoleKey( UUID.randomUUID().toString() );
+		SysRole role = new SysRole();
+		BeanUtil.copyObj(roleDTO, role);
 		baseMapper.insertRole( role );
-		return insertRoleMenu( role );
+		return insertRoleMenu( roleDTO );
 	}
 
 	@Override
@@ -111,22 +116,26 @@ public class SysRoleServiceImpl extends ServiceImpl<ISysRoleDAO, SysRole> implem
 	}
 
 	@Override
-	public int updateRole(SysRole role) {
+	public int updateRole(SysRoleDTO roleDTO) {
 		// 修改角色信息
+		SysRole role = new SysRole();
+		BeanUtil.copyObj(roleDTO, role);
 		baseMapper.updateRole(role);
         // 删除角色与菜单关联
-        roleMenuMapper.deleteRoleMenuByRoleId(role.getRoleId());
-        return insertRoleMenu(role);
+        roleMenuMapper.deleteRoleMenuByRoleId(roleDTO.getRoleId());
+        return insertRoleMenu(roleDTO);
 	}
 
 	@Override
-	public int updateRule(SysRole role) {
+	public int updateRule(SysRoleDTO roleDTO) {
 		 // 修改角色信息
+		SysRole role = new SysRole();
+		BeanUtil.copyObj(roleDTO, role);
 		baseMapper.updateRole(role);
         // 删除角色与部门关联
-        roleDeptMapper.deleteRoleDeptByRoleId(role.getRoleId());
+        roleDeptMapper.deleteRoleDeptByRoleId(roleDTO.getRoleId());
         // 新增角色和部门信息（数据权限）
-        return insertRoleDept(role);
+        return insertRoleDept(roleDTO);
 	}
 
 	@Override
@@ -157,15 +166,15 @@ public class SysRoleServiceImpl extends ServiceImpl<ISysRoleDAO, SysRole> implem
 	/**
      * .新增角色部门信息(数据权限)
      *
-     * @param role 角色对象
+     * @param roleDTO 角色对象
      */
-	public int insertRoleDept(SysRole role) {
+	public int insertRoleDept(SysRoleDTO roleDTO) {
 		int rows = 1;
 		// 新增角色与部门（数据权限）管理
 		List<SysRoleDept> list = new ArrayList<SysRoleDept>();
-		for (Integer deptId : role.getDeptIds()) {
+		for (Integer deptId : roleDTO.getDeptIds()) {
 			SysRoleDept rd = new SysRoleDept();
-			rd.setRoleId( role.getRoleId() );
+			rd.setRoleId( roleDTO.getRoleId() );
 			rd.setDeptId( deptId );
 			list.add( rd );
 		}
@@ -179,15 +188,15 @@ public class SysRoleServiceImpl extends ServiceImpl<ISysRoleDAO, SysRole> implem
 	/**
 	 * .新增角色菜单信息
 	 * 
-	 * @param role
+	 * @param roleDTO
 	 */
-	public int insertRoleMenu(SysRole role) {
+	public int insertRoleMenu(SysRoleDTO roleDTO) {
 		int rows = 1;
 		// 新增用户与角色管理
 		List<SysRoleMenu> list = new ArrayList<SysRoleMenu>();
-		for (Integer menuId : role.getMenuIds()) {
+		for (Integer menuId : roleDTO.getMenuIds()) {
 			SysRoleMenu rm = new SysRoleMenu();
-			rm.setRoleId( role.getRoleId() );
+			rm.setRoleId( roleDTO.getRoleId() );
 			rm.setMenuId( menuId );
 			list.add( rm );
 		}

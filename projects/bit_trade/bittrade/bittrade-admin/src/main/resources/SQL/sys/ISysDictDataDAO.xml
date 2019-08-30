@@ -3,7 +3,7 @@
 <mapper namespace="com.bittrade.admin.dao.sys.ISysDictDataDAO">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.bittrade.admin.model.domain.SysDictData">
+    <resultMap id="BaseResultMap" type="com.bittrade.pojo.model.SysDictData">
         <id column="dict_code" property="dictCode" />
         <result column="dict_sort" property="dictSort" />
         <result column="dict_label" property="dictLabel" />
@@ -45,7 +45,7 @@
 		</where>
 	</select>
 	
-	<select id="selectDictDataByType" parameterType="com.bittrade.admin.model.domain.SysDictData" resultMap="BaseResultMap">
+	<select id="selectDictDataByType" parameterType="com.bittrade.pojo.model.SysDictData" resultMap="BaseResultMap">
 		<include refid="selectDictDataVo"/>
 		where dict_type = #{dictType} order by dict_sort asc
 	</select>
@@ -75,7 +75,7 @@
         </foreach> 
  	</delete>
  	
-	<update id="updateDictData" parameterType="com.bittrade.admin.model.domain.SysDictData">
+	<update id="updateDictData" parameterType="com.bittrade.pojo.model.SysDictData">
  		update sys_dict_data
  		<set>
  			<if test="dictSort != null and dictSort != ''">dict_sort = #{dictSort},</if>
@@ -97,7 +97,7 @@
  		update sys_dict_data set dict_type = #{newDictType} where dict_type = #{oldDictType}
 	</update>
  	
- 	<insert id="insertDictData" parameterType="com.bittrade.admin.model.domain.SysDictData" useGeneratedKeys="true" keyProperty="dictCode">
+ 	<insert id="insertDictData" parameterType="com.bittrade.pojo.model.SysDictData" useGeneratedKeys="true" keyProperty="dictCode">
  		insert into sys_dict_data(
  			<if test="dictSort != null and dictSort != ''">dict_sort,</if>
  			<if test="dictLabel != null and dictLabel != ''">dict_label,</if>

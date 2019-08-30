@@ -3,7 +3,7 @@
 <mapper namespace="com.bittrade.admin.dao.sys.ISysOperLogDAO">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.bittrade.admin.model.domain.SysOperLog">
+    <resultMap id="BaseResultMap" type="com.bittrade.pojo.model.SysOperLog">
         <id column="oper_id" property="operId" />
         <result column="title" property="title" />
         <result column="business_type" property="businessType" />
@@ -30,12 +30,12 @@
         from sys_oper_log
     </sql>
     
-	<insert id="insertOperlog" parameterType="com.bittrade.admin.model.domain.SysOperLog">
+	<insert id="insertOperlog" parameterType="com.bittrade.pojo.model.SysOperLog">
 		insert into sys_oper_log(title, business_type, method, operator_type, oper_name, dept_name, oper_url, oper_ip, oper_location, oper_param, status, error_msg, oper_time)
         values (#{title}, #{businessType}, #{method}, #{operatorType}, #{operName}, #{deptName}, #{operUrl}, #{operIp}, #{operLocation}, #{operParam}, #{status}, #{errorMsg}, sysdate())
 	</insert>
 	
-	<select id="selectOperLogList" parameterType="com.bittrade.admin.model.domain.SysOperLog" resultMap="BaseResultMap">
+	<select id="selectOperLogList" parameterType="com.bittrade.pojo.model.SysOperLog" resultMap="BaseResultMap">
 		<include refid="selectOperLogVo"/>
 		<where>
 			<if test="operLog.title != null and operLog.title != ''">

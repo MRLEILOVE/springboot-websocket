@@ -3,11 +3,11 @@
  */
 package com.bittrade.__default.service.impl;
 
+import com.bittrade.pojo.model.TPaymentMode;
+import com.bittrade.pojo.dto.TPaymentModeDTO;
+import com.bittrade.pojo.vo.TPaymentModeVO;
 import com.bittrade.__default.service.IDefaultTPaymentModeService;
 import com.core.framework.base.DAO.IBaseDAO;
-import com.core.framework.base.DTO.BaseDTO;
-import com.core.framework.base.VO.BaseVO;
-import com.core.framework.base.model.BaseModel;
 import com.core.framework.base.service.impl.BaseServiceImpl;
 
 /**
@@ -16,6 +16,6 @@ import com.core.framework.base.service.impl.BaseServiceImpl;
  *
  */
 //public abstract class DefaultTPaymentModeServiceImpl extends BaseServiceImpl<TPaymentMode, TPaymentModeDTO, TPaymentModeVO, ITPaymentModeDAO> implements IDefaultTPaymentModeService {
-public abstract class DefaultTPaymentModeServiceImpl<DAO extends IBaseDAO<Model, DTO, VO>, Model extends BaseModel<Model>, DTO extends BaseDTO<DTO>, VO extends BaseVO<VO>> extends BaseServiceImpl<Model, DTO, VO, DAO> implements IDefaultTPaymentModeService<Model, DTO, VO> {
+public abstract class DefaultTPaymentModeServiceImpl<DAO extends IBaseDAO<TPaymentMode, TPaymentModeDTO, TPaymentModeVO>> extends BaseServiceImpl<TPaymentMode, TPaymentModeDTO, TPaymentModeVO, DAO> implements IDefaultTPaymentModeService {
 	
 }

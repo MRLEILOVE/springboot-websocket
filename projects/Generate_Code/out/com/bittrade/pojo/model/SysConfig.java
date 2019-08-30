@@ -1,3 +1,6 @@
+/**
+ * This code is generated automatically. Please do not edit it.
+ */
 package com.bittrade.pojo.model;
 
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -20,7 +23,7 @@ import lombok.experimental.Accessors;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Accessors(chain = true)
+@Accessors(chain = false) // true, because BeanUtil.copyObj .
 @EqualsAndHashCode(callSuper = false)
 @TableName(value="sys_config")
 public class SysConfig extends BaseModel<SysConfig> {
@@ -90,7 +93,7 @@ public class SysConfig extends BaseModel<SysConfig> {
 	/**
 	 * 参数主键
 	 */
-	@com.baomidou.mybatisplus.annotation.TableId(value = "configId", type = com.baomidou.mybatisplus.annotation.IdType.AUTO)
+	@com.baomidou.mybatisplus.annotation.TableId(value = "config_id", type = com.baomidou.mybatisplus.annotation.IdType.AUTO)
 	private Integer configId;
 	
 	/**

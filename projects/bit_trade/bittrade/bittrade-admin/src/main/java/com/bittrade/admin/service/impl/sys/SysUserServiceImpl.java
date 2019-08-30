@@ -12,10 +12,12 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.bittrade.admin.dao.sys.ISysRoleDAO;
 import com.bittrade.admin.dao.sys.ISysUserDAO;
 import com.bittrade.admin.dao.sys.ISysUserRoleDAO;
-import com.bittrade.admin.model.domain.SysRole;
-import com.bittrade.admin.model.domain.SysUser;
-import com.bittrade.admin.model.domain.SysUserRole;
 import com.bittrade.admin.service.sys.SysUserService;
+import com.bittrade.pojo.dto.SysUserDTO;
+import com.bittrade.pojo.model.SysRole;
+import com.bittrade.pojo.model.SysUser;
+import com.bittrade.pojo.model.SysUserRole;
+import com.core.tool.BeanUtil;
 import com.core.tool.ConvertUtil;
 
 /**
@@ -48,7 +50,7 @@ public class SysUserServiceImpl extends ServiceImpl<ISysUserDAO, SysUser> implem
 	}
 
 	@Override
-	public SysUser selectUserById(Integer userId) {
+	public SysUserDTO selectUserById(Integer userId) {
 		return baseMapper.selectUserById( userId );
 	}
 
@@ -80,21 +82,23 @@ public class SysUserServiceImpl extends ServiceImpl<ISysUserDAO, SysUser> implem
 	}
 
 	@Override
-	public int updateUser(SysUser user) {
-		Integer userId = user.getUserId();
+	public int updateUser(SysUserDTO userDTO) {
+		Integer userId = userDTO.getUserId();
 		// 删除用户与角色关联
 		userRoleMapper.deleteUserRoleByUserId( userId );
 		// 新增用户与角色管理
-		insertUserRole( user );
+		insertUserRole( userDTO );
+		SysUser user = new SysUser();
+		BeanUtil.copyObj(userDTO, user);
 		return baseMapper.updateUser( user );
 	}
 	
-	public void insertUserRole(SysUser user) {
+	public void insertUserRole(SysUserDTO userDTO) {
 		// 新增用户与角色管理
 		List<SysUserRole> list = new ArrayList<SysUserRole>();
-		for (Integer roleId : user.getRoleIds()) {
+		for (Integer roleId : userDTO.getRoleIds()) {
 			SysUserRole ur = new SysUserRole();
-			ur.setUserId( user.getUserId() );
+			ur.setUserId( userDTO.getUserId() );
 			ur.setRoleId( roleId );
 			list.add( ur );
 		}
@@ -104,11 +108,13 @@ public class SysUserServiceImpl extends ServiceImpl<ISysUserDAO, SysUser> implem
 	}
 
 	@Override
-	public int insertUser(SysUser user) {
+	public int insertUser(SysUserDTO userDTO) {
 		// 新增用户信息
+		SysUser user = new SysUser();
+		BeanUtil.copyObj(userDTO, user);
 		int rows = baseMapper.insertUser( user );
 		// 新增用户与角色管理
-		insertUserRole( user );
+		insertUserRole( userDTO );
 		return rows;
 	}
 }

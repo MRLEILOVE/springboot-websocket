@@ -5,11 +5,8 @@ import java.util.List;
 
 import com.bittrade.__default.service.IDefaultTKlineService;
 import com.bittrade.pojo.dto.QueryKLineDto;
-import com.bittrade.pojo.dto.TKlineDTO;
 import com.bittrade.pojo.model.TEntrustRecord;
-import com.bittrade.pojo.model.TKline;
 import com.bittrade.pojo.vo.QueryKLineVO;
-import com.bittrade.pojo.vo.TKlineVO;
 
 /**
  * 也可以单独一个进程或者把相关的存储也一同单独。
@@ -17,7 +14,7 @@ import com.bittrade.pojo.vo.TKlineVO;
  * @author Administrator
  *
  */
-public interface ITKlineService extends IDefaultTKlineService<TKline, TKlineDTO, TKlineVO> {
+public interface ITKlineService extends IDefaultTKlineService {
 
 	/**
 	 * k线查询

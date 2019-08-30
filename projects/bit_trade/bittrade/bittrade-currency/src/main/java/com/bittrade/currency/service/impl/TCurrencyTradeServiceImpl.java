@@ -3,19 +3,15 @@ package com.bittrade.currency.service.impl;
 import java.math.BigDecimal;
 import java.util.List;
 
-import com.bittrade.common.utils.RedisKeyUtil;
-import com.bittrade.pojo.vo.CurrencyTradeVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.bittrade.__default.service.impl.DefaultTCurrencyTradeServiceImpl;
 import com.bittrade.currency.api.service.ITCurrencyTradeService;
 import com.bittrade.currency.dao.ITCurrencyTradeDAO;
-import com.bittrade.pojo.dto.TCurrencyTradeDTO;
-import com.bittrade.pojo.model.TCurrencyTrade;
-import com.bittrade.pojo.vo.TCurrencyTradeVO;
+import com.bittrade.pojo.vo.CurrencyTradeVO;
 import com.bittrade.pojo.vo.TransactionPairVO;
-import org.springframework.util.StringUtils;
+
 import redis.clients.jedis.JedisCluster;
 
 /**
@@ -26,7 +22,7 @@ import redis.clients.jedis.JedisCluster;
 @Service
 @com.alibaba.dubbo.config.annotation.Service
 public class TCurrencyTradeServiceImpl extends
-		DefaultTCurrencyTradeServiceImpl<ITCurrencyTradeDAO, TCurrencyTrade, TCurrencyTradeDTO, TCurrencyTradeVO>
+		DefaultTCurrencyTradeServiceImpl<ITCurrencyTradeDAO>
 		implements ITCurrencyTradeService {
 
 	@Autowired

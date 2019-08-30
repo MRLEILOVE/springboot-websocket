@@ -1,3 +1,6 @@
+/**
+ * This code is generated automatically. Please do not edit it.
+ */
 package com.bittrade.pojo.model;
 
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -20,7 +23,7 @@ import lombok.experimental.Accessors;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Accessors(chain = true)
+@Accessors(chain = false) // true, because BeanUtil.copyObj .
 @EqualsAndHashCode(callSuper = false)
 @TableName(value="sys_user")
 public class SysUser extends BaseModel<SysUser> {
@@ -140,7 +143,7 @@ public class SysUser extends BaseModel<SysUser> {
 	/**
 	 * 用户ID
 	 */
-	@com.baomidou.mybatisplus.annotation.TableId(value = "userId", type = com.baomidou.mybatisplus.annotation.IdType.AUTO)
+	@com.baomidou.mybatisplus.annotation.TableId(value = "user_id", type = com.baomidou.mybatisplus.annotation.IdType.AUTO)
 	private Integer userId;
 	
 	/**

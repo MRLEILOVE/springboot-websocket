@@ -1,9 +1,9 @@
 package com.bittrade.uac.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.bittrade.uac.model.dto.ReturnDTO;
 import com.bittrade.uac.model.dto.UserAuthenticationDto;
 import com.bittrade.uac.model.pojo.UserAuthentication;
-import com.core.common.DTO.ReturnDTO;
 
 
 /**

@@ -48,7 +48,7 @@
 	<!-- 其他的也可以类似的加， yes， 类似蕾丝的。 -->
 	<sql id="sql_Column_forObject">
 		<choose>
-			<when test="tAcceptDealer.strArr_field != null">
+			<when test="tAcceptDealer != null and tAcceptDealer.strArr_field != null">
 		<foreach collection="tAcceptDealer.strArr_field" index="index" item="item" open="" separator="," close="">
 			`${item}`
 		</foreach>
@@ -81,7 +81,7 @@
 		</choose>
 	</sql>
 	<sql id="sql_WHERE_forObject">
-		<if test="tAcceptDealer.map_in != null">
+		<if test="tAcceptDealer != null and tAcceptDealer.map_in != null">
 		<foreach collection="tAcceptDealer.map_in.entrySet()" index="map_index" item="map_item">
 		AND `${map_index}` IN 
 		<foreach collection="map_item" index="arr_index" item="arr_item" open="(" separator="," close=")">
@@ -89,17 +89,17 @@
 		</foreach>
 		</foreach>
 		</if>
-		<if test="tAcceptDealer.map_eq != null">
+		<if test="tAcceptDealer != null and tAcceptDealer.map_eq != null">
 		<foreach collection="tAcceptDealer.map_eq.entrySet()" index="map_index" item="map_item">
 		AND `${map_index}` = #{map_item}
 		</foreach>
 		</if>
-		<if test="tAcceptDealer.map_le != null">
+		<if test="tAcceptDealer != null and tAcceptDealer.map_le != null">
 		<foreach collection="tAcceptDealer.map_le.entrySet()" index="map_index" item="map_item">
 		AND `${map_index}` &lt;= #{map_item}
 		</foreach>
 		</if>
-		<if test="tAcceptDealer.map_ge != null">
+		<if test="tAcceptDealer != null and tAcceptDealer.map_ge != null">
 		<foreach collection="tAcceptDealer.map_ge.entrySet()" index="map_index" item="map_item">
 		AND `${map_index}` &gt;= #{map_item}
 		</foreach>

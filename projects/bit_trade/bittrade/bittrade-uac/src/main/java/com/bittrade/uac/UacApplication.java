@@ -1,7 +1,6 @@
 package com.bittrade.uac;
 
 import com.alibaba.dubbo.config.spring.context.annotation.EnableDubbo;
-import com.core.framework.BaseApplication;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -19,7 +18,7 @@ import org.springframework.web.filter.CorsFilter;
  */
 @EnableDubbo
 @EnableEurekaClient
-@EnableFeignClients
+@EnableFeignClients(basePackages = "com.bittrade.uac.web.feign.client")
 @MapperScan("com.bittrade.uac.mapper")
 @SpringBootApplication
 public class UacApplication{

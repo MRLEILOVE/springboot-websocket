@@ -3,7 +3,7 @@
 <mapper namespace="com.bittrade.admin.dao.sys.ISysRoleDeptDAO">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.bittrade.admin.model.domain.SysRoleDept">
+    <resultMap id="BaseResultMap" type="com.bittrade.pojo.model.SysRoleDept">
         <id column="role_id" property="roleId" />
         <result column="dept_id" property="deptId" />
     </resultMap>

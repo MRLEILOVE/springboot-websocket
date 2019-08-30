@@ -3,11 +3,11 @@
  */
 package com.bittrade.__default.service.impl;
 
+import com.bittrade.pojo.model.TKline;
+import com.bittrade.pojo.dto.TKlineDTO;
+import com.bittrade.pojo.vo.TKlineVO;
 import com.bittrade.__default.service.IDefaultTKlineService;
 import com.core.framework.base.DAO.IBaseDAO;
-import com.core.framework.base.DTO.BaseDTO;
-import com.core.framework.base.VO.BaseVO;
-import com.core.framework.base.model.BaseModel;
 import com.core.framework.base.service.impl.BaseServiceImpl;
 
 /**
@@ -16,6 +16,6 @@ import com.core.framework.base.service.impl.BaseServiceImpl;
  *
  */
 //public abstract class DefaultTKlineServiceImpl extends BaseServiceImpl<TKline, TKlineDTO, TKlineVO, ITKlineDAO> implements IDefaultTKlineService {
-public abstract class DefaultTKlineServiceImpl<DAO extends IBaseDAO<Model, DTO, VO>, Model extends BaseModel<Model>, DTO extends BaseDTO<DTO>, VO extends BaseVO<VO>> extends BaseServiceImpl<Model, DTO, VO, DAO> implements IDefaultTKlineService<Model, DTO, VO> {
+public abstract class DefaultTKlineServiceImpl<DAO extends IBaseDAO<TKline, TKlineDTO, TKlineVO>> extends BaseServiceImpl<TKline, TKlineDTO, TKlineVO, DAO> implements IDefaultTKlineService {
 	
 }

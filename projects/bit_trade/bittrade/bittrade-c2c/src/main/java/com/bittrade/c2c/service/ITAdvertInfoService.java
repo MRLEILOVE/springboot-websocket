@@ -6,19 +6,19 @@ import java.util.List;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.bittrade.__default.service.IDefaultTAdvertInfoService;
-import com.bittrade.pojo.dto.TAdvertInfoDTO;
 import com.bittrade.pojo.model.TAdvertInfo;
 import com.bittrade.pojo.model.TAdvertOrder;
+//git.dev.tencent.com/ha_sir/git.git
 import com.bittrade.pojo.vo.AdvertUserVO;
 import com.bittrade.pojo.vo.PublishAdvertVO;
 import com.bittrade.pojo.vo.QueryAdvertVO;
-import com.bittrade.pojo.vo.TAdvertInfoVO;
+//git.dev.tencent.com/ha_sir/git.git
 import com.core.web.constant.entity.LoginUser;
 
 /**
  * @author Administrator
  */
-public interface ITAdvertInfoService extends IDefaultTAdvertInfoService<TAdvertInfo, TAdvertInfoDTO, TAdvertInfoVO> {
+public interface ITAdvertInfoService extends IDefaultTAdvertInfoService {
 
 	/**
 	 * 发布广告

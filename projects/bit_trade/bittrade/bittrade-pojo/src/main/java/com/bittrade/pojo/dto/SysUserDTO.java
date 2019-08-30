@@ -1,5 +1,7 @@
 package com.bittrade.pojo.dto;
 
+import java.util.List;
+
 import com.core.framework.base.DTO.BaseDTO;
 
 import lombok.Data;
@@ -36,5 +38,13 @@ public class SysUserDTO extends BaseDTO<SysUserDTO> {
 	private String updateBy;
 	private java.time.LocalDateTime updateTime;
 	private String remark;
+
+	/** 角色组 */
+	private Integer[] roleIds;
+
+	private List<SysRoleDTO> roles;
+
+	/** 部门对象 */
+	private SysDeptDTO dept;
 
 }

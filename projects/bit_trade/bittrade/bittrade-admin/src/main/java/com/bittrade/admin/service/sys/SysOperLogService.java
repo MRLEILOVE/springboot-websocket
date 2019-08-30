@@ -2,7 +2,7 @@ package com.bittrade.admin.service.sys;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.bittrade.admin.model.domain.SysOperLog;
+import com.bittrade.pojo.model.SysOperLog;
 
 /**
  * <p>

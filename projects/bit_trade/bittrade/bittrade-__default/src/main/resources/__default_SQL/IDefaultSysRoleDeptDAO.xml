@@ -24,7 +24,7 @@
 	<!-- 其他的也可以类似的加， yes， 类似蕾丝的。 -->
 	<sql id="sql_Column_forObject">
 		<choose>
-			<when test="sysRoleDept.strArr_field != null">
+			<when test="sysRoleDept != null and sysRoleDept.strArr_field != null">
 		<foreach collection="sysRoleDept.strArr_field" index="index" item="item" open="" separator="," close="">
 			`${item}`
 		</foreach>
@@ -57,7 +57,7 @@
 		</choose>
 	</sql>
 	<sql id="sql_WHERE_forObject">
-		<if test="sysRoleDept.map_in != null">
+		<if test="sysRoleDept != null and sysRoleDept.map_in != null">
 		<foreach collection="sysRoleDept.map_in.entrySet()" index="map_index" item="map_item">
 		AND `${map_index}` IN 
 		<foreach collection="map_item" index="arr_index" item="arr_item" open="(" separator="," close=")">
@@ -65,17 +65,17 @@
 		</foreach>
 		</foreach>
 		</if>
-		<if test="sysRoleDept.map_eq != null">
+		<if test="sysRoleDept != null and sysRoleDept.map_eq != null">
 		<foreach collection="sysRoleDept.map_eq.entrySet()" index="map_index" item="map_item">
 		AND `${map_index}` = #{map_item}
 		</foreach>
 		</if>
-		<if test="sysRoleDept.map_le != null">
+		<if test="sysRoleDept != null and sysRoleDept.map_le != null">
 		<foreach collection="sysRoleDept.map_le.entrySet()" index="map_index" item="map_item">
 		AND `${map_index}` &lt;= #{map_item}
 		</foreach>
 		</if>
-		<if test="sysRoleDept.map_ge != null">
+		<if test="sysRoleDept != null and sysRoleDept.map_ge != null">
 		<foreach collection="sysRoleDept.map_ge.entrySet()" index="map_index" item="map_item">
 		AND `${map_index}` &gt;= #{map_item}
 		</foreach>

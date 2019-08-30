@@ -1,12 +1,11 @@
 package com.bittrade.uac.web.fronted;
 
-import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.bittrade.uac.model.dto.ReturnDTO;
 import com.bittrade.uac.model.dto.UserFindPwdVo;
 import com.bittrade.uac.model.vo.*;
 import com.bittrade.uac.model.pojo.User;
 import com.bittrade.uac.service.UacUserService;
-import com.core.common.DTO.ReturnDTO;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -77,7 +76,7 @@ public class UacAuthController {
             @ApiImplicitParam(name = "短信发送类型", value = "sendType", required = true, dataType = "Integer", paramType = "query"),
     })
     public ReturnDTO<String> sendSms(@RequestBody SendSmsVo sendSmsVo) {
-        log.info("com.jdcloud.provider.web.fronted.UacAuthController.sendSms:" + JSON.toJSONString(sendSmsVo));
+        log.info("com.jdcloud.provider.web.fronted.UacAuthController.sendSms:" + sendSmsVo.toString());
         uacUserService.sendSms(sendSmsVo);
         return ReturnDTO.ok();
     }
