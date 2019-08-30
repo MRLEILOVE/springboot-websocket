@@ -86,7 +86,7 @@ public class TPaymentModeController extends BaseController<TPaymentMode, TPaymen
 	/**
 	 * 获取付款方式详情
 	 *
-	 * @param type {@link TPaymentMode.PaymentTypeEnum}
+	 * @param type      {@link TPaymentMode.PaymentTypeEnum}
 	 * @param loginUser {@link LoginUser}
 	 * @return result
 	 */
@@ -94,6 +94,33 @@ public class TPaymentModeController extends BaseController<TPaymentMode, TPaymen
 	public ReturnDTO<Object> getBindingPaymentDetails(@PathVariable("type") Integer type, @ALoginUser LoginUser loginUser) {
 		TPaymentMode bindingPaymentDetails = itPaymentModeService.getBindingPaymentDetails(type, loginUser);
 		return ReturnDTO.ok(bindingPaymentDetails);
+	}
+
+	/**
+	 * 启用或禁用付款方式
+	 *
+	 * @param id 付款方式id
+	 * @param loginUser {@link LoginUser}
+	 * @return result
+	 */
+	@PostMapping("/action/enable_or_disable/{id}")
+	public ReturnDTO<Object> enableOrDisablePayment(@PathVariable("id") Long id, @ALoginUser LoginUser loginUser) {
+		Integer status = itPaymentModeService.enableOrDisablePayment(id, loginUser);
+		String msg = TPaymentMode.StatusEnum.ENABLE.getCode().equals(status) ? "啓用成功" : "禁用成功";
+		return ReturnDTO.ok(msg);
+	}
+
+	/**
+	 * 解绑付款方式
+	 *
+	 * @param id 付款方式id
+	 * @param loginUser {@link LoginUser}
+	 * @return result
+	 */
+	@PostMapping("/action/un_binding/{id}")
+	public ReturnDTO<Object> unBindingPayment(@PathVariable("id") Long id, @ALoginUser LoginUser loginUser) {
+		Boolean result = itPaymentModeService.unBindingPayment(id, loginUser);
+		return result ? ReturnDTO.ok("解綁成功") : ReturnDTO.error("解綁失敗");
 	}
 
 }

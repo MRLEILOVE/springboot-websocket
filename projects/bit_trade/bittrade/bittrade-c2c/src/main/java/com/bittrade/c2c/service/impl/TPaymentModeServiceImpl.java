@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * 收款方式
@@ -139,5 +140,59 @@ public class TPaymentModeServiceImpl extends DefaultTPaymentModeServiceImpl<ITPa
 				.eq(TPaymentMode::getType, type)
 		);
 	}
+
+	/**
+	 * 启用或禁用付款方式
+	 *
+	 * @param id 付款方式id
+	 * @param loginUser {@link LoginUser}
+	 * @return result
+	 */
+	@Override
+	public Integer enableOrDisablePayment(Long id, LoginUser loginUser) {
+		TPaymentMode paymentMode = baseMapper.selectOne(Wrappers.<TPaymentMode>lambdaQuery()
+				.select(TPaymentMode::getStatus, TPaymentMode::getId)
+				.eq(TPaymentMode::getId, id)
+				.eq(TPaymentMode::getUserId, loginUser.getUser_id())
+		);
+		if (Objects.isNull(paymentMode)) {
+			throw new BusinessException("操作失敗，請稍候重試");
+		}
+		Integer status;
+		if (TPaymentMode.StatusEnum.ENABLE.getCode().equals(paymentMode.getStatus())) {
+			// 如果是启用的，则禁用
+			status = TPaymentMode.StatusEnum.DISABLE.getCode();
+		} else {
+			status = TPaymentMode.StatusEnum.ENABLE.getCode();
+		}
+		paymentMode.setStatus(status);
+		try {
+			baseMapper.update(paymentMode, Wrappers.<TPaymentMode>lambdaUpdate().eq(TPaymentMode::getId, id));
+		} catch (Exception e) {
+			log.error("启用或禁用付款方式异常：", e);
+			throw new BusinessException("操作失敗，請稍候重試");
+		}
+		return baseMapper.selectOne(Wrappers.<TPaymentMode>lambdaQuery()
+				.select(TPaymentMode::getStatus)
+				.eq(TPaymentMode::getId, id))
+				.getStatus();
+	}
+
+	/**
+	 * 解绑付款方式
+	 *
+	 * @param id 付款方式id
+	 * @param loginUser {@link LoginUser}
+	 * @return result
+	 */
+	@Override
+	public Boolean unBindingPayment(Long id, LoginUser loginUser) {
+		int result = baseMapper.delete(Wrappers.<TPaymentMode>lambdaUpdate()
+				.eq(TPaymentMode::getId, id)
+				.eq(TPaymentMode::getUserId, loginUser.getUser_id())
+		);
+		return result > 0;
+	}
+
 
 }

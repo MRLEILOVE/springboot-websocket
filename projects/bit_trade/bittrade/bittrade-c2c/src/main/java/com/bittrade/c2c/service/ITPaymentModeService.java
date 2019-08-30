@@ -25,4 +25,8 @@ public interface ITPaymentModeService extends IDefaultTPaymentModeService {
 	List<TPaymentMode> listAlreadyBindingPayment(LoginUser loginUser);
 
 	TPaymentMode getBindingPaymentDetails(Integer type, LoginUser loginUser);
+
+	Integer enableOrDisablePayment(Long id, LoginUser loginUser);
+
+	Boolean unBindingPayment(Long id, LoginUser loginUser);
 }
