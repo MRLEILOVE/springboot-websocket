@@ -113,6 +113,7 @@ public class SysUserServiceImpl extends ServiceImpl<ISysUserDAO, SysUser> implem
 		SysUser user = new SysUser();
 		BeanUtil.copyObj(userDTO, user);
 		int rows = baseMapper.insertUser( user );
+		userDTO.setUserId(user.getUserId());
 		// 新增用户与角色管理
 		insertUserRole( userDTO );
 		return rows;

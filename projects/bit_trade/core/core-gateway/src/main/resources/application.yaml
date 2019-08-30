@@ -22,4 +22,16 @@ spring:
               args:
                 name: fallbackcmd
                 fallbackUri: forward:/fallback
+        - id: currency_route
+          uri: http://localhost:8901
+          order: 0
+          predicates:
+            - Path=/currency/**
+          filters:
+            - StripPrefix=1
+            - name: RateLimiter
+            - name: Hystrix
+              args:
+                name: fallbackcmd
+                fallbackUri: forward:/fallback
   hystrix.command.fallbackcmd.execution.isolation.thread.timeoutInMilliseconds: 5000

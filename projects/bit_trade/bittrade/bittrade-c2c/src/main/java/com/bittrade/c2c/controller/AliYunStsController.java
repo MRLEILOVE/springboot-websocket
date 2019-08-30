@@ -1,18 +1,21 @@
 package com.bittrade.c2c.controller;
 
-import com.aliyuncs.sts.model.v20150401.AssumeRoleResponse;
-import com.bittrade.c2c.conf.AliYunConfig;
-import com.bittrade.c2c.service.AliYunStsService;
-import com.bittrade.c2c.vo.OssTokenVO;
-import com.core.common.DTO.ReturnDTO;
-import lombok.extern.slf4j.Slf4j;
+import java.util.Objects;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.Objects;
+import com.aliyuncs.sts.model.v20150401.AssumeRoleResponse;
+import com.bittrade.c2c.conf.AliYunConfig;
+import com.bittrade.c2c.service.AliYunStsService;
+import com.bittrade.c2c.vo.OssTokenVO;
+import com.core.common.DTO.ReturnDTO;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 阿里云OSS STS
