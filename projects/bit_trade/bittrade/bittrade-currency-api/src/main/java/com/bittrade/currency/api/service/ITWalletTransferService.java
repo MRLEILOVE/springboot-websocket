@@ -1,24 +1,19 @@
 package com.bittrade.currency.api.service;
 
-import com.bittrade.__default.service.IDefaultTWalletTransferService;
-import com.bittrade.pojo.dto.TWalletTransferDTO;
-import com.bittrade.pojo.dto.TransferDto;
-import com.bittrade.pojo.model.TCurrency;
-import com.bittrade.pojo.model.TWalletTransfer;
-import com.bittrade.pojo.vo.CoinVo;
-import com.bittrade.pojo.vo.TWalletTransferVO;
-import com.core.common.DTO.ReturnDTO;
-
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Map;
+
+import com.bittrade.__default.service.IDefaultTWalletTransferService;
+import com.bittrade.pojo.dto.TransferDto;
+import com.bittrade.pojo.vo.CoinVo;
+import com.core.common.DTO.ReturnDTO;
 
 /**
  * 
  * @author Administrator
  *
  */
-public interface ITWalletTransferService extends IDefaultTWalletTransferService<TWalletTransfer, TWalletTransferDTO, TWalletTransferVO> {
+public interface ITWalletTransferService extends IDefaultTWalletTransferService {
     /**
      * 资金划转
      */

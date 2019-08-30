@@ -4,8 +4,8 @@ import org.springframework.stereotype.Service;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.bittrade.admin.dao.sys.ISysUserRoleDAO;
-import com.bittrade.admin.model.domain.SysUserRole;
 import com.bittrade.admin.service.sys.SysUserRoleService;
+import com.bittrade.pojo.model.SysUserRole;
 
 /**
  * <p>

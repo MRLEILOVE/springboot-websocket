@@ -3,11 +3,11 @@
  */
 package com.bittrade.__default.service.impl;
 
+import com.bittrade.pojo.model.TEntrustRecord;
+import com.bittrade.pojo.dto.TEntrustRecordDTO;
+import com.bittrade.pojo.vo.TEntrustRecordVO;
 import com.bittrade.__default.service.IDefaultTEntrustRecordService;
 import com.core.framework.base.DAO.IBaseDAO;
-import com.core.framework.base.DTO.BaseDTO;
-import com.core.framework.base.VO.BaseVO;
-import com.core.framework.base.model.BaseModel;
 import com.core.framework.base.service.impl.BaseServiceImpl;
 
 /**
@@ -16,6 +16,6 @@ import com.core.framework.base.service.impl.BaseServiceImpl;
  *
  */
 //public abstract class DefaultTEntrustRecordServiceImpl extends BaseServiceImpl<TEntrustRecord, TEntrustRecordDTO, TEntrustRecordVO, ITEntrustRecordDAO> implements IDefaultTEntrustRecordService {
-public abstract class DefaultTEntrustRecordServiceImpl<DAO extends IBaseDAO<Model, DTO, VO>, Model extends BaseModel<Model>, DTO extends BaseDTO<DTO>, VO extends BaseVO<VO>> extends BaseServiceImpl<Model, DTO, VO, DAO> implements IDefaultTEntrustRecordService<Model, DTO, VO> {
+public abstract class DefaultTEntrustRecordServiceImpl<DAO extends IBaseDAO<TEntrustRecord, TEntrustRecordDTO, TEntrustRecordVO>> extends BaseServiceImpl<TEntrustRecord, TEntrustRecordDTO, TEntrustRecordVO, DAO> implements IDefaultTEntrustRecordService {
 	
 }

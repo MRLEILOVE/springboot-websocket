@@ -22,11 +22,12 @@ import com.bittrade.admin.exception.UserBlockedException;
 import com.bittrade.admin.exception.UserNotExistsException;
 import com.bittrade.admin.exception.UserPasswordNotMatchException;
 import com.bittrade.admin.exception.UserPasswordRetryLimitExceedException;
-import com.bittrade.admin.model.domain.SysUser;
 import com.bittrade.admin.service.sys.SysMenuService;
 import com.bittrade.admin.service.sys.SysRoleService;
 import com.bittrade.admin.shiro.service.LoginService;
 import com.bittrade.admin.util.ShiroUtil;
+import com.bittrade.pojo.dto.SysUserDTO;
+import com.bittrade.pojo.model.SysUser;
 import com.core.common.constant.GlobalConstant.Sys;
 
 import lombok.extern.slf4j.Slf4j;
@@ -52,17 +53,17 @@ public class UserRealm extends AuthorizingRealm {
 	@Override
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
 
-		SysUser user = ShiroUtil.getUser();
+		SysUserDTO userDTO = ShiroUtil.getUser();
 		SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
 		// 如果是唯一ADMIN,解锁所有姿势
-		if (user.getLoginName().equals( Sys.ADMIN ) ) {
+		if (userDTO.getLoginName().equals( Sys.ADMIN ) ) {
 			info.addRole( Sys.ADMIN );
 			info.addStringPermission( Sys.ALL_PERMISSION );
 		} else {
 			// 角色
-			info.setRoles( sysRoleService.selectRoleKeys( user.getUserId() ) );
+			info.setRoles( sysRoleService.selectRoleKeys( userDTO.getUserId() ) );
 			// 权限
-			info.setStringPermissions( sysMenuService.selectPermsByUserId( user.getUserId() ) );
+			info.setStringPermissions( sysMenuService.selectPermsByUserId( userDTO.getUserId() ) );
 		}
 		return info;
 	}

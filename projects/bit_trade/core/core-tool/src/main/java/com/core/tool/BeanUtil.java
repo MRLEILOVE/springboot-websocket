@@ -1,13 +1,14 @@
 package com.core.tool;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.beanutils.BeanUtils;
+import net.sf.cglib.beans.BeanCopier;
 
 /**
  * 
@@ -15,20 +16,84 @@ import org.apache.commons.beanutils.BeanUtils;
  *
  */
 public class BeanUtil {
+
+	/*
+		注： 
+		(1)相同属性名，且类型不匹配时候的处理，ok，但是未满足的属性不拷贝； 
+		(2)get和set方法不匹配的处理，创建拷贝的时候报错，无法拷贝任何属性(当且仅当sourceClass的get方法超过set方法时出现) 
+		(3)BeanCopier  
+		初始化例子：BeanCopier copier = BeanCopier.create(Source.class, Target.class, useConverter=true) 
+		第三个参数userConverter,是否开启Convert,默认BeanCopier只会做同名，同类型属性的copier,否则就会报错. 
+		copier = BeanCopier.create(source.getClass(), target.getClass(), false); 
+		copier.copy(source, target, null); 
+		(4)修复beanCopier对set方法强限制的约束 
+		改写net.sf.cglib.beans.BeanCopier.Generator.generateClass(ClassVisitor)方法 
+		将133行的 
+		MethodInfo write = ReflectUtils.getMethodInfo(setter.getWriteMethod()); 
+		预先存一个names2放入 
+		 109        Map names2 = new HashMap(); 
+		 110        for (int i = 0; i < getters.length; ++i) { 
+		 111          names2.put(setters[i].getName(), getters[i]); 
+					} 
+		调用这行代码前判断查询下，如果没有改writeMethod则忽略掉该字段的操作，这样就可以避免异常的发生。
+    */
+	
+	private static final Map<String, BeanCopier> MAP__BEAN_COPIER = new HashMap<>();
+	
+	private static final BeanCopier getBeanCopier(Object source, Object target) {
+		String str_key = source.getClass()/*.toString()*/ + "," + target.getClass()/*.toString()*/;
+		if (MAP__BEAN_COPIER.containsKey(str_key)) {
+			return MAP__BEAN_COPIER.get(str_key);
+		} else {
+			BeanCopier beanCopier = BeanCopier.create(source.getClass(), target.getClass(), false);
+			MAP__BEAN_COPIER.put(str_key, beanCopier);
+			return beanCopier;
+		}
+	}
 	
 	/**
 	 * 
 	 * @param src
-	 * @param dest
+	 * @param dst
 	 */
-	public static final void copyObj(Object src, Object dest) {
+	public static final void copyObj(Object src, Object dst) {
 		try {
-			BeanUtils.copyProperties(dest, src);
+//			org.apache.commons.beanutils.BeanUtils.copyProperties(dst, src);
+//			org.apache.commons.beanutils.PropertyUtils.copyProperties(dst, src);
+//			cn.hutool.core.bean.BeanUtil.copyProperties(src, dst);
+			getBeanCopier(src, dst).copy(src, dst, null);
+//		} catch (java.lang.IllegalAccessException e) {
+//			e.printStackTrace();
+//		} catch (java.lang.reflect.InvocationTargetException e) {
+//			e.printStackTrace();
+//		} catch (java.lang.NoSuchMethodException e) {
+//			e.printStackTrace();
+		} finally {
+			
+		}
+	}
+	
+	/**
+	 * 
+	 * @param <T>
+	 * @param src
+	 * @param dstCls
+	 * @return
+	 */
+	public static final <T> T copyObj(Object src, Class<T> dstCls) {
+		T dst = null;
+		
+		try {
+			dst = dstCls/*.getDeclaredConstructor()*/.newInstance();
+			
+			copyObj(src, dst);
+		} catch (InstantiationException e) {
+			e.printStackTrace();
 		} catch (IllegalAccessException e) {
 			e.printStackTrace();
-		} catch (InvocationTargetException e) {
-			e.printStackTrace();
 		}
+		
+		return dst;
 	}
 	
 	/** Bean方法名中属性名开始的下标 */
@@ -43,20 +108,20 @@ public class BeanUtil {
 	/**
 	 * Bean属性复制工具方法。
 	 * 
-	 * @param dest
+	 * @param dst
 	 *            目标对象
 	 * @param src
 	 *            源对象
 	 */
-	public static void copyBeanProp(Object dest, Object src) {
-		List<Method> destSetters = getSetterMethods( dest );
+	public static void copyBeanProp(Object dst, Object src) {
+		List<Method> dstSetters = getSetterMethods( dst );
 		List<Method> srcGetters = getGetterMethods( src );
 		try {
-			for (Method setter : destSetters) {
+			for (Method setter : dstSetters) {
 				for (Method getter : srcGetters) {
 					if (isMethodPropEquals( setter.getName(), getter.getName() )
 							&& setter.getParameterTypes()[ 0 ].equals( getter.getReturnType() )) {
-						setter.invoke( dest, getter.invoke( src ) );
+						setter.invoke( dst, getter.invoke( src ) );
 					}
 				}
 			}

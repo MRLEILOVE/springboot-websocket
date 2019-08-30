@@ -45,7 +45,7 @@ WHERE是使用的 prefixOverrides（前缀）， SET是使用的 suffixOverrides
 	<!-- 其他的也可以类似的加， yes， 类似蕾丝的。 -->
 	<sql id="sql_Column_forObject">
 		<choose>
-			<when test="${struct.variableName}.strArr_field != null">
+			<when test="${struct.variableName} != null and ${struct.variableName}.strArr_field != null">
 		<foreach collection="${struct.variableName}.strArr_field" index="index" item="item" open="" separator="," close="">
 			`${r'${'}item${r'}'}`
 		</foreach>
@@ -78,7 +78,7 @@ WHERE是使用的 prefixOverrides（前缀）， SET是使用的 suffixOverrides
 		</choose>
 	</sql>
 	<sql id="sql_WHERE_forObject">
-		<if test="${struct.variableName}.map_in != null">
+		<if test="${struct.variableName} != null and ${struct.variableName}.map_in != null">
 		<foreach collection="${struct.variableName}.map_in.entrySet()" index="map_index" item="map_item">
 		AND `${r'${'}map_index${r'}'}` IN 
 		<foreach collection="map_item" index="arr_index" item="arr_item" open="(" separator="," close=")">
@@ -86,17 +86,17 @@ WHERE是使用的 prefixOverrides（前缀）， SET是使用的 suffixOverrides
 		</foreach>
 		</foreach>
 		</if>
-		<if test="${struct.variableName}.map_eq != null">
+		<if test="${struct.variableName} != null and ${struct.variableName}.map_eq != null">
 		<foreach collection="${struct.variableName}.map_eq.entrySet()" index="map_index" item="map_item">
 		AND `${r'${'}map_index${r'}'}` = ${r'#{'}map_item${r'}'}
 		</foreach>
 		</if>
-		<if test="${struct.variableName}.map_le != null">
+		<if test="${struct.variableName} != null and ${struct.variableName}.map_le != null">
 		<foreach collection="${struct.variableName}.map_le.entrySet()" index="map_index" item="map_item">
 		AND `${r'${'}map_index${r'}'}` &lt;= ${r'#{'}map_item${r'}'}
 		</foreach>
 		</if>
-		<if test="${struct.variableName}.map_ge != null">
+		<if test="${struct.variableName} != null and ${struct.variableName}.map_ge != null">
 		<foreach collection="${struct.variableName}.map_ge.entrySet()" index="map_index" item="map_item">
 		AND `${r'${'}map_index${r'}'}` &gt;= ${r'#{'}map_item${r'}'}
 		</foreach>

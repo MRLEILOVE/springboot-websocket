@@ -8,10 +8,8 @@ import org.springframework.stereotype.Service;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.bittrade.__default.service.impl.DefaultTLegalCurrencyCoinServiceImpl;
-import com.bittrade.pojo.dto.TLegalCurrencyCoinDTO;
 import com.bittrade.pojo.model.TLegalCurrencyCoin;
 import com.bittrade.pojo.vo.LegalCurrencyCoinVO;
-import com.bittrade.pojo.vo.TLegalCurrencyCoinVO;
 import com.common.bittrade.dao.ITLegalCurrencyCoinDAO;
 import com.common.bittrade.service.ITLegalCurrencyCoinService;
 import com.google.common.collect.Lists;
@@ -21,7 +19,7 @@ import com.google.common.collect.Lists;
  */
 @Service
 @com.alibaba.dubbo.config.annotation.Service
-public class TLegalCurrencyCoinServiceImpl extends DefaultTLegalCurrencyCoinServiceImpl<ITLegalCurrencyCoinDAO, TLegalCurrencyCoin, TLegalCurrencyCoinDTO, TLegalCurrencyCoinVO> implements ITLegalCurrencyCoinService {
+public class TLegalCurrencyCoinServiceImpl extends DefaultTLegalCurrencyCoinServiceImpl<ITLegalCurrencyCoinDAO> implements ITLegalCurrencyCoinService {
 	@Autowired
 	private ITLegalCurrencyCoinDAO currencyCoinDAO;
 

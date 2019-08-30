@@ -1,22 +1,20 @@
 package com.common.bittrade.service;
 
+import java.math.BigDecimal;
+import java.util.List;
+
 import com.bittrade.__default.service.IDefaultTLegalCurrencyAccountService;
-import com.bittrade.pojo.dto.TLegalCurrencyAccountDTO;
+import com.bittrade.pojo.model.TLegalCurrencyAccount;
 import com.bittrade.pojo.model.TLegalCurrencyCoin;
 import com.bittrade.pojo.vo.AssetsVO;
 import com.bittrade.pojo.vo.ConversionVo;
-import com.bittrade.pojo.vo.TLegalCurrencyAccountVO;
-import com.bittrade.pojo.model.TLegalCurrencyAccount;
-
-import java.math.BigDecimal;
-import java.util.List;
 
 /**
  * 
  * @author Administrator
  *
  */
-public interface ITLegalCurrencyAccountService extends IDefaultTLegalCurrencyAccountService<TLegalCurrencyAccount, TLegalCurrencyAccountDTO, TLegalCurrencyAccountVO> {
+public interface ITLegalCurrencyAccountService extends IDefaultTLegalCurrencyAccountService {
 
     /**
      * c2c账户总资金折合

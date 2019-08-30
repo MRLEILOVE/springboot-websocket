@@ -1,3 +1,6 @@
+/**
+ * This code is generated automatically. Please do not edit it.
+ */
 package ${POJO_BASE_PKG}.model${module_name};
 
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -20,7 +23,7 @@ import lombok.experimental.Accessors;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Accessors(chain = true)
+@Accessors(chain = false) // true, because BeanUtil.copyObj .
 @EqualsAndHashCode(callSuper = false)
 @TableName(value="${struct.tableName}")
 public class ${struct.className} extends BaseModel<${struct.className}> {
@@ -59,7 +62,7 @@ public class ${struct.className} extends BaseModel<${struct.className}> {
 	 * ${itemPK.comment}
 	 */
 	<#if itemPK.autoIncrement>
-	@com.baomidou.mybatisplus.annotation.TableId(value = "${itemPK.name}", type = com.baomidou.mybatisplus.annotation.IdType.AUTO)
+	@com.baomidou.mybatisplus.annotation.TableId(value = "${itemPK.columnName}", type = com.baomidou.mybatisplus.annotation.IdType.AUTO)
 	</#if>
 	private ${itemPK.javaType} ${itemPK.name};
 	

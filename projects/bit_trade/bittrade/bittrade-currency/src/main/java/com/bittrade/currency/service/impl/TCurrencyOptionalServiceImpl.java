@@ -14,7 +14,6 @@ import com.bittrade.currency.api.service.ITCurrencyOptionalService;
 import com.bittrade.currency.dao.ITCurrencyOptionalDAO;
 import com.bittrade.pojo.dto.TCurrencyOptionalDTO;
 import com.bittrade.pojo.model.TCurrencyOptional;
-import com.bittrade.pojo.vo.TCurrencyOptionalVO;
 import com.bittrade.pojo.vo.TransactionPairVO;
 import com.core.common.DTO.ReturnDTO;
 
@@ -25,7 +24,7 @@ import com.core.common.DTO.ReturnDTO;
  */
 @Service
 @com.alibaba.dubbo.config.annotation.Service
-public class TCurrencyOptionalServiceImpl extends DefaultTCurrencyOptionalServiceImpl<ITCurrencyOptionalDAO, TCurrencyOptional, TCurrencyOptionalDTO, TCurrencyOptionalVO> implements ITCurrencyOptionalService {
+public class TCurrencyOptionalServiceImpl extends DefaultTCurrencyOptionalServiceImpl<ITCurrencyOptionalDAO> implements ITCurrencyOptionalService {
     @Autowired
     private ITCurrencyOptionalDAO currencyOptionalDAO;
 

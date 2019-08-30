@@ -32,7 +32,7 @@
 	<!-- 其他的也可以类似的加， yes， 类似蕾丝的。 -->
 	<sql id="sql_Column_forObject">
 		<choose>
-			<when test="tRecordLog.strArr_field != null">
+			<when test="tRecordLog != null and tRecordLog.strArr_field != null">
 		<foreach collection="tRecordLog.strArr_field" index="index" item="item" open="" separator="," close="">
 			`${item}`
 		</foreach>
@@ -65,7 +65,7 @@
 		</choose>
 	</sql>
 	<sql id="sql_WHERE_forObject">
-		<if test="tRecordLog.map_in != null">
+		<if test="tRecordLog != null and tRecordLog.map_in != null">
 		<foreach collection="tRecordLog.map_in.entrySet()" index="map_index" item="map_item">
 		AND `${map_index}` IN 
 		<foreach collection="map_item" index="arr_index" item="arr_item" open="(" separator="," close=")">
@@ -73,17 +73,17 @@
 		</foreach>
 		</foreach>
 		</if>
-		<if test="tRecordLog.map_eq != null">
+		<if test="tRecordLog != null and tRecordLog.map_eq != null">
 		<foreach collection="tRecordLog.map_eq.entrySet()" index="map_index" item="map_item">
 		AND `${map_index}` = #{map_item}
 		</foreach>
 		</if>
-		<if test="tRecordLog.map_le != null">
+		<if test="tRecordLog != null and tRecordLog.map_le != null">
 		<foreach collection="tRecordLog.map_le.entrySet()" index="map_index" item="map_item">
 		AND `${map_index}` &lt;= #{map_item}
 		</foreach>
 		</if>
-		<if test="tRecordLog.map_ge != null">
+		<if test="tRecordLog != null and tRecordLog.map_ge != null">
 		<foreach collection="tRecordLog.map_ge.entrySet()" index="map_index" item="map_item">
 		AND `${map_index}` &gt;= #{map_item}
 		</foreach>

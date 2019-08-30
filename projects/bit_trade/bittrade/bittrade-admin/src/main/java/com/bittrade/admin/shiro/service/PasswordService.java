@@ -15,10 +15,10 @@ import org.springframework.stereotype.Component;
 
 import com.bittrade.admin.exception.UserPasswordNotMatchException;
 import com.bittrade.admin.exception.UserPasswordRetryLimitExceedException;
-import com.bittrade.admin.model.domain.SysUser;
 import com.bittrade.admin.util.MessageUtil;
 import com.bittrade.admin.util.ServletUtil;
 import com.bittrade.admin.util.ShiroUtil;
+import com.bittrade.pojo.model.SysUser;
 import com.core.common.constant.GlobalConstant.Sys;
 
 import eu.bitwalker.useragentutils.UserAgent;

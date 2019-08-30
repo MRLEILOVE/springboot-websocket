@@ -19,19 +19,16 @@ spring:
     throw-exception-if-no-handler-found: true
   mail:
     host: smtp.sina.cn
+    port: 25
     username: xiao_zichao@sina.cn
     password: Xiaozichao1
-    protocol: smtp
     subject: 剑灵科技
     properties: {
-      mail.smtp.ssl.enable: true,
       mail.smtp.starttls.enable: true,
       mail.smtp.starttls.required: true,
-      mail.smtp.connectiontimeout: 1000,
-      mail.smtp.timeout: 500,
-      mail.smtp.writetimeout: 5000,
       mail.smtp.auth: true
     }
+
 
 sms:
   c5:

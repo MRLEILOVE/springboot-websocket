@@ -46,7 +46,7 @@
 	<!-- 其他的也可以类似的加， yes， 类似蕾丝的。 -->
 	<sql id="sql_Column_forObject">
 		<choose>
-			<when test="wCoinConfig.strArr_field != null">
+			<when test="wCoinConfig != null and wCoinConfig.strArr_field != null">
 		<foreach collection="wCoinConfig.strArr_field" index="index" item="item" open="" separator="," close="">
 			`${item}`
 		</foreach>
@@ -79,7 +79,7 @@
 		</choose>
 	</sql>
 	<sql id="sql_WHERE_forObject">
-		<if test="wCoinConfig.map_in != null">
+		<if test="wCoinConfig != null and wCoinConfig.map_in != null">
 		<foreach collection="wCoinConfig.map_in.entrySet()" index="map_index" item="map_item">
 		AND `${map_index}` IN 
 		<foreach collection="map_item" index="arr_index" item="arr_item" open="(" separator="," close=")">
@@ -87,17 +87,17 @@
 		</foreach>
 		</foreach>
 		</if>
-		<if test="wCoinConfig.map_eq != null">
+		<if test="wCoinConfig != null and wCoinConfig.map_eq != null">
 		<foreach collection="wCoinConfig.map_eq.entrySet()" index="map_index" item="map_item">
 		AND `${map_index}` = #{map_item}
 		</foreach>
 		</if>
-		<if test="wCoinConfig.map_le != null">
+		<if test="wCoinConfig != null and wCoinConfig.map_le != null">
 		<foreach collection="wCoinConfig.map_le.entrySet()" index="map_index" item="map_item">
 		AND `${map_index}` &lt;= #{map_item}
 		</foreach>
 		</if>
-		<if test="wCoinConfig.map_ge != null">
+		<if test="wCoinConfig != null and wCoinConfig.map_ge != null">
 		<foreach collection="wCoinConfig.map_ge.entrySet()" index="map_index" item="map_item">
 		AND `${map_index}` &gt;= #{map_item}
 		</foreach>

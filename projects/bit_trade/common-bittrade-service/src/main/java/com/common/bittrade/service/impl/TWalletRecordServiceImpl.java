@@ -11,10 +11,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.bittrade.__default.service.impl.DefaultTWalletRecordServiceImpl;
 import com.bittrade.common.enums.WalletRecordTypeEnumer;
 import com.bittrade.pojo.dto.AccountTypeDto;
-import com.bittrade.pojo.dto.TWalletRecordDTO;
-import com.bittrade.pojo.model.TWalletRecord;
 import com.bittrade.pojo.vo.RecordVO;
-import com.bittrade.pojo.vo.TWalletRecordVO;
 import com.common.bittrade.dao.ITWalletRecordDAO;
 import com.common.bittrade.service.ITWalletRecordService;
 
@@ -25,7 +22,7 @@ import com.common.bittrade.service.ITWalletRecordService;
  */
 @Service
 @com.alibaba.dubbo.config.annotation.Service
-public class TWalletRecordServiceImpl extends DefaultTWalletRecordServiceImpl<ITWalletRecordDAO, TWalletRecord, TWalletRecordDTO, TWalletRecordVO> implements ITWalletRecordService {
+public class TWalletRecordServiceImpl extends DefaultTWalletRecordServiceImpl<ITWalletRecordDAO> implements ITWalletRecordService {
     @Autowired
     private ITWalletRecordDAO walletRecordDAO;
 

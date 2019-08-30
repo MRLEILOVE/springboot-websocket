@@ -16,12 +16,10 @@ import com.bittrade.__default.service.impl.DefaultTLegalCurrencyAccountServiceIm
 import com.bittrade.common.constant.IConstant;
 import com.bittrade.common.enums.StatusEnumer;
 import com.bittrade.common.utils.RedisKeyUtil;
-import com.bittrade.pojo.dto.TLegalCurrencyAccountDTO;
 import com.bittrade.pojo.model.TLegalCurrencyAccount;
 import com.bittrade.pojo.model.TLegalCurrencyCoin;
 import com.bittrade.pojo.vo.AssetsVO;
 import com.bittrade.pojo.vo.ConversionVo;
-import com.bittrade.pojo.vo.TLegalCurrencyAccountVO;
 import com.common.bittrade.dao.ITLegalCurrencyAccountDAO;
 import com.common.bittrade.dao.ITLegalCurrencyCoinDAO;
 import com.common.bittrade.service.ITLegalCurrencyAccountService;
@@ -35,7 +33,7 @@ import redis.clients.jedis.JedisCluster;
  */
 @Service
 @com.alibaba.dubbo.config.annotation.Service
-public class TLegalCurrencyAccountServiceImpl extends DefaultTLegalCurrencyAccountServiceImpl<ITLegalCurrencyAccountDAO, TLegalCurrencyAccount, TLegalCurrencyAccountDTO, TLegalCurrencyAccountVO> implements ITLegalCurrencyAccountService {
+public class TLegalCurrencyAccountServiceImpl extends DefaultTLegalCurrencyAccountServiceImpl<ITLegalCurrencyAccountDAO> implements ITLegalCurrencyAccountService {
 
     @Autowired
     private ITLegalCurrencyAccountDAO legalCurrencyAccountDAO;

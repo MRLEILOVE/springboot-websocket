@@ -1,9 +1,12 @@
 package com.core.framework.base.model;
 
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -128,4 +131,47 @@ public abstract class BaseModel<Model extends com.baomidou.mybatisplus.extension
 		return orderBy( name, values.toArray( /* new Object[values.size()] */ ) );
 	}
 
+	
+	/**
+	 * 暂时admin后台使用。
+	 */
+
+	/** 搜索值 */
+	@TableField(exist=false)
+	private String				searchValue;
+
+	/** 创建者 */
+	@TableField(exist=false)
+	private String				createBy;
+
+	/** 创建时间 */
+	@TableField(exist=false)
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	private Date				createTime;
+
+	/** 更新者 */
+	@TableField(exist=false)
+	private String				updateBy;
+
+	/** 更新时间 */
+	@TableField(exist=false)
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	private Date				updateTime;
+
+	/** 备注 */
+	@TableField(exist=false)
+	private String				remark;
+
+	/** 请求参数 */
+	@TableField(exist=false)
+	private Map<String, Object>	params;
+	
+	public Map<String, Object> getParams() {
+		if (params == null) {
+			params = new HashMap<>();
+		}
+		return params;
+	}
+	
+	
 }
