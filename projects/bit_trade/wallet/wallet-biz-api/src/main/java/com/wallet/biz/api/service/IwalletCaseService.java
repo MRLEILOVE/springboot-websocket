@@ -16,9 +16,9 @@ public interface IwalletCaseService {
 
     ReturnDTO chongbi(Long userId, CoinTypeVO coinTypeVO);
 
-    ReturnDTO rechargeRecord(Long userId, CoinTypeVO coinTypeVO);
+    ReturnDTO rechargeRecord(Long userId/*, CoinTypeVO coinTypeVO*/);
 
-    ReturnDTO withdrawRecord(Long userId, CoinTypeVO coinTypeVO);
+    ReturnDTO withdrawRecord(Long userId/*, CoinTypeVO coinTypeVO*/);
 
     ReturnDTO qrCode(Long userId, CoinTypeVO coinTypeVO);
 

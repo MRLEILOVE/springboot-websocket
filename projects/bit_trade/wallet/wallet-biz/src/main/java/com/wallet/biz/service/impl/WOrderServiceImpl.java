@@ -58,7 +58,7 @@ public class WOrderServiceImpl extends ServiceImpl<IWOrderDAO, WOrder> implement
                 .userId(order.getUserId())
                 .currencyId(orderWCoin.getId().intValue())
                 .build()));
-        BigDecimal chAmount = (new BigDecimal(String.valueOf(order.getAmount())).add(new BigDecimal(String.valueOf(order.getFee()))));
+        BigDecimal chAmount = order.getAmount().add(order.getFee());
         int i = orderAccount.getTotal().compareTo(chAmount);
         if (i<0){
             return ReturnDTO.error("提币超过用户当前余额");

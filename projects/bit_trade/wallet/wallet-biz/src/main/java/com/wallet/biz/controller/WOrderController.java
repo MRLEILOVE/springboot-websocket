@@ -65,8 +65,7 @@ public class WOrderController {
     @GetMapping("/Withdrawcoinlist")
     @ApiOperation(value = "可提币种列表", notes = "可提币种列表")
     public ReturnDTO withdrawcoinlist(){
-        List<WCoin> Withdrawcoinlist = wCoinService.list(new QueryWrapper<>(WCoin.builder()
-                .isWithdraw("E").build()));
+        List<WCoin> Withdrawcoinlist = wCoinService.list(new QueryWrapper<>(WCoin.builder().isWithdraw("E").build()));
         return getReturnDTO(Withdrawcoinlist);
     }
 
@@ -76,6 +75,11 @@ public class WOrderController {
             CoinTypeVO coin = new CoinTypeVO();
             coin.setCoinType(list.getCoinType());
             coin.setToken(list.getToken());
+            if(list.getToken().equals("BTC")){
+                coin.setName("比特幣");
+            }else{
+                coin.setName("泰達幣");
+            }
             coinlist.add(coin);
         }
         return ReturnDTO.ok(coinlist);
@@ -85,39 +89,39 @@ public class WOrderController {
     @ApiOperation(value = "确定提币", notes = "确定提币")
     public ReturnDTO confirmTibi(@RequestBody @Validated WithdrawBillParamVo withdrawBillParamVo, @ALoginUser LoginUser user) {
         //用户判断
-        Long userId = user == null ? null : user.getUser_id();
+        Long userId = 10086L;//user == null ? null : user.getUser_id();
         if (userId == null) {
             return ReturnDTO.error("用户未登录");
         }
-        if (user.checkPayPassWord(withdrawBillParamVo.getPassword())) {
-            return ReturnDTO.error("密码错误");
-        }
+//        if (user.checkPayPassWord(withdrawBillParamVo.getPassword())) {
+//            return ReturnDTO.error("密码错误");
+//        }
         return caseService.confirmTibi(withdrawBillParamVo, userId);
     }
 
 
     @GetMapping("rechargerecord")
-    @ApiOperation(value = "充提币记录", notes = "充提币记录")
-    public ReturnDTO rechargeRecord(@RequestBody @Validated CoinTypeVO coinTypeVO, @ALoginUser LoginUser user) {
-        Long userId = user == null ? null : user.getUser_id();
+    @ApiOperation(value = "充币记录", notes = "充币记录")
+    public ReturnDTO rechargeRecord(/*@RequestBody @Validated CoinTypeVO coinTypeVO,*/ @ALoginUser LoginUser user) {
+        Long userId = 10086L;//user == null ? null : user.getUser_id();
         if (userId == null) {
             return ReturnDTO.error("用户未登录");
         }
 //        Page<OrderVO> page = orderService.queryFundrechargeRecord(userId,addressParamDto);
-        return caseService.rechargeRecord(userId, coinTypeVO);
+        return caseService.rechargeRecord(userId/*, coinTypeVO*/);
     }
 
     @GetMapping("withdrawrecord")
-    @ApiOperation(value = "充提币记录", notes = "充提币记录")
-    public ReturnDTO withdrawRecord(@RequestBody @Validated CoinTypeVO coinTypeVO, @ALoginUser LoginUser user) {
-        Long userId = user == null ? null : user.getUser_id();
+    @ApiOperation(value = "提币记录", notes = "提币记录")
+    public ReturnDTO withdrawRecord(/*@RequestBody @Validated CoinTypeVO coinTypeVO,*/ @ALoginUser LoginUser user) {
+        Long userId = 10086L;//user == null ? null : user.getUser_id();
         if (userId == null) {
             return ReturnDTO.error("用户未登录");
         }
 //        Page<OrderVO> page = orderService.queryFundwithdrawRecord(userId,addressParamDto);
-        return caseService.withdrawRecord(userId, coinTypeVO);
+        return caseService.withdrawRecord(userId/*, coinTypeVO*/);
     }
-    @GetMapping("feeMaxMin")
+    @PostMapping("feeMaxMin")
     @ApiOperation(value = "最大最小提币费率", notes = "最大最小提币费率")
     public ReturnDTO feeMaxMin(@RequestBody @Validated CoinTypeVO coinTypeVO) {
         MaxMinVo fee = new MaxMinVo();
@@ -126,7 +130,7 @@ public class WOrderController {
         return ReturnDTO.ok(fee);
     }
 
-    @GetMapping("quotaMaxMin")
+    @PostMapping("quotaMaxMin")
     @ApiOperation(value = "最大最小提币数量", notes = "最大最小提币数量")
     public ReturnDTO quotaMaxMin(@RequestBody @Validated CoinTypeVO coinTypeVO) {
         MaxMinVo quota = new MaxMinVo();
@@ -135,10 +139,10 @@ public class WOrderController {
         return ReturnDTO.ok(quota);
     }
 
-    @GetMapping("jugmentQuota")
+    @PostMapping("jugmentQuota")
     @ApiOperation(value = "额度判断", notes = "额度判断")
     public ReturnDTO jugmentQuota(@RequestBody @Validated CoinTypeVO coinTypeVO, @ALoginUser LoginUser user) {
-        Long userId = user == null ? null : user.getUser_id();
+        Long userId = 10086L;//user == null ? null : user.getUser_id();
         if (userId == null) {
             return ReturnDTO.error("用户未登录");
         }
