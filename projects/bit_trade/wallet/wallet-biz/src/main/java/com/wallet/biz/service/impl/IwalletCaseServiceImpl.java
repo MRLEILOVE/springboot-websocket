@@ -2,9 +2,7 @@ package com.wallet.biz.service.impl;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import com.bittrade.pojo.model.*;
 import com.common.bittrade.service.IWWalletAccountRecordService;
@@ -120,6 +118,20 @@ private static final SnowFlake SNOW_FLAKE__ENTRUST	= new SnowFlake( 2, 2);
 //                .coinType(coinTypeVO.getCoinType())
 //                .token(coinTypeVO.getToken())
                 .orderType(1).build()));
+        list.sort(new Comparator<WOrder>() {
+            @Override
+            public int compare(WOrder o1, WOrder o2) {
+//                return o1.getCreateTime().compareTo(o2.getCreateTime());
+                if (o1.getCreateTime().isAfter(o2.getCreateTime())) {
+
+                    return -1;
+                }
+                return 1;
+            }
+        });
+        if(list.size()>10){
+            return ReturnDTO.ok(list.subList(0,10));
+        }
         return ReturnDTO.ok(list);
     }
 
@@ -130,6 +142,20 @@ private static final SnowFlake SNOW_FLAKE__ENTRUST	= new SnowFlake( 2, 2);
 //                .coinType(coinTypeVO.getCoinType())
 //                .token(coinTypeVO.getToken())
                 .orderType(-1).build()));
+        Collections.sort(list, new Comparator<WOrder>() {
+            @Override
+            public int compare(WOrder o1, WOrder o2) {
+//                return o1.getCreateTime().compareTo(o2.getCreateTime());
+                if(o1.getCreateTime().isAfter(o2.getCreateTime())) {
+
+                    return -1;
+                }
+                return 1;
+            }
+        });
+        if(list.size()>10){
+            return ReturnDTO.ok(list.subList(0,10));
+        }
         return ReturnDTO.ok(list);
     }
 
@@ -274,17 +300,18 @@ private static final SnowFlake SNOW_FLAKE__ENTRUST	= new SnowFlake( 2, 2);
     public ReturnDTO checkparam(CoinTypeVO coinTypeVO, Long userID) {
         WCoin orderWCoin = wCoinService.getOne(new QueryWrapper<>(WCoin.builder()
                 .token(coinTypeVO.getToken())
-                .isWithdraw("E")
+//                .isWithdraw("E")
                 .status((byte)1).build()));
         WWalletAccount orderAccount = wWalletAccountService.getAccount(userID,orderWCoin.getId().intValue());
-        BigDecimal minfee = new BigDecimal(tParamConfigService.getEnableValueByKey(coinTypeVO.getToken().toLowerCase()+"MinFee"));
-        BigDecimal minquota = new BigDecimal(tParamConfigService.getEnableValueByKey(coinTypeVO.getToken().toLowerCase()+"Min"));
-
-        int i1 = orderAccount.getTotal().compareTo(minquota.add(minfee));
-        if (i1 < 0 ) {
-            return ReturnDTO.ok(BigDecimal.ZERO);
-        }
-        return ReturnDTO.ok(orderAccount.getTotal().subtract(minfee));
+//        BigDecimal minfee = new BigDecimal(tParamConfigService.getEnableValueByKey(coinTypeVO.getToken().toLowerCase()+"MinFee"));
+//        BigDecimal minquota = new BigDecimal(tParamConfigService.getEnableValueByKey(coinTypeVO.getToken().toLowerCase()+"Min"));
+//
+//        int i1 = orderAccount.getTotal().compareTo(minquota.add(minfee));
+//        if (i1 < 0 ) {
+//            return ReturnDTO.ok(BigDecimal.ZERO);
+//        }
+ //       return ReturnDTO.ok(orderAccount.getTotal().subtract(minfee));
+        return ReturnDTO.ok(orderAccount.getTotal());
     }
 
 }

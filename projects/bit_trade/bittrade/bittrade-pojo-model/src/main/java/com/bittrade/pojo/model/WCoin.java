@@ -87,11 +87,7 @@ public class WCoin extends BaseModel<WCoin> {
 		 * 更新时间
 		 */
 		public static final String UPDATE_TIME = "update_time";
-		
-		/**
-		 * 中文名
-		 */
-		public static final String NAME_CN = "name_CN";
+
 		
 	};
 	
@@ -145,10 +141,6 @@ public class WCoin extends BaseModel<WCoin> {
 	 * 更新时间
 	 */
 	private java.time.LocalDateTime updateTime;
-	
-	/**
-	 * 中文名
-	 */
-	private String nameCN;
+
 	
 }
