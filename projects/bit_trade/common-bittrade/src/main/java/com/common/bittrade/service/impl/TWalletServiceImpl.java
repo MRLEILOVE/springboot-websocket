@@ -19,7 +19,6 @@ import com.bittrade.common.constant.IConstant;
 import com.bittrade.common.utils.RedisKeyUtil;
 import com.bittrade.currency.api.service.ITCurrencyService;
 import com.bittrade.currency.api.service.ITCurrencyTradeService;
-import com.bittrade.pojo.dto.TWalletDTO;
 import com.bittrade.pojo.model.TCurrency;
 import com.bittrade.pojo.model.TCurrencyTrade;
 import com.bittrade.pojo.model.TEntrustRecord;
@@ -29,7 +28,6 @@ import com.bittrade.pojo.vo.AssetsVO;
 import com.bittrade.pojo.vo.CoinAccountVO;
 import com.bittrade.pojo.vo.ConversionVo;
 import com.bittrade.pojo.vo.QueryWalletVO;
-import com.bittrade.pojo.vo.TWalletVO;
 import com.bittrade.pojo.vo.UserWalletVO;
 import com.common.bittrade.dao.ITWalletDAO;
 import com.common.bittrade.dao.ITWalletRecordDAO;
@@ -51,7 +49,7 @@ import redis.clients.jedis.JedisCluster;
  */
 @Service
 @com.alibaba.dubbo.config.annotation.Service
-public class TWalletServiceImpl extends DefaultTWalletServiceImpl<ITWalletDAO, TWallet, TWalletDTO, TWalletVO> implements ITWalletService {
+public class TWalletServiceImpl extends DefaultTWalletServiceImpl<ITWalletDAO> implements ITWalletService {
 
 	private static final Logger		LOG			= LoggerFactory.getLogger( TWalletServiceImpl.class );
 	private static final SnowFlake	SNOW_FLAKE	= new SnowFlake( 1, 1 );
@@ -96,8 +94,12 @@ public class TWalletServiceImpl extends DefaultTWalletServiceImpl<ITWalletDAO, T
 			// 计算折合人民币的数量
 			String rateKey = jedisCluster.get( "USD_TO_CNY_RATE_KEY" );
 			if (rateKey != null) {
-				Integer cnyRateKey = Integer.parseInt( rateKey );
-				CNY = cnyRateKey * usdtTotal;
+				JSONObject job = (JSONObject)JSONObject.parseObject(rateKey);
+				String rateStr = job.getString("rate");
+				if(rateStr != null) {
+					Double cnyRateKey = Double.parseDouble(rateStr);
+					CNY = cnyRateKey * usdtTotal;
+				}
 			}
 
 			resultVO.setTotal( usdtTotal );
