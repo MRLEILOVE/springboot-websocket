@@ -5,8 +5,8 @@ data:
   #mapper-locations: classpath*:/__default_SQL/**/I*DAO.xml,classpath*:/SQL/**/I*DAO.xml
   application:
     name: c2c
-  register-with-eureka: true
-  fetch-registry: true
+  register-with-eureka: false
+  fetch-registry: false
 
 dubbo.protocol.port: 20884
 
@@ -20,3 +20,14 @@ spring:
     active: common, dubbo_provider, dubbo_consumer
   mvc:
     throw-exception-if-no-handler-found: true
+
+# 阿里云配置
+bit-trade:
+  aliyun:
+    AccessKeyId: LTAI4Fq9fBhzh4jRvDaSqGAV
+    AccessKeySecret: me6vYfwU8e1SVtHwjx8Y7GNIRQXUwg
+    bucketDomain: sts.aliyuncs.com
+    bucketName: leigq-bucket
+    endpoint: oss-cn-shenzhen.aliyuncs.com
+    region: oss-cn-shenzhen
+    roleArn: acs:ram::1915198832760148:role/tst-test

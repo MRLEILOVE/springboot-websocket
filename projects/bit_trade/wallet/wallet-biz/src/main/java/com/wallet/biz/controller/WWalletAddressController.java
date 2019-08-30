@@ -2,6 +2,7 @@ package com.wallet.biz.controller;
 
 import java.util.List;
 
+import com.wallet.biz.api.service.IJsonRpcService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -41,11 +42,13 @@ public class WWalletAddressController {
     IWCoinService wCoinService;
     @Autowired
     private IwalletCaseService caseService;
+    @Autowired
+    private IJsonRpcService jsonRpcService;
 
-    @GetMapping("/firstaddress")
+    @PostMapping("/firstaddress")
     @ApiOperation(value = "第一提币地址", notes = "第一提币地址")
     public ReturnDTO firstaddress(@RequestBody @Validated CoinTypeVO coinTypeVO, @ALoginUser LoginUser user) {
-        Long userId = user == null ? null : user.getUser_id();
+        Long userId = 10086L;//user == null ? null : user.getUser_id();
         if (userId == null) {
             return ReturnDTO.error("用户未登录");
         }
@@ -56,10 +59,10 @@ public class WWalletAddressController {
         return ReturnDTO.ok(wWalletAddress.getAddress());
     }
 
-    @GetMapping("/addresslist")
+    @PostMapping("/addresslist")
     @ApiOperation(value = "提币地址列表", notes = "提币地址列表")
     public ReturnDTO addresslist(@RequestBody @Validated CoinTypeVO coinTypeVO, @ALoginUser LoginUser user) {
-        Long userId = user == null ? null : user.getUser_id();
+        Long userId = 10086L;//user == null ? null : user.getUser_id();
         if (userId == null) {
             return ReturnDTO.error("用户未登录");
         }
@@ -73,10 +76,15 @@ public class WWalletAddressController {
     @PostMapping("/addaddress")
     @ApiOperation(value = "添加提币地址", notes = "添加提币地址")
     public ReturnDTO addaddress(@RequestBody @Validated WalletAddressVO walletAddressVO, @ALoginUser LoginUser user) {
-        Long userId = user == null ? null : user.getUser_id();
+        Long userId = 10086L;//user == null ? null : user.getUser_id();
         if (userId == null) {
             return ReturnDTO.error("用户未登录");
         }
+        //todo 生产环境需检查地址有效性
+//        if(jsonRpcService.validateAddress(walletAddressVO.getAddress())){
+//            return caseService.addaddress(userId, walletAddressVO);
+//        }
+//        return ReturnDTO.error("无效地址");
         return caseService.addaddress(userId, walletAddressVO);
     }
 
