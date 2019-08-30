@@ -3,7 +3,7 @@
 <mapper namespace="com.bittrade.admin.dao.sys.ISysDictTypeDAO">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.bittrade.pojo.model.SysDictType">
+    <resultMap id="BaseResultMap" type="com.bittrade.admin.model.domain.SysDictType">
         <id column="dict_id" property="dictId" />
         <result column="dict_name" property="dictName" />
         <result column="dict_type" property="dictType" />
@@ -71,7 +71,7 @@
         </foreach> 
  	</delete>
 
- 	<update id="updateDictType" parameterType="com.bittrade.pojo.model.SysDictType">
+ 	<update id="updateDictType" parameterType="com.bittrade.admin.model.domain.SysDictType">
  		update sys_dict_type
  		<set>
  			<if test="dictName != null and dictName != ''">dict_name = #{dictName},</if>
@@ -84,7 +84,7 @@
  		where dict_id = #{dictId}
 	</update>
  	
- 	<insert id="insertDictType" parameterType="com.bittrade.pojo.model.SysDictType">
+ 	<insert id="insertDictType" parameterType="com.bittrade.admin.model.domain.SysDictType">
  		insert into sys_dict_type(
  			<if test="dictName != null and dictName != ''">dict_name,</if>
  			<if test="dictType != null and dictType != ''">dict_type,</if>

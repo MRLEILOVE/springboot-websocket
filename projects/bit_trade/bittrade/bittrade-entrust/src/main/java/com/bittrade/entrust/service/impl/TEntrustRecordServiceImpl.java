@@ -10,7 +10,9 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.bittrade.__default.service.impl.DefaultTEntrustRecordServiceImpl;
 import com.bittrade.entrust.api.service.ITEntrustRecordService;
 import com.bittrade.entrust.dao.ITEntrustRecordDAO;
+import com.bittrade.pojo.dto.TEntrustRecordDTO;
 import com.bittrade.pojo.model.TEntrustRecord;
+import com.bittrade.pojo.vo.TEntrustRecordVO;
 import com.bittrade.pojo.vo.TRealTimeTransactionVO;
 
 /**
@@ -21,7 +23,7 @@ import com.bittrade.pojo.vo.TRealTimeTransactionVO;
 @Service
 @Component
 public class TEntrustRecordServiceImpl extends
-		DefaultTEntrustRecordServiceImpl<ITEntrustRecordDAO>
+		DefaultTEntrustRecordServiceImpl<ITEntrustRecordDAO, TEntrustRecord, TEntrustRecordDTO, TEntrustRecordVO>
 		implements ITEntrustRecordService {
 
 	@Autowired

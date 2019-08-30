@@ -11,7 +11,7 @@ import com.bittrade.pojo.model.TAdvertOrder;
  */
 public interface ITAdvertOrderDAO extends IDefaultTAdvertOrderDAO {
 
-	Long getPaymentOrPutCoinAging(@Param("userId") Long userId, @Param("type") Integer type, @Param("status") Integer status);
+	Long getPaymentOrPutCoinAging(@Param("userId") Long userId, @Param("type") Byte type, @Param("status") Byte status);
 
-    Page<TAdvertOrder> listAdvertOrders(@Param("page") Page<TAdvertOrder> page, @Param("userId") Long userId, @Param("status") Integer status);
+    Page<TAdvertOrder> listAdvertOrders(@Param("page") Page<TAdvertOrder> page, @Param("userId") Long userId, @Param("status") Byte status);
 }

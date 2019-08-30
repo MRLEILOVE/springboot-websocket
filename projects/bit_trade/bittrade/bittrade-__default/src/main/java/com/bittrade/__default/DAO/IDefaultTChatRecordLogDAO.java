@@ -149,6 +149,6 @@ public abstract interface IDefaultTChatRecordLogDAO extends IBaseDAO<TChatRecord
 	 * @param pageDTO
 	 * @return
 	 */
-	public List<TChatRecordLogDTO> getsDTOBy(@Param(value="tChatRecordLog") TChatRecordLogDTO tChatRecordLogDTO, PageDTO<TChatRecordLogDTO> pageDTO);
+	public List<TChatRecordLogDTO> getsDTOBy(TChatRecordLogDTO tChatRecordLogDTO, PageDTO<TChatRecordLogDTO> pageDTO);
 	
 }

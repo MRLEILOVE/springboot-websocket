@@ -18,13 +18,12 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.bittrade.admin.annotation.Log;
 import com.bittrade.admin.controller.base.BaseController;
 import com.bittrade.admin.enums.AnnotationEnum.BusinessType;
+import com.bittrade.admin.model.domain.SysRole;
 import com.bittrade.admin.service.sys.SysRoleService;
 import com.bittrade.admin.util.ExcelUtil;
 import com.bittrade.admin.util.ShiroUtil;
 import com.bittrade.admin.wrapper.TableDataInfo;
 import com.bittrade.admin.wrapper.Wrapper;
-import com.bittrade.pojo.dto.SysRoleDTO;
-import com.bittrade.pojo.model.SysRole;
 
 /**
  * <p>
@@ -77,10 +76,10 @@ public class SysRoleController extends BaseController {
 	@PostMapping("/add")
 	@Transactional(rollbackFor = Exception.class)
 	@ResponseBody
-	public Wrapper<String> addSave(SysRoleDTO roleDTO) {
-		roleDTO.setCreateBy( ShiroUtil.getLoginName() );
+	public Wrapper<String> addSave(SysRole role) {
+		role.setCreateBy( ShiroUtil.getLoginName() );
 		ShiroUtil.clearCachedAuthorizationInfo();
-		return toAjax( sysRoleService.insertRole( roleDTO ) );
+		return toAjax( sysRoleService.insertRole( role ) );
 	}
 
 	@GetMapping("/edit/{roleId}")
@@ -97,10 +96,10 @@ public class SysRoleController extends BaseController {
 	@PostMapping("/edit")
 	@Transactional(rollbackFor = Exception.class)
 	@ResponseBody
-	public Wrapper<String> editSave(SysRoleDTO roleDTO) {
-		roleDTO.setUpdateBy( ShiroUtil.getLoginName() );
+	public Wrapper<String> editSave(SysRole role) {
+		role.setUpdateBy( ShiroUtil.getLoginName() );
 		ShiroUtil.clearCachedAuthorizationInfo();
-		return toAjax( sysRoleService.updateRole( roleDTO ) );
+		return toAjax( sysRoleService.updateRole( role ) );
 	}
 
 	/**
@@ -120,9 +119,9 @@ public class SysRoleController extends BaseController {
 	@PostMapping("/rule")
 	@Transactional(rollbackFor = Exception.class)
 	@ResponseBody
-	public Wrapper<String> ruleSave(SysRoleDTO roleDTO) {
-		roleDTO.setUpdateBy( ShiroUtil.getLoginName() );
-		return toAjax( sysRoleService.updateRule( roleDTO ) );
+	public Wrapper<String> ruleSave(SysRole role) {
+		role.setUpdateBy( ShiroUtil.getLoginName() );
+		return toAjax( sysRoleService.updateRule( role ) );
 	}
 
 	@RequiresPermissions("system:role:remove")

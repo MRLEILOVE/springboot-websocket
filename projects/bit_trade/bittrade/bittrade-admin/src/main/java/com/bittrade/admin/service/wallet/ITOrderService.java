@@ -1,12 +1,15 @@
 package com.bittrade.admin.service.wallet;
 
 import com.bittrade.__default.service.IDefaultTOrderService;
+import com.bittrade.pojo.dto.TOrderDTO;
+import com.bittrade.pojo.vo.TOrderVO;
+import com.bittrade.pojo.model.TOrder;
 
 /**
  * 
  * @author Administrator
  *
  */
-public interface ITOrderService extends IDefaultTOrderService {
+public interface ITOrderService extends IDefaultTOrderService<TOrder, TOrderDTO, TOrderVO> {
 	
 }

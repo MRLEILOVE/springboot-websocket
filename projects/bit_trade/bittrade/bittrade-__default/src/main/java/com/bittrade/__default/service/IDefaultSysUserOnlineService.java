@@ -3,9 +3,9 @@
  */
 package com.bittrade.__default.service;
 
-import com.bittrade.pojo.model.SysUserOnline;
-import com.bittrade.pojo.dto.SysUserOnlineDTO;
-import com.bittrade.pojo.vo.SysUserOnlineVO;
+import com.core.framework.base.DTO.BaseDTO;
+import com.core.framework.base.VO.BaseVO;
+import com.core.framework.base.model.BaseModel;
 import com.core.framework.base.service.IBaseService;
 
 /**
@@ -13,6 +13,6 @@ import com.core.framework.base.service.IBaseService;
  * @author Administrator
  *
  */
-public abstract interface IDefaultSysUserOnlineService extends IBaseService<SysUserOnline, SysUserOnlineDTO, SysUserOnlineVO> {
+public abstract interface IDefaultSysUserOnlineService<Model extends BaseModel<Model>, DTO extends BaseDTO<DTO>, VO extends BaseVO<VO>> extends IBaseService<Model, DTO, VO> {
 	
 }

@@ -10,9 +10,6 @@ import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import com.core.tool.ConvertUtil;
-import com.core.tool.PubUtil;
-
 /**
  * 客户端工具类
  * 

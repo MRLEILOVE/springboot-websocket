@@ -149,6 +149,6 @@ public abstract interface IDefaultTTickerDAO extends IBaseDAO<TTicker, TTickerDT
 	 * @param pageDTO
 	 * @return
 	 */
-	public List<TTickerDTO> getsDTOBy(@Param(value="tTicker") TTickerDTO tTickerDTO, PageDTO<TTickerDTO> pageDTO);
+	public List<TTickerDTO> getsDTOBy(TTickerDTO tTickerDTO, PageDTO<TTickerDTO> pageDTO);
 	
 }

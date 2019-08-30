@@ -14,13 +14,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.bittrade.admin.controller.base.BaseController;
+import com.bittrade.admin.model.domain.SysUser;
 import com.bittrade.admin.service.sys.SysUserService;
 import com.bittrade.admin.shiro.service.PasswordService;
 import com.bittrade.admin.util.FileUploadUtil;
 import com.bittrade.admin.util.ShiroUtil;
 import com.bittrade.admin.wrapper.Wrapper;
-import com.bittrade.pojo.dto.SysUserDTO;
-import com.bittrade.pojo.model.SysUser;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -52,10 +51,10 @@ public class SysProfileController extends BaseController {
 	 */
 	@GetMapping()
 	public String profile(ModelMap mmap) {
-		SysUserDTO userDTO = getUser();
-		userDTO.setSex( getSex( userDTO.getSex() ) );
-		mmap.put( "user", userDTO );
-		mmap.put( "roleGroup", sysUserService.selectUserRoleGroup( userDTO.getUserId() ) );
+		SysUser user = getUser();
+		user.setSex( getSex( user.getSex() ) );
+		mmap.put( "user", user );
+		mmap.put( "roleGroup", sysUserService.selectUserRoleGroup( user.getUserId() ) );
 		return prefix + "/profile";
 	}
 
@@ -68,9 +67,9 @@ public class SysProfileController extends BaseController {
 	@GetMapping("/checkPassword")
 	@ResponseBody
 	public boolean checkPassword(String password) {
-		SysUserDTO userDTO = getUser();
-		String encrypt = new Md5Hash( userDTO.getLoginName() + password + userDTO.getSalt() ).toHex().toString();
-		if (userDTO.getPassword().equals( encrypt )) {
+		SysUser user = getUser();
+		String encrypt = new Md5Hash( user.getLoginName() + password + user.getSalt() ).toHex().toString();
+		if (user.getPassword().equals( encrypt )) {
 			return true;
 		}
 		return false;

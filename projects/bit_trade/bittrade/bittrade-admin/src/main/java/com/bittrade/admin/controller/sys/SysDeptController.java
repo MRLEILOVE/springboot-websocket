@@ -1,6 +1,6 @@
 package com.bittrade.admin.controller.sys;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -16,12 +16,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.bittrade.admin.controller.base.BaseController;
+import com.bittrade.admin.model.domain.SysDept;
+import com.bittrade.admin.model.domain.SysRole;
 import com.bittrade.admin.service.sys.SysDeptService;
 import com.bittrade.admin.util.ShiroUtil;
 import com.bittrade.admin.wrapper.Wrapper;
-import com.bittrade.pojo.dto.SysDeptDTO;
-import com.bittrade.pojo.model.SysDept;
-import com.bittrade.pojo.model.SysRole;
 
 /**
  * <p>
@@ -78,18 +77,18 @@ public class SysDeptController extends BaseController {
 	@ResponseBody
 	public Wrapper<String> addSave(SysDept dept) {
 		dept.setCreateBy( ShiroUtil.getLoginName() );
-		dept.setCreateTime( LocalDateTime.now() );
+		dept.setCreateTime( new Date() );
 		deptService.save( dept );
 		return success();
 	}
 
 	@GetMapping("/edit/{deptId}")
 	public String edit(@PathVariable("deptId") Integer deptId, ModelMap mmap) {
-		SysDeptDTO deptDTO = deptService.selectDeptById( deptId );
-		if (deptDTO != null && 100 == deptId) {
-			deptDTO.setParentName( "无" );
+		SysDept dept = deptService.selectDeptById( deptId );
+		if (dept != null && 100 == deptId) {
+			dept.setParentName( "无" );
 		}
-		mmap.put( "dept", deptDTO );
+		mmap.put( "dept", dept );
 		return prefix + "/edit";
 	}
 

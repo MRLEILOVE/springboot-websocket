@@ -31,7 +31,4 @@ public class SysDeptDTO extends BaseDTO<SysDeptDTO> {
 	private String updateBy;
 	private java.time.LocalDateTime updateTime;
 
-	/** 父部门名称 */
-	private String parentName;
-
 }

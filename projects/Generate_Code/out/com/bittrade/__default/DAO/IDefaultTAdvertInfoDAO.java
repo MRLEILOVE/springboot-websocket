@@ -149,6 +149,6 @@ public abstract interface IDefaultTAdvertInfoDAO extends IBaseDAO<TAdvertInfo, T
 	 * @param pageDTO
 	 * @return
 	 */
-	public List<TAdvertInfoDTO> getsDTOBy(@Param(value="tAdvertInfo") TAdvertInfoDTO tAdvertInfoDTO, PageDTO<TAdvertInfoDTO> pageDTO);
+	public List<TAdvertInfoDTO> getsDTOBy(TAdvertInfoDTO tAdvertInfoDTO, PageDTO<TAdvertInfoDTO> pageDTO);
 	
 }

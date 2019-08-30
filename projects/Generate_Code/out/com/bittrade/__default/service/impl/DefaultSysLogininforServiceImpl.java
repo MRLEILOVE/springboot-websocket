@@ -3,11 +3,11 @@
  */
 package com.bittrade.__default.service.impl;
 
-import com.bittrade.pojo.model.SysLogininfor;
-import com.bittrade.pojo.dto.SysLogininforDTO;
-import com.bittrade.pojo.vo.SysLogininforVO;
 import com.bittrade.__default.service.IDefaultSysLogininforService;
 import com.core.framework.base.DAO.IBaseDAO;
+import com.core.framework.base.DTO.BaseDTO;
+import com.core.framework.base.VO.BaseVO;
+import com.core.framework.base.model.BaseModel;
 import com.core.framework.base.service.impl.BaseServiceImpl;
 
 /**
@@ -16,6 +16,6 @@ import com.core.framework.base.service.impl.BaseServiceImpl;
  *
  */
 //public abstract class DefaultSysLogininforServiceImpl extends BaseServiceImpl<SysLogininfor, SysLogininforDTO, SysLogininforVO, ISysLogininforDAO> implements IDefaultSysLogininforService {
-public abstract class DefaultSysLogininforServiceImpl<DAO extends IBaseDAO<SysLogininfor, SysLogininforDTO, SysLogininforVO>> extends BaseServiceImpl<SysLogininfor, SysLogininforDTO, SysLogininforVO, DAO> implements IDefaultSysLogininforService {
+public abstract class DefaultSysLogininforServiceImpl<DAO extends IBaseDAO<Model, DTO, VO>, Model extends BaseModel<Model>, DTO extends BaseDTO<DTO>, VO extends BaseVO<VO>> extends BaseServiceImpl<Model, DTO, VO, DAO> implements IDefaultSysLogininforService<Model, DTO, VO> {
 	
 }

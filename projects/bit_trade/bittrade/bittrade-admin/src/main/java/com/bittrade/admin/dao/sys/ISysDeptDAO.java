@@ -3,8 +3,7 @@ package com.bittrade.admin.dao.sys;
 import java.util.List;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.bittrade.pojo.dto.SysDeptDTO;
-import com.bittrade.pojo.model.SysDept;
+import com.bittrade.admin.model.domain.SysDept;
 
 /**
  * <p>
@@ -30,7 +29,7 @@ public interface ISysDeptDAO extends BaseMapper<SysDept> {
 	 * @param deptId
 	 * @return 部门信息
 	 */
-	public SysDeptDTO selectDeptById(Integer deptId);
+	public SysDept selectDeptById(Integer deptId);
 	
 	/**
 	 * .根据角色ID查询部门

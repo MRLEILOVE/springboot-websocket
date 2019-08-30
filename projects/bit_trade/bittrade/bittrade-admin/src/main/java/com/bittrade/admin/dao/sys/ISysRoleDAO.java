@@ -4,9 +4,9 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.bittrade.__default.DAO.IDefaultSysRoleDAO;
-import com.bittrade.pojo.model.SysRole;
+import com.bittrade.admin.model.domain.SysRole;
 
 /**
  * <p>
@@ -16,7 +16,7 @@ import com.bittrade.pojo.model.SysRole;
  * @author who ?
  * @since 2018-11-03
  */
-public interface ISysRoleDAO extends IDefaultSysRoleDAO {
+public interface ISysRoleDAO extends BaseMapper<SysRole> {
 
 	/**
 	 * .根据用户ID查询角色

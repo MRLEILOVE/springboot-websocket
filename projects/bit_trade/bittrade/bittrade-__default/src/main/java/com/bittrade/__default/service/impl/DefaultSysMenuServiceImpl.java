@@ -3,11 +3,11 @@
  */
 package com.bittrade.__default.service.impl;
 
-import com.bittrade.pojo.model.SysMenu;
-import com.bittrade.pojo.dto.SysMenuDTO;
-import com.bittrade.pojo.vo.SysMenuVO;
 import com.bittrade.__default.service.IDefaultSysMenuService;
 import com.core.framework.base.DAO.IBaseDAO;
+import com.core.framework.base.DTO.BaseDTO;
+import com.core.framework.base.VO.BaseVO;
+import com.core.framework.base.model.BaseModel;
 import com.core.framework.base.service.impl.BaseServiceImpl;
 
 /**
@@ -16,6 +16,6 @@ import com.core.framework.base.service.impl.BaseServiceImpl;
  *
  */
 //public abstract class DefaultSysMenuServiceImpl extends BaseServiceImpl<SysMenu, SysMenuDTO, SysMenuVO, ISysMenuDAO> implements IDefaultSysMenuService {
-public abstract class DefaultSysMenuServiceImpl<DAO extends IBaseDAO<SysMenu, SysMenuDTO, SysMenuVO>> extends BaseServiceImpl<SysMenu, SysMenuDTO, SysMenuVO, DAO> implements IDefaultSysMenuService {
+public abstract class DefaultSysMenuServiceImpl<DAO extends IBaseDAO<Model, DTO, VO>, Model extends BaseModel<Model>, DTO extends BaseDTO<DTO>, VO extends BaseVO<VO>> extends BaseServiceImpl<Model, DTO, VO, DAO> implements IDefaultSysMenuService<Model, DTO, VO> {
 	
 }

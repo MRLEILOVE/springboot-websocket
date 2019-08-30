@@ -1,12 +1,11 @@
 package com.bittrade.pojo.dto;
 
 import com.core.framework.base.DTO.BaseDTO;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- *
+ * 
  * @author Administrator
  *
  */

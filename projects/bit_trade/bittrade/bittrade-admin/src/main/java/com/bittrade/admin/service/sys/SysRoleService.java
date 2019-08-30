@@ -4,9 +4,8 @@ import java.util.List;
 import java.util.Set;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.bittrade.__default.service.IDefaultSysRoleService;
-import com.bittrade.pojo.dto.SysRoleDTO;
-import com.bittrade.pojo.model.SysRole;
+import com.baomidou.mybatisplus.extension.service.IService;
+import com.bittrade.admin.model.domain.SysRole;
 
 /**
  * <p>
@@ -16,7 +15,7 @@ import com.bittrade.pojo.model.SysRole;
  * @author who ?
  * @since 2018-11-03
  */
-public interface SysRoleService extends IDefaultSysRoleService {
+public interface SysRoleService extends IService<SysRole> {
 
 	/**
 	 * .根据用户ID查询角色
@@ -32,7 +31,7 @@ public interface SysRoleService extends IDefaultSysRoleService {
 	 * @param userId
 	 * @return 角色列表
 	 */
-	public List<SysRoleDTO> selectRolesByUserId(Integer userId);
+	public List<SysRole> selectRolesByUserId(Integer userId);
 
 	/**
 	 * .根据条件分页查询角色数据
@@ -45,10 +44,10 @@ public interface SysRoleService extends IDefaultSysRoleService {
 	/**
      * .增保存角色信息
      * 
-     * @param roleDTO 角色信息
+     * @param role 角色信息
      * @return 结果
      */
-    public int insertRole(SysRoleDTO roleDTO);
+    public int insertRole(SysRole role);
     
     /**
      *. 查询所有角色
@@ -85,18 +84,18 @@ public interface SysRoleService extends IDefaultSysRoleService {
     /**
      * .修改保存角色信息
      * 
-     * @param roleDTO 角色信息
+     * @param role 角色信息
      * @return 结果
      */
-    public int updateRole(SysRoleDTO roleDTO);
+    public int updateRole(SysRole role);
 
     /**
      * .修改数据权限信息
      * 
-     * @param roleDTO 角色信息
+     * @param role 角色信息
      * @return 结果
      */
-    public int updateRule(SysRoleDTO roleDTO);
+    public int updateRule(SysRole role);
 
     /**
      * .校验角色名称是否唯一

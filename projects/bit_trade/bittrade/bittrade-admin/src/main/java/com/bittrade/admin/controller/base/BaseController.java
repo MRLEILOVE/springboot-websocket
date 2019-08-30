@@ -14,15 +14,15 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.bittrade.admin.constant.GlobalConstant.PageAug;
 import com.bittrade.admin.enums.UserEnum.UserSex;
+import com.bittrade.admin.model.domain.SysUser;
 import com.bittrade.admin.model.dto.BaseQuery;
+import com.bittrade.admin.util.DateTimeUtil;
 import com.bittrade.admin.util.ServletUtil;
 import com.bittrade.admin.util.ShiroUtil;
 import com.bittrade.admin.wrapper.WrapMapper;
 import com.bittrade.admin.wrapper.Wrapper;
-import com.bittrade.pojo.dto.SysUserDTO;
-import com.core.common.constant.GlobalConstant.PageAug;
-import com.core.tool.DateTimeUtils;
 
 public class BaseController {
 
@@ -103,10 +103,10 @@ public class BaseController {
 	public <T extends BaseQuery> void paramsHandle(T t) {
 		String beginTime = t.getParams().get( "beginTime" );
 		String endTime = t.getParams().get( "endTime" );
-		t.setBeginTime( StringUtils.isBlank( beginTime ) ? null : DateTimeUtils.stringToDate( beginTime, "yyyy-MM-dd" ) );
+		t.setBeginTime( StringUtils.isBlank( beginTime ) ? null : DateTimeUtil.stringToDate( beginTime, "yyyy-MM-dd" ) );
 		if (StringUtils.isNotBlank( endTime )) {
 			Calendar c = Calendar.getInstance();
-			c.setTime( DateTimeUtils.stringToDate( endTime, "yyyy-MM-dd" ) );
+			c.setTime( DateTimeUtil.stringToDate( endTime, "yyyy-MM-dd" ) );
 			c.set( HOUR_OF_DAY, 23 );
 			c.set( MINUTE, 59 );
 			c.set( SECOND, 59 );
@@ -146,12 +146,12 @@ public class BaseController {
 		return WrapMapper.wrap( code, message );
 	}
 
-	public SysUserDTO getUser() {
+	public SysUser getUser() {
 		return ShiroUtil.getUser();
 	}
 
-	public void setUser(SysUserDTO userDTO) {
-		ShiroUtil.setUser( userDTO );
+	public void setUser(SysUser user) {
+		ShiroUtil.setUser( user );
 	}
 
 	public Integer getUserId() {

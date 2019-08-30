@@ -149,6 +149,6 @@ public abstract interface IDefaultSysRoleMenuDAO extends IBaseDAO<SysRoleMenu, S
 	 * @param pageDTO
 	 * @return
 	 */
-	public List<SysRoleMenuDTO> getsDTOBy(@Param(value="sysRoleMenu") SysRoleMenuDTO sysRoleMenuDTO, PageDTO<SysRoleMenuDTO> pageDTO);
+	public List<SysRoleMenuDTO> getsDTOBy(SysRoleMenuDTO sysRoleMenuDTO, PageDTO<SysRoleMenuDTO> pageDTO);
 	
 }

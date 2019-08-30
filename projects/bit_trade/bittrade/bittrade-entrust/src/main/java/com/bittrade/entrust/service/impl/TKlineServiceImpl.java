@@ -21,10 +21,12 @@ import com.bittrade.currency.api.service.ITCurrencyTradeService;
 import com.bittrade.entrust.api.service.ITKlineService;
 import com.bittrade.entrust.dao.ITKlineDAO;
 import com.bittrade.pojo.dto.QueryKLineDto;
+import com.bittrade.pojo.dto.TKlineDTO;
 import com.bittrade.pojo.model.TCurrencyTrade;
 import com.bittrade.pojo.model.TEntrustRecord;
 import com.bittrade.pojo.model.TKline;
 import com.bittrade.pojo.vo.QueryKLineVO;
+import com.bittrade.pojo.vo.TKlineVO;
 import com.core.common.constant.ICompareResultConstant;
 import com.core.tool.DateTimeUtil;
 
@@ -37,7 +39,7 @@ import redis.clients.jedis.JedisCluster;
  */
 @Service
 @com.alibaba.dubbo.config.annotation.Service
-public class TKlineServiceImpl extends DefaultTKlineServiceImpl<ITKlineDAO> implements ITKlineService {
+public class TKlineServiceImpl extends DefaultTKlineServiceImpl<ITKlineDAO, TKline, TKlineDTO, TKlineVO> implements ITKlineService {
 
 	private static final Logger															LOG	= LoggerFactory.getLogger( TKlineServiceImpl.class );
 

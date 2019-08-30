@@ -23,9 +23,6 @@ public class CoinTypeVO {
 //    @NotNull(message = "具体币种不能为空")
     @ApiModelProperty("具体币种")
     private String token;
-
-    @ApiModelProperty("币种名称")
-    private String name;
 }
 
 

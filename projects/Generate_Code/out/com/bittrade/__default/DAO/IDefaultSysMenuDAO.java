@@ -149,6 +149,6 @@ public abstract interface IDefaultSysMenuDAO extends IBaseDAO<SysMenu, SysMenuDT
 	 * @param pageDTO
 	 * @return
 	 */
-	public List<SysMenuDTO> getsDTOBy(@Param(value="sysMenu") SysMenuDTO sysMenuDTO, PageDTO<SysMenuDTO> pageDTO);
+	public List<SysMenuDTO> getsDTOBy(SysMenuDTO sysMenuDTO, PageDTO<SysMenuDTO> pageDTO);
 	
 }

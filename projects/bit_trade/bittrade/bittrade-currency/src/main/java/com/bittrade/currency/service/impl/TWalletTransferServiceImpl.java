@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.bittrade.pojo.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,18 +25,11 @@ import com.bittrade.currency.api.service.ITWalletTransferService;
 import com.bittrade.currency.dao.ITAccountManageDAO;
 import com.bittrade.currency.dao.ITCurrencyDAO;
 import com.bittrade.currency.dao.ITWalletTransferDAO;
+import com.bittrade.pojo.dto.TWalletTransferDTO;
 import com.bittrade.pojo.dto.TransferDto;
-import com.bittrade.pojo.model.TAccountManage;
-import com.bittrade.pojo.model.TCurrency;
-import com.bittrade.pojo.model.TLegalCurrencyAccount;
-import com.bittrade.pojo.model.TLegalCurrencyCoin;
-import com.bittrade.pojo.model.TWallet;
-import com.bittrade.pojo.model.TWalletRecord;
-import com.bittrade.pojo.model.TWalletTransfer;
-import com.bittrade.pojo.model.WCoin;
-import com.bittrade.pojo.model.WWalletAccount;
 import com.bittrade.pojo.vo.CoinVo;
 import com.bittrade.pojo.vo.LegalCurrencyCoinVO;
+import com.bittrade.pojo.vo.TWalletTransferVO;
 import com.common.bittrade.dao.ITWalletDAO;
 import com.common.bittrade.dao.ITWalletRecordDAO;
 import com.common.bittrade.service.ITLegalCurrencyAccountService;
@@ -56,7 +50,7 @@ import com.core.tool.SnowFlake;
 @Service
 @com.alibaba.dubbo.config.annotation.Service
 public class TWalletTransferServiceImpl extends
-		DefaultTWalletTransferServiceImpl<ITWalletTransferDAO>
+		DefaultTWalletTransferServiceImpl<ITWalletTransferDAO, TWalletTransfer, TWalletTransferDTO, TWalletTransferVO>
 		implements ITWalletTransferService {
 	private static final Logger LOG = LoggerFactory.getLogger(TWalletTransferServiceImpl.class);
 	private static final SnowFlake SNOW_FLAKE__ENTRUST = new SnowFlake(2, 2);

@@ -4,8 +4,8 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.bittrade.admin.base.BaseTester;
+import com.bittrade.admin.model.domain.SysLogininfor;
 import com.bittrade.admin.service.impl.sys.SysLogininforServiceImpl;
-import com.bittrade.pojo.model.SysLogininfor;
 
 public class SysTester extends BaseTester {
 

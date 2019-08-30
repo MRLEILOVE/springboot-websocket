@@ -149,6 +149,6 @@ public abstract interface IDefaultSysDictDataDAO extends IBaseDAO<SysDictData, S
 	 * @param pageDTO
 	 * @return
 	 */
-	public List<SysDictDataDTO> getsDTOBy(@Param(value="sysDictData") SysDictDataDTO sysDictDataDTO, PageDTO<SysDictDataDTO> pageDTO);
+	public List<SysDictDataDTO> getsDTOBy(SysDictDataDTO sysDictDataDTO, PageDTO<SysDictDataDTO> pageDTO);
 	
 }

@@ -26,6 +26,13 @@
 		其他类似的类似，也可以公用（共用）引用。
 	-->
 	<sql id="Base_Column_List">
+		<choose>
+			<when test="strArr_field != null">
+		<foreach collection="strArr_field" index="index" item="item" open="" separator="," close="">
+			`${item}`
+		</foreach>
+			</when>
+			<otherwise>
 		`sessionId` AS `sessionId`, 
 		`login_name` AS `loginName`, 
 		`dept_name` AS `deptName`, 
@@ -37,18 +44,6 @@
 		`start_timestamp` AS `startTimestamp`, 
 		`last_access_time` AS `lastAccessTime`, 
 		`expire_time` AS `expireTime`
-	</sql>
-	
-	<!-- 其他的也可以类似的加， yes， 类似蕾丝的。 -->
-	<sql id="sql_Column_forObject">
-		<choose>
-			<when test="sysUserOnline != null and sysUserOnline.strArr_field != null">
-		<foreach collection="sysUserOnline.strArr_field" index="index" item="item" open="" separator="," close="">
-			`${item}`
-		</foreach>
-			</when>
-			<otherwise>
-		<include refid="Base_Column_List"></include>
 			</otherwise>
 		</choose>
 	</sql>
@@ -75,29 +70,18 @@
 		</choose>
 	</sql>
 	<sql id="sql_WHERE_forObject">
-		<if test="sysUserOnline != null and sysUserOnline.map_in != null">
+		<choose>
+			<when test="sysUserOnline.map_in != null">
+			
 		<foreach collection="sysUserOnline.map_in.entrySet()" index="map_index" item="map_item">
 		AND `${map_index}` IN 
 		<foreach collection="map_item" index="arr_index" item="arr_item" open="(" separator="," close=")">
 			#{arr_item}
 		</foreach>
 		</foreach>
-		</if>
-		<if test="sysUserOnline != null and sysUserOnline.map_eq != null">
-		<foreach collection="sysUserOnline.map_eq.entrySet()" index="map_index" item="map_item">
-		AND `${map_index}` = #{map_item}
-		</foreach>
-		</if>
-		<if test="sysUserOnline != null and sysUserOnline.map_le != null">
-		<foreach collection="sysUserOnline.map_le.entrySet()" index="map_index" item="map_item">
-		AND `${map_index}` &lt;= #{map_item}
-		</foreach>
-		</if>
-		<if test="sysUserOnline != null and sysUserOnline.map_ge != null">
-		<foreach collection="sysUserOnline.map_ge.entrySet()" index="map_index" item="map_item">
-		AND `${map_index}` &gt;= #{map_item}
-		</foreach>
-		</if>
+			
+			</when>
+		</choose>
 	</sql>
 	
 	
@@ -681,10 +665,40 @@
 	
 	<select id="getsDTOBy" resultType="com.bittrade.pojo.dto.SysUserOnlineDTO">
 		SELECT 
-			<include refid="sql_Column_forObject"></include>
+			<include refid="Base_Column_List"></include>
 		FROM sys_user_online
 		<where>
-			<include refid="sql_WHERE_forObject"></include>
+			<if test="loginName != null">
+			AND `login_name` = #{loginName,jdbcType=VARCHAR}
+			</if>
+			<if test="deptName != null">
+			AND `dept_name` = #{deptName,jdbcType=VARCHAR}
+			</if>
+			<if test="ipaddr != null">
+			AND `ipaddr` = #{ipaddr,jdbcType=VARCHAR}
+			</if>
+			<if test="loginLocation != null">
+			AND `login_location` = #{loginLocation,jdbcType=VARCHAR}
+			</if>
+			<if test="browser != null">
+			AND `browser` = #{browser,jdbcType=VARCHAR}
+			</if>
+			<if test="os != null">
+			AND `os` = #{os,jdbcType=VARCHAR}
+			</if>
+			<if test="status != null">
+			AND `status` = #{status,jdbcType=VARCHAR}
+			</if>
+			<if test="startTimestamp != null">
+			AND `start_timestamp` = #{startTimestamp,jdbcType=TIMESTAMP}
+			</if>
+			<if test="lastAccessTime != null">
+			AND `last_access_time` = #{lastAccessTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="expireTime != null">
+			AND `expire_time` = #{expireTime,jdbcType=INTEGER}
+			</if>
+			<include refid="sql_WHERE_forProperty"></include>
 		</where>
 	</select>
 

@@ -16,11 +16,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.bittrade.admin.annotation.Log;
 import com.bittrade.admin.controller.base.BaseController;
 import com.bittrade.admin.enums.AnnotationEnum.BusinessType;
+import com.bittrade.admin.model.domain.SysMenu;
+import com.bittrade.admin.model.domain.SysRole;
 import com.bittrade.admin.service.sys.SysMenuService;
 import com.bittrade.admin.util.ShiroUtil;
 import com.bittrade.admin.wrapper.Wrapper;
-import com.bittrade.pojo.model.SysMenu;
-import com.bittrade.pojo.model.SysRole;
 
 /**
  * <p>

@@ -2,8 +2,7 @@ package com.bittrade.admin.service.sys;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.bittrade.pojo.dto.SysUserDTO;
-import com.bittrade.pojo.model.SysUser;
+import com.bittrade.admin.model.domain.SysUser;
 
 /**
  * <p>
@@ -30,7 +29,7 @@ public interface SysUserService extends IService<SysUser> {
 	 * @param userId
 	 * @return 用户对象信息
 	 */
-	public SysUserDTO selectUserById(Integer userId);
+	public SysUser selectUserById(Integer userId);
 
 	/**
 	 * .通过用户名查询用户
@@ -76,17 +75,17 @@ public interface SysUserService extends IService<SysUser> {
 	/**
 	 * 保存用户信息
 	 * 
-	 * @param userDTO
+	 * @param user
 	 * @return 结果
 	 */
-	public int updateUser(SysUserDTO userDTO);
+	public int updateUser(SysUser user);
 	
 	/**
      * 保存用户信息
      * 
-     * @param userDTO 用户信息
+     * @param user 用户信息
      * @return 结果
      */
-    public int insertUser(SysUserDTO userDTO);
+    public int insertUser(SysUser user);
 
 }

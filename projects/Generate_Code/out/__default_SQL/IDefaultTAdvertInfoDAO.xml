@@ -21,7 +21,7 @@
 		<result javaType="java.math.BigDecimal" property="alreadyTransactionAmount" jdbcType="DECIMAL" column="already_transaction_amount" />
 		<result javaType="java.math.BigDecimal" property="balanceAmount" jdbcType="DECIMAL" column="balance_amount" />
 		<result javaType="java.math.BigDecimal" property="freezeAmount" jdbcType="DECIMAL" column="freeze_amount" />
-		<result javaType="String" property="paymentMethodId" jdbcType="VARCHAR" column="payment_method_id" />
+		<result javaType="Long" property="paymentMethodId" jdbcType="BIGINT" column="payment_method_id" />
 		<result javaType="Byte" property="status" jdbcType="INTEGER" column="status" />
 		<result javaType="Byte" property="openOpponentLimit" jdbcType="INTEGER" column="open_opponent_limit" />
 		<result javaType="Byte" property="certificationLevel" jdbcType="INTEGER" column="certification_level" />
@@ -38,6 +38,13 @@
 		其他类似的类似，也可以公用（共用）引用。
 	-->
 	<sql id="Base_Column_List">
+		<choose>
+			<when test="strArr_field != null">
+		<foreach collection="strArr_field" index="index" item="item" open="" separator="," close="">
+			`${item}`
+		</foreach>
+			</when>
+			<otherwise>
 		`id` AS `id`, 
 		`user_id` AS `userId`, 
 		`coin_id` AS `coinId`, 
@@ -61,18 +68,6 @@
 		`version` AS `version`, 
 		`create_time` AS `createTime`, 
 		`update_time` AS `updateTime`
-	</sql>
-	
-	<!-- 其他的也可以类似的加， yes， 类似蕾丝的。 -->
-	<sql id="sql_Column_forObject">
-		<choose>
-			<when test="tAdvertInfo != null and tAdvertInfo.strArr_field != null">
-		<foreach collection="tAdvertInfo.strArr_field" index="index" item="item" open="" separator="," close="">
-			`${item}`
-		</foreach>
-			</when>
-			<otherwise>
-		<include refid="Base_Column_List"></include>
 			</otherwise>
 		</choose>
 	</sql>
@@ -99,35 +94,24 @@
 		</choose>
 	</sql>
 	<sql id="sql_WHERE_forObject">
-		<if test="tAdvertInfo != null and tAdvertInfo.map_in != null">
+		<choose>
+			<when test="tAdvertInfo.map_in != null">
+			
 		<foreach collection="tAdvertInfo.map_in.entrySet()" index="map_index" item="map_item">
 		AND `${map_index}` IN 
 		<foreach collection="map_item" index="arr_index" item="arr_item" open="(" separator="," close=")">
 			#{arr_item}
 		</foreach>
 		</foreach>
-		</if>
-		<if test="tAdvertInfo != null and tAdvertInfo.map_eq != null">
-		<foreach collection="tAdvertInfo.map_eq.entrySet()" index="map_index" item="map_item">
-		AND `${map_index}` = #{map_item}
-		</foreach>
-		</if>
-		<if test="tAdvertInfo != null and tAdvertInfo.map_le != null">
-		<foreach collection="tAdvertInfo.map_le.entrySet()" index="map_index" item="map_item">
-		AND `${map_index}` &lt;= #{map_item}
-		</foreach>
-		</if>
-		<if test="tAdvertInfo != null and tAdvertInfo.map_ge != null">
-		<foreach collection="tAdvertInfo.map_ge.entrySet()" index="map_index" item="map_item">
-		AND `${map_index}` &gt;= #{map_item}
-		</foreach>
-		</if>
+			
+			</when>
+		</choose>
 	</sql>
 	
 	
 	<insert id="add" parameterType="com.bittrade.pojo.model.TAdvertInfo" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO t_advert_info(`user_id`, `coin_id`, `type`, `pricing_mode`, `floating_ratio`, `price`, `hide_price`, `min_limit`, `max_limit`, `already_transaction_amount`, `balance_amount`, `freeze_amount`, `payment_method_id`, `status`, `open_opponent_limit`, `certification_level`, `registered_time`, `payment_time`, `message`, `version`, `create_time`, `update_time`)
-		VALUES(#{userId,jdbcType=BIGINT}, #{coinId,jdbcType=BIGINT}, #{type,jdbcType=INTEGER}, #{pricingMode,jdbcType=INTEGER}, #{floatingRatio,jdbcType=DECIMAL}, #{price,jdbcType=DECIMAL}, #{hidePrice,jdbcType=DECIMAL}, #{minLimit,jdbcType=DECIMAL}, #{maxLimit,jdbcType=DECIMAL}, #{alreadyTransactionAmount,jdbcType=DECIMAL}, #{balanceAmount,jdbcType=DECIMAL}, #{freezeAmount,jdbcType=DECIMAL}, #{paymentMethodId,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{openOpponentLimit,jdbcType=INTEGER}, #{certificationLevel,jdbcType=INTEGER}, #{registeredTime,jdbcType=TIMESTAMP}, #{paymentTime,jdbcType=INTEGER}, #{message,jdbcType=VARCHAR}, #{version,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+		VALUES(#{userId,jdbcType=BIGINT}, #{coinId,jdbcType=BIGINT}, #{type,jdbcType=INTEGER}, #{pricingMode,jdbcType=INTEGER}, #{floatingRatio,jdbcType=DECIMAL}, #{price,jdbcType=DECIMAL}, #{hidePrice,jdbcType=DECIMAL}, #{minLimit,jdbcType=DECIMAL}, #{maxLimit,jdbcType=DECIMAL}, #{alreadyTransactionAmount,jdbcType=DECIMAL}, #{balanceAmount,jdbcType=DECIMAL}, #{freezeAmount,jdbcType=DECIMAL}, #{paymentMethodId,jdbcType=BIGINT}, #{status,jdbcType=INTEGER}, #{openOpponentLimit,jdbcType=INTEGER}, #{certificationLevel,jdbcType=INTEGER}, #{registeredTime,jdbcType=TIMESTAMP}, #{paymentTime,jdbcType=INTEGER}, #{message,jdbcType=VARCHAR}, #{version,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
 	</insert>
 	
 	<insert id="addWithSelective" parameterType="com.bittrade.pojo.model.TAdvertInfo" useGeneratedKeys="true" keyProperty="id">
@@ -237,7 +221,7 @@
 			#{freezeAmount,jdbcType=DECIMAL}, 
 			</if>
 			<if test="paymentMethodId != null">
-			#{paymentMethodId,jdbcType=VARCHAR}, 
+			#{paymentMethodId,jdbcType=BIGINT}, 
 			</if>
 			<if test="status != null">
 			#{status,jdbcType=INTEGER}, 
@@ -316,7 +300,7 @@
 			AND `freeze_amount` = #{freezeAmount,jdbcType=DECIMAL}
 			</if>
 			<if test="paymentMethodId != null">
-			AND `payment_method_id` = #{paymentMethodId,jdbcType=VARCHAR}
+			AND `payment_method_id` = #{paymentMethodId,jdbcType=BIGINT}
 			</if>
 			<if test="status != null">
 			AND `status` = #{status,jdbcType=INTEGER}
@@ -363,7 +347,7 @@
 			`already_transaction_amount` = #{alreadyTransactionAmount,jdbcType=DECIMAL}, 
 			`balance_amount` = #{balanceAmount,jdbcType=DECIMAL}, 
 			`freeze_amount` = #{freezeAmount,jdbcType=DECIMAL}, 
-			`payment_method_id` = #{paymentMethodId,jdbcType=VARCHAR}, 
+			`payment_method_id` = #{paymentMethodId,jdbcType=BIGINT}, 
 			`status` = #{status,jdbcType=INTEGER}, 
 			`open_opponent_limit` = #{openOpponentLimit,jdbcType=INTEGER}, 
 			`certification_level` = #{certificationLevel,jdbcType=INTEGER}, 
@@ -419,7 +403,7 @@
 			`freeze_amount` = #{freezeAmount,jdbcType=DECIMAL}, 
 			</if>
 			<if test="paymentMethodId != null">
-			`payment_method_id` = #{paymentMethodId,jdbcType=VARCHAR}, 
+			`payment_method_id` = #{paymentMethodId,jdbcType=BIGINT}, 
 			</if>
 			<if test="status != null">
 			`status` = #{status,jdbcType=INTEGER}, 
@@ -469,7 +453,7 @@
 			`already_transaction_amount` = #{tAdvertInfo.alreadyTransactionAmount,jdbcType=DECIMAL}, 
 			`balance_amount` = #{tAdvertInfo.balanceAmount,jdbcType=DECIMAL}, 
 			`freeze_amount` = #{tAdvertInfo.freezeAmount,jdbcType=DECIMAL}, 
-			`payment_method_id` = #{tAdvertInfo.paymentMethodId,jdbcType=VARCHAR}, 
+			`payment_method_id` = #{tAdvertInfo.paymentMethodId,jdbcType=BIGINT}, 
 			`status` = #{tAdvertInfo.status,jdbcType=INTEGER}, 
 			`open_opponent_limit` = #{tAdvertInfo.openOpponentLimit,jdbcType=INTEGER}, 
 			`certification_level` = #{tAdvertInfo.certificationLevel,jdbcType=INTEGER}, 
@@ -522,7 +506,7 @@
 			AND `freeze_amount` = #{condiTAdvertInfo.freezeAmount,jdbcType=DECIMAL}
 			</if>
 			<if test="condiTAdvertInfo.paymentMethodId != null">
-			AND `payment_method_id` = #{condiTAdvertInfo.paymentMethodId,jdbcType=VARCHAR}
+			AND `payment_method_id` = #{condiTAdvertInfo.paymentMethodId,jdbcType=BIGINT}
 			</if>
 			<if test="condiTAdvertInfo.status != null">
 			AND `status` = #{condiTAdvertInfo.status,jdbcType=INTEGER}
@@ -596,7 +580,7 @@
 			`freeze_amount` = #{tAdvertInfo.freezeAmount,jdbcType=DECIMAL}, 
 			</if>
 			<if test="tAdvertInfo.paymentMethodId != null">
-			`payment_method_id` = #{tAdvertInfo.paymentMethodId,jdbcType=VARCHAR}, 
+			`payment_method_id` = #{tAdvertInfo.paymentMethodId,jdbcType=BIGINT}, 
 			</if>
 			<if test="tAdvertInfo.status != null">
 			`status` = #{tAdvertInfo.status,jdbcType=INTEGER}, 
@@ -669,7 +653,7 @@
 			AND `freeze_amount` = #{condiTAdvertInfo.freezeAmount,jdbcType=DECIMAL}
 			</if>
 			<if test="condiTAdvertInfo.paymentMethodId != null">
-			AND `payment_method_id` = #{condiTAdvertInfo.paymentMethodId,jdbcType=VARCHAR}
+			AND `payment_method_id` = #{condiTAdvertInfo.paymentMethodId,jdbcType=BIGINT}
 			</if>
 			<if test="condiTAdvertInfo.status != null">
 			AND `status` = #{condiTAdvertInfo.status,jdbcType=INTEGER}
@@ -797,7 +781,7 @@
 			AND `freeze_amount` = #{freezeAmount,jdbcType=DECIMAL}
 			</if>
 			<if test="paymentMethodId != null">
-			AND `payment_method_id` = #{paymentMethodId,jdbcType=VARCHAR}
+			AND `payment_method_id` = #{paymentMethodId,jdbcType=BIGINT}
 			</if>
 			<if test="status != null">
 			AND `status` = #{status,jdbcType=INTEGER}
@@ -901,7 +885,7 @@
 			AND `freeze_amount` = #{freezeAmount,jdbcType=DECIMAL}
 			</if>
 			<if test="paymentMethodId != null">
-			AND `payment_method_id` = #{paymentMethodId,jdbcType=VARCHAR}
+			AND `payment_method_id` = #{paymentMethodId,jdbcType=BIGINT}
 			</if>
 			<if test="status != null">
 			AND `status` = #{status,jdbcType=INTEGER}
@@ -982,7 +966,7 @@
 			AND `freeze_amount` = #{tAdvertInfo.freezeAmount,jdbcType=DECIMAL}
 			</if>
 			<if test="tAdvertInfo.paymentMethodId != null">
-			AND `payment_method_id` = #{tAdvertInfo.paymentMethodId,jdbcType=VARCHAR}
+			AND `payment_method_id` = #{tAdvertInfo.paymentMethodId,jdbcType=BIGINT}
 			</if>
 			<if test="tAdvertInfo.status != null">
 			AND `status` = #{tAdvertInfo.status,jdbcType=INTEGER}
@@ -1081,7 +1065,7 @@
 			AND `freeze_amount` = #{tAdvertInfo.freezeAmount,jdbcType=DECIMAL}
 			</if>
 			<if test="tAdvertInfo.paymentMethodId != null">
-			AND `payment_method_id` = #{tAdvertInfo.paymentMethodId,jdbcType=VARCHAR}
+			AND `payment_method_id` = #{tAdvertInfo.paymentMethodId,jdbcType=BIGINT}
 			</if>
 			<if test="tAdvertInfo.status != null">
 			AND `status` = #{tAdvertInfo.status,jdbcType=INTEGER}
@@ -1180,7 +1164,7 @@
 			AND `freeze_amount` = #{freezeAmount,jdbcType=DECIMAL}
 			</if>
 			<if test="paymentMethodId != null">
-			AND `payment_method_id` = #{paymentMethodId,jdbcType=VARCHAR}
+			AND `payment_method_id` = #{paymentMethodId,jdbcType=BIGINT}
 			</if>
 			<if test="status != null">
 			AND `status` = #{status,jdbcType=INTEGER}
@@ -1215,10 +1199,76 @@
 	
 	<select id="getsDTOBy" resultType="com.bittrade.pojo.dto.TAdvertInfoDTO">
 		SELECT 
-			<include refid="sql_Column_forObject"></include>
+			<include refid="Base_Column_List"></include>
 		FROM t_advert_info
 		<where>
-			<include refid="sql_WHERE_forObject"></include>
+			<if test="userId != null">
+			AND `user_id` = #{userId,jdbcType=BIGINT}
+			</if>
+			<if test="coinId != null">
+			AND `coin_id` = #{coinId,jdbcType=BIGINT}
+			</if>
+			<if test="type != null">
+			AND `type` = #{type,jdbcType=INTEGER}
+			</if>
+			<if test="pricingMode != null">
+			AND `pricing_mode` = #{pricingMode,jdbcType=INTEGER}
+			</if>
+			<if test="floatingRatio != null">
+			AND `floating_ratio` = #{floatingRatio,jdbcType=DECIMAL}
+			</if>
+			<if test="price != null">
+			AND `price` = #{price,jdbcType=DECIMAL}
+			</if>
+			<if test="hidePrice != null">
+			AND `hide_price` = #{hidePrice,jdbcType=DECIMAL}
+			</if>
+			<if test="minLimit != null">
+			AND `min_limit` = #{minLimit,jdbcType=DECIMAL}
+			</if>
+			<if test="maxLimit != null">
+			AND `max_limit` = #{maxLimit,jdbcType=DECIMAL}
+			</if>
+			<if test="alreadyTransactionAmount != null">
+			AND `already_transaction_amount` = #{alreadyTransactionAmount,jdbcType=DECIMAL}
+			</if>
+			<if test="balanceAmount != null">
+			AND `balance_amount` = #{balanceAmount,jdbcType=DECIMAL}
+			</if>
+			<if test="freezeAmount != null">
+			AND `freeze_amount` = #{freezeAmount,jdbcType=DECIMAL}
+			</if>
+			<if test="paymentMethodId != null">
+			AND `payment_method_id` = #{paymentMethodId,jdbcType=BIGINT}
+			</if>
+			<if test="status != null">
+			AND `status` = #{status,jdbcType=INTEGER}
+			</if>
+			<if test="openOpponentLimit != null">
+			AND `open_opponent_limit` = #{openOpponentLimit,jdbcType=INTEGER}
+			</if>
+			<if test="certificationLevel != null">
+			AND `certification_level` = #{certificationLevel,jdbcType=INTEGER}
+			</if>
+			<if test="registeredTime != null">
+			AND `registered_time` = #{registeredTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="paymentTime != null">
+			AND `payment_time` = #{paymentTime,jdbcType=INTEGER}
+			</if>
+			<if test="message != null">
+			AND `message` = #{message,jdbcType=VARCHAR}
+			</if>
+			<if test="version != null">
+			AND `version` = #{version,jdbcType=BIGINT}
+			</if>
+			<if test="createTime != null">
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="updateTime != null">
+			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+			<include refid="sql_WHERE_forProperty"></include>
 		</where>
 	</select>
 

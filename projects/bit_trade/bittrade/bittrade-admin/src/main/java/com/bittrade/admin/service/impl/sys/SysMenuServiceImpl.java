@@ -17,16 +17,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.bittrade.admin.constant.GlobalConstant.Number;
+import com.bittrade.admin.constant.GlobalConstant.Sys;
 import com.bittrade.admin.dao.sys.ISysMenuDAO;
 import com.bittrade.admin.dao.sys.ISysRoleMenuDAO;
 import com.bittrade.admin.enums.UserEnum;
+import com.bittrade.admin.model.domain.SysMenu;
+import com.bittrade.admin.model.domain.SysRole;
+import com.bittrade.admin.model.domain.SysUser;
 import com.bittrade.admin.service.sys.SysMenuService;
-import com.bittrade.pojo.dto.SysMenuDTO;
-import com.bittrade.pojo.dto.SysUserDTO;
-import com.bittrade.pojo.model.SysMenu;
-import com.bittrade.pojo.model.SysRole;
-import com.core.common.constant.GlobalConstant.Number;
-import com.core.common.constant.GlobalConstant.Sys;
 
 /**
  * <p>
@@ -57,14 +56,14 @@ public class SysMenuServiceImpl extends ServiceImpl<ISysMenuDAO, SysMenu> implem
 	}
 
 	@Override
-	public List<SysMenuDTO> selectMenusByUser(SysUserDTO userDTO) {
-		List<SysMenuDTO> meus = new LinkedList<SysMenuDTO>();
-		if (userDTO.getLoginName().equals( Sys.ADMIN )) {
+	public List<SysMenu> selectMenusByUser(SysUser user) {
+		List<SysMenu> meus = new LinkedList<SysMenu>();
+		if (user.getLoginName().equals( Sys.ADMIN )) {
 			meus = baseMapper.selectMenuNormalAll();
 		} else {
-			meus = baseMapper.selectMenusByUserId( userDTO.getUserId() );
+			meus = baseMapper.selectMenusByUserId( user.getUserId() );
 		}
-		return getChildPerms(meus, Number.ZERO_0);
+		return getChildPerms(meus,Number.ZERO_0);
 	}
 
 	@Override
@@ -158,10 +157,10 @@ public class SysMenuServiceImpl extends ServiceImpl<ISysMenuDAO, SysMenu> implem
 	 * @param typeId  传入的父节点ID
 	 * @return String
 	 */
-	public List<SysMenuDTO> getChildPerms(List<SysMenuDTO> list, int parentId) {
-		List<SysMenuDTO> returnList = new ArrayList<SysMenuDTO>();
-		for (Iterator<SysMenuDTO> iterator = list.iterator(); iterator.hasNext();) {
-			SysMenuDTO t = (SysMenuDTO) iterator.next();
+	public List<SysMenu> getChildPerms(List<SysMenu> list, int parentId) {
+		List<SysMenu> returnList = new ArrayList<SysMenu>();
+		for (Iterator<SysMenu> iterator = list.iterator(); iterator.hasNext();) {
+			SysMenu t = (SysMenu) iterator.next();
 			// 一、根据传入的某个父节点ID,遍历该父节点的所有子节点
 			if (t.getParentId() == parentId) {
 				recursionFn( list, t );
@@ -177,11 +176,11 @@ public class SysMenuServiceImpl extends ServiceImpl<ISysMenuDAO, SysMenu> implem
 	 * @param list
 	 * @param SysMenu
 	 */
-	private void recursionFn(List<SysMenuDTO> list, SysMenuDTO t) {
+	private void recursionFn(List<SysMenu> list, SysMenu t) {
 		// 得到子节点列表
-		List<SysMenuDTO> childList = getChildList( list, t );
+		List<SysMenu> childList = getChildList( list, t );
 		t.setChildren( childList );
-		for (SysMenuDTO tChild : childList) {
+		for (SysMenu tChild : childList) {
 			if (hasChild( list, tChild )) {
 				// 判断是否有子节点
 				//Iterator<SysMenu> it = childList.iterator();
@@ -196,11 +195,11 @@ public class SysMenuServiceImpl extends ServiceImpl<ISysMenuDAO, SysMenu> implem
 	/**
 	 * .得到子节点列表
 	 */
-	private List<SysMenuDTO> getChildList(List<SysMenuDTO> list, SysMenuDTO t) {
-		List<SysMenuDTO> tlist = new ArrayList<SysMenuDTO>();
-		Iterator<SysMenuDTO> it = list.iterator();
+	private List<SysMenu> getChildList(List<SysMenu> list, SysMenu t) {
+		List<SysMenu> tlist = new ArrayList<SysMenu>();
+		Iterator<SysMenu> it = list.iterator();
 		while (it.hasNext()) {
-			SysMenuDTO n = (SysMenuDTO) it.next();
+			SysMenu n = (SysMenu) it.next();
 			if (n.getParentId().longValue() == t.getMenuId().longValue()) {
 				tlist.add( n );
 			}
@@ -211,7 +210,7 @@ public class SysMenuServiceImpl extends ServiceImpl<ISysMenuDAO, SysMenu> implem
 	/**
 	 * .判断是否有子节点
 	 */
-	private boolean hasChild(List<SysMenuDTO> list, SysMenuDTO t) {
+	private boolean hasChild(List<SysMenu> list, SysMenu t) {
 		return getChildList( list, t ).size() > 0 ? true : false;
 	}
 	

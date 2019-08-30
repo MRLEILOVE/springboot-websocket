@@ -74,15 +74,7 @@ spring:
       get*=PROPAGATION_REQUIRED,-Exception,readOnly
     # AspectJ的切入点表达式---execution表达式 .
     expression: execution (* com..service.impl..*ServiceImpl.*(..))
-  # http .
-  http:
-    encoding:
-      enabled: true
-      force: true
-      charset: UTF-8
-  # application .
   application_name: bittrade-${data.application.name:}
-  # profile .
   profiles:
     include:
       - data

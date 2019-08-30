@@ -1,6 +1,3 @@
-/**
- * This code is generated automatically. Please do not edit it.
- */
 package com.bittrade.pojo.model;
 
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -23,7 +20,7 @@ import lombok.experimental.Accessors;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Accessors(chain = false) // true, because BeanUtil.copyObj .
+@Accessors(chain = true)
 @EqualsAndHashCode(callSuper = false)
 @TableName(value="t_advert_info")
 public class TAdvertInfo extends BaseModel<TAdvertInfo> {
@@ -104,7 +101,7 @@ public class TAdvertInfo extends BaseModel<TAdvertInfo> {
 		public static final String FREEZE_AMOUNT = "freeze_amount";
 		
 		/**
-		 * 收款方式id，出售单为收款方式, 购买单为付款方式,多个以逗号分隔
+		 * 收款方式id，出售单为收款方式, 购买单为付款方式
 		 */
 		public static final String PAYMENT_METHOD_ID = "payment_method_id";
 		
@@ -222,9 +219,9 @@ public class TAdvertInfo extends BaseModel<TAdvertInfo> {
 	private java.math.BigDecimal freezeAmount;
 	
 	/**
-	 * 收款方式id，出售单为收款方式, 购买单为付款方式,多个以逗号分隔
+	 * 收款方式id，出售单为收款方式, 购买单为付款方式
 	 */
-	private String paymentMethodId;
+	private Long paymentMethodId;
 	
 	/**
 	 * 状态：1，进行中；2，已下架(暂停)；3，已撤销；

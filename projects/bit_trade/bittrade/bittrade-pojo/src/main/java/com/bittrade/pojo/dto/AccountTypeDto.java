@@ -1,12 +1,12 @@
 package com.bittrade.pojo.dto;
 
-import java.util.Date;
-
 import com.core.framework.base.DTO.BaseDTO;
-
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+
+import java.time.LocalDateTime;
+import java.util.Date;
 
 @ApiModel("账户类型分页dto")
 @Data

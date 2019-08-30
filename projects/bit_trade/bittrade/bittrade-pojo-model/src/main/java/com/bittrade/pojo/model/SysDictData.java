@@ -1,6 +1,3 @@
-/**
- * This code is generated automatically. Please do not edit it.
- */
 package com.bittrade.pojo.model;
 
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -23,7 +20,7 @@ import lombok.experimental.Accessors;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Accessors(chain = false) // true, because BeanUtil.copyObj .
+@Accessors(chain = true)
 @EqualsAndHashCode(callSuper = false)
 @TableName(value="sys_dict_data")
 public class SysDictData extends BaseModel<SysDictData> {
@@ -113,7 +110,7 @@ public class SysDictData extends BaseModel<SysDictData> {
 	/**
 	 * 字典编码
 	 */
-	@com.baomidou.mybatisplus.annotation.TableId(value = "dict_code", type = com.baomidou.mybatisplus.annotation.IdType.AUTO)
+	@com.baomidou.mybatisplus.annotation.TableId(value = "dictCode", type = com.baomidou.mybatisplus.annotation.IdType.AUTO)
 	private Integer dictCode;
 	
 	/**

@@ -149,6 +149,6 @@ public abstract interface IDefaultTRecordLogDAO extends IBaseDAO<TRecordLog, TRe
 	 * @param pageDTO
 	 * @return
 	 */
-	public List<TRecordLogDTO> getsDTOBy(@Param(value="tRecordLog") TRecordLogDTO tRecordLogDTO, PageDTO<TRecordLogDTO> pageDTO);
+	public List<TRecordLogDTO> getsDTOBy(TRecordLogDTO tRecordLogDTO, PageDTO<TRecordLogDTO> pageDTO);
 	
 }

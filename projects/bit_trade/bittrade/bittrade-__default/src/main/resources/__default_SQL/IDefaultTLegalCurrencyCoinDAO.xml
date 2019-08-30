@@ -23,6 +23,13 @@
 		其他类似的类似，也可以公用（共用）引用。
 	-->
 	<sql id="Base_Column_List">
+		<choose>
+			<when test="strArr_field != null">
+		<foreach collection="strArr_field" index="index" item="item" open="" separator="," close="">
+			`${item}`
+		</foreach>
+			</when>
+			<otherwise>
 		`id` AS `id`, 
 		`name` AS `name`, 
 		`title` AS `title`, 
@@ -31,18 +38,6 @@
 		`min_quota` AS `minQuota`, 
 		`create_time` AS `createTime`, 
 		`update_time` AS `updateTime`
-	</sql>
-	
-	<!-- 其他的也可以类似的加， yes， 类似蕾丝的。 -->
-	<sql id="sql_Column_forObject">
-		<choose>
-			<when test="tLegalCurrencyCoin != null and tLegalCurrencyCoin.strArr_field != null">
-		<foreach collection="tLegalCurrencyCoin.strArr_field" index="index" item="item" open="" separator="," close="">
-			`${item}`
-		</foreach>
-			</when>
-			<otherwise>
-		<include refid="Base_Column_List"></include>
 			</otherwise>
 		</choose>
 	</sql>
@@ -69,29 +64,18 @@
 		</choose>
 	</sql>
 	<sql id="sql_WHERE_forObject">
-		<if test="tLegalCurrencyCoin != null and tLegalCurrencyCoin.map_in != null">
+		<choose>
+			<when test="tLegalCurrencyCoin.map_in != null">
+			
 		<foreach collection="tLegalCurrencyCoin.map_in.entrySet()" index="map_index" item="map_item">
 		AND `${map_index}` IN 
 		<foreach collection="map_item" index="arr_index" item="arr_item" open="(" separator="," close=")">
 			#{arr_item}
 		</foreach>
 		</foreach>
-		</if>
-		<if test="tLegalCurrencyCoin != null and tLegalCurrencyCoin.map_eq != null">
-		<foreach collection="tLegalCurrencyCoin.map_eq.entrySet()" index="map_index" item="map_item">
-		AND `${map_index}` = #{map_item}
-		</foreach>
-		</if>
-		<if test="tLegalCurrencyCoin != null and tLegalCurrencyCoin.map_le != null">
-		<foreach collection="tLegalCurrencyCoin.map_le.entrySet()" index="map_index" item="map_item">
-		AND `${map_index}` &lt;= #{map_item}
-		</foreach>
-		</if>
-		<if test="tLegalCurrencyCoin != null and tLegalCurrencyCoin.map_ge != null">
-		<foreach collection="tLegalCurrencyCoin.map_ge.entrySet()" index="map_index" item="map_item">
-		AND `${map_index}` &gt;= #{map_item}
-		</foreach>
-		</if>
+			
+			</when>
+		</choose>
 	</sql>
 	
 	
@@ -540,10 +524,31 @@
 	
 	<select id="getsDTOBy" resultType="com.bittrade.pojo.dto.TLegalCurrencyCoinDTO">
 		SELECT 
-			<include refid="sql_Column_forObject"></include>
+			<include refid="Base_Column_List"></include>
 		FROM t_legal_currency_coin
 		<where>
-			<include refid="sql_WHERE_forObject"></include>
+			<if test="name != null">
+			AND `name` = #{name,jdbcType=VARCHAR}
+			</if>
+			<if test="title != null">
+			AND `title` = #{title,jdbcType=VARCHAR}
+			</if>
+			<if test="img != null">
+			AND `img` = #{img,jdbcType=VARCHAR}
+			</if>
+			<if test="status != null">
+			AND `status` = #{status,jdbcType=INTEGER}
+			</if>
+			<if test="minQuota != null">
+			AND `min_quota` = #{minQuota,jdbcType=DECIMAL}
+			</if>
+			<if test="createTime != null">
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="updateTime != null">
+			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+			<include refid="sql_WHERE_forProperty"></include>
 		</where>
 	</select>
 

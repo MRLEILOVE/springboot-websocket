@@ -46,6 +46,7 @@ public class TAdvertOrderController extends BaseController<TAdvertOrder, TAdvert
 
 	/**
 	 * 取消订单
+     * TODO 待測試
 	 * <br/>
 	 * create by: leigq
 	 * <br/>
@@ -54,13 +55,14 @@ public class TAdvertOrderController extends BaseController<TAdvertOrder, TAdvert
 	 * @return result
 	 */
 	@PostMapping("/action/cancel/{order_id}")
-	public ReturnDTO<Object> cancelAdvertOrder(@PathVariable("order_id") Long orderId, @ALoginUser LoginUser loginUser) {
-		boolean cancelResult = itAdvertOrderService.cancelAdvertOrder(orderId, loginUser);
+	public ReturnDTO<Object> cancelAdvertOrder(@PathVariable("order_id") Long orderId) {
+		boolean cancelResult = itAdvertOrderService.cancelAdvertOrder(orderId);
 		return cancelResult ? ReturnDTO.ok("取消成功") : ReturnDTO.error("取消失敗");
 	}
 
     /**
      * 點擊已付款
+     * TODO 待測試
      * <br/>
      * create by: leigq
      * <br/>
@@ -76,6 +78,7 @@ public class TAdvertOrderController extends BaseController<TAdvertOrder, TAdvert
 
     /**
      * 點擊確認收款
+     * TODO 待測試
      * <br/>
      * create by: leigq
      * <br/>
@@ -91,6 +94,7 @@ public class TAdvertOrderController extends BaseController<TAdvertOrder, TAdvert
 
 	/**
 	 * 未完成订单列表
+	 * TODO 待測試
 	 * <br/>
 	 * create by: leigq
 	 * <br/>
@@ -108,6 +112,7 @@ public class TAdvertOrderController extends BaseController<TAdvertOrder, TAdvert
 
 	/**
 	 * 已完成订单列表
+	 * TODO 待測試
 	 * <br/>
 	 * create by: leigq
 	 * <br/>
@@ -125,6 +130,7 @@ public class TAdvertOrderController extends BaseController<TAdvertOrder, TAdvert
 
 	/**
 	 * 已取消订单列表
+	 * TODO 待測試
 	 * <br/>
 	 * create by: leigq
 	 * <br/>

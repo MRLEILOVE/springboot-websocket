@@ -1,8 +1,5 @@
 package com.bittrade.pojo.dto;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.core.framework.base.DTO.BaseDTO;
 
 import lombok.Data;
@@ -33,8 +30,5 @@ public class SysMenuDTO extends BaseDTO<SysMenuDTO> {
 	private String updateBy;
 	private java.time.LocalDateTime updateTime;
 	private String remark;
-
-	/** 子菜单 */
-	private List<SysMenuDTO> children = new ArrayList<SysMenuDTO>();
 
 }

@@ -3,9 +3,9 @@
  */
 package com.bittrade.__default.service;
 
-import com.bittrade.pojo.model.TParamConfig;
-import com.bittrade.pojo.dto.TParamConfigDTO;
-import com.bittrade.pojo.vo.TParamConfigVO;
+import com.core.framework.base.DTO.BaseDTO;
+import com.core.framework.base.VO.BaseVO;
+import com.core.framework.base.model.BaseModel;
 import com.core.framework.base.service.IBaseService;
 
 /**
@@ -13,6 +13,6 @@ import com.core.framework.base.service.IBaseService;
  * @author Administrator
  *
  */
-public abstract interface IDefaultTParamConfigService extends IBaseService<TParamConfig, TParamConfigDTO, TParamConfigVO> {
+public abstract interface IDefaultTParamConfigService<Model extends BaseModel<Model>, DTO extends BaseDTO<DTO>, VO extends BaseVO<VO>> extends IBaseService<Model, DTO, VO> {
 	
 }

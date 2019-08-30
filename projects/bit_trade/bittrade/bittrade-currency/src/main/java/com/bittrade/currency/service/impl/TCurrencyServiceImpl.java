@@ -9,7 +9,9 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.bittrade.__default.service.impl.DefaultTCurrencyServiceImpl;
 import com.bittrade.currency.api.service.ITCurrencyService;
 import com.bittrade.currency.dao.ITCurrencyDAO;
+import com.bittrade.pojo.dto.TCurrencyDTO;
 import com.bittrade.pojo.model.TCurrency;
+import com.bittrade.pojo.vo.TCurrencyVO;
 
 /**
  * 
@@ -19,7 +21,7 @@ import com.bittrade.pojo.model.TCurrency;
 @Service
 @com.alibaba.dubbo.config.annotation.Service
 public class TCurrencyServiceImpl extends
-		DefaultTCurrencyServiceImpl<ITCurrencyDAO> implements ITCurrencyService {
+		DefaultTCurrencyServiceImpl<ITCurrencyDAO, TCurrency, TCurrencyDTO, TCurrencyVO> implements ITCurrencyService {
 
 	@Autowired
 	private ITCurrencyDAO tCurrencyDAO;

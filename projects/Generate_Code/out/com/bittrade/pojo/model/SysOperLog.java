@@ -1,6 +1,3 @@
-/**
- * This code is generated automatically. Please do not edit it.
- */
 package com.bittrade.pojo.model;
 
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -23,7 +20,7 @@ import lombok.experimental.Accessors;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Accessors(chain = false) // true, because BeanUtil.copyObj .
+@Accessors(chain = true)
 @EqualsAndHashCode(callSuper = false)
 @TableName(value="sys_oper_log")
 public class SysOperLog extends BaseModel<SysOperLog> {
@@ -113,7 +110,7 @@ public class SysOperLog extends BaseModel<SysOperLog> {
 	/**
 	 * 日志主键
 	 */
-	@com.baomidou.mybatisplus.annotation.TableId(value = "oper_id", type = com.baomidou.mybatisplus.annotation.IdType.AUTO)
+	@com.baomidou.mybatisplus.annotation.TableId(value = "operId", type = com.baomidou.mybatisplus.annotation.IdType.AUTO)
 	private Integer operId;
 	
 	/**

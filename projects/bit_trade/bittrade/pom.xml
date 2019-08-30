@@ -27,7 +27,6 @@
 		<module>bittrade-netty-websocket</module>
 		<module>bittrade-batch</module>
 		<module>bittrade-c2c</module>
-		<module>bittrade-uac</module>
 	</modules>
 
 	<dependencyManagement>

@@ -46,9 +46,6 @@ import com.bittrade.admin.annotation.Excel.Type;
 import com.bittrade.admin.exception.BusinessException;
 import com.bittrade.admin.wrapper.WrapMapper;
 import com.bittrade.admin.wrapper.Wrapper;
-import com.core.tool.ConvertUtil;
-import com.core.tool.ReflectUtil;
-import com.core.tool.StringUtil;
 
 /**
  * Excel相关处理
@@ -230,7 +227,7 @@ public class ExcelUtil<T>
 					{
 						if (val instanceof String)
 						{
-							val = com.core.tool.DateUtil.parseDate(val);
+							val = DateUtils.parseDate(val);
 						}
 						else if (val instanceof Double)
 						{
@@ -448,7 +445,7 @@ public class ExcelUtil<T>
 						String readConverterExp = attr.readConverterExp();
 						if (StringUtil.isNotEmpty(dateFormat) && StringUtil.isNotNull(value))
 						{
-							cell.setCellValue(com.core.tool.DateUtil.parseDateToStr(dateFormat, (Date) value));
+							cell.setCellValue(DateUtils.parseDateToStr(dateFormat, (Date) value));
 						}
 						else if (StringUtil.isNotEmpty(readConverterExp) && StringUtil.isNotNull(value))
 						{

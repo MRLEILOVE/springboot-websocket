@@ -149,6 +149,6 @@ public abstract interface IDefaultTEntrustDAO extends IBaseDAO<TEntrust, TEntrus
 	 * @param pageDTO
 	 * @return
 	 */
-	public List<TEntrustDTO> getsDTOBy(@Param(value="tEntrust") TEntrustDTO tEntrustDTO, PageDTO<TEntrustDTO> pageDTO);
+	public List<TEntrustDTO> getsDTOBy(TEntrustDTO tEntrustDTO, PageDTO<TEntrustDTO> pageDTO);
 	
 }

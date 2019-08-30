@@ -149,6 +149,6 @@ public abstract interface IDefaultTLoginLogDAO extends IBaseDAO<TLoginLog, TLogi
 	 * @param pageDTO
 	 * @return
 	 */
-	public List<TLoginLogDTO> getsDTOBy(@Param(value="tLoginLog") TLoginLogDTO tLoginLogDTO, PageDTO<TLoginLogDTO> pageDTO);
+	public List<TLoginLogDTO> getsDTOBy(TLoginLogDTO tLoginLogDTO, PageDTO<TLoginLogDTO> pageDTO);
 	
 }

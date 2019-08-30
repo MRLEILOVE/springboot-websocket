@@ -8,9 +8,8 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.SimplePrincipalCollection;
 import org.apache.shiro.subject.Subject;
 
+import com.bittrade.admin.model.domain.SysUser;
 import com.bittrade.admin.shiro.realm.UserRealm;
-import com.bittrade.pojo.dto.SysUserDTO;
-import com.core.tool.BeanUtil;
 
 /**
  * shiro 工具类
@@ -30,21 +29,21 @@ public class ShiroUtil {
 		getSubjct().logout();
 	}
 
-	public static SysUserDTO getUser() {
-		SysUserDTO userDTO = null;
+	public static SysUser getUser() {
+		SysUser user = null;
 		Object obj = getSubjct().getPrincipal();
 		if (null != obj ) {
-			userDTO = new SysUserDTO();
-			BeanUtil.copyBeanProp( userDTO, obj );
+			user = new SysUser();
+			BeanUtils.copyBeanProp( user, obj );
 		}
-		return userDTO;
+		return user;
 	}
 
-	public static void setUser(SysUserDTO userDTO) {
+	public static void setUser(SysUser user) {
 		Subject subject = getSubjct();
 		PrincipalCollection principalCollection = subject.getPrincipals();
 		String realmName = principalCollection.getRealmNames().iterator().next();
-		PrincipalCollection newPrincipalCollection = new SimplePrincipalCollection( userDTO, realmName );
+		PrincipalCollection newPrincipalCollection = new SimplePrincipalCollection( user, realmName );
 		// 重新加载Principal
 		subject.runAs( newPrincipalCollection );
 	}

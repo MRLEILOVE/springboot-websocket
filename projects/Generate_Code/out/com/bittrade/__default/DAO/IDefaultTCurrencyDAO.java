@@ -149,6 +149,6 @@ public abstract interface IDefaultTCurrencyDAO extends IBaseDAO<TCurrency, TCurr
 	 * @param pageDTO
 	 * @return
 	 */
-	public List<TCurrencyDTO> getsDTOBy(@Param(value="tCurrency") TCurrencyDTO tCurrencyDTO, PageDTO<TCurrencyDTO> pageDTO);
+	public List<TCurrencyDTO> getsDTOBy(TCurrencyDTO tCurrencyDTO, PageDTO<TCurrencyDTO> pageDTO);
 	
 }

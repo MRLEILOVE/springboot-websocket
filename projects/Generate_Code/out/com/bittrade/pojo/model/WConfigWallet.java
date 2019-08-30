@@ -1,6 +1,3 @@
-/**
- * This code is generated automatically. Please do not edit it.
- */
 package com.bittrade.pojo.model;
 
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -23,7 +20,7 @@ import lombok.experimental.Accessors;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Accessors(chain = false) // true, because BeanUtil.copyObj .
+@Accessors(chain = true)
 @EqualsAndHashCode(callSuper = false)
 @TableName(value="w_config_wallet")
 public class WConfigWallet extends BaseModel<WConfigWallet> {

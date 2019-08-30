@@ -3,6 +3,9 @@ package com.bittrade.admin.service.impl.wallet;
 import org.springframework.stereotype.Service;
 
 import com.bittrade.__default.service.impl.DefaultWWalletAccountRecordServiceImpl;
+import com.bittrade.pojo.dto.WWalletAccountRecordDTO;
+import com.bittrade.pojo.vo.WWalletAccountRecordVO;
+import com.bittrade.pojo.model.WWalletAccountRecord;
 import com.bittrade.admin.dao.wallet.IWWalletAccountRecordDAO;
 import com.bittrade.admin.service.wallet.IWWalletAccountRecordService;
 
@@ -12,6 +15,6 @@ import com.bittrade.admin.service.wallet.IWWalletAccountRecordService;
  *
  */
 @Service
-public class WWalletAccountRecordServiceImpl extends DefaultWWalletAccountRecordServiceImpl<IWWalletAccountRecordDAO> implements IWWalletAccountRecordService {
+public class WWalletAccountRecordServiceImpl extends DefaultWWalletAccountRecordServiceImpl<IWWalletAccountRecordDAO, WWalletAccountRecord, WWalletAccountRecordDTO, WWalletAccountRecordVO> implements IWWalletAccountRecordService {
 	
 }

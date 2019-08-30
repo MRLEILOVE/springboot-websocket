@@ -9,10 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.task.TaskExecutor;
 
+import com.bittrade.admin.model.domain.SysUserOnline;
 import com.bittrade.admin.service.impl.sys.SysUserOnlineServiceImpl;
 import com.bittrade.admin.shiro.constant.OnlineStatus;
 import com.bittrade.admin.shiro.service.AsyncFactory;
-import com.bittrade.pojo.model.SysUserOnline;
 
 /**
  * 针对自定义的ShiroSession的db操作

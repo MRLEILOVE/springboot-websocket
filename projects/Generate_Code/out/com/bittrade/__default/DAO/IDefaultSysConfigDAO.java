@@ -149,6 +149,6 @@ public abstract interface IDefaultSysConfigDAO extends IBaseDAO<SysConfig, SysCo
 	 * @param pageDTO
 	 * @return
 	 */
-	public List<SysConfigDTO> getsDTOBy(@Param(value="sysConfig") SysConfigDTO sysConfigDTO, PageDTO<SysConfigDTO> pageDTO);
+	public List<SysConfigDTO> getsDTOBy(SysConfigDTO sysConfigDTO, PageDTO<SysConfigDTO> pageDTO);
 	
 }

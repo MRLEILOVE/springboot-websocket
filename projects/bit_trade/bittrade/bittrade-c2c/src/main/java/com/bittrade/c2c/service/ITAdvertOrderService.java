@@ -3,6 +3,7 @@ package com.bittrade.c2c.service;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.bittrade.__default.service.IDefaultTAdvertOrderService;
 import com.bittrade.pojo.dto.TAdvertOrderDTO;
+import com.bittrade.pojo.vo.TAdvertOrderVO;
 import com.bittrade.pojo.model.TAdvertOrder;
 import com.core.web.constant.entity.LoginUser;
 
@@ -11,19 +12,19 @@ import com.core.web.constant.entity.LoginUser;
  * @author Administrator
  *
  */
-public interface ITAdvertOrderService extends IDefaultTAdvertOrderService {
+public interface ITAdvertOrderService extends IDefaultTAdvertOrderService<TAdvertOrder, TAdvertOrderDTO, TAdvertOrderVO> {
 
-	Long getPaymentOrPutCoinAging(Long userId, Integer type, Integer status);
+	Long getPaymentOrPutCoinAging(Long userId, Byte type, Byte status);
 
 	boolean existenceNoCompleteOrders(Long advertId);
 
-	TAdvertOrder getAdvertOrderDetails(Long orderId);
+	TAdvertOrderDTO getAdvertOrderDetails(Long orderId);
 
-	boolean cancelAdvertOrder(Long orderId, LoginUser loginUser);
+	boolean cancelAdvertOrder(Long orderId);
 
     boolean clickAlreadyPaid(Long orderId);
 
 	boolean clickAlreadyReceipt(Long orderId);
 
-	Page<TAdvertOrder> listAdvertOrders(Page<TAdvertOrder> page, LoginUser loginUser, Integer status);
+	Page<TAdvertOrder> listAdvertOrders(Page<TAdvertOrder> page, LoginUser loginUser, Byte status);
 }

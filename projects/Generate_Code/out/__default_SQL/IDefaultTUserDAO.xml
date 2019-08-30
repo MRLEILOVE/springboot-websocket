@@ -40,6 +40,13 @@
 		其他类似的类似，也可以公用（共用）引用。
 	-->
 	<sql id="Base_Column_List">
+		<choose>
+			<when test="strArr_field != null">
+		<foreach collection="strArr_field" index="index" item="item" open="" separator="," close="">
+			`${item}`
+		</foreach>
+			</when>
+			<otherwise>
 		`id` AS `id`, 
 		`is_identity_validate` AS `isIdentityValidate`, 
 		`is_mail_validate` AS `isMailValidate`, 
@@ -65,18 +72,6 @@
 		`extend1` AS `extend1`, 
 		`extend2` AS `extend2`, 
 		`extend3` AS `extend3`
-	</sql>
-	
-	<!-- 其他的也可以类似的加， yes， 类似蕾丝的。 -->
-	<sql id="sql_Column_forObject">
-		<choose>
-			<when test="tUser != null and tUser.strArr_field != null">
-		<foreach collection="tUser.strArr_field" index="index" item="item" open="" separator="," close="">
-			`${item}`
-		</foreach>
-			</when>
-			<otherwise>
-		<include refid="Base_Column_List"></include>
 			</otherwise>
 		</choose>
 	</sql>
@@ -103,29 +98,18 @@
 		</choose>
 	</sql>
 	<sql id="sql_WHERE_forObject">
-		<if test="tUser != null and tUser.map_in != null">
+		<choose>
+			<when test="tUser.map_in != null">
+			
 		<foreach collection="tUser.map_in.entrySet()" index="map_index" item="map_item">
 		AND `${map_index}` IN 
 		<foreach collection="map_item" index="arr_index" item="arr_item" open="(" separator="," close=")">
 			#{arr_item}
 		</foreach>
 		</foreach>
-		</if>
-		<if test="tUser != null and tUser.map_eq != null">
-		<foreach collection="tUser.map_eq.entrySet()" index="map_index" item="map_item">
-		AND `${map_index}` = #{map_item}
-		</foreach>
-		</if>
-		<if test="tUser != null and tUser.map_le != null">
-		<foreach collection="tUser.map_le.entrySet()" index="map_index" item="map_item">
-		AND `${map_index}` &lt;= #{map_item}
-		</foreach>
-		</if>
-		<if test="tUser != null and tUser.map_ge != null">
-		<foreach collection="tUser.map_ge.entrySet()" index="map_index" item="map_item">
-		AND `${map_index}` &gt;= #{map_item}
-		</foreach>
-		</if>
+			
+			</when>
+		</choose>
 	</sql>
 	
 	
@@ -1267,10 +1251,76 @@
 	
 	<select id="getsDTOBy" resultType="com.bittrade.pojo.dto.TUserDTO">
 		SELECT 
-			<include refid="sql_Column_forObject"></include>
+			<include refid="Base_Column_List"></include>
 		FROM t_user
 		<where>
-			<include refid="sql_WHERE_forObject"></include>
+			<if test="loginName != null">
+			AND `login_name` = #{loginName,jdbcType=VARCHAR}
+			</if>
+			<if test="loginPassword != null">
+			AND `login_password` = #{loginPassword,jdbcType=VARCHAR}
+			</if>
+			<if test="nickName != null">
+			AND `nick_name` = #{nickName,jdbcType=VARCHAR}
+			</if>
+			<if test="realName != null">
+			AND `real_name` = #{realName,jdbcType=VARCHAR}
+			</if>
+			<if test="telePhone != null">
+			AND `tele_phone` = #{telePhone,jdbcType=VARCHAR}
+			</if>
+			<if test="recommendCode != null">
+			AND `recommend_code` = #{recommendCode,jdbcType=VARCHAR}
+			</if>
+			<if test="userEmail != null">
+			AND `user_email` = #{userEmail,jdbcType=VARCHAR}
+			</if>
+			<if test="phoneAreaCode != null">
+			AND `phone_area_code` = #{phoneAreaCode,jdbcType=VARCHAR}
+			</if>
+			<if test="isTelValidate != null">
+			AND `is_tel_validate` = #{isTelValidate,jdbcType=INTEGER}
+			</if>
+			<if test="userAddress != null">
+			AND `user_address` = #{userAddress,jdbcType=VARCHAR}
+			</if>
+			<if test="identityType != null">
+			AND `identity_type` = #{identityType,jdbcType=INTEGER}
+			</if>
+			<if test="identityNo != null">
+			AND `identity_no` = #{identityNo,jdbcType=VARCHAR}
+			</if>
+			<if test="telValidateTime != null">
+			AND `tel_validate_time` = #{telValidateTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="mailValidateTime != null">
+			AND `mail_validate_time` = #{mailValidateTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="type != null">
+			AND `type` = #{type,jdbcType=INTEGER}
+			</if>
+			<if test="status != null">
+			AND `status` = #{status,jdbcType=INTEGER}
+			</if>
+			<if test="userFirstIp != null">
+			AND `user_first_ip` = #{userFirstIp,jdbcType=VARCHAR}
+			</if>
+			<if test="updateTime != null">
+			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="createTime != null">
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="extend1 != null">
+			AND `extend1` = #{extend1,jdbcType=VARCHAR}
+			</if>
+			<if test="extend2 != null">
+			AND `extend2` = #{extend2,jdbcType=VARCHAR}
+			</if>
+			<if test="extend3 != null">
+			AND `extend3` = #{extend3,jdbcType=VARCHAR}
+			</if>
+			<include refid="sql_WHERE_forProperty"></include>
 		</where>
 	</select>
 

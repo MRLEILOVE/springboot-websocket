@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bittrade.c2c.dao.ITLegalCurrencyAccountDAO">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.bittrade.pojo.model.TLegalCurrencyAccount">
+		<id javaType="int" property="id" jdbcType="INTEGER" column="id" />
+		<result javaType="Long" property="userId" jdbcType="BIGINT" column="user_id" />
+		<result javaType="Integer" property="coinId" jdbcType="INTEGER" column="coin_id" />
+		<result javaType="java.math.BigDecimal" property="balanceAmount" jdbcType="DECIMAL" column="balance_amount" />
+		<result javaType="java.math.BigDecimal" property="freezeAmount" jdbcType="DECIMAL" column="freeze_amount" />
+		<result javaType="Integer" property="version" jdbcType="INTEGER" column="version" />
+		<result javaType="java.time.LocalDateTime" property="createTime" jdbcType="TIMESTAMP" column="create_time" />
+		<result javaType="java.time.LocalDateTime" property="updateTime" jdbcType="TIMESTAMP" column="update_time" />
+	</resultMap>
+
+	<!-- 通用查询结果列 -->
+	<sql id="Base_Column_List">
+		`id` AS id, 
+		`user_id` AS userId, 
+		`coin_id` AS coinId, 
+		`balance_amount` AS balanceAmount, 
+		`freeze_amount` AS freezeAmount, 
+		`version` AS version, 
+		`create_time` AS createTime, 
+		`update_time` AS updateTime
+	</sql>
+
+	<select id="getAssets" resultType="com.bittrade.pojo.vo.AssetsVO">
+		SELECT a.balance_amount AS total, a.freeze_amount AS totalFrozen,c.id AS currencyId,c.`name` AS currencyName
+		FROM t_legal_currency_account a
+		INNER JOIN t_legal_currency_coin c ON c.id = a.coin_id
+		WHERE user_id = #{userId}
+	</select>
+
+	<select id="availableBalance" resultType="java.lang.String">
+		SELECT IFNULL(a.balance_amount,0) AS  balanceAmount
+		FROM t_legal_currency_account a
+		INNER JOIN t_legal_currency_coin c ON c.id = a.coin_id
+		WHERE a.user_id = #{userId}
+		AND c.`name` = #{coinName}
+	</select>
+
+	<select id="getByUserIdAndCoinId" resultType="com.bittrade.pojo.model.TLegalCurrencyAccount">
+		SELECT
+		a.*
+		FROM
+		t_legal_currency_account a
+		INNER JOIN t_legal_currency_coin c
+		ON c.id = a.coin_id
+		WHERE a.user_id = #{userId}
+		AND c.id = #{coinId}
+	</select>
+
+	<update id="c2cIn">
+		UPDATE t_legal_currency_account
+		SET balance_amount = balance_amount + #{num},
+			update_time = now(),
+        	version = version + 1
+		WHERE id = #{id} AND version = #{version}
+	</update>
+
+	<update id="c2cOut">
+		UPDATE t_legal_currency_account
+		SET balance_amount = balance_amount - #{num},
+			update_time = now(),
+            version = version + 1
+		WHERE id = #{id} AND version = #{version}
+	</update>
+</mapper>

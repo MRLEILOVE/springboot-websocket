@@ -3,7 +3,7 @@
 <mapper namespace="com.bittrade.admin.dao.sys.ISysMenuDAO">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.bittrade.pojo.model.SysMenu">
+    <resultMap id="BaseResultMap" type="com.bittrade.admin.model.domain.SysMenu">
         <id column="menu_id" property="menuId" />
         <result column="menu_name" property="menuName" />
         <result property="parentName" column="parent_name"    />
@@ -39,14 +39,14 @@
 		where ur.user_id = #{userId}
 	</select>
 	
-	<select id="selectMenuNormalAll" resultType="com.bittrade.pojo.dto.SysMenuDTO">
+	<select id="selectMenuNormalAll" resultMap="BaseResultMap">
 		select distinct m.menu_id, m.parent_id, m.menu_name, m.url, m.perms , m.menu_type, m.icon, m.order_num, m.create_time
 		from sys_menu m
 		where m.menu_type in ('M', 'C') and m.visible = 1
 		order by m.order_num
 	</select>
 	
-	<select id="selectMenusByUserId" parameterType="Integer" resultType="com.bittrade.pojo.dto.SysMenuDTO">
+	<select id="selectMenusByUserId" parameterType="Integer" resultMap="BaseResultMap">
 		select distinct m.menu_id, m.parent_id, m.menu_name, m.url, m.perms , m.menu_type, m.icon, m.order_num, m.create_time
 		from sys_menu m
 			 left join sys_role_menu rm on m.menu_id = rm.menu_id
@@ -68,7 +68,7 @@
 		order by m.parent_id, m.order_num
 	</select>
 	
-	<select id="selectMenuList" parameterType="com.bittrade.pojo.model.SysMenu" resultMap="BaseResultMap">
+	<select id="selectMenuList" parameterType="com.bittrade.admin.model.domain.SysMenu" resultMap="BaseResultMap">
         <include refid="selectMenuVo"/>
         <where>
 			<if test="menuName != null and menuName != ''">
@@ -95,12 +95,12 @@
 	    select count(1) from sys_menu where parent_id=#{menuId}  
 	</select>
 	
-	<select id="checkMenuNameUnique" parameterType="com.bittrade.pojo.model.SysMenu" resultMap="BaseResultMap">
+	<select id="checkMenuNameUnique" parameterType="com.bittrade.admin.model.domain.SysMenu" resultMap="BaseResultMap">
 		<include refid="selectMenuVo"/>
 		where menu_name=#{menuName} and parent_id = #{parentId}
 	</select>
 	
-	<update id="updateMenu" parameterType="com.bittrade.pojo.model.SysMenu">
+	<update id="updateMenu" parameterType="com.bittrade.admin.model.domain.SysMenu">
  		update sys_menu
  		<set>
  			<if test="menuName != null and menuName != ''">menu_name = #{menuName},</if>
@@ -118,7 +118,7 @@
  		where menu_id = #{menuId}
 	</update>
 	
-	<insert id="insertMenu" parameterType="com.bittrade.pojo.model.SysMenu">
+	<insert id="insertMenu" parameterType="com.bittrade.admin.model.domain.SysMenu">
  		insert into sys_menu(
  			<if test="menuId != null and menuId != 0">menu_id,</if>
  			<if test="parentId != null and parentId != 0">parent_id,</if>

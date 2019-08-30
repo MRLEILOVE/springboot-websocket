@@ -21,24 +21,19 @@
 		其他类似的类似，也可以公用（共用）引用。
 	-->
 	<sql id="Base_Column_List">
+		<choose>
+			<when test="strArr_field != null">
+		<foreach collection="strArr_field" index="index" item="item" open="" separator="," close="">
+			`${item}`
+		</foreach>
+			</when>
+			<otherwise>
 		`id` AS `id`, 
 		`create_time` AS `createTime`, 
 		`update_time` AS `updateTime`, 
 		`main_account_id` AS `mainAccountId`, 
 		`target_account_id` AS `targetAccountId`, 
 		`status` AS `status`
-	</sql>
-	
-	<!-- 其他的也可以类似的加， yes， 类似蕾丝的。 -->
-	<sql id="sql_Column_forObject">
-		<choose>
-			<when test="tTransferDirection != null and tTransferDirection.strArr_field != null">
-		<foreach collection="tTransferDirection.strArr_field" index="index" item="item" open="" separator="," close="">
-			`${item}`
-		</foreach>
-			</when>
-			<otherwise>
-		<include refid="Base_Column_List"></include>
 			</otherwise>
 		</choose>
 	</sql>
@@ -65,29 +60,18 @@
 		</choose>
 	</sql>
 	<sql id="sql_WHERE_forObject">
-		<if test="tTransferDirection != null and tTransferDirection.map_in != null">
+		<choose>
+			<when test="tTransferDirection.map_in != null">
+			
 		<foreach collection="tTransferDirection.map_in.entrySet()" index="map_index" item="map_item">
 		AND `${map_index}` IN 
 		<foreach collection="map_item" index="arr_index" item="arr_item" open="(" separator="," close=")">
 			#{arr_item}
 		</foreach>
 		</foreach>
-		</if>
-		<if test="tTransferDirection != null and tTransferDirection.map_eq != null">
-		<foreach collection="tTransferDirection.map_eq.entrySet()" index="map_index" item="map_item">
-		AND `${map_index}` = #{map_item}
-		</foreach>
-		</if>
-		<if test="tTransferDirection != null and tTransferDirection.map_le != null">
-		<foreach collection="tTransferDirection.map_le.entrySet()" index="map_index" item="map_item">
-		AND `${map_index}` &lt;= #{map_item}
-		</foreach>
-		</if>
-		<if test="tTransferDirection != null and tTransferDirection.map_ge != null">
-		<foreach collection="tTransferDirection.map_ge.entrySet()" index="map_index" item="map_item">
-		AND `${map_index}` &gt;= #{map_item}
-		</foreach>
-		</if>
+			
+			</when>
+		</choose>
 	</sql>
 	
 	
@@ -450,10 +434,25 @@
 	
 	<select id="getsDTOBy" resultType="com.bittrade.pojo.dto.TTransferDirectionDTO">
 		SELECT 
-			<include refid="sql_Column_forObject"></include>
+			<include refid="Base_Column_List"></include>
 		FROM t_transfer_direction
 		<where>
-			<include refid="sql_WHERE_forObject"></include>
+			<if test="createTime != null">
+			AND `create_time` = #{createTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="updateTime != null">
+			AND `update_time` = #{updateTime,jdbcType=TIMESTAMP}
+			</if>
+			<if test="mainAccountId != null">
+			AND `main_account_id` = #{mainAccountId,jdbcType=INTEGER}
+			</if>
+			<if test="targetAccountId != null">
+			AND `target_account_id` = #{targetAccountId,jdbcType=INTEGER}
+			</if>
+			<if test="status != null">
+			AND `status` = #{status,jdbcType=INTEGER}
+			</if>
+			<include refid="sql_WHERE_forProperty"></include>
 		</where>
 	</select>
 

@@ -3,11 +3,11 @@
  */
 package com.bittrade.__default.service.impl;
 
-import com.bittrade.pojo.model.SysDictType;
-import com.bittrade.pojo.dto.SysDictTypeDTO;
-import com.bittrade.pojo.vo.SysDictTypeVO;
 import com.bittrade.__default.service.IDefaultSysDictTypeService;
 import com.core.framework.base.DAO.IBaseDAO;
+import com.core.framework.base.DTO.BaseDTO;
+import com.core.framework.base.VO.BaseVO;
+import com.core.framework.base.model.BaseModel;
 import com.core.framework.base.service.impl.BaseServiceImpl;
 
 /**
@@ -16,6 +16,6 @@ import com.core.framework.base.service.impl.BaseServiceImpl;
  *
  */
 //public abstract class DefaultSysDictTypeServiceImpl extends BaseServiceImpl<SysDictType, SysDictTypeDTO, SysDictTypeVO, ISysDictTypeDAO> implements IDefaultSysDictTypeService {
-public abstract class DefaultSysDictTypeServiceImpl<DAO extends IBaseDAO<SysDictType, SysDictTypeDTO, SysDictTypeVO>> extends BaseServiceImpl<SysDictType, SysDictTypeDTO, SysDictTypeVO, DAO> implements IDefaultSysDictTypeService {
+public abstract class DefaultSysDictTypeServiceImpl<DAO extends IBaseDAO<Model, DTO, VO>, Model extends BaseModel<Model>, DTO extends BaseDTO<DTO>, VO extends BaseVO<VO>> extends BaseServiceImpl<Model, DTO, VO, DAO> implements IDefaultSysDictTypeService<Model, DTO, VO> {
 	
 }

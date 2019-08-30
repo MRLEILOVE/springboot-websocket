@@ -1,6 +1,3 @@
-/**
- * This code is generated automatically. Please do not edit it.
- */
 package com.bittrade.pojo.model;
 
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -23,7 +20,7 @@ import lombok.experimental.Accessors;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Accessors(chain = false) // true, because BeanUtil.copyObj .
+@Accessors(chain = true)
 @EqualsAndHashCode(callSuper = false)
 @TableName(value="w_coin")
 public class WCoin extends BaseModel<WCoin> {
@@ -88,11 +85,6 @@ public class WCoin extends BaseModel<WCoin> {
 		 */
 		public static final String UPDATE_TIME = "update_time";
 		
-		/**
-		 * 中文名
-		 */
-		public static final String NAME_CN = "name_CN";
-		
 	};
 	
 	/**
@@ -145,10 +137,5 @@ public class WCoin extends BaseModel<WCoin> {
 	 * 更新时间
 	 */
 	private java.time.LocalDateTime updateTime;
-	
-	/**
-	 * 中文名
-	 */
-	private String nameCN;
 	
 }

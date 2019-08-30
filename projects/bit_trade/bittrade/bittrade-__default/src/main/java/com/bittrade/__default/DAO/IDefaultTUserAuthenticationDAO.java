@@ -149,6 +149,6 @@ public abstract interface IDefaultTUserAuthenticationDAO extends IBaseDAO<TUserA
 	 * @param pageDTO
 	 * @return
 	 */
-	public List<TUserAuthenticationDTO> getsDTOBy(@Param(value="tUserAuthentication") TUserAuthenticationDTO tUserAuthenticationDTO, PageDTO<TUserAuthenticationDTO> pageDTO);
+	public List<TUserAuthenticationDTO> getsDTOBy(TUserAuthenticationDTO tUserAuthenticationDTO, PageDTO<TUserAuthenticationDTO> pageDTO);
 	
 }

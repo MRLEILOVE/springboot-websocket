@@ -41,7 +41,7 @@ public interface IConstant {
 	/**
 	 * UTF-8
 	 */
-	public static final String UTF_8 = "UTF-8"; // java.nio.charset.StandardCharsets.UTF_8
+	public static final String UTF_8 = "UTF-8";
 	
 	/**
 	 * 日期时间的格式

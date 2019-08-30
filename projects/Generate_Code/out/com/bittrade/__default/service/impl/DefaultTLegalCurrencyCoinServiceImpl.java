@@ -3,11 +3,11 @@
  */
 package com.bittrade.__default.service.impl;
 
-import com.bittrade.pojo.model.TLegalCurrencyCoin;
-import com.bittrade.pojo.dto.TLegalCurrencyCoinDTO;
-import com.bittrade.pojo.vo.TLegalCurrencyCoinVO;
 import com.bittrade.__default.service.IDefaultTLegalCurrencyCoinService;
 import com.core.framework.base.DAO.IBaseDAO;
+import com.core.framework.base.DTO.BaseDTO;
+import com.core.framework.base.VO.BaseVO;
+import com.core.framework.base.model.BaseModel;
 import com.core.framework.base.service.impl.BaseServiceImpl;
 
 /**
@@ -16,6 +16,6 @@ import com.core.framework.base.service.impl.BaseServiceImpl;
  *
  */
 //public abstract class DefaultTLegalCurrencyCoinServiceImpl extends BaseServiceImpl<TLegalCurrencyCoin, TLegalCurrencyCoinDTO, TLegalCurrencyCoinVO, ITLegalCurrencyCoinDAO> implements IDefaultTLegalCurrencyCoinService {
-public abstract class DefaultTLegalCurrencyCoinServiceImpl<DAO extends IBaseDAO<TLegalCurrencyCoin, TLegalCurrencyCoinDTO, TLegalCurrencyCoinVO>> extends BaseServiceImpl<TLegalCurrencyCoin, TLegalCurrencyCoinDTO, TLegalCurrencyCoinVO, DAO> implements IDefaultTLegalCurrencyCoinService {
+public abstract class DefaultTLegalCurrencyCoinServiceImpl<DAO extends IBaseDAO<Model, DTO, VO>, Model extends BaseModel<Model>, DTO extends BaseDTO<DTO>, VO extends BaseVO<VO>> extends BaseServiceImpl<Model, DTO, VO, DAO> implements IDefaultTLegalCurrencyCoinService<Model, DTO, VO> {
 	
 }

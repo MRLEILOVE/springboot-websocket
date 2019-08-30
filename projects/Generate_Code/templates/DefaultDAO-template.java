@@ -149,6 +149,6 @@ public abstract interface IDefault${struct.className}DAO extends IBaseDAO<${stru
 	 * @param pageDTO
 	 * @return
 	 */
-	public List<${struct.className}DTO> getsDTOBy(@Param(value="${struct.variableName}") ${struct.className}DTO ${struct.variableName}DTO, PageDTO<${struct.className}DTO> pageDTO);
+	public List<${struct.className}DTO> getsDTOBy(${struct.className}DTO ${struct.variableName}DTO, PageDTO<${struct.className}DTO> pageDTO);
 	
 }

@@ -149,6 +149,6 @@ public abstract interface IDefaultTWalletTransferDAO extends IBaseDAO<TWalletTra
 	 * @param pageDTO
 	 * @return
 	 */
-	public List<TWalletTransferDTO> getsDTOBy(@Param(value="tWalletTransfer") TWalletTransferDTO tWalletTransferDTO, PageDTO<TWalletTransferDTO> pageDTO);
+	public List<TWalletTransferDTO> getsDTOBy(TWalletTransferDTO tWalletTransferDTO, PageDTO<TWalletTransferDTO> pageDTO);
 	
 }

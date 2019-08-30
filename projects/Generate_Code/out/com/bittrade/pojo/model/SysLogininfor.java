@@ -1,6 +1,3 @@
-/**
- * This code is generated automatically. Please do not edit it.
- */
 package com.bittrade.pojo.model;
 
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -23,7 +20,7 @@ import lombok.experimental.Accessors;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Accessors(chain = false) // true, because BeanUtil.copyObj .
+@Accessors(chain = true)
 @EqualsAndHashCode(callSuper = false)
 @TableName(value="sys_logininfor")
 public class SysLogininfor extends BaseModel<SysLogininfor> {
@@ -88,7 +85,7 @@ public class SysLogininfor extends BaseModel<SysLogininfor> {
 	/**
 	 * 访问ID
 	 */
-	@com.baomidou.mybatisplus.annotation.TableId(value = "info_id", type = com.baomidou.mybatisplus.annotation.IdType.AUTO)
+	@com.baomidou.mybatisplus.annotation.TableId(value = "infoId", type = com.baomidou.mybatisplus.annotation.IdType.AUTO)
 	private Integer infoId;
 	
 	/**

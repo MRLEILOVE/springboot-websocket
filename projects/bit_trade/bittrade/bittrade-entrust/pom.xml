@@ -27,7 +27,7 @@
 		</dependency>
 		<dependency>
 			<groupId>com.bittrade</groupId>
-			<artifactId>common-bittrade-service</artifactId>
+			<artifactId>common-bittrade</artifactId>
 		</dependency>
 		
 		<!-- <dependency>

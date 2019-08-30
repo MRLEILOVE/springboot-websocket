@@ -1,26 +1,26 @@
 package com.bittrade.admin.shiro.service;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
+import com.bittrade.admin.constant.GlobalConstant;
+import com.bittrade.admin.constant.GlobalConstant.Sys;
 import com.bittrade.admin.enums.UserEnum.UserState;
 import com.bittrade.admin.exception.CaptchaException;
 import com.bittrade.admin.exception.UserBlockedException;
 import com.bittrade.admin.exception.UserDeleteException;
 import com.bittrade.admin.exception.UserNotExistsException;
 import com.bittrade.admin.exception.UserPasswordNotMatchException;
+import com.bittrade.admin.model.domain.SysUser;
 import com.bittrade.admin.service.sys.SysUserService;
 import com.bittrade.admin.shiro.constant.ShiroConstant;
 import com.bittrade.admin.util.MessageUtil;
 import com.bittrade.admin.util.ServletUtil;
 import com.bittrade.admin.util.ShiroUtil;
-import com.bittrade.pojo.model.SysUser;
-import com.core.common.constant.GlobalConstant;
-import com.core.common.constant.GlobalConstant.Sys;
 
 import eu.bitwalker.useragentutils.UserAgent;
 
@@ -98,7 +98,7 @@ public class LoginService {
 	 */
 	public void recordLoginInfo(SysUser user) {
 		user.setLoginIp( ShiroUtil.getIp() );
-		user.setLoginDate( LocalDateTime.now() );
+		user.setLoginDate( new Date() );
 		sysUserService.updateById( user );
 	}
 

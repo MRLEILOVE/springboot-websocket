@@ -1,20 +1,19 @@
 package com.bittrade.admin.shiro.service;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
+import com.bittrade.admin.constant.GlobalConstant.Sys;
 import com.bittrade.admin.enums.UserEnum.UserState;
+import com.bittrade.admin.model.domain.SysLogininfor;
+import com.bittrade.admin.model.domain.SysOperLog;
+import com.bittrade.admin.model.domain.SysUserOnline;
 import com.bittrade.admin.service.impl.sys.SysLogininforServiceImpl;
 import com.bittrade.admin.service.impl.sys.SysUserOnlineServiceImpl;
 import com.bittrade.admin.service.sys.SysOperLogService;
 import com.bittrade.admin.shiro.session.OnlineSession;
 import com.bittrade.admin.util.AddressUtil;
+import com.bittrade.admin.util.ConvertUtil;
 import com.bittrade.admin.util.SpringUtil;
-import com.bittrade.pojo.model.SysLogininfor;
-import com.bittrade.pojo.model.SysOperLog;
-import com.bittrade.pojo.model.SysUserOnline;
-import com.core.common.constant.GlobalConstant.Sys;
-import com.core.tool.ConvertUtil;
-import com.core.tool.DateUtil;
 
 import eu.bitwalker.useragentutils.UserAgent;
 
@@ -37,8 +36,8 @@ public class AsyncFactory {
 		online.setSessionId( String.valueOf( session.getId() ) );
 		online.setDeptName( session.getDeptName() );
 		online.setLoginName( session.getLoginName() );
-		online.setStartTimestamp( DateUtil.date2LocalDateTime(session.getStartTimestamp()) );
-		online.setLastAccessTime( DateUtil.date2LocalDateTime(session.getLastAccessTime()) );
+		online.setStartTimestamp( session.getStartTimestamp() );
+		online.setLastAccessTime( session.getLastAccessTime() );
 		online.setExpireTime( ConvertUtil.toInt( session.getTimeout() ) );
 		online.setIpaddr( session.getHost() );
 		online.setLoginLocation( AddressUtil.getRealAddressByIP( session.getHost() ) );
@@ -80,7 +79,7 @@ public class AsyncFactory {
 		logininfor.setIpaddr( ip );
 		logininfor.setLoginLocation( AddressUtil.getRealAddressByIP( ip ) );
 		logininfor.setBrowser( browser );
-		logininfor.setLoginTime( LocalDateTime.now() );
+		logininfor.setLoginTime( new Date() );
 		logininfor.setOs( os );
 		logininfor.setMsg( message );
 		// 日志状态

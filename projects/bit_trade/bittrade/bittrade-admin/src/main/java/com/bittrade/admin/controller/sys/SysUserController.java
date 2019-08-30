@@ -1,7 +1,7 @@
 package com.bittrade.admin.controller.sys;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -18,8 +18,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.bittrade.admin.annotation.Log;
+import com.bittrade.admin.constant.GlobalConstant.Sys;
 import com.bittrade.admin.controller.base.BaseController;
 import com.bittrade.admin.enums.AnnotationEnum.BusinessType;
+import com.bittrade.admin.model.domain.SysUser;
 import com.bittrade.admin.service.sys.SysRoleService;
 import com.bittrade.admin.service.sys.SysUserService;
 import com.bittrade.admin.shiro.service.PasswordService;
@@ -27,9 +29,6 @@ import com.bittrade.admin.util.ExcelUtil;
 import com.bittrade.admin.util.ShiroUtil;
 import com.bittrade.admin.wrapper.TableDataInfo;
 import com.bittrade.admin.wrapper.Wrapper;
-import com.bittrade.pojo.dto.SysUserDTO;
-import com.bittrade.pojo.model.SysUser;
-import com.core.common.constant.GlobalConstant.Sys;
 
 /**
  * <p>
@@ -87,15 +86,15 @@ public class SysUserController extends BaseController {
 	@PostMapping("/add")
 	@Transactional(rollbackFor = Exception.class)
 	@ResponseBody
-	public Wrapper<String> addSave(SysUserDTO userDTO) {
-		if (userDTO.getLoginName().equals( Sys.ADMIN )) {
+	public Wrapper<String> addSave(SysUser user) {
+		if (user.getLoginName().equals( Sys.ADMIN )) {
 			return error( "不允许修改超级管理员" );
 		}
-		userDTO.setSalt( ShiroUtil.randomSalt() );
-		userDTO.setPassword( passwordService.encryptPassword( userDTO.getLoginName(), userDTO.getPassword(), userDTO.getSalt() ) );
-		userDTO.setCreateBy( ShiroUtil.getLoginName() );
-		userDTO.setCreateTime( LocalDateTime.now() );
-		return toAjax( sysUserService.insertUser( userDTO ) );
+		user.setSalt( ShiroUtil.randomSalt() );
+		user.setPassword( passwordService.encryptPassword( user.getLoginName(), user.getPassword(), user.getSalt() ) );
+		user.setCreateBy( ShiroUtil.getLoginName() );
+		user.setCreateTime( new Date() );
+		return toAjax( sysUserService.insertUser( user ) );
 	}
 
 	@GetMapping("/edit/{userId}")
@@ -110,9 +109,9 @@ public class SysUserController extends BaseController {
 	@PostMapping("/edit")
 	@Transactional(rollbackFor = Exception.class)
 	@ResponseBody
-	public Wrapper<String> editSave(SysUserDTO userDTO) {
-		userDTO.setUpdateBy( ShiroUtil.getLoginName() );
-		return toAjax( sysUserService.updateUser( userDTO ) );
+	public Wrapper<String> editSave(SysUser user) {
+		user.setUpdateBy( ShiroUtil.getLoginName() );
+		return toAjax( sysUserService.updateUser( user ) );
 	}
 
 	@RequiresPermissions("system:user:resetPwd")
@@ -148,8 +147,8 @@ public class SysUserController extends BaseController {
 	@PostMapping("/checkLoginNameUnique")
 	@ResponseBody
 	public String checkLoginNameUnique(SysUser user) {
-		SysUserDTO sysUserDTO = getUser();
-		if (sysUserDTO.getLoginName().equals(user.getLoginName())) {
+		SysUser sysUser = getUser();
+		if (sysUser.getLoginName().equals(user.getLoginName())) {
 			return "0";
 		}
 		return sysUserService.count( new QueryWrapper<SysUser>( user ) ) > 0 ? "1" : "0";
@@ -158,8 +157,8 @@ public class SysUserController extends BaseController {
 	@PostMapping("/checkPhoneUnique")
 	@ResponseBody
 	public String checkPhoneUnique(SysUser user) {
-		SysUserDTO sysUserDTO = getUser();
-		if (sysUserDTO.getPhonenumber().equals(user.getPhonenumber())) {
+		SysUser sysUser = getUser();
+		if (sysUser.getPhonenumber().equals(user.getPhonenumber())) {
 			return "0";
 		}
 		return sysUserService.count( new QueryWrapper<SysUser>( user ) ) > 0 ? "1" : "0";
@@ -168,8 +167,8 @@ public class SysUserController extends BaseController {
 	@PostMapping("/checkEmailUnique")
 	@ResponseBody
 	public String checkEmailUnique(SysUser user) {
-		SysUserDTO sysUserDTO = getUser();
-		if (sysUserDTO.getEmail().equals(user.getEmail())) {
+		SysUser sysUser = getUser();
+		if (sysUser.getEmail().equals(user.getEmail())) {
 			return "0";
 		}
 		return sysUserService.count( new QueryWrapper<SysUser>( user ) ) > 0 ? "1" : "0";

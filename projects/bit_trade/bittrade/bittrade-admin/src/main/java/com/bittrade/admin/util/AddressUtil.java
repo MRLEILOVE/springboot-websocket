@@ -4,13 +4,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.core.common.constant.GlobalConstant;
-import com.core.tool.HttpUtil;
+import com.bittrade.admin.constant.GlobalConstant;
 
 /**
  * 获取地址类
  * 
- * @author who ?
+ * @author ruoyi
  */
 public class AddressUtil {
 	private static final Logger	log		= LoggerFactory.getLogger( AddressUtil.class );

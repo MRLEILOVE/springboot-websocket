@@ -5,9 +5,9 @@ import org.springframework.stereotype.Service;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.bittrade.admin.dao.sys.ISysLogininforDAO;
+import com.bittrade.admin.model.domain.SysLogininfor;
 import com.bittrade.admin.service.sys.SysLogininforService;
-import com.bittrade.pojo.model.SysLogininfor;
-import com.core.tool.ConvertUtil;
+import com.bittrade.admin.util.ConvertUtil;
 
 /**
  * <p>

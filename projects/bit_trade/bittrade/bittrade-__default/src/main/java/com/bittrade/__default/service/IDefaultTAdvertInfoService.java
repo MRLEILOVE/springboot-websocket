@@ -3,9 +3,9 @@
  */
 package com.bittrade.__default.service;
 
-import com.bittrade.pojo.model.TAdvertInfo;
-import com.bittrade.pojo.dto.TAdvertInfoDTO;
-import com.bittrade.pojo.vo.TAdvertInfoVO;
+import com.core.framework.base.DTO.BaseDTO;
+import com.core.framework.base.VO.BaseVO;
+import com.core.framework.base.model.BaseModel;
 import com.core.framework.base.service.IBaseService;
 
 /**
@@ -13,6 +13,6 @@ import com.core.framework.base.service.IBaseService;
  * @author Administrator
  *
  */
-public abstract interface IDefaultTAdvertInfoService extends IBaseService<TAdvertInfo, TAdvertInfoDTO, TAdvertInfoVO> {
+public abstract interface IDefaultTAdvertInfoService<Model extends BaseModel<Model>, DTO extends BaseDTO<DTO>, VO extends BaseVO<VO>> extends IBaseService<Model, DTO, VO> {
 	
 }

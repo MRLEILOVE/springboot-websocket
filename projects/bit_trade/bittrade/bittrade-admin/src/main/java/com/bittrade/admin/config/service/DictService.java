@@ -5,8 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.bittrade.admin.model.domain.SysDictData;
 import com.bittrade.admin.service.sys.SysDictDataService;
-import com.bittrade.pojo.model.SysDictData;
 
 /**
  * RuoYi首创 html调用 thymeleaf 实现字典读取
