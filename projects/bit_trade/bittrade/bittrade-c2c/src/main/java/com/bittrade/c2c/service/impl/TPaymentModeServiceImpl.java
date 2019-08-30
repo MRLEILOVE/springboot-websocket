@@ -12,6 +12,7 @@ import com.core.web.constant.entity.LoginUser;
 import com.core.web.constant.exception.BusinessException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
@@ -21,6 +22,7 @@ import java.time.LocalDateTime;
  * @author Administrator
  */
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class TPaymentModeServiceImpl extends DefaultTPaymentModeServiceImpl<ITPaymentModeDAO> implements ITPaymentModeService {
 
 	/**
@@ -40,6 +42,7 @@ public class TPaymentModeServiceImpl extends DefaultTPaymentModeServiceImpl<ITPa
 		paymentMode.setUserId(loginUser.getUser_id())
 				.setType(TPaymentMode.PaymentTypeEnum.BANK_CARD.getCode())
 				.setStatus(TPaymentMode.StatusEnum.ENABLE.getCode())
+				.setQrCode(null)
 				.setCreateTime(LocalDateTime.now())
 				.setUpdateTime(LocalDateTime.now());
 		return baseMapper.add(paymentMode) > 0;
@@ -53,7 +56,20 @@ public class TPaymentModeServiceImpl extends DefaultTPaymentModeServiceImpl<ITPa
 	 */
 	@Override
 	public boolean bindingWeChart(BindingWeChartVO bindingWeChartVO, LoginUser loginUser) {
-		return false;
+		// 验证微信是否已存在，每个用户只能绑定一个
+		checkPaymentModeExistence(loginUser, TPaymentMode.PaymentTypeEnum.WE_CHAT);
+		// 构建参数
+		TPaymentMode paymentMode = TPaymentMode.builder().build();
+		BeanUtils.copyProperties(bindingWeChartVO, paymentMode);
+		/*填充其他参数*/
+		paymentMode.setUserId(loginUser.getUser_id())
+				.setType(TPaymentMode.PaymentTypeEnum.WE_CHAT.getCode())
+				.setStatus(TPaymentMode.StatusEnum.ENABLE.getCode())
+				.setBankName(null)
+				.setBankBranch(null)
+				.setCreateTime(LocalDateTime.now())
+				.setUpdateTime(LocalDateTime.now());
+		return baseMapper.add(paymentMode) > 0;
 	}
 
 	/**
@@ -64,7 +80,20 @@ public class TPaymentModeServiceImpl extends DefaultTPaymentModeServiceImpl<ITPa
 	 */
 	@Override
 	public boolean bindingAliPay(BindingAliPayVO bindingAliPayVO, LoginUser loginUser) {
-		return false;
+		// 验证支付宝是否已存在，每个用户只能绑定一个
+		checkPaymentModeExistence(loginUser, TPaymentMode.PaymentTypeEnum.ALI_PAY);
+		// 构建参数
+		TPaymentMode paymentMode = TPaymentMode.builder().build();
+		BeanUtils.copyProperties(bindingAliPayVO, paymentMode);
+		/*填充其他参数*/
+		paymentMode.setUserId(loginUser.getUser_id())
+				.setType(TPaymentMode.PaymentTypeEnum.ALI_PAY.getCode())
+				.setStatus(TPaymentMode.StatusEnum.ENABLE.getCode())
+				.setBankName(null)
+				.setBankBranch(null)
+				.setCreateTime(LocalDateTime.now())
+				.setUpdateTime(LocalDateTime.now());
+		return baseMapper.add(paymentMode) > 0;
 	}
 
 	/**
