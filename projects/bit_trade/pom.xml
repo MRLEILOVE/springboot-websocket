@@ -25,7 +25,8 @@
 		<module>test</module>
 		<module>bittrade</module>
 		<module>wallet</module>
-		<module>common-bittrade</module>
+		<module>common-bittrade-service</module>
+		<module>common-bittrade-web</module>
 	</modules>
 
 	<properties>
@@ -49,10 +50,38 @@
 			</dependency> -->
 			<dependency>
 				<groupId>com.bittrade</groupId>
-				<artifactId>common-bittrade</artifactId>
+				<artifactId>common-bittrade-service</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.bittrade</groupId>
+				<artifactId>common-bittrade-web</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			
+			<!-- asm . -->
+			<dependency>
+				<groupId>org.ow2.asm</groupId>
+				<artifactId>asm</artifactId>
+				<version>7.1</version>
+			</dependency>
+			<dependency>
+				<groupId>org.ow2.asm</groupId>
+				<artifactId>asm-commons</artifactId>
+				<version>7.1</version>
+			</dependency>
+			<dependency>
+				<groupId>org.ow2.asm</groupId>
+				<artifactId>asm-util</artifactId>
+				<version>7.1</version>
+			</dependency>
+			<dependency>
+				<groupId>cglib</groupId>
+				<artifactId>cglib-nodep</artifactId>
+				<version>3.3.0</version>
+			</dependency>
+			
+			<!-- apache . -->
 			<dependency>
 				<groupId>org.apache.commons</groupId>
 				<artifactId>commons-compress</artifactId>

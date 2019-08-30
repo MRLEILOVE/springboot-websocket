@@ -7,11 +7,8 @@ import com.core.common.DTO.ReturnDTO;
 
 
 public interface IwalletCaseService {
-    ReturnDTO showfee();
 
-    ReturnDTO showmaxMin();
-
-    ReturnDTO checkparam();
+    ReturnDTO checkparam(CoinTypeVO coinTypeVO, Long userID);
 
     ReturnDTO auditStatus();
 
@@ -19,11 +16,15 @@ public interface IwalletCaseService {
 
     ReturnDTO chongbi(Long userId, CoinTypeVO coinTypeVO);
 
-    ReturnDTO rechargeRecord(Long userId, CoinTypeVO coinTypeVO);
+    ReturnDTO rechargeRecord(Long userId/*, CoinTypeVO coinTypeVO*/);
 
-    ReturnDTO withdrawRecord(Long userId, CoinTypeVO coinTypeVO);
+    ReturnDTO withdrawRecord(Long userId/*, CoinTypeVO coinTypeVO*/);
 
     ReturnDTO qrCode(Long userId, CoinTypeVO coinTypeVO);
 
     ReturnDTO addaddress(Long userId, WalletAddressVO walletAddressVO);
+
+    void BillToAccount();
+
+    void OrderToBill();
 }
