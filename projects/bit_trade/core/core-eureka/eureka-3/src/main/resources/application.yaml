@@ -1,6 +1,0 @@
-server:
-  port: 1763
-
-spring:
-  profiles:
-    active: eureka
