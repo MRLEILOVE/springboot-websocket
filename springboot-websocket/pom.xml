@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.liegq.www</groupId>
+    <artifactId>springboot-websocket</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+
+    <!-- 项目的名称, Maven产生的文档用, 使用Maven Install命令打包出来的jar名字-->
+    <name>springboot-websocket</name>
+
+    <!-- 项目的详细描述, Maven 产生的文档用。 当这个元素能够用HTML格式描述时（例如，CDATA中的文本会被解析器忽略，
+         就可以包含HTML标签）， 不鼓励使用纯文本描述。如果你需要修改产生的web站点的索引页面，你应该修改你自己的
+         索引页文件，而不是调整这里的文档。 -->
+    <description>websocket demo project for Spring Boot</description>
+    <!--
+    打包类型,常用的有jar,war,pom,
+    区别具体见:<a href='https://blog.csdn.net/zhangjiahao7521/article/details/81158049'>maven中jar、war、pom的区别<a/>
+    -->
+    <packaging>jar</packaging>
+
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.1.9.RELEASE</version>
+        <relativePath/>
+    </parent>
+
+
+    <!--统一管理版本-->
+    <properties>
+        <java.version>1.8</java.version>
+        <commons-collections4.version>4.1</commons-collections4.version>
+    </properties>
+
+
+    <dependencies>
+        <!-- 核心模块，包括自动配置支持、日志和YAML等 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <!--websocket-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-websocket</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <!--编写更少量的代码：使用apache commons工具类库:
+            https://www.cnblogs.com/ITtangtang/p/3966955.html-->
+        <!--apache.commons.lang3-->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+        </dependency>
+
+        <!--你可以把这个工具看成是java.util的扩展-->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-collections4</artifactId>
+            <version>${commons-collections4.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
