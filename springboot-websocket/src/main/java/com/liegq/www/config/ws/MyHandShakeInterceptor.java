@@ -1,4 +1,4 @@
-package com.liegq.www.config.websocket;
+package com.liegq.www.config.ws;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.server.ServerHttpRequest;

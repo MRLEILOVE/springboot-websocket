@@ -1,16 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Websocket测试</title>
 </head>
+
 <body>
-Welcome<br/><input id="text" type="text"/>
-<button onclick="subscribe1()">订阅一推一->/user/1/subscribeOneToOne</button>
-<button onclick="subscribe2()">订阅一推多->/topic/subscribeOneToMany</button>
-<hr/>
+
+<h1>WebSocket测试</h1>
+
+<input id="text" type="text" />
+<button onclick="send()">发送消息</button>
+
+<button onclick="subscribe1()">订阅一推一</button>
+<button onclick="subscribe2()">订阅一推多</button>
 <button onclick="closeWebSocket()">关闭WebSocket连接</button>
-<hr/>
+
+<hr>
+<h4>接收到的后台推送:</h4>
 <div id="message"></div>
 </body>
 
@@ -29,50 +37,57 @@ Welcome<br/><input id="text" type="text"/>
         {},
         function connectCallback(frame) {
             // 连接成功时（服务器响应 CONNECTED 帧）的回调方法
-            setMessageInnerHTML("WebSocket连接成功....");
+            console.log('连接WebSocket成功....');
+            // 将消息显示在网页上
+            setMessageInnerHTML('连接WebSocket成功....');
         },
         function errorCallBack(error) {
             // 连接失败时（服务器响应 ERROR 帧）的回调方法
-            setMessageInnerHTML("WebSocket连接成功失败....");
+            console.log('连接WebSocket失败.....');
+            // 将消息显示在网页上
+            setMessageInnerHTML('连接WebSocket失败.....');
         }
     );
 
-    // 发送消息
+    //发送消息
     function send() {
         var message = document.getElementById('text').value;
-        var messageJson = JSON.stringify({"name": message});
-        stompClient.send("/app/sendTest", {}, messageJson);
-        setMessageInnerHTML("/app/sendTest 你发送的消息:" + message);
+        var messageJson = JSON.stringify({ "message": message });
+        stompClient.send("/app/messages/action/send", {}, messageJson);
+        setMessageInnerHTML("你发送的消息:" + message);
     }
 
     // 订阅一推一
     function subscribe1() {
-        stompClient.subscribe('/user/1/messages', function (response) {
-            setMessageInnerHTML("已成功订阅/topic/subscribeTest");
+        stompClient.subscribe('/app/user/1/queue/messages', function (response) {
+            // 后台推送消息才进行此回调
             var returnData = JSON.parse(response.body);
-            setMessageInnerHTML("订阅 /topic/subscribeTest 接收到的消息为:" + returnData);
+            // 将消息显示在网页上
+            setMessageInnerHTML(returnData.responseMessage);
         });
     }
 
-    // 订订阅一推多
+    // 订阅一推多
     function subscribe2() {
-        stompClient.subscribe('/topic/subscribe', function (response) {
-            setMessageInnerHTML("已成功订阅/topic/sendTest");
+        stompClient.subscribe('/app/topic/messages', function (response) {
+            // 后台推送消息才进行此回调
             var returnData = JSON.parse(response.body);
-            setMessageInnerHTML("/topic/sendTest 你接收到的消息为:" + returnData.responseMessage);
+            // 将消息显示在网页上
+            setMessageInnerHTML(returnData.responseMessage);
         });
     }
 
-    // 关闭websocket连接
+
+    //关闭websocket连接
     function closeWebSocket() {
         stompClient.disconnect();
         setMessageInnerHTML("websocket连接已关闭......")
     }
 
-    // 将消息显示在网页上
+    //将消息显示在网页上
     function setMessageInnerHTML(innerHTML) {
         document.getElementById('message').innerHTML += innerHTML + '<br/>';
     }
-
 </script>
+
 </html>
