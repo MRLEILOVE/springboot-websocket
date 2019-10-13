@@ -40,15 +40,16 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 	@Override
 	public void registerStompEndpoints(StompEndpointRegistry registry) {
 		/*
-		 * 允许使用socketJs方式访问，访问点为ws，允许跨域
-		 * 在网页上我们就可以通过这个链接
-		 * http://localhost:8080/ws
-		 * 来和服务器的WebSocket连接
-		 * */
+		 * 将"/ws"路径注册为STOMP端点，这个路径与发送和接收消息的目的路径有所不同，
+		 * 这是一个端点，客户端在订阅或发布消息到目的地址前，要连接该端点，
+		 * 即客户端要先发送请求 url="ws://host:port/serverName/ws" 与 STOMP server 进行连接，之后才能用其他 url 订阅、发送、接收消息
+		 */
 		registry.addEndpoint("/ws")
+				// 允许跨域
 				.setAllowedOrigins("*")
 				// 添加自定义拦截
 				.addInterceptors(myHandShakeInterceptor)
+				// 允许使用socketJs方式访问
 				.withSockJS();
 	}
 
@@ -62,18 +63,16 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 	 */
 	@Override
 	public void configureMessageBroker(MessageBrokerRegistry registry) {
-		/*
-		 * 启用代理
-		 * /user:代表点对点，即发指定用户
-		 * /topic:代表发布广播，即群发
-		 * */
-		registry.enableSimpleBroker("/user", "/topic");
-		/*
-		 * 全局使用的消息前缀（客户端订阅路径上会体现出来）,只对@MessageMapping、@SubscribeMapping生效(看源码注释)
-		 * 例如客户端发送消息的目的地为/app/sendTest，则对应控制层@MessageMapping(“/sendTest”)
-		 * 客户端订阅主题的目的地为/app/subscribeTest，则对应控制层@SubscribeMapping(“/subscribeTest”)
-		 * */
-		registry.setApplicationDestinationPrefixes("/app");
+		// （#1 内存代理设置）表示在topic、user、app这3个域上服务端可以向客户端发消息
+		registry.enableSimpleBroker("/topic", "/user", "/app");
+
+		// （#2 专业代理设置，1和2二选一）
+//      registry.enableStompBrokerRelay("/topic", "/user")
+//      .setRelayHost("127.0.0.1") // 必须要用ip，不能用 localhost 或者 tcp://localhost，否则会报【Message broker not active】错误！
+//      .setRelayPort(61613); // 端口号。用户名和密码是可选的，默认都是guest
+
+		// 表示客户端向服务器端发送的加上"/app"或"/user"前缀的命令才会进入@MessageMapping或@SubscribeMapping注解处理 (看源码注释)
+		registry.setApplicationDestinationPrefixes("/app", "/user");
 		// 点对点使用的订阅前缀（客户端订阅路径上会体现出来），不设置的话，默认也是/user/
 		registry.setUserDestinationPrefix("/user/");
 	}

@@ -36,7 +36,7 @@ public class WebSocketTask {
 		ServerMessage serverMessage = ServerMessage.builder()
 				.responseMessage("这个是后台主动推送的一对一消息")
 				.build();
-		wsUtil.pushMsg("1", WebSocketConstants.ONE_TO_ONE_MESSAGE_RESPONSE_DESTINATION, serverMessage);
+		wsUtil.pushMsg(null, String.format(WebSocketConstants.ONE_TO_ONE_MESSAGE_RESPONSE_DESTINATION, "1"), serverMessage);
 	}
 
 
