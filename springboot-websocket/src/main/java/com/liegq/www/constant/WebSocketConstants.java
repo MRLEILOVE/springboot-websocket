@@ -9,11 +9,11 @@ public interface WebSocketConstants {
 	/**
 	 * 一推一发送消息目的地
 	 */
-	String ONE_TO_ONE_MESSAGE_RESPONSE_DESTINATION = "/messages/one";
+	String ONE_TO_ONE_MESSAGE_RESPONSE_DESTINATION = "/queue/messages";
 
 	/**
-	 * 一推多发送消息目的地
+	 * 广播发送消息目的地
 	 */
-	String ONE_TO_MANY_MESSAGE_RESPONSE_DESTINATION = "/messages/many";
+	String TOPIC_MESSAGE_RESPONSE_DESTINATION = "/topic/messages";
 
 }

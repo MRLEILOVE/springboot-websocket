@@ -1,7 +1,9 @@
 package com.liegq.www.bean;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 /**
@@ -16,8 +18,9 @@ import lombok.experimental.Accessors;
  * </p>
  */
 @Data
-@Accessors(chain = true)
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class ClientMessage {
 
     private String message;

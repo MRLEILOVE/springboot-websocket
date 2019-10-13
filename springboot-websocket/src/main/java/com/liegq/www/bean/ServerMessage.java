@@ -1,6 +1,9 @@
 package com.liegq.www.bean;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  *  服务端发送消息实体
@@ -14,11 +17,11 @@ import lombok.Data;
  * </p>
  */
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class ServerMessage {
 
     private String responseMessage;
 
-    public ServerMessage(String responseMessage) {
-        this.responseMessage = responseMessage;
-    }
 }

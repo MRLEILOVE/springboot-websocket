@@ -2,6 +2,7 @@ package com.liegq.www;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 
 @SpringBootApplication
@@ -11,6 +12,7 @@ import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBr
  *这时候控制器（controller）开始支持@MessageMapping,就像是使用@requestMapping一样
  * */
 @EnableWebSocketMessageBroker
+@EnableScheduling
 public class WebsocketApplication {
 
 	public static void main(String[] args) {
